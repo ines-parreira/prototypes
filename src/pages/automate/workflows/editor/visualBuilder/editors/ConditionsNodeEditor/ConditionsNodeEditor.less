@@ -16,13 +16,12 @@
         align-items: center;
     }
 
-    .errorMessage {
-        color: var(--feedback-error-2);
-        margin: 0;
-    }
-
     .input {
         flex: 1;
+    }
+
+    .selectInput {
+        width: unset;
     }
 
     .fallback {
@@ -93,5 +92,11 @@
 
     .dateConditionNumberInput {
         max-width: 80px;
+    }
+
+    .error {
+        .caption-regular();
+
+        color: var(--feedback-error-2);
     }
 }

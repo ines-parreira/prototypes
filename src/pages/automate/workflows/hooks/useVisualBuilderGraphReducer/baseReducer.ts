@@ -1,10 +1,16 @@
 import {produce} from 'immer'
 
+import _merge from 'lodash/merge'
+
+import {App} from 'pages/automate/actionsPlatform/types'
 import {
     buildEdgeCommonProperties,
     cleanConditionsFromEmptyVariables,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {MessageContent} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import {
+    MessageContent,
+    WorkflowConfiguration,
+} from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 import {getWorkflowVariableListForNode} from '../../models/variables.model'
 import {
@@ -13,7 +19,6 @@ import {
     ChannelTriggerNodeType,
     EndNodeType,
     FileUploadNodeType,
-    isTriggerNodeType,
     OrderLineItemSelectionNodeType,
     OrderSelectionNodeType,
     RemoveItemNodeType,
@@ -25,6 +30,9 @@ import {
     VisualBuilderGraph,
     VisualBuilderNode,
     ReplaceItemNodeType,
+    VisualBuilderErrors,
+    VisualBuilderTouched,
+    VisualBuilderGraphAppApp,
 } from '../../models/visualBuilderGraph.types'
 import {
     buildAutomatedMessageNode,
@@ -128,10 +136,13 @@ export type VisualBuilderBaseAction =
     | {
           type: 'DELETE_NODE'
           nodeId: string
+          steps: WorkflowConfiguration[]
+          apps: App[]
       }
     | {
           type: 'DELETE_BRANCH'
           nodeId: string
+          steps: WorkflowConfiguration[]
       }
     | {
           type: 'GREY_OUT_BRANCH'
@@ -248,6 +259,11 @@ export type VisualBuilderBaseAction =
           apps: NonNullable<VisualBuilderGraph['apps']>
       }
     | {
+          type: 'SET_APP_API_KEY'
+          appId: string
+          apiKey: string
+      }
+    | {
           type: 'SET_INPUTS'
           inputs: VisualBuilderGraph['inputs']
       }
@@ -274,6 +290,18 @@ export type VisualBuilderBaseAction =
           skipChargeNodeId: string
           subscriptionId: string
           chargeId: string
+      }
+    | {
+          type: 'SET_ERRORS'
+          nodeId?: string
+          appId?: string
+          errors: VisualBuilderErrors | null
+      }
+    | {
+          type: 'SET_TOUCHED'
+          nodeId?: string
+          appId?: string
+          touched: VisualBuilderTouched | null
       }
 
 export function baseReducer(
@@ -440,6 +468,7 @@ export function baseReducer(
                         (n) => n.id === action.nodeId
                     )
                     if (nodeIndex === -1) return
+
                     draft.nodes.splice(nodeIndex, 1)
                     const incomingEdge = draft.edges.find(
                         (e) => e.target === action.nodeId
@@ -462,7 +491,9 @@ export function baseReducer(
                                                 edge.data.conditions,
                                                 getWorkflowVariableListForNode(
                                                     draft,
-                                                    edge.target
+                                                    edge.target,
+                                                    action.steps,
+                                                    action.apps
                                                 )
                                             )
                                         return edge
@@ -474,7 +505,7 @@ export function baseReducer(
                 })
             )
         case 'DELETE_BRANCH': {
-            const triggerNode = graph.nodes.find(isTriggerNodeType)!
+            const triggerNode = graph.nodes[0]
             const nextGraph = deleteBranch(graph, action.nodeId, {
                 keepIncomingEdge: true,
             })
@@ -491,6 +522,20 @@ export function baseReducer(
                     )
                     draft.nodes.push(endNode)
                     incomingEdge.target = endNode.id
+
+                    if (draft.apps && !draft.isTemplate) {
+                        const appUsage = computeAppUsage(draft, action.steps)
+
+                        draft.apps = draft.apps.filter((app) => {
+                            switch (app.type) {
+                                case 'shopify':
+                                case 'recharge':
+                                    return app.type in appUsage
+                                case 'app':
+                                    return app.app_id in appUsage
+                            }
+                        })
+                    }
                 })
             )
         }
@@ -678,6 +723,60 @@ export function baseReducer(
                     node.data.chargeId = action.chargeId
                 }
             })
+        case 'SET_APP_API_KEY':
+            return produce(graph, (draft) => {
+                const app = draft.apps?.find(
+                    (app): app is VisualBuilderGraphAppApp =>
+                        app.type === 'app' && app.app_id === action.appId
+                )
+
+                if (app) {
+                    app.api_key = action.apiKey
+                }
+            })
+        case 'SET_ERRORS':
+            return produce(graph, (draft) => {
+                if (action.nodeId) {
+                    const node = draft.nodes.find((n) => n.id === action.nodeId)
+
+                    if (node) {
+                        node.data.errors = action.errors
+                    }
+                } else if (action.appId) {
+                    for (const app of draft.apps ?? []) {
+                        if (app.type === 'app' && app.app_id === action.appId) {
+                            app.errors = action.errors
+
+                            break
+                        }
+                    }
+                } else {
+                    draft.errors = action.errors
+                }
+            })
+        case 'SET_TOUCHED':
+            return produce(graph, (draft) => {
+                if (action.nodeId) {
+                    const node = draft.nodes.find((n) => n.id === action.nodeId)
+
+                    if (node) {
+                        node.data.touched = _merge(
+                            node.data.touched,
+                            action.touched
+                        )
+                    }
+                } else if (action.appId) {
+                    for (const app of draft.apps ?? []) {
+                        if (app.type === 'app' && app.app_id === action.appId) {
+                            app.touched = action.touched
+
+                            break
+                        }
+                    }
+                } else {
+                    draft.touched = _merge(draft.touched, action.touched)
+                }
+            })
     }
 }
 
@@ -715,7 +814,7 @@ function insertFallibleNode(
     nodeToInsert: VisualBuilderNode,
     beforeNodeId: string
 ) {
-    const triggerNode = graph.nodes.find(isTriggerNodeType)!
+    const triggerNode = graph.nodes[0]
 
     return produce(graph, (draft) => {
         const edge = draft.edges.find((e) => e.target === beforeNodeId)
@@ -725,6 +824,15 @@ function insertFallibleNode(
                 ? 'ask-for-feedback'
                 : 'end-failure'
         )
+
+        const targetNode = draft.nodes.find((node) => node.id === beforeNodeId)
+
+        if (
+            targetNode?.type === 'end' &&
+            targetNode.data.action === 'end-failure'
+        ) {
+            targetNode.data.action = 'end-success'
+        }
 
         draft.nodes.push(nodeToInsert, endNode)
         edge.target = nodeToInsert.id
@@ -762,4 +870,53 @@ function insertFallibleNode(
             draft.branchIdsEditing = []
         }
     })
+}
+
+function computeAppUsage(
+    graph: VisualBuilderGraph,
+    steps: WorkflowConfiguration[]
+) {
+    return graph.nodes.reduce<Record<string, boolean>>((acc, node) => {
+        switch (node.type) {
+            case 'reusable_llm_prompt_call': {
+                const step = steps.find(
+                    (step) =>
+                        step.id === node.data.configuration_id &&
+                        step.internal_id === node.data.configuration_internal_id
+                )
+
+                if (step && step.apps) {
+                    const app = step.apps[0]
+
+                    switch (app.type) {
+                        case 'shopify':
+                        case 'recharge':
+                            acc[app.type] = true
+                            break
+                        case 'app':
+                            acc[app.app_id] = true
+                            break
+                    }
+                }
+
+                break
+            }
+            case 'cancel_order':
+            case 'refund_order':
+            case 'update_shipping_address':
+            case 'remove_item':
+            case 'replace_item':
+            case 'create_discount_code':
+            case 'reship_for_free':
+            case 'refund_shipping_costs':
+                acc['shopify'] = true
+                break
+            case 'cancel_subscription':
+            case 'skip_charge':
+                acc['recharge'] = true
+                break
+        }
+
+        return acc
+    }, {})
 }

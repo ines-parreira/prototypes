@@ -87,8 +87,6 @@ describe('<ActionFormInputConditions />', () => {
             )
         })
 
-        expect(screen.getByText('Enter a value')).toBeInTheDocument()
-
         act(() => {
             fireEvent.change(screen.getByPlaceholderText('value'), {
                 target: {value: 'value'},

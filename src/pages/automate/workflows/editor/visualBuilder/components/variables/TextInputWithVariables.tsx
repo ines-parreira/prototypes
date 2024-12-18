@@ -43,6 +43,7 @@ type Props = {
     noSelectedCategoryText?: string
     isDisabled?: boolean
     toolTipMessage?: string | null
+    error?: string
 }
 
 const TextInputWithVariables = (
@@ -56,6 +57,7 @@ const TextInputWithVariables = (
         noSelectedCategoryText,
         isDisabled,
         toolTipMessage = 'Variables are automatically created and can be used to recall information from previous steps in a flow',
+        error,
     }: Props,
     ref: ForwardedRef<Editor>
 ) => {
@@ -93,9 +95,13 @@ const TextInputWithVariables = (
 
             setEditorState(newEditorState)
 
-            onChange(newEditorState.getCurrentContent().getPlainText())
+            const nextValue = newEditorState.getCurrentContent().getPlainText()
+
+            if (nextValue !== value) {
+                onChange(nextValue)
+            }
         },
-        [onChange]
+        [value, onChange]
     )
     const handleVariableSelect = (variable: WorkflowVariable) => {
         const newEditorState = insertText(
@@ -137,67 +143,78 @@ const TextInputWithVariables = (
     }, [value])
 
     return (
-        <ToolbarProvider workflowVariables={variables}>
-            <InputGroup isDisabled={isDisabled} className={css.container}>
-                <InputGroupContext.Consumer>
-                    {(inputGroupContext) => (
-                        <>
-                            <div className={css.editor}>
-                                <Editor
-                                    editorState={editorState}
-                                    readOnly={isDisabled}
-                                    onChange={handleChange}
-                                    stripPastedStyles
-                                    ref={(editor) => {
-                                        editorRef.current = editor
+        <div className={css.container}>
+            <ToolbarProvider workflowVariables={variables}>
+                <InputGroup
+                    isDisabled={isDisabled}
+                    className={css.group}
+                    hasError={!!error}
+                >
+                    <InputGroupContext.Consumer>
+                        {(inputGroupContext) => (
+                            <>
+                                <div className={css.editor}>
+                                    <Editor
+                                        editorState={editorState}
+                                        readOnly={isDisabled}
+                                        onChange={handleChange}
+                                        stripPastedStyles
+                                        ref={(editor) => {
+                                            editorRef.current = editor
+                                        }}
+                                        plugins={plugins}
+                                        onFocus={() => {
+                                            inputGroupContext?.setIsFocused(
+                                                true
+                                            )
+                                            onFocus?.()
+                                        }}
+                                        onBlur={() => {
+                                            inputGroupContext?.setIsFocused(
+                                                false
+                                            )
+                                            onBlur?.()
+                                        }}
+                                        placeholder={placeholder}
+                                    />
+                                </div>
+                                <div
+                                    ref={dropdownTargetRef}
+                                    className={css.button}
+                                    onClick={() => {
+                                        setIsDropdownOpen(!isDropdownOpen)
                                     }}
-                                    plugins={plugins}
-                                    onFocus={() => {
-                                        inputGroupContext?.setIsFocused(true)
-                                        onFocus?.()
-                                    }}
-                                    onBlur={() => {
-                                        inputGroupContext?.setIsFocused(false)
-                                        onBlur?.()
-                                    }}
-                                    placeholder={placeholder}
-                                />
-                            </div>
-                            <div
-                                ref={dropdownTargetRef}
-                                className={css.button}
-                                onClick={() => {
-                                    setIsDropdownOpen(!isDropdownOpen)
-                                }}
-                            >
-                                {`{+}`}
-                                <i
-                                    className={classnames(
-                                        'material-icons',
-                                        css.buttonIcon
-                                    )}
                                 >
-                                    arrow_drop_down
-                                </i>
-                            </div>
-                            {toolTipMessage && (
-                                <Tooltip target={dropdownTargetRef}>
-                                    {toolTipMessage}
-                                </Tooltip>
-                            )}
-                        </>
-                    )}
-                </InputGroupContext.Consumer>
-            </InputGroup>
-            <WorkflowVariableDropdown
-                isDisabled={isDisabled}
-                noSelectedCategoryText={noSelectedCategoryText}
-                target={dropdownTargetRef}
-                onSelect={handleVariableSelect}
-                isOpen={isDropdownOpen}
-                onToggle={setIsDropdownOpen}
-            />
-        </ToolbarProvider>
+                                    {`{+}`}
+                                    <i
+                                        className={classnames(
+                                            'material-icons',
+                                            css.buttonIcon
+                                        )}
+                                    >
+                                        arrow_drop_down
+                                    </i>
+                                </div>
+                                {toolTipMessage && (
+                                    <Tooltip target={dropdownTargetRef}>
+                                        {toolTipMessage}
+                                    </Tooltip>
+                                )}
+                            </>
+                        )}
+                    </InputGroupContext.Consumer>
+                </InputGroup>
+                <WorkflowVariableDropdown
+                    isDisabled={isDisabled}
+                    noSelectedCategoryText={noSelectedCategoryText}
+                    target={dropdownTargetRef}
+                    onSelect={handleVariableSelect}
+                    isOpen={isDropdownOpen}
+                    onToggle={setIsDropdownOpen}
+                />
+            </ToolbarProvider>
+            {error && <div className={css.error}>{error}</div>}
+        </div>
     )
 }
 

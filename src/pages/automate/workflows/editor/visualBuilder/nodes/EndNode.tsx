@@ -1,25 +1,21 @@
-import classNames from 'classnames'
 import React, {memo, useMemo} from 'react'
-import {Handle, NodeProps, Position} from 'reactflow'
+import {NodeProps} from 'reactflow'
 
 import {
     endNodeActionIconByAction,
     endNodeActionLabelByAction,
 } from 'pages/automate/workflows/constants'
+import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
-    VisualBuilderNodeProps,
     useVisualBuilderNodeProps,
+    VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {
-    EndNodeType,
-    isTriggerNodeType,
-} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
-import {useVisualBuilderContext} from '../../../hooks/useVisualBuilder'
 import EdgeBlock from '../components/EdgeBlock'
-
-import css from './Node.less'
+import VisualBuilderNode from './VisualBuilderNode'
+import VisualBuilderNodeIconContent from './VisualBuilderNodeIconContent'
 
 type Props = VisualBuilderNodeProps & {
     action: EndNodeType['data']['action']
@@ -36,37 +32,20 @@ const EndNode = memo(function EndNode({
     return (
         <div>
             <EdgeBlock {...edgeProps} />
-            <div
-                className={classNames(css.node, css.endNode, {
-                    [css.nodeGreyedOut]: isGreyedOut,
-                    [css.nodeSelected]: isSelected,
-                    [css.notClickable]: actions.length < 2,
-                })}
-                onClick={(event) => {
-                    if (actions.length < 2) {
-                        event.stopPropagation()
-                    }
-                }}
+            <VisualBuilderNode
+                isClickable={actions.length > 1}
+                isSelected={isSelected}
+                isGreyedOut={isGreyedOut}
+                target={false}
+                height={74}
             >
-                <div className={'w-100'}>
-                    <Badge type={ColorType.Light}>end</Badge>
-                </div>
-                <div className={css.nodeTitle}>
-                    <div>
-                        <span className={css.iconContainer}>
-                            <i className={classNames('material-icons')}>
-                                {endNodeActionIconByAction[action]}
-                            </i>
-                        </span>
-                        {endNodeActionLabelByAction[action]}
-                    </div>
-                </div>
-                <Handle
-                    type="target"
-                    position={Position.Top}
-                    className={classNames(css.sourceHandle)}
-                />
-            </div>
+                <Badge type={ColorType.Light}>end</Badge>
+                <VisualBuilderNodeIconContent
+                    icon={endNodeActionIconByAction[action]}
+                >
+                    {endNodeActionLabelByAction[action]}
+                </VisualBuilderNodeIconContent>
+            </VisualBuilderNode>
         </div>
     )
 })
@@ -76,7 +55,7 @@ export default function EndNodeWrapper(node: NodeProps<EndNodeType['data']>) {
 
     const {visualBuilderGraph} = useVisualBuilderContext()
 
-    const triggerNode = visualBuilderGraph.nodes.find(isTriggerNodeType)!
+    const triggerNode = visualBuilderGraph.nodes[0]
 
     const actions = useMemo<EndNodeType['data']['action'][]>(() => {
         switch (triggerNode.type!) {

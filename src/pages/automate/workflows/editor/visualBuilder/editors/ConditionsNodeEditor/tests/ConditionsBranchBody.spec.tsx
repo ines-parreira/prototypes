@@ -15,7 +15,6 @@ describe('<ConditionsBranchBody />', () => {
                 branchId={''}
                 availableVariables={[]}
                 showNoneOption={true}
-                shouldShowErrors={true}
                 type={null}
                 conditions={[]}
                 onDeleteBranch={() => {}}
@@ -23,7 +22,7 @@ describe('<ConditionsBranchBody />', () => {
                 onVariableSelect={jest.fn()}
                 onConditionTypeChange={jest.fn()}
                 onConditionChange={jest.fn()}
-                emptyBranchErrorMessage="Error message"
+                errors="Error message"
             />
         )
 

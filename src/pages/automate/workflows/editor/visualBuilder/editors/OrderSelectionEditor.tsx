@@ -3,10 +3,10 @@ import React, {useCallback, useMemo} from 'react'
 
 import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
 import {OrderSelectionNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {MessageContent} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import {Drawer} from 'pages/common/components/Drawer'
+import Caption from 'pages/common/forms/Caption/Caption'
 
 import MessageContentFormField from '../components/MessageContentFormField'
 import SupportedChannelsWarning from '../components/SupportedChannelsWarning'
@@ -21,7 +21,7 @@ export default function OrderSelectionEditor({
 }: {
     nodeInEdition: OrderSelectionNodeType
 }) {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const {dispatch, getVariableListForNode} = useVisualBuilderContext()
     const {previewLanguage} = useTranslationsPreviewContext()
     const handleUpdateContent = useCallback(
         (content: MessageContent) => {
@@ -34,13 +34,10 @@ export default function OrderSelectionEditor({
         [dispatch, nodeInEdition.id]
     )
     const workflowVariables = useMemo(
-        () =>
-            getWorkflowVariableListForNode(
-                visualBuilderGraph,
-                nodeInEdition.id
-            ),
-        [visualBuilderGraph, nodeInEdition.id]
+        () => getVariableListForNode(nodeInEdition.id),
+        [getVariableListForNode, nodeInEdition.id]
     )
+
     return (
         <>
             <NodeEditorDrawerHeader nodeInEdition={nodeInEdition} />
@@ -48,20 +45,27 @@ export default function OrderSelectionEditor({
                 <div className={css.container}>
                     <SupportedChannelsWarning nodeType={nodeInEdition.type} />
                     <div className={css.formField}>
-                        <Label className={css.label} isRequired={true}>
-                            Message
-                        </Label>
-                        <div className={css.withDescription}>
+                        <Label isRequired>Message</Label>
+                        <div>
                             <MessageContentFormField
                                 content={nodeInEdition.data.content}
                                 handleUpdateContent={handleUpdateContent}
                                 workflowVariables={workflowVariables}
+                                onBlur={() => {
+                                    dispatch({
+                                        type: 'SET_TOUCHED',
+                                        nodeId: nodeInEdition.id,
+                                        touched: {
+                                            content: true,
+                                        },
+                                    })
+                                }}
                             />
-                            <div className={css.description}>
+                            <Caption error={nodeInEdition.data.errors?.content}>
                                 Prompt customers to select an order. Customers
                                 will be required to authenticate to see past
                                 orders.
-                            </div>
+                            </Caption>
                         </div>
                     </div>
                     {previewLanguage && (

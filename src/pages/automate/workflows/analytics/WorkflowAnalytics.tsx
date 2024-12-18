@@ -90,7 +90,6 @@ export default function WorkflowAnalytics({
                 workflowEditorContext.handleValidate(true)
 
             if (configurationError) {
-                workflowEditorContext.setShouldShowErrors(true)
                 notifyMerchant({
                     message:
                         'Complete steps and save in order to test this Flow',
@@ -243,9 +242,7 @@ export default function WorkflowAnalytics({
                             workflowEditorContext.visualBuilderGraph
                         }
                         dispatch={workflowEditorContext.dispatch}
-                        shouldShowErrors={
-                            workflowEditorContext.shouldShowErrors
-                        }
+                        isNew={false}
                     />
                 </Container>
             </div>

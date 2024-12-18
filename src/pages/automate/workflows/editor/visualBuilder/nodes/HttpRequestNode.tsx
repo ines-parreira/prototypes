@@ -1,10 +1,7 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React, {memo} from 'react'
-import {Handle, NodeProps, Position} from 'reactflow'
+import {NodeProps} from 'reactflow'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
-import useIsHttpRequestNodeErrored from 'pages/automate/workflows/hooks/useIsHttpRequestNodeErrored'
 import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
@@ -13,8 +10,8 @@ import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilder
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
-
-import css from './Node.less'
+import VisualBuilderNode from './VisualBuilderNode'
+import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
 type Props = VisualBuilderNodeProps & {
     name: string
@@ -26,42 +23,24 @@ const HttpRequestNode = memo(function HttpRequestNode({
     isErrored,
     isSelected,
     isGreyedOut,
-    shouldShowErrors,
     edgeProps,
     deleteProps,
 }: Props) {
     return (
         <div>
             <EdgeBlock {...edgeProps} />
-            <div
-                className={classNames(css.node, {
-                    [css.nodeErrored]: shouldShowErrors && isErrored,
-                    [css.nodeGreyedOut]: isGreyedOut,
-                    [css.nodeSelected]: isSelected,
-                })}
+            <VisualBuilderNode
+                isClickable
+                isSelected={isSelected}
+                isErrored={isErrored}
+                isGreyedOut={isGreyedOut}
             >
-                <Handle
-                    type="target"
-                    position={Position.Top}
-                    className={css.sourceHandle}
-                />
-                <div className={css.nodeContainer}>
-                    <VisualBuilderActionTag nodeType="http_request" />
-                    <Label className={css.nodeTitle}>
-                        {name.length > 0 ? (
-                            name
-                        ) : (
-                            <span className={css.clickToAdd}>Request name</span>
-                        )}
-                    </Label>
-                    <NodeDeleteIcon {...deleteProps} />
-                </div>
-                <Handle
-                    type="source"
-                    position={Position.Bottom}
-                    className={classNames(css.targetHandle)}
-                />
-            </div>
+                <VisualBuilderActionTag nodeType="http_request" />
+                <VisualBuilderNodeContent placeholder="Request name">
+                    {name}
+                </VisualBuilderNodeContent>
+                <NodeDeleteIcon {...deleteProps} />
+            </VisualBuilderNode>
         </div>
     )
 })
@@ -69,16 +48,13 @@ const HttpRequestNode = memo(function HttpRequestNode({
 export default function HttpRequestNodeWrapper(
     node: NodeProps<HttpRequestNodeType['data']>
 ) {
-    const {name} = node.data
-    const {isErrored, shouldShowErrors} = useIsHttpRequestNodeErrored(node)
     const commonProps = useVisualBuilderNodeProps(node)
 
     return (
         <HttpRequestNode
             {...commonProps}
-            shouldShowErrors={commonProps.shouldShowErrors || shouldShowErrors}
-            name={name}
-            isErrored={isErrored}
+            name={node.data.name}
+            isErrored={!!node.data.errors}
         />
     )
 }

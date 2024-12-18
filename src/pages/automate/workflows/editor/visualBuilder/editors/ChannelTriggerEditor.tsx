@@ -5,6 +5,7 @@ import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useT
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {ChannelTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {Drawer} from 'pages/common/components/Drawer'
+import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'
 
 import TranslationsPreviewField from '../components/translations/TranslationPreviewField'
@@ -42,8 +43,8 @@ export default function ChannelTriggerEditor({
                     className={css.container}
                 >
                     <div className={css.formField}>
-                        <Label isRequired={true}>Trigger button</Label>
-                        <div className={css.withDescription}>
+                        <Label isRequired>Trigger button</Label>
+                        <div>
                             <TextInput
                                 className={css.textInput}
                                 ref={setInputRef}
@@ -57,11 +58,21 @@ export default function ChannelTriggerEditor({
                                     })
                                 }
                                 value={nodeInEdition.data.label ?? ''}
+                                hasError={!!nodeInEdition.data.errors?.label}
+                                onBlur={() => {
+                                    dispatch({
+                                        type: 'SET_TOUCHED',
+                                        nodeId: nodeInEdition.id,
+                                        touched: {
+                                            label: true,
+                                        },
+                                    })
+                                }}
                             />
-                            <div className={css.description}>
+                            <Caption error={nodeInEdition.data.errors?.label}>
                                 The flow will be triggered when customers click
                                 this button.
-                            </div>
+                            </Caption>
                         </div>
                     </div>
                     {previewLanguage && (

@@ -2,58 +2,49 @@ import _keyBy from 'lodash/keyBy'
 import _noop from 'lodash/noop'
 import React, {useCallback, useMemo, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Container} from 'reactstrap'
 import {ulid} from 'ulidx'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import AutomateFormView from 'pages/automate/common/components/AutomateFormView'
+import {
+    useVisualBuilder,
+    VisualBuilderContext,
+} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {useVisualBuilderGraphReducer} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import {computeNodesPositions} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
 import {transformVisualBuilderGraphIntoWfConfiguration} from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {
     transformWorkflowConfigurationIntoVisualBuilderGraph,
     WorkflowConfigurationBuilder,
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import PageHeader from 'pages/common/components/PageHeader'
-import InputField from 'pages/common/forms/input/InputField'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
 
 import css from './ActionsPlatformEditTemplateView.less'
 import ActionsPlatformTemplateAppsSelectBox from './components/ActionsPlatformTemplateAppsSelectBox'
-import WorkflowVisualBuilder from './components/visualBuilder/WorkflowVisualBuilder'
+import ActionsPlatformTemplateFormView from './components/ActionsPlatformTemplateFormView'
+import ActionsPlatformTemplateVisualBuilderView from './components/ActionsPlatformTemplateVisualBuilderView'
 import useApps from './hooks/useApps'
 import useCreateActionTemplate from './hooks/useCreateActionTemplate'
-import useValidateVisualBuilderGraph from './hooks/useValidateVisualBuilderGraph'
+import useTouchActionTemplateGraph from './hooks/useTouchActionTemplateGraph'
+import useValidateActionTemplateGraph from './hooks/useValidateActionTemplateGraph'
+import useValidateOnVisualBuilderGraphChange from './hooks/useValidateOnVisualBuilderGraphChange'
 import {ActionTemplate, ActionTemplateApp} from './types'
 
 const getInitialTemplate = () => {
-    const httpStepId = ulid()
-    const httpStepVariableId = ulid()
-
     const b = new WorkflowConfigurationBuilder({
         id: ulid(),
         name: '',
         initialStep: {
-            id: httpStepId,
-            kind: 'http-request',
+            id: ulid(),
+            kind: 'end',
             settings: {
-                url: '',
-                method: 'GET',
-                headers: {},
-                name: '',
-                variables: [
-                    {
-                        id: httpStepVariableId,
-                        name: 'Request result',
-                        jsonpath: '$',
-                        data_type: null,
-                    },
-                ],
+                success: true,
             },
         },
         entrypoints: [
@@ -73,21 +64,14 @@ const getInitialTemplate = () => {
                 settings: {
                     custom_inputs: [],
                     object_inputs: [],
-                    outputs: [
-                        {
-                            description: '',
-                            id: httpStepId,
-                            path: `steps_state.${httpStepId}.content.${httpStepVariableId}`,
-                        },
-                    ],
+                    outputs: [],
                 },
             },
         ],
         is_draft: true,
+        apps: [],
+        available_languages: [],
     })
-    b.insertHttpRequestConditionAndEndStepAndSelect('success', {success: true})
-    b.selectParentStep()
-    b.insertHttpRequestConditionAndEndStepAndSelect('error', {success: false})
 
     return b.build()
 }
@@ -101,58 +85,82 @@ const ActionsPlatformCreateTemplateView = () => {
     const template = useMemo(() => getInitialTemplate(), [])
     const [templateApps, setTemplateApps] = useState<ActionTemplateApp[]>([])
 
-    const [shouldShowErrors, setShouldShowErrors] = useState(false)
+    const {data: steps = []} = useGetWorkflowConfigurationTemplates({
+        triggers: ['reusable-llm-prompt'],
+    })
+
     const [visualBuilderGraphDirty, dispatch] = useVisualBuilderGraphReducer(
         computeNodesPositions(
-            transformWorkflowConfigurationIntoVisualBuilderGraph(template)
+            transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(
+                template,
+                true
+            )
         )
     )
-    const appDispatch = useAppDispatch()
+    const [visualBuilderGraph, setVisualBuilderGraph] = useState(
+        visualBuilderGraphDirty
+    )
 
-    const handleValidate = useValidateVisualBuilderGraph()
+    const visualBuilderContextValue = useVisualBuilder(
+        visualBuilderGraphDirty,
+        dispatch,
+        true
+    )
+
+    const {getVariableListForNode} = visualBuilderContextValue
+
+    const handleValidate = useValidateActionTemplateGraph(
+        getVariableListForNode
+    )
+    const handleTouch = useTouchActionTemplateGraph()
+
+    useValidateOnVisualBuilderGraphChange({
+        graph: visualBuilderGraphDirty,
+        handleValidate,
+        dispatch,
+    })
+
     const handleSave = useCallback(
         async (isDraft: boolean) => {
-            const error = handleValidate(visualBuilderGraphDirty)
+            const graph = handleValidate(handleTouch(visualBuilderGraphDirty))
 
-            if (error) {
-                setShouldShowErrors(true)
+            const isErrored =
+                !!graph.errors || graph.nodes.some((node) => !!node.data.errors)
 
-                void appDispatch(
-                    notify({
-                        message: error,
-                        allowHTML: true,
-                        showDismissButton: true,
-                        status: NotificationStatus.Error,
-                    })
-                )
+            if (isErrored) {
+                dispatch({
+                    type: 'RESET_GRAPH',
+                    graph,
+                })
 
                 return
             }
 
             await createActionTemplate([
                 {
-                    internal_id:
-                        visualBuilderGraphDirty.wfConfigurationOriginal
-                            .internal_id,
+                    internal_id: visualBuilderGraphDirty.internal_id,
                 },
                 transformVisualBuilderGraphIntoWfConfiguration(
                     visualBuilderGraphDirty,
-                    isDraft
+                    isDraft,
+                    steps
                 ) as ActionTemplate,
             ])
 
-            history.push(
-                `/app/automation/actions-platform/edit/${visualBuilderGraphDirty.wfConfigurationOriginal.id}`
-            )
+            history.push('/app/automation/actions-platform')
         },
         [
             visualBuilderGraphDirty,
             createActionTemplate,
             handleValidate,
-            appDispatch,
+            handleTouch,
             history,
+            steps,
+            dispatch,
         ]
     )
+
+    const [isEditingSteps, setIsEditingSteps] = useState(false)
 
     const selectableApps = useMemo(() => {
         const actionsAppsByAppId = _keyBy(actionsApps, 'id')
@@ -162,101 +170,126 @@ const ActionsPlatformCreateTemplateView = () => {
         )
     }, [actionsApps, apps])
 
+    if (isEditingSteps) {
+        return (
+            <VisualBuilderContext.Provider value={visualBuilderContextValue}>
+                <ActionsPlatformTemplateVisualBuilderView
+                    visualBuilderGraph={visualBuilderGraph}
+                    handleValidate={handleValidate}
+                    handleTouch={handleTouch}
+                    onExit={() => {
+                        setIsEditingSteps(false)
+                    }}
+                    onSave={() => {
+                        setVisualBuilderGraph(visualBuilderGraphDirty)
+                    }}
+                />
+            </VisualBuilderContext.Provider>
+        )
+    }
+
     return (
-        <div className={css.page}>
-            <PageHeader
-                className={css.header}
-                title={
-                    <InputField
-                        className={css.name}
-                        placeholder="e.g. Update shipping address"
-                        caption="Provide a name for this Action template."
-                        value={visualBuilderGraphDirty.name}
-                        onChange={(nextValue) => {
+        <AutomateFormView
+            title="Actions platform"
+            headerNavbarItems={[
+                {
+                    route: '/app/automation/actions-platform',
+                    title: 'Templates',
+                    exact: false,
+                },
+                {
+                    route: '/app/automation/actions-platform/steps',
+                    title: 'Steps',
+                    exact: true,
+                },
+                {
+                    route: '/app/automation/actions-platform/apps',
+                    title: 'Apps',
+                    exact: true,
+                },
+            ]}
+        >
+            <Button
+                intent="secondary"
+                fillStyle="ghost"
+                className={css.backButton}
+                onClick={() => {
+                    history.push('/app/automation/actions-platform')
+                }}
+            >
+                <ButtonIconLabel icon="arrow_back">
+                    Back to templates
+                </ButtonIconLabel>
+            </Button>
+            <div className={css.form}>
+                <VisualBuilderContext.Provider
+                    value={visualBuilderContextValue}
+                >
+                    <ActionsPlatformTemplateFormView
+                        onEditSteps={() => {
+                            setIsEditingSteps(true)
+                            setVisualBuilderGraph(visualBuilderGraphDirty)
+                        }}
+                        steps={steps}
+                    />
+                </VisualBuilderContext.Provider>
+            </div>
+            <div className={css.actions}>
+                <Button
+                    onClick={() => {
+                        void handleSave(true)
+                    }}
+                    isLoading={isCreateActionTemplateLoading}
+                >
+                    Create Action
+                </Button>
+                <Button
+                    intent="secondary"
+                    onClick={() => {
+                        void handleSave(false)
+                    }}
+                    isLoading={isCreateActionTemplateLoading}
+                >
+                    Create and publish
+                </Button>
+                <Button
+                    intent="secondary"
+                    onClick={() => {
+                        history.push('/app/automation/actions-platform')
+                    }}
+                >
+                    Cancel
+                </Button>
+            </div>
+            <Modal
+                isOpen={!visualBuilderGraphDirty.apps?.length}
+                isClosable={false}
+                onClose={_noop}
+            >
+                <ModalHeader title="Select App(s)" />
+                <ModalBody>
+                    <ActionsPlatformTemplateAppsSelectBox
+                        apps={selectableApps}
+                        value={templateApps}
+                        onChange={setTemplateApps}
+                        isDisabled={isAppsLoading}
+                    />
+                </ModalBody>
+                <ModalActionsFooter>
+                    <Button
+                        onClick={() => {
                             dispatch({
-                                type: 'SET_NAME',
-                                name: nextValue,
+                                type: 'SET_APPS',
+                                apps: templateApps,
                             })
                         }}
-                        hasError={
-                            shouldShowErrors &&
-                            !visualBuilderGraphDirty.name.trim()
-                        }
-                    />
-                }
-            >
-                <div className={css.actions}>
-                    <Button
-                        intent="secondary"
-                        onClick={() => {
-                            history.push('/app/automation/actions-platform')
-                        }}
-                        isDisabled={
-                            isCreateActionTemplateLoading || isAppsLoading
-                        }
+                        isDisabled={!templateApps.length}
                     >
-                        Cancel
+                        Use
                     </Button>
-                    <Button
-                        intent="secondary"
-                        isDisabled={
-                            isCreateActionTemplateLoading || isAppsLoading
-                        }
-                        onClick={() => {
-                            void handleSave(true)
-                        }}
-                    >
-                        Save
-                    </Button>
-                    <Button
-                        intent="primary"
-                        isDisabled={
-                            isCreateActionTemplateLoading || isAppsLoading
-                        }
-                        onClick={() => {
-                            void handleSave(false)
-                        }}
-                    >
-                        Publish
-                    </Button>
-                </div>
-            </PageHeader>
-            <Container className={css.container} fluid>
-                <WorkflowVisualBuilder
-                    visualBuilderGraph={visualBuilderGraphDirty}
-                    dispatch={dispatch}
-                    shouldShowErrors={shouldShowErrors}
-                />
-                <Modal
-                    isOpen={!visualBuilderGraphDirty.apps?.length}
-                    isClosable={false}
-                    onClose={_noop}
-                >
-                    <ModalHeader title="Select App(s)" />
-                    <ModalBody>
-                        <ActionsPlatformTemplateAppsSelectBox
-                            apps={selectableApps}
-                            value={templateApps}
-                            onChange={setTemplateApps}
-                            isDisabled={isAppsLoading}
-                        />
-                    </ModalBody>
-                    <ModalActionsFooter>
-                        <Button
-                            onClick={() => {
-                                dispatch({
-                                    type: 'SET_APPS',
-                                    apps: templateApps,
-                                })
-                            }}
-                            isDisabled={!templateApps.length}
-                        >
-                            Use
-                        </Button>
-                    </ModalActionsFooter>
-                </Modal>
-            </Container>
-        </div>
+                </ModalActionsFooter>
+            </Modal>
+        </AutomateFormView>
     )
 }
 

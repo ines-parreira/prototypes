@@ -23,7 +23,7 @@ export default function TranslationsPreviewField({nodeId, tkey}: Props) {
     const {previewLanguageList, previewLanguage, translatedGraph} =
         useTranslationsPreviewContext()
     const workflowVariables = useMemo(
-        () => getWorkflowVariableListForNode(translatedGraph, nodeId),
+        () => getWorkflowVariableListForNode(translatedGraph, nodeId, [], []),
         [translatedGraph, nodeId]
     )
     const workflowsVariablesPlugin = useMemo(

@@ -1,11 +1,10 @@
 import {act, fireEvent, render, screen, within} from '@testing-library/react'
 import React from 'react'
 
+import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
 import {VisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {buildNodeCommonProperties} from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-
-import NodeEditorDrawerContext from '../../NodeEditorDrawerContext'
 
 import LLMPromptTriggerEditor from '../LLMPromptTriggerEditor'
 
@@ -14,13 +13,12 @@ jest.mock('common/flags', () => ({
 }))
 
 describe('<LLMPromptTriggerEditor />', () => {
-    it('should render semi immutable inputs', () => {
+    it('should dispatch ADD_LLM_PROMPT_TRIGGER_INPUT', () => {
         const nodeInEdition: LLMPromptTriggerNodeType = {
             ...buildNodeCommonProperties(),
             id: 'llm_prompt_trigger1',
             type: 'llm_prompt_trigger',
             data: {
-                instructions: '',
                 requires_confirmation: false,
                 inputs: [
                     {
@@ -29,15 +27,10 @@ describe('<LLMPromptTriggerEditor />', () => {
                         instructions: '',
                         data_type: 'string',
                     },
-                    {
-                        id: 'test2',
-                        name: 'test2',
-                        instructions: '',
-                        data_type: 'string',
-                    },
                 ],
                 conditionsType: null,
                 conditions: [],
+                instructions: '',
             },
         }
 
@@ -47,58 +40,125 @@ describe('<LLMPromptTriggerEditor />', () => {
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: {
+                        id: '',
+                        internal_id: '',
+                        is_draft: false,
                         name: '',
                         nodes: [nodeInEdition],
                         edges: [],
                         available_languages: [],
-                        wfConfigurationOriginal: {
-                            id: '',
-                            is_draft: false,
-                            name: '',
-                            internal_id: '',
-                            initial_step_id: '',
-                            steps: [],
-                            transitions: [],
-                            available_languages: [],
-                            triggers: [
-                                {
-                                    kind: 'llm-prompt',
-                                    settings: {
-                                        custom_inputs: [
-                                            {
-                                                id: 'test',
-                                                name: 'test',
-                                                instructions: '',
-                                                data_type: 'string',
-                                            },
-                                        ],
-                                        object_inputs: [],
-                                        outputs: [],
-                                    },
-                                },
-                            ],
-                            entrypoints: [
-                                {
-                                    kind: 'llm-conversation',
-                                    trigger: 'llm-prompt',
-                                    settings: {
-                                        instructions: '',
-                                        requires_confirmation: false,
-                                    },
-                                },
-                            ],
-                        },
                         nodeEditingId: null,
                         choiceEventIdEditing: null,
                         branchIdsEditing: [],
+                        isTemplate: false,
                     },
-                    checkInvalidConditionsForNode: () => false,
-                    checkInvalidVariablesForNode: () => false,
                     checkNodeHasVariablesUsedInChildren: () => false,
                     dispatch: mockDispatch,
                     getVariableListInChildren: () => [],
                     checkNewVisualBuilderNode: () => false,
-                    shouldShowErrors: false,
+                    getVariableListForNode: () => [],
+                    initialVisualBuilderGraph: {
+                        id: '',
+                        internal_id: '',
+                        is_draft: false,
+                        name: '',
+                        nodes: [nodeInEdition],
+                        edges: [],
+                        available_languages: [],
+                        nodeEditingId: null,
+                        choiceEventIdEditing: null,
+                        branchIdsEditing: [],
+                        isTemplate: false,
+                    },
+                    isNew: false,
+                }}
+            >
+                <NodeEditorDrawerContext.Provider value={{onClose: jest.fn()}}>
+                    <LLMPromptTriggerEditor nodeInEdition={nodeInEdition} />
+                </NodeEditorDrawerContext.Provider>
+            </VisualBuilderContext.Provider>
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Add Variable'))
+        })
+
+        expect(mockDispatch).toHaveBeenCalledWith({
+            type: 'ADD_LLM_PROMPT_TRIGGER_INPUT',
+        })
+    })
+
+    it('should dispatch DELETE_LLM_PROMPT_TRIGGER_INPUT', () => {
+        const nodeInEdition: LLMPromptTriggerNodeType = {
+            ...buildNodeCommonProperties(),
+            id: 'llm_prompt_trigger1',
+            type: 'llm_prompt_trigger',
+            data: {
+                requires_confirmation: false,
+                inputs: [
+                    {
+                        id: 'test',
+                        name: 'test',
+                        instructions: '',
+                        data_type: 'string',
+                    },
+                ],
+                conditionsType: null,
+                conditions: [],
+                instructions: '',
+            },
+        }
+
+        const mockDispatch = jest.fn()
+
+        render(
+            <VisualBuilderContext.Provider
+                value={{
+                    visualBuilderGraph: {
+                        id: '',
+                        internal_id: '',
+                        is_draft: false,
+                        name: '',
+                        nodes: [nodeInEdition],
+                        edges: [],
+                        available_languages: [],
+                        nodeEditingId: null,
+                        choiceEventIdEditing: null,
+                        branchIdsEditing: [],
+                        isTemplate: false,
+                    },
+                    checkNodeHasVariablesUsedInChildren: () => false,
+                    dispatch: mockDispatch,
+                    getVariableListInChildren: () => [],
+                    checkNewVisualBuilderNode: () => false,
+                    getVariableListForNode: () => [],
+                    initialVisualBuilderGraph: {
+                        id: '',
+                        internal_id: '',
+                        is_draft: false,
+                        name: '',
+                        nodes: [
+                            {
+                                ...buildNodeCommonProperties(),
+                                id: 'llm_prompt_trigger1',
+                                type: 'llm_prompt_trigger',
+                                data: {
+                                    requires_confirmation: false,
+                                    inputs: [],
+                                    conditionsType: null,
+                                    conditions: [],
+                                    instructions: '',
+                                },
+                            },
+                        ],
+                        edges: [],
+                        available_languages: [],
+                        nodeEditingId: null,
+                        choiceEventIdEditing: null,
+                        branchIdsEditing: [],
+                        isTemplate: false,
+                    },
+                    isNew: false,
                 }}
             >
                 <NodeEditorDrawerContext.Provider value={{onClose: jest.fn()}}>
@@ -116,6 +176,217 @@ describe('<LLMPromptTriggerEditor />', () => {
             )
         })
 
-        expect(mockDispatch).not.toHaveBeenCalled()
+        expect(mockDispatch).toHaveBeenCalledWith({
+            type: 'DELETE_LLM_PROMPT_TRIGGER_INPUT',
+            id: 'test',
+        })
+    })
+
+    it('should dispatch SET_LLM_PROMPT_TRIGGER_INPUT', () => {
+        const nodeInEdition: LLMPromptTriggerNodeType = {
+            ...buildNodeCommonProperties(),
+            id: 'llm_prompt_trigger1',
+            type: 'llm_prompt_trigger',
+            data: {
+                requires_confirmation: false,
+                inputs: [
+                    {
+                        id: 'test',
+                        name: 'test',
+                        instructions: '',
+                        data_type: 'string',
+                    },
+                ],
+                conditionsType: null,
+                conditions: [],
+                instructions: '',
+            },
+        }
+
+        const mockDispatch = jest.fn()
+
+        render(
+            <VisualBuilderContext.Provider
+                value={{
+                    visualBuilderGraph: {
+                        id: '',
+                        internal_id: '',
+                        is_draft: false,
+                        name: '',
+                        nodes: [nodeInEdition],
+                        edges: [],
+                        available_languages: [],
+                        nodeEditingId: null,
+                        choiceEventIdEditing: null,
+                        branchIdsEditing: [],
+                        isTemplate: false,
+                    },
+                    checkNodeHasVariablesUsedInChildren: () => false,
+                    dispatch: mockDispatch,
+                    getVariableListInChildren: () => [],
+                    checkNewVisualBuilderNode: () => false,
+                    getVariableListForNode: () => [],
+                    initialVisualBuilderGraph: {
+                        id: '',
+                        internal_id: '',
+                        is_draft: false,
+                        name: '',
+                        nodes: [
+                            {
+                                ...buildNodeCommonProperties(),
+                                id: 'llm_prompt_trigger1',
+                                type: 'llm_prompt_trigger',
+                                data: {
+                                    requires_confirmation: false,
+                                    inputs: [],
+                                    conditionsType: null,
+                                    conditions: [],
+                                    instructions: '',
+                                },
+                            },
+                        ],
+                        edges: [],
+                        available_languages: [],
+                        nodeEditingId: null,
+                        choiceEventIdEditing: null,
+                        branchIdsEditing: [],
+                        isTemplate: false,
+                    },
+                    isNew: false,
+                }}
+            >
+                <NodeEditorDrawerContext.Provider value={{onClose: jest.fn()}}>
+                    <LLMPromptTriggerEditor nodeInEdition={nodeInEdition} />
+                </NodeEditorDrawerContext.Provider>
+            </VisualBuilderContext.Provider>
+        )
+
+        act(() => {
+            fireEvent.change(screen.getByDisplayValue('test'), {
+                target: {value: 'some test'},
+            })
+        })
+
+        expect(mockDispatch).toHaveBeenCalledWith({
+            type: 'SET_LLM_PROMPT_TRIGGER_INPUT',
+            input: {
+                id: 'test',
+                name: 'some test',
+                instructions: '',
+                data_type: 'string',
+            },
+        })
+    })
+
+    it('should dispatch SET_TOUCHED for inputs', () => {
+        const nodeInEdition: LLMPromptTriggerNodeType = {
+            ...buildNodeCommonProperties(),
+            id: 'llm_prompt_trigger1',
+            type: 'llm_prompt_trigger',
+            data: {
+                requires_confirmation: false,
+                inputs: [
+                    {
+                        id: 'test',
+                        name: 'test name',
+                        instructions: 'test instructions',
+                        data_type: 'string',
+                    },
+                ],
+                conditionsType: null,
+                conditions: [],
+                instructions: '',
+            },
+        }
+
+        const mockDispatch = jest.fn()
+
+        render(
+            <VisualBuilderContext.Provider
+                value={{
+                    visualBuilderGraph: {
+                        id: '',
+                        internal_id: '',
+                        is_draft: false,
+                        name: '',
+                        nodes: [nodeInEdition],
+                        edges: [],
+                        available_languages: [],
+                        nodeEditingId: null,
+                        choiceEventIdEditing: null,
+                        branchIdsEditing: [],
+                        isTemplate: false,
+                    },
+                    checkNodeHasVariablesUsedInChildren: () => false,
+                    dispatch: mockDispatch,
+                    getVariableListInChildren: () => [],
+                    checkNewVisualBuilderNode: () => false,
+                    getVariableListForNode: () => [],
+                    initialVisualBuilderGraph: {
+                        id: '',
+                        internal_id: '',
+                        is_draft: false,
+                        name: '',
+                        nodes: [
+                            {
+                                ...buildNodeCommonProperties(),
+                                id: 'llm_prompt_trigger1',
+                                type: 'llm_prompt_trigger',
+                                data: {
+                                    requires_confirmation: false,
+                                    inputs: [],
+                                    conditionsType: null,
+                                    conditions: [],
+                                    instructions: '',
+                                },
+                            },
+                        ],
+                        edges: [],
+                        available_languages: [],
+                        nodeEditingId: null,
+                        choiceEventIdEditing: null,
+                        branchIdsEditing: [],
+                        isTemplate: false,
+                    },
+                    isNew: false,
+                }}
+            >
+                <NodeEditorDrawerContext.Provider value={{onClose: jest.fn()}}>
+                    <LLMPromptTriggerEditor nodeInEdition={nodeInEdition} />
+                </NodeEditorDrawerContext.Provider>
+            </VisualBuilderContext.Provider>
+        )
+
+        act(() => {
+            fireEvent.blur(screen.getByDisplayValue('test name'))
+        })
+
+        act(() => {
+            fireEvent.blur(screen.getByDisplayValue('test instructions'))
+        })
+
+        expect(mockDispatch).toHaveBeenNthCalledWith(1, {
+            type: 'SET_TOUCHED',
+            nodeId: nodeInEdition.id,
+            touched: {
+                inputs: {
+                    test: {
+                        name: true,
+                    },
+                },
+            },
+        })
+
+        expect(mockDispatch).toHaveBeenNthCalledWith(2, {
+            type: 'SET_TOUCHED',
+            nodeId: nodeInEdition.id,
+            touched: {
+                inputs: {
+                    test: {
+                        instructions: true,
+                    },
+                },
+            },
+        })
     })
 })

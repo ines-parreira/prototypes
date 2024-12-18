@@ -21,6 +21,7 @@ type MessageContentFormFieldProps = {
     content: MessageContent
     handleUpdateContent: (content: MessageContent) => void
     workflowVariables?: WorkflowVariableList
+    onBlur?: () => void
 }
 
 const textLimit = 5000
@@ -39,6 +40,7 @@ export default function MessageContentFormField({
     content,
     handleUpdateContent,
     workflowVariables,
+    onBlur,
 }: MessageContentFormFieldProps) {
     const storeIntegration = useSelfServiceStoreIntegrationContext()
     const {visualBuilderGraph} = useVisualBuilderContext()
@@ -132,6 +134,7 @@ export default function MessageContentFormField({
                     noAutoScroll
                     uploadType={UploadType.PublicAttachment}
                     getWorkflowVariables={getWorkflowVariables}
+                    onBlur={onBlur}
                 />
 
                 <TicketAttachments

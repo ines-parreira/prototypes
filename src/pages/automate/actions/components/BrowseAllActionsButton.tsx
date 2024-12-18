@@ -14,7 +14,7 @@ export default function CreateCustomActionButton() {
     const {routes} = useAiAgentNavigation({shopName})
 
     const isMultiStepActionEnabled = useFlag(
-        FeatureFlagKey.ActionsMultiStep,
+        FeatureFlagKey.ActionsUseCaseTemplates,
         false
     )
 

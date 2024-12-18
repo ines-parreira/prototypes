@@ -100,7 +100,7 @@ describe('useUpsertAction', () => {
         expect(handleError).toHaveBeenNthCalledWith(
             1,
             errorResponseBody,
-            'Fail to update action. Please try again later.',
+            'Fail to update Action. Please try again later.',
             mockedDispatch
         )
     })

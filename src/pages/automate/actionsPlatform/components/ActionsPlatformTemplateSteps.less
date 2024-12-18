@@ -1,0 +1,35 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .label {
+        margin-bottom: @layout-spacing-xxs;
+    }
+
+    .description {
+        color: var(--neutral-grey-5);
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .steps {
+        display: flex;
+        width: 680px;
+        height: 280px;
+        align-items: flex-start;
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
+
+        &.isErrored {
+            border-color: var(--feedback-error);
+        }
+    }
+
+    .editStepsButton {
+        position: absolute;
+        top: @layout-spacing-s;
+        right: @layout-spacing-s;
+        background: var(--neutral-grey-0) !important;
+    }
+}

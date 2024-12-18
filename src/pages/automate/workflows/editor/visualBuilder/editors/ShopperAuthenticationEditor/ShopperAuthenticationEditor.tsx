@@ -6,6 +6,7 @@ import InputField from 'gorgias-design-system/Input/TextField'
 import {ShopperAuthenticationNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {Drawer} from 'pages/common/components/Drawer'
 import RadioButton from 'pages/common/components/RadioButton'
+import Caption from 'pages/common/forms/Caption/Caption'
 import {THEME_NAME} from 'theme'
 
 import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
@@ -24,7 +25,7 @@ export default function ShopperAuthenticationEditor({
             <NodeEditorDrawerHeader nodeInEdition={nodeInEdition} />
             <Drawer.Content>
                 <div className={css.container}>
-                    <div className={shopperAuthenticationCss.content}>
+                    <div>
                         <div
                             className={classNames(
                                 shopperAuthenticationCss.loginCard,
@@ -79,12 +80,12 @@ export default function ShopperAuthenticationEditor({
                                 />
                             </div>
                         </div>
-                        <p className={css.description}>
+                        <Caption>
                             If a customer is not already signed in, they will be
                             asked to provide an email address or phone number
                             and verify with a code before they can proceed to
                             the next step.
-                        </p>
+                        </Caption>
                     </div>
                 </div>
             </Drawer.Content>

@@ -23,6 +23,15 @@ type Props = {
     onBlur?: () => void
     noSelectedCategoryText?: string
     inputVariableToolTipMessage?: string | null
+    errors?: Record<
+        string,
+        {
+            key?: string
+            value?: string
+        }
+    >
+    onKeyBlur?: (index: number) => void
+    onValueBlur?: (index: number) => void
 }
 
 const FormUrlencoded = ({
@@ -35,6 +44,9 @@ const FormUrlencoded = ({
     isDisabled,
     inputVariableToolTipMessage,
     noSelectedCategoryText = 'Insert variable from previous steps',
+    errors,
+    onKeyBlur,
+    onValueBlur,
 }: Props) => {
     return (
         <div className={css.keyValueContainer}>
@@ -48,7 +60,11 @@ const FormUrlencoded = ({
                         onChange={(key) => {
                             onChange(index, {key, value: item.value})
                         }}
-                        onBlur={onBlur}
+                        onBlur={() => {
+                            onBlur?.()
+                            onKeyBlur?.(index)
+                        }}
+                        hasError={!!errors?.[index]?.key}
                     />
                     <TextInputWithVariables
                         toolTipMessage={inputVariableToolTipMessage}
@@ -60,7 +76,11 @@ const FormUrlencoded = ({
                         variables={variables}
                         noSelectedCategoryText={noSelectedCategoryText}
                         placeholder="Value"
-                        onBlur={onBlur}
+                        onBlur={() => {
+                            onBlur?.()
+                            onValueBlur?.(index)
+                        }}
+                        error={errors?.[index]?.value}
                     />
                     <IconButton
                         isDisabled={isDisabled}

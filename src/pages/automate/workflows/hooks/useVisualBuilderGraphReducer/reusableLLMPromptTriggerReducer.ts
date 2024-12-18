@@ -18,11 +18,10 @@ export type VisualBuilderReusableLLMPromptTriggerAction =
       }
     | {
           type: 'DELETE_REUSABLE_LLM_PROMPT_TRIGGER_INPUT'
-          index: number
+          id: ReusableLLMPromptTriggerNodeType['data']['inputs'][number]['id']
       }
     | {
           type: 'SET_REUSABLE_LLM_PROMPT_TRIGGER_INPUT'
-          index: number
           input: ReusableLLMPromptTriggerNodeType['data']['inputs'][number]
       }
     | {
@@ -105,7 +104,13 @@ export function reusableLLMPromptTriggerReducer(
                 )
 
                 if (node) {
-                    node.data.inputs.splice(action.index, 1)
+                    const index = node.data.inputs.findIndex(
+                        (input) => input.id === action.id
+                    )
+
+                    if (index !== -1) {
+                        node.data.inputs.splice(index, 1)
+                    }
                 }
             })
         case 'SET_REUSABLE_LLM_PROMPT_TRIGGER_INPUT':
@@ -115,7 +120,13 @@ export function reusableLLMPromptTriggerReducer(
                 )
 
                 if (node) {
-                    node.data.inputs[action.index] = action.input
+                    const index = node.data.inputs.findIndex(
+                        (input) => input.id === action.input.id
+                    )
+
+                    if (index !== -1) {
+                        node.data.inputs[index] = action.input
+                    }
                 }
             })
         case 'SET_REUSABLE_LLM_PROMPT_TRIGGER_CONDITIONS_TYPE':

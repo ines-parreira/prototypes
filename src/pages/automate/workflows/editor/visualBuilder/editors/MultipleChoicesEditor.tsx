@@ -3,10 +3,10 @@ import React, {useCallback, useMemo} from 'react'
 
 import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
 import {MultipleChoicesNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {MessageContent} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import {Drawer} from 'pages/common/components/Drawer'
+import Caption from 'pages/common/forms/Caption/Caption'
 
 import MessageContentFormField from '../components/MessageContentFormField'
 import TranslationsPreviewField from '../components/translations/TranslationPreviewField'
@@ -21,7 +21,7 @@ export default function MultipleChoicesEditor({
 }: {
     nodeInEdition: MultipleChoicesNodeType
 }) {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const {dispatch, getVariableListForNode} = useVisualBuilderContext()
     const {previewLanguage} = useTranslationsPreviewContext()
     const handleUpdateContent = useCallback(
         (content: MessageContent) => {
@@ -35,12 +35,8 @@ export default function MultipleChoicesEditor({
     )
     const choices = nodeInEdition.data.choices ?? []
     const workflowVariables = useMemo(
-        () =>
-            getWorkflowVariableListForNode(
-                visualBuilderGraph,
-                nodeInEdition.id
-            ),
-        [visualBuilderGraph, nodeInEdition.id]
+        () => getVariableListForNode(nodeInEdition.id),
+        [getVariableListForNode, nodeInEdition.id]
     )
 
     return (
@@ -49,17 +45,31 @@ export default function MultipleChoicesEditor({
             <Drawer.Content>
                 <div className={css.container}>
                     <div className={css.formField}>
-                        <Label className={css.label} isRequired={true}>
-                            Question
-                        </Label>
-                        <MessageContentFormField
-                            content={nodeInEdition.data.content}
-                            handleUpdateContent={handleUpdateContent}
-                            workflowVariables={workflowVariables}
-                        />
+                        <Label isRequired>Question</Label>
+                        <div>
+                            <MessageContentFormField
+                                content={nodeInEdition.data.content}
+                                handleUpdateContent={handleUpdateContent}
+                                workflowVariables={workflowVariables}
+                                onBlur={() => {
+                                    dispatch({
+                                        type: 'SET_TOUCHED',
+                                        nodeId: nodeInEdition.id,
+                                        touched: {
+                                            content: true,
+                                        },
+                                    })
+                                }}
+                            />
+                            {!!nodeInEdition.data.errors?.content && (
+                                <Caption
+                                    error={nodeInEdition.data.errors.content}
+                                />
+                            )}
+                        </div>
                     </div>
                     <div className={css.formField}>
-                        <Label className={css.label}>Options</Label>
+                        <Label>Options</Label>
                         <ReplyButtonList
                             nodeId={nodeInEdition.id}
                             choices={choices}
@@ -85,6 +95,20 @@ export default function MultipleChoicesEditor({
                                 })
                             }}
                             workflowVariables={workflowVariables}
+                            errors={nodeInEdition.data.errors?.choices}
+                            onBlur={(eventId) => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        choices: {
+                                            [eventId]: {
+                                                label: true,
+                                            },
+                                        },
+                                    },
+                                })
+                            }}
                         />
                     </div>
                     {previewLanguage && (

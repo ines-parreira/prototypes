@@ -22,7 +22,10 @@ import FitViewIcon from 'pages/automate/common/components/FitViewIcon'
 import {withVisualBuilderContext} from '../../hooks/useVisualBuilder'
 import {VisualBuilderGraphAction} from '../../hooks/useVisualBuilderGraphReducer'
 import {useWorkflowEditorContext} from '../../hooks/useWorkflowEditor'
-import {VisualBuilderGraph} from '../../models/visualBuilderGraph.types'
+import {
+    ChannelTriggerNodeType,
+    VisualBuilderGraph,
+} from '../../models/visualBuilderGraph.types'
 import {VisualBuilderBackground} from './components/VisualBuilderBackground'
 
 import CustomEdge from './CustomEdge'
@@ -34,11 +37,9 @@ import ConditionsNode from './nodes/ConditionsNode'
 import EndNode from './nodes/EndNode'
 import FileUploadNode from './nodes/FileUploadNode'
 import HttpRequestNode from './nodes/HttpRequestNode'
-import LLMPromptTriggerNode from './nodes/LLMPromptTriggerNode'
 import MultipleChoicesNode from './nodes/MultipleChoicesNode'
 import OrderLineItemSelectionNode from './nodes/OrderLineItemSelectionNode'
 import OrderSelectionNode from './nodes/OrderSelectionNode'
-import ReusableLLMPromptTriggerNode from './nodes/ReusableLLMPromptTriggerNode'
 import ShopperAuthenticationNode from './nodes/ShopperAuthenticationNode'
 import TextReplyNode from './nodes/TextReplyNode'
 
@@ -47,8 +48,6 @@ import css from './WorkflowVisualBuilder.less'
 
 const nodeTypes = {
     channel_trigger: ChannelTriggerNode,
-    llm_prompt_trigger: LLMPromptTriggerNode,
-    reusable_llm_prompt_trigger: ReusableLLMPromptTriggerNode,
     automated_message: AutomatedMessageNode,
     conditions: ConditionsNode,
     multiple_choices: MultipleChoicesNode,
@@ -66,13 +65,12 @@ const edgeTypes = {
 }
 
 interface Props {
-    isNewWorkflow: boolean
-    visualBuilderGraph: VisualBuilderGraph
+    isNew: boolean
+    visualBuilderGraph: VisualBuilderGraph<ChannelTriggerNodeType>
     dispatch: Dispatch<VisualBuilderGraphAction>
-    shouldShowErrors: boolean
 }
 
-export function WorkflowVisualBuilderWrapped({isNewWorkflow}: Props) {
+export function WorkflowVisualBuilderWrapped({isNew}: Props) {
     const {
         isFetchPending,
         visualBuilderGraph,
@@ -89,12 +87,6 @@ export function WorkflowVisualBuilderWrapped({isNewWorkflow}: Props) {
               (n) => n.id === visualBuilderGraph.nodeEditingId
           )
         : null
-
-    const startFlowNode = useMemo(
-        () =>
-            visualBuilderGraph.nodes.find((n) => n.type === 'channel_trigger'),
-        [visualBuilderGraph.nodes]
-    )
 
     const onDrawerEditorClose = useCallback(() => {
         dispatch({type: 'CLOSE_EDITOR'})
@@ -217,9 +209,9 @@ export function WorkflowVisualBuilderWrapped({isNewWorkflow}: Props) {
                         nodeInEdition={visualBuilderNodeEditing}
                         onClose={onDrawerEditorClose}
                     />
-                    {startFlowNode && !isNewWorkflow && (
+                    {!isNew && (
                         <TestFlowEditor
-                            startFlowNode={startFlowNode}
+                            startFlowNode={visualBuilderGraph.nodes[0]}
                             isAuthenticationBannerVisible={
                                 hasNodeWithShopperAuthentication
                             }

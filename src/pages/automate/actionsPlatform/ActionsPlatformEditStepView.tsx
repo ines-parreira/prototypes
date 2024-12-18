@@ -1,8 +1,11 @@
-import React, {useCallback, useMemo, useState} from 'react'
+import React, {useCallback, useMemo} from 'react'
 import {Container} from 'reactstrap'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import {DraftBadge} from 'pages/automate/workflows/components/DraftBadge'
+import {
+    useVisualBuilder,
+    VisualBuilderContext,
+} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {useVisualBuilderGraphReducer} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import {computeNodesPositions} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
 import {
@@ -14,13 +17,13 @@ import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import InputField from 'pages/common/forms/input/InputField'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
 
-import css from './ActionsPlatformEditTemplateView.less'
+import css from './ActionsPlatformEditStepView.less'
 import WorkflowVisualBuilder from './components/visualBuilder/WorkflowVisualBuilder'
 import useEditActionTemplate from './hooks/useEditActionTemplate'
-import useValidateVisualBuilderGraph from './hooks/useValidateVisualBuilderGraph'
+import useTouchActionStepGraph from './hooks/useTouchActionStepGraph'
+import useValidateActionStepGraph from './hooks/useValidateActionStepGraph'
+import useValidateOnVisualBuilderGraphChange from './hooks/useValidateOnVisualBuilderGraphChange'
 import {ActionTemplate} from './types'
 
 type Props = {
@@ -34,11 +37,13 @@ const ActionsPlatformEditStepView = ({template}: Props) => {
     const visualBuilderGraph = useMemo(
         () =>
             computeNodesPositions(
-                transformWorkflowConfigurationIntoVisualBuilderGraph(template)
+                transformWorkflowConfigurationIntoVisualBuilderGraph(
+                    template,
+                    true
+                )
             ),
         [template]
     )
-    const [shouldShowErrors, setShouldShowErrors] = useState(false)
     const [visualBuilderGraphDirty, dispatch] =
         useVisualBuilderGraphReducer(visualBuilderGraph)
 
@@ -47,23 +52,35 @@ const ActionsPlatformEditStepView = ({template}: Props) => {
         [visualBuilderGraph, visualBuilderGraphDirty]
     )
 
-    const appDispatch = useAppDispatch()
-    const handleValidate = useValidateVisualBuilderGraph()
+    const visualBuilderContextValue = useVisualBuilder(
+        visualBuilderGraphDirty,
+        dispatch,
+        true
+    )
+
+    const {getVariableListForNode} = visualBuilderContextValue
+
+    const handleValidate = useValidateActionStepGraph(getVariableListForNode)
+    const handleTouch = useTouchActionStepGraph()
+
+    useValidateOnVisualBuilderGraphChange({
+        graph: visualBuilderGraphDirty,
+        handleValidate,
+        dispatch,
+    })
+
     const handleSave = useCallback(
         async (isDraft: boolean) => {
-            const error = handleValidate(visualBuilderGraphDirty)
+            const graph = handleValidate(handleTouch(visualBuilderGraphDirty))
 
-            if (error) {
-                setShouldShowErrors(true)
+            const isErrored =
+                !!graph.errors || graph.nodes.some((node) => !!node.data.errors)
 
-                void appDispatch(
-                    notify({
-                        message: error,
-                        allowHTML: true,
-                        showDismissButton: true,
-                        status: NotificationStatus.Error,
-                    })
-                )
+            if (isErrored) {
+                dispatch({
+                    type: 'RESET_GRAPH',
+                    graph,
+                })
 
                 return
             }
@@ -71,14 +88,13 @@ const ActionsPlatformEditStepView = ({template}: Props) => {
             const configurationDirty =
                 transformVisualBuilderGraphIntoWfConfiguration(
                     visualBuilderGraphDirty,
-                    isDraft
+                    isDraft,
+                    []
                 ) as ActionTemplate
 
             await editActionTemplate([
                 {
-                    internal_id:
-                        visualBuilderGraphDirty.wfConfigurationOriginal
-                            .internal_id,
+                    internal_id: visualBuilderGraphDirty.internal_id,
                 },
                 configurationDirty,
             ])
@@ -87,7 +103,8 @@ const ActionsPlatformEditStepView = ({template}: Props) => {
                 type: 'RESET_GRAPH',
                 graph: computeNodesPositions(
                     transformWorkflowConfigurationIntoVisualBuilderGraph(
-                        configurationDirty
+                        configurationDirty,
+                        true
                     )
                 ),
             })
@@ -95,13 +112,13 @@ const ActionsPlatformEditStepView = ({template}: Props) => {
         [
             visualBuilderGraphDirty,
             editActionTemplate,
-            appDispatch,
             handleValidate,
+            handleTouch,
             dispatch,
         ]
     )
 
-    const isDraft = visualBuilderGraphDirty.wfConfigurationOriginal.is_draft
+    const isDraft = visualBuilderGraphDirty.is_draft
 
     return (
         <div className={css.page}>
@@ -120,10 +137,7 @@ const ActionsPlatformEditStepView = ({template}: Props) => {
                                     name: nextValue,
                                 })
                             }}
-                            hasError={
-                                shouldShowErrors &&
-                                !visualBuilderGraphDirty.name.trim()
-                            }
+                            error={visualBuilderGraphDirty.errors?.name}
                             isDisabled={!isDraft}
                         />
                         {isDraft && <DraftBadge />}
@@ -207,11 +221,11 @@ const ActionsPlatformEditStepView = ({template}: Props) => {
                 </div>
             </PageHeader>
             <Container className={css.container} fluid>
-                <WorkflowVisualBuilder
-                    visualBuilderGraph={visualBuilderGraphDirty}
-                    dispatch={dispatch}
-                    shouldShowErrors={shouldShowErrors}
-                />
+                <VisualBuilderContext.Provider
+                    value={visualBuilderContextValue}
+                >
+                    <WorkflowVisualBuilder />
+                </VisualBuilderContext.Provider>
             </Container>
         </div>
     )

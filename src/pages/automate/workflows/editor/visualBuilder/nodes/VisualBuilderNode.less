@@ -1,0 +1,52 @@
+@import '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .container {
+        display: flex;
+        width: 280px;
+        padding: 12px @layout-spacing-s;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: @layout-spacing-xs;
+        border-radius: 4px;
+        border: 1px solid var(--neutral-grey-3);
+        background: var(--neutral-grey-0);
+        position: relative;
+
+        &.isClickable {
+            cursor: pointer;
+
+            &:hover {
+                box-shadow: 4px 4px 16px 0 rgba(22, 22, 22, 0.1);
+            }
+        }
+
+        &.isSelected {
+            border-color: var(--main-primary);
+            box-shadow: 0 2px 4px 0 rgba(22, 22, 22, 0.16);
+        }
+
+        &.isErrored {
+            border-color: var(--feedback-error);
+        }
+
+        &.isGreyedOut {
+            background: var(--neutral-grey-2);
+        }
+    }
+
+    .source {
+        pointer-events: none;
+        opacity: 0;
+        transform: translate(-50%, 100%) !important;
+        cursor: pointer !important;
+    }
+
+    .target {
+        pointer-events: none;
+        opacity: 0;
+        transform: translate(-50%, -100%) !important;
+        cursor: pointer !important;
+    }
+}

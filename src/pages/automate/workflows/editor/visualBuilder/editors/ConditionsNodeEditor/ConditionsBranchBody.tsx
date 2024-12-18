@@ -43,7 +43,6 @@ interface Props {
     conditions: ConditionSchema[]
     availableVariables: WorkflowVariableList
     canDeleteBranch: boolean
-    shouldShowErrors: boolean
     showNoneOption?: boolean
     hasMultipleChildren: boolean
     maxConditionsTooltipMessage: string
@@ -58,16 +57,15 @@ interface Props {
     variableDropdownProps?: Partial<
         React.ComponentProps<typeof WorkflowVariableDropdown>
     >
-    emptyBranchErrorMessage?: string
     variablePickerTooltipMessage?: string | null
     isDisabled?: boolean
+    errors?: string | Record<string, string>
+    onConditionBlur?: (conditionIndex: number) => void
 }
 
 export const ConditionsBranchBody = ({
     type,
     branchId,
-    shouldShowErrors,
-    emptyBranchErrorMessage,
     onConditionTypeChange,
     onDeleteBranch,
     onVariableSelect,
@@ -82,6 +80,8 @@ export const ConditionsBranchBody = ({
     variableDropdownProps,
     variablePickerTooltipMessage,
     isDisabled,
+    errors,
+    onConditionBlur,
 }: Props) => {
     const renderInput = useCallback(
         (variable: WorkflowVariable, conditionIndex: number) => {
@@ -90,6 +90,11 @@ export const ConditionsBranchBody = ({
             if ('exists' in condition || 'doesNotExist' in condition) {
                 return null
             }
+
+            const error =
+                typeof errors === 'object'
+                    ? errors?.[conditionIndex]
+                    : undefined
 
             switch (variable.type) {
                 case 'boolean': {
@@ -119,7 +124,6 @@ export const ConditionsBranchBody = ({
                     return (
                         <StringConditionType
                             condition={condition}
-                            shouldShowErrors={shouldShowErrors}
                             onChange={(updatedCondition) =>
                                 onConditionChange(
                                     updatedCondition,
@@ -128,6 +132,10 @@ export const ConditionsBranchBody = ({
                             }
                             isDisabled={isDisabled}
                             options={variable.options}
+                            error={error}
+                            onBlur={() => {
+                                onConditionBlur?.(conditionIndex)
+                            }}
                         />
                     )
                 }
@@ -140,7 +148,6 @@ export const ConditionsBranchBody = ({
                         <NumberConditionType
                             condition={condition}
                             format={variable.format}
-                            shouldShowErrors={shouldShowErrors}
                             onChange={(updatedCondition) =>
                                 onConditionChange(
                                     updatedCondition,
@@ -148,6 +155,10 @@ export const ConditionsBranchBody = ({
                                 )
                             }
                             isDisabled={isDisabled}
+                            error={error}
+                            onBlur={() => {
+                                onConditionBlur?.(conditionIndex)
+                            }}
                         />
                     )
                 }
@@ -166,12 +177,16 @@ export const ConditionsBranchBody = ({
                                 )
                             }
                             isDisabled={isDisabled}
+                            error={error}
+                            onBlur={() => {
+                                onConditionBlur?.(conditionIndex)
+                            }}
                         />
                     )
                 }
             }
         },
-        [conditions, onConditionChange, shouldShowErrors, isDisabled]
+        [conditions, onConditionChange, isDisabled, errors, onConditionBlur]
     )
 
     const handleOperatorSelect = useCallback(
@@ -250,14 +265,6 @@ export const ConditionsBranchBody = ({
                     isDisabled={isDisabled}
                 />
             </div>
-
-            {emptyBranchErrorMessage &&
-                !conditions.length &&
-                shouldShowErrors && (
-                    <p className={css.errorMessage}>
-                        {emptyBranchErrorMessage}
-                    </p>
-                )}
 
             {type && (
                 <>
@@ -366,6 +373,10 @@ export const ConditionsBranchBody = ({
                         )}
                     </div>
                 </>
+            )}
+
+            {typeof errors === 'string' && (
+                <div className={css.error}>{errors}</div>
             )}
         </div>
     )

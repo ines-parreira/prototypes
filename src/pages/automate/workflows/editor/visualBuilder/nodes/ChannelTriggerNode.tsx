@@ -1,16 +1,15 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React, {memo} from 'react'
-import {Handle, Position, NodeProps} from 'reactflow'
+import {NodeProps} from 'reactflow'
 
 import {
-    VisualBuilderNodeProps,
     useVisualBuilderNodeProps,
+    VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import {ChannelTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
-import css from './Node.less'
+import VisualBuilderNode from './VisualBuilderNode'
+import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
 type Props = VisualBuilderNodeProps & {
     label: string
@@ -21,58 +20,33 @@ const ChannelTriggerNode = memo(function ChannelTriggerNode({
     label,
     isErrored,
     isSelected,
-    shouldShowErrors,
 }: Props) {
     return (
-        <div>
-            <div
-                className={classNames(css.node, {
-                    [css.nodeErrored]: shouldShowErrors && isErrored,
-                    [css.nodeSelected]: isSelected,
-                })}
-                style={{height: 98}}
-            >
-                <Handle
-                    type="target"
-                    position={Position.Top}
-                    className={css.sourceHandle}
-                />
-                <div className={css.nodeContainer}>
-                    <div className={'w-100'}>
-                        <Badge type={ColorType.Light}>start</Badge>
-                    </div>
-                    <Label className={css.nodeTitle}>
-                        {label.length > 0 ? (
-                            label
-                        ) : (
-                            <span className={css.clickToAdd}>
-                                Trigger button
-                            </span>
-                        )}
-                    </Label>
-                </div>
-                <Handle
-                    type="source"
-                    position={Position.Bottom}
-                    className={classNames(css.targetHandle)}
-                />
-            </div>
-        </div>
+        <VisualBuilderNode
+            isClickable
+            isSelected={isSelected}
+            isErrored={isErrored}
+            height={98}
+            source={false}
+        >
+            <Badge type={ColorType.Light}>start</Badge>
+            <VisualBuilderNodeContent placeholder="Trigger button">
+                {label}
+            </VisualBuilderNodeContent>
+        </VisualBuilderNode>
     )
 })
 
 export default function ChannelTriggerNodeWrapper(
     node: NodeProps<ChannelTriggerNodeType['data']>
 ) {
-    const label = node.data.label
-    const isErrored = label.length === 0
     const commonProps = useVisualBuilderNodeProps(node)
 
     return (
         <ChannelTriggerNode
             {...commonProps}
-            label={label}
-            isErrored={isErrored}
+            label={node.data.label}
+            isErrored={!!node.data.errors}
         />
     )
 }

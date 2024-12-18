@@ -16,7 +16,7 @@ export function handleError(
                     showDismissButton: true,
                     status: NotificationStatus.Error,
                     message:
-                        'An Action already exists with this name. Choose a unique name in order to create this Action.',
+                        'An Action with this name already exists. Choose a unique name in order to save.',
                 })
             )
             return undefined

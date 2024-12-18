@@ -6,22 +6,26 @@ import {getIntegrations} from 'state/integrations/selectors'
 import {ActionAppConfiguration} from '../types'
 
 type Props = {
-    shopName: string
+    shopName?: string
     appType?: ActionAppConfiguration['type'] | null
 }
 
-export default function useGetActionAppIntegration({appType, shopName}: Props) {
+const useGetActionAppIntegration = ({appType, shopName}: Props) => {
     const integrations = useAppSelector(getIntegrations)
 
-    const integration = useMemo(() => {
-        if (!appType || !integrations.length) return
+    return useMemo(() => {
+        if (!appType || !integrations.length) {
+            return
+        }
 
         return integrations.find((integration) => {
             if (
                 integration.deactivated_datetime ||
                 integration.deleted_datetime
-            )
+            ) {
                 return
+            }
+
             if (appType === 'shopify') {
                 return (
                     integration.type === appType &&
@@ -39,6 +43,6 @@ export default function useGetActionAppIntegration({appType, shopName}: Props) {
             }
         })
     }, [appType, integrations, shopName])
-
-    return integration
 }
+
+export default useGetActionAppIntegration

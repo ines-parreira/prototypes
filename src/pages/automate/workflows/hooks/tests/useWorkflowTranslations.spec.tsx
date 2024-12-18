@@ -188,21 +188,6 @@ describe('useWorkflowTranslations', () => {
         )
     })
 
-    it('list incomplete translations', async () => {
-        const {result, waitForNextUpdate} = renderHook(
-            () =>
-                useWorkflowTranslations('id', ['en-US', 'fr-FR'], false, true),
-            renderHookOptions
-        )
-        await waitForNextUpdate()
-        act(() => {
-            graph = result.current.switchLanguage(graph, 'fr-FR')
-        })
-        const incompleteLangs =
-            result.current.getLangsOfIncompleteTranslations(graph)
-        expect(incompleteLangs).toEqual(['fr-FR'])
-    })
-
     it('removes stale translations', async () => {
         const {result, waitForNextUpdate, rerender} = renderHook(
             (availableLanguages: LanguageCode[]) =>

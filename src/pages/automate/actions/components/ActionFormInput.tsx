@@ -20,6 +20,12 @@ type Props = {
     onDelete: () => void
     onChange: (input: Input) => void
     disabledTooltip?: string
+    error?: {
+        name?: string
+        instructions?: string
+    }
+    onNameBlur?: () => void
+    onInstructionsBlur?: () => void
 }
 
 const ActionFormInput = ({
@@ -29,6 +35,9 @@ const ActionFormInput = ({
     onChange,
     onDelete,
     disabledTooltip,
+    error,
+    onNameBlur,
+    onInstructionsBlur,
 }: Props) => {
     const ref = useRef<HTMLDivElement>(null)
 
@@ -108,6 +117,8 @@ const ActionFormInput = ({
                             name: nextValue,
                         })
                     }}
+                    hasError={!!error?.name}
+                    onBlur={onNameBlur}
                 />
                 <TextInput
                     isDisabled={isDisabled}
@@ -119,6 +130,8 @@ const ActionFormInput = ({
                             instructions: nextValue,
                         })
                     }}
+                    hasError={!!error?.instructions}
+                    onBlur={onInstructionsBlur}
                 />
                 <IconButton
                     intent="destructive"

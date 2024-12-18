@@ -5,7 +5,10 @@ import {useHistory} from 'react-router-dom'
 import {Container} from 'reactstrap'
 import {ulid} from 'ulidx'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import {
+    useVisualBuilder,
+    VisualBuilderContext,
+} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {useVisualBuilderGraphReducer} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import {computeNodesPositions} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
 import {transformVisualBuilderGraphIntoWfConfiguration} from 'pages/automate/workflows/models/visualBuilderGraph.model'
@@ -20,15 +23,15 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import PageHeader from 'pages/common/components/PageHeader'
 import InputField from 'pages/common/forms/input/InputField'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
 
-import css from './ActionsPlatformEditTemplateView.less'
+import css from './ActionsPlatformEditStepView.less'
 import ActionsPlatformStepAppSelectBox from './components/ActionsPlatformStepAppSelectBox'
 import WorkflowVisualBuilder from './components/visualBuilder/WorkflowVisualBuilder'
 import useApps from './hooks/useApps'
 import useCreateActionTemplate from './hooks/useCreateActionTemplate'
-import useValidateVisualBuilderGraph from './hooks/useValidateVisualBuilderGraph'
+import useTouchActionStepGraph from './hooks/useTouchActionStepGraph'
+import useValidateActionStepGraph from './hooks/useValidateActionStepGraph'
+import useValidateOnVisualBuilderGraphChange from './hooks/useValidateOnVisualBuilderGraphChange'
 import {ActionTemplate, ActionTemplateApp} from './types'
 
 const getInitialTemplate = () => {
@@ -68,6 +71,7 @@ const getInitialTemplate = () => {
             },
         ],
         is_draft: true,
+        available_languages: [],
     })
     b.insertHttpRequestConditionAndEndStepAndSelect('success', {success: true})
     b.selectParentStep()
@@ -85,56 +89,67 @@ const ActionsPlatformCreateStepView = () => {
     const template = useMemo(() => getInitialTemplate(), [])
     const [templateApp, setTemplateApp] = useState<ActionTemplateApp>()
 
-    const [shouldShowErrors, setShouldShowErrors] = useState(false)
     const [visualBuilderGraphDirty, dispatch] = useVisualBuilderGraphReducer(
         computeNodesPositions(
-            transformWorkflowConfigurationIntoVisualBuilderGraph(template)
+            transformWorkflowConfigurationIntoVisualBuilderGraph(template, true)
         )
     )
-    const appDispatch = useAppDispatch()
 
-    const handleValidate = useValidateVisualBuilderGraph()
+    const visualBuilderContextValue = useVisualBuilder(
+        visualBuilderGraphDirty,
+        dispatch,
+        true
+    )
+
+    const {getVariableListForNode} = visualBuilderContextValue
+
+    const handleValidate = useValidateActionStepGraph(getVariableListForNode)
+    const handleTouch = useTouchActionStepGraph()
+
+    useValidateOnVisualBuilderGraphChange({
+        graph: visualBuilderGraphDirty,
+        handleValidate,
+        dispatch,
+    })
+
     const handleSave = useCallback(
         async (isDraft: boolean) => {
-            const error = handleValidate(visualBuilderGraphDirty)
+            const graph = handleValidate(handleTouch(visualBuilderGraphDirty))
 
-            if (error) {
-                setShouldShowErrors(true)
+            const isErrored =
+                !!graph.errors || graph.nodes.some((node) => !!node.data.errors)
 
-                void appDispatch(
-                    notify({
-                        message: error,
-                        allowHTML: true,
-                        showDismissButton: true,
-                        status: NotificationStatus.Error,
-                    })
-                )
+            if (isErrored) {
+                dispatch({
+                    type: 'RESET_GRAPH',
+                    graph,
+                })
 
                 return
             }
 
             await createActionTemplate([
                 {
-                    internal_id:
-                        visualBuilderGraphDirty.wfConfigurationOriginal
-                            .internal_id,
+                    internal_id: visualBuilderGraphDirty.internal_id,
                 },
                 transformVisualBuilderGraphIntoWfConfiguration(
                     visualBuilderGraphDirty,
-                    isDraft
+                    isDraft,
+                    []
                 ) as ActionTemplate,
             ])
 
             history.push(
-                `/app/automation/actions-platform/steps/edit/${visualBuilderGraphDirty.wfConfigurationOriginal.id}`
+                `/app/automation/actions-platform/steps/edit/${visualBuilderGraphDirty.id}`
             )
         },
         [
             visualBuilderGraphDirty,
             createActionTemplate,
             handleValidate,
-            appDispatch,
+            handleTouch,
             history,
+            dispatch,
         ]
     )
 
@@ -162,10 +177,7 @@ const ActionsPlatformCreateStepView = () => {
                                 name: nextValue,
                             })
                         }}
-                        hasError={
-                            shouldShowErrors &&
-                            !visualBuilderGraphDirty.name.trim()
-                        }
+                        error={visualBuilderGraphDirty.errors?.name}
                     />
                 }
             >
@@ -208,11 +220,11 @@ const ActionsPlatformCreateStepView = () => {
                 </div>
             </PageHeader>
             <Container className={css.container} fluid>
-                <WorkflowVisualBuilder
-                    visualBuilderGraph={visualBuilderGraphDirty}
-                    dispatch={dispatch}
-                    shouldShowErrors={shouldShowErrors}
-                />
+                <VisualBuilderContext.Provider
+                    value={visualBuilderContextValue}
+                >
+                    <WorkflowVisualBuilder />
+                </VisualBuilderContext.Provider>
                 <Modal
                     isOpen={!visualBuilderGraphDirty.apps?.length}
                     isClosable={false}

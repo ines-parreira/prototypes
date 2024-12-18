@@ -7,10 +7,11 @@ type Props = {
     caption?: ReactNode
     prefix?: ReactNode
     suffix?: ReactNode
+    isDisabled?: boolean
 } & Omit<HTMLProps<HTMLDivElement>, 'prefix'>
 
 const DropdownItemLabel = (
-    {caption, children, className, prefix, suffix, ...other}: Props,
+    {caption, children, className, prefix, suffix, isDisabled, ...other}: Props,
     ref: ForwardedRef<HTMLDivElement>
 ) => {
     return (
@@ -29,7 +30,11 @@ const DropdownItemLabel = (
                 {children}
 
                 {caption && (
-                    <div className={classnames(css.caption, 'caption-regular')}>
+                    <div
+                        className={classnames(css.caption, 'caption-regular', {
+                            [css.disabled]: isDisabled,
+                        })}
+                    >
                         {caption}
                     </div>
                 )}

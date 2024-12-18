@@ -2,7 +2,6 @@ import {Label} from '@gorgias/merchant-ui-kit'
 import React, {useMemo} from 'react'
 
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
 import {RemoveItemNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {Drawer} from 'pages/common/components/Drawer'
 
@@ -16,15 +15,11 @@ export default function RemoveItemEditor({
 }: {
     nodeInEdition: RemoveItemNodeType
 }) {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const {dispatch, getVariableListForNode} = useVisualBuilderContext()
 
     const workflowVariables = useMemo(
-        () =>
-            getWorkflowVariableListForNode(
-                visualBuilderGraph,
-                nodeInEdition.id
-            ),
-        [visualBuilderGraph, nodeInEdition.id]
+        () => getVariableListForNode(nodeInEdition.id),
+        [getVariableListForNode, nodeInEdition.id]
     )
 
     return (
@@ -33,9 +28,7 @@ export default function RemoveItemEditor({
             <Drawer.Content>
                 <div className={css.container}>
                     <div className={css.formField}>
-                        <Label className={css.label} isRequired>
-                            Product variant id
-                        </Label>
+                        <Label isRequired>Product variant id</Label>
                         <TextInputWithVariables
                             value={nodeInEdition.data.productVariantId}
                             onChange={(nextValue) => {
@@ -47,12 +40,20 @@ export default function RemoveItemEditor({
                                 })
                             }}
                             variables={workflowVariables}
+                            error={nodeInEdition.data.errors?.productVariantId}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        productVariantId: true,
+                                    },
+                                })
+                            }}
                         />
                     </div>
                     <div className={css.formField}>
-                        <Label className={css.label} isRequired>
-                            Quantity
-                        </Label>
+                        <Label isRequired>Quantity</Label>
                         <TextInputWithVariables
                             value={nodeInEdition.data.quantity}
                             onChange={(nextValue) => {
@@ -64,6 +65,16 @@ export default function RemoveItemEditor({
                                 })
                             }}
                             variables={workflowVariables}
+                            error={nodeInEdition.data.errors?.quantity}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        quantity: true,
+                                    },
+                                })
+                            }}
                         />
                     </div>
                 </div>

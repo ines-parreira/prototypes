@@ -73,7 +73,6 @@ describe('TestFlowEditor', () => {
                         currentLanguage: 'en-GB',
                         visualBuilderGraph: {
                             available_languages: ['en-US', 'en-GB'],
-                            wfConfigurationOriginal: {},
                         },
                     } as any
                 }
@@ -106,7 +105,6 @@ describe('TestFlowEditor', () => {
                         currentLanguage: 'en-GB',
                         visualBuilderGraph: {
                             available_languages: ['en-US', 'en-GB'],
-                            wfConfigurationOriginal: {},
                         },
                     } as any
                 }
@@ -139,7 +137,6 @@ describe('TestFlowEditor', () => {
                         currentLanguage: 'en-GB',
                         visualBuilderGraph: {
                             available_languages: ['en-US', 'en-GB'],
-                            wfConfigurationOriginal: {},
                         },
                     } as any
                 }
@@ -172,7 +169,6 @@ describe('TestFlowEditor', () => {
                         currentLanguage: null,
                         visualBuilderGraph: {
                             available_languages: ['en-US', 'en-GB'],
-                            wfConfigurationOriginal: {},
                         },
                     } as any
                 }
@@ -205,7 +201,6 @@ describe('TestFlowEditor', () => {
                         currentLanguage: undefined,
                         visualBuilderGraph: {
                             available_languages: ['en-US', 'en-GB'],
-                            wfConfigurationOriginal: {},
                         },
                     } as any
                 }

@@ -32,4 +32,29 @@ describe('<Headers />', () => {
             value: 'test value',
         })
     })
+
+    it('should trigger name blur', () => {
+        const mockOnBlur = jest.fn()
+
+        render(
+            <Headers
+                headers={[
+                    {
+                        name: 'test name',
+                        value: 'test value',
+                    },
+                ]}
+                onChange={jest.fn()}
+                onDelete={jest.fn()}
+                onAdd={jest.fn()}
+                onNameBlur={mockOnBlur}
+            />
+        )
+
+        act(() => {
+            fireEvent.blur(screen.getByDisplayValue('test name'))
+        })
+
+        expect(mockOnBlur).toHaveBeenCalled()
+    })
 })

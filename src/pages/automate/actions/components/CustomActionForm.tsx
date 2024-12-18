@@ -83,7 +83,12 @@ const CustomActionForm = ({configuration}: Props) => {
 
         ;(nextGraph.nodes[0] as LLMPromptTriggerNodeType).data.inputs = inputs
 
-        return getWorkflowVariableListForNode(nextGraph, nextGraph.nodes[1].id)
+        return getWorkflowVariableListForNode(
+            nextGraph,
+            nextGraph.nodes[1].id,
+            [],
+            []
+        )
     }, [graph, inputs])
 
     const history = useHistory()
@@ -130,7 +135,8 @@ const CustomActionForm = ({configuration}: Props) => {
 
         const configuration = transformVisualBuilderGraphIntoWfConfiguration(
             nextGraph,
-            false
+            false,
+            []
         )
 
         upsertAction([
@@ -308,10 +314,18 @@ const CustomActionForm = ({configuration}: Props) => {
                                             instructions: '',
                                         })
                                     }}
-                                    onDelete={(index) => {
+                                    onDelete={(id) => {
+                                        const index = value.findIndex(
+                                            (input) => input.id === id
+                                        )
+
                                         removeInput(index)
                                     }}
-                                    onChange={(input, index) => {
+                                    onChange={(input) => {
+                                        const index = value.findIndex(
+                                            (item) => item.id === input.id
+                                        )
+
                                         updateInput(index, input)
                                     }}
                                 />

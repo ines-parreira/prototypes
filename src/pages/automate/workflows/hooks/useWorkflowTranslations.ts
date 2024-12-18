@@ -176,27 +176,6 @@ export default function useWorkflowTranslations(
         ]
     )
 
-    const getLangsOfIncompleteTranslations = useCallback(
-        (graph: VisualBuilderGraph) => {
-            const nextTranslationsByLangDirty = snapshotTranslations(
-                graph,
-                currentLanguage,
-                translationsByLangDirty
-            )
-            const allTkeys = collectTkeys(graph)
-            const incompleteLangs: LanguageCode[] = []
-            Object.entries(nextTranslationsByLangDirty).forEach(
-                ([lang, translations]) => {
-                    if (!allTkeys.every((tkey) => translations[tkey])) {
-                        incompleteLangs.push(lang as LanguageCode)
-                    }
-                }
-            )
-            return incompleteLangs
-        },
-        [translationsByLangDirty, currentLanguage]
-    )
-
     const discardTranslations = useCallback(() => {
         setTranslationsByLangDirty(translationsByLang)
         setCurrentLanguage(originalLanguage.current)
@@ -318,7 +297,6 @@ export default function useWorkflowTranslations(
         saveTranslations,
         deleteTranslation,
         areTranslationsDirty,
-        getLangsOfIncompleteTranslations,
         discardTranslations,
         translateKey,
         setCurrentLanguage,
@@ -359,30 +337,26 @@ function translateDeep<T>(
     options?: {doNotFallback?: boolean}
 ): T {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return walkDeep(
-        o,
-        (el) => {
-            if (_isObject(el)) {
-                const tkeys = _keys(el).filter((k) => k.match(/_tkey$/))
-                return tkeys.reduce((acc, tkey) => {
-                    const translatedKey = tkey.replace(/_tkey$/, '')
-                    const translatedValue =
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                        translationDict[_get(el, tkey)] ??
-                        (options?.doNotFallback
-                            ? ''
-                            : (_get(el, translatedKey) ?? ''))
-                    return {
-                        ...acc,
-                        [translatedKey]: translatedValue,
-                    }
-                }, el)
-            }
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-            return el
-        },
-        {ignoreKeys: ['wfConfigurationOriginal']}
-    )
+    return walkDeep(o, (el) => {
+        if (_isObject(el)) {
+            const tkeys = _keys(el).filter((k) => k.match(/_tkey$/))
+            return tkeys.reduce((acc, tkey) => {
+                const translatedKey = tkey.replace(/_tkey$/, '')
+                const translatedValue =
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                    translationDict[_get(el, tkey)] ??
+                    (options?.doNotFallback
+                        ? ''
+                        : (_get(el, translatedKey) ?? ''))
+                return {
+                    ...acc,
+                    [translatedKey]: translatedValue,
+                }
+            }, el)
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return el
+    })
 }
 
 function snapshotTranslations(
@@ -391,22 +365,18 @@ function snapshotTranslations(
     translationsByLang: TranslationsByLang
 ): TranslationsByLang {
     const translations: Record<string, string> = {}
-    walkDeep(
-        graph,
-        (el) => {
-            if (_isObject(el)) {
-                const tkeys = _keys(el).filter((k) => k.match(/_tkey$/))
-                tkeys.forEach((tkey) => {
-                    const translatedKey = tkey.replace(/_tkey$/, '')
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                    translations[_get(el, tkey)] = _get(el, translatedKey) ?? ''
-                })
-            }
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-            return el
-        },
-        {ignoreKeys: ['wfConfigurationOriginal']}
-    )
+    walkDeep(graph, (el) => {
+        if (_isObject(el)) {
+            const tkeys = _keys(el).filter((k) => k.match(/_tkey$/))
+            tkeys.forEach((tkey) => {
+                const translatedKey = tkey.replace(/_tkey$/, '')
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                translations[_get(el, tkey)] = _get(el, translatedKey) ?? ''
+            })
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return el
+    })
     const tkeys = Object.keys(translations)
     // When snapshotting translations for current language we also remove stale tkeys from translations for ALL
     // remaining languages. This prevents a situation when translations for deleted step are only removed from
@@ -425,25 +395,6 @@ function snapshotTranslations(
         ...cleanedTranslationsByLang,
         [currentLanguage]: translations,
     }
-}
-
-function collectTkeys(graph: VisualBuilderGraph): string[] {
-    const allTkeys: string[] = []
-    walkDeep(
-        graph,
-        (el) => {
-            if (_isObject(el)) {
-                const tkeys = _keys(el).filter((k) => k.match(/_tkey$/))
-                tkeys.forEach((tkey) => {
-                    allTkeys.push(_get(el, tkey) as string)
-                })
-            }
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-            return el
-        },
-        {ignoreKeys: ['wfConfigurationOriginal']}
-    )
-    return allTkeys
 }
 
 export function emptyTranslatedTexts<T>(o: T): T {

@@ -9,9 +9,9 @@ export const colorByVisualBuilderNodeType: Record<
     | Exclude<
           NonNullable<VisualBuilderNode['type']>,
           | 'channel_trigger'
-          | 'llm_prompt_trigger'
           | 'end'
           | 'reusable_llm_prompt_trigger'
+          | 'reusable_llm_prompt_call'
       >
     | 'custom_input'
     | 'merchant_input'
@@ -106,15 +106,19 @@ export const colorByVisualBuilderNodeType: Record<
         color: 'var(--accessory-orange-3)',
         backgroundColor: 'var(--accessory-orange-1)',
     },
+    llm_prompt_trigger: {
+        color: 'var(--neutral-grey-6)',
+        backgroundColor: 'var(--neutral-grey-3)',
+    },
 }
 
 export const iconByVisualBuilderNodeType: Record<
     | Exclude<
           NonNullable<VisualBuilderNode['type']>,
           | 'channel_trigger'
-          | 'llm_prompt_trigger'
           | 'end'
           | 'reusable_llm_prompt_trigger'
+          | 'reusable_llm_prompt_call'
       >
     | 'custom_input'
     | 'merchant_input'
@@ -143,10 +147,11 @@ export const iconByVisualBuilderNodeType: Record<
     skip_charge: <i className="material-icons">skip_next</i>,
     app: <i className="material-icons">key</i>,
     replace_item: <i className="material-icons">swap_horiz</i>,
+    llm_prompt_trigger: <i className="material-icons">data_object</i>,
 }
 
 export const labelByVisualBuilderNodeType: Record<
-    NonNullable<VisualBuilderNode['type']>,
+    Exclude<NonNullable<VisualBuilderNode['type']>, 'reusable_llm_prompt_call'>,
     string
 > = {
     channel_trigger: 'Start',
@@ -166,7 +171,7 @@ export const labelByVisualBuilderNodeType: Record<
     remove_item: 'Remove order item',
     cancel_subscription: 'Cancel subscription',
     skip_charge: 'Skip next subscription shipment',
-    llm_prompt_trigger: 'Start',
+    llm_prompt_trigger: 'Collect information',
     reusable_llm_prompt_trigger: 'Start',
     create_discount_code: 'Create discount code',
     refund_shipping_costs: 'Refund shipping costs',

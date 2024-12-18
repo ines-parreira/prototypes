@@ -1,0 +1,46 @@
+import {Label} from '@gorgias/merchant-ui-kit'
+import classnames from 'classnames'
+import React from 'react'
+
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Caption from 'pages/common/forms/Caption/Caption'
+
+import css from './ActionsPlatformTemplateSteps.less'
+import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
+
+type Props = {
+    error?: string
+    onEditSteps: () => void
+}
+
+const ActionsPlatformTemplateSteps = ({error, onEditSteps}: Props) => {
+    return (
+        <div>
+            <Label isRequired className={css.label}>
+                Action steps
+            </Label>
+            <div className={css.description}>
+                Add one or more steps with your 3rd party apps to perform the
+                Action.
+            </div>
+            <div
+                className={classnames(css.steps, {
+                    [css.isErrored]: !!error,
+                })}
+            >
+                <WorkflowVisualBuilder isMiniMapHidden isDisabled />
+                <Button
+                    intent="secondary"
+                    onClick={onEditSteps}
+                    className={css.editStepsButton}
+                >
+                    <ButtonIconLabel icon="edit">Edit</ButtonIconLabel>
+                </Button>
+            </div>
+            {!!error && <Caption error={error} />}
+        </div>
+    )
+}
+
+export default ActionsPlatformTemplateSteps

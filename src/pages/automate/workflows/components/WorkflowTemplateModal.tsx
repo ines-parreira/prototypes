@@ -1,5 +1,8 @@
 import React from 'react'
 
+import {ChannelTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {transformWorkflowConfigurationIntoVisualBuilderGraph} from 'pages/automate/workflows/models/workflowConfiguration.model'
+import {WorkflowTemplate} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -8,8 +11,6 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
 import VisualBuilderTemplatePreview from '../editor/visualBuilder/components/VisualBuilderTemplatePreview'
 import {computeNodesPositions} from '../hooks/useVisualBuilderGraphReducer/utils'
-import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
-import {WorkflowTemplate} from '../models/workflowConfiguration.types'
 
 import css from './WorkflowTemplateModal.less'
 
@@ -28,7 +29,9 @@ export const WorkflowTemplateModal = ({
 }: Props) => {
     const workflow = template.getConfiguration('template', 0)
     const visualBuilderGraph = computeNodesPositions(
-        transformWorkflowConfigurationIntoVisualBuilderGraph(workflow)
+        transformWorkflowConfigurationIntoVisualBuilderGraph<ChannelTriggerNodeType>(
+            workflow
+        )
     )
     return (
         <Modal isOpen={isOpen} onClose={onClose} classNameDialog={css.dialog}>

@@ -13,7 +13,7 @@ import css from './ActionFormMerchantInputValue.less'
 type Props = {
     input: MerchantInput
     value: string | number | boolean
-    onChange: (input?: string | number | boolean) => void
+    onChange: (input: string | number | boolean) => void
 }
 
 const ActionFormMerchantInputValue = ({input, onChange, value}: Props) => {
@@ -22,7 +22,7 @@ const ActionFormMerchantInputValue = ({input, onChange, value}: Props) => {
     const options = 'options' in input ? input.options : undefined
     return (
         <div ref={ref} className={css.container}>
-            <Label className={css.label}>{name}</Label>
+            <Label isRequired>{name}</Label>
             {options && options.length ? (
                 <SelectField
                     value={value as string}
@@ -47,7 +47,9 @@ const ActionFormMerchantInputValue = ({input, onChange, value}: Props) => {
             ) : (
                 <NumberInput
                     value={(value as number) || 0}
-                    onChange={onChange}
+                    onChange={(nextValue) => {
+                        onChange(nextValue ?? 0)
+                    }}
                     placeholder={description}
                 />
             )}

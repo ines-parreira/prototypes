@@ -22,10 +22,19 @@ type Props = {
     onDelete: (index: number) => void
     onAdd: () => void
     onBlur?: () => void
+    onNameBlur?: (index: number) => void
+    onValueBlur?: (index: number) => void
     isDisabled?: boolean
     noSelectedCategoryText?: string
     inputVariableToolTipMessage?: string | null
     error?: string
+    errors?: Record<
+        string,
+        {
+            name?: string
+            value?: string
+        }
+    >
 }
 
 const Headers = ({
@@ -38,7 +47,10 @@ const Headers = ({
     isDisabled,
     inputVariableToolTipMessage,
     error,
+    errors,
     noSelectedCategoryText = 'Insert variable from previous steps',
+    onNameBlur,
+    onValueBlur,
 }: Props) => {
     return (
         <div className={css.keyValueContainer}>
@@ -52,6 +64,10 @@ const Headers = ({
                         onChange={(name) => {
                             onChange(index, {name, value: header.value})
                         }}
+                        hasError={!!errors?.[index]?.name}
+                        onBlur={() => {
+                            onNameBlur?.(index)
+                        }}
                     />
                     <TextInputWithVariables
                         toolTipMessage={inputVariableToolTipMessage}
@@ -63,6 +79,10 @@ const Headers = ({
                         }}
                         variables={variables}
                         placeholder="Value"
+                        error={errors?.[index]?.value}
+                        onBlur={() => {
+                            onValueBlur?.(index)
+                        }}
                     />
                     <IconButton
                         isDisabled={isDisabled}

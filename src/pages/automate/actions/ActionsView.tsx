@@ -28,7 +28,7 @@ const ActionsView = () => {
     const dispatch = useAppDispatch()
 
     const isMultiStepActionEnabled = useFlag(
-        FeatureFlagKey.ActionsMultiStep,
+        FeatureFlagKey.ActionsUseCaseTemplates,
         false
     )
 
@@ -77,7 +77,7 @@ const ActionsView = () => {
                     <div className={css.actionListDescription}>
                         <div data-candu-id="custom-action-view-header">
                             {ACTIONS_DESCRIPTION} When enabled, you can preview
-                            this Action in the{' '}
+                            Actions in the{' '}
                             <Link to={routes.test}>test area</Link>.
                         </div>
                         <div className={css.actionButtons}>

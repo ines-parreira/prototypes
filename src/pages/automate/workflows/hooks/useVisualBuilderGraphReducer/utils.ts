@@ -16,7 +16,6 @@ import {
     EndNodeType,
     FileUploadNodeType,
     HttpRequestNodeType,
-    isTriggerNodeType,
     MultipleChoicesNodeType,
     OrderLineItemSelectionNodeType,
     OrderSelectionNodeType,
@@ -25,6 +24,7 @@ import {
     RemoveItemNodeType,
     ReplaceItemNodeType,
     ReshipForFreeNodeType,
+    ReusableLLMPromptCallNodeType,
     ShopperAuthenticationNodeType,
     SkipChargeNodeType,
     TextReplyNodeType,
@@ -32,6 +32,7 @@ import {
     VisualBuilderEdge,
     VisualBuilderGraph,
     VisualBuilderNode,
+    VisualBuilderTriggerNode,
 } from '../../models/visualBuilderGraph.types'
 import {WorkflowTransition} from '../../models/workflowConfiguration.types'
 
@@ -53,7 +54,7 @@ export function greyOutBranch(
                       draft.data.isGreyedOut = isGreyedOut
                   })
                 : n
-        ),
+        ) as VisualBuilderGraph['nodes'],
     }
 }
 
@@ -61,7 +62,7 @@ export function deleteBranch(
     graph: VisualBuilderGraph,
     nodeId: string,
     {keepIncomingEdge}: {keepIncomingEdge?: boolean} = {}
-) {
+): VisualBuilderGraph {
     const {nodes, edges} = graph
     const nodeIdsToDelete: Set<string> = new Set()
     const edgeIdsToDelete: Set<string> = new Set()
@@ -84,12 +85,14 @@ export function deleteBranch(
         }
     )
     if (!nodeToDeleteIncomingEdge) return graph
-    const nextGraph = {
+
+    return {
         ...graph,
-        nodes: nodes.filter((n) => !nodeIdsToDelete.has(n.id)),
+        nodes: nodes.filter(
+            (n) => !nodeIdsToDelete.has(n.id)
+        ) as VisualBuilderGraph['nodes'],
         edges: edges.filter((e) => !edgeIdsToDelete.has(e.id)),
     }
-    return nextGraph
 }
 
 export const buildAutomatedMessageNode = (): AutomatedMessageNodeType => {
@@ -487,13 +490,36 @@ export const buildSkipChargeNode = ({
     }
 }
 
+export const buildReusableLLMPromptCallNode = ({
+    configuration_id,
+    configuration_internal_id,
+    values,
+}: Pick<
+    ReusableLLMPromptCallNodeType['data'],
+    'configuration_id' | 'configuration_internal_id' | 'values'
+>): ReusableLLMPromptCallNodeType => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'reusable_llm_prompt_call',
+        data: {
+            configuration_id,
+            configuration_internal_id,
+            objects: {},
+            custom_inputs: {},
+            values,
+        },
+    }
+}
+
 const nodeWidth = 300
 const nodeHeight = 98
-const nodeGap = 36
+const nodeGap = 38
 
-export function computeNodesPositions(
-    g: VisualBuilderGraph
-): VisualBuilderGraph {
+export function computeNodesPositions<
+    T extends VisualBuilderTriggerNode = VisualBuilderTriggerNode,
+>(g: VisualBuilderGraph<T>): VisualBuilderGraph<T> {
     const layout = flextree<VisualBuilderNode>({
         nodeSize: (node) => {
             const width = node.data.width || nodeWidth
@@ -503,7 +529,9 @@ export function computeNodesPositions(
                     ? 80
                     : node.data.type === 'reusable_llm_prompt_trigger'
                       ? 48
-                      : nodeHeight)
+                      : node.data.type === 'llm_prompt_trigger'
+                        ? 88 + 34
+                        : nodeHeight)
 
             return [width, height + nodeGap * 2]
         },
@@ -512,11 +540,7 @@ export function computeNodesPositions(
 
     const nodesById = _keyBy(g.nodes, 'id')
 
-    const triggerNode = g.nodes.find(isTriggerNodeType)
-
-    if (!triggerNode) {
-        throw new Error()
-    }
+    const triggerNode = g.nodes[0]
 
     const root = layout.hierarchy(triggerNode, (node) => {
         return g.edges
@@ -533,7 +557,7 @@ export function computeNodesPositions(
         const y = flextreeNodesById[node.id]?.y ?? node.position.y
 
         return {...node, position: {x, y}}
-    })
+    }) as [T, ...VisualBuilderNode[]]
 
     return {
         ...g,

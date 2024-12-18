@@ -4,11 +4,9 @@ import React, {useMemo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {
-    EndNodeType,
-    isTriggerNodeType,
-} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {Drawer} from 'pages/common/components/Drawer'
+import Caption from 'pages/common/forms/Caption/Caption'
 import TicketAssignee from 'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import {getHumanAgents} from 'state/agents/selectors'
@@ -63,10 +61,7 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
         (t) => t?.get('id') === nodeInEdition.data.ticketAssigneeTeamId
     )
 
-    const triggerNode = useMemo(
-        () => visualBuilderGraph.nodes.find(isTriggerNodeType)!,
-        [visualBuilderGraph.nodes]
-    )
+    const triggerNode = visualBuilderGraph.nodes[0]
 
     const actionOptions = useMemo<EndNodeType['data']['action'][]>(() => {
         switch (triggerNode.type) {
@@ -86,7 +81,7 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
             <Drawer.Content>
                 <div className={css.container}>
                     <div className={css.formField}>
-                        <Label className={css.label}>Action</Label>
+                        <Label>Action</Label>
                         <EndNodeTypeSelect
                             options={actionOptions}
                             value={nodeInEdition.data.action}
@@ -111,15 +106,15 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
                     </div>
                     <div className={css.formField}>
                         {nodeInEdition.data.action === 'ask-for-feedback' && (
-                            <div className={css.withDescription}>
+                            <div>
                                 <WasThisHelpfulCard />
-                                <div className={css.description}>
+                                <Caption>
                                     Customers will be asked for feedback and a
                                     ticket is created in the channel if
                                     customers select "No, I need more help".
                                     Feedback will always be requested in the
                                     channel language.
-                                </div>
+                                </Caption>
                             </div>
                         )}
                         {nodeInEdition.data.action === 'end' && (
@@ -133,7 +128,7 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
                         {(nodeInEdition.data.action === 'ask-for-feedback' ||
                             nodeInEdition.data.action === 'create-ticket') && (
                             <>
-                                <Label className={css.label}>
+                                <Label>
                                     {nodeInEdition.data.action ===
                                     'ask-for-feedback'
                                         ? 'If'

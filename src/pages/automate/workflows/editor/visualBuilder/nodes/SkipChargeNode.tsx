@@ -1,21 +1,17 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {memo, useMemo} from 'react'
-import {Handle, NodeProps, Position} from 'reactflow'
+import React, {memo} from 'react'
+import {NodeProps} from 'reactflow'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {isValidLiquidSyntaxInNode} from 'pages/automate/workflows/models/variables.model'
 import {SkipChargeNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
-
-import css from './Node.less'
+import VisualBuilderNode from './VisualBuilderNode'
+import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
 type Props = VisualBuilderNodeProps & {
     isErrored: boolean
@@ -23,7 +19,6 @@ type Props = VisualBuilderNodeProps & {
 
 const SkipChargeNode = memo(function SkipChargeNode({
     isSelected,
-    shouldShowErrors,
     isErrored,
     isGreyedOut,
     edgeProps,
@@ -32,31 +27,18 @@ const SkipChargeNode = memo(function SkipChargeNode({
     return (
         <div>
             <EdgeBlock {...edgeProps} />
-            <div
-                className={classNames(css.node, {
-                    [css.nodeErrored]: shouldShowErrors && isErrored,
-                    [css.nodeGreyedOut]: isGreyedOut,
-                    [css.nodeSelected]: isSelected,
-                })}
+            <VisualBuilderNode
+                isClickable
+                isSelected={isSelected}
+                isErrored={isErrored}
+                isGreyedOut={isGreyedOut}
             >
-                <Handle
-                    type="target"
-                    position={Position.Top}
-                    className={css.sourceHandle}
-                />
-                <div className={css.nodeContainer}>
-                    <VisualBuilderActionTag nodeType="skip_charge" />
-                    <Label className={css.nodeTitle}>
-                        Skip next shipment of an ongoing subscription.
-                    </Label>
-                    <NodeDeleteIcon {...deleteProps} />
-                </div>
-                <Handle
-                    type="source"
-                    position={Position.Bottom}
-                    className={classNames(css.targetHandle)}
-                />
-            </div>
+                <VisualBuilderActionTag nodeType="skip_charge" />
+                <VisualBuilderNodeContent>
+                    Skip next shipment of an ongoing subscription.
+                </VisualBuilderNodeContent>
+                <NodeDeleteIcon {...deleteProps} />
+            </VisualBuilderNode>
         </div>
     )
 })
@@ -64,25 +46,7 @@ const SkipChargeNode = memo(function SkipChargeNode({
 export default function SkipChargeNodeWrapper(
     node: NodeProps<SkipChargeNodeType['data']>
 ) {
-    const {checkInvalidVariablesForNode} = useVisualBuilderContext()
-    const hasInvalidVariables = useMemo(
-        () =>
-            checkInvalidVariablesForNode({
-                id: node.id,
-                data: node.data,
-                type: 'skip_charge',
-            }),
-        [node.id, node.data, checkInvalidVariablesForNode]
-    )
-    const isErrored =
-        !node.data.subscriptionId ||
-        !node.data.chargeId ||
-        hasInvalidVariables ||
-        !isValidLiquidSyntaxInNode({
-            data: node.data,
-            type: 'skip_charge',
-        })
     const commonProps = useVisualBuilderNodeProps(node)
 
-    return <SkipChargeNode {...commonProps} isErrored={isErrored} />
+    return <SkipChargeNode {...commonProps} isErrored={!!node.data.errors} />
 }

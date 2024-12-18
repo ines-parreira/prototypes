@@ -26,12 +26,21 @@ import {stringToDatetime} from 'utils/date'
 import css from '../ConditionsNodeEditor.less'
 import {TIMEPERIOD_REGEX} from '../constants'
 
-interface Props {
+type Props = {
     condition: Exclude<DateSchema, ExistsSchema | DoesNotExistSchema>
     onChange: (condition: ConditionSchema) => void
     isDisabled?: boolean
+    error?: string
+    onBlur?: () => void
 }
-export const DateConditionType = ({condition, onChange, isDisabled}: Props) => {
+
+export const DateConditionType = ({
+    condition,
+    onChange,
+    isDisabled,
+    error,
+    onBlur,
+}: Props) => {
     const currentUser = useAppSelector(getCurrentUser)
 
     const key = Object.keys(condition)[0] as AllKeys<typeof condition>
@@ -88,6 +97,8 @@ export const DateConditionType = ({condition, onChange, isDisabled}: Props) => {
                         }
                         placeholder="Choose a date..."
                         isDisabled={isDisabled}
+                        error={error}
+                        onBlur={onBlur}
                     />
                 </div>
             </DatePicker>

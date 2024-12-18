@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useRef} from 'react'
 import {useLocation} from 'react-router-dom'
@@ -136,9 +137,7 @@ function WorkflowEditorViewWrapped({
     const isSavePending = workflowEditorContext.isSavePending
     const isPublishPending = workflowEditorContext.isPublishPending
     const isExistingDraft = !isNewWorkflow && isDraft
-    const workflowNameIsErrored =
-        workflowEditorContext.visualBuilderGraph.name.trim().length === 0 ||
-        workflowEditorContext.visualBuilderGraph.name.length > 100
+
     const zoom = workflowEditorContext.zoom
 
     useEffect(() => {
@@ -186,7 +185,6 @@ function WorkflowEditorViewWrapped({
         const configurationError = workflowEditorContext.handleValidate(true)
 
         if (configurationError) {
-            workflowEditorContext.setShouldShowErrors(true)
             notifyMerchant({
                 message: 'Complete steps and save in order to test this Flow',
                 status: NotificationStatus.Error,
@@ -246,18 +244,26 @@ function WorkflowEditorViewWrapped({
     })
 
     const upsertWorkflow = async (isDraft = true) => {
-        const configurationError =
-            workflowEditorContext.handleValidate(!isDraft)
-        if (configurationError) {
-            workflowEditorContext.setShouldShowErrors(true)
+        if (!workflowEditorContext.handleValidate(isDraft)) {
             notifyMerchant({
-                message: configurationError,
+                message: `Complete or delete incomplete steps in order to ${isDraft || !workflowEditorContext.configuration.is_draft ? 'save' : 'publish'}`,
                 status: NotificationStatus.Error,
             })
+
             return
         }
 
-        if (!storeIntegrationId) return
+        const error = workflowEditorContext.handleValidateSize()
+
+        if (error) {
+            notifyMerchant({
+                message: error,
+                status: NotificationStatus.Error,
+            })
+
+            return
+        }
+
         const isFirstTimePublish =
             !isDraft && workflowEditorContext.configuration.is_draft
 
@@ -403,8 +409,8 @@ function WorkflowEditorViewWrapped({
                                     }
                                     isDisabled={isFetchPending}
                                     hasError={
-                                        workflowEditorContext.shouldShowErrors &&
-                                        workflowNameIsErrored
+                                        !!workflowEditorContext
+                                            .visualBuilderGraph.errors?.name
                                     }
                                     onKeyDown={(event) => {
                                         if (event.key === 'Enter') {
@@ -414,8 +420,20 @@ function WorkflowEditorViewWrapped({
                                 />
                                 {isExistingDraft && <DraftBadge />}
                             </div>
-                            <span className={css.headerLeftdescription}>
-                                Flow name will not be visible to customers
+                            <span
+                                className={classnames(
+                                    css.headerLeftDescription,
+                                    {
+                                        [css.isErrored]:
+                                            !!workflowEditorContext
+                                                .visualBuilderGraph.errors
+                                                ?.name,
+                                    }
+                                )}
+                            >
+                                {workflowEditorContext.visualBuilderGraph.errors
+                                    ?.name ||
+                                    'Flow name will not be visible to customers'}
                             </span>
                         </div>
                     }
@@ -481,6 +499,15 @@ function WorkflowEditorViewWrapped({
                                     )}
                                 </div>
                             )}
+                        {!!workflowEditorContext.visualBuilderGraph.errors
+                            ?.nodes && (
+                            <div className={css.error}>
+                                {
+                                    workflowEditorContext.visualBuilderGraph
+                                        .errors.nodes
+                                }
+                            </div>
+                        )}
                     </>
                 </PageHeader>
                 <Container className={css.pageContainer} fluid>
@@ -502,14 +529,11 @@ function WorkflowEditorViewWrapped({
                         </ToggleButton.Wrapper>
                     )}
                     <WorkflowVisualBuilder
-                        isNewWorkflow={isNewWorkflow}
+                        isNew={isNewWorkflow}
                         visualBuilderGraph={
                             workflowEditorContext.visualBuilderGraph
                         }
                         dispatch={workflowEditorContext.dispatch}
-                        shouldShowErrors={
-                            workflowEditorContext.shouldShowErrors
-                        }
                     />
                 </Container>
                 <UnsavedChangesPrompt

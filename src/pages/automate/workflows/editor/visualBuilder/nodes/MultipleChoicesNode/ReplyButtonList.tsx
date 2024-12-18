@@ -15,6 +15,13 @@ type ReplyButtonListProps = {
     onChangeChoiceLabel: (event_id: string, label: string) => void
     onAddChoice: () => void
     workflowVariables: WorkflowVariableList
+    errors?: Record<
+        string,
+        {
+            label?: string
+        }
+    >
+    onBlur?: (event_id: string) => void
 }
 
 export default function ReplyButtonList({
@@ -24,6 +31,8 @@ export default function ReplyButtonList({
     onChangeChoiceLabel,
     onAddChoice,
     workflowVariables,
+    errors,
+    onBlur,
 }: ReplyButtonListProps) {
     const {dispatch} = useWorkflowEditorContext()
     const [choicesDirty, setChoicesDirty] = useState(choices)
@@ -106,6 +115,10 @@ export default function ReplyButtonList({
                     onDeleteChoiceCancel={handleDeleteChoiceCancel}
                     onDeleteChoiceConfirmation={handleDeleteChoiceConfirmation}
                     workflowVariables={workflowVariables}
+                    error={errors?.[event_id]?.label}
+                    onBlur={() => {
+                        onBlur?.(event_id)
+                    }}
                 />
             ))}
             <div>

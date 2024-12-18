@@ -76,7 +76,6 @@ export default function ActionFormInputConditions({variables}: Props) {
                 branchId={''}
                 availableVariables={variables}
                 showNoneOption={true}
-                shouldShowErrors={true}
                 type={conditionsType.value}
                 conditions={getValues('trigger.conditions')}
                 onDeleteBranch={() => {}}

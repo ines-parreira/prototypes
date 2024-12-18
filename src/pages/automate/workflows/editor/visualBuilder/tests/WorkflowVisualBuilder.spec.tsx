@@ -91,10 +91,8 @@ describe('<WorkflowVisualBuilder />', () => {
                     isTesting: false,
                     setFlowPublishingInChannels: jest.fn(),
                     setIsTesting: jest.fn(),
-                    setShouldShowErrors: jest.fn(),
                     setWorkflowStepMetrics: jest.fn(),
                     setZoom: jest.fn(),
-                    shouldShowErrors: true,
                     switchLanguage: jest.fn(),
                     translateGraph: jest.fn(),
                     translateKey: jest.fn(),
@@ -102,12 +100,12 @@ describe('<WorkflowVisualBuilder />', () => {
                     visualBuilderGraph: visualBuilderGraphSimpleChoicesFixture,
                     workflowStepMetrics: null,
                     zoom: 1,
+                    handleValidateSize: jest.fn(),
                 }}
             >
                 <WorkflowVisualBuilder
+                    isNew={false}
                     dispatch={jest.fn()}
-                    isNewWorkflow
-                    shouldShowErrors
                     visualBuilderGraph={visualBuilderGraphSimpleChoicesFixture}
                 />
             </WorkflowEditorContext.Provider>

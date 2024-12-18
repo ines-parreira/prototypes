@@ -14,9 +14,9 @@ type Props = {
     nodeType: Exclude<
         NonNullable<VisualBuilderNode['type']>,
         | 'channel_trigger'
-        | 'llm_prompt_trigger'
         | 'end'
         | 'reusable_llm_prompt_trigger'
+        | 'reusable_llm_prompt_call'
     >
 }
 

@@ -1,24 +1,18 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {memo, useMemo} from 'react'
-import {Handle, Position, NodeProps} from 'reactflow'
+import React, {memo} from 'react'
+import {NodeProps} from 'reactflow'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
-    VisualBuilderNodeProps,
     useVisualBuilderNodeProps,
+    VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {
-    workflowVariableRegex,
-    isValidLiquidSyntaxInNode,
-} from 'pages/automate/workflows/models/variables.model'
+import {workflowVariableRegex} from 'pages/automate/workflows/models/variables.model'
 
 import {AutomatedMessageNodeType} from '../../../models/visualBuilderGraph.types'
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
-
-import css from './Node.less'
+import VisualBuilderNode from './VisualBuilderNode'
+import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
 type Props = VisualBuilderNodeProps & {
     contentText: string
@@ -28,7 +22,6 @@ type Props = VisualBuilderNodeProps & {
 const AutomatedMessageNode = memo(function AutomatedMessageNode({
     contentText,
     isErrored,
-    shouldShowErrors,
     isGreyedOut,
     isSelected,
     edgeProps,
@@ -37,35 +30,18 @@ const AutomatedMessageNode = memo(function AutomatedMessageNode({
     return (
         <div>
             <EdgeBlock {...edgeProps} />
-            <div
-                className={classNames(css.node, {
-                    [css.nodeErrored]: shouldShowErrors && isErrored,
-                    [css.nodeGreyedOut]: isGreyedOut,
-                    [css.nodeSelected]: isSelected,
-                })}
+            <VisualBuilderNode
+                isClickable
+                isSelected={isSelected}
+                isErrored={isErrored}
+                isGreyedOut={isGreyedOut}
             >
-                <Handle
-                    type="target"
-                    position={Position.Top}
-                    className={css.sourceHandle}
-                />
-                <div className={css.nodeContainer}>
-                    <VisualBuilderActionTag nodeType="automated_message" />
-                    <Label className={css.nodeTitle}>
-                        {contentText.length > 0 ? (
-                            contentText.replace(workflowVariableRegex, '{...}')
-                        ) : (
-                            <span className={css.clickToAdd}>Message</span>
-                        )}
-                    </Label>
-                    <NodeDeleteIcon {...deleteProps} />
-                </div>
-                <Handle
-                    type="source"
-                    position={Position.Bottom}
-                    className={classNames(css.targetHandle)}
-                />
-            </div>
+                <VisualBuilderActionTag nodeType="automated_message" />
+                <VisualBuilderNodeContent placeholder="Message">
+                    {contentText.replace(workflowVariableRegex, '{...}')}
+                </VisualBuilderNodeContent>
+                <NodeDeleteIcon {...deleteProps} />
+            </VisualBuilderNode>
         </div>
     )
 })
@@ -73,34 +49,13 @@ const AutomatedMessageNode = memo(function AutomatedMessageNode({
 export default function AutomatedMessageNodeWrapper(
     node: NodeProps<AutomatedMessageNodeType['data']>
 ) {
-    const {content} = node.data
-    const {checkInvalidVariablesForNode} = useVisualBuilderContext()
-
-    const hasInvalidVariables = useMemo(
-        () =>
-            checkInvalidVariablesForNode({
-                id: node.id,
-                data: node.data,
-                type: 'automated_message',
-            }),
-        [node.id, node.data, checkInvalidVariablesForNode]
-    )
-
-    const isErrored =
-        content.text.length === 0 ||
-        hasInvalidVariables ||
-        !isValidLiquidSyntaxInNode({type: 'automated_message', data: node.data})
-
     const commonProps = useVisualBuilderNodeProps(node)
 
     return (
         <AutomatedMessageNode
             {...commonProps}
-            shouldShowErrors={
-                commonProps.shouldShowErrors || hasInvalidVariables
-            }
-            contentText={content.text}
-            isErrored={isErrored}
+            contentText={node.data.content.text}
+            isErrored={!!node.data.errors}
         />
     )
 }

@@ -1,21 +1,12 @@
-import classNames from 'classnames'
-import {Location} from 'history'
-import _noop from 'lodash/noop'
-import React, {useState, useRef, useCallback, useEffect} from 'react'
+import React from 'react'
 import {Prompt} from 'react-router-dom'
 
-import Button from 'pages/common/components/button/Button'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import history from 'pages/history'
-
-import css from './UnsavedChangesPrompt.less'
+import UnsavedChangesModal from './UnsavedChangesModal'
+import useUnsavedChangesPrompt from './useUnsavedChangesPrompt'
 
 type Props = {
     onDiscard?: () => void
-    onSave: (location?: Location) => Promise<unknown> | void
+    onSave: () => Promise<unknown> | void
     shouldRedirectAfterSave?: boolean
     when: boolean | undefined
 }
@@ -26,108 +17,32 @@ const UnsavedChangesPrompt: React.FC<Props> = ({
     shouldRedirectAfterSave,
     when,
 }) => {
-    const isDiscarding = useRef(false)
-    const [show, setShow] = useState(false)
-    const [location, setLocation] = useState<Location>()
-
-    const beforeUnload = useCallback(
-        (e: BeforeUnloadEvent) => {
-            if (when) {
-                e.preventDefault()
-                e.returnValue = ''
-            }
-            return
-        },
-        [when]
-    )
-
-    useEffect(() => {
-        window.addEventListener('beforeunload', beforeUnload)
-
-        return () => {
-            window.removeEventListener('beforeunload', beforeUnload)
-        }
-    }, [beforeUnload])
-
-    const redirectToOriginalLocation = () => {
-        if (location) {
-            isDiscarding.current = true
-
-            history.push(location.pathname, location.state)
-        }
-    }
-
-    useEffect(() => {
-        const unlisten = history.listen(() => {
-            // Reset isDiscarding to false after each navigation
-            isDiscarding.current = false
-        })
-
-        return () => unlisten()
-    }, [])
+    const {isOpen, onClose, redirectToOriginalLocation, onNavigateAway} =
+        useUnsavedChangesPrompt({when})
 
     return (
         <>
-            <Prompt
-                when={when}
-                message={(location) => {
-                    if (!isDiscarding.current) {
-                        setLocation(location)
-                        setShow(true)
-                        return false
+            <Prompt when={when} message={onNavigateAway} />
+            <UnsavedChangesModal
+                onDiscard={() => {
+                    onClose()
+                    onDiscard && onDiscard()
+                    redirectToOriginalLocation()
+                }}
+                isOpen={isOpen}
+                onClose={onClose}
+                onSave={async () => {
+                    if (shouldRedirectAfterSave) {
+                        await onSave()
+                            ?.then(redirectToOriginalLocation)
+                            .catch(() => onClose())
+                    } else {
+                        await onSave()?.catch(() => onClose())
                     }
 
-                    return true
+                    onClose()
                 }}
             />
-            <Modal isOpen={show} isClosable={false} onClose={_noop}>
-                <ModalHeader title="Save changes?" />
-                <ModalBody className={css.body}>
-                    Your changes to this page will be lost if you don’t save
-                    them.
-                </ModalBody>
-                <ModalFooter className={classNames(css.footer, 'pt-3 px-3')}>
-                    <div>
-                        <Button
-                            fillStyle="ghost"
-                            intent="destructive"
-                            onClick={() => {
-                                setShow(false)
-                                onDiscard && onDiscard()
-                                redirectToOriginalLocation()
-                            }}
-                            className="mr-2 mb-3"
-                        >
-                            Discard Changes
-                        </Button>
-                    </div>
-                    <div>
-                        <Button
-                            intent="secondary"
-                            onClick={() => setShow(false)}
-                            className="mr-2 mb-3"
-                        >
-                            Back To Editing
-                        </Button>
-                        <Button
-                            onClick={async () => {
-                                if (shouldRedirectAfterSave) {
-                                    void onSave(location)?.then(
-                                        redirectToOriginalLocation
-                                    )
-                                } else {
-                                    await onSave(location)
-                                }
-
-                                setShow(false)
-                            }}
-                            className="mb-3"
-                        >
-                            Save Changes
-                        </Button>
-                    </div>
-                </ModalFooter>
-            </Modal>
         </>
     )
 }

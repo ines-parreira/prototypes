@@ -3,12 +3,7 @@
 @import '~css/typography.less';
 
 :local {
-    .label {
-        .body-semibold();
-    }
-
     .labelDisabled {
-        .body-semibold();
         color: var(--neutral-grey-4);
     }
 
@@ -22,12 +17,6 @@
         }
     }
 
-    .withDescription {
-        display: flex;
-        flex-direction: column;
-        gap: @layout-spacing-xxs;
-    }
-
     .description {
         .caption-regular();
         color: var(--neutral-grey-5);
@@ -37,6 +26,19 @@
         display: flex;
         flex-direction: column;
         gap: @layout-spacing-s;
+    }
+
+    .llmPromptContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+    }
+
+    .llmPromptVariables {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+        align-self: stretch;
     }
 
     .formField {
@@ -83,9 +85,29 @@
             margin-bottom: @layout-spacing-xs;
         }
     }
+
     .headersHeading {
         display: flex;
         justify-content: space-between;
         width: 100%;
+    }
+
+    .reusableLLMPromptCallStepSection {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+    }
+
+    .reusableLLMPromptCallStepInputs {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .separator {
+        height: 1px;
+        background: var(--neutral-grey-3);
+        margin-top: @layout-spacing-s;
+        margin-bottom: @layout-spacing-s;
     }
 }

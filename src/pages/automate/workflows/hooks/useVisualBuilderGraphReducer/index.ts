@@ -1,6 +1,10 @@
 import {useReducer} from 'react'
 
-import {VisualBuilderGraph} from '../../models/visualBuilderGraph.types'
+import {
+    VisualBuilderGraph,
+    VisualBuilderTriggerNode,
+} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+
 import {VisualBuilderBaseAction, baseReducer} from './baseReducer'
 import {
     VisualBuilderChoicesAction,
@@ -23,6 +27,11 @@ import {
     VisualBuilderLLMPromptTriggerAction,
 } from './llmPromptTriggerReducer'
 import {
+    isVisualBuilderReusableLLMPromptCallAction,
+    reusableLLMPromptCallReducer,
+    VisualBuilderReusableLLMPromptCallAction,
+} from './reusableLLMPromptCallReducer'
+import {
     isVisualBuilderReusableLLMPromptTriggerAction,
     reusableLLMPromptTriggerReducer,
     VisualBuilderReusableLLMPromptTriggerAction,
@@ -35,29 +44,43 @@ export type VisualBuilderGraphAction =
     | VisualBuilderConditionsAction
     | VisualBuilderLLMPromptTriggerAction
     | VisualBuilderReusableLLMPromptTriggerAction
+    | VisualBuilderReusableLLMPromptCallAction
 
-export function useVisualBuilderGraphReducer(initialState: VisualBuilderGraph) {
-    return useReducer(reducer, initialState)
+export function useVisualBuilderGraphReducer<
+    T extends VisualBuilderTriggerNode = VisualBuilderTriggerNode,
+>(initialState: VisualBuilderGraph<T>) {
+    return useReducer<typeof reducer<T>>(reducer, initialState)
 }
 
-export function reducer(
-    graph: VisualBuilderGraph,
+export function reducer<
+    T extends VisualBuilderTriggerNode = VisualBuilderTriggerNode,
+>(
+    graph: VisualBuilderGraph<T>,
     action: VisualBuilderGraphAction
-): VisualBuilderGraph {
+): VisualBuilderGraph<T> {
     if (isVisualBuilderChoiceAction(action)) {
-        return choicesReducer(graph, action)
+        return choicesReducer(graph, action) as VisualBuilderGraph<T>
     }
     if (isVisualBuilderHttpRequestAction(action)) {
-        return httpRequestReducer(graph, action)
+        return httpRequestReducer(graph, action) as VisualBuilderGraph<T>
     }
     if (isVisualBuilderConditionAction(action)) {
-        return conditionsReducer(graph, action)
+        return conditionsReducer(graph, action) as VisualBuilderGraph<T>
     }
     if (isVisualBuilderLLMPromptTriggerAction(action)) {
-        return llmPromptTriggerReducer(graph, action)
+        return llmPromptTriggerReducer(graph, action) as VisualBuilderGraph<T>
     }
     if (isVisualBuilderReusableLLMPromptTriggerAction(action)) {
-        return reusableLLMPromptTriggerReducer(graph, action)
+        return reusableLLMPromptTriggerReducer(
+            graph,
+            action
+        ) as VisualBuilderGraph<T>
     }
-    return baseReducer(graph, action)
+    if (isVisualBuilderReusableLLMPromptCallAction(action)) {
+        return reusableLLMPromptCallReducer(
+            graph,
+            action
+        ) as VisualBuilderGraph<T>
+    }
+    return baseReducer(graph, action) as VisualBuilderGraph<T>
 }

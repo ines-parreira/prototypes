@@ -19,7 +19,7 @@ import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreC
 import css from './AiAgentLayout.less'
 
 type Props = {
-    children: ReactNode
+    children?: ReactNode
     shopName: string
     className?: string
     title?: ReactNode

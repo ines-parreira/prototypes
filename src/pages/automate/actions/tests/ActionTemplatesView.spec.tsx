@@ -57,7 +57,7 @@ describe('<ActionTemplatesView  />', () => {
         jest.restoreAllMocks()
 
         mockUseFlag.mockReturnValue({
-            [FeatureFlagKey.ActionsMultiStep]: true,
+            [FeatureFlagKey.ActionsUseCaseTemplates]: true,
         })
         mockUseEnableAiAgent.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),

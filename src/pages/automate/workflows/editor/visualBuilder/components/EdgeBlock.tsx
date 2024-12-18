@@ -1,17 +1,30 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import {noop} from 'lodash'
-import React, {ReactNode, useCallback, useMemo, useRef, useState} from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import _ from 'lodash'
+import _groupBy from 'lodash/groupBy'
+import _keyBy from 'lodash/keyBy'
+import React, {
+    Dispatch,
+    ReactNode,
+    SetStateAction,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
+import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import {useStoreAppsContext} from 'pages/automate/actions/providers/StoreAppsContext'
+import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
+import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
 import {useSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import {
-    colorByVisualBuilderNodeType,
-    iconByVisualBuilderNodeType,
-    labelByVisualBuilderNodeType,
-} from 'pages/automate/workflows/constants'
+import VisualBuilderActionIcon from 'pages/automate/workflows/components/VisualBuilderActionIcon'
+import {labelByVisualBuilderNodeType} from 'pages/automate/workflows/constants'
 import {
     useVisualBuilderContext,
-    VisualBuilderContext,
+    VisualBuilderContextType,
 } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     getChannelName,
@@ -21,71 +34,17 @@ import {
     hasParentNodeInPath,
     isNodeUniquePerPath,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {isTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 
 import css from './EdgeBlock.less'
+import EdgeBlockMenuCategoryItem from './EdgeBlockMenuCategoryItem'
+import EdgeBlockMenuItem from './EdgeBlockMenuItem'
+import EdgeBlockMenuSkeletonItem from './EdgeBlockMenuSkeletonItem'
 import EdgeIconButton from './EdgeIconButton'
 import EdgeLabel from './EdgeLabel'
-
-type MenuItemProps = {
-    label: string
-    description: string
-    icon: ReactNode
-    style: {
-        color: string
-        backgroundColor: string
-    }
-    onClick: () => void
-    disabledText?: string
-    floatingRef?: HTMLElement | null
-}
-
-const MenuItem = ({
-    label,
-    onClick,
-    disabledText,
-    style,
-    icon,
-    description,
-    floatingRef,
-}: MenuItemProps) => {
-    const [ref, setRef] = useState<HTMLElement | null>(null)
-
-    return (
-        <DropdownItem
-            ref={setRef}
-            option={{
-                label,
-                value: label,
-            }}
-            onClick={disabledText ? noop : onClick}
-            shouldCloseOnSelect={!disabledText}
-            className={classNames(css.menuItemContainer, {
-                [css.disabled]: disabledText,
-            })}
-        >
-            <div className={css.menuIcon} style={style}>
-                {icon}
-            </div>
-            <div>
-                {label}
-                <div className={css.menuItemDescription}>{description}</div>
-            </div>
-            {disabledText && floatingRef && ref && (
-                <Tooltip
-                    placement="top-start"
-                    target={ref}
-                    container={floatingRef}
-                >
-                    {disabledText}
-                </Tooltip>
-            )}
-        </DropdownItem>
-    )
-}
 
 const MultipleChoicesMenuItem = ({
     nodeId,
@@ -97,11 +56,10 @@ const MultipleChoicesMenuItem = ({
     const {dispatch} = useVisualBuilderContext()
 
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.multiple_choices}
             description="Display up to 6 options"
-            icon={iconByVisualBuilderNodeType.multiple_choices}
-            style={colorByVisualBuilderNodeType.multiple_choices}
+            icon={<VisualBuilderActionIcon nodeType="multiple_choices" />}
             onClick={() => {
                 dispatch({
                     type: 'INSERT_MULTIPLE_CHOICES_NODE',
@@ -132,7 +90,7 @@ const TextReplyMenuItem = ({
     }
 
     const unsupportedConnectedChannels = getUnsupportedConnectedChannels(
-        visualBuilderGraph.wfConfigurationOriginal.id,
+        visualBuilderGraph.id,
         'text_reply'
     )
     const supportedChannels = getSupportedChannels('text_reply')
@@ -147,11 +105,10 @@ const TextReplyMenuItem = ({
             : undefined
 
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.text_reply}
             description="Allow up to 5,000 characters"
-            icon={iconByVisualBuilderNodeType.text_reply}
-            style={colorByVisualBuilderNodeType.text_reply}
+            icon={<VisualBuilderActionIcon nodeType="text_reply" />}
             onClick={() => {
                 dispatch({
                     type: 'INSERT_TEXT_REPLY_NODE',
@@ -183,7 +140,7 @@ const FileUploadMenuItem = ({
     }
 
     const unsupportedConnectedChannels = getUnsupportedConnectedChannels(
-        visualBuilderGraph.wfConfigurationOriginal.id,
+        visualBuilderGraph.id,
         'file_upload'
     )
     const supportedChannels = getSupportedChannels('file_upload')
@@ -198,11 +155,10 @@ const FileUploadMenuItem = ({
             : undefined
 
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.file_upload}
             description="Allow up to 5 files"
-            icon={iconByVisualBuilderNodeType.file_upload}
-            style={colorByVisualBuilderNodeType.file_upload}
+            icon={<VisualBuilderActionIcon nodeType="file_upload" />}
             onClick={() => {
                 dispatch({
                     type: 'INSERT_FILE_UPLOAD_NODE',
@@ -225,11 +181,10 @@ const AutomatedMessageMenuItem = ({
     const {dispatch} = useVisualBuilderContext()
 
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.automated_message}
             description="Display short text"
-            icon={iconByVisualBuilderNodeType.automated_message}
-            style={colorByVisualBuilderNodeType.automated_message}
+            icon={<VisualBuilderActionIcon nodeType="automated_message" />}
             onClick={() => {
                 dispatch({
                     type: 'INSERT_AUTOMATED_MESSAGE_NODE',
@@ -261,7 +216,7 @@ const ShopperAuthenticationMenuItem = ({
     }
 
     const unsupportedConnectedChannels = getUnsupportedConnectedChannels(
-        visualBuilderGraph.wfConfigurationOriginal.id,
+        visualBuilderGraph.id,
         'shopper_authentication'
     )
     const supportedChannels = getSupportedChannels('shopper_authentication')
@@ -276,11 +231,10 @@ const ShopperAuthenticationMenuItem = ({
             : undefined
 
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.shopper_authentication}
             description="Confirm customer identity"
-            icon={iconByVisualBuilderNodeType.shopper_authentication}
-            style={colorByVisualBuilderNodeType.shopper_authentication}
+            icon={<VisualBuilderActionIcon nodeType="shopper_authentication" />}
             onClick={() => {
                 dispatch({
                     type: 'INSERT_SHOPPER_AUTHENTICATION_NODE',
@@ -321,7 +275,7 @@ const OrderSelectionMenuItem = ({
     }
 
     const unsupportedConnectedChannels = getUnsupportedConnectedChannels(
-        visualBuilderGraph.wfConfigurationOriginal.id,
+        visualBuilderGraph.id,
         'order_selection'
     )
     const supportedChannels = getSupportedChannels('order_selection')
@@ -336,11 +290,10 @@ const OrderSelectionMenuItem = ({
             : undefined
 
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.order_selection}
             description="Display last 5 orders"
-            icon={iconByVisualBuilderNodeType.order_selection}
-            style={colorByVisualBuilderNodeType.order_selection}
+            icon={<VisualBuilderActionIcon nodeType="order_selection" />}
             onClick={() => {
                 dispatch({
                     type: 'INSERT_ORDER_SELECTION_NODE',
@@ -380,7 +333,7 @@ const OrderLineItemSelectionMenuItem = ({
     }
 
     const unsupportedConnectedChannels = getUnsupportedConnectedChannels(
-        visualBuilderGraph.wfConfigurationOriginal.id,
+        visualBuilderGraph.id,
         'order_line_item_selection'
     )
     const supportedChannels = getSupportedChannels('order_line_item_selection')
@@ -395,11 +348,12 @@ const OrderLineItemSelectionMenuItem = ({
             : undefined
 
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.order_line_item_selection}
             description="Select an item from an order"
-            icon={iconByVisualBuilderNodeType.order_line_item_selection}
-            style={colorByVisualBuilderNodeType.order_line_item_selection}
+            icon={
+                <VisualBuilderActionIcon nodeType="order_line_item_selection" />
+            }
             onClick={() => {
                 dispatch({
                     type: 'INSERT_ORDER_LINE_ITEM_SELECTION_NODE',
@@ -423,18 +377,19 @@ const OrderLineItemSelectionMenuItem = ({
 const HttpRequestMenuItem = ({
     nodeId,
     floatingRef,
+    description,
 }: {
     nodeId: string
     floatingRef?: HTMLElement | null
+    description?: string
 }) => {
     const {dispatch} = useVisualBuilderContext()
 
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.http_request}
-            description="Perform 3rd party actions"
-            icon={iconByVisualBuilderNodeType.http_request}
-            style={colorByVisualBuilderNodeType.http_request}
+            description={description}
+            icon={<VisualBuilderActionIcon nodeType="http_request" />}
             onClick={() => {
                 dispatch({
                     type: 'INSERT_HTTP_REQUEST_NODE',
@@ -450,19 +405,20 @@ const ConditionsMenuItem = ({
     nodeId,
     floatingRef,
     disabledText,
+    description,
 }: {
     nodeId: string
     floatingRef?: HTMLElement | null
     disabledText?: string
+    description?: string
 }) => {
     const {dispatch} = useVisualBuilderContext()
 
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.conditions}
-            description="Route customers using variables"
-            icon={iconByVisualBuilderNodeType.conditions}
-            style={colorByVisualBuilderNodeType.conditions}
+            description={description}
+            icon={<VisualBuilderActionIcon nodeType="conditions" />}
             onClick={() => {
                 dispatch({
                     type: 'INSERT_CONDITIONS_NODE',
@@ -471,6 +427,39 @@ const ConditionsMenuItem = ({
             }}
             floatingRef={floatingRef}
             disabledText={disabledText}
+        />
+    )
+}
+
+const ChannelTriggerConditionsMenuItem = ({
+    nodeId,
+    floatingRef,
+}: {
+    nodeId: string
+    floatingRef?: HTMLElement | null
+}) => {
+    const {visualBuilderGraph} = useVisualBuilderContext()
+
+    return (
+        <ConditionsMenuItem
+            nodeId={nodeId}
+            floatingRef={floatingRef}
+            disabledText={
+                !hasParentNodeInPath(
+                    'shopper_authentication',
+                    visualBuilderGraph,
+                    nodeId
+                ) &&
+                !hasParentNodeInPath(
+                    'http_request',
+                    visualBuilderGraph,
+                    nodeId
+                ) &&
+                !hasParentNodeInPath('text_reply', visualBuilderGraph, nodeId)
+                    ? 'Conditions rely on variables from other steps such as Customer login, Collect text reply, Order selection and HTTP requests.'
+                    : undefined
+            }
+            description="Route customers using variables"
         />
     )
 }
@@ -492,11 +481,9 @@ const CancelOrderMenuItem = ({
     const {dispatch} = useVisualBuilderContext()
 
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.cancel_order}
-            description="Cancel order."
-            icon={iconByVisualBuilderNodeType.cancel_order}
-            style={colorByVisualBuilderNodeType.cancel_order}
+            icon={<VisualBuilderActionIcon nodeType="cancel_order" />}
             onClick={() => {
                 dispatch({
                     type: 'INSERT_CANCEL_ORDER_NODE',
@@ -527,11 +514,9 @@ const RefundOrderMenuItem = ({
     const {dispatch} = useVisualBuilderContext()
 
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.refund_order}
-            description="Refund order."
-            icon={iconByVisualBuilderNodeType.refund_order}
-            style={colorByVisualBuilderNodeType.refund_order}
+            icon={<VisualBuilderActionIcon nodeType="refund_order" />}
             onClick={() => {
                 dispatch({
                     type: 'INSERT_REFUND_ORDER_NODE',
@@ -562,11 +547,11 @@ const UpdateShippingAddressMenuItem = ({
     const {dispatch} = useVisualBuilderContext()
 
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.update_shipping_address}
-            description="Edit order shipping address."
-            icon={iconByVisualBuilderNodeType.update_shipping_address}
-            style={colorByVisualBuilderNodeType.update_shipping_address}
+            icon={
+                <VisualBuilderActionIcon nodeType="update_shipping_address" />
+            }
             onClick={() => {
                 dispatch({
                     type: 'INSERT_UPDATE_SHIPPING_ADDRESS_NODE',
@@ -597,11 +582,9 @@ const RemoveItemMenuItem = ({
     const {dispatch} = useVisualBuilderContext()
 
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.remove_item}
-            description="Remove order item."
-            icon={iconByVisualBuilderNodeType.remove_item}
-            style={colorByVisualBuilderNodeType.remove_item}
+            icon={<VisualBuilderActionIcon nodeType="remove_item" />}
             onClick={() => {
                 dispatch({
                     type: 'INSERT_REMOVE_ITEM_NODE',
@@ -631,11 +614,9 @@ const ReplaceItemMenuItem = ({
     const {dispatch} = useVisualBuilderContext()
 
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.replace_item}
-            description="Replace order item."
-            icon={iconByVisualBuilderNodeType.replace_item}
-            style={colorByVisualBuilderNodeType.replace_item}
+            icon={<VisualBuilderActionIcon nodeType="replace_item" />}
             onClick={() => {
                 dispatch({
                     type: 'INSERT_REPLACE_ITEM_NODE',
@@ -663,11 +644,9 @@ const CreateDiscountCodeMenuItem = ({
 }) => {
     const {dispatch} = useVisualBuilderContext()
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.create_discount_code}
-            description="Create discount code."
-            icon={iconByVisualBuilderNodeType.create_discount_code}
-            style={colorByVisualBuilderNodeType.create_discount_code}
+            icon={<VisualBuilderActionIcon nodeType="create_discount_code" />}
             onClick={() => {
                 dispatch({
                     type: 'INSERT_CREATE_DISCOUNT_CODE_NODE',
@@ -697,11 +676,9 @@ const ReshipForFreeMenuItem = ({
     const {dispatch} = useVisualBuilderContext()
 
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.reship_for_free}
-            description="Reship order for free."
-            icon={iconByVisualBuilderNodeType.reship_for_free}
-            style={colorByVisualBuilderNodeType.reship_for_free}
+            icon={<VisualBuilderActionIcon nodeType="reship_for_free" />}
             onClick={() => {
                 dispatch({
                     type: 'INSERT_RESHIP_FOR_FREE_NODE',
@@ -733,11 +710,9 @@ const RefundShippingCostsMenuItem = ({
     const {dispatch} = useVisualBuilderContext()
 
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.refund_shipping_costs}
-            description="Refund shipping costs."
-            icon={iconByVisualBuilderNodeType.refund_shipping_costs}
-            style={colorByVisualBuilderNodeType.refund_shipping_costs}
+            icon={<VisualBuilderActionIcon nodeType="refund_shipping_costs" />}
             onClick={() => {
                 dispatch({
                     type: 'INSERT_REFUND_SHIPPING_COSTS_NODE',
@@ -766,11 +741,9 @@ const CancelSubscriptionMenuItem = ({
     const {dispatch} = useVisualBuilderContext()
 
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.cancel_subscription}
-            description="Cancel active subscription."
-            icon={iconByVisualBuilderNodeType.cancel_subscription}
-            style={colorByVisualBuilderNodeType.cancel_subscription}
+            icon={<VisualBuilderActionIcon nodeType="cancel_subscription" />}
             onClick={() => {
                 dispatch({
                     type: 'INSERT_CANCEL_SUBSCRIPTION_NODE',
@@ -798,11 +771,9 @@ const SkipChargeMenuItem = ({
     const {dispatch} = useVisualBuilderContext()
 
     return (
-        <MenuItem
+        <EdgeBlockMenuItem
             label={labelByVisualBuilderNodeType.skip_charge}
-            description="Skip next shipment of an ongoing subscription."
-            icon={iconByVisualBuilderNodeType.skip_charge}
-            style={colorByVisualBuilderNodeType.skip_charge}
+            icon={<VisualBuilderActionIcon nodeType="skip_charge" />}
             onClick={() => {
                 dispatch({
                     type: 'INSERT_SKIP_CHARGE_NODE',
@@ -816,16 +787,324 @@ const SkipChargeMenuItem = ({
     )
 }
 
+const LLMPromptTemplateShopifyMenuItems = ({
+    nodeId,
+    floatingRef,
+}: {
+    nodeId: string
+    floatingRef?: HTMLElement | null
+}) => {
+    const {visualBuilderGraph} = useVisualBuilderContext()
+
+    if (!visualBuilderGraph.apps?.some((app) => app.type === 'shopify')) {
+        return null
+    }
+
+    return (
+        <>
+            <CancelOrderMenuItem
+                nodeId={nodeId}
+                floatingRef={floatingRef}
+                customerId="{{objects.customer.id}}"
+                orderExternalId="{{objects.order.external_id}}"
+                integrationId="{{store.helpdesk_integration_id}}"
+            />
+            <RefundOrderMenuItem
+                nodeId={nodeId}
+                floatingRef={floatingRef}
+                customerId="{{objects.customer.id}}"
+                orderExternalId="{{objects.order.external_id}}"
+                integrationId="{{store.helpdesk_integration_id}}"
+            />
+            <UpdateShippingAddressMenuItem
+                nodeId={nodeId}
+                floatingRef={floatingRef}
+                customerId="{{objects.customer.id}}"
+                orderExternalId="{{objects.order.external_id}}"
+                integrationId="{{store.helpdesk_integration_id}}"
+            />
+            <RemoveItemMenuItem
+                nodeId={nodeId}
+                floatingRef={floatingRef}
+                customerId="{{objects.customer.id}}"
+                orderExternalId="{{objects.order.external_id}}"
+                integrationId="{{store.helpdesk_integration_id}}"
+            />
+            <ReplaceItemMenuItem
+                nodeId={nodeId}
+                floatingRef={floatingRef}
+                customerId="{{objects.customer.id}}"
+                orderExternalId="{{objects.order.external_id}}"
+                integrationId="{{store.helpdesk_integration_id}}"
+            />
+            <CreateDiscountCodeMenuItem
+                nodeId={nodeId}
+                floatingRef={floatingRef}
+                customerId="{{objects.customer.id}}"
+                integrationId="{{store.helpdesk_integration_id}}"
+            />
+            <ReshipForFreeMenuItem
+                nodeId={nodeId}
+                floatingRef={floatingRef}
+                customerId="{{objects.customer.id}}"
+                orderExternalId="{{objects.order.external_id}}"
+                integrationId="{{store.helpdesk_integration_id}}"
+            />
+            <RefundShippingCostsMenuItem
+                nodeId={nodeId}
+                floatingRef={floatingRef}
+                customerId="{{objects.customer.id}}"
+                orderExternalId="{{objects.order.external_id}}"
+                integrationId="{{store.helpdesk_integration_id}}"
+            />
+        </>
+    )
+}
+
+const LLMPromptTemplateRechargeMenuItems = ({
+    nodeId,
+    floatingRef,
+}: {
+    nodeId: string
+    floatingRef?: HTMLElement | null
+}) => {
+    const {visualBuilderGraph} = useVisualBuilderContext()
+
+    if (!visualBuilderGraph.apps?.some((app) => app.type === 'recharge')) {
+        return null
+    }
+
+    return (
+        <>
+            <CancelSubscriptionMenuItem
+                nodeId={nodeId}
+                floatingRef={floatingRef}
+                customerId="{{objects.customer.id}}"
+                integrationId="{{apps.recharge.integration_id}}"
+            />
+            <SkipChargeMenuItem
+                nodeId={nodeId}
+                floatingRef={floatingRef}
+                customerId="{{objects.customer.id}}"
+                integrationId="{{apps.recharge.integration_id}}"
+            />
+        </>
+    )
+}
+
+const ReusableLLMPromptCallMenuItem = ({
+    nodeId,
+    icon,
+    label,
+    configurationId,
+    configurationInternalId,
+    trigger,
+    entrypoint,
+    app,
+    values,
+}: {
+    nodeId: string
+    icon: ReactNode
+    label: string
+    configurationId: string
+    configurationInternalId: string
+    trigger: Extract<
+        NonNullable<WorkflowConfiguration['triggers']>[number],
+        {kind: 'reusable-llm-prompt'}
+    >['settings']
+    entrypoint: Extract<
+        NonNullable<WorkflowConfiguration['entrypoints']>[number],
+        {kind: 'reusable-llm-prompt-call-step'}
+    >['settings']
+    app: NonNullable<WorkflowConfiguration['apps']>[number]
+    values: WorkflowConfiguration['values']
+}) => {
+    const {dispatch} = useVisualBuilderContext()
+
+    return (
+        <EdgeBlockMenuItem
+            label={label}
+            icon={icon}
+            onClick={() => {
+                dispatch({
+                    type: 'INSERT_REUSABLE_LLM_PROMPT_CALL_NODE',
+                    beforeNodeId: nodeId,
+                    configurationId,
+                    configurationInternalId,
+                    trigger,
+                    entrypoint,
+                    app,
+                    values,
+                })
+            }}
+        />
+    )
+}
+
+const AppMenuCategoryItems = ({
+    nodeId,
+    setMenuItems,
+}: {
+    nodeId: string
+    setMenuItems: Dispatch<SetStateAction<ReactNode>>
+}) => {
+    const enabledSteps:
+        | ActionTemplate['internal_id'][]
+        | Record<never, never>
+        | undefined = useFlags()[FeatureFlagKey.ActionSteps]
+
+    const {visualBuilderGraph} = useVisualBuilderContext()
+    const {data: steps = []} = useGetWorkflowConfigurationTemplates({
+        triggers: ['reusable-llm-prompt'],
+    })
+    const {apps} = useApps()
+    const {recharge: rechargeIntegration} = useStoreAppsContext()
+
+    const appsById = _keyBy(apps, 'id')
+
+    const stepsByApp = useMemo(
+        () =>
+            _groupBy(steps, (step) => {
+                if (
+                    Array.isArray(enabledSteps) &&
+                    !!enabledSteps.includes(step.internal_id)
+                ) {
+                    return null
+                }
+
+                switch (step.apps[0].type) {
+                    case 'shopify':
+                    case 'recharge':
+                        return step.apps[0].type
+                    case 'app':
+                        return step.apps[0].app_id
+                }
+            }),
+        [steps, enabledSteps]
+    )
+
+    return (
+        <>
+            {Object.entries(stepsByApp).map(([appId, steps]) => {
+                const app = appsById[appId]
+
+                if (
+                    visualBuilderGraph.isTemplate &&
+                    !visualBuilderGraph.apps?.some((templateApp) => {
+                        switch (templateApp.type) {
+                            case 'shopify':
+                            case 'recharge':
+                                return templateApp.type === app.type
+                            case 'app':
+                                return (
+                                    templateApp.type === app.type &&
+                                    templateApp.app_id === app.id
+                                )
+                        }
+                    })
+                ) {
+                    return null
+                }
+
+                if (!app) {
+                    return <EdgeBlockMenuSkeletonItem />
+                }
+
+                if (
+                    app.type === 'recharge' &&
+                    !visualBuilderGraph.isTemplate &&
+                    !rechargeIntegration
+                ) {
+                    return null
+                }
+
+                return (
+                    <EdgeBlockMenuCategoryItem
+                        key={appId}
+                        icon={<AppIcon icon={app.icon} name={app.name} />}
+                        label={app.name}
+                        onClick={() => {
+                            setMenuItems((prevState) => (
+                                <>
+                                    <DropdownHeader
+                                        prefix={
+                                            <i className="material-icons">
+                                                arrow_back
+                                            </i>
+                                        }
+                                        onClick={() => {
+                                            setMenuItems(prevState)
+                                        }}
+                                        className={css.header}
+                                    >
+                                        {app.name}
+                                    </DropdownHeader>
+                                    <DropdownBody>
+                                        {steps
+                                            .map((step) =>
+                                                _.isEmpty(
+                                                    step.triggers[0].settings
+                                                ) ? null : (
+                                                    <ReusableLLMPromptCallMenuItem
+                                                        key={step.id}
+                                                        nodeId={nodeId}
+                                                        label={step.name}
+                                                        icon={
+                                                            <AppIcon
+                                                                icon={app.icon}
+                                                                name={app.name}
+                                                            />
+                                                        }
+                                                        configurationId={
+                                                            step.id
+                                                        }
+                                                        configurationInternalId={
+                                                            step.internal_id
+                                                        }
+                                                        trigger={
+                                                            step.triggers[0]
+                                                                .settings as Extract<
+                                                                NonNullable<
+                                                                    WorkflowConfiguration['triggers']
+                                                                >[number],
+                                                                {
+                                                                    kind: 'reusable-llm-prompt'
+                                                                }
+                                                            >['settings']
+                                                        }
+                                                        entrypoint={
+                                                            step.entrypoints[0]
+                                                                .settings
+                                                        }
+                                                        app={step.apps[0]}
+                                                        values={step.values}
+                                                    />
+                                                )
+                                            )
+                                            .filter(Boolean)}
+                                    </DropdownBody>
+                                </>
+                            ))
+                        }}
+                    />
+                )
+            })}
+        </>
+    )
+}
+
 function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
     const {visualBuilderGraph} = useVisualBuilderContext()
 
-    const triggerNode = visualBuilderGraph.nodes.find(isTriggerNodeType)!
+    const triggerNode = visualBuilderGraph.nodes[0]
 
-    return useMemo<ReactNode>(() => {
+    const [menuItems, setMenuItems] = useState<ReactNode>(null)
+
+    const initialMenuItems = useMemo<ReactNode>(() => {
         switch (triggerNode.type) {
             case 'channel_trigger':
                 return (
-                    <>
+                    <DropdownBody>
                         <MultipleChoicesMenuItem
                             nodeId={nodeId}
                             floatingRef={floatingRef}
@@ -857,36 +1136,17 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
                         <HttpRequestMenuItem
                             nodeId={nodeId}
                             floatingRef={floatingRef}
+                            description="Perform 3rd party actions"
                         />
-                        <ConditionsMenuItem
+                        <ChannelTriggerConditionsMenuItem
                             nodeId={nodeId}
                             floatingRef={floatingRef}
-                            disabledText={
-                                !hasParentNodeInPath(
-                                    'shopper_authentication',
-                                    visualBuilderGraph,
-                                    nodeId
-                                ) &&
-                                !hasParentNodeInPath(
-                                    'http_request',
-                                    visualBuilderGraph,
-                                    nodeId
-                                ) &&
-                                !hasParentNodeInPath(
-                                    'text_reply',
-                                    visualBuilderGraph,
-                                    nodeId
-                                )
-                                    ? 'Conditions rely on variables from other steps such as Customer login, Collect text reply, Order selection and HTTP requests.'
-                                    : undefined
-                            }
                         />
-                    </>
+                    </DropdownBody>
                 )
             case 'reusable_llm_prompt_trigger':
-            case 'llm_prompt_trigger':
                 return (
-                    <>
+                    <DropdownBody>
                         <HttpRequestMenuItem
                             nodeId={nodeId}
                             floatingRef={floatingRef}
@@ -895,89 +1155,54 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
                             nodeId={nodeId}
                             floatingRef={floatingRef}
                         />
-                        {visualBuilderGraph.apps?.some(
-                            (app) => app.type === 'shopify'
-                        ) && (
+                        <LLMPromptTemplateShopifyMenuItems
+                            nodeId={nodeId}
+                            floatingRef={floatingRef}
+                        />
+                        <LLMPromptTemplateRechargeMenuItems
+                            nodeId={nodeId}
+                            floatingRef={floatingRef}
+                        />
+                    </DropdownBody>
+                )
+            case 'llm_prompt_trigger':
+                return (
+                    <DropdownBody>
+                        <HttpRequestMenuItem
+                            nodeId={nodeId}
+                            floatingRef={floatingRef}
+                        />
+                        <ConditionsMenuItem
+                            nodeId={nodeId}
+                            floatingRef={floatingRef}
+                        />
+                        {visualBuilderGraph.isTemplate && (
                             <>
-                                <CancelOrderMenuItem
+                                <LLMPromptTemplateShopifyMenuItems
                                     nodeId={nodeId}
                                     floatingRef={floatingRef}
-                                    customerId="{{objects.customer.id}}"
-                                    orderExternalId="{{objects.order.external_id}}"
-                                    integrationId="{{store.helpdesk_integration_id}}"
                                 />
-                                <RefundOrderMenuItem
+                                <LLMPromptTemplateRechargeMenuItems
                                     nodeId={nodeId}
                                     floatingRef={floatingRef}
-                                    customerId="{{objects.customer.id}}"
-                                    orderExternalId="{{objects.order.external_id}}"
-                                    integrationId="{{store.helpdesk_integration_id}}"
-                                />
-                                <UpdateShippingAddressMenuItem
-                                    nodeId={nodeId}
-                                    floatingRef={floatingRef}
-                                    customerId="{{objects.customer.id}}"
-                                    orderExternalId="{{objects.order.external_id}}"
-                                    integrationId="{{store.helpdesk_integration_id}}"
-                                />
-                                <RemoveItemMenuItem
-                                    nodeId={nodeId}
-                                    floatingRef={floatingRef}
-                                    customerId="{{objects.customer.id}}"
-                                    orderExternalId="{{objects.order.external_id}}"
-                                    integrationId="{{store.helpdesk_integration_id}}"
-                                />
-                                <ReplaceItemMenuItem
-                                    nodeId={nodeId}
-                                    floatingRef={floatingRef}
-                                    customerId="{{objects.customer.id}}"
-                                    orderExternalId="{{objects.order.external_id}}"
-                                    integrationId="{{store.helpdesk_integration_id}}"
-                                />
-                                <CreateDiscountCodeMenuItem
-                                    nodeId={nodeId}
-                                    floatingRef={floatingRef}
-                                    customerId="{{objects.customer.id}}"
-                                    integrationId="{{store.helpdesk_integration_id}}"
-                                />
-                                <ReshipForFreeMenuItem
-                                    nodeId={nodeId}
-                                    floatingRef={floatingRef}
-                                    customerId="{{objects.customer.id}}"
-                                    orderExternalId="{{objects.order.external_id}}"
-                                    integrationId="{{store.helpdesk_integration_id}}"
-                                />
-                                <RefundShippingCostsMenuItem
-                                    nodeId={nodeId}
-                                    floatingRef={floatingRef}
-                                    customerId="{{objects.customer.id}}"
-                                    orderExternalId="{{objects.order.external_id}}"
-                                    integrationId="{{store.helpdesk_integration_id}}"
                                 />
                             </>
                         )}
-                        {visualBuilderGraph.apps?.some(
-                            (app) => app.type === 'recharge'
-                        ) && (
-                            <>
-                                <CancelSubscriptionMenuItem
-                                    nodeId={nodeId}
-                                    floatingRef={floatingRef}
-                                    customerId="{{objects.customer.id}}"
-                                    integrationId="{{apps.recharge.integration_id}}"
-                                />
-                                <SkipChargeMenuItem
-                                    nodeId={nodeId}
-                                    floatingRef={floatingRef}
-                                    customerId="{{objects.customer.id}}"
-                                    integrationId="{{apps.recharge.integration_id}}"
-                                />
-                            </>
-                        )}
-                    </>
+                        <AppMenuCategoryItems
+                            nodeId={nodeId}
+                            setMenuItems={setMenuItems}
+                        />
+                    </DropdownBody>
                 )
         }
-    }, [visualBuilderGraph, nodeId, floatingRef, triggerNode.type])
+    }, [visualBuilderGraph.isTemplate, nodeId, floatingRef, triggerNode.type])
+
+    useEffect(() => {
+        setMenuItems(initialMenuItems)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [visualBuilderGraph.isTemplate, nodeId, floatingRef, triggerNode.type])
+
+    return menuItems
 }
 
 export type VisualBuilderEdgeProps = {
@@ -1038,7 +1263,12 @@ export type VisualBuilderEdgeProps = {
         label: string
         nodeId: string
     }
-} & Pick<VisualBuilderContext, 'dispatch'>
+    incomingReusableLLMPromptCallCondition?: {
+        label: string
+        nodeId: string
+        isClickable: boolean
+    }
+} & Pick<VisualBuilderContextType, 'dispatch'>
 
 export default function EdgeBlock({
     nodeId,
@@ -1055,6 +1285,7 @@ export default function EdgeBlock({
     incomingReshipForFreeCondition,
     incomingCancelSubscriptionCondition,
     incomingSkipChargeCondition,
+    incomingReusableLLMPromptCallCondition,
     isSelected,
     dispatch,
 }: VisualBuilderEdgeProps) {
@@ -1088,7 +1319,8 @@ export default function EdgeBlock({
                     incomingReshipForFreeCondition ||
                     incomingRefundShippingCostsCondition ||
                     incomingCancelSubscriptionCondition ||
-                    incomingSkipChargeCondition
+                    incomingSkipChargeCondition ||
+                    incomingReusableLLMPromptCallCondition
                         ? -48
                         : -46,
             }}
@@ -1220,6 +1452,24 @@ export default function EdgeBlock({
                     {incomingSkipChargeCondition.label}
                 </EdgeLabel>
             )}
+            {incomingReusableLLMPromptCallCondition && (
+                <EdgeLabel
+                    onClick={() => {
+                        if (
+                            incomingReusableLLMPromptCallCondition.isClickable
+                        ) {
+                            dispatch({
+                                type: 'SET_NODE_EDITING_ID',
+                                nodeId: incomingReusableLLMPromptCallCondition.nodeId,
+                            })
+                        }
+                    }}
+                    isSelected={isSelected}
+                    type="reusable_llm_prompt_call"
+                >
+                    {incomingReusableLLMPromptCallCondition.label}
+                </EdgeLabel>
+            )}
             {incomingCondition && (
                 <EdgeLabel
                     type="condition"
@@ -1256,7 +1506,6 @@ export default function EdgeBlock({
                 icon="add"
                 onClick={() => setIsNodeMenuDropdownOpen(true)}
             />
-
             <Dropdown
                 ref={onFloatingRefChange}
                 isOpen={isNodeMenuDropdownOpen}
@@ -1265,7 +1514,7 @@ export default function EdgeBlock({
                 placement="right-start"
                 className={css.menuContainer}
             >
-                <DropdownBody>{menuItems}</DropdownBody>
+                {menuItems}
             </Dropdown>
         </div>
     )

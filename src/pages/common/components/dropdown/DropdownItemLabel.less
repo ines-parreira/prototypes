@@ -1,6 +1,7 @@
 :local {
     .wrapper {
         display: flex;
+        flex-grow: 1;
         padding: 8px 0;
     }
 
@@ -10,9 +11,14 @@
 
     .caption {
         color: var(--neutral-grey-5);
+
+        &.disabled {
+            color: var(--neutral-grey-4);
+        }
     }
 
     .affix {
+        display: flex;
         font-size: 20px;
 
         & > * {

@@ -210,11 +210,15 @@ const WorkflowVariableDropdown = ({
                             className={css.item}
                         >
                             <div className={css.itemContent}>
-                                {option.nodeType && (
-                                    <VisualBuilderActionIcon
-                                        nodeType={option.nodeType}
-                                    />
-                                )}
+                                {option.icon
+                                    ? option.icon
+                                    : option.nodeType &&
+                                      option.nodeType !==
+                                          'reusable_llm_prompt_call' && (
+                                          <VisualBuilderActionIcon
+                                              nodeType={option.nodeType}
+                                          />
+                                      )}
                                 <span className={css.itemName}>
                                     {option.name}
                                 </span>

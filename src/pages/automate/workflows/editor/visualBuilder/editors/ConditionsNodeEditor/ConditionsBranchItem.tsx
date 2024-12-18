@@ -20,7 +20,6 @@ interface Props {
     conditions: ConditionSchema[]
     availableVariables: WorkflowVariableList
     canDeleteBranch: boolean
-    shouldShowErrors: boolean
     showNoneOption?: boolean
     hasMultipleChildren: boolean
     onConditionTypeChange: (branchId: string, type: 'and' | 'or' | null) => void
@@ -32,12 +31,17 @@ interface Props {
     ) => void
     onConditionDelete: (conditionIndex: number) => void
     onDeleteBranch: () => void
+    errors?: {
+        name?: string
+        conditions?: string | Record<string, string>
+    }
+    onNameBlur?: () => void
+    onConditionBlur?: (index: number) => void
 }
 
 export const ConditionsBranchItem = ({
     name,
     onNameChange,
-    shouldShowErrors,
     type,
     branchId,
     onConditionTypeChange,
@@ -50,10 +54,11 @@ export const ConditionsBranchItem = ({
     conditions,
     canDeleteBranch,
     showNoneOption,
+    errors,
+    onNameBlur,
+    onConditionBlur,
 }: Props) => {
     const {isExpanded} = useAccordionItemContext()
-
-    const hasNameError = shouldShowErrors && !name
 
     return (
         <div className={css.container}>
@@ -61,10 +66,10 @@ export const ConditionsBranchItem = ({
                 {isExpanded ? (
                     <InputField
                         value={name}
-                        hasError={hasNameError}
-                        error={hasNameError ? 'Enter a branch name' : ''}
+                        error={errors?.name}
                         className={css.input}
                         onChange={onNameChange}
+                        onBlur={onNameBlur}
                     />
                 ) : (
                     <>{name}</>
@@ -88,10 +93,10 @@ export const ConditionsBranchItem = ({
                     onConditionTypeChange={onConditionTypeChange}
                     onDeleteBranch={onDeleteBranch}
                     onVariableSelect={onVariableSelect}
-                    shouldShowErrors={shouldShowErrors}
                     type={type}
                     showNoneOption={showNoneOption}
-                    emptyBranchErrorMessage="A branch must have at least 1 condition"
+                    errors={errors?.conditions}
+                    onConditionBlur={onConditionBlur}
                 />
             </AccordionBody>
         </div>

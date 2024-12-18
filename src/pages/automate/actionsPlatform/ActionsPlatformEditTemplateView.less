@@ -1,41 +1,21 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 
 :local {
-    .page {
+    .form {
         display: flex;
+        width: 680px;
         flex-direction: column;
-        width: 100%;
-    }
-
-    .container {
-        padding: 0;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-    }
-
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-    }
-
-    .title {
-        max-width: 500px;
-        flex: 1;
-        display: flex;
-        align-items: baseline;
-        gap: @layout-spacing-xs;
-    }
-
-    .name {
-        max-width: 500px;
-        flex: 1;
+        gap: @layout-spacing-l;
     }
 
     .actions {
         display: flex;
+        align-items: center;
         gap: @layout-spacing-xs;
+        margin-top: @layout-spacing-xl;
+    }
+
+    .backButton {
+        margin-bottom: @layout-spacing-s;
     }
 }

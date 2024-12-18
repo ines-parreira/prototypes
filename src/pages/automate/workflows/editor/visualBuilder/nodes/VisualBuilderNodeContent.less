@@ -1,0 +1,22 @@
+@import '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .container {
+        .body-semibold();
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: var(--neutral-grey-5);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        cursor: inherit;
+        overflow-wrap: anywhere;
+
+        &.isFilled {
+            color: var(--neutral-grey-6);
+        }
+    }
+}

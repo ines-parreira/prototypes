@@ -1,0 +1,57 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .page {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .container {
+        padding: 0;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: @layout-spacing-xs;
+    }
+
+    .caption {
+        margin-top: 6px;
+    }
+
+    .title {
+        flex: 1;
+        max-width: 500px;
+    }
+
+    .name {
+        input {
+            .heading-section-regular();
+        }
+
+        height: 40px;
+    }
+
+    .actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .buttons {
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+
+    .description {
+        color: var(--neutral-grey-5);
+    }
+}

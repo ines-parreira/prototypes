@@ -1,0 +1,15 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .section {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: @layout-spacing-s;
+
+        &.big {
+            gap: @layout-spacing-xl;
+        }
+    }
+}

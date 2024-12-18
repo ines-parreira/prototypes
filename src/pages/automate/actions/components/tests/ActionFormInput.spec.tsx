@@ -244,4 +244,63 @@ describe('<ActionFormInput />', () => {
 
         expect(screen.queryByText('Product')).not.toBeInTheDocument()
     })
+
+    it('should trigger on blur handlers', () => {
+        const mockOnNameBlur = jest.fn()
+        const mockOnInstructionsBlur = jest.fn()
+
+        render(
+            <ActionFormInput
+                input={{
+                    id: 'someid',
+                    name: 'some name',
+                    instructions: 'some instructions',
+                    data_type: 'string',
+                }}
+                onDelete={jest.fn()}
+                onChange={jest.fn()}
+                onNameBlur={mockOnNameBlur}
+                onInstructionsBlur={mockOnInstructionsBlur}
+            />
+        )
+
+        act(() => {
+            fireEvent.blur(screen.getByDisplayValue('some name'))
+        })
+
+        act(() => {
+            fireEvent.blur(screen.getByDisplayValue('some instructions'))
+        })
+
+        expect(mockOnNameBlur).toHaveBeenCalled()
+        expect(mockOnInstructionsBlur).toHaveBeenCalled()
+    })
+
+    it('should display errors', () => {
+        render(
+            <ActionFormInput
+                input={{
+                    id: 'someid',
+                    name: '',
+                    instructions: '',
+                    data_type: 'string',
+                }}
+                onDelete={jest.fn()}
+                onChange={jest.fn()}
+                error={{
+                    name: 'Name is required',
+                    instructions: 'Description is required',
+                }}
+            />
+        )
+
+        expect(
+            screen.getByPlaceholderText('e.g. Address').parentElement
+        ).toHaveClass('hasError')
+        expect(
+            screen.getByPlaceholderText(
+                'e.g. Ask for customer’s shipping address'
+            ).parentElement
+        ).toHaveClass('hasError')
+    })
 })

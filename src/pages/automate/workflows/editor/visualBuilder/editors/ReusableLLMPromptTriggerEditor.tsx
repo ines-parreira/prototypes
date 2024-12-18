@@ -4,9 +4,7 @@ import React, {useMemo} from 'react'
 
 import ActionFormInputs from 'pages/automate/actions/components/ActionFormInputs'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
 import {ReusableLLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {getTriggerNode} from 'pages/automate/workflows/models/workflowConfiguration.model'
 import {Drawer} from 'pages/common/components/Drawer'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -22,26 +20,20 @@ export default function ReusableLLMPromptTriggerEditor({
 }: {
     nodeInEdition: ReusableLLMPromptTriggerNodeType
 }) {
-    const {dispatch, visualBuilderGraph, shouldShowErrors} =
-        useVisualBuilderContext()
+    const {
+        dispatch,
+        visualBuilderGraph,
+        getVariableListForNode,
+        initialVisualBuilderGraph,
+        isNew,
+    } = useVisualBuilderContext<ReusableLLMPromptTriggerNodeType>()
 
     const workflowVariables = useMemo(
-        () =>
-            getWorkflowVariableListForNode(
-                visualBuilderGraph,
-                nodeInEdition.id
-            ),
-        [visualBuilderGraph, nodeInEdition.id]
+        () => getVariableListForNode(nodeInEdition.id),
+        [getVariableListForNode, nodeInEdition.id]
     )
 
-    const isDraft = visualBuilderGraph.wfConfigurationOriginal.is_draft
-    const initialTriggerNode = useMemo(
-        () =>
-            getTriggerNode(
-                visualBuilderGraph.wfConfigurationOriginal
-            ) as ReusableLLMPromptTriggerNodeType,
-        [visualBuilderGraph.wfConfigurationOriginal]
-    )
+    const isDraft = visualBuilderGraph.is_draft
 
     return (
         <>
@@ -66,23 +58,53 @@ export default function ReusableLLMPromptTriggerEditor({
                     </CheckBox>
                     <ActionFormInputs
                         inputs={nodeInEdition.data.inputs}
-                        semiImmutableInputs={initialTriggerNode.data.inputs}
+                        semiImmutableInputs={
+                            isNew
+                                ? []
+                                : initialVisualBuilderGraph.nodes[0].data.inputs
+                        }
                         onAdd={() => {
                             dispatch({
                                 type: 'ADD_REUSABLE_LLM_PROMPT_TRIGGER_INPUT',
                             })
                         }}
-                        onDelete={(index) => {
+                        onDelete={(id) => {
                             dispatch({
                                 type: 'DELETE_REUSABLE_LLM_PROMPT_TRIGGER_INPUT',
-                                index,
+                                id,
                             })
                         }}
-                        onChange={(nextValue, index) => {
+                        onChange={(nextValue) => {
                             dispatch({
                                 type: 'SET_REUSABLE_LLM_PROMPT_TRIGGER_INPUT',
-                                index,
                                 input: nextValue,
+                            })
+                        }}
+                        errors={nodeInEdition.data.errors?.inputs}
+                        onNameBlur={(id) => {
+                            dispatch({
+                                type: 'SET_TOUCHED',
+                                nodeId: nodeInEdition.id,
+                                touched: {
+                                    inputs: {
+                                        [id]: {
+                                            name: true,
+                                        },
+                                    },
+                                },
+                            })
+                        }}
+                        onInstructionsBlur={(id) => {
+                            dispatch({
+                                type: 'SET_TOUCHED',
+                                nodeId: nodeInEdition.id,
+                                touched: {
+                                    inputs: {
+                                        [id]: {
+                                            instructions: true,
+                                        },
+                                    },
+                                },
                             })
                         }}
                     />
@@ -104,7 +126,6 @@ export default function ReusableLLMPromptTriggerEditor({
                                 branchId={''}
                                 availableVariables={workflowVariables}
                                 showNoneOption
-                                shouldShowErrors={shouldShowErrors}
                                 type={nodeInEdition.data.conditionsType}
                                 conditions={nodeInEdition.data.conditions}
                                 onDeleteBranch={_noop}
@@ -140,6 +161,7 @@ export default function ReusableLLMPromptTriggerEditor({
                                     })
                                 }}
                                 isDisabled={!isDraft}
+                                errors={nodeInEdition.data.errors?.conditions}
                             />
                         </div>
                     </ToolbarProvider>

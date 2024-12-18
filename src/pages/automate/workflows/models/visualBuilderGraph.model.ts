@@ -2,17 +2,24 @@ import _cloneDeep from 'lodash/cloneDeep'
 import _groupBy from 'lodash/groupBy'
 import _isEqual from 'lodash/isEqual'
 import _keyBy from 'lodash/keyBy'
+import _merge from 'lodash/merge'
 import _omit from 'lodash/omit'
 import _omitBy from 'lodash/omitBy'
+import _setWith from 'lodash/setWith'
 import {Edge, Node} from 'reactflow'
 import {ulid} from 'ulidx'
+
+import {validateHttpHeaderName, validateWebhookURL} from 'utils'
 
 import {ConditionSchema, ConditionsSchema, VarSchema} from './conditions.types'
 import {
     extractVariablesFromNode,
     getWorkflowVariableListForNode,
+    hasInvalidVariables,
+    isValidLiquidSyntax,
     parseWorkflowVariable,
     unescapeUrlEncodedVariables,
+    validateJSONWithVariables,
 } from './variables.model'
 import {WorkflowVariableList} from './variables.types'
 import {
@@ -24,6 +31,21 @@ import {
     isHttpRequestNodeType,
     LLMPromptTriggerNodeType,
     ReusableLLMPromptTriggerNodeType,
+    HttpRequestNodeType,
+    ConditionsNodeType,
+    ChannelTriggerNodeType,
+    MultipleChoicesNodeType,
+    AutomatedMessageNodeType,
+    TextReplyNodeType,
+    FileUploadNodeType,
+    OrderSelectionNodeType,
+    OrderLineItemSelectionNodeType,
+    SkipChargeNodeType,
+    CancelSubscriptionNodeType,
+    ReplaceItemNodeType,
+    RemoveItemNodeType,
+    UpdateShippingAddressNodeType,
+    VisualBuilderGraphAppApp,
 } from './visualBuilderGraph.types'
 import {
     WorkflowConfiguration,
@@ -45,6 +67,7 @@ import {
     WorkflowStepRemoveItem,
     WorkflowStepReplaceItem,
     WorkflowStepReshipForFree,
+    WorkflowStepReusableLLMPromptCall,
     WorkflowStepShopperAuthentication,
     WorkflowStepSkipCharge,
     WorkflowStepTextInput,
@@ -72,7 +95,8 @@ export const buildNodeCommonProperties: () => Pick<
 
 export function areGraphsEqual(
     g1: VisualBuilderGraph,
-    g2: VisualBuilderGraph
+    g2: VisualBuilderGraph,
+    ignoreTouched = true
 ): boolean {
     const essentialGraph = (g: VisualBuilderGraph) =>
         _omit(
@@ -81,12 +105,22 @@ export function areGraphsEqual(
                 nodes: g.nodes
                     .map((node) => {
                         let data = _omitBy(
-                            _omit(node.data, ['isGreyedOut']),
+                            _omit(
+                                node.data,
+                                ignoreTouched
+                                    ? ['isGreyedOut', 'errors', 'touched']
+                                    : ['isGreyedOut', 'errors']
+                            ),
                             (value) => value === undefined
                         )
 
                         if (node.type === 'http_request') {
-                            data = _omit(data, ['testRequestResult'])
+                            data = _omit(
+                                data,
+                                ignoreTouched
+                                    ? ['testRequestResult', 'errors', 'touched']
+                                    : ['testRequestResult', 'errors']
+                            )
 
                             return {
                                 id: node.id,
@@ -117,13 +151,27 @@ export function areGraphsEqual(
                             `${b.source}-${b.target}`
                         )
                     ),
+                apps: g.apps?.map((app) =>
+                    _omit(
+                        app,
+                        ignoreTouched ? ['errors', 'touched'] : ['errors']
+                    )
+                ),
             },
-            [
-                'wfConfigurationOriginal',
-                'nodeEditingId',
-                'choiceEventIdEditing',
-                'branchIdsEditing',
-            ]
+            ignoreTouched
+                ? [
+                      'nodeEditingId',
+                      'choiceEventIdEditing',
+                      'branchIdsEditing',
+                      'errors',
+                      'touched',
+                  ]
+                : [
+                      'nodeEditingId',
+                      'choiceEventIdEditing',
+                      'branchIdsEditing',
+                      'errors',
+                  ]
         )
 
     return _isEqual(essentialGraph(g1), essentialGraph(g2))
@@ -236,7 +284,12 @@ function setLLMPromptObjectInputs(
     >
 ) {
     const variables = extractVariablesFromNode(node)
-    const availableVariables = getWorkflowVariableListForNode(g, node.id)
+    const availableVariables = getWorkflowVariableListForNode(
+        g,
+        node.id,
+        [],
+        []
+    )
 
     variables
         .map((variable) => parseWorkflowVariable(variable, availableVariables))
@@ -331,7 +384,12 @@ function setReusableLLMPromptObjectInputs(
     >
 ) {
     const variables = extractVariablesFromNode(node)
-    const availableVariables = getWorkflowVariableListForNode(g, node.id)
+    const availableVariables = getWorkflowVariableListForNode(
+        g,
+        node.id,
+        [],
+        []
+    )
 
     variables
         .map((variable) => parseWorkflowVariable(variable, availableVariables))
@@ -418,20 +476,26 @@ function setStaticInputs(
 
 export function transformVisualBuilderGraphIntoWfConfiguration(
     g: VisualBuilderGraph,
-    isDraft = true
+    isDraft = true,
+    steps: WorkflowConfiguration[]
 ) {
-    const c: WorkflowConfiguration = _cloneDeep<WorkflowConfiguration>(
-        g.wfConfigurationOriginal
-    )
-    c.name = g.name
-    c.available_languages = g.available_languages
-    c.steps = []
-    c.transitions = []
-    c.is_draft = isDraft
-    c.apps = g.apps
-    c.inputs = g.inputs
-    c.values = g.values
+    const c: WorkflowConfiguration = {
+        id: g.id,
+        internal_id: g.internal_id,
+        is_draft: isDraft,
+        name: g.name,
+        initial_step_id: null,
+        available_languages: g.available_languages,
+        steps: [],
+        transitions: [],
+        apps: g.apps,
+        inputs: _cloneDeep(g.inputs),
+        values: _cloneDeep(g.values),
+        template_internal_id: g.template_internal_id,
+    }
+
     const stepIdByNodeId: Record<string, string> = {}
+
     walkVisualBuilderGraph(
         g,
         g.nodes[0].id,
@@ -685,6 +749,21 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     kind: 'conditions',
                     settings: {
                         name: node.data.name,
+                    },
+                }
+                c.steps.push(step)
+                stepIdByNodeId[node.id] = step.id
+            } else if (node.type === 'reusable_llm_prompt_call') {
+                const step: WorkflowStepReusableLLMPromptCall = {
+                    id: node.id,
+                    kind: 'reusable-llm-prompt-call',
+                    settings: {
+                        objects: node.data.objects,
+                        configuration_id: node.data.configuration_id,
+                        custom_inputs: node.data.custom_inputs,
+                        values: node.data.values,
+                        configuration_internal_id:
+                            node.data.configuration_internal_id,
                     },
                 }
                 c.steps.push(step)
@@ -1152,7 +1231,12 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     conditions: incomingEdge?.data?.conditions
                         ? cleanConditionsFromEmptyVariables(
                               incomingEdge.data.conditions,
-                              getWorkflowVariableListForNode(g, node.id)
+                              getWorkflowVariableListForNode(
+                                  g,
+                                  node.id,
+                                  steps,
+                                  []
+                              )
                           )
                         : undefined,
                 })
@@ -1180,6 +1264,8 @@ export function getIncoming(
         | 'reship_for_free'
         | 'cancel_subscription'
         | 'skip_charge'
+        | 'reusable_llm_prompt_call',
+    steps: WorkflowConfiguration[]
 ) {
     const incomingEdge = visualBuilderGraph.edges.find(
         ({target}) => target === currentNodeId
@@ -1252,6 +1338,31 @@ export function getIncoming(
 
             break
         }
+        case 'reusable_llm_prompt_call': {
+            const branchName = incomingEdge.data?.name
+
+            if (previousNode && previousNode.type === type) {
+                const configuration = steps.find(
+                    (step) =>
+                        step.id === previousNode.data.configuration_id &&
+                        step.internal_id ===
+                            previousNode.data.configuration_internal_id
+                )
+
+                const isClickable =
+                    !!configuration?.inputs?.length ||
+                    (configuration?.apps?.[0]?.type === 'app' &&
+                        !visualBuilderGraph.isTemplate)
+
+                return {
+                    label: branchName,
+                    nodeId: previousNode.id,
+                    isClickable,
+                }
+            }
+
+            break
+        }
         case 'conditions': {
             const branchName = incomingEdge.data?.name
             const branchId = incomingEdge.id
@@ -1318,4 +1429,1275 @@ export function hasParentNodeInPath(
     )
 
     return hasParentNode
+}
+
+export function getGraphTouched(): NonNullable<VisualBuilderGraph['touched']> {
+    return {
+        name: true,
+        nodes: true,
+    }
+}
+
+export function getGraphAppAppTouched(): NonNullable<
+    VisualBuilderGraphAppApp['touched']
+> {
+    return {
+        api_key: true,
+    }
+}
+
+export function getGraphAppAppErrors(
+    app: VisualBuilderGraphAppApp
+): VisualBuilderGraphAppApp['errors'] {
+    let errors: VisualBuilderGraphAppApp['errors'] = null
+
+    if (app.touched?.api_key && !app.api_key?.trim()) {
+        errors = mergeErrors(errors, 'api_key', 'API key is required')
+    }
+
+    return errors
+}
+
+function mergeErrors<T extends VisualBuilderNode['data']['errors']>(
+    errors: T,
+    path: string,
+    error: string
+): NonNullable<T> {
+    return _merge(_setWith({}, path, error, Object), errors)
+}
+
+export function getLLMPromptTriggerNodeTouched(
+    node: LLMPromptTriggerNodeType
+): NonNullable<LLMPromptTriggerNodeType['data']['touched']> {
+    return {
+        instructions: true,
+        inputs: node.data.inputs.reduce<
+            Record<
+                string,
+                {
+                    name?: boolean
+                    instructions?: boolean
+                }
+            >
+        >(
+            (touched, input) => ({
+                ...touched,
+                [input.id]: {
+                    name: true,
+                    instructions: true,
+                },
+            }),
+            {}
+        ),
+        conditions: node.data.conditions.reduce<Record<string, boolean>>(
+            (touched, _condition, index) => ({
+                ...touched,
+                [index]: true,
+            }),
+            {}
+        ),
+    }
+}
+
+export function getLLMPromptTriggerNodeErrors(
+    node: LLMPromptTriggerNodeType,
+    variables: WorkflowVariableList
+): LLMPromptTriggerNodeType['data']['errors'] {
+    let errors: LLMPromptTriggerNodeType['data']['errors'] = null
+
+    if (node.data.touched?.instructions && !node.data.instructions.trim()) {
+        errors = mergeErrors(errors, 'instructions', 'Description is required')
+    }
+
+    node.data.inputs.forEach((input) => {
+        if (node.data.touched?.inputs?.[input.id]?.name && !input.name.trim()) {
+            errors = mergeErrors(
+                errors,
+                `inputs.${input.id}.name`,
+                'Name is required'
+            )
+        }
+
+        if (
+            node.data.touched?.inputs?.[input.id]?.instructions &&
+            !input.instructions.trim()
+        ) {
+            errors = mergeErrors(
+                errors,
+                `inputs.${input.id}.instructions`,
+                'Description is required'
+            )
+        }
+    })
+
+    if (node.data.conditionsType) {
+        if (!node.data.conditions.length) {
+            if (node.data.touched?.conditions) {
+                errors = mergeErrors(
+                    errors,
+                    `conditions`,
+                    'Add conditions or select "No conditions required"'
+                )
+            }
+        } else {
+            for (let index = 0; index < node.data.conditions.length; index++) {
+                if (
+                    typeof node.data.touched?.conditions !== 'object' ||
+                    !node.data.touched?.conditions?.[index]
+                ) {
+                    continue
+                }
+
+                const condition = node.data.conditions[index]
+                const key = Object.keys(condition)[0] as AllKeys<
+                    typeof condition
+                >
+                const schema = condition[key]!
+
+                const variableInUse = schema[0].var
+                const variable = parseWorkflowVariable(variableInUse, variables)
+
+                if (!variable) {
+                    errors = mergeErrors(
+                        errors,
+                        `conditions.${index}`,
+                        'Invalid variables'
+                    )
+                } else if (
+                    variable.type === 'date' &&
+                    (key === 'greaterThan' || key === 'lessThan') &&
+                    !schema[1]
+                ) {
+                    errors = mergeErrors(
+                        errors,
+                        `conditions.${index}`,
+                        'Choose a date'
+                    )
+                } else if (
+                    key !== 'exists' &&
+                    key !== 'doesNotExist' &&
+                    typeof schema[1] === 'undefined'
+                ) {
+                    errors = mergeErrors(
+                        errors,
+                        `conditions.${index}`,
+                        'Enter a value'
+                    )
+                } else if (
+                    variable.type === 'string' &&
+                    typeof schema[1] === 'string' &&
+                    !schema[1].trim()
+                ) {
+                    errors = mergeErrors(
+                        errors,
+                        `conditions.${index}`,
+                        'Enter a value'
+                    )
+                } else if (
+                    variable.type === 'number' &&
+                    typeof schema[1] === 'number' &&
+                    !schema[1]
+                ) {
+                    errors = mergeErrors(
+                        errors,
+                        `conditions.${index}`,
+                        'Enter a value'
+                    )
+                }
+            }
+        }
+    }
+
+    return errors
+}
+
+export function getHTTPRequestNodeTouched(
+    node: HttpRequestNodeType
+): NonNullable<HttpRequestNodeType['data']['touched']> {
+    return {
+        name: true,
+        url: true,
+        headers: node.data.headers.reduce<
+            Record<
+                string,
+                {
+                    name?: boolean
+                    value?: boolean
+                }
+            >
+        >(
+            (touched, _header, index) => ({
+                ...touched,
+                [index]: {
+                    name: true,
+                    value: true,
+                },
+            }),
+            {}
+        ),
+        json: true,
+        formUrlencoded: node.data.formUrlencoded?.reduce<
+            Record<
+                string,
+                {
+                    key?: boolean
+                    value?: boolean
+                }
+            >
+        >(
+            (touched, _header, index) => ({
+                ...touched,
+                [index]: {
+                    key: true,
+                    value: true,
+                },
+            }),
+            {}
+        ),
+        variables: node.data.variables?.reduce<
+            Record<
+                string,
+                {
+                    name?: boolean
+                    jsonpath?: boolean
+                }
+            >
+        >(
+            (touched, _header, index) => ({
+                ...touched,
+                [index]: {
+                    name: true,
+                    jsonpath: true,
+                },
+            }),
+            {}
+        ),
+    }
+}
+
+export function getHTTPRequestNodeErrors(
+    node: HttpRequestNodeType,
+    variables: WorkflowVariableList
+): HttpRequestNodeType['data']['errors'] {
+    let errors: HttpRequestNodeType['data']['errors'] = null
+
+    if (node.data.touched?.name && !node.data.name.trim()) {
+        errors = mergeErrors(errors, 'name', 'Request name is required')
+    }
+
+    if (node.data.touched?.url) {
+        if (!node.data.url.trim()) {
+            errors = mergeErrors(errors, 'url', 'URL is required')
+        } else {
+            const error = validateWebhookURL(node.data.url)
+
+            if (error) {
+                errors = mergeErrors(errors, 'url', error)
+            } else if (hasInvalidVariables(node.data.url, variables)) {
+                errors = mergeErrors(errors, 'url', 'Invalid variables')
+            } else if (!isValidLiquidSyntax(node.data.url)) {
+                errors = mergeErrors(errors, 'url', 'Invalid variables syntax')
+            }
+        }
+    }
+
+    node.data.headers.forEach((header, index) => {
+        if (node.data.touched?.headers?.[index]?.name) {
+            if (!header.name.trim()) {
+                errors = mergeErrors(
+                    errors,
+                    `headers.${index}.name`,
+                    'Name is required'
+                )
+            } else if (!validateHttpHeaderName(header.name)) {
+                errors = mergeErrors(errors, `headers.${index}`, 'Invalid name')
+            }
+        }
+
+        if (node.data.touched?.headers?.[index]?.value) {
+            if (!header.value.trim()) {
+                errors = mergeErrors(
+                    errors,
+                    `headers.${index}.value`,
+                    'Value is required'
+                )
+            } else if (hasInvalidVariables(header.value, variables)) {
+                errors = mergeErrors(
+                    errors,
+                    `headers.${index}.value`,
+                    'Invalid variables'
+                )
+            } else if (!isValidLiquidSyntax(header.value)) {
+                errors = mergeErrors(
+                    errors,
+                    `headers.${index}.value`,
+                    'Invalid variables syntax'
+                )
+            }
+        }
+    })
+
+    switch (node.data.bodyContentType) {
+        case 'application/json':
+            {
+                if (!node.data.touched?.json) {
+                    break
+                }
+
+                if (hasInvalidVariables(node.data.json ?? '', variables)) {
+                    errors = mergeErrors(errors, `json`, 'Invalid variables')
+                } else if (
+                    !validateJSONWithVariables(node.data.json ?? '', variables)
+                ) {
+                    errors = mergeErrors(errors, `json`, 'Invalid JSON')
+                } else if (!isValidLiquidSyntax(node.data.json ?? '')) {
+                    errors = mergeErrors(
+                        errors,
+                        `json`,
+                        'Invalid variables syntax'
+                    )
+                }
+            }
+            break
+        case 'application/x-www-form-urlencoded':
+            {
+                node.data.formUrlencoded?.forEach((item, index) => {
+                    if (
+                        node.data.touched?.formUrlencoded?.[index]?.key &&
+                        !item.key.trim()
+                    ) {
+                        errors = mergeErrors(
+                            errors,
+                            `formUrlencoded.${index}.key`,
+                            'Key is required'
+                        )
+                    }
+
+                    if (node.data.touched?.formUrlencoded?.[index]?.value) {
+                        if (!item.value.trim()) {
+                            errors = mergeErrors(
+                                errors,
+                                `formUrlencoded.${index}.value`,
+                                'Value is required'
+                            )
+                        } else if (hasInvalidVariables(item.value, variables)) {
+                            errors = mergeErrors(
+                                errors,
+                                `formUrlencoded.${index}.value`,
+                                'Invalid variables'
+                            )
+                        } else if (!isValidLiquidSyntax(item.value)) {
+                            errors = mergeErrors(
+                                errors,
+                                `formUrlencoded.${index}.value`,
+                                'Invalid variables syntax'
+                            )
+                        }
+                    }
+                })
+            }
+            break
+    }
+
+    node.data.variables.forEach((variable, index) => {
+        if (
+            node.data.touched?.variables?.[index]?.name &&
+            !variable.name.trim()
+        ) {
+            errors = mergeErrors(
+                errors,
+                `variables.${index}.name`,
+                'Name is required'
+            )
+        }
+
+        if (
+            node.data.touched?.variables?.[index]?.jsonpath &&
+            !variable.jsonpath.trim()
+        ) {
+            errors = mergeErrors(
+                errors,
+                `variables.${index}.jsonpath`,
+                'JSONPath is required'
+            )
+        }
+    })
+
+    return errors
+}
+
+export function getConditionsNodeTouched(
+    edges: VisualBuilderGraph['edges'],
+    node: ConditionsNodeType
+): NonNullable<ConditionsNodeType['data']['touched']> {
+    return {
+        branches: edges
+            .filter((edge) => edge.source === node.id && edge.data?.conditions)
+            .reduce<
+                Record<
+                    string,
+                    {
+                        name?: boolean
+                        conditions?: boolean | Record<string, boolean>
+                    }
+                >
+            >(
+                (touched, edge) => ({
+                    ...touched,
+                    [edge.id]: {
+                        name: true,
+                        conditions: (
+                            edge.data?.conditions?.and ??
+                            edge.data?.conditions?.or ??
+                            []
+                        ).reduce<Record<string, boolean>>(
+                            (touched, _condition, index) => ({
+                                ...touched,
+                                [index]: true,
+                            }),
+                            {}
+                        ),
+                    },
+                }),
+                {}
+            ),
+    }
+}
+
+export function getConditionsNodeErrors(
+    edges: VisualBuilderGraph['edges'],
+    node: ConditionsNodeType,
+    variables: WorkflowVariableList
+): ConditionsNodeType['data']['errors'] {
+    let errors: ConditionsNodeType['data']['errors'] = null
+
+    edges
+        .filter((edge) => edge.source === node.id && edge.data?.conditions)
+        .forEach((edge) => {
+            if (
+                node.data.touched?.branches?.[edge.id]?.name &&
+                !edge.data?.name?.trim()
+            ) {
+                errors = mergeErrors(
+                    errors,
+                    `branches.${edge.id}.name`,
+                    'Name is required'
+                )
+            }
+
+            const conditions = edge.data?.conditions?.and
+                ? edge.data.conditions.and
+                : (edge.data?.conditions?.or ?? [])
+
+            if (
+                node.data.touched?.branches?.[edge.id]?.conditions &&
+                !conditions.length
+            ) {
+                errors = mergeErrors(
+                    errors,
+                    `branches.${edge.id}.conditions`,
+                    'A branch must have at least 1 condition'
+                )
+            } else {
+                for (let index = 0; index < conditions.length; index++) {
+                    const touched =
+                        node.data.touched?.branches?.[edge.id]?.conditions
+
+                    if (typeof touched !== 'object' || !touched?.[index]) {
+                        continue
+                    }
+
+                    const condition = conditions[index]
+                    const key = Object.keys(condition)[0] as AllKeys<
+                        typeof condition
+                    >
+                    const schema = condition[key]!
+
+                    const variableInUse = schema[0].var
+                    const variable = parseWorkflowVariable(
+                        variableInUse,
+                        variables
+                    )
+
+                    if (!variable) {
+                        errors = mergeErrors(
+                            errors,
+                            `branches.${edge.id}.conditions.${index}`,
+                            'Invalid variables'
+                        )
+                    } else if (
+                        variable.type === 'date' &&
+                        (key === 'greaterThan' || key === 'lessThan') &&
+                        !schema[1]
+                    ) {
+                        errors = mergeErrors(
+                            errors,
+                            `branches.${edge.id}.conditions.${index}`,
+                            'Choose a date'
+                        )
+                    } else if (
+                        key !== 'exists' &&
+                        key !== 'doesNotExist' &&
+                        typeof schema[1] === 'undefined'
+                    ) {
+                        errors = mergeErrors(
+                            errors,
+                            `branches.${edge.id}.conditions.${index}`,
+                            'Enter a value'
+                        )
+                    } else if (
+                        variable.type === 'string' &&
+                        typeof schema[1] === 'string' &&
+                        !schema[1].trim()
+                    ) {
+                        errors = mergeErrors(
+                            errors,
+                            `branches.${edge.id}.conditions.${index}`,
+                            'Enter a value'
+                        )
+                    } else if (
+                        variable.type === 'number' &&
+                        typeof schema[1] === 'number' &&
+                        !schema[1]
+                    ) {
+                        errors = mergeErrors(
+                            errors,
+                            `branches.${edge.id}.conditions.${index}`,
+                            'Enter a value'
+                        )
+                    }
+                }
+            }
+        })
+
+    return errors
+}
+
+export function getChannelTriggerNodeTouched(): NonNullable<
+    ChannelTriggerNodeType['data']['touched']
+> {
+    return {
+        label: true,
+    }
+}
+
+export function getChannelTriggerNodeErrors(
+    node: ChannelTriggerNodeType
+): ChannelTriggerNodeType['data']['errors'] {
+    let errors: ChannelTriggerNodeType['data']['errors'] = null
+
+    if (node.data.touched?.label && !node.data.label.trim()) {
+        errors = mergeErrors(errors, 'label', 'Trigger button is required')
+    }
+
+    return errors
+}
+
+export function getReusableLLMPromptTriggerNodeTouched(
+    node: ReusableLLMPromptTriggerNodeType
+): NonNullable<ReusableLLMPromptTriggerNodeType['data']['touched']> {
+    return {
+        inputs: node.data.inputs.reduce<
+            Record<
+                string,
+                {
+                    name?: boolean
+                    instructions?: boolean
+                }
+            >
+        >(
+            (touched, input) => ({
+                ...touched,
+                [input.id]: {
+                    name: true,
+                    instructions: true,
+                },
+            }),
+            {}
+        ),
+        conditions: node.data.conditions.reduce<Record<string, boolean>>(
+            (touched, _condition, index) => ({
+                ...touched,
+                [index]: true,
+            }),
+            {}
+        ),
+    }
+}
+
+export function getReusableLLMPromptTriggerNodeErrors(
+    node: ReusableLLMPromptTriggerNodeType,
+    variables: WorkflowVariableList
+): ReusableLLMPromptTriggerNodeType['data']['errors'] {
+    let errors: ReusableLLMPromptTriggerNodeType['data']['errors'] = null
+
+    node.data.inputs.forEach((input) => {
+        if (node.data.touched?.inputs?.[input.id]?.name && !input.name.trim()) {
+            errors = mergeErrors(
+                errors,
+                `inputs.${input.id}.name`,
+                'Name is required'
+            )
+        }
+
+        if (
+            node.data.touched?.inputs?.[input.id]?.instructions &&
+            !input.instructions.trim()
+        ) {
+            errors = mergeErrors(
+                errors,
+                `inputs.${input.id}.instructions`,
+                'Description is required'
+            )
+        }
+    })
+
+    if (node.data.conditionsType) {
+        if (!node.data.conditions.length) {
+            if (node.data.touched?.conditions) {
+                errors = mergeErrors(
+                    errors,
+                    `conditions`,
+                    'Add conditions or select "No conditions required"'
+                )
+            }
+        } else {
+            for (let index = 0; index < node.data.conditions.length; index++) {
+                if (
+                    typeof node.data.touched?.conditions !== 'object' ||
+                    !node.data.touched?.conditions?.[index]
+                ) {
+                    continue
+                }
+
+                const condition = node.data.conditions[index]
+                const key = Object.keys(condition)[0] as AllKeys<
+                    typeof condition
+                >
+                const schema = condition[key]!
+
+                const variableInUse = schema[0].var
+                const variable = parseWorkflowVariable(variableInUse, variables)
+
+                if (!variable) {
+                    errors = mergeErrors(
+                        errors,
+                        `conditions.${index}`,
+                        'Invalid variables'
+                    )
+                } else if (
+                    variable.type === 'date' &&
+                    (key === 'greaterThan' || key === 'lessThan') &&
+                    !schema[1]
+                ) {
+                    errors = mergeErrors(
+                        errors,
+                        `conditions.${index}`,
+                        'Choose a date'
+                    )
+                } else if (
+                    key !== 'exists' &&
+                    key !== 'doesNotExist' &&
+                    typeof schema[1] === 'undefined'
+                ) {
+                    errors = mergeErrors(
+                        errors,
+                        `conditions.${index}`,
+                        'Enter a value'
+                    )
+                } else if (
+                    variable.type === 'string' &&
+                    typeof schema[1] === 'string' &&
+                    !schema[1].trim()
+                ) {
+                    errors = mergeErrors(
+                        errors,
+                        `conditions.${index}`,
+                        'Enter a value'
+                    )
+                } else if (
+                    variable.type === 'number' &&
+                    typeof schema[1] === 'number' &&
+                    !schema[1]
+                ) {
+                    errors = mergeErrors(
+                        errors,
+                        `conditions.${index}`,
+                        'Enter a value'
+                    )
+                }
+            }
+        }
+    }
+
+    return errors
+}
+
+export function getMultipleChoicesNodeTouched(
+    node: MultipleChoicesNodeType
+): NonNullable<MultipleChoicesNodeType['data']['touched']> {
+    return {
+        content: true,
+        choices: node.data.choices.reduce<Record<string, {label?: boolean}>>(
+            (touched, choice) => ({
+                ...touched,
+                [choice.event_id]: {
+                    label: true,
+                },
+            }),
+            {}
+        ),
+    }
+}
+
+export function getMultipleChoicesNodeErrors(
+    node: MultipleChoicesNodeType,
+    variables: WorkflowVariableList
+): MultipleChoicesNodeType['data']['errors'] {
+    let errors: MultipleChoicesNodeType['data']['errors'] = null
+
+    if (node.data.touched?.content) {
+        if (!node.data.content.text.trim()) {
+            errors = mergeErrors(errors, `content`, 'Question is required')
+        } else if (hasInvalidVariables(node.data.content.text, variables)) {
+            errors = mergeErrors(errors, `content`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.content.text)) {
+            errors = mergeErrors(errors, `content`, 'Invalid variables syntax')
+        }
+    }
+
+    node.data.choices.forEach((choice) => {
+        if (node.data.touched?.choices?.[choice.event_id]?.label) {
+            if (!choice.label.trim()) {
+                errors = mergeErrors(
+                    errors,
+                    `choices.${choice.event_id}.label`,
+                    'Option label is required'
+                )
+            } else if (hasInvalidVariables(choice.label, variables)) {
+                errors = mergeErrors(
+                    errors,
+                    `choices.${choice.event_id}.label`,
+                    'Invalid variables'
+                )
+            } else if (!isValidLiquidSyntax(choice.label)) {
+                errors = mergeErrors(
+                    errors,
+                    `choices.${choice.event_id}.label`,
+                    'Invalid variables syntax'
+                )
+            }
+        }
+    })
+
+    return errors
+}
+
+export function getAutomatedMessageNodeTouched(): NonNullable<
+    AutomatedMessageNodeType['data']['touched']
+> {
+    return {
+        content: true,
+    }
+}
+
+export function getAutomatedMessageNodeErrors(
+    node: AutomatedMessageNodeType,
+    variables: WorkflowVariableList
+): AutomatedMessageNodeType['data']['errors'] {
+    let errors: AutomatedMessageNodeType['data']['errors'] = null
+
+    if (node.data.touched?.content) {
+        if (!node.data.content.text.trim()) {
+            errors = mergeErrors(errors, `content`, 'Message is required')
+        } else if (hasInvalidVariables(node.data.content.text, variables)) {
+            errors = mergeErrors(errors, `content`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.content.text)) {
+            errors = mergeErrors(errors, `content`, 'Invalid variables syntax')
+        }
+    }
+
+    return errors
+}
+
+export function getTextReplyNodeTouched(): NonNullable<
+    TextReplyNodeType['data']['touched']
+> {
+    return {
+        content: true,
+    }
+}
+
+export function getTextReplyNodeErrors(
+    node: TextReplyNodeType,
+    variables: WorkflowVariableList
+): TextReplyNodeType['data']['errors'] {
+    let errors: TextReplyNodeType['data']['errors'] = null
+
+    if (node.data.touched?.content) {
+        if (!node.data.content.text.trim()) {
+            errors = mergeErrors(errors, `content`, 'Message is required')
+        } else if (hasInvalidVariables(node.data.content.text, variables)) {
+            errors = mergeErrors(errors, `content`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.content.text)) {
+            errors = mergeErrors(errors, `content`, 'Invalid variables syntax')
+        }
+    }
+
+    return errors
+}
+
+export function getFileUploadNodeTouched(): NonNullable<
+    FileUploadNodeType['data']['touched']
+> {
+    return {
+        content: true,
+    }
+}
+
+export function getFileUploadNodeErrors(
+    node: FileUploadNodeType,
+    variables: WorkflowVariableList
+): FileUploadNodeType['data']['errors'] {
+    let errors: FileUploadNodeType['data']['errors'] = null
+
+    if (node.data.touched?.content) {
+        if (!node.data.content.text.trim()) {
+            errors = mergeErrors(errors, `content`, 'Message is required')
+        } else if (hasInvalidVariables(node.data.content.text, variables)) {
+            errors = mergeErrors(errors, `content`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.content.text)) {
+            errors = mergeErrors(errors, `content`, 'Invalid variables syntax')
+        }
+    }
+
+    return errors
+}
+
+export function getOrderSelectionNodeTouched(): NonNullable<
+    OrderSelectionNodeType['data']['touched']
+> {
+    return {
+        content: true,
+    }
+}
+
+export function getOrderSelectionNodeErrors(
+    node: OrderSelectionNodeType,
+    variables: WorkflowVariableList
+): OrderSelectionNodeType['data']['errors'] {
+    let errors: OrderSelectionNodeType['data']['errors'] = null
+
+    if (node.data.touched?.content) {
+        if (!node.data.content.text.trim()) {
+            errors = mergeErrors(errors, `content`, 'Message is required')
+        } else if (hasInvalidVariables(node.data.content.text, variables)) {
+            errors = mergeErrors(errors, `content`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.content.text)) {
+            errors = mergeErrors(errors, `content`, 'Invalid variables syntax')
+        }
+    }
+
+    return errors
+}
+
+export function getOrderLineItemSelectionNodeTouched(): NonNullable<
+    OrderLineItemSelectionNodeType['data']['touched']
+> {
+    return {
+        content: true,
+    }
+}
+
+export function getOrderLineItemSelectionNodeErrors(
+    node: OrderLineItemSelectionNodeType,
+    variables: WorkflowVariableList
+): OrderLineItemSelectionNodeType['data']['errors'] {
+    let errors: OrderLineItemSelectionNodeType['data']['errors'] = null
+
+    if (node.data.touched?.content) {
+        if (!node.data.content.text.trim()) {
+            errors = mergeErrors(errors, `content`, 'Message is required')
+        } else if (hasInvalidVariables(node.data.content.text, variables)) {
+            errors = mergeErrors(errors, `content`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.content.text)) {
+            errors = mergeErrors(errors, `content`, 'Invalid variables syntax')
+        }
+    }
+
+    return errors
+}
+
+export function getSkipChargeNodeTouched(): NonNullable<
+    SkipChargeNodeType['data']['touched']
+> {
+    return {
+        subscriptionId: true,
+        chargeId: true,
+    }
+}
+
+export function getSkipChargeNodeErrors(
+    node: SkipChargeNodeType,
+    variables: WorkflowVariableList
+): SkipChargeNodeType['data']['errors'] {
+    let errors: SkipChargeNodeType['data']['errors'] = null
+
+    if (node.data.touched?.subscriptionId) {
+        if (!node.data.subscriptionId.trim()) {
+            errors = mergeErrors(
+                errors,
+                `subscriptionId`,
+                'Subscription id is required'
+            )
+        } else if (hasInvalidVariables(node.data.subscriptionId, variables)) {
+            errors = mergeErrors(errors, `subscriptionId`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.subscriptionId)) {
+            errors = mergeErrors(
+                errors,
+                `subscriptionId`,
+                'Invalid variables syntax'
+            )
+        }
+    }
+
+    if (node.data.touched?.chargeId) {
+        if (!node.data.chargeId.trim()) {
+            errors = mergeErrors(errors, `chargeId`, 'Charge id is required')
+        } else if (hasInvalidVariables(node.data.chargeId, variables)) {
+            errors = mergeErrors(errors, `chargeId`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.chargeId)) {
+            errors = mergeErrors(errors, `chargeId`, 'Invalid variables syntax')
+        }
+    }
+
+    return errors
+}
+
+export function getCancelSubscriptionNodeTouched(): NonNullable<
+    CancelSubscriptionNodeType['data']['touched']
+> {
+    return {
+        subscriptionId: true,
+        reason: true,
+    }
+}
+
+export function getCancelSubscriptionNodeErrors(
+    node: CancelSubscriptionNodeType,
+    variables: WorkflowVariableList
+): SkipChargeNodeType['data']['errors'] {
+    let errors: CancelSubscriptionNodeType['data']['errors'] = null
+
+    if (node.data.touched?.subscriptionId) {
+        if (!node.data.subscriptionId.trim()) {
+            errors = mergeErrors(
+                errors,
+                `subscriptionId`,
+                'Subscription id is required'
+            )
+        } else if (hasInvalidVariables(node.data.subscriptionId, variables)) {
+            errors = mergeErrors(errors, `subscriptionId`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.subscriptionId)) {
+            errors = mergeErrors(
+                errors,
+                `subscriptionId`,
+                'Invalid variables syntax'
+            )
+        }
+    }
+
+    if (node.data.touched?.reason) {
+        if (!node.data.reason.trim()) {
+            errors = mergeErrors(errors, `reason`, 'Reason is required')
+        } else if (hasInvalidVariables(node.data.reason, variables)) {
+            errors = mergeErrors(errors, `reason`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.reason)) {
+            errors = mergeErrors(errors, `reason`, 'Invalid variables syntax')
+        }
+    }
+
+    return errors
+}
+
+export function getReplaceItemNodeTouched(): NonNullable<
+    ReplaceItemNodeType['data']['touched']
+> {
+    return {
+        productVariantId: true,
+        quantity: true,
+        addedProductVariantId: true,
+        addedQuantity: true,
+    }
+}
+
+export function getReplaceItemNodeErrors(
+    node: ReplaceItemNodeType,
+    variables: WorkflowVariableList
+): ReplaceItemNodeType['data']['errors'] {
+    let errors: ReplaceItemNodeType['data']['errors'] = null
+
+    if (node.data.touched?.productVariantId) {
+        if (!node.data.productVariantId.trim()) {
+            errors = mergeErrors(
+                errors,
+                `productVariantId`,
+                'Product variant id is required'
+            )
+        } else if (hasInvalidVariables(node.data.productVariantId, variables)) {
+            errors = mergeErrors(
+                errors,
+                `productVariantId`,
+                'Invalid variables'
+            )
+        } else if (!isValidLiquidSyntax(node.data.productVariantId)) {
+            errors = mergeErrors(
+                errors,
+                `productVariantId`,
+                'Invalid variables syntax'
+            )
+        }
+    }
+
+    if (node.data.touched?.quantity) {
+        if (!node.data.quantity.trim()) {
+            errors = mergeErrors(errors, `quantity`, 'Quantity is required')
+        } else if (hasInvalidVariables(node.data.quantity, variables)) {
+            errors = mergeErrors(errors, `quantity`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.quantity)) {
+            errors = mergeErrors(errors, `quantity`, 'Invalid variables syntax')
+        }
+    }
+
+    if (node.data.touched?.addedProductVariantId) {
+        if (!node.data.addedProductVariantId.trim()) {
+            errors = mergeErrors(
+                errors,
+                `addedProductVariantId`,
+                'Added product variant id is required'
+            )
+        } else if (
+            hasInvalidVariables(node.data.addedProductVariantId, variables)
+        ) {
+            errors = mergeErrors(
+                errors,
+                `addedProductVariantId`,
+                'Invalid variables'
+            )
+        } else if (!isValidLiquidSyntax(node.data.addedProductVariantId)) {
+            errors = mergeErrors(
+                errors,
+                `addedProductVariantId`,
+                'Invalid variables syntax'
+            )
+        }
+    }
+
+    if (node.data.touched?.addedQuantity) {
+        if (!node.data.addedQuantity.trim()) {
+            errors = mergeErrors(
+                errors,
+                `addedQuantity`,
+                'Added quantity is required'
+            )
+        } else if (hasInvalidVariables(node.data.addedQuantity, variables)) {
+            errors = mergeErrors(errors, `addedQuantity`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.addedQuantity)) {
+            errors = mergeErrors(
+                errors,
+                `addedQuantity`,
+                'Invalid variables syntax'
+            )
+        }
+    }
+
+    return errors
+}
+
+export function getRemoveItemNodeTouched(): NonNullable<
+    RemoveItemNodeType['data']['touched']
+> {
+    return {
+        productVariantId: true,
+        quantity: true,
+    }
+}
+
+export function getRemoveItemNodeErrors(
+    node: RemoveItemNodeType,
+    variables: WorkflowVariableList
+): RemoveItemNodeType['data']['errors'] {
+    let errors: RemoveItemNodeType['data']['errors'] = null
+
+    if (node.data.touched?.productVariantId) {
+        if (!node.data.productVariantId.trim()) {
+            errors = mergeErrors(
+                errors,
+                `productVariantId`,
+                'Product variant id is required'
+            )
+        } else if (hasInvalidVariables(node.data.productVariantId, variables)) {
+            errors = mergeErrors(
+                errors,
+                `productVariantId`,
+                'Invalid variables'
+            )
+        } else if (!isValidLiquidSyntax(node.data.productVariantId)) {
+            errors = mergeErrors(
+                errors,
+                `productVariantId`,
+                'Invalid variables syntax'
+            )
+        }
+    }
+
+    if (node.data.touched?.quantity) {
+        if (!node.data.quantity.trim()) {
+            errors = mergeErrors(errors, `quantity`, 'Quantity is required')
+        } else if (hasInvalidVariables(node.data.quantity, variables)) {
+            errors = mergeErrors(errors, `quantity`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.quantity)) {
+            errors = mergeErrors(errors, `quantity`, 'Invalid variables syntax')
+        }
+    }
+
+    return errors
+}
+
+export function getUpdateShippingAddressNodeTouched(): NonNullable<
+    UpdateShippingAddressNodeType['data']['touched']
+> {
+    return {
+        name: true,
+        address1: true,
+        address2: true,
+        city: true,
+        zip: true,
+        province: true,
+        country: true,
+        phone: true,
+        lastName: true,
+        firstName: true,
+    }
+}
+
+export function getUpdateShippingAddressNodeErrors(
+    node: UpdateShippingAddressNodeType,
+    variables: WorkflowVariableList
+): UpdateShippingAddressNodeType['data']['errors'] {
+    let errors: UpdateShippingAddressNodeType['data']['errors'] = null
+
+    if (node.data.touched?.name) {
+        if (!node.data.name.trim()) {
+            errors = mergeErrors(errors, `name`, 'Name is required')
+        } else if (hasInvalidVariables(node.data.name, variables)) {
+            errors = mergeErrors(errors, `name`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.name)) {
+            errors = mergeErrors(errors, `name`, 'Invalid variables syntax')
+        }
+    }
+
+    if (node.data.touched?.address1) {
+        if (!node.data.address1.trim()) {
+            errors = mergeErrors(
+                errors,
+                `address1`,
+                'Address line 1 is required'
+            )
+        } else if (hasInvalidVariables(node.data.address1, variables)) {
+            errors = mergeErrors(errors, `address1`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.address1)) {
+            errors = mergeErrors(errors, `address1`, 'Invalid variables syntax')
+        }
+    }
+
+    if (node.data.touched?.address2) {
+        if (!node.data.address2.trim()) {
+            errors = mergeErrors(
+                errors,
+                `address2`,
+                'Address line 2 is required'
+            )
+        } else if (hasInvalidVariables(node.data.address2, variables)) {
+            errors = mergeErrors(errors, `address2`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.address2)) {
+            errors = mergeErrors(errors, `address2`, 'Invalid variables syntax')
+        }
+    }
+
+    if (node.data.touched?.city) {
+        if (!node.data.city.trim()) {
+            errors = mergeErrors(errors, `city`, 'City is required')
+        } else if (hasInvalidVariables(node.data.city, variables)) {
+            errors = mergeErrors(errors, `city`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.city)) {
+            errors = mergeErrors(errors, `city`, 'Invalid variables syntax')
+        }
+    }
+
+    if (node.data.touched?.zip) {
+        if (!node.data.zip.trim()) {
+            errors = mergeErrors(errors, `zip`, 'ZIP code is required')
+        } else if (hasInvalidVariables(node.data.zip, variables)) {
+            errors = mergeErrors(errors, `zip`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.zip)) {
+            errors = mergeErrors(errors, `zip`, 'Invalid variables syntax')
+        }
+    }
+
+    if (node.data.touched?.province) {
+        if (!node.data.province.trim()) {
+            errors = mergeErrors(errors, `province`, 'State is required')
+        } else if (hasInvalidVariables(node.data.province, variables)) {
+            errors = mergeErrors(errors, `province`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.province)) {
+            errors = mergeErrors(errors, `province`, 'Invalid variables syntax')
+        }
+    }
+
+    if (node.data.touched?.country) {
+        if (!node.data.country.trim()) {
+            errors = mergeErrors(errors, `country`, 'Country is required')
+        } else if (hasInvalidVariables(node.data.country, variables)) {
+            errors = mergeErrors(errors, `country`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.country)) {
+            errors = mergeErrors(errors, `country`, 'Invalid variables syntax')
+        }
+    }
+
+    if (node.data.touched?.phone) {
+        if (!node.data.phone.trim()) {
+            errors = mergeErrors(errors, `phone`, 'Phone number is required')
+        } else if (hasInvalidVariables(node.data.phone, variables)) {
+            errors = mergeErrors(errors, `phone`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.phone)) {
+            errors = mergeErrors(errors, `phone`, 'Invalid variables syntax')
+        }
+    }
+
+    if (node.data.touched?.lastName) {
+        if (!node.data.lastName.trim()) {
+            errors = mergeErrors(errors, `lastName`, 'Last name is required')
+        } else if (hasInvalidVariables(node.data.lastName, variables)) {
+            errors = mergeErrors(errors, `lastName`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.lastName)) {
+            errors = mergeErrors(errors, `lastName`, 'Invalid variables syntax')
+        }
+    }
+
+    if (node.data.touched?.firstName) {
+        if (!node.data.firstName.trim()) {
+            errors = mergeErrors(errors, `firstName`, 'First name is required')
+        } else if (hasInvalidVariables(node.data.firstName, variables)) {
+            errors = mergeErrors(errors, `firstName`, 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.firstName)) {
+            errors = mergeErrors(
+                errors,
+                `firstName`,
+                'Invalid variables syntax'
+            )
+        }
+    }
+
+    return errors
 }

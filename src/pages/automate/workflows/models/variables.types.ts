@@ -1,3 +1,5 @@
+import {ReactNode} from 'react'
+
 export type WorkflowVariableType =
     | 'string'
     | 'number'
@@ -30,10 +32,12 @@ type BaseWorkflowVariable<T extends WorkflowVariableType> = {
         | 'skip_charge'
         | 'app'
         | 'custom_input'
+        | 'reusable_llm_prompt_call'
         | 'merchant_input'
     type: T
     format?: WorkflowVariableFormat
     filter?: string
+    icon?: ReactNode
 }
 
 type StringWorkflowVariable = BaseWorkflowVariable<'string'> & {
@@ -65,7 +69,9 @@ export type WorkflowVariableGroup = {
         | 'shopper_authentication'
         | 'custom_input'
         | 'merchant_input'
+        | 'reusable_llm_prompt_call'
     variables: (WorkflowVariable | WorkflowVariableGroup)[]
+    icon?: ReactNode
 }
 
 export type WorkflowVariableList = (WorkflowVariable | WorkflowVariableGroup)[]

@@ -21,8 +21,8 @@ import App from 'pages/App'
 import ActionEventsViewContainer from 'pages/automate/actions/ActionEventsViewContainer'
 import ActionsTemplatesViewContainer from 'pages/automate/actions/ActionsTemplatesViewContainer'
 import ActionsViewContainer from 'pages/automate/actions/ActionsViewContainer'
-import CreateActionFormView from 'pages/automate/actions/CreateActionFormView'
-import EditActionFormView from 'pages/automate/actions/EditActionFormView'
+import CreateActionViewContainer from 'pages/automate/actions/CreateActionViewContainer'
+import EditActionViewContainer from 'pages/automate/actions/EditActionViewContainer'
 import useShowAutomateActions from 'pages/automate/actions/hooks/useShowAutomateActions'
 import ActionsPlatformAppsView from 'pages/automate/actionsPlatform/ActionsPlatformAppsView'
 import ActionsPlatformCreateAppFormView from 'pages/automate/actionsPlatform/ActionsPlatformCreateAppFormView'
@@ -888,12 +888,12 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
                             <Route
                                 path={`${path}/actions/new`}
                                 exact
-                                component={CreateActionFormView}
+                                component={CreateActionViewContainer}
                             />
                             <Route
                                 path={`${path}/actions/edit/:id`}
                                 exact
-                                component={EditActionFormView}
+                                component={EditActionViewContainer}
                             />
                             <Route
                                 path={`${path}/actions/templates`}

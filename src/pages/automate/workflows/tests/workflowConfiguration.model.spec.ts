@@ -109,7 +109,9 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
         const visualBuilderGraph =
             transformWorkflowConfigurationIntoVisualBuilderGraph(
                 transformVisualBuilderGraphIntoWfConfiguration(
-                    transformWorkflowConfigurationIntoVisualBuilderGraph(c)
+                    transformWorkflowConfigurationIntoVisualBuilderGraph(c),
+                    true,
+                    []
                 )
             )
         expect(visualBuilderGraph.nodes.length).toBe(6)
@@ -323,7 +325,9 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
         const visualBuilderGraph =
             transformWorkflowConfigurationIntoVisualBuilderGraph(
                 transformVisualBuilderGraphIntoWfConfiguration(
-                    transformWorkflowConfigurationIntoVisualBuilderGraph(c)
+                    transformWorkflowConfigurationIntoVisualBuilderGraph(c),
+                    true,
+                    []
                 )
             )
         expect(visualBuilderGraph.nodes.length).toBe(4)
@@ -523,7 +527,9 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
         const visualBuilderGraph =
             transformWorkflowConfigurationIntoVisualBuilderGraph(
                 transformVisualBuilderGraphIntoWfConfiguration(
-                    transformWorkflowConfigurationIntoVisualBuilderGraph(c)
+                    transformWorkflowConfigurationIntoVisualBuilderGraph(c),
+                    true,
+                    []
                 )
             )
         expect(visualBuilderGraph.nodes.length).toBe(4)
@@ -697,7 +703,9 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
         const visualBuilderGraph =
             transformWorkflowConfigurationIntoVisualBuilderGraph(
                 transformVisualBuilderGraphIntoWfConfiguration(
-                    transformWorkflowConfigurationIntoVisualBuilderGraph(c)
+                    transformWorkflowConfigurationIntoVisualBuilderGraph(c),
+                    true,
+                    []
                 )
             )
         expect(visualBuilderGraph.nodes.length).toBe(4)
@@ -869,7 +877,9 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
         const visualBuilderGraph =
             transformWorkflowConfigurationIntoVisualBuilderGraph(
                 transformVisualBuilderGraphIntoWfConfiguration(
-                    transformWorkflowConfigurationIntoVisualBuilderGraph(c)
+                    transformWorkflowConfigurationIntoVisualBuilderGraph(c),
+                    true,
+                    []
                 )
             )
         expect(visualBuilderGraph.nodes.length).toBe(4)
@@ -1093,7 +1103,9 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
         const visualBuilderGraph =
             transformWorkflowConfigurationIntoVisualBuilderGraph(
                 transformVisualBuilderGraphIntoWfConfiguration(
-                    transformWorkflowConfigurationIntoVisualBuilderGraph(c)
+                    transformWorkflowConfigurationIntoVisualBuilderGraph(c),
+                    true,
+                    []
                 )
             )
         expect(visualBuilderGraph.nodes.length).toBe(4)
@@ -1298,7 +1310,9 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
         const visualBuilderGraph =
             transformWorkflowConfigurationIntoVisualBuilderGraph(
                 transformVisualBuilderGraphIntoWfConfiguration(
-                    transformWorkflowConfigurationIntoVisualBuilderGraph(c)
+                    transformWorkflowConfigurationIntoVisualBuilderGraph(c),
+                    true,
+                    []
                 )
             )
         expect(visualBuilderGraph.nodes.length).toBe(4)

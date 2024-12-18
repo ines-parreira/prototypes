@@ -11,7 +11,6 @@ import thunk from 'redux-thunk'
 import {shopifyIntegration} from 'fixtures/integrations'
 import {
     useGetStoreApps,
-    useGetWorkflowConfiguration,
     useGetWorkflowConfigurationTemplates,
     useUpsertAccountOauth2Token,
 } from 'models/workflows/queries'
@@ -20,6 +19,7 @@ import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {renderWithRouter} from 'utils/testing'
 
+import {WorkflowConfiguration} from '../../workflows/models/workflowConfiguration.types'
 import EditActionFormView from '../EditActionFormView'
 import useAddStoreApp from '../hooks/useAddStoreApp'
 import useDeleteAction from '../hooks/useDeleteAction'
@@ -37,7 +37,6 @@ jest.mock('../hooks/useUpsertAction')
 jest.mock('../hooks/useDeleteAction')
 
 const mockStore = configureMockStore([thunk])
-const mockUseGetWorkflowConfiguration = jest.mocked(useGetWorkflowConfiguration)
 const mockUseFlags = jest.mocked(useFlags)
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates
@@ -56,72 +55,69 @@ const defaultState = {
     integrations: fromJS({integrations: [shopifyIntegration]}),
 }
 
+const configuration: WorkflowConfiguration = {
+    available_languages: [],
+    entrypoints: [
+        {
+            deactivated_datetime: null,
+            kind: 'llm-conversation',
+            settings: {
+                instructions: 'test',
+                requires_confirmation: false,
+            },
+            trigger: 'llm-prompt',
+        },
+    ],
+    id: 'test1',
+    initial_step_id: 'teststep1',
+    internal_id: 'testinternal1',
+    is_draft: false,
+    name: 'test1',
+    steps: [
+        {
+            id: 'teststep1',
+            kind: 'http-request',
+            settings: {
+                headers: {},
+                method: 'GET',
+                name: '',
+                url: 'https://example.com',
+                variables: [
+                    {
+                        id: 'testvariable1',
+                        name: 'Request result',
+                        jsonpath: '$',
+                        data_type: null,
+                    },
+                ],
+            },
+        },
+    ],
+    transitions: [],
+    triggers: [
+        {
+            kind: 'llm-prompt',
+            settings: {
+                custom_inputs: [],
+                object_inputs: [],
+                outputs: [
+                    {
+                        description: '',
+                        id: 'testoutput1',
+                        path: 'steps_state.teststep1.content.testvariable1',
+                    },
+                ],
+            },
+        },
+    ],
+    updated_datetime: '2024-10-01T11:04:32.989Z',
+}
+
 describe('<EditActionFormView />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
 
         mockUseFlags.mockReturnValue({})
-        mockUseGetWorkflowConfiguration.mockReturnValue({
-            data: {
-                available_languages: [],
-                entrypoints: [
-                    {
-                        deactivated_datetime: null,
-                        kind: 'llm-conversation',
-                        settings: {
-                            instructions: 'test',
-                            requires_confirmation: false,
-                        },
-                        trigger: 'llm-prompt',
-                    },
-                ],
-                id: 'test1',
-                initial_step_id: 'teststep1',
-                internal_id: 'testinternal1',
-                is_draft: false,
-                name: 'test1',
-                steps: [
-                    {
-                        id: 'teststep1',
-                        kind: 'http-request',
-                        settings: {
-                            headers: {},
-                            method: 'GET',
-                            name: '',
-                            url: 'https://example.com',
-                            variables: [
-                                {
-                                    id: 'testvariable1',
-                                    name: 'Request result',
-                                    jsonpath: '$',
-                                    data_type: null,
-                                },
-                            ],
-                        },
-                    },
-                ],
-                transitions: [],
-                triggers: [
-                    {
-                        kind: 'llm-prompt',
-                        settings: {
-                            custom_inputs: [],
-                            object_inputs: [],
-                            outputs: [
-                                {
-                                    description: '',
-                                    id: 'testoutput1',
-                                    path: 'steps_state.teststep1.content.testvariable1',
-                                },
-                            ],
-                        },
-                    },
-                ],
-                updated_datetime: '2024-10-01T11:04:32.989Z',
-                created_datetime: '2024-10-01T11:04:32.989Z',
-            },
-            isInitialLoading: false,
-        } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
         mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
             data: [],
             isInitialLoading: false,
@@ -162,7 +158,7 @@ describe('<EditActionFormView />', () => {
         renderWithRouter(
             <Provider store={mockStore()}>
                 <QueryClientProvider client={queryClient}>
-                    <EditActionFormView />
+                    <EditActionFormView configuration={configuration} />
                 </QueryClientProvider>
             </Provider>,
             {
@@ -175,44 +171,40 @@ describe('<EditActionFormView />', () => {
     })
 
     it('should render edit template action form', () => {
-        mockUseGetWorkflowConfiguration.mockReturnValue({
-            data: {
-                available_languages: [],
-                entrypoints: [
-                    {
-                        deactivated_datetime: null,
-                        kind: 'llm-conversation',
-                        settings: {
-                            instructions: 'test',
-                            requires_confirmation: false,
-                        },
-                        trigger: 'llm-prompt',
+        const configuration: WorkflowConfiguration = {
+            available_languages: [],
+            entrypoints: [
+                {
+                    deactivated_datetime: null,
+                    kind: 'llm-conversation',
+                    settings: {
+                        instructions: 'test',
+                        requires_confirmation: false,
                     },
-                ],
-                id: 'test1',
-                initial_step_id: 'teststep1',
-                internal_id: 'testinternal1',
-                is_draft: false,
-                name: 'test1',
-                steps: [],
-                transitions: [],
-                triggers: [
-                    {
-                        kind: 'llm-prompt',
-                        settings: {
-                            custom_inputs: [],
-                            object_inputs: [],
-                            outputs: [],
-                        },
+                    trigger: 'llm-prompt',
+                },
+            ],
+            id: 'test1',
+            initial_step_id: 'teststep1',
+            internal_id: 'testinternal1',
+            is_draft: false,
+            name: 'test1',
+            steps: [],
+            transitions: [],
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [],
+                        outputs: [],
                     },
-                ],
-                updated_datetime: '2024-10-01T11:04:32.989Z',
-                created_datetime: '2024-10-01T11:04:32.989Z',
-                apps: [{type: 'shopify'}],
-                template_internal_id: 'testtemplateinternal1',
-            },
-            isInitialLoading: false,
-        } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
+                },
+            ],
+            updated_datetime: '2024-10-01T11:04:32.989Z',
+            apps: [{type: 'shopify'}],
+            template_internal_id: 'testtemplateinternal1',
+        }
         mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
             data: [
                 {
@@ -258,7 +250,7 @@ describe('<EditActionFormView />', () => {
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <QueryClientProvider client={queryClient}>
-                    <EditActionFormView />
+                    <EditActionFormView configuration={configuration} />
                 </QueryClientProvider>
             </Provider>,
             {
@@ -277,49 +269,45 @@ describe('<EditActionFormView />', () => {
             ],
         })
 
-        mockUseGetWorkflowConfiguration.mockReturnValue({
-            data: {
-                available_languages: [],
-                entrypoints: [
-                    {
-                        deactivated_datetime: null,
-                        kind: 'llm-conversation',
-                        settings: {
-                            instructions: 'test',
-                            requires_confirmation: false,
-                        },
-                        trigger: 'llm-prompt',
+        const configuration: WorkflowConfiguration = {
+            available_languages: [],
+            entrypoints: [
+                {
+                    deactivated_datetime: null,
+                    kind: 'llm-conversation',
+                    settings: {
+                        instructions: 'test',
+                        requires_confirmation: false,
                     },
-                ],
-                id: 'test1',
-                initial_step_id: 'teststep1',
-                internal_id: 'testinternal1',
-                is_draft: false,
-                name: 'test1',
-                steps: [],
-                transitions: [],
-                triggers: [
-                    {
-                        kind: 'llm-prompt',
-                        settings: {
-                            custom_inputs: [],
-                            object_inputs: [],
-                            outputs: [],
-                        },
+                    trigger: 'llm-prompt',
+                },
+            ],
+            id: 'test1',
+            initial_step_id: 'teststep1',
+            internal_id: 'testinternal1',
+            is_draft: false,
+            name: 'test1',
+            steps: [],
+            transitions: [],
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [],
+                        outputs: [],
                     },
-                ],
-                updated_datetime: '2024-10-01T11:04:32.989Z',
-                created_datetime: '2024-10-01T11:04:32.989Z',
-                apps: [{type: 'shopify'}],
-                template_internal_id: 'testtemplateinternal1',
-            },
-            isInitialLoading: false,
-        } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
+                },
+            ],
+            updated_datetime: '2024-10-01T11:04:32.989Z',
+            apps: [{type: 'shopify'}],
+            template_internal_id: 'testtemplateinternal1',
+        }
 
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <QueryClientProvider client={queryClient}>
-                    <EditActionFormView />
+                    <EditActionFormView configuration={configuration} />
                 </QueryClientProvider>
             </Provider>,
             {

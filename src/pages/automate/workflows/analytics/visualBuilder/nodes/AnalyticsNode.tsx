@@ -55,6 +55,7 @@ type Props = VisualBuilderNodeProps & {
         | 'llm_prompt_trigger'
         | 'end'
         | 'reusable_llm_prompt_trigger'
+        | 'reusable_llm_prompt_call'
     >
     contentText: string
     nodeId: string
@@ -177,6 +178,7 @@ export default function AnalyticsNodeWrapper(
         | 'llm_prompt_trigger'
         | 'end'
         | 'reusable_llm_prompt_trigger'
+        | 'reusable_llm_prompt_call'
     >
 
     const {content, name} = node.data as any

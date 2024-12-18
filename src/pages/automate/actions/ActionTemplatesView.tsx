@@ -26,7 +26,7 @@ const ActionTemplatesView = () => {
     })
 
     const isMultiStepActionEnabled = useFlag(
-        FeatureFlagKey.ActionsMultiStep,
+        FeatureFlagKey.ActionsUseCaseTemplates,
         false
     )
 

@@ -1,7 +1,5 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React, {memo} from 'react'
-import {Handle, NodeProps, Position} from 'reactflow'
+import {NodeProps} from 'reactflow'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -13,7 +11,8 @@ import {ShopperAuthenticationNodeType} from 'pages/automate/workflows/models/vis
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
 
-import css from './Node.less'
+import VisualBuilderNode from './VisualBuilderNode'
+import VisualBuilderNodeIconContent from './VisualBuilderNodeIconContent'
 
 const ShopperAuthenticationNode = memo(function ShopperAuthenticationNode({
     isSelected,
@@ -24,35 +23,18 @@ const ShopperAuthenticationNode = memo(function ShopperAuthenticationNode({
     return (
         <div>
             <EdgeBlock {...edgeProps} />
-            <div
-                className={classNames(
-                    css.node,
-                    {
-                        [css.nodeGreyedOut]: isGreyedOut,
-                        [css.nodeSelected]: isSelected,
-                    },
-                    css.shopperAuthenticationNode
-                )}
+            <VisualBuilderNode
+                isClickable
+                isSelected={isSelected}
+                isGreyedOut={isGreyedOut}
+                height={80}
             >
-                <Handle
-                    type="target"
-                    position={Position.Top}
-                    className={css.sourceHandle}
-                />
-                <div className={css.nodeContainer}>
-                    <VisualBuilderActionTag nodeType="shopper_authentication" />
-                    <Label className={css.nodeGreyTitle}>
-                        <i className="material-icons">check_circle</i>
-                        Confirm customer identity
-                    </Label>
-                    <NodeDeleteIcon {...deleteProps} />
-                </div>
-                <Handle
-                    type="source"
-                    position={Position.Bottom}
-                    className={classNames(css.targetHandle)}
-                />
-            </div>
+                <VisualBuilderActionTag nodeType="shopper_authentication" />
+                <VisualBuilderNodeIconContent icon="check_circle">
+                    Confirm customer identity
+                </VisualBuilderNodeIconContent>
+                <NodeDeleteIcon {...deleteProps} />
+            </VisualBuilderNode>
         </div>
     )
 })

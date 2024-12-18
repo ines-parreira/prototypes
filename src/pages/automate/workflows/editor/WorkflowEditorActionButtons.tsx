@@ -75,7 +75,7 @@ export const WorkflowEditorActionButtons = ({
                 <Button
                     onClick={onSave}
                     isLoading={isFetchPending || isSavePending}
-                    isDisabled={!isDirty || isFetchPending}
+                    isDisabled={isFetchPending}
                     intent="secondary"
                 >
                     Save
@@ -83,7 +83,7 @@ export const WorkflowEditorActionButtons = ({
                 <Button
                     onClick={onPublish}
                     isLoading={isFetchPending || isPublishPending}
-                    isDisabled={!isDirty || isFetchPending}
+                    isDisabled={isFetchPending}
                 >
                     Publish
                 </Button>

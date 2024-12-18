@@ -15,7 +15,6 @@ import {
 } from '../../models/visualBuilderGraph.model'
 import {
     HttpRequestNodeType,
-    isTriggerNodeType,
     VisualBuilderEdge,
     VisualBuilderGraph,
 } from '../../models/visualBuilderGraph.types'
@@ -397,7 +396,9 @@ export function httpRequestReducer(
                                     edge.data.conditions,
                                     getWorkflowVariableListForNode(
                                         draft,
-                                        edge.target
+                                        edge.target,
+                                        [],
+                                        []
                                     )
                                 )
                         }
@@ -699,11 +700,11 @@ function rebuildGraphForVariableChange(
     })
 }
 
-function insertHttpRequest(graph: VisualBuilderGraph, beforeEndNodeId: string) {
-    const triggerNode = graph.nodes.find(isTriggerNodeType)!
+function insertHttpRequest(graph: VisualBuilderGraph, beforeNodeId: string) {
+    const triggerNode = graph.nodes[0]
 
     return produce(graph, (draft) => {
-        const edge = draft.edges.find((e) => e.target === beforeEndNodeId)
+        const edge = draft.edges.find((e) => e.target === beforeNodeId)
         if (!edge) return
         const httpRequestNode = buildHttpRequestNode()
         const endNode = buildEndNode(
@@ -712,13 +713,22 @@ function insertHttpRequest(graph: VisualBuilderGraph, beforeEndNodeId: string) {
                 : 'end-failure'
         )
 
+        const targetNode = draft.nodes.find((node) => node.id === beforeNodeId)
+
+        if (
+            targetNode?.type === 'end' &&
+            targetNode.data.action === 'end-failure'
+        ) {
+            targetNode.data.action = 'end-success'
+        }
+
         draft.nodes.push(httpRequestNode, endNode)
         edge.target = httpRequestNode.id
         draft.edges.push(
             {
                 ...buildEdgeCommonProperties(),
                 source: httpRequestNode.id,
-                target: beforeEndNodeId,
+                target: beforeNodeId,
                 data: {
                     name: 'Success',
                     conditions: getFallibleNodeSuccessConditions(

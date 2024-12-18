@@ -22,6 +22,15 @@ type Props = {
     ) => void
     onDelete: (index: number) => void
     onAdd: () => void
+    errors?: Record<
+        number,
+        {
+            name?: string
+            jsonpath?: string
+        }
+    >
+    onNameBlur?: (index: number) => void
+    onJSONPathBlur?: (index: number) => void
 }
 
 const Variables = ({
@@ -31,6 +40,9 @@ const Variables = ({
     onChange,
     onDelete,
     onAdd,
+    errors,
+    onNameBlur,
+    onJSONPathBlur,
 }: Props) => {
     const anchorRef = useRef<HTMLButtonElement | null>(null)
     const [currentDeleteIndex, setCurrentDeleteIndex] = useState<number>(-1)
@@ -53,6 +65,10 @@ const Variables = ({
                             onChange={(name) => {
                                 onChange(index, {...variable, name})
                             }}
+                            hasError={!!errors?.[index]?.name}
+                            onBlur={() => {
+                                onNameBlur?.(index)
+                            }}
                         />
                         <TextInput
                             value={variable.jsonpath}
@@ -60,6 +76,10 @@ const Variables = ({
                             placeholder="JSONPath"
                             onChange={(jsonpath) => {
                                 onChange(index, {...variable, jsonpath})
+                            }}
+                            hasError={!!errors?.[index]?.jsonpath}
+                            onBlur={() => {
+                                onJSONPathBlur?.(index)
                             }}
                         />
                         <SelectField

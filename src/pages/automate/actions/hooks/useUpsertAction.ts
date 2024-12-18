@@ -90,8 +90,8 @@ export default function useUpsertAction(
         onError: (error, _, context) => {
             const errorMessage =
                 actionType === 'create'
-                    ? `Fail to create action. Please try again later.`
-                    : `Fail to update action. Please try again later.`
+                    ? `Fail to create Action. Please try again later.`
+                    : `Fail to update Action. Please try again later.`
             handleError(error, errorMessage, dispatch)
             queryClient.setQueryData(
                 storeWorkflowsConfigurationQueryKey,

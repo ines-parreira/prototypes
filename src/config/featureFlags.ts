@@ -3,6 +3,9 @@ export enum FeatureFlagKey {
     ActionEventsLogs = 'action-events-logs',
     ActionsInputsProduct = 'actions-inputs-product',
     ActionsInternalPlatform = 'actions-internal-platform',
+    ActionsMultiStep = 'actions-multi-step',
+    ActionSteps = 'action-steps',
+    ActionsUseCaseTemplates = 'actions-use-case-templates',
     ActionTemplates = 'action-templates',
     AdvancedSearchSorting = 'advanced-search-sorting',
     AgentActivityTracking = 'agent-activity-tracking',
@@ -141,5 +144,4 @@ export enum FeatureFlagKey {
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     VoiceCallSearch = 'voice-call-search',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
-    ActionsMultiStep = 'actions-multi-step',
 }

@@ -2,6 +2,10 @@
 
 :local {
     .container {
+        flex: 1;
+    }
+
+    .group {
         min-width: 0;
     }
 
@@ -70,5 +74,12 @@
                 }
             }
         }
+    }
+
+    .error {
+        .caption-regular();
+
+        color: var(--feedback-error);
+        margin-top: 4px;
     }
 }

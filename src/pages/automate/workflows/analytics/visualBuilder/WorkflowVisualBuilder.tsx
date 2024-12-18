@@ -65,12 +65,6 @@ export const WorkflowVisualBuilderWrapped: React.FC<Props> = () => {
     const reactFlow = useReactFlow()
     const [searchParams] = useSearchParam('zoom')
 
-    const startFlowNode = useMemo(
-        () =>
-            visualBuilderGraph.nodes.find((n) => n.type === 'channel_trigger'),
-        [visualBuilderGraph.nodes]
-    )
-
     const onDrawerTestEditorClose = useCallback(() => {
         setIsTesting(false)
     }, [setIsTesting])
@@ -172,16 +166,14 @@ export const WorkflowVisualBuilderWrapped: React.FC<Props> = () => {
                             </Controls>
                         </ReactFlow>
                     </div>
-                    {startFlowNode && (
-                        <TestFlowEditor
-                            startFlowNode={startFlowNode}
-                            isAuthenticationBannerVisible={
-                                hasNodeWithShopperAuthentication
-                            }
-                            isTesting={isTesting}
-                            onClose={onDrawerTestEditorClose}
-                        />
-                    )}
+                    <TestFlowEditor
+                        startFlowNode={visualBuilderGraph.nodes[0]}
+                        isAuthenticationBannerVisible={
+                            hasNodeWithShopperAuthentication
+                        }
+                        isTesting={isTesting}
+                        onClose={onDrawerTestEditorClose}
+                    />
                 </>
             )}
         </div>

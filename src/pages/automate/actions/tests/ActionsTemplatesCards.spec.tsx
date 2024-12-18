@@ -97,7 +97,7 @@ describe('<ActionsTemplatesCards />', () => {
 
     it('should render use case template card', () => {
         mockUseFlag.mockReturnValue({
-            [FeatureFlagKey.ActionsMultiStep]: true,
+            [FeatureFlagKey.ActionsUseCaseTemplates]: true,
         })
         renderWithRouter(
             <ActionsTemplatesCards

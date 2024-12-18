@@ -1,0 +1,35 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .form {
+        display: flex;
+        width: 680px;
+        flex-direction: column;
+        gap: @layout-spacing-l;
+    }
+
+    .actions {
+        position: sticky;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+        margin-top: @layout-spacing-m;
+        padding: @layout-spacing-m 0;
+        background: var(--neutral-grey-0);
+    }
+
+    .links {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .deleteButton {
+        margin-left: auto;
+    }
+
+    .container {
+        grid-template-columns: minmax(480px, 680px) 1fr;
+    }
+}

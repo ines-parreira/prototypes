@@ -1,20 +1,23 @@
 import {Label} from '@gorgias/merchant-ui-kit'
 import _noop from 'lodash/noop'
-import React, {useMemo} from 'react'
+import React, {useMemo, useRef, useState} from 'react'
 
 import ActionFormInputs from 'pages/automate/actions/components/ActionFormInputs'
+import VisualBuilderActionIcon from 'pages/automate/workflows/components/VisualBuilderActionIcon'
+import useSplitLLMPromptTriggerInputs from 'pages/automate/workflows/hooks/useSplitLLMPromptTriggerInputs'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
+import {WorkflowVariableGroup} from 'pages/automate/workflows/models/variables.types'
 import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {getTriggerNode} from 'pages/automate/workflows/models/workflowConfiguration.model'
 import {Drawer} from 'pages/common/components/Drawer'
-import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
-import CheckBox from 'pages/common/forms/CheckBox'
-import TextArea from 'pages/common/forms/TextArea'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
 
 import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
-import {ConditionsBranchBody} from './ConditionsNodeEditor/ConditionsBranchBody'
-import {buildConditionSchemaByVariableType} from './ConditionsNodeEditor/utils'
 
 import css from './NodeEditor.less'
 
@@ -23,142 +26,190 @@ export default function LLMPromptTriggerEditor({
 }: {
     nodeInEdition: LLMPromptTriggerNodeType
 }) {
-    const {dispatch, visualBuilderGraph, shouldShowErrors} =
+    const {dispatch, visualBuilderGraph, getVariableListForNode} =
         useVisualBuilderContext()
 
-    const workflowVariables = useMemo(
-        () =>
-            getWorkflowVariableListForNode(
-                visualBuilderGraph,
-                nodeInEdition.id
-            ),
-        [visualBuilderGraph, nodeInEdition.id]
+    const [inputs, templateInputs] = useSplitLLMPromptTriggerInputs(
+        nodeInEdition.data.inputs,
+        visualBuilderGraph.nodes
     )
 
-    const isDraft = visualBuilderGraph.wfConfigurationOriginal.is_draft
-    const initialTriggerNode = useMemo(
-        () =>
-            getTriggerNode(
-                visualBuilderGraph.wfConfigurationOriginal
-            ) as LLMPromptTriggerNodeType,
-        [visualBuilderGraph.wfConfigurationOriginal]
+    const workflowVariables = useMemo(
+        () => getVariableListForNode(nodeInEdition.id),
+        [getVariableListForNode, nodeInEdition.id]
     )
+
+    const customerVariables = workflowVariables.find(
+        (variable): variable is WorkflowVariableGroup =>
+            variable.nodeType === 'shopper_authentication'
+    )
+    const orderVariables = workflowVariables.find(
+        (variable): variable is WorkflowVariableGroup =>
+            variable.nodeType === 'order_selection'
+    )
+
+    const customerVariableInputRef = useRef<HTMLDivElement>(null)
+    const customerVariableFloatingRef = useRef<HTMLElement>(null)
+
+    const [isCustomerVariableOpen, setIsCustomerVariableOpen] = useState(false)
+
+    const orderVariableInputRef = useRef<HTMLDivElement>(null)
+    const orderVariableFloatingRef = useRef<HTMLElement>(null)
+
+    const [isOrderVariableOpen, setIsOrderVariableOpen] = useState(false)
 
     return (
         <>
             <NodeEditorDrawerHeader nodeInEdition={nodeInEdition} />
             <Drawer.Content>
-                <div className={css.container}>
-                    <TextArea
-                        className={css.formItem}
-                        label="AI Agent instructions"
-                        isRequired
-                        placeholder="e.g. Update the customer’s shipping address with a new address"
-                        caption="Describe what the Action does."
-                        value={nodeInEdition.data.instructions}
-                        onChange={(nextValue) => {
-                            dispatch({
-                                type: 'SET_LLM_PROMPT_TRIGGER_INSTRUCTIONS',
-                                instructions: nextValue,
-                            })
-                        }}
-                        isDisabled={!isDraft}
-                    />
-                    <CheckBox
-                        isChecked={nodeInEdition.data.requires_confirmation}
-                        onChange={(nextValue) => {
-                            dispatch({
-                                type: 'SET_LLM_PROMPT_TRIGGER_REQUIRES_CONFIRMATION',
-                                requiresConfirmation: nextValue,
-                            })
-                        }}
-                        caption="Recommended for irreversible Actions. e.g.
-                                    AI Agent will confirm that the customer
-                                    wants to cancel a specific order before
-                                    cancelling."
-                    >
-                        Require AI Agent to confirm with customers before
-                        completing the Action
-                    </CheckBox>
+                <div className={css.llmPromptContainer}>
+                    <div>
+                        Collect information from customers to use as variables
+                        in HTTP requests or conditions in this Action
+                        (optional).
+                    </div>
+                    <div className={css.llmPromptVariables}>
+                        <Label>
+                            Note: the following variables are already available
+                            to use in Action steps
+                        </Label>
+                        <SelectInputBox
+                            floating={customerVariableFloatingRef}
+                            onToggle={setIsCustomerVariableOpen}
+                            ref={customerVariableInputRef}
+                            prefix={
+                                <VisualBuilderActionIcon nodeType="shopper_authentication" />
+                            }
+                            label={customerVariables?.name}
+                        >
+                            <SelectInputBoxContext.Consumer>
+                                {(context) => (
+                                    <Dropdown
+                                        isOpen={isCustomerVariableOpen}
+                                        onToggle={() => context!.onBlur()}
+                                        ref={customerVariableFloatingRef}
+                                        target={customerVariableInputRef}
+                                    >
+                                        <DropdownBody>
+                                            {customerVariables?.variables.map(
+                                                (option) => (
+                                                    <DropdownItem
+                                                        key={option.name}
+                                                        option={{
+                                                            label: option.name,
+                                                            value: option.name,
+                                                        }}
+                                                        onClick={_noop}
+                                                    >
+                                                        <DropdownItemLabel
+                                                            prefix={
+                                                                <VisualBuilderActionIcon nodeType="shopper_authentication" />
+                                                            }
+                                                        >
+                                                            {option.name}
+                                                        </DropdownItemLabel>
+                                                    </DropdownItem>
+                                                )
+                                            )}
+                                        </DropdownBody>
+                                    </Dropdown>
+                                )}
+                            </SelectInputBoxContext.Consumer>
+                        </SelectInputBox>
+                        <SelectInputBox
+                            floating={orderVariableFloatingRef}
+                            onToggle={setIsOrderVariableOpen}
+                            ref={orderVariableInputRef}
+                            prefix={
+                                <VisualBuilderActionIcon nodeType="order_selection" />
+                            }
+                            label={orderVariables?.name}
+                        >
+                            <SelectInputBoxContext.Consumer>
+                                {(context) => (
+                                    <Dropdown
+                                        isOpen={isOrderVariableOpen}
+                                        onToggle={() => context!.onBlur()}
+                                        ref={orderVariableFloatingRef}
+                                        target={orderVariableInputRef}
+                                    >
+                                        <DropdownBody>
+                                            {orderVariables?.variables.map(
+                                                (option) => (
+                                                    <DropdownItem
+                                                        key={option.name}
+                                                        option={{
+                                                            label: option.name,
+                                                            value: option.name,
+                                                        }}
+                                                        onClick={_noop}
+                                                    >
+                                                        <DropdownItemLabel
+                                                            prefix={
+                                                                <VisualBuilderActionIcon nodeType="order_selection" />
+                                                            }
+                                                        >
+                                                            {option.name}
+                                                        </DropdownItemLabel>
+                                                    </DropdownItem>
+                                                )
+                                            )}
+                                        </DropdownBody>
+                                    </Dropdown>
+                                )}
+                            </SelectInputBoxContext.Consumer>
+                        </SelectInputBox>
+                    </div>
                     <ActionFormInputs
-                        inputs={nodeInEdition.data.inputs}
-                        semiImmutableInputs={initialTriggerNode.data.inputs}
+                        inputs={inputs}
+                        templateInputs={templateInputs}
                         onAdd={() => {
                             dispatch({
                                 type: 'ADD_LLM_PROMPT_TRIGGER_INPUT',
                             })
                         }}
-                        onDelete={(index) => {
+                        onDelete={(id) => {
                             dispatch({
                                 type: 'DELETE_LLM_PROMPT_TRIGGER_INPUT',
-                                index,
+                                id,
                             })
                         }}
-                        onChange={(nextValue, index) => {
+                        onChange={(nextValue) => {
                             dispatch({
                                 type: 'SET_LLM_PROMPT_TRIGGER_INPUT',
-                                index,
                                 input: nextValue,
                             })
                         }}
+                        label="Collect additional information from customers to use as variables in this Action"
+                        description={null}
+                        errors={nodeInEdition.data.errors?.inputs}
+                        onNameBlur={(id) => {
+                            dispatch({
+                                type: 'SET_TOUCHED',
+                                nodeId: nodeInEdition.id,
+                                touched: {
+                                    inputs: {
+                                        [id]: {
+                                            name: true,
+                                        },
+                                    },
+                                },
+                            })
+                        }}
+                        onInstructionsBlur={(id) => {
+                            dispatch({
+                                type: 'SET_TOUCHED',
+                                nodeId: nodeInEdition.id,
+                                touched: {
+                                    inputs: {
+                                        [id]: {
+                                            instructions: true,
+                                        },
+                                    },
+                                },
+                            })
+                        }}
                     />
-                    <ToolbarProvider workflowVariables={workflowVariables}>
-                        <div className={css.formItem}>
-                            <Label>
-                                Action can only be performed according to the
-                                following conditions
-                            </Label>
-                            <ConditionsBranchBody
-                                maxConditionsTooltipMessage="You’ve reached the maximum number of conditions for this action"
-                                variableDropdownProps={{
-                                    noSelectedCategoryText: 'INSERT variable',
-                                    dropdownPlacement: 'bottom-start',
-                                }}
-                                variablePickerTooltipMessage={null}
-                                hasMultipleChildren
-                                canDeleteBranch={false}
-                                branchId={''}
-                                availableVariables={workflowVariables}
-                                showNoneOption
-                                shouldShowErrors={shouldShowErrors}
-                                type={nodeInEdition.data.conditionsType}
-                                conditions={nodeInEdition.data.conditions}
-                                onDeleteBranch={_noop}
-                                onConditionDelete={(index) => {
-                                    dispatch({
-                                        type: 'DELETE_LLM_PROMPT_TRIGGER_CONDITION',
-                                        index,
-                                    })
-                                }}
-                                onVariableSelect={(variable) => {
-                                    const newCondition =
-                                        buildConditionSchemaByVariableType(
-                                            variable.type,
-                                            variable.value
-                                        )
-
-                                    dispatch({
-                                        type: 'ADD_LLM_PROMPT_TRIGGER_CONDITION',
-                                        condition: newCondition,
-                                    })
-                                }}
-                                onConditionTypeChange={(_branchId, type) => {
-                                    dispatch({
-                                        type: 'SET_LLM_PROMPT_TRIGGER_CONDITIONS_TYPE',
-                                        conditionsType: type,
-                                    })
-                                }}
-                                onConditionChange={(condition, index) => {
-                                    dispatch({
-                                        type: 'SET_LLM_PROMPT_TRIGGER_CONDITION',
-                                        index,
-                                        condition,
-                                    })
-                                }}
-                                isDisabled={!isDraft}
-                            />
-                        </div>
-                    </ToolbarProvider>
                 </div>
             </Drawer.Content>
         </>

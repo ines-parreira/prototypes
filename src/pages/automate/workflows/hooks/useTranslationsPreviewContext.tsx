@@ -10,7 +10,7 @@ import {VisualBuilderGraph} from '../models/visualBuilderGraph.types'
 import {LanguageCode} from '../models/workflowConfiguration.types'
 import {useWorkflowEditorContext} from './useWorkflowEditor'
 
-const TranslationsPreviewContext = createContext<
+export const TranslationsPreviewContext = createContext<
     | {
           previewLanguageList: LanguageCode[]
           previewLanguage?: LanguageCode | null

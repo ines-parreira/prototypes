@@ -1,55 +1,52 @@
 import {useQueryClient} from '@tanstack/react-query'
 import {produce} from 'immer'
 import React, {
-    useCallback,
-    useEffect,
-    useState,
-    useContext,
     createContext,
-    useRef,
+    useCallback,
+    useContext,
+    useEffect,
     useMemo,
+    useRef,
+    useState,
 } from 'react'
 
 import {WorkflowStepMetricsMap} from 'hooks/reporting/automate/utils'
 import useThrottledValue from 'hooks/useThrottledValue'
 import {IntegrationType} from 'models/integration/constants'
 import {
+    useGetWorkflowConfiguration,
     useUpsertWorkflowConfiguration,
     workflowsConfigurationDefinitionKeys,
-    useGetWorkflowConfiguration,
 } from 'models/workflows/queries'
+import useValidateOnVisualBuilderGraphChange from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
 import {useSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import {validateHttpHeaderName, validateWebhookURL} from 'utils'
 
 import {MAX_CONFIGURATION_SIZE_IN_BYTES} from '../constants'
-import {ConditionSchema} from '../models/conditions.types'
-import {
-    getWorkflowVariableListForNode,
-    checkGraphVariablesValidity,
-    validateJSONWithVariables,
-} from '../models/variables.model'
-import {WorkflowVariableList} from '../models/variables.types'
+import {getWorkflowVariableListForNode} from '../models/variables.model'
 import {
     areGraphsEqual,
     transformVisualBuilderGraphIntoWfConfiguration,
 } from '../models/visualBuilderGraph.model'
-import {VisualBuilderGraph} from '../models/visualBuilderGraph.types'
+import {
+    ChannelTriggerNodeType,
+    VisualBuilderGraph,
+} from '../models/visualBuilderGraph.types'
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
 import {
     LanguageCode,
     WorkflowConfiguration,
-    WorkflowStep,
-    WorkflowStepHttpRequest,
-    WorkflowTransition,
 } from '../models/workflowConfiguration.types'
 import {WorkflowConfigurationUpsertDto} from '../types'
 import {
     getPayloadSizeToLimitRate,
     isPayloadTooLarge,
 } from '../utils/payloadSize'
+import useTouchWorkflowGraph from './useTouchWorkflowGraph'
+import useUntouchWorkflowGraph from './useUntouchWorkflowGraph'
+import useValidateWorkflowGraph from './useValidateWorkflowGraph'
 import {
-    VisualBuilderGraphAction,
     useVisualBuilderGraphReducer,
+    VisualBuilderGraphAction,
 } from './useVisualBuilderGraphReducer'
 import {computeNodesPositions} from './useVisualBuilderGraphReducer/utils'
 import useWorkflowTranslations, {
@@ -59,13 +56,14 @@ import {workflowConfigurationFactory} from './utils'
 
 export type WorkflowEditorContext = {
     configuration: WorkflowConfiguration
-    visualBuilderGraph: VisualBuilderGraph
+    visualBuilderGraph: VisualBuilderGraph<ChannelTriggerNodeType>
     isDirty: boolean
     isFetchPending: boolean
     isSavePending: boolean
     isTesting: boolean
     isPublishPending: boolean
-    handleValidate: (isPublishing: boolean) => Maybe<string>
+    handleValidate: (isDraft: boolean) => boolean
+    handleValidateSize: () => string | undefined
     handleSave: () => Promise<string | undefined>
     handlePublish: () => Promise<string | undefined>
     handleDiscard: () => void
@@ -78,8 +76,6 @@ export type WorkflowEditorContext = {
         graph: VisualBuilderGraph,
         lang: LanguageCode
     ) => VisualBuilderGraph
-    shouldShowErrors: boolean
-    setShouldShowErrors: (b: boolean) => void
     setIsTesting: (isTesting: boolean) => void
     translationSizeToLimitRate: number
     configurationSizeToLimitRate: number
@@ -143,7 +139,6 @@ export function useWorkflowEditor(
 
     const [isSavePending, setIsSavePending] = useState(false)
     const [isPublishPending, setIsPublishPending] = useState(false)
-    const [shouldShowErrors, setShouldShowErrors] = useState(false)
     const [isTesting, setIsTesting] = useState(false)
     const [isFlowPublishingInChannels, setFlowPublishingInChannels] =
         useState(false)
@@ -168,7 +163,7 @@ export function useWorkflowEditor(
         )
     const [visualBuilderGraphDirty, dispatch] = useVisualBuilderGraphReducer(
         computeNodesPositions(
-            transformWorkflowConfigurationIntoVisualBuilderGraph(
+            transformWorkflowConfigurationIntoVisualBuilderGraph<ChannelTriggerNodeType>(
                 workflowFactoryInstance.current
             )
         )
@@ -178,7 +173,6 @@ export function useWorkflowEditor(
         translateWithSavedTranslations,
         saveTranslations,
         deleteTranslation,
-        getLangsOfIncompleteTranslations,
         discardTranslations,
         translateKey,
         currentLanguage,
@@ -188,10 +182,10 @@ export function useWorkflowEditor(
         translateGraph,
         computeCurrentTranslationSizeToLimitRate,
     } = useWorkflowTranslations(
-        visualBuilderGraphDirty.wfConfigurationOriginal.internal_id,
+        visualBuilderGraphDirty.internal_id,
         visualBuilderGraphDirty.available_languages ?? ['en-US'],
         isNew,
-        visualBuilderGraphDirty.wfConfigurationOriginal.internal_id !==
+        visualBuilderGraphDirty.internal_id !==
             workflowFactoryInstance.current.internal_id
     )
 
@@ -273,7 +267,11 @@ export function useWorkflowEditor(
         (graph) =>
             getPayloadSizeToLimitRate(
                 emptyTranslatedTexts(
-                    transformVisualBuilderGraphIntoWfConfiguration(graph)
+                    transformVisualBuilderGraphIntoWfConfiguration(
+                        graph,
+                        true,
+                        []
+                    )
                 ),
                 MAX_CONFIGURATION_SIZE_IN_BYTES
             ),
@@ -286,98 +284,133 @@ export function useWorkflowEditor(
         500
     )
 
+    const getVariableListForNode = useCallback(
+        (nodeId: string) => {
+            return getWorkflowVariableListForNode(
+                visualBuilderGraphDirty,
+                nodeId,
+                [],
+                []
+            )
+        },
+        [visualBuilderGraphDirty]
+    )
+
+    const handleValidateGraph = useValidateWorkflowGraph(getVariableListForNode)
+    const handleTouchGraph = useTouchWorkflowGraph()
+    const handleUntouchGraph = useUntouchWorkflowGraph()
+
+    useValidateOnVisualBuilderGraphChange({
+        graph: visualBuilderGraphDirty,
+        handleValidate: handleValidateGraph,
+        dispatch,
+    })
+
     const handleValidate = useCallback(
-        (isPublishing: boolean) => {
-            const configurationDirty =
-                transformVisualBuilderGraphIntoWfConfiguration(
-                    visualBuilderGraphDirty
-                )
-
-            const availableVariablesByStepId =
-                visualBuilderGraphDirty.nodes.reduce<
-                    Record<WorkflowStep['id'], WorkflowVariableList>
-                >(
-                    (acc, node) => ({
-                        ...acc,
-                        [node.id]: getWorkflowVariableListForNode(
-                            visualBuilderGraphDirty,
-                            node.id
-                        ),
-                    }),
-                    {}
-                )
-
-            const error = validateConfiguration(
-                configurationDirty,
-                isPublishing,
-                availableVariablesByStepId
+        (isDraft: boolean): boolean => {
+            const graph = handleValidateGraph(
+                handleTouchGraph(visualBuilderGraphDirty),
+                isDraft
             )
 
-            if (error) return error
-            if (configurationDirty.is_draft && !isPublishing) return null
+            const isErrored =
+                !!graph.errors || graph.nodes.some((node) => !!node.data.errors)
 
-            for (const lang of visualBuilderGraphDirty.available_languages) {
-                const translatedGraph = translateGraph(
-                    visualBuilderGraphDirty,
-                    lang
+            if (isErrored) {
+                dispatch({
+                    type: 'RESET_GRAPH',
+                    graph,
+                })
+
+                return false
+            }
+
+            for (const language of visualBuilderGraphDirty.available_languages) {
+                if (language === currentLanguage) {
+                    continue
+                }
+
+                const graph = handleValidateGraph(
+                    translateGraph(
+                        handleTouchGraph(visualBuilderGraphDirty),
+                        language
+                    ),
+                    isDraft
                 )
 
-                const graphVariablesError =
-                    checkGraphVariablesValidity(translatedGraph)
+                const isErrored =
+                    !!graph.errors ||
+                    graph.nodes.some((node) => !!node.data.errors)
 
-                if (graphVariablesError) {
-                    const nextGraph = switchLanguage(
-                        visualBuilderGraphDirty,
-                        lang
+                if (isErrored) {
+                    const graph = handleValidateGraph(
+                        switchLanguage(
+                            handleTouchGraph(visualBuilderGraphDirty),
+                            language
+                        ),
+                        isDraft
                     )
+
                     dispatch({
                         type: 'RESET_GRAPH',
-                        graph: nextGraph,
+                        graph,
                     })
-                    return graphVariablesError
+
+                    return false
                 }
             }
 
-            const incompleteLangs = getLangsOfIncompleteTranslations(
-                visualBuilderGraphDirty
-            )
-            if (incompleteLangs.length > 0) {
-                const nextGraph = switchLanguage(
-                    visualBuilderGraphDirty,
-                    incompleteLangs[0]
-                )
-                dispatch({
-                    type: 'RESET_GRAPH',
-                    graph: nextGraph,
-                })
-                return 'Complete steps in all available languages in order to create a flow'
-            }
-            const tooLargeLangs = getLangsOfTooLargeTranslations(
-                visualBuilderGraphDirty
-            )
-            if (tooLargeLangs.length > 0) {
-                const nextGraph = switchLanguage(
-                    visualBuilderGraphDirty,
-                    tooLargeLangs[0]
-                )
-                dispatch({
-                    type: 'RESET_GRAPH',
-                    graph: nextGraph,
-                })
-                return 'This Flow is too large to save. Please remove steps or shorten responses and try again.'
-            }
-
-            return null
+            return true
         },
         [
             translateGraph,
             visualBuilderGraphDirty,
-            getLangsOfIncompleteTranslations,
-            getLangsOfTooLargeTranslations,
             switchLanguage,
             dispatch,
+            handleValidateGraph,
+            handleTouchGraph,
+            currentLanguage,
         ]
     )
+
+    const handleValidateSize = useCallback((): string | undefined => {
+        if (
+            isPayloadTooLarge(
+                emptyTranslatedTexts(
+                    transformVisualBuilderGraphIntoWfConfiguration(
+                        visualBuilderGraphDirty,
+                        visualBuilderGraphDirty.is_draft,
+                        []
+                    )
+                ),
+                MAX_CONFIGURATION_SIZE_IN_BYTES
+            )
+        ) {
+            return 'This Flow is too large to save. Please remove steps and try again.'
+        }
+
+        const tooLargeLangs = getLangsOfTooLargeTranslations(
+            visualBuilderGraphDirty
+        )
+
+        if (tooLargeLangs.length > 0) {
+            const nextGraph = switchLanguage(
+                visualBuilderGraphDirty,
+                tooLargeLangs[0]
+            )
+            dispatch({
+                type: 'RESET_GRAPH',
+                graph: nextGraph,
+            })
+
+            return 'This Flow is too large to save. Please remove steps or shorten responses and try again.'
+        }
+    }, [
+        visualBuilderGraphDirty,
+        getLangsOfTooLargeTranslations,
+        dispatch,
+        switchLanguage,
+    ])
 
     const updateWorkflow = useCallback(
         async (configurationDirty: WorkflowConfiguration) => {
@@ -397,8 +430,7 @@ export function useWorkflowEditor(
             if (isNew) {
                 const updatedConfiguration = (await upsertWorkflowConfiguration(
                     [
-                        visualBuilderGraphDirty.wfConfigurationOriginal
-                            .internal_id,
+                        visualBuilderGraphDirty.internal_id,
                         configurationUpsertDto,
                     ]
                 )) as {data: WorkflowConfiguration}
@@ -409,8 +441,7 @@ export function useWorkflowEditor(
                 await saveTranslations(visualBuilderGraphDirty)
                 const updatedConfiguration = (await upsertWorkflowConfiguration(
                     [
-                        visualBuilderGraphDirty.wfConfigurationOriginal
-                            .internal_id,
+                        visualBuilderGraphDirty.internal_id,
                         configurationUpsertDto,
                     ]
                 )) as {data: WorkflowConfiguration}
@@ -472,7 +503,8 @@ export function useWorkflowEditor(
             const configurationDirty =
                 transformVisualBuilderGraphIntoWfConfiguration(
                     visualBuilderGraphDirty,
-                    false
+                    false,
+                    []
                 )
             return await updateWorkflow(configurationDirty)
         } finally {
@@ -492,7 +524,9 @@ export function useWorkflowEditor(
             setIsSavePending(true)
             const configurationDirty =
                 transformVisualBuilderGraphIntoWfConfiguration(
-                    visualBuilderGraphDirty
+                    visualBuilderGraphDirty,
+                    true,
+                    []
                 )
             return await updateWorkflow(configurationDirty)
         } finally {
@@ -511,7 +545,7 @@ export function useWorkflowEditor(
     const switchLanguageCallback = useCallback(
         (nextLanguage: LanguageCode) => {
             const nextVisualBuilderGraph = switchLanguage(
-                visualBuilderGraphDirty,
+                handleUntouchGraph(visualBuilderGraphDirty),
                 nextLanguage
             )
             dispatch({
@@ -519,7 +553,7 @@ export function useWorkflowEditor(
                 graph: nextVisualBuilderGraph,
             })
         },
-        [visualBuilderGraphDirty, switchLanguage, dispatch]
+        [visualBuilderGraphDirty, switchLanguage, dispatch, handleUntouchGraph]
     )
 
     const deleteTranslationCallback = useCallback(
@@ -544,6 +578,7 @@ export function useWorkflowEditor(
         isPublishPending,
         isDirty: isVisualBuilderGraphDirty,
         handleValidate,
+        handleValidateSize,
         handleSave,
         handlePublish,
         handleDiscard,
@@ -552,8 +587,6 @@ export function useWorkflowEditor(
         currentLanguage,
         switchLanguage: switchLanguageCallback,
         deleteTranslation: deleteTranslationCallback,
-        shouldShowErrors,
-        setShouldShowErrors,
         isTesting,
         setIsTesting,
         translateGraph,
@@ -568,219 +601,8 @@ export function useWorkflowEditor(
     }
 }
 
-function isHttpRequestStepIncomplete({
-    url,
-    name,
-    headers = {},
-    variables,
-    body,
-}: WorkflowStepHttpRequest['settings']) {
-    if (!name.trim() || !url) {
-        return true
-    }
-
-    if (
-        Object.entries(headers ?? {}).some(([k, v]) => !k.trim() || !v.trim())
-    ) {
-        return true
-    }
-
-    if (variables.some((v) => !v.name.trim() || !v.jsonpath.trim())) {
-        return true
-    }
-
-    if (headers?.['content-type'] === 'application/x-www-form-urlencoded') {
-        const entries = Array.from(new URLSearchParams(body ?? '').entries())
-
-        if (entries.some(([k, v]) => !k.trim() || !v.trim())) {
-            return true
-        }
-    }
-
-    return false
-}
-
-export function validateConditionSteps(
-    transition: (Pick<WorkflowTransition, 'name'> & {
-        conditions: ConditionSchema[]
-    })[]
-): boolean {
-    return transition.some(({conditions, name}) => {
-        if (!name) return true
-
-        return validateConditions(conditions)
-    })
-}
-
-export function validateConditions(conditions: ConditionSchema[]): boolean {
-    if (conditions.length === 0) return true
-
-    return conditions.some((condition) => {
-        const key = Object.keys(condition)[0] as AllKeys<typeof condition>
-        const schema = condition[key]
-
-        if (!schema) {
-            return true
-        }
-
-        if (key === 'exists' || key === 'doesNotExist') {
-            return false
-        }
-
-        return typeof schema[1] === 'undefined'
-    })
-}
-
-export function validateConfiguration(
-    conf: WorkflowConfiguration,
-    isPublishing: boolean,
-    availableVariablesByStepId: Record<WorkflowStep['id'], WorkflowVariableList>
-): Maybe<string> {
-    const action = isPublishing ? 'publish' : 'save'
-    if (!conf.name.trim()) {
-        return `You must add a flow name in order to ${action}`
-    }
-    if (conf.name.length > 100) {
-        return 'Flow name must be less than 100 characters'
-    }
-
-    if (conf.is_draft && !isPublishing) return null
-    if (conf.steps.length === 1) {
-        return 'You must add at least one step after the trigger button in order to publish'
-    }
-
-    const conditions = conf.transitions.filter(
-        (transition) =>
-            Array.isArray(transition.conditions?.and) ||
-            Array.isArray(transition.conditions?.or)
-    )
-
-    const invalidConditions = validateConditionSteps(
-        conditions.map((transition) => ({
-            name: transition.name,
-            conditions: transition.conditions?.and
-                ? transition?.conditions?.and
-                : (transition.conditions?.or ?? []),
-        }))
-    )
-
-    if (invalidConditions) {
-        return 'Fix errors in conditional step in order to save'
-    }
-
-    if (
-        conf.triggers?.find((trigger) => {
-            if (trigger.kind === 'llm-prompt' && trigger.settings.conditions) {
-                return validateConditions(
-                    trigger.settings.conditions?.and
-                        ? trigger.settings.conditions?.and
-                        : (trigger.settings.conditions?.or ?? [])
-                )
-            }
-
-            return false
-        })
-    ) {
-        return 'Fix errors in conditions in order to save'
-    }
-
-    const httpRequestSteps = conf.steps.filter(
-        (s): s is WorkflowStepHttpRequest => s.kind === 'http-request'
-    )
-
-    if (
-        conf.entrypoint?.label.trim().length === 0 ||
-        conf.steps.find(
-            (s) =>
-                (s.kind === 'message' ||
-                    s.kind === 'text-input' ||
-                    s.kind === 'attachments-input' ||
-                    s.kind === 'order-selection' ||
-                    s.kind === 'choices') &&
-                !s.settings.message.content.text.trim()
-        ) ||
-        conf.steps.find(
-            (s) =>
-                s.kind === 'choices' &&
-                s.settings.choices.find((c) => !c.label.trim())
-        ) ||
-        httpRequestSteps.find((s) => isHttpRequestStepIncomplete(s.settings)) ||
-        conf.steps.find(
-            (s) =>
-                s.kind === 'update-shipping-address' &&
-                (!s.settings.name.trim() ||
-                    !s.settings.address1.trim() ||
-                    !s.settings.address2.trim() ||
-                    !s.settings.city.trim() ||
-                    !s.settings.zip.trim() ||
-                    !s.settings.province.trim() ||
-                    !s.settings.country.trim() ||
-                    !s.settings.phone.trim() ||
-                    !s.settings.last_name.trim() ||
-                    !s.settings.first_name.trim())
-        ) ||
-        conf.steps.find(
-            (s) =>
-                s.kind === 'cancel-subscription' &&
-                (!s.settings.subscription_id.trim() ||
-                    !s.settings.reason.trim())
-        ) ||
-        conf.steps.find(
-            (s) =>
-                s.kind === 'skip-charge' &&
-                (!s.settings.subscription_id.trim() ||
-                    !s.settings.charge_id.trim())
-        ) ||
-        conf.entrypoints?.find(
-            (entrypoint) =>
-                entrypoint.kind === 'llm-conversation' &&
-                !entrypoint.settings.instructions.trim()
-        )
-    ) {
-        return 'Complete or delete incomplete steps in order to publish'
-    }
-
-    const urlValidationMessage = httpRequestSteps
-        .map((s) => validateWebhookURL(s.settings.url))
-        .filter(Boolean)[0]
-    if (urlValidationMessage) {
-        return urlValidationMessage
-    }
-
-    const jsonInvalid = httpRequestSteps
-        .filter(
-            (s) => s.settings.headers?.['content-type'] === 'application/json'
-        )
-        .some(
-            (s) =>
-                !validateJSONWithVariables(
-                    s.settings.body || '',
-                    availableVariablesByStepId[s.id] ?? []
-                )
-        )
-    if (jsonInvalid) {
-        return 'Invalid JSON'
-    }
-    const headerNameInvalid = httpRequestSteps.some((s) =>
-        Object.entries(s.settings.headers ?? {}).some(
-            ([k]) => !validateHttpHeaderName(k)
-        )
-    )
-    if (headerNameInvalid) {
-        return 'Invalid header name in HTTP request'
-    }
-    if (
-        isPayloadTooLarge(
-            emptyTranslatedTexts(conf),
-            MAX_CONFIGURATION_SIZE_IN_BYTES
-        )
-    ) {
-        return 'This Flow is too large to save. Please remove steps and try again.'
-    }
-}
-
 export function createWorkflowEditorContextForPreview(
-    visualBuilderGraph: VisualBuilderGraph
+    visualBuilderGraph: VisualBuilderGraph<ChannelTriggerNodeType>
 ): WorkflowEditorContext {
     return {
         configuration: workflowConfigurationFactory('id'),
@@ -793,7 +615,8 @@ export function createWorkflowEditorContextForPreview(
         setIsTesting: () => null,
         isFlowPublishingInChannels: false,
         setFlowPublishingInChannels: () => null,
-        handleValidate: () => null,
+        handleValidate: () => true,
+        handleValidateSize: () => undefined,
         handleSave: () => Promise.resolve(''),
         handlePublish: () => Promise.resolve(''),
         handleDiscard: () => null,
@@ -804,10 +627,6 @@ export function createWorkflowEditorContextForPreview(
             // noop
         },
         deleteTranslation: () => {
-            // noop
-        },
-        shouldShowErrors: false,
-        setShouldShowErrors: () => {
             // noop
         },
         translateGraph: (graph) => graph,

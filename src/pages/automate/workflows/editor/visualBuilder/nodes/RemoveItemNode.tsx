@@ -1,21 +1,17 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {memo, useMemo} from 'react'
-import {Handle, NodeProps, Position} from 'reactflow'
+import React, {memo} from 'react'
+import {NodeProps} from 'reactflow'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {isValidLiquidSyntaxInNode} from 'pages/automate/workflows/models/variables.model'
 import {RemoveItemNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
-
-import css from './Node.less'
+import VisualBuilderNode from './VisualBuilderNode'
+import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
 type Props = VisualBuilderNodeProps & {
     isErrored: boolean
@@ -23,7 +19,6 @@ type Props = VisualBuilderNodeProps & {
 
 const RemoveItemNode = memo(function RemoveItemNode({
     isSelected,
-    shouldShowErrors,
     isErrored,
     isGreyedOut,
     edgeProps,
@@ -32,29 +27,18 @@ const RemoveItemNode = memo(function RemoveItemNode({
     return (
         <div>
             <EdgeBlock {...edgeProps} />
-            <div
-                className={classNames(css.node, {
-                    [css.nodeErrored]: shouldShowErrors && isErrored,
-                    [css.nodeGreyedOut]: isGreyedOut,
-                    [css.nodeSelected]: isSelected,
-                })}
+            <VisualBuilderNode
+                isClickable
+                isSelected={isSelected}
+                isErrored={isErrored}
+                isGreyedOut={isGreyedOut}
             >
-                <Handle
-                    type="target"
-                    position={Position.Top}
-                    className={css.sourceHandle}
-                />
-                <div className={css.nodeContainer}>
-                    <VisualBuilderActionTag nodeType="remove_item" />
-                    <Label className={css.nodeTitle}>Remove item.</Label>
-                    <NodeDeleteIcon {...deleteProps} />
-                </div>
-                <Handle
-                    type="source"
-                    position={Position.Bottom}
-                    className={classNames(css.targetHandle)}
-                />
-            </div>
+                <VisualBuilderActionTag nodeType="remove_item" />
+                <VisualBuilderNodeContent>
+                    Remove item.
+                </VisualBuilderNodeContent>
+                <NodeDeleteIcon {...deleteProps} />
+            </VisualBuilderNode>
         </div>
     )
 })
@@ -62,25 +46,7 @@ const RemoveItemNode = memo(function RemoveItemNode({
 export default function RemoveItemNodeWrapper(
     node: NodeProps<RemoveItemNodeType['data']>
 ) {
-    const {checkInvalidVariablesForNode} = useVisualBuilderContext()
-    const hasInvalidVariables = useMemo(
-        () =>
-            checkInvalidVariablesForNode({
-                id: node.id,
-                data: node.data,
-                type: 'remove_item',
-            }),
-        [node.id, node.data, checkInvalidVariablesForNode]
-    )
-    const isErrored =
-        !node.data.productVariantId ||
-        !node.data.quantity ||
-        hasInvalidVariables ||
-        !isValidLiquidSyntaxInNode({
-            data: node.data,
-            type: 'remove_item',
-        })
     const commonProps = useVisualBuilderNodeProps(node)
 
-    return <RemoveItemNode {...commonProps} isErrored={isErrored} />
+    return <RemoveItemNode {...commonProps} isErrored={!!node.data.errors} />
 }

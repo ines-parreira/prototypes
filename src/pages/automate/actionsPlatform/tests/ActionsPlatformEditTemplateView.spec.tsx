@@ -9,6 +9,7 @@ import {ulid} from 'ulidx'
 
 import {
     useDownloadWorkflowConfigurationStepLogs,
+    useGetWorkflowConfigurationTemplates,
     useListActionsApps,
 } from 'models/workflows/queries'
 import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
@@ -29,6 +30,9 @@ const mockUseDownloadWorkflowConfigurationStepLogs = jest.mocked(
     useDownloadWorkflowConfigurationStepLogs
 )
 const mockUseListActionsApps = jest.mocked(useListActionsApps)
+const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
+    useGetWorkflowConfigurationTemplates
+)
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])()
 const mockEditActionTemplate = jest.fn()
 
@@ -40,6 +44,14 @@ mockUseDownloadWorkflowConfigurationStepLogs.mockReturnValue({
     mutateAsync: jest.fn(),
     isLoading: false,
 } as unknown as ReturnType<typeof useDownloadWorkflowConfigurationStepLogs>)
+mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
+    data: [],
+    isInitialLoading: false,
+} as unknown as ReturnType<typeof useGetWorkflowConfigurationTemplates>)
+mockUseListActionsApps.mockReturnValue({
+    data: [],
+    isInitialLoading: false,
+} as unknown as ReturnType<typeof useListActionsApps>)
 
 const b = new WorkflowConfigurationBuilder({
     id: ulid(),
@@ -84,12 +96,6 @@ b.insertHttpRequestConditionAndEndStepAndSelect('error')
 const template = b.build()
 
 describe('<ActionsPlatformEditTemplateView />', () => {
-    beforeEach(() => {
-        mockUseListActionsApps.mockReturnValue({
-            data: [],
-            isInitialLoading: false,
-        } as unknown as ReturnType<typeof useListActionsApps>)
-    })
     const renderApp = (template: ActionTemplate) => {
         render(
             <Provider store={mockStore}>
@@ -99,21 +105,21 @@ describe('<ActionsPlatformEditTemplateView />', () => {
             </Provider>
         )
     }
+
     it('should render edit template visual builder', () => {
         renderApp(template as ActionTemplate)
 
         expect(screen.getByDisplayValue(template.name)).toBeInTheDocument()
-        expect(screen.getByDisplayValue(template.name)).toBeEnabled()
     })
 
-    it('should render draft badge', () => {
+    it('should render publish button', () => {
         renderApp(
             produce(template as ActionTemplate, (draft) => {
                 draft.is_draft = true
             })
         )
 
-        expect(screen.getByText('draft')).toBeInTheDocument()
+        expect(screen.getByText('Publish')).toBeInTheDocument()
     })
 
     it('should reset graph after successful edit', async () => {
@@ -127,40 +133,32 @@ describe('<ActionsPlatformEditTemplateView />', () => {
             fireEvent.click(screen.getByText('Publish'))
         })
 
-        expect(screen.getByText('Are you sure?')).toBeInTheDocument()
-
-        act(() => {
-            fireEvent.click(screen.getByText('Confirm'))
-        })
-
         await waitFor(() => {
             expect(screen.queryByText('Publish')).not.toBeInTheDocument()
         })
     })
 
-    it('should require confirmation before saving a template', async () => {
+    it('should display errors', () => {
+        const mockEditActionTemplate = jest.fn()
+
+        mockUseEditActionTemplate.mockReturnValue({
+            editActionTemplate: mockEditActionTemplate,
+            isLoading: false,
+        })
+
         renderApp(template as ActionTemplate)
 
         act(() => {
-            fireEvent.click(screen.getByTestId('rf__node-http_request1'))
-        })
-
-        act(() => {
-            fireEvent.change(screen.getByDisplayValue('test http request'), {
-                target: {value: 'http request'},
+            fireEvent.change(screen.getByDisplayValue(template.name), {
+                target: {value: ''},
             })
         })
 
         act(() => {
-            fireEvent.click(screen.getByText('Save'))
+            fireEvent.click(screen.getByText('Save changes'))
         })
 
-        act(() => {
-            fireEvent.click(screen.getByText('Confirm'))
-        })
-
-        await waitFor(() => {
-            expect(mockEditActionTemplate).toHaveBeenCalled()
-        })
+        expect(mockEditActionTemplate).not.toHaveBeenCalled()
+        expect(screen.getByText('Action name is required')).toBeInTheDocument()
     })
 })

@@ -35,7 +35,7 @@ describe('llmPromptTriggerReducer', () => {
         const g = visualBuilderGraphLlmPromptTriggerFixture
         const nextG = llmPromptTriggerReducer(g, {
             type: 'DELETE_LLM_PROMPT_TRIGGER_INPUT',
-            index: 0,
+            id: 'someid',
         })
 
         expect(
@@ -51,7 +51,6 @@ describe('llmPromptTriggerReducer', () => {
         const g = visualBuilderGraphLlmPromptTriggerFixture
         const nextG = llmPromptTriggerReducer(g, {
             type: 'SET_LLM_PROMPT_TRIGGER_INPUT',
-            index: 0,
             input: {
                 id: 'someid',
                 name: 'some name',

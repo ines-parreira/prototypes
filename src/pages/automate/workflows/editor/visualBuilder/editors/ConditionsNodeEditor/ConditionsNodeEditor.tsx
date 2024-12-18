@@ -4,7 +4,6 @@ import {ulid} from 'ulidx'
 
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {ConditionSchema} from 'pages/automate/workflows/models/conditions.types'
-import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
 import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
 import {
     ConditionsNodeType,
@@ -29,19 +28,15 @@ export default function ConditionsNodeEditor({
 }: {
     nodeInEdition: ConditionsNodeType
 }) {
-    const {visualBuilderGraph, dispatch, shouldShowErrors} =
+    const {visualBuilderGraph, dispatch, getVariableListForNode} =
         useVisualBuilderContext()
 
     const edges = visualBuilderGraph.edges.filter(
         (edge) => edge.source === nodeInEdition.id
     )
     const workflowVariables = useMemo(
-        () =>
-            getWorkflowVariableListForNode(
-                visualBuilderGraph,
-                nodeInEdition.id
-            ),
-        [visualBuilderGraph, nodeInEdition.id]
+        () => getVariableListForNode(nodeInEdition.id),
+        [getVariableListForNode, nodeInEdition.id]
     )
 
     const handleAddConditionBranch = () => {
@@ -268,9 +263,6 @@ export default function ConditionsNodeEditor({
                                                 availableVariables={
                                                     workflowVariables
                                                 }
-                                                shouldShowErrors={
-                                                    shouldShowErrors
-                                                }
                                                 canDeleteBranch={
                                                     item.id !== branches[0].id
                                                 }
@@ -331,6 +323,40 @@ export default function ConditionsNodeEditor({
                                                 }}
                                                 type={type}
                                                 conditions={conditions}
+                                                errors={
+                                                    nodeInEdition.data.errors
+                                                        ?.branches?.[item.id]
+                                                }
+                                                onNameBlur={() => {
+                                                    dispatch({
+                                                        type: 'SET_TOUCHED',
+                                                        nodeId: nodeInEdition.id,
+                                                        touched: {
+                                                            branches: {
+                                                                [item.id]: {
+                                                                    name: true,
+                                                                },
+                                                            },
+                                                        },
+                                                    })
+                                                }}
+                                                onConditionBlur={(index) => {
+                                                    dispatch({
+                                                        type: 'SET_TOUCHED',
+                                                        nodeId: nodeInEdition.id,
+                                                        touched: {
+                                                            branches: {
+                                                                [item.id]: {
+                                                                    conditions:
+                                                                        {
+                                                                            [index]:
+                                                                                true,
+                                                                        },
+                                                                },
+                                                            },
+                                                        },
+                                                    })
+                                                }}
                                             />
                                         </SortableAccordionItem>
                                     )

@@ -1,7 +1,5 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React, {memo} from 'react'
-import {Handle, NodeProps, Position} from 'reactflow'
+import {NodeProps} from 'reactflow'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -12,8 +10,8 @@ import {CreateDiscountCodeNodeType} from 'pages/automate/workflows/models/visual
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
-
-import css from './Node.less'
+import VisualBuilderNode from './VisualBuilderNode'
+import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
 const CreateDiscountCodeNode = memo(function CreateDiscountCodeNode({
     isSelected,
@@ -24,33 +22,17 @@ const CreateDiscountCodeNode = memo(function CreateDiscountCodeNode({
     return (
         <div>
             <EdgeBlock {...edgeProps} />
-            <div
-                className={classNames(css.node, {
-                    [css.nodeGreyedOut]: isGreyedOut,
-                    [css.nodeSelected]: isSelected,
-                })}
-                onClick={(event) => {
-                    event.stopPropagation()
-                }}
+            <VisualBuilderNode
+                isClickable={false}
+                isSelected={isSelected}
+                isGreyedOut={isGreyedOut}
             >
-                <Handle
-                    type="target"
-                    position={Position.Top}
-                    className={css.sourceHandle}
-                />
-                <div className={css.nodeContainer}>
-                    <VisualBuilderActionTag nodeType="create_discount_code" />
-                    <Label className={css.nodeTitle}>
-                        Create discount code.
-                    </Label>
-                    <NodeDeleteIcon {...deleteProps} />
-                </div>
-                <Handle
-                    type="source"
-                    position={Position.Bottom}
-                    className={classNames(css.targetHandle)}
-                />
-            </div>
+                <VisualBuilderActionTag nodeType="create_discount_code" />
+                <VisualBuilderNodeContent>
+                    Create discount code.
+                </VisualBuilderNodeContent>
+                <NodeDeleteIcon {...deleteProps} />
+            </VisualBuilderNode>
         </div>
     )
 })

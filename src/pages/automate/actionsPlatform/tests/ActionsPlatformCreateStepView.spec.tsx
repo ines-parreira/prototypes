@@ -13,7 +13,10 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {IntegrationType} from 'models/integration/constants'
-import {useListActionsApps} from 'models/workflows/queries'
+import {
+    useGetWorkflowConfigurationTemplates,
+    useListActionsApps,
+} from 'models/workflows/queries'
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 
@@ -28,6 +31,9 @@ jest.mock('../hooks/useCreateActionTemplate')
 const mockUseListActionsApps = jest.mocked(useListActionsApps)
 const mockUseApps = jest.mocked(useApps)
 const mockUseCreateActionTemplate = jest.mocked(useCreateActionTemplate)
+const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
+    useGetWorkflowConfigurationTemplates
+)
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])()
 
 mockUseListActionsApps.mockReturnValue({
@@ -69,6 +75,10 @@ mockUseCreateActionTemplate.mockReturnValue({
     createActionTemplate: jest.fn(),
     isLoading: false,
 })
+mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
+    data: [],
+    isInitialLoading: false,
+} as unknown as ReturnType<typeof useGetWorkflowConfigurationTemplates>)
 
 describe('<ActionsPlatformCreateStepView />', () => {
     it('should render create step visual builder', () => {
@@ -130,5 +140,33 @@ describe('<ActionsPlatformCreateStepView />', () => {
         expect(historyPushSpy).toHaveBeenCalledWith(
             '/app/automation/actions-platform/steps'
         )
+    })
+
+    it('should show errors on save', () => {
+        render(
+            <Provider store={mockStore}>
+                <ActionsPlatformCreateStepView />
+            </Provider>
+        )
+
+        act(() => {
+            fireEvent.focus(
+                within(screen.getByRole('combobox')).getByText('Select App')
+            )
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Shopify'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Use'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Save'))
+        })
+
+        expect(screen.getByText('Name is required')).toBeInTheDocument()
     })
 })

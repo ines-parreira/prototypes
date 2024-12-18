@@ -16,8 +16,9 @@ interface Props {
     condition: Exclude<NumberSchema, ExistsSchema | DoesNotExistSchema>
     format: WorkflowVariableFormat | undefined
     onChange: (condition: ConditionSchema) => void
-    shouldShowErrors?: boolean
     isDisabled?: boolean
+    error?: string
+    onBlur?: () => void
 }
 
 const getDisplayValue = (
@@ -48,8 +49,9 @@ export const NumberConditionType = ({
     condition,
     format,
     onChange,
-    shouldShowErrors,
     isDisabled,
+    error,
+    onBlur,
 }: Props) => {
     const key = Object.keys(condition)[0] as AllKeys<typeof condition>
 
@@ -66,7 +68,7 @@ export const NumberConditionType = ({
             className={css.input}
             placeholder="value"
             value={getDisplayValue(value, format)}
-            hasError={shouldShowErrors && !value}
+            hasError={!!error}
             onChange={(nextValue) => {
                 onChange(
                     produce(condition, (draft) => {
@@ -84,6 +86,7 @@ export const NumberConditionType = ({
                 )
             }}
             isDisabled={isDisabled}
+            onBlur={onBlur}
         />
     )
 }

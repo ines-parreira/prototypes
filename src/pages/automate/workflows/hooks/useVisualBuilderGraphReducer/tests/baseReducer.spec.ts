@@ -17,6 +17,7 @@ import {
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {
     visualBuilderGraphLlmPromptTriggerFixture,
+    visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
     visualBuilderGraphSimpleChoicesFixture,
 } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
 
@@ -231,6 +232,8 @@ describe('baseReducer', () => {
         const nextG = baseReducer(g, {
             type: 'DELETE_NODE',
             nodeId: 'automated_message1',
+            steps: [],
+            apps: [],
         })
         // there should be one less node and one less edge
         expect(g.nodes.length).toEqual(nextG.nodes.length + 1)
@@ -253,9 +256,11 @@ describe('baseReducer', () => {
 
     test('DELETE_BRANCH', () => {
         const g = visualBuilderGraphSimpleChoicesFixture
-        const nextG = baseReducer(g, {
+        let nextG = baseReducer(g, {
             type: 'DELETE_NODE',
             nodeId: 'automated_message1',
+            steps: [],
+            apps: [],
         })
         // there should be one less node and one less edge
         expect(g.nodes.length).toEqual(nextG.nodes.length + 1)
@@ -267,6 +272,16 @@ describe('baseReducer', () => {
                 .filter((e) => e.source === 'multiple_choices1')
                 .map((e) => e.target)
         ).toEqual(['end1', 'automated_message2', 'text_reply1'])
+
+        nextG = baseReducer(
+            visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+            {
+                type: 'DELETE_BRANCH',
+                nodeId: 'reusable_llm_prompt_call1',
+                steps: [],
+            }
+        )
+        expect(nextG.apps).toEqual([])
     })
 
     test('GREY_OUT_BRANCH', () => {
@@ -883,5 +898,96 @@ describe('baseReducer', () => {
         node = nextG.nodes.find((n): n is EndNodeType => n.id === 'end3')
         expect(node).toBeDefined()
         expect(node?.data.action).toBe('create-ticket')
+    })
+
+    test('SET_APP_API_KEY', () => {
+        const nextG = baseReducer(
+            visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+            {
+                type: 'SET_APP_API_KEY',
+                appId: '123',
+                apiKey: 'some api key',
+            }
+        )
+
+        expect(nextG.apps).toEqual([
+            {
+                type: 'app',
+                app_id: '123',
+                api_key: 'some api key',
+            },
+        ])
+    })
+
+    test('SET_ERRORS', () => {
+        let nextG = baseReducer(
+            visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+            {
+                type: 'SET_ERRORS',
+                nodeId: 'trigger',
+                errors: {
+                    instructions: 'error',
+                    conditions: 'error',
+                },
+            }
+        )
+        nextG = baseReducer(nextG, {
+            type: 'SET_ERRORS',
+            errors: {
+                name: 'error',
+            },
+        })
+        nextG = baseReducer(nextG, {
+            type: 'SET_ERRORS',
+            appId: '123',
+            errors: {
+                api_key: 'error',
+            },
+        })
+
+        expect(nextG.errors).toEqual({name: 'error'})
+        expect(nextG.nodes[0].data.errors).toEqual({
+            instructions: 'error',
+            conditions: 'error',
+        })
+        expect(nextG.apps?.[0]?.errors).toEqual({
+            api_key: 'error',
+        })
+    })
+
+    test('SET_TOUCHED', () => {
+        let nextG = baseReducer(
+            visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+            {
+                type: 'SET_TOUCHED',
+                nodeId: 'trigger',
+                touched: {
+                    instructions: true,
+                    conditions: true,
+                },
+            }
+        )
+        nextG = baseReducer(nextG, {
+            type: 'SET_TOUCHED',
+            touched: {
+                name: true,
+            },
+        })
+        nextG = baseReducer(nextG, {
+            type: 'SET_TOUCHED',
+            appId: '123',
+            touched: {
+                api_key: true,
+            },
+        })
+
+        expect(nextG.touched).toEqual({name: true})
+        expect(nextG.nodes[0].data.touched).toEqual({
+            instructions: true,
+            conditions: true,
+        })
+        expect(nextG.apps?.[0]?.touched).toEqual({
+            api_key: true,
+        })
     })
 })

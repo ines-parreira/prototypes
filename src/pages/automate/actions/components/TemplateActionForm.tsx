@@ -184,7 +184,9 @@ const TemplateActionForm = ({configuration, template}: Props) => {
 
         return getWorkflowVariableListForNode(
             nextTemplateGraph,
-            nextTemplateGraph.nodes[0].id
+            nextTemplateGraph.nodes[0].id,
+            [],
+            []
         )
     }, [inputs, templateGraph])
 
@@ -282,7 +284,8 @@ const TemplateActionForm = ({configuration, template}: Props) => {
 
         const configuration = transformVisualBuilderGraphIntoWfConfiguration(
             nextGraph,
-            false
+            false,
+            []
         )
 
         upsertAction([
@@ -542,8 +545,18 @@ const TemplateActionForm = ({configuration, template}: Props) => {
                                             instructions: '',
                                         })
                                     }}
-                                    onDelete={removeInput}
-                                    onChange={(input, index) => {
+                                    onDelete={(id) => {
+                                        const index = value.findIndex(
+                                            (input) => input.id === id
+                                        )
+
+                                        removeInput(index)
+                                    }}
+                                    onChange={(input) => {
+                                        const index = value.findIndex(
+                                            (item) => item.id === input.id
+                                        )
+
                                         updateInput(index, input)
                                     }}
                                     appName={app?.name}

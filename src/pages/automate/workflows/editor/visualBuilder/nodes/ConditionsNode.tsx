@@ -1,21 +1,17 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {memo, useMemo} from 'react'
-import {Handle, NodeProps, Position} from 'reactflow'
+import React, {memo} from 'react'
+import {NodeProps} from 'reactflow'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
-    VisualBuilderNodeProps,
     useVisualBuilderNodeProps,
+    VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-
 import {ConditionsNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
-
-import css from './Node.less'
+import VisualBuilderNode from './VisualBuilderNode'
+import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
 type Props = VisualBuilderNodeProps & {
     isErrored: boolean
@@ -25,7 +21,6 @@ type Props = VisualBuilderNodeProps & {
 const ConditionsNode = memo(function ConditionsNode({
     name,
     isErrored,
-    shouldShowErrors,
     isGreyedOut,
     isSelected,
     edgeProps,
@@ -34,35 +29,18 @@ const ConditionsNode = memo(function ConditionsNode({
     return (
         <div>
             <EdgeBlock {...edgeProps} />
-            <div
-                className={classNames(css.node, {
-                    [css.nodeErrored]: shouldShowErrors && isErrored,
-                    [css.nodeGreyedOut]: isGreyedOut,
-                    [css.nodeSelected]: isSelected,
-                })}
+            <VisualBuilderNode
+                isClickable
+                isSelected={isSelected}
+                isErrored={isErrored}
+                isGreyedOut={isGreyedOut}
             >
-                <Handle
-                    type="target"
-                    position={Position.Top}
-                    className={css.sourceHandle}
-                />
-                <div className={css.nodeContainer}>
-                    <VisualBuilderActionTag nodeType="conditions" />
-                    <Label className={css.nodeTitle}>
-                        {name || (
-                            <span className={css.clickToAdd}>
-                                Route customers using variables
-                            </span>
-                        )}
-                    </Label>
-                    <NodeDeleteIcon {...deleteProps} />
-                </div>
-                <Handle
-                    type="source"
-                    position={Position.Bottom}
-                    className={classNames(css.targetHandle)}
-                />
-            </div>
+                <VisualBuilderActionTag nodeType="conditions" />
+                <VisualBuilderNodeContent placeholder="Route customers using variables">
+                    {name}
+                </VisualBuilderNodeContent>
+                <NodeDeleteIcon {...deleteProps} />
+            </VisualBuilderNode>
         </div>
     )
 })
@@ -70,39 +48,13 @@ const ConditionsNode = memo(function ConditionsNode({
 export default function ConditionsNodeWrapper(
     node: NodeProps<ConditionsNodeType['data']>
 ) {
-    const {checkInvalidVariablesForNode, checkInvalidConditionsForNode} =
-        useVisualBuilderContext()
-
-    const hasInvalidVariables = useMemo(
-        () =>
-            checkInvalidVariablesForNode({
-                id: node.id,
-                data: node.data,
-                type: 'conditions',
-            }),
-        [node.id, node.data, checkInvalidVariablesForNode]
-    )
-
-    const hasInvalidConditions = useMemo(
-        () =>
-            checkInvalidConditionsForNode({
-                id: node.id,
-                data: node.data,
-                type: 'conditions',
-            }),
-        [node.id, node.data, checkInvalidConditionsForNode]
-    )
-
-    const isErrored = hasInvalidVariables || hasInvalidConditions
-
     const commonProps = useVisualBuilderNodeProps(node)
 
     return (
         <ConditionsNode
             {...commonProps}
             name={node.data.name}
-            shouldShowErrors={commonProps.shouldShowErrors && isErrored}
-            isErrored={isErrored}
+            isErrored={!!node.data.errors}
         />
     )
 }

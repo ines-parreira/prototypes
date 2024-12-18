@@ -16,7 +16,7 @@ import useSelfServiceChatChannels, {
 } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import LanguageSelector from 'pages/automate/workflows/components/LanguageSelector'
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import {VisualBuilderNode} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {ChannelTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Button from 'pages/common/components/button/Button'
 import {Drawer} from 'pages/common/components/Drawer'
 import {notify} from 'state/notifications/actions'
@@ -32,7 +32,7 @@ type Props = {
     isTesting: boolean
     onClose: () => void
     isAuthenticationBannerVisible?: boolean
-    startFlowNode: VisualBuilderNode
+    startFlowNode: ChannelTriggerNodeType
 }
 export const TestFlowEditor = ({
     isTesting,
@@ -61,7 +61,7 @@ export const TestFlowEditor = ({
     const {
         currentLanguage,
         translateKey,
-        visualBuilderGraph: {available_languages, wfConfigurationOriginal},
+        visualBuilderGraph: {available_languages},
     } = useWorkflowEditorContext()
 
     const [selectedTestLanguage, setSelectedTestLanguage] =
@@ -103,13 +103,8 @@ export const TestFlowEditor = ({
         : (currentLanguage ?? available_languages[0])
 
     const label =
-        translateKey(
-            wfConfigurationOriginal.entrypoint?.label_tkey ?? '',
-            selectedLanguage
-        ) ||
-        (startFlowNode.type === 'channel_trigger'
-            ? startFlowNode.data.label
-            : '')
+        translateKey(startFlowNode.data.label_tkey, selectedLanguage) ||
+        startFlowNode.data.label
 
     function resetChatFlow({
         label,

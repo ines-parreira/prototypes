@@ -122,6 +122,7 @@ export default class RichField extends Component<Props, State> {
 
     _onBlur = () => {
         this.setState({isFocused: false})
+        this.props.onBlur?.()
     }
 
     render() {

@@ -1,5 +1,7 @@
 import React, {useRef, useState, useCallback} from 'react'
 
+import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import {WorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -26,6 +28,11 @@ export default function NodeDeleteIcon({
     hasMultipleChildren,
     hasVariablesUsedInChildren,
 }: VisualBuilderDeleteProps) {
+    const {data: steps = []} = useGetWorkflowConfigurationTemplates({
+        triggers: ['reusable-llm-prompt'],
+    })
+    const {apps} = useApps()
+
     const [isNodeMenuDropdownOpen, setIsNodeMenuDropdownOpen] = useState(false)
 
     const ref = useRef<HTMLDivElement>(null)
@@ -59,6 +66,8 @@ export default function NodeDeleteIcon({
                     dispatch({
                         type: 'DELETE_NODE',
                         nodeId,
+                        steps,
+                        apps,
                     })
                 },
                 onCancel: () => {
@@ -79,6 +88,7 @@ export default function NodeDeleteIcon({
                 dispatch({
                     type: 'DELETE_BRANCH',
                     nodeId,
+                    steps,
                 })
             },
             onCancel: () => {
@@ -89,7 +99,7 @@ export default function NodeDeleteIcon({
                 })
             },
         }
-    }, [dispatch, nodeId, intent])
+    }, [dispatch, nodeId, intent, steps, apps])
 
     return (
         <ConfirmationPopover {...getConfirmationPopoverProps()}>
@@ -136,6 +146,8 @@ export default function NodeDeleteIcon({
                                             dispatch({
                                                 type: 'DELETE_NODE',
                                                 nodeId: nodeId,
+                                                steps,
+                                                apps,
                                             })
                                         }
                                     }}

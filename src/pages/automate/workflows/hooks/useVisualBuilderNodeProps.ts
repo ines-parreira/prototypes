@@ -1,5 +1,7 @@
 import {useMemo} from 'react'
 
+import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+
 import {VisualBuilderEdgeProps} from '../editor/visualBuilder/components/EdgeBlock'
 import {VisualBuilderDeleteProps} from '../editor/visualBuilder/components/NodeDeleteIcon'
 import {workflowVariableRegex} from '../models/variables.model'
@@ -15,7 +17,6 @@ type Node = {
 
 export type VisualBuilderNodeProps = {
     isGreyedOut: boolean | null | undefined
-    shouldShowErrors: boolean
     isSelected: boolean
     edgeProps: VisualBuilderEdgeProps
     deleteProps: VisualBuilderDeleteProps
@@ -25,65 +26,91 @@ export function useVisualBuilderNodeProps({
     id,
     data: {isGreyedOut},
 }: Node): VisualBuilderNodeProps {
-    const {
-        visualBuilderGraph,
-        dispatch,
-        checkNodeHasVariablesUsedInChildren,
-        shouldShowErrors,
-    } = useVisualBuilderContext()
+    const {visualBuilderGraph, dispatch, checkNodeHasVariablesUsedInChildren} =
+        useVisualBuilderContext()
+
+    const triggerNode = visualBuilderGraph.nodes[0]
+
+    const {data: steps = []} = useGetWorkflowConfigurationTemplates(
+        {
+            triggers: ['reusable-llm-prompt'],
+        },
+        {enabled: triggerNode.type === 'llm_prompt_trigger'}
+    )
 
     const isSelected = visualBuilderGraph.nodeEditingId === id
-    const incomingChoice = getIncoming(visualBuilderGraph, id, 'choice')
-    const incomingCondition = getIncoming(visualBuilderGraph, id, 'conditions')
+    const incomingChoice = getIncoming(visualBuilderGraph, id, 'choice', steps)
+    const incomingCondition = getIncoming(
+        visualBuilderGraph,
+        id,
+        'conditions',
+        steps
+    )
     const incomingHttpRequestCondition = getIncoming(
         visualBuilderGraph,
         id,
-        'http_request'
+        'http_request',
+        steps
     )
     const incomingCancelOrderCondition = getIncoming(
         visualBuilderGraph,
         id,
-        'cancel_order'
+        'cancel_order',
+        steps
     )
     const incomingRefundOrderCondition = getIncoming(
         visualBuilderGraph,
         id,
-        'refund_order'
+        'refund_order',
+        steps
     )
     const incomingUpdateShippingAddressCondition = getIncoming(
         visualBuilderGraph,
         id,
-        'update_shipping_address'
+        'update_shipping_address',
+        steps
     )
     const incomingRemoveItemCondition = getIncoming(
         visualBuilderGraph,
         id,
-        'remove_item'
+        'remove_item',
+        steps
     )
     const incomingCreateDiscountCodeCondition = getIncoming(
         visualBuilderGraph,
         id,
-        'create_discount_code'
+        'create_discount_code',
+        steps
     )
     const incomingReshipForFreeCondition = getIncoming(
         visualBuilderGraph,
         id,
-        'reship_for_free'
+        'reship_for_free',
+        steps
     )
     const incomingRefundShippingCostsCondition = getIncoming(
         visualBuilderGraph,
         id,
-        'refund_shipping_costs'
+        'refund_shipping_costs',
+        steps
     )
     const incomingCancelSubscriptionCondition = getIncoming(
         visualBuilderGraph,
         id,
-        'cancel_subscription'
+        'cancel_subscription',
+        steps
     )
     const incomingSkipChargeCondition = getIncoming(
         visualBuilderGraph,
         id,
-        'skip_charge'
+        'skip_charge',
+        steps
+    )
+    const incomingReusableLLMPromptCallCondition = getIncoming(
+        visualBuilderGraph,
+        id,
+        'reusable_llm_prompt_call',
+        steps
     )
 
     const isEdgeSelected = useMemo(() => {
@@ -136,6 +163,11 @@ export function useVisualBuilderNodeProps({
             visualBuilderGraph.nodeEditingId
         if (isSkipChargeSelected) return true
 
+        const isReusableLLMPromptCallSelected =
+            incomingReusableLLMPromptCallCondition?.nodeId ===
+            visualBuilderGraph.nodeEditingId
+        if (isReusableLLMPromptCallSelected) return true
+
         return false
     }, [
         incomingChoice?.nodeId,
@@ -148,6 +180,7 @@ export function useVisualBuilderNodeProps({
         incomingRefundShippingCostsCondition,
         incomingCancelSubscriptionCondition,
         incomingSkipChargeCondition,
+        incomingReusableLLMPromptCallCondition,
         visualBuilderGraph.branchIdsEditing,
         visualBuilderGraph.nodeEditingId,
     ])
@@ -260,6 +293,18 @@ export function useVisualBuilderNodeProps({
                           nodeId: incomingSkipChargeCondition.nodeId,
                       }
                     : undefined,
+            incomingReusableLLMPromptCallCondition:
+                incomingReusableLLMPromptCallCondition?.nodeId &&
+                incomingReusableLLMPromptCallCondition?.label &&
+                typeof incomingReusableLLMPromptCallCondition?.isClickable !==
+                    'undefined'
+                    ? {
+                          label: incomingReusableLLMPromptCallCondition.label,
+                          nodeId: incomingReusableLLMPromptCallCondition.nodeId,
+                          isClickable:
+                              incomingReusableLLMPromptCallCondition.isClickable,
+                      }
+                    : undefined,
             dispatch,
             isSelected: isEdgeSelected,
         }),
@@ -293,6 +338,9 @@ export function useVisualBuilderNodeProps({
             incomingCancelSubscriptionCondition?.nodeId,
             incomingSkipChargeCondition?.label,
             incomingSkipChargeCondition?.nodeId,
+            incomingReusableLLMPromptCallCondition?.label,
+            incomingReusableLLMPromptCallCondition?.nodeId,
+            incomingReusableLLMPromptCallCondition?.isClickable,
             dispatch,
         ]
     )
@@ -317,7 +365,6 @@ export function useVisualBuilderNodeProps({
     )
 
     return {
-        shouldShowErrors,
         isSelected,
         isGreyedOut,
         edgeProps,

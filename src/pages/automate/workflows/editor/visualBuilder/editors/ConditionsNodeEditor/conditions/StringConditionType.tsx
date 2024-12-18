@@ -20,20 +20,22 @@ import css from '../ConditionsNodeEditor.less'
 type Props = {
     condition: Exclude<StringSchema, ExistsSchema | DoesNotExistSchema>
     onChange: (condition: ConditionSchema) => void
-    shouldShowErrors?: boolean
     isDisabled?: boolean
     options?: {
         value: string | null
         label: string
     }[]
+    error?: string
+    onBlur?: () => void
 }
 
 export const StringConditionType = ({
     condition,
     onChange,
-    shouldShowErrors,
     isDisabled,
     options,
+    error,
+    onBlur,
 }: Props) => {
     const key = Object.keys(condition)[0] as AllKeys<typeof condition>
     const schema = condition[key]
@@ -49,22 +51,25 @@ export const StringConditionType = ({
     if (options?.length) {
         const value = schema[1]
         const label = options.find((option) => option.value === value)?.label
-        const hasError = shouldShowErrors && !label
 
         return (
             <SelectInputBox
+                className={css.selectInput}
                 floating={floatingRef}
                 label={label}
                 onToggle={setIsOpen}
                 ref={targetRef}
-                hasError={hasError}
+                hasError={!!error}
                 placeholder="value"
             >
                 <SelectInputBoxContext.Consumer>
                     {(context) => (
                         <Dropdown
                             isOpen={isOpen}
-                            onToggle={() => context!.onBlur()}
+                            onToggle={() => {
+                                context!.onBlur()
+                                onBlur?.()
+                            }}
                             ref={floatingRef}
                             target={targetRef}
                             value={value}
@@ -99,7 +104,6 @@ export const StringConditionType = ({
     }
 
     const value = String(schema[1] ?? '')
-    const hasError = shouldShowErrors && !value
 
     return (
         <InputField
@@ -118,10 +122,10 @@ export const StringConditionType = ({
                     })
                 )
             }}
-            error={hasError && 'Enter a value'}
-            hasError={hasError}
+            error={error}
             value={value}
             isDisabled={isDisabled}
+            onBlur={onBlur}
         />
     )
 }

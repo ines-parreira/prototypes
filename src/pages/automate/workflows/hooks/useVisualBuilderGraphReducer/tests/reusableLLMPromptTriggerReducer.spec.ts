@@ -37,7 +37,7 @@ describe('reusableLLMPromptTriggerReducer', () => {
         const g = visualBuilderGraphReusableLLMPromptTriggerFixture
         const nextG = reusableLLMPromptTriggerReducer(g, {
             type: 'DELETE_REUSABLE_LLM_PROMPT_TRIGGER_INPUT',
-            index: 0,
+            id: 'someid',
         })
 
         expect(
@@ -55,7 +55,6 @@ describe('reusableLLMPromptTriggerReducer', () => {
         const g = visualBuilderGraphReusableLLMPromptTriggerFixture
         const nextG = reusableLLMPromptTriggerReducer(g, {
             type: 'SET_REUSABLE_LLM_PROMPT_TRIGGER_INPUT',
-            index: 0,
             input: {
                 id: 'someid',
                 name: 'some name',

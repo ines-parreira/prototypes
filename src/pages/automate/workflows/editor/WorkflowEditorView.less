@@ -47,10 +47,14 @@
             height: 40px;
         }
 
-        .headerLeftdescription {
+        .headerLeftDescription {
             color: var(--neutral-grey-5);
             margin-top: @layout-spacing-xs;
             line-height: normal;
+
+            &.isErrored {
+                color: var(--feedback-error);
+            }
         }
     }
 
@@ -72,5 +76,14 @@
         margin-top: @layout-spacing-xs;
         display: flex;
         justify-content: flex-end;
+    }
+
+    .error {
+        .body-regular();
+
+        margin-top: @layout-spacing-xs;
+        display: flex;
+        justify-content: flex-end;
+        color: var(--feedback-error);
     }
 }

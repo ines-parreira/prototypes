@@ -1,0 +1,20 @@
+@import '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        align-content: center;
+        row-gap: 8px;
+        align-self: stretch;
+        flex-wrap: wrap;
+    }
+
+    .suffix {
+        .caption-regular();
+
+        color: var(--neutral-grey-5);
+    }
+}

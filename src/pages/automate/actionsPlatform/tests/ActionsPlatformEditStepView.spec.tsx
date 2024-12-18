@@ -6,7 +6,10 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {ulid} from 'ulidx'
 
-import {useDownloadWorkflowConfigurationStepLogs} from 'models/workflows/queries'
+import {
+    useDownloadWorkflowConfigurationStepLogs,
+    useGetWorkflowConfigurationTemplates,
+} from 'models/workflows/queries'
 import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
 import {RootState, StoreDispatch} from 'state/types'
 
@@ -38,6 +41,9 @@ const mockUseDownloadWorkflowConfigurationStepLogs = jest.mocked(
 )
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])()
 const mockEditActionTemplate = jest.fn()
+const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
+    useGetWorkflowConfigurationTemplates
+)
 
 mockUseEditActionTemplate.mockReturnValue({
     editActionTemplate: mockEditActionTemplate,
@@ -47,6 +53,10 @@ mockUseDownloadWorkflowConfigurationStepLogs.mockReturnValue({
     mutateAsync: jest.fn(),
     isLoading: false,
 } as unknown as ReturnType<typeof useDownloadWorkflowConfigurationStepLogs>)
+mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
+    data: [],
+    isInitialLoading: false,
+} as unknown as ReturnType<typeof useGetWorkflowConfigurationTemplates>)
 
 const b = new WorkflowConfigurationBuilder({
     id: ulid(),
@@ -172,6 +182,38 @@ describe('<ActionsPlatformEditStepView />', () => {
 
         await waitFor(() => {
             expect(mockEditActionTemplate).toHaveBeenCalled()
+        })
+    })
+
+    it('should show graph errors on save', async () => {
+        render(
+            <Provider store={mockStore}>
+                <ActionsPlatformEditStepView
+                    template={template as ActionTemplate}
+                />
+            </Provider>
+        )
+
+        act(() => {
+            fireEvent.change(screen.getByDisplayValue('test step'), {
+                target: {value: ''},
+            })
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Save'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Confirm'))
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText('Name is required')).toBeInTheDocument()
+        })
+
+        await waitFor(() => {
+            expect(mockEditActionTemplate).not.toHaveBeenCalled()
         })
     })
 })

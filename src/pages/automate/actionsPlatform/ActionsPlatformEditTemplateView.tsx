@@ -1,26 +1,27 @@
-import React, {useCallback, useMemo, useState} from 'react'
-import {Container} from 'reactstrap'
+import React, {useCallback, useState} from 'react'
+import {useHistory} from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import {DraftBadge} from 'pages/automate/workflows/components/DraftBadge'
+import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import AutomateFormView from 'pages/automate/common/components/AutomateFormView'
+import {
+    useVisualBuilder,
+    VisualBuilderContext,
+} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {useVisualBuilderGraphReducer} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import {computeNodesPositions} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
-import {
-    areGraphsEqual,
-    transformVisualBuilderGraphIntoWfConfiguration,
-} from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import {transformVisualBuilderGraphIntoWfConfiguration} from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from 'pages/automate/workflows/models/workflowConfiguration.model'
 import Button from 'pages/common/components/button/Button'
-import PageHeader from 'pages/common/components/PageHeader'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import InputField from 'pages/common/forms/input/InputField'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import css from './ActionsPlatformEditTemplateView.less'
-import WorkflowVisualBuilder from './components/visualBuilder/WorkflowVisualBuilder'
+import ActionsPlatformTemplateFormView from './components/ActionsPlatformTemplateFormView'
+import ActionsPlatformTemplateVisualBuilderView from './components/ActionsPlatformTemplateVisualBuilderView'
 import useEditActionTemplate from './hooks/useEditActionTemplate'
-import useValidateVisualBuilderGraph from './hooks/useValidateVisualBuilderGraph'
+import useTouchActionTemplateGraph from './hooks/useTouchActionTemplateGraph'
+import useValidateActionTemplateGraph from './hooks/useValidateActionTemplateGraph'
+import useValidateOnVisualBuilderGraphChange from './hooks/useValidateOnVisualBuilderGraphChange'
 import {ActionTemplate} from './types'
 
 type Props = {
@@ -31,39 +32,55 @@ const ActionsPlatformEditTemplateView = ({template}: Props) => {
     const {isLoading: isEditActionTemplateLoading, editActionTemplate} =
         useEditActionTemplate()
 
-    const visualBuilderGraph = useMemo(
-        () =>
-            computeNodesPositions(
-                transformWorkflowConfigurationIntoVisualBuilderGraph(template)
-            ),
-        [template]
-    )
-    const [shouldShowErrors, setShouldShowErrors] = useState(false)
-    const [visualBuilderGraphDirty, dispatch] =
-        useVisualBuilderGraphReducer(visualBuilderGraph)
+    const history = useHistory()
 
-    const isVisualBuilderGraphDirty = useMemo(
-        () => !areGraphsEqual(visualBuilderGraph, visualBuilderGraphDirty),
-        [visualBuilderGraph, visualBuilderGraphDirty]
+    const {data: steps = []} = useGetWorkflowConfigurationTemplates({
+        triggers: ['reusable-llm-prompt'],
+    })
+
+    const [visualBuilderGraphDirty, dispatch] = useVisualBuilderGraphReducer(
+        computeNodesPositions(
+            transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(
+                template,
+                true
+            )
+        )
+    )
+    const [visualBuilderGraph, setVisualBuilderGraph] = useState(
+        visualBuilderGraphDirty
     )
 
-    const appDispatch = useAppDispatch()
-    const handleValidate = useValidateVisualBuilderGraph()
+    const visualBuilderContextValue = useVisualBuilder(
+        visualBuilderGraphDirty,
+        dispatch,
+        false
+    )
+
+    const {getVariableListForNode} = visualBuilderContextValue
+
+    const handleValidate = useValidateActionTemplateGraph(
+        getVariableListForNode
+    )
+    const handleTouch = useTouchActionTemplateGraph()
+
+    useValidateOnVisualBuilderGraphChange({
+        graph: visualBuilderGraphDirty,
+        handleValidate,
+        dispatch,
+    })
+
     const handleSave = useCallback(
         async (isDraft: boolean) => {
-            const error = handleValidate(visualBuilderGraphDirty)
+            const graph = handleValidate(handleTouch(visualBuilderGraphDirty))
 
-            if (error) {
-                setShouldShowErrors(true)
+            const isErrored =
+                !!graph.errors || graph.nodes.some((node) => !!node.data.errors)
 
-                void appDispatch(
-                    notify({
-                        message: error,
-                        allowHTML: true,
-                        showDismissButton: true,
-                        status: NotificationStatus.Error,
-                    })
-                )
+            if (isErrored) {
+                dispatch({
+                    type: 'RESET_GRAPH',
+                    graph,
+                })
 
                 return
             }
@@ -71,148 +88,137 @@ const ActionsPlatformEditTemplateView = ({template}: Props) => {
             const configurationDirty =
                 transformVisualBuilderGraphIntoWfConfiguration(
                     visualBuilderGraphDirty,
-                    isDraft
+                    isDraft,
+                    steps
                 ) as ActionTemplate
 
             await editActionTemplate([
                 {
-                    internal_id:
-                        visualBuilderGraphDirty.wfConfigurationOriginal
-                            .internal_id,
+                    internal_id: visualBuilderGraphDirty.internal_id,
                 },
                 configurationDirty,
             ])
 
+            const nextGraph = computeNodesPositions(
+                transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(
+                    configurationDirty,
+                    true
+                )
+            )
+
             dispatch({
                 type: 'RESET_GRAPH',
-                graph: computeNodesPositions(
-                    transformWorkflowConfigurationIntoVisualBuilderGraph(
-                        configurationDirty
-                    )
-                ),
+                graph: nextGraph,
             })
+
+            setVisualBuilderGraph(nextGraph)
         },
         [
             visualBuilderGraphDirty,
             editActionTemplate,
-            appDispatch,
             handleValidate,
+            handleTouch,
             dispatch,
+            steps,
         ]
     )
 
-    const isDraft = visualBuilderGraphDirty.wfConfigurationOriginal.is_draft
+    const [isEditingSteps, setIsEditingSteps] = useState(false)
+
+    if (isEditingSteps) {
+        return (
+            <VisualBuilderContext.Provider value={visualBuilderContextValue}>
+                <ActionsPlatformTemplateVisualBuilderView
+                    visualBuilderGraph={visualBuilderGraph}
+                    handleValidate={handleValidate}
+                    handleTouch={handleTouch}
+                    onExit={() => {
+                        setIsEditingSteps(false)
+                    }}
+                    onSave={() => {
+                        setVisualBuilderGraph(visualBuilderGraphDirty)
+                    }}
+                />
+            </VisualBuilderContext.Provider>
+        )
+    }
 
     return (
-        <div className={css.page}>
-            <PageHeader
-                className={css.header}
-                title={
-                    <div className={css.title}>
-                        <InputField
-                            className={css.name}
-                            placeholder="e.g. Update shipping address"
-                            caption="Provide a name for this Action template."
-                            value={visualBuilderGraphDirty.name}
-                            onChange={(nextValue) => {
-                                dispatch({
-                                    type: 'SET_NAME',
-                                    name: nextValue,
-                                })
-                            }}
-                            hasError={
-                                shouldShowErrors &&
-                                !visualBuilderGraphDirty.name.trim()
-                            }
-                        />
-                        {isDraft && <DraftBadge />}
-                    </div>
-                }
+        <AutomateFormView
+            title="Actions platform"
+            headerNavbarItems={[
+                {
+                    route: '/app/automation/actions-platform',
+                    title: 'Templates',
+                    exact: false,
+                },
+                {
+                    route: '/app/automation/actions-platform/steps',
+                    title: 'Steps',
+                    exact: true,
+                },
+                {
+                    route: '/app/automation/actions-platform/apps',
+                    title: 'Apps',
+                    exact: true,
+                },
+            ]}
+        >
+            <Button
+                intent="secondary"
+                fillStyle="ghost"
+                className={css.backButton}
+                onClick={() => {
+                    history.push('/app/automation/actions-platform')
+                }}
             >
-                <div className={css.actions}>
+                <ButtonIconLabel icon="arrow_back">
+                    Back to templates
+                </ButtonIconLabel>
+            </Button>
+            <div className={css.form}>
+                <VisualBuilderContext.Provider
+                    value={visualBuilderContextValue}
+                >
+                    <ActionsPlatformTemplateFormView
+                        onEditSteps={() => {
+                            setIsEditingSteps(true)
+                            setVisualBuilderGraph(visualBuilderGraphDirty)
+                        }}
+                        steps={steps}
+                    />
+                </VisualBuilderContext.Provider>
+            </div>
+            <div className={css.actions}>
+                <Button
+                    onClick={() => {
+                        void handleSave(visualBuilderGraph.is_draft)
+                    }}
+                    isLoading={isEditActionTemplateLoading}
+                >
+                    Save changes
+                </Button>
+                {visualBuilderGraph.is_draft && (
                     <Button
                         intent="secondary"
                         onClick={() => {
-                            dispatch({
-                                type: 'RESET_GRAPH',
-                                graph: visualBuilderGraph,
-                            })
+                            void handleSave(false)
                         }}
-                        isDisabled={
-                            !isVisualBuilderGraphDirty ||
-                            isEditActionTemplateLoading
-                        }
+                        isLoading={isEditActionTemplateLoading}
                     >
-                        Discard changes
+                        Publish
                     </Button>
-                    {isDraft ? (
-                        <>
-                            <Button
-                                intent="secondary"
-                                isDisabled={
-                                    !isVisualBuilderGraphDirty ||
-                                    isEditActionTemplateLoading
-                                }
-                                onClick={() => {
-                                    void handleSave(true)
-                                }}
-                            >
-                                Save
-                            </Button>
-                            <ConfirmationPopover
-                                onConfirm={() => {
-                                    void handleSave(false)
-                                }}
-                                showCancelButton
-                                cancelButtonProps={{intent: 'secondary'}}
-                                content="Are you sure you want to publish this Action template? This will prevent you from updating settings like AI Agent instructions, conditions and deleting already existing inputs."
-                            >
-                                {({uid, onDisplayConfirmation}) => (
-                                    <Button
-                                        id={uid}
-                                        intent="primary"
-                                        isDisabled={isEditActionTemplateLoading}
-                                        onClick={onDisplayConfirmation}
-                                    >
-                                        Publish
-                                    </Button>
-                                )}
-                            </ConfirmationPopover>
-                        </>
-                    ) : (
-                        <ConfirmationPopover
-                            onConfirm={() => {
-                                void handleSave(false)
-                            }}
-                            showCancelButton
-                            cancelButtonProps={{intent: 'secondary'}}
-                            content="Are you sure you want to update this Action template? This will also update all Actions created from this template."
-                        >
-                            {({uid, onDisplayConfirmation}) => (
-                                <Button
-                                    id={uid}
-                                    intent="primary"
-                                    isDisabled={
-                                        !isVisualBuilderGraphDirty ||
-                                        isEditActionTemplateLoading
-                                    }
-                                    onClick={onDisplayConfirmation}
-                                >
-                                    Save
-                                </Button>
-                            )}
-                        </ConfirmationPopover>
-                    )}
-                </div>
-            </PageHeader>
-            <Container className={css.container} fluid>
-                <WorkflowVisualBuilder
-                    visualBuilderGraph={visualBuilderGraphDirty}
-                    dispatch={dispatch}
-                    shouldShowErrors={shouldShowErrors}
-                />
-            </Container>
-        </div>
+                )}
+                <Button
+                    intent="secondary"
+                    onClick={() => {
+                        history.push('/app/automation/actions-platform')
+                    }}
+                >
+                    Cancel
+                </Button>
+            </div>
+        </AutomateFormView>
     )
 }
 

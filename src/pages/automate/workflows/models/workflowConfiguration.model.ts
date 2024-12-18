@@ -34,6 +34,8 @@ import {
     RefundShippingCostsNodeType,
     ReplaceItemNodeType,
     ReusableLLMPromptTriggerNodeType,
+    VisualBuilderTriggerNode,
+    ReusableLLMPromptCallNodeType,
 } from './visualBuilderGraph.types'
 import {
     MessageContent,
@@ -226,27 +228,31 @@ export function getTriggerNode(
     }
 }
 
-export function transformWorkflowConfigurationIntoVisualBuilderGraph(
-    c: WorkflowConfiguration
-): VisualBuilderGraph {
-    const triggerNode = getTriggerNode(c)
-    const nodes: VisualBuilderNode[] = [triggerNode]
+export function transformWorkflowConfigurationIntoVisualBuilderGraph<
+    T extends VisualBuilderTriggerNode = VisualBuilderTriggerNode,
+>(c: WorkflowConfiguration, isTemplate = false): VisualBuilderGraph<T> {
+    const triggerNode = getTriggerNode(c) as T
+    const nodes: [T, ...VisualBuilderNode[]] = [triggerNode]
     const edges: VisualBuilderEdge[] = []
     const nodeIdByStepId: Record<string, string> = {}
 
     if (!c.initial_step_id) {
         return {
+            id: c.id,
+            internal_id: c.internal_id,
+            is_draft: c.is_draft,
             name: c.name,
             available_languages: c.available_languages,
+            template_internal_id: c.template_internal_id,
             nodes,
             edges,
-            wfConfigurationOriginal: c,
             apps: c.apps,
             inputs: c.inputs,
             values: c.values,
             nodeEditingId: null,
             choiceEventIdEditing: null,
             branchIdsEditing: [],
+            isTemplate,
         }
     }
 
@@ -647,6 +653,23 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
 
             nodeIdByStepId[step.id] = node.id
             nodes.push(node)
+        } else if (step.kind === 'reusable-llm-prompt-call') {
+            const node: ReusableLLMPromptCallNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'reusable_llm_prompt_call',
+                data: {
+                    objects: step.settings.objects,
+                    configuration_internal_id:
+                        step.settings.configuration_internal_id,
+                    custom_inputs: step.settings.custom_inputs,
+                    values: step.settings.values,
+                    configuration_id: step.settings.configuration_id,
+                },
+            }
+
+            nodeIdByStepId[step.id] = node.id
+            nodes.push(node)
         } else {
             return
         }
@@ -681,17 +704,21 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
     })
 
     return {
+        id: c.id,
+        internal_id: c.internal_id,
+        is_draft: c.is_draft,
         name: c.name,
         available_languages: c.available_languages,
+        template_internal_id: c.template_internal_id,
         nodes,
         edges,
-        wfConfigurationOriginal: c,
         apps: c.apps,
         inputs: c.inputs,
         values: c.values,
         nodeEditingId: null,
         choiceEventIdEditing: null,
         branchIdsEditing: [],
+        isTemplate,
     }
 }
 

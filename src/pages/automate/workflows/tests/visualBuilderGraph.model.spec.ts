@@ -1,8 +1,62 @@
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
+    getAutomatedMessageNodeErrors,
+    getAutomatedMessageNodeTouched,
+    getCancelSubscriptionNodeErrors,
+    getCancelSubscriptionNodeTouched,
+    getChannelTriggerNodeErrors,
+    getChannelTriggerNodeTouched,
+    getConditionsNodeErrors,
+    getConditionsNodeTouched,
+    getFileUploadNodeErrors,
+    getFileUploadNodeTouched,
+    getGraphAppAppErrors,
+    getGraphAppAppTouched,
+    getGraphTouched,
+    getHTTPRequestNodeErrors,
+    getHTTPRequestNodeTouched,
+    getLLMPromptTriggerNodeErrors,
+    getLLMPromptTriggerNodeTouched,
+    getMultipleChoicesNodeErrors,
+    getMultipleChoicesNodeTouched,
+    getOrderLineItemSelectionNodeErrors,
+    getOrderLineItemSelectionNodeTouched,
+    getOrderSelectionNodeErrors,
+    getOrderSelectionNodeTouched,
+    getRemoveItemNodeErrors,
+    getRemoveItemNodeTouched,
+    getReplaceItemNodeErrors,
+    getReplaceItemNodeTouched,
+    getReusableLLMPromptTriggerNodeErrors,
+    getReusableLLMPromptTriggerNodeTouched,
+    getSkipChargeNodeErrors,
+    getSkipChargeNodeTouched,
+    getTextReplyNodeErrors,
+    getTextReplyNodeTouched,
+    getUpdateShippingAddressNodeErrors,
+    getUpdateShippingAddressNodeTouched,
     transformVisualBuilderGraphIntoWfConfiguration,
 } from '../models/visualBuilderGraph.model'
+import {
+    AutomatedMessageNodeType,
+    CancelSubscriptionNodeType,
+    ChannelTriggerNodeType,
+    ConditionsNodeType,
+    FileUploadNodeType,
+    HttpRequestNodeType,
+    LLMPromptTriggerNodeType,
+    MultipleChoicesNodeType,
+    OrderLineItemSelectionNodeType,
+    OrderSelectionNodeType,
+    RemoveItemNodeType,
+    ReplaceItemNodeType,
+    ReusableLLMPromptTriggerNodeType,
+    SkipChargeNodeType,
+    TextReplyNodeType,
+    UpdateShippingAddressNodeType,
+    VisualBuilderEdge,
+} from '../models/visualBuilderGraph.types'
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
 import {visualBuilderGraphSimpleChoicesFixture} from './visualBuilderGraph.fixtures'
 
@@ -11,8 +65,10 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
         const g = visualBuilderGraphSimpleChoicesFixture
         const transformed = transformVisualBuilderGraphIntoWfConfiguration(
             transformWorkflowConfigurationIntoVisualBuilderGraph(
-                transformVisualBuilderGraphIntoWfConfiguration(g)
-            )
+                transformVisualBuilderGraphIntoWfConfiguration(g, true, [])
+            ),
+            true,
+            []
         )
         const {id, is_draft, name, internal_id, initial_step_id} = transformed
         expect(transformed).toEqual(
@@ -98,92 +154,82 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
     })
 
     it('should transform http request step JSON variable', () => {
-        const configuration = transformVisualBuilderGraphIntoWfConfiguration({
-            name: 'name',
-            nodes: [
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'trigger_button1',
-                    type: 'channel_trigger',
-                    data: {
-                        label: 'entrypoint',
-                        label_tkey: 'entrypoint_tkey',
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'http_request1',
-                    type: 'http_request',
-                    data: {
-                        name: '',
-                        url: 'https://example.com',
-                        method: 'GET',
-                        headers: [],
-                        variables: [
-                            {
-                                id: 'variable1',
-                                name: '',
-                                jsonpath: '$',
-                                data_type: 'json',
-                            },
-                            {
-                                id: 'variable2',
-                                name: '',
-                                jsonpath: '$.string',
-                                data_type: 'string',
-                            },
-                        ],
-                        json: null,
-                        formUrlencoded: null,
-                        bodyContentType: null,
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'end1',
-                    type: 'end',
-                    data: {
-                        action: 'end',
-                    },
-                },
-            ],
-            edges: [
-                {
-                    ...buildEdgeCommonProperties(),
-                    id: 'trigger_button1_multiple_choices1',
-                    source: 'trigger_button1',
-                    target: 'http_request1',
-                },
-                {
-                    ...buildEdgeCommonProperties(),
-                    id: 'http_request1_end1',
-                    source: 'http_request1',
-                    target: 'end1',
-                },
-            ],
-            available_languages: [],
-            wfConfigurationOriginal: {
-                id: '1',
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration(
+            {
+                id: '',
+                internal_id: '',
                 is_draft: false,
-                name: 'my workflow',
-                internal_id: '1',
-                initial_step_id: 'messages1',
-                steps: [
+                isTemplate: false,
+                name: 'name',
+                nodes: [
                     {
-                        id: 'messages1',
-                        kind: 'message',
-                        settings: {
-                            message: {content: {html: '', text: ''}},
+                        ...buildNodeCommonProperties(),
+                        id: 'trigger_button1',
+                        type: 'channel_trigger',
+                        data: {
+                            label: 'entrypoint',
+                            label_tkey: 'entrypoint_tkey',
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'http_request1',
+                        type: 'http_request',
+                        data: {
+                            name: '',
+                            url: 'https://example.com',
+                            method: 'GET',
+                            headers: [],
+                            variables: [
+                                {
+                                    id: 'variable1',
+                                    name: '',
+                                    jsonpath: '$',
+                                    data_type: 'json',
+                                },
+                                {
+                                    id: 'variable2',
+                                    name: '',
+                                    jsonpath: '$.string',
+                                    data_type: 'string',
+                                },
+                            ],
+                            json: null,
+                            formUrlencoded: null,
+                            bodyContentType: null,
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end1',
+                        type: 'end',
+                        data: {
+                            action: 'end',
                         },
                     },
                 ],
-                transitions: [],
+                edges: [
+                    {
+                        ...buildEdgeCommonProperties(),
+                        id: 'trigger_button1_multiple_choices1',
+                        source: 'trigger_button1',
+                        target: 'http_request1',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        id: 'http_request1_end1',
+                        source: 'http_request1',
+                        target: 'end1',
+                    },
+                ],
                 available_languages: [],
+                nodeEditingId: null,
+                choiceEventIdEditing: null,
+                branchIdsEditing: [],
             },
-            nodeEditingId: null,
-            choiceEventIdEditing: null,
-            branchIdsEditing: [],
-        })
+            true,
+            []
+        )
 
         expect(configuration.steps).toEqual(
             expect.arrayContaining([
@@ -216,102 +262,91 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
     })
 
     it('should transform graph with a create discount code step', () => {
-        const configuration = transformVisualBuilderGraphIntoWfConfiguration({
-            name: 'Create discount code',
-            available_languages: ['en-US'],
-            inputs: [
-                {
-                    id: 'test',
-                    name: 'test',
-                    description: '',
-                    data_type: 'string',
-                },
-            ],
-            values: {
-                test: 'test',
-            },
-            nodes: [
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'trigger',
-                    type: 'llm_prompt_trigger',
-                    data: {
-                        instructions: 'This action creates a discount code',
-                        requires_confirmation: false,
-                        inputs: [],
-                        conditionsType: null,
-                        conditions: [],
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'create_discount_code',
-                    type: 'create_discount_code',
-                    data: {
-                        customerId: '{{objects.customer.id}}',
-                        integrationId: '{{store.helpdesk_integration_id}}',
-                        amount: '',
-                        discountType: '',
-                        validFor: '',
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'end_success',
-                    type: 'end',
-                    data: {
-                        action: 'end',
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'end_failure',
-                    type: 'end',
-                    data: {
-                        action: 'end',
-                    },
-                },
-            ],
-            edges: [
-                {
-                    ...buildEdgeCommonProperties(),
-                    source: 'trigger',
-                    target: 'create_discount_code',
-                },
-                {
-                    ...buildEdgeCommonProperties(),
-                    source: 'create_discount_code',
-                    target: 'end_success',
-                },
-                {
-                    ...buildEdgeCommonProperties(),
-                    source: 'create_discount_code',
-                    target: 'end_failure',
-                },
-            ],
-            wfConfigurationOriginal: {
-                internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
-                id: '01J7ZTERAST0PVVPF347XA37FR',
-                name: 'Create discount code',
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration(
+            {
+                id: '',
+                internal_id: '',
                 is_draft: false,
-                initial_step_id: 'trigger',
-                entrypoint: null,
-                available_languages: [],
-                steps: [],
-                transitions: [],
-                updated_datetime: '2024-09-17T11:18:00.201Z',
-                triggers: [],
-                entrypoints: [],
-                apps: [
+                isTemplate: false,
+                name: 'Create discount code',
+                available_languages: ['en-US'],
+                inputs: [
                     {
-                        type: 'shopify',
+                        id: 'test',
+                        name: 'test',
+                        description: '',
+                        data_type: 'string',
                     },
                 ],
+                values: {
+                    test: 'test',
+                },
+                nodes: [
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'trigger',
+                        type: 'llm_prompt_trigger',
+                        data: {
+                            instructions: 'This action creates a discount code',
+                            requires_confirmation: false,
+                            inputs: [],
+                            conditionsType: null,
+                            conditions: [],
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'create_discount_code',
+                        type: 'create_discount_code',
+                        data: {
+                            customerId: '{{objects.customer.id}}',
+                            integrationId: '{{store.helpdesk_integration_id}}',
+                            amount: '',
+                            discountType: '',
+                            validFor: '',
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end_success',
+                        type: 'end',
+                        data: {
+                            action: 'end',
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end_failure',
+                        type: 'end',
+                        data: {
+                            action: 'end',
+                        },
+                    },
+                ],
+                edges: [
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'trigger',
+                        target: 'create_discount_code',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'create_discount_code',
+                        target: 'end_success',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'create_discount_code',
+                        target: 'end_failure',
+                    },
+                ],
+                nodeEditingId: null,
+                choiceEventIdEditing: null,
+                branchIdsEditing: [],
             },
-            nodeEditingId: null,
-            choiceEventIdEditing: null,
-            branchIdsEditing: [],
-        })
+            true,
+            []
+        )
         expect(configuration.entrypoints).toEqual([
             {
                 kind: 'llm-conversation',
@@ -410,89 +445,79 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
     })
 
     it('should transform graph with a reship for free step', () => {
-        const configuration = transformVisualBuilderGraphIntoWfConfiguration({
-            name: 'Reship for free',
-            available_languages: ['en-US'],
-            nodes: [
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'trigger',
-                    type: 'llm_prompt_trigger',
-                    data: {
-                        instructions: 'This action reships an order for free',
-                        requires_confirmation: false,
-                        inputs: [],
-                        conditionsType: null,
-                        conditions: [],
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'reship_for_free',
-                    type: 'reship_for_free',
-                    data: {
-                        customerId: '{{objects.customer.id}}',
-                        orderExternalId: '{{objects.order.external_id}}',
-                        integrationId: '{{store.helpdesk_integration_id}}',
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'end_success',
-                    type: 'end',
-                    data: {
-                        action: 'end',
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'end_failure',
-                    type: 'end',
-                    data: {
-                        action: 'end',
-                    },
-                },
-            ],
-            edges: [
-                {
-                    ...buildEdgeCommonProperties(),
-                    source: 'trigger',
-                    target: 'reship_for_free',
-                },
-                {
-                    ...buildEdgeCommonProperties(),
-                    source: 'reship_for_free',
-                    target: 'end_success',
-                },
-                {
-                    ...buildEdgeCommonProperties(),
-                    source: 'reship_for_free',
-                    target: 'end_failure',
-                },
-            ],
-            wfConfigurationOriginal: {
-                internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
-                id: '01J7ZTERAST0PVVPF347XA37FR',
-                name: 'Reship for free',
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration(
+            {
+                id: '',
+                internal_id: '',
                 is_draft: false,
-                initial_step_id: 'trigger',
-                entrypoint: null,
-                available_languages: [],
-                steps: [],
-                transitions: [],
-                updated_datetime: '2024-09-17T11:18:00.201Z',
-                triggers: [],
-                entrypoints: [],
-                apps: [
+                isTemplate: false,
+                name: 'Reship for free',
+                available_languages: ['en-US'],
+                nodes: [
                     {
-                        type: 'shopify',
+                        ...buildNodeCommonProperties(),
+                        id: 'trigger',
+                        type: 'llm_prompt_trigger',
+                        data: {
+                            instructions:
+                                'This action reships an order for free',
+                            requires_confirmation: false,
+                            inputs: [],
+                            conditionsType: null,
+                            conditions: [],
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'reship_for_free',
+                        type: 'reship_for_free',
+                        data: {
+                            customerId: '{{objects.customer.id}}',
+                            orderExternalId: '{{objects.order.external_id}}',
+                            integrationId: '{{store.helpdesk_integration_id}}',
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end_success',
+                        type: 'end',
+                        data: {
+                            action: 'end',
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end_failure',
+                        type: 'end',
+                        data: {
+                            action: 'end',
+                        },
                     },
                 ],
+                edges: [
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'trigger',
+                        target: 'reship_for_free',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'reship_for_free',
+                        target: 'end_success',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'reship_for_free',
+                        target: 'end_failure',
+                    },
+                ],
+                nodeEditingId: null,
+                choiceEventIdEditing: null,
+                branchIdsEditing: [],
             },
-            nodeEditingId: null,
-            choiceEventIdEditing: null,
-            branchIdsEditing: [],
-        })
+            true,
+            []
+        )
         expect(configuration.entrypoints).toEqual([
             {
                 kind: 'llm-conversation',
@@ -551,89 +576,79 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
     })
 
     it('should transform graph with a refund shipping costs step', () => {
-        const configuration = transformVisualBuilderGraphIntoWfConfiguration({
-            name: 'Refund shipping costs',
-            available_languages: ['en-US'],
-            nodes: [
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'trigger',
-                    type: 'llm_prompt_trigger',
-                    data: {
-                        instructions: 'This action refunds the shipping costs',
-                        requires_confirmation: false,
-                        inputs: [],
-                        conditionsType: null,
-                        conditions: [],
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'refund_shipping_costs',
-                    type: 'refund_shipping_costs',
-                    data: {
-                        customerId: '{{objects.customer.id}}',
-                        orderExternalId: '{{objects.order.external_id}}',
-                        integrationId: '{{store.helpdesk_integration_id}}',
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'end_success',
-                    type: 'end',
-                    data: {
-                        action: 'end',
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'end_failure',
-                    type: 'end',
-                    data: {
-                        action: 'end',
-                    },
-                },
-            ],
-            edges: [
-                {
-                    ...buildEdgeCommonProperties(),
-                    source: 'trigger',
-                    target: 'refund_shipping_costs',
-                },
-                {
-                    ...buildEdgeCommonProperties(),
-                    source: 'refund_shipping_costs',
-                    target: 'end_success',
-                },
-                {
-                    ...buildEdgeCommonProperties(),
-                    source: 'refund_shipping_costs',
-                    target: 'end_failure',
-                },
-            ],
-            wfConfigurationOriginal: {
-                internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
-                id: '01J7ZTERAST0PVVPF347XA37FR',
-                name: 'Refund shipping costs',
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration(
+            {
+                id: '',
+                internal_id: '',
                 is_draft: false,
-                initial_step_id: 'trigger',
-                entrypoint: null,
-                available_languages: [],
-                steps: [],
-                transitions: [],
-                updated_datetime: '2024-09-17T11:18:00.201Z',
-                triggers: [],
-                entrypoints: [],
-                apps: [
+                isTemplate: false,
+                name: 'Refund shipping costs',
+                available_languages: ['en-US'],
+                nodes: [
                     {
-                        type: 'shopify',
+                        ...buildNodeCommonProperties(),
+                        id: 'trigger',
+                        type: 'llm_prompt_trigger',
+                        data: {
+                            instructions:
+                                'This action refunds the shipping costs',
+                            requires_confirmation: false,
+                            inputs: [],
+                            conditionsType: null,
+                            conditions: [],
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'refund_shipping_costs',
+                        type: 'refund_shipping_costs',
+                        data: {
+                            customerId: '{{objects.customer.id}}',
+                            orderExternalId: '{{objects.order.external_id}}',
+                            integrationId: '{{store.helpdesk_integration_id}}',
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end_success',
+                        type: 'end',
+                        data: {
+                            action: 'end',
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end_failure',
+                        type: 'end',
+                        data: {
+                            action: 'end',
+                        },
                     },
                 ],
+                edges: [
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'trigger',
+                        target: 'refund_shipping_costs',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'refund_shipping_costs',
+                        target: 'end_success',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'refund_shipping_costs',
+                        target: 'end_failure',
+                    },
+                ],
+                nodeEditingId: null,
+                choiceEventIdEditing: null,
+                branchIdsEditing: [],
             },
-            nodeEditingId: null,
-            choiceEventIdEditing: null,
-            branchIdsEditing: [],
-        })
+            true,
+            []
+        )
         expect(configuration.entrypoints).toEqual([
             {
                 kind: 'llm-conversation',
@@ -692,122 +707,113 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
     })
 
     it('should transform graph with a replace item step', () => {
-        const configuration = transformVisualBuilderGraphIntoWfConfiguration({
-            name: 'Replace item',
-            available_languages: ['en-US'],
-            nodes: [
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'trigger',
-                    type: 'llm_prompt_trigger',
-                    data: {
-                        instructions: 'This action replaces an item',
-                        requires_confirmation: false,
-                        inputs: [
-                            {
-                                kind: 'product',
-                                id: 'product1',
-                                name: 'Product to replace',
-                                instructions: 'Select the product to replace',
-                            },
-                            {
-                                kind: 'product',
-                                id: 'product2',
-                                name: 'Product to replace with',
-                                instructions:
-                                    'Select the product to replace with',
-                            },
-                            {
-                                data_type: 'string',
-                                id: 'quantity1',
-                                name: 'Quantity to remove',
-                                instructions:
-                                    'How nmuch of the product to remove',
-                            },
-                            {
-                                data_type: 'string',
-                                id: 'quantity2',
-                                name: 'Quantity to add',
-                                instructions: 'How much of the product to add',
-                            },
-                        ],
-                        conditionsType: null,
-                        conditions: [],
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'replace_item',
-                    type: 'replace_item',
-                    data: {
-                        customerId: '{{objects.customer.id}}',
-                        orderExternalId: '{{objects.order.external_id}}',
-                        integrationId: '{{store.helpdesk_integration_id}}',
-                        productVariantId:
-                            '{{objects.products.product1.selected_variant.external_gid}}',
-                        quantity: '{{custom_inputs.quantity1}}',
-                        addedProductVariantId:
-                            '{{objects.products.product2.selected_variant.external_gid}}',
-                        addedQuantity: '{{custom_inputs.quantity2}}',
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'end_success',
-                    type: 'end',
-                    data: {
-                        action: 'end',
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'end_failure',
-                    type: 'end',
-                    data: {
-                        action: 'end',
-                    },
-                },
-            ],
-            edges: [
-                {
-                    ...buildEdgeCommonProperties(),
-                    source: 'trigger',
-                    target: 'replace_item',
-                },
-                {
-                    ...buildEdgeCommonProperties(),
-                    source: 'replace_item',
-                    target: 'end_success',
-                },
-                {
-                    ...buildEdgeCommonProperties(),
-                    source: 'replace_item',
-                    target: 'end_failure',
-                },
-            ],
-            wfConfigurationOriginal: {
-                internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
-                id: '01J7ZTERAST0PVVPF347XA37FR',
-                name: 'Replace item',
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration(
+            {
+                id: '',
+                internal_id: '',
                 is_draft: false,
-                initial_step_id: 'trigger',
-                entrypoint: null,
-                available_languages: [],
-                steps: [],
-                transitions: [],
-                updated_datetime: '2024-09-17T11:18:00.201Z',
-                triggers: [],
-                entrypoints: [],
-                apps: [
+                isTemplate: false,
+                name: 'Replace item',
+                available_languages: ['en-US'],
+                nodes: [
                     {
-                        type: 'shopify',
+                        ...buildNodeCommonProperties(),
+                        id: 'trigger',
+                        type: 'llm_prompt_trigger',
+                        data: {
+                            instructions: 'This action replaces an item',
+                            requires_confirmation: false,
+                            inputs: [
+                                {
+                                    kind: 'product',
+                                    id: 'product1',
+                                    name: 'Product to replace',
+                                    instructions:
+                                        'Select the product to replace',
+                                },
+                                {
+                                    kind: 'product',
+                                    id: 'product2',
+                                    name: 'Product to replace with',
+                                    instructions:
+                                        'Select the product to replace with',
+                                },
+                                {
+                                    data_type: 'string',
+                                    id: 'quantity1',
+                                    name: 'Quantity to remove',
+                                    instructions:
+                                        'How nmuch of the product to remove',
+                                },
+                                {
+                                    data_type: 'string',
+                                    id: 'quantity2',
+                                    name: 'Quantity to add',
+                                    instructions:
+                                        'How much of the product to add',
+                                },
+                            ],
+                            conditionsType: null,
+                            conditions: [],
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'replace_item',
+                        type: 'replace_item',
+                        data: {
+                            customerId: '{{objects.customer.id}}',
+                            orderExternalId: '{{objects.order.external_id}}',
+                            integrationId: '{{store.helpdesk_integration_id}}',
+                            productVariantId:
+                                '{{objects.products.product1.selected_variant.external_gid}}',
+                            quantity: '{{custom_inputs.quantity1}}',
+                            addedProductVariantId:
+                                '{{objects.products.product2.selected_variant.external_gid}}',
+                            addedQuantity: '{{custom_inputs.quantity2}}',
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end_success',
+                        type: 'end',
+                        data: {
+                            action: 'end',
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end_failure',
+                        type: 'end',
+                        data: {
+                            action: 'end',
+                        },
                     },
                 ],
+                edges: [
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'trigger',
+                        target: 'replace_item',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'replace_item',
+                        target: 'end_success',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'replace_item',
+                        target: 'end_failure',
+                    },
+                ],
+                nodeEditingId: null,
+                choiceEventIdEditing: null,
+                branchIdsEditing: [],
             },
-            nodeEditingId: null,
-            choiceEventIdEditing: null,
-            branchIdsEditing: [],
-        })
+            true,
+            []
+        )
         expect(configuration.entrypoints).toEqual([
             {
                 kind: 'llm-conversation',
@@ -899,114 +905,103 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
     })
 
     it('should transform graph with reusable LLM prompt trigger', () => {
-        const configuration = transformVisualBuilderGraphIntoWfConfiguration({
-            name: 'Reusable LLM prompt trigger',
-            available_languages: [],
-            nodes: [
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'trigger',
-                    type: 'reusable_llm_prompt_trigger',
-                    data: {
-                        requires_confirmation: false,
-                        inputs: [
-                            {
-                                data_type: 'string',
-                                id: 'input1',
-                                name: 'Input 1',
-                                instructions: 'some instructions',
-                            },
-                        ],
-                        conditionsType: null,
-                        conditions: [],
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'http_request1',
-                    type: 'http_request',
-                    data: {
-                        name: '',
-                        url: 'https://example.com?order_name={{objects.order.name}}',
-                        method: 'GET',
-                        headers: [],
-                        variables: [
-                            {
-                                id: 'variable1',
-                                name: 'test',
-                                jsonpath: '$.string',
-                                data_type: 'string',
-                            },
-                        ],
-                        json: null,
-                        formUrlencoded: null,
-                        bodyContentType: null,
-                        outputs: [
-                            {
-                                id: 'output1',
-                                path: 'steps_state.http_request1.content.variable1',
-                                description: 'some description',
-                            },
-                        ],
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'end_success',
-                    type: 'end',
-                    data: {
-                        action: 'end',
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'end_failure',
-                    type: 'end',
-                    data: {
-                        action: 'end',
-                    },
-                },
-            ],
-            edges: [
-                {
-                    ...buildEdgeCommonProperties(),
-                    source: 'trigger',
-                    target: 'http_request1',
-                },
-                {
-                    ...buildEdgeCommonProperties(),
-                    source: 'http_request1',
-                    target: 'end_success',
-                },
-                {
-                    ...buildEdgeCommonProperties(),
-                    source: 'http_request1',
-                    target: 'end_failure',
-                },
-            ],
-            wfConfigurationOriginal: {
-                internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
-                id: '01J7ZTERAST0PVVPF347XA37FR',
-                name: 'Reusable LLM prompt trigger',
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration(
+            {
+                id: '',
+                internal_id: '',
                 is_draft: false,
-                initial_step_id: 'trigger',
-                entrypoint: null,
+                isTemplate: false,
+                name: 'Reusable LLM prompt trigger',
                 available_languages: [],
-                steps: [],
-                transitions: [],
-                updated_datetime: '2024-09-17T11:18:00.201Z',
-                triggers: [],
-                entrypoints: [],
-                apps: [
+                nodes: [
                     {
-                        type: 'shopify',
+                        ...buildNodeCommonProperties(),
+                        id: 'trigger',
+                        type: 'reusable_llm_prompt_trigger',
+                        data: {
+                            requires_confirmation: false,
+                            inputs: [
+                                {
+                                    data_type: 'string',
+                                    id: 'input1',
+                                    name: 'Input 1',
+                                    instructions: 'some instructions',
+                                },
+                            ],
+                            conditionsType: null,
+                            conditions: [],
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'http_request1',
+                        type: 'http_request',
+                        data: {
+                            name: '',
+                            url: 'https://example.com?order_name={{objects.order.name}}',
+                            method: 'GET',
+                            headers: [],
+                            variables: [
+                                {
+                                    id: 'variable1',
+                                    name: 'test',
+                                    jsonpath: '$.string',
+                                    data_type: 'string',
+                                },
+                            ],
+                            json: null,
+                            formUrlencoded: null,
+                            bodyContentType: null,
+                            outputs: [
+                                {
+                                    id: 'output1',
+                                    path: 'steps_state.http_request1.content.variable1',
+                                    description: 'some description',
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end_success',
+                        type: 'end',
+                        data: {
+                            action: 'end',
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end_failure',
+                        type: 'end',
+                        data: {
+                            action: 'end',
+                        },
                     },
                 ],
+                edges: [
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'trigger',
+                        target: 'http_request1',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'http_request1',
+                        target: 'end_success',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'http_request1',
+                        target: 'end_failure',
+                    },
+                ],
+                nodeEditingId: null,
+                choiceEventIdEditing: null,
+                branchIdsEditing: [],
             },
-            nodeEditingId: null,
-            choiceEventIdEditing: null,
-            branchIdsEditing: [],
-        })
+            true,
+            []
+        )
         expect(configuration.entrypoints).toEqual([
             {
                 kind: 'reusable-llm-prompt-call-step',
@@ -1053,94 +1048,83 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
     })
 
     it('should transform graph with end success/failure actions', () => {
-        const configuration = transformVisualBuilderGraphIntoWfConfiguration({
-            name: 'Reusable LLM prompt trigger',
-            available_languages: [],
-            nodes: [
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'trigger',
-                    type: 'reusable_llm_prompt_trigger',
-                    data: {
-                        requires_confirmation: false,
-                        inputs: [],
-                        conditionsType: null,
-                        conditions: [],
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'http_request1',
-                    type: 'http_request',
-                    data: {
-                        name: '',
-                        url: 'https://example.com',
-                        method: 'GET',
-                        headers: [],
-                        variables: [],
-                        json: null,
-                        formUrlencoded: null,
-                        bodyContentType: null,
-                        outputs: [],
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'end_success',
-                    type: 'end',
-                    data: {
-                        action: 'end-success',
-                    },
-                },
-                {
-                    ...buildNodeCommonProperties(),
-                    id: 'end_failure',
-                    type: 'end',
-                    data: {
-                        action: 'end-failure',
-                    },
-                },
-            ],
-            edges: [
-                {
-                    ...buildEdgeCommonProperties(),
-                    source: 'trigger',
-                    target: 'http_request1',
-                },
-                {
-                    ...buildEdgeCommonProperties(),
-                    source: 'http_request1',
-                    target: 'end_success',
-                },
-                {
-                    ...buildEdgeCommonProperties(),
-                    source: 'http_request1',
-                    target: 'end_failure',
-                },
-            ],
-            wfConfigurationOriginal: {
-                internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
-                id: '01J7ZTERAST0PVVPF347XA37FR',
-                name: 'Reusable LLM prompt trigger',
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration(
+            {
+                id: '',
+                internal_id: '',
                 is_draft: false,
-                initial_step_id: 'trigger',
-                entrypoint: null,
+                isTemplate: false,
+                name: 'Reusable LLM prompt trigger',
                 available_languages: [],
-                steps: [],
-                transitions: [],
-                updated_datetime: '2024-09-17T11:18:00.201Z',
-                triggers: [],
-                entrypoints: [],
-                apps: [
+                nodes: [
                     {
-                        type: 'shopify',
+                        ...buildNodeCommonProperties(),
+                        id: 'trigger',
+                        type: 'reusable_llm_prompt_trigger',
+                        data: {
+                            requires_confirmation: false,
+                            inputs: [],
+                            conditionsType: null,
+                            conditions: [],
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'http_request1',
+                        type: 'http_request',
+                        data: {
+                            name: '',
+                            url: 'https://example.com',
+                            method: 'GET',
+                            headers: [],
+                            variables: [],
+                            json: null,
+                            formUrlencoded: null,
+                            bodyContentType: null,
+                            outputs: [],
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end_success',
+                        type: 'end',
+                        data: {
+                            action: 'end-success',
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end_failure',
+                        type: 'end',
+                        data: {
+                            action: 'end-failure',
+                        },
                     },
                 ],
+                edges: [
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'trigger',
+                        target: 'http_request1',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'http_request1',
+                        target: 'end_success',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'http_request1',
+                        target: 'end_failure',
+                    },
+                ],
+                nodeEditingId: null,
+                choiceEventIdEditing: null,
+                branchIdsEditing: [],
             },
-            nodeEditingId: null,
-            choiceEventIdEditing: null,
-            branchIdsEditing: [],
-        })
+            true,
+            []
+        )
 
         expect(configuration.steps).toEqual([
             {
@@ -1169,5 +1153,3821 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 },
             },
         ])
+    })
+
+    it('should transform graph with reusable_llm_prompt_call node', () => {
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration(
+            {
+                id: '',
+                internal_id: '',
+                is_draft: false,
+                isTemplate: false,
+                name: 'Reusable LLM prompt call step',
+                available_languages: [],
+                nodes: [
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'trigger',
+                        type: 'llm_prompt_trigger',
+                        data: {
+                            requires_confirmation: false,
+                            inputs: [],
+                            conditionsType: null,
+                            conditions: [],
+                            instructions: '',
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'reusable_llm_prompt_call1',
+                        type: 'reusable_llm_prompt_call',
+                        data: {
+                            configuration_id: 'configurationid1',
+                            configuration_internal_id:
+                                'configurationinternalid1',
+                            objects: {
+                                order: '{{objects.order}}',
+                                customer: '{{objects.customer}}',
+                                products: {
+                                    product1: '{{objects.products.product1}}',
+                                },
+                            },
+                            custom_inputs: {
+                                input1: '{{custom_inputs.input1}}',
+                            },
+                            values: {
+                                value1: 'test',
+                                value2: 1,
+                                value3: true,
+                            },
+                        },
+                    },
+                ],
+                edges: [
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'trigger',
+                        target: 'reusable_llm_prompt_call1',
+                    },
+                ],
+                nodeEditingId: null,
+                choiceEventIdEditing: null,
+                branchIdsEditing: [],
+            },
+            true,
+            []
+        )
+
+        expect(configuration.steps).toEqual([
+            {
+                id: 'reusable_llm_prompt_call1',
+                kind: 'reusable-llm-prompt-call',
+                settings: {
+                    configuration_id: 'configurationid1',
+                    configuration_internal_id: 'configurationinternalid1',
+                    custom_inputs: {
+                        input1: '{{custom_inputs.input1}}',
+                    },
+                    objects: {
+                        customer: '{{objects.customer}}',
+                        order: '{{objects.order}}',
+                        products: {
+                            product1: '{{objects.products.product1}}',
+                        },
+                    },
+                    values: {
+                        value1: 'test',
+                        value2: 1,
+                        value3: true,
+                    },
+                },
+            },
+        ])
+    })
+})
+
+describe('touched', () => {
+    it('should touch graph', () => {
+        expect(getGraphTouched()).toEqual({
+            name: true,
+            nodes: true,
+        })
+    })
+
+    it('should touch graph app app', () => {
+        expect(getGraphAppAppTouched()).toEqual({
+            api_key: true,
+        })
+    })
+
+    it('should touch LLM prompt trigger node', () => {
+        expect(
+            getLLMPromptTriggerNodeTouched({
+                ...buildNodeCommonProperties(),
+                id: 'trigger',
+                type: 'llm_prompt_trigger',
+                data: {
+                    instructions: '',
+                    requires_confirmation: false,
+                    inputs: [
+                        {
+                            id: 'someid',
+                            name: '',
+                            instructions: '',
+                            data_type: 'string',
+                        },
+                    ],
+                    conditionsType: 'and',
+                    conditions: [{equals: [{var: ''}, '']}],
+                },
+            })
+        ).toEqual({
+            conditions: {
+                0: true,
+            },
+            inputs: {
+                someid: {
+                    instructions: true,
+                    name: true,
+                },
+            },
+            instructions: true,
+        })
+    })
+
+    it('should touch HTTP request node', () => {
+        expect(
+            getHTTPRequestNodeTouched({
+                ...buildNodeCommonProperties(),
+                id: 'http_request1',
+                type: 'http_request',
+                data: {
+                    name: '',
+                    url: '',
+                    method: 'GET',
+                    headers: [
+                        {
+                            name: 'test',
+                            value: 'test',
+                        },
+                    ],
+                    variables: [
+                        {
+                            id: 'variable1',
+                            name: '',
+                            jsonpath: '',
+                            data_type: 'json',
+                        },
+                        {
+                            id: 'variable2',
+                            name: '',
+                            jsonpath: '',
+                            data_type: 'string',
+                        },
+                    ],
+                    json: null,
+                    formUrlencoded: [
+                        {
+                            key: 'test',
+                            value: 'test',
+                        },
+                    ],
+                    bodyContentType: null,
+                },
+            })
+        ).toEqual({
+            headers: {
+                '0': {
+                    name: true,
+                    value: true,
+                },
+            },
+            json: true,
+            name: true,
+            url: true,
+            variables: {
+                '0': {
+                    jsonpath: true,
+                    name: true,
+                },
+                '1': {
+                    jsonpath: true,
+                    name: true,
+                },
+            },
+            formUrlencoded: {
+                '0': {
+                    key: true,
+                    value: true,
+                },
+            },
+        })
+    })
+
+    it('should touch conditions node', () => {
+        expect(
+            getConditionsNodeTouched(
+                [
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'trigger',
+                        target: 'conditions1',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        id: 'conditions1_branch1',
+                        source: 'conditions1',
+                        target: 'end1',
+                        data: {
+                            conditions: {and: []},
+                        },
+                    },
+                ],
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'conditions1',
+                    type: 'conditions',
+                    data: {
+                        name: 'conditions1',
+                        touched: {
+                            branches: {
+                                conditions1_branch1: {
+                                    conditions: {},
+                                    name: true,
+                                },
+                            },
+                        },
+                    },
+                }
+            )
+        ).toEqual({
+            branches: {
+                conditions1_branch1: {
+                    conditions: {},
+                    name: true,
+                },
+            },
+        })
+    })
+
+    it('should touch channel trigger node', () => {
+        expect(getChannelTriggerNodeTouched()).toEqual({
+            label: true,
+        })
+    })
+
+    it('should touch reusable LLM prompt trigger node', () => {
+        expect(
+            getReusableLLMPromptTriggerNodeTouched({
+                ...buildNodeCommonProperties(),
+                id: 'trigger',
+                type: 'reusable_llm_prompt_trigger',
+                data: {
+                    requires_confirmation: false,
+                    inputs: [
+                        {
+                            id: 'someid',
+                            name: '',
+                            instructions: '',
+                            data_type: 'string',
+                        },
+                    ],
+                    conditionsType: 'and',
+                    conditions: [{equals: [{var: ''}, '']}],
+                },
+            })
+        ).toEqual({
+            conditions: {
+                0: true,
+            },
+            inputs: {
+                someid: {
+                    instructions: true,
+                    name: true,
+                },
+            },
+        })
+    })
+
+    it('should touch multiple choices node', () => {
+        expect(
+            getMultipleChoicesNodeTouched({
+                ...buildNodeCommonProperties(),
+                id: 'trigger',
+                type: 'multiple_choices',
+                data: {
+                    content: {
+                        html: '',
+                        text: '',
+                    },
+                    choices: [
+                        {
+                            event_id: 'someid',
+                            label: '',
+                        },
+                    ],
+                },
+            })
+        ).toEqual({
+            content: true,
+            choices: {
+                someid: {
+                    label: true,
+                },
+            },
+        })
+    })
+
+    it('should touch automated message node', () => {
+        expect(getAutomatedMessageNodeTouched()).toEqual({
+            content: true,
+        })
+    })
+
+    it('should touch text reply node', () => {
+        expect(getTextReplyNodeTouched()).toEqual({
+            content: true,
+        })
+    })
+
+    it('should touch file upload node', () => {
+        expect(getFileUploadNodeTouched()).toEqual({
+            content: true,
+        })
+    })
+
+    it('should touch order selection node', () => {
+        expect(getOrderSelectionNodeTouched()).toEqual({
+            content: true,
+        })
+    })
+
+    it('should touch order line item selection node', () => {
+        expect(getOrderLineItemSelectionNodeTouched()).toEqual({
+            content: true,
+        })
+    })
+
+    it('should touch skip charge node', () => {
+        expect(getSkipChargeNodeTouched()).toEqual({
+            subscriptionId: true,
+            chargeId: true,
+        })
+    })
+
+    it('should touch cancel subscription node', () => {
+        expect(getCancelSubscriptionNodeTouched()).toEqual({
+            subscriptionId: true,
+            reason: true,
+        })
+    })
+
+    it('should touch replace item node', () => {
+        expect(getReplaceItemNodeTouched()).toEqual({
+            productVariantId: true,
+            quantity: true,
+            addedProductVariantId: true,
+            addedQuantity: true,
+        })
+    })
+
+    it('should touch remove item node', () => {
+        expect(getRemoveItemNodeTouched()).toEqual({
+            productVariantId: true,
+            quantity: true,
+        })
+    })
+
+    it('should touch update shipping address item node', () => {
+        expect(getUpdateShippingAddressNodeTouched()).toEqual({
+            name: true,
+            address1: true,
+            address2: true,
+            city: true,
+            zip: true,
+            province: true,
+            country: true,
+            phone: true,
+            lastName: true,
+            firstName: true,
+        })
+    })
+})
+
+describe('errors', () => {
+    it('should validate graph app app', () => {
+        expect(
+            getGraphAppAppErrors({
+                app_id: 'someid',
+                type: 'app',
+                api_key: '',
+                touched: {
+                    api_key: true,
+                },
+            })
+        ).toEqual({
+            api_key: 'API key is required',
+        })
+    })
+
+    describe('getLLMPromptTriggerNodeErrors()', () => {
+        it('should return null if there are no errors', () => {
+            const node: LLMPromptTriggerNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'llm_prompt_trigger',
+                data: {
+                    touched: {
+                        instructions: true,
+                        inputs: {},
+                        conditions: true,
+                    },
+                    instructions: 'some instructions',
+                    inputs: [],
+                    conditionsType: null,
+                    conditions: [],
+                    requires_confirmation: false,
+                },
+            }
+
+            const errors = getLLMPromptTriggerNodeErrors(node, [])
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should add an error if instructions are empty and touched', () => {
+            const node: LLMPromptTriggerNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'llm_prompt_trigger',
+                data: {
+                    touched: {
+                        instructions: true,
+                    },
+                    instructions: '',
+                    inputs: [],
+                    conditionsType: null,
+                    conditions: [],
+                    requires_confirmation: false,
+                },
+            }
+
+            const errors = getLLMPromptTriggerNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                instructions: 'Description is required',
+            })
+        })
+
+        it('should add an error if input name & instructions are empty and touched', () => {
+            const node: LLMPromptTriggerNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'llm_prompt_trigger',
+                data: {
+                    touched: {
+                        inputs: {
+                            input1: {name: true, instructions: true},
+                        },
+                    },
+                    instructions: '',
+                    inputs: [
+                        {
+                            id: 'input1',
+                            name: '',
+                            instructions: '',
+                            data_type: 'string',
+                        },
+                    ],
+                    conditionsType: null,
+                    conditions: [],
+                    requires_confirmation: false,
+                },
+            }
+
+            const errors = getLLMPromptTriggerNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                inputs: {
+                    input1: {
+                        name: 'Name is required',
+                        instructions: 'Description is required',
+                    },
+                },
+            })
+        })
+
+        it('should add an error for invalid conditions', () => {
+            const node: LLMPromptTriggerNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'llm_prompt_trigger',
+                data: {
+                    touched: {
+                        conditions: {0: true},
+                    },
+                    instructions: '',
+                    inputs: [],
+                    conditionsType: 'and',
+                    conditions: [{startsWith: [{var: 'variable1'}, null]}],
+                    requires_confirmation: false,
+                },
+            }
+
+            const errors = getLLMPromptTriggerNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                conditions: {0: 'Invalid variables'},
+            })
+        })
+
+        it('should add an error if a string condition value is empty', () => {
+            const node: LLMPromptTriggerNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'llm_prompt_trigger',
+                data: {
+                    touched: {
+                        conditions: {0: true},
+                    },
+                    instructions: '',
+                    inputs: [],
+                    conditionsType: 'and',
+                    conditions: [{equals: [{var: 'variable1'}, '']}],
+                    requires_confirmation: false,
+                },
+            }
+
+            const errors = getLLMPromptTriggerNodeErrors(node, [
+                {
+                    type: 'string',
+                    value: 'variable1',
+                    nodeType: 'http_request',
+                    name: '',
+                },
+            ])
+
+            expect(errors).toEqual({
+                conditions: {0: 'Enter a value'},
+            })
+        })
+
+        it('should add an error if a number condition value is zero', () => {
+            const node: LLMPromptTriggerNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'llm_prompt_trigger',
+                data: {
+                    touched: {
+                        conditions: {0: true},
+                    },
+                    instructions: '',
+                    inputs: [],
+                    conditionsType: 'and',
+                    conditions: [{equals: [{var: 'variable1'}, 0]}],
+                    requires_confirmation: false,
+                },
+            }
+
+            const errors = getLLMPromptTriggerNodeErrors(node, [
+                {
+                    type: 'number',
+                    value: 'variable1',
+                    nodeType: 'http_request',
+                    name: '',
+                },
+            ])
+
+            expect(errors).toEqual({
+                conditions: {0: 'Enter a value'},
+            })
+        })
+
+        it('should add an error if a date condition value is empty', () => {
+            const node: LLMPromptTriggerNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'llm_prompt_trigger',
+                data: {
+                    touched: {
+                        conditions: {0: true},
+                    },
+                    instructions: '',
+                    inputs: [],
+                    conditionsType: 'and',
+                    conditions: [
+                        {greaterThan: [{var: 'variable1'}, undefined]},
+                    ],
+                    requires_confirmation: false,
+                },
+            }
+
+            const errors = getLLMPromptTriggerNodeErrors(node, [
+                {
+                    type: 'date',
+                    value: 'variable1',
+                    nodeType: 'http_request',
+                    name: '',
+                },
+            ])
+
+            expect(errors).toEqual({
+                conditions: {0: 'Choose a date'},
+            })
+        })
+    })
+
+    describe('getHTTPRequestNodeErrors()', () => {
+        it('should return null if there are no errors', () => {
+            const node: HttpRequestNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'http_request',
+                data: {
+                    touched: {
+                        name: true,
+                        url: true,
+                        headers: {
+                            0: {
+                                name: true,
+                                value: true,
+                            },
+                        },
+                    },
+                    name: 'Some name',
+                    method: 'POST',
+                    url: 'https://example.com',
+                    headers: [{name: 'test', value: 'test'}],
+                    bodyContentType: 'application/json',
+                    json: '{"key": "value"}',
+                    formUrlencoded: [],
+                    variables: [],
+                },
+            }
+
+            const errors = getHTTPRequestNodeErrors(node, [])
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should add an error if name is empty and touched', () => {
+            const node: HttpRequestNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'http_request',
+                data: {
+                    touched: {
+                        name: true,
+                    },
+                    name: '',
+                    method: 'GET',
+                    url: '',
+                    headers: [],
+                    bodyContentType: null,
+                    json: null,
+                    formUrlencoded: [],
+                    variables: [],
+                },
+            }
+
+            const errors = getHTTPRequestNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                name: 'Request name is required',
+            })
+        })
+
+        it('should add an error if URL is empty and touched', () => {
+            const node: HttpRequestNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'http_request',
+                data: {
+                    touched: {
+                        url: true,
+                    },
+                    name: '',
+                    method: 'GET',
+                    url: '',
+                    headers: [],
+                    bodyContentType: null,
+                    json: null,
+                    formUrlencoded: [],
+                    variables: [],
+                },
+            }
+
+            const errors = getHTTPRequestNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                url: 'URL is required',
+            })
+        })
+
+        it('should add an error for invalid URL format', () => {
+            const node: HttpRequestNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'http_request',
+                data: {
+                    touched: {
+                        url: true,
+                    },
+                    name: '',
+                    method: 'GET',
+                    url: 'invalid-url',
+                    headers: [],
+                    bodyContentType: null,
+                    json: null,
+                    formUrlencoded: [],
+                    variables: [],
+                },
+            }
+
+            const errors = getHTTPRequestNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                url: 'Invalid url',
+            })
+        })
+
+        it('should add an error for invalid header name & value', () => {
+            const node: HttpRequestNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'http_request',
+                data: {
+                    touched: {
+                        headers: {
+                            0: {
+                                name: true,
+                                value: true,
+                            },
+                        },
+                    },
+                    name: '',
+                    method: 'GET',
+                    url: '',
+                    headers: [{name: '', value: ''}],
+                    bodyContentType: null,
+                    json: null,
+                    formUrlencoded: [],
+                    variables: [],
+                },
+            }
+
+            const errors = getHTTPRequestNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                headers: {
+                    0: {
+                        name: 'Name is required',
+                        value: 'Value is required',
+                    },
+                },
+            })
+        })
+
+        it('should add an error for invalid JSON body', () => {
+            const node: HttpRequestNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'http_request',
+                data: {
+                    touched: {
+                        json: true,
+                    },
+                    name: '',
+                    method: 'POST',
+                    url: '',
+                    headers: [],
+                    bodyContentType: 'application/json',
+                    json: '{invalid-json}',
+                    formUrlencoded: [],
+                    variables: [],
+                },
+            }
+
+            const errors = getHTTPRequestNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                json: 'Invalid JSON',
+            })
+        })
+
+        it('should add an error for invalid form-urlencoded key & value', () => {
+            const node: HttpRequestNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'http_request',
+                data: {
+                    touched: {
+                        formUrlencoded: {
+                            0: {
+                                key: true,
+                                value: true,
+                            },
+                        },
+                    },
+                    name: '',
+                    method: 'POST',
+                    url: '',
+                    headers: [],
+                    bodyContentType: 'application/x-www-form-urlencoded',
+                    json: null,
+                    formUrlencoded: [{key: '', value: ''}],
+                    variables: [],
+                },
+            }
+
+            const errors = getHTTPRequestNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                formUrlencoded: {
+                    0: {
+                        key: 'Key is required',
+                        value: 'Value is required',
+                    },
+                },
+            })
+        })
+
+        it('should add an error for invalid variable name & JSONPath', () => {
+            const node: HttpRequestNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'http_request',
+                data: {
+                    touched: {
+                        variables: {
+                            0: {
+                                name: true,
+                                jsonpath: true,
+                            },
+                        },
+                    },
+                    name: '',
+                    method: 'GET',
+                    url: '',
+                    headers: [],
+                    bodyContentType: null,
+                    json: null,
+                    formUrlencoded: [],
+                    variables: [
+                        {
+                            id: 'someid',
+                            name: '',
+                            jsonpath: '',
+                            data_type: 'string',
+                        },
+                    ],
+                },
+            }
+
+            const errors = getHTTPRequestNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                variables: {
+                    0: {
+                        name: 'Name is required',
+                        jsonpath: 'JSONPath is required',
+                    },
+                },
+            })
+        })
+    })
+
+    describe('getConditionsNodeErrors()', () => {
+        it('should return null if there are no errors', () => {
+            const edges: VisualBuilderEdge[] = [
+                {
+                    ...buildEdgeCommonProperties(),
+                    id: 'edge1',
+                    source: 'node1',
+                    target: 'node2',
+                    data: {
+                        name: 'Some name',
+                        conditions: {
+                            and: [{equals: [{var: 'variable1'}, 'value']}],
+                        },
+                    },
+                },
+            ]
+            const node: ConditionsNodeType = {
+                ...buildNodeCommonProperties(),
+                id: 'node1',
+                type: 'conditions',
+                data: {
+                    touched: {
+                        branches: {
+                            edge1: {
+                                name: true,
+                                conditions: {
+                                    0: true,
+                                },
+                            },
+                        },
+                    },
+                    name: '',
+                },
+            }
+
+            const errors = getConditionsNodeErrors(edges, node, [
+                {
+                    type: 'string',
+                    value: 'variable1',
+                    nodeType: 'http_request',
+                    name: '',
+                },
+            ])
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should add an error if branch name is empty and touched', () => {
+            const edges: VisualBuilderEdge[] = [
+                {
+                    ...buildEdgeCommonProperties(),
+                    id: 'edge1',
+                    source: 'node1',
+                    target: 'node2',
+                    data: {
+                        name: '',
+                        conditions: {
+                            and: [],
+                        },
+                    },
+                },
+            ]
+            const node: ConditionsNodeType = {
+                ...buildNodeCommonProperties(),
+                id: 'node1',
+                type: 'conditions',
+                data: {
+                    touched: {
+                        branches: {
+                            edge1: {
+                                name: true,
+                            },
+                        },
+                    },
+                    name: '',
+                },
+            }
+
+            const errors = getConditionsNodeErrors(edges, node, [])
+
+            expect(errors).toEqual({
+                branches: {
+                    edge1: {
+                        name: 'Name is required',
+                    },
+                },
+            })
+        })
+
+        it('should add an error if conditions array is empty and touched', () => {
+            const edges: VisualBuilderEdge[] = [
+                {
+                    ...buildEdgeCommonProperties(),
+                    id: 'edge1',
+                    source: 'node1',
+                    target: 'node2',
+                    data: {
+                        name: '',
+                        conditions: {
+                            and: [],
+                        },
+                    },
+                },
+            ]
+            const node: ConditionsNodeType = {
+                ...buildNodeCommonProperties(),
+                id: 'node1',
+                type: 'conditions',
+                data: {
+                    touched: {
+                        branches: {
+                            edge1: {
+                                conditions: true,
+                            },
+                        },
+                    },
+                    name: '',
+                },
+            }
+
+            const errors = getConditionsNodeErrors(edges, node, [])
+
+            expect(errors).toEqual({
+                branches: {
+                    edge1: {
+                        conditions: 'A branch must have at least 1 condition',
+                    },
+                },
+            })
+        })
+
+        it('should add an error for invalid variables in a condition', () => {
+            const edges: VisualBuilderEdge[] = [
+                {
+                    ...buildEdgeCommonProperties(),
+                    id: 'edge1',
+                    source: 'node1',
+                    target: 'node2',
+                    data: {
+                        name: '',
+                        conditions: {
+                            and: [{equals: [{var: 'variable1'}, null]}],
+                        },
+                    },
+                },
+            ]
+            const node: ConditionsNodeType = {
+                ...buildNodeCommonProperties(),
+                id: 'node1',
+                type: 'conditions',
+                data: {
+                    touched: {
+                        branches: {
+                            edge1: {
+                                conditions: {
+                                    0: true,
+                                },
+                            },
+                        },
+                    },
+                    name: '',
+                },
+            }
+
+            const errors = getConditionsNodeErrors(edges, node, [])
+
+            expect(errors).toEqual({
+                branches: {
+                    edge1: {
+                        conditions: {
+                            0: 'Invalid variables',
+                        },
+                    },
+                },
+            })
+        })
+
+        it('should add an error for empty string value in a condition', () => {
+            const edges: VisualBuilderEdge[] = [
+                {
+                    ...buildEdgeCommonProperties(),
+                    id: 'edge1',
+                    source: 'node1',
+                    target: 'node2',
+                    data: {
+                        name: '',
+                        conditions: {
+                            and: [{equals: [{var: 'variable1'}, '']}],
+                        },
+                    },
+                },
+            ]
+            const node: ConditionsNodeType = {
+                ...buildNodeCommonProperties(),
+                id: 'node1',
+                type: 'conditions',
+                data: {
+                    touched: {
+                        branches: {
+                            edge1: {
+                                conditions: {
+                                    0: true,
+                                },
+                            },
+                        },
+                    },
+                    name: '',
+                },
+            }
+
+            const errors = getConditionsNodeErrors(edges, node, [
+                {
+                    type: 'string',
+                    value: 'variable1',
+                    nodeType: 'http_request',
+                    name: '',
+                },
+            ])
+
+            expect(errors).toEqual({
+                branches: {
+                    edge1: {
+                        conditions: {
+                            0: 'Enter a value',
+                        },
+                    },
+                },
+            })
+        })
+
+        it('should add an error for zero value in a numeric condition', () => {
+            const edges: VisualBuilderEdge[] = [
+                {
+                    ...buildEdgeCommonProperties(),
+                    id: 'edge1',
+                    source: 'node1',
+                    target: 'node2',
+                    data: {
+                        name: '',
+                        conditions: {
+                            and: [{equals: [{var: 'variable1'}, 0]}],
+                        },
+                    },
+                },
+            ]
+            const node: ConditionsNodeType = {
+                ...buildNodeCommonProperties(),
+                id: 'node1',
+                type: 'conditions',
+                data: {
+                    touched: {
+                        branches: {
+                            edge1: {
+                                conditions: {
+                                    0: true,
+                                },
+                            },
+                        },
+                    },
+                    name: '',
+                },
+            }
+
+            const errors = getConditionsNodeErrors(edges, node, [
+                {
+                    type: 'number',
+                    value: 'variable1',
+                    nodeType: 'http_request',
+                    name: '',
+                },
+            ])
+
+            expect(errors).toEqual({
+                branches: {
+                    edge1: {
+                        conditions: {
+                            0: 'Enter a value',
+                        },
+                    },
+                },
+            })
+        })
+
+        it('should add an error for empty value in a date condition', () => {
+            const edges: VisualBuilderEdge[] = [
+                {
+                    ...buildEdgeCommonProperties(),
+                    id: 'edge1',
+                    source: 'node1',
+                    target: 'node2',
+                    data: {
+                        name: '',
+                        conditions: {
+                            and: [
+                                {greaterThan: [{var: 'variable1'}, undefined]},
+                            ],
+                        },
+                    },
+                },
+            ]
+            const node: ConditionsNodeType = {
+                ...buildNodeCommonProperties(),
+                id: 'node1',
+                type: 'conditions',
+                data: {
+                    touched: {
+                        branches: {
+                            edge1: {
+                                conditions: {
+                                    0: true,
+                                },
+                            },
+                        },
+                    },
+                    name: '',
+                },
+            }
+
+            const errors = getConditionsNodeErrors(edges, node, [
+                {
+                    type: 'date',
+                    value: 'variable1',
+                    nodeType: 'http_request',
+                    name: '',
+                },
+            ])
+
+            expect(errors).toEqual({
+                branches: {
+                    edge1: {
+                        conditions: {
+                            0: 'Choose a date',
+                        },
+                    },
+                },
+            })
+        })
+    })
+
+    describe('getChannelTriggerNodeErrors()', () => {
+        it('should return null if there are no errors', () => {
+            const node: ChannelTriggerNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'channel_trigger',
+                data: {
+                    label: 'some label',
+                    label_tkey: '',
+                    touched: {
+                        label: true,
+                    },
+                },
+            }
+
+            const errors = getChannelTriggerNodeErrors(node)
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should add an error if the label is empty and touched', () => {
+            const node: ChannelTriggerNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'channel_trigger',
+                data: {
+                    label: '',
+                    label_tkey: '',
+                    touched: {
+                        label: true,
+                    },
+                },
+            }
+
+            const errors = getChannelTriggerNodeErrors(node)
+
+            expect(errors).toEqual({
+                label: 'Trigger button is required',
+            })
+        })
+    })
+
+    describe('getReusableLLMPromptTriggerNodeErrors()', () => {
+        it('should return null if there are no errors', () => {
+            const node: ReusableLLMPromptTriggerNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'reusable_llm_prompt_trigger',
+                data: {
+                    touched: {
+                        inputs: {},
+                        conditions: true,
+                    },
+                    inputs: [],
+                    conditionsType: null,
+                    conditions: [],
+                    requires_confirmation: false,
+                },
+            }
+
+            const errors = getReusableLLMPromptTriggerNodeErrors(node, [])
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should add an error if input name & instructions are empty and touched', () => {
+            const node: ReusableLLMPromptTriggerNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'reusable_llm_prompt_trigger',
+                data: {
+                    touched: {
+                        inputs: {
+                            input1: {name: true, instructions: true},
+                        },
+                    },
+                    inputs: [
+                        {
+                            id: 'input1',
+                            name: '',
+                            instructions: '',
+                            data_type: 'string',
+                        },
+                    ],
+                    conditionsType: null,
+                    conditions: [],
+                    requires_confirmation: false,
+                },
+            }
+
+            const errors = getReusableLLMPromptTriggerNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                inputs: {
+                    input1: {
+                        name: 'Name is required',
+                        instructions: 'Description is required',
+                    },
+                },
+            })
+        })
+
+        it('should add an error for invalid conditions', () => {
+            const node: ReusableLLMPromptTriggerNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'reusable_llm_prompt_trigger',
+                data: {
+                    touched: {
+                        conditions: {0: true},
+                    },
+                    inputs: [],
+                    conditionsType: 'and',
+                    conditions: [{startsWith: [{var: 'variable1'}, null]}],
+                    requires_confirmation: false,
+                },
+            }
+
+            const errors = getReusableLLMPromptTriggerNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                conditions: {0: 'Invalid variables'},
+            })
+        })
+
+        it('should add an error if a string condition value is empty', () => {
+            const node: ReusableLLMPromptTriggerNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'reusable_llm_prompt_trigger',
+                data: {
+                    touched: {
+                        conditions: {0: true},
+                    },
+                    inputs: [],
+                    conditionsType: 'and',
+                    conditions: [{equals: [{var: 'variable1'}, '']}],
+                    requires_confirmation: false,
+                },
+            }
+
+            const errors = getReusableLLMPromptTriggerNodeErrors(node, [
+                {
+                    type: 'string',
+                    value: 'variable1',
+                    nodeType: 'http_request',
+                    name: '',
+                },
+            ])
+
+            expect(errors).toEqual({
+                conditions: {0: 'Enter a value'},
+            })
+        })
+
+        it('should add an error if a number condition value is zero', () => {
+            const node: ReusableLLMPromptTriggerNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'reusable_llm_prompt_trigger',
+                data: {
+                    touched: {
+                        conditions: {0: true},
+                    },
+                    inputs: [],
+                    conditionsType: 'and',
+                    conditions: [{equals: [{var: 'variable1'}, 0]}],
+                    requires_confirmation: false,
+                },
+            }
+
+            const errors = getReusableLLMPromptTriggerNodeErrors(node, [
+                {
+                    type: 'number',
+                    value: 'variable1',
+                    nodeType: 'http_request',
+                    name: '',
+                },
+            ])
+
+            expect(errors).toEqual({
+                conditions: {0: 'Enter a value'},
+            })
+        })
+
+        it('should add an error if a date condition is empty', () => {
+            const node: ReusableLLMPromptTriggerNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'reusable_llm_prompt_trigger',
+                data: {
+                    touched: {
+                        conditions: {0: true},
+                    },
+                    inputs: [],
+                    conditionsType: 'and',
+                    conditions: [
+                        {greaterThan: [{var: 'variable1'}, undefined]},
+                    ],
+                    requires_confirmation: false,
+                },
+            }
+
+            const errors = getReusableLLMPromptTriggerNodeErrors(node, [
+                {
+                    type: 'date',
+                    value: 'variable1',
+                    nodeType: 'http_request',
+                    name: '',
+                },
+            ])
+
+            expect(errors).toEqual({
+                conditions: {0: 'Choose a date'},
+            })
+        })
+    })
+
+    describe('getMultipleChoicesNodeErrors()', () => {
+        it('should return null if there are no errors', () => {
+            const node: MultipleChoicesNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'multiple_choices',
+                data: {
+                    touched: {
+                        content: true,
+                        choices: {
+                            choice1: {
+                                label: true,
+                            },
+                        },
+                    },
+                    content: {
+                        html: 'some html',
+                        text: 'some text',
+                    },
+                    choices: [{event_id: 'choice1', label: 'Option 1'}],
+                },
+            }
+
+            const errors = getMultipleChoicesNodeErrors(node, [])
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should add an error if the content text is empty and touched', () => {
+            const node: MultipleChoicesNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'multiple_choices',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: '',
+                        text: '',
+                    },
+                    choices: [],
+                },
+            }
+
+            const errors = getMultipleChoicesNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                content: 'Question is required',
+            })
+        })
+
+        it('should add an error if the content text contains invalid variables', () => {
+            const node: MultipleChoicesNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'multiple_choices',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: 'Question with {{variable1}}',
+                        text: 'Question with {{variable1}}',
+                    },
+                    choices: [],
+                },
+            }
+
+            const errors = getMultipleChoicesNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                content: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if the content text has invalid syntax', () => {
+            const node: MultipleChoicesNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'multiple_choices',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: 'Question with {{',
+                        text: 'Question with {{',
+                    },
+                    choices: [],
+                },
+            }
+
+            const errors = getMultipleChoicesNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                content: 'Invalid variables syntax',
+            })
+        })
+
+        it('should add an error for an empty choice label if touched', () => {
+            const node: MultipleChoicesNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'multiple_choices',
+                data: {
+                    touched: {
+                        choices: {
+                            choice1: {
+                                label: true,
+                            },
+                        },
+                    },
+                    content: {
+                        html: '',
+                        text: '',
+                    },
+                    choices: [{event_id: 'choice1', label: ''}],
+                },
+            }
+
+            const errors = getMultipleChoicesNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                choices: {
+                    choice1: {
+                        label: 'Option label is required',
+                    },
+                },
+            })
+        })
+
+        it('should add an error for invalid variables in a choice label', () => {
+            const node: MultipleChoicesNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'multiple_choices',
+                data: {
+                    touched: {
+                        choices: {
+                            choice1: {
+                                label: true,
+                            },
+                        },
+                    },
+                    content: {
+                        html: '',
+                        text: '',
+                    },
+                    choices: [{event_id: 'choice1', label: '{{variable1}}'}],
+                },
+            }
+
+            const errors = getMultipleChoicesNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                choices: {
+                    choice1: {
+                        label: 'Invalid variables',
+                    },
+                },
+            })
+        })
+
+        it('should add an error for invalid syntax in a choice label', () => {
+            const node: MultipleChoicesNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'multiple_choices',
+                data: {
+                    touched: {
+                        choices: {
+                            choice1: {
+                                label: true,
+                            },
+                        },
+                    },
+                    content: {
+                        html: '',
+                        text: '',
+                    },
+                    choices: [{event_id: 'choice1', label: '{{'}],
+                },
+            }
+
+            const errors = getMultipleChoicesNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                choices: {
+                    choice1: {
+                        label: 'Invalid variables syntax',
+                    },
+                },
+            })
+        })
+    })
+
+    describe('getAutomatedMessageNodeErrors()', () => {
+        it('should return null if there are no errors', () => {
+            const node: AutomatedMessageNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'automated_message',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: 'some html',
+                        text: 'some text',
+                    },
+                },
+            }
+
+            const errors = getAutomatedMessageNodeErrors(node, [])
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should add an error if the content text is empty and touched', () => {
+            const node: AutomatedMessageNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'automated_message',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: '',
+                        text: '',
+                    },
+                },
+            }
+
+            const errors = getAutomatedMessageNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                content: 'Message is required',
+            })
+        })
+
+        it('should add an error if the content text contains invalid variables', () => {
+            const node: AutomatedMessageNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'automated_message',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: 'Message with {{variable1}}',
+                        text: 'Message with {{variable1}}',
+                    },
+                },
+            }
+
+            const errors = getAutomatedMessageNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                content: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if the content text has invalid syntax', () => {
+            const node: AutomatedMessageNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'automated_message',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: 'Message with {{',
+                        text: 'Message with {{',
+                    },
+                },
+            }
+
+            const errors = getAutomatedMessageNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                content: 'Invalid variables syntax',
+            })
+        })
+    })
+
+    describe('getTextReplyNodeErrors()', () => {
+        it('should return null if there are no errors', () => {
+            const node: TextReplyNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'text_reply',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: 'some html',
+                        text: 'some text',
+                    },
+                },
+            }
+
+            const errors = getTextReplyNodeErrors(node, [])
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should add an error if the content text is empty and touched', () => {
+            const node: TextReplyNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'text_reply',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: '',
+                        text: '',
+                    },
+                },
+            }
+
+            const errors = getTextReplyNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                content: 'Message is required',
+            })
+        })
+
+        it('should add an error if the content text contains invalid variables', () => {
+            const node: TextReplyNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'text_reply',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: 'Message with {{variable1}}',
+                        text: 'Message with {{variable1}}',
+                    },
+                },
+            }
+
+            const errors = getTextReplyNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                content: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if the content text has invalid syntax', () => {
+            const node: TextReplyNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'text_reply',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: 'Message with {{',
+                        text: 'Message with {{',
+                    },
+                },
+            }
+
+            const errors = getTextReplyNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                content: 'Invalid variables syntax',
+            })
+        })
+    })
+
+    describe('getFileUploadNodeErrors()', () => {
+        it('should return null if there are no errors', () => {
+            const node: FileUploadNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'file_upload',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: 'some html',
+                        text: 'some text',
+                    },
+                },
+            }
+
+            const errors = getFileUploadNodeErrors(node, [])
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should add an error if the content text is empty and touched', () => {
+            const node: FileUploadNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'file_upload',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: '',
+                        text: '',
+                    },
+                },
+            }
+
+            const errors = getFileUploadNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                content: 'Message is required',
+            })
+        })
+
+        it('should add an error if the content text contains invalid variables', () => {
+            const node: FileUploadNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'file_upload',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: 'Message with {{variable1}}',
+                        text: 'Message with {{variable1}}',
+                    },
+                },
+            }
+
+            const errors = getFileUploadNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                content: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if the content text has invalid syntax', () => {
+            const node: FileUploadNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'file_upload',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: 'Message with {{',
+                        text: 'Message with {{',
+                    },
+                },
+            }
+
+            const errors = getFileUploadNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                content: 'Invalid variables syntax',
+            })
+        })
+    })
+
+    describe('getOrderSelectionNodeErrors()', () => {
+        it('should return null if there are no errors', () => {
+            const node: OrderSelectionNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'order_selection',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: 'some html',
+                        text: 'some text',
+                    },
+                },
+            }
+
+            const errors = getOrderSelectionNodeErrors(node, [])
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should add an error if the content text is empty and touched', () => {
+            const node: OrderSelectionNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'order_selection',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: '',
+                        text: '',
+                    },
+                },
+            }
+
+            const errors = getOrderSelectionNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                content: 'Message is required',
+            })
+        })
+
+        it('should add an error if the content text contains invalid variables', () => {
+            const node: OrderSelectionNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'order_selection',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: 'Message with {{variable1}}',
+                        text: 'Message with {{variable1}}',
+                    },
+                },
+            }
+
+            const errors = getOrderSelectionNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                content: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if the content text has invalid syntax', () => {
+            const node: OrderSelectionNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'order_selection',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: 'Message with {{',
+                        text: 'Message with {{',
+                    },
+                },
+            }
+
+            const errors = getOrderSelectionNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                content: 'Invalid variables syntax',
+            })
+        })
+    })
+
+    describe('getOrderLineItemSelectionNodeErrors()', () => {
+        it('should return null if there are no errors', () => {
+            const node: OrderLineItemSelectionNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'order_line_item_selection',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: 'some html',
+                        text: 'some text',
+                    },
+                },
+            }
+
+            const errors = getOrderLineItemSelectionNodeErrors(node, [])
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should add an error if the content text is empty and touched', () => {
+            const node: OrderLineItemSelectionNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'order_line_item_selection',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: '',
+                        text: '',
+                    },
+                },
+            }
+
+            const errors = getOrderLineItemSelectionNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                content: 'Message is required',
+            })
+        })
+
+        it('should add an error if the content text contains invalid variables', () => {
+            const node: OrderLineItemSelectionNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'order_line_item_selection',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: 'Message with {{variable1}}',
+                        text: 'Message with {{variable1}}',
+                    },
+                },
+            }
+
+            const errors = getOrderLineItemSelectionNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                content: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if the content text has invalid syntax', () => {
+            const node: OrderLineItemSelectionNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'order_line_item_selection',
+                data: {
+                    touched: {
+                        content: true,
+                    },
+                    content: {
+                        html: 'Message with {{',
+                        text: 'Message with {{',
+                    },
+                },
+            }
+
+            const errors = getOrderLineItemSelectionNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                content: 'Invalid variables syntax',
+            })
+        })
+    })
+
+    describe('getSkipChargeNodeErrors()', () => {
+        it('should return null if there are no errors', () => {
+            const node: SkipChargeNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'skip_charge',
+                data: {
+                    customerId: '',
+                    integrationId: '',
+                    subscriptionId: 'subscriptionId',
+                    chargeId: 'chargeId',
+                    touched: {
+                        subscriptionId: true,
+                        chargeId: true,
+                    },
+                },
+            }
+
+            const errors = getSkipChargeNodeErrors(node, [])
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should add an error if subscription id is empty and touched', () => {
+            const node: SkipChargeNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'skip_charge',
+                data: {
+                    customerId: '',
+                    integrationId: '',
+                    subscriptionId: '',
+                    chargeId: '',
+                    touched: {
+                        subscriptionId: true,
+                    },
+                },
+            }
+
+            const errors = getSkipChargeNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                subscriptionId: 'Subscription id is required',
+            })
+        })
+
+        it('should add an error if subscription id contains invalid variables', () => {
+            const node: SkipChargeNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'skip_charge',
+                data: {
+                    customerId: '',
+                    integrationId: '',
+                    subscriptionId: '{{variable1}}',
+                    chargeId: '',
+                    touched: {
+                        subscriptionId: true,
+                    },
+                },
+            }
+
+            const errors = getSkipChargeNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                subscriptionId: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if subscription id has invalid syntax', () => {
+            const node: SkipChargeNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'skip_charge',
+                data: {
+                    customerId: '',
+                    integrationId: '',
+                    subscriptionId: '{{',
+                    chargeId: '',
+                    touched: {
+                        subscriptionId: true,
+                    },
+                },
+            }
+
+            const errors = getSkipChargeNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                subscriptionId: 'Invalid variables syntax',
+            })
+        })
+
+        it('should add an error if charge id is empty and touched', () => {
+            const node: SkipChargeNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'skip_charge',
+                data: {
+                    customerId: '',
+                    integrationId: '',
+                    subscriptionId: '',
+                    chargeId: '',
+                    touched: {
+                        chargeId: true,
+                    },
+                },
+            }
+
+            const errors = getSkipChargeNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                chargeId: 'Charge id is required',
+            })
+        })
+
+        it('should add an error if charge id contains invalid variables', () => {
+            const node: SkipChargeNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'skip_charge',
+                data: {
+                    customerId: '',
+                    integrationId: '',
+                    subscriptionId: '',
+                    chargeId: '{{variable1}}',
+                    touched: {
+                        chargeId: true,
+                    },
+                },
+            }
+
+            const errors = getSkipChargeNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                chargeId: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if charge id has invalid syntax', () => {
+            const node: SkipChargeNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'skip_charge',
+                data: {
+                    customerId: '',
+                    integrationId: '',
+                    subscriptionId: '',
+                    chargeId: '{{',
+                    touched: {
+                        chargeId: true,
+                    },
+                },
+            }
+
+            const errors = getSkipChargeNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                chargeId: 'Invalid variables syntax',
+            })
+        })
+    })
+
+    describe('getCancelSubscriptionNodeErrors()', () => {
+        it('should return null if there are no errors', () => {
+            const node: CancelSubscriptionNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'cancel_subscription',
+                data: {
+                    customerId: '',
+                    integrationId: '',
+                    subscriptionId: 'subscriptionId',
+                    reason: 'reason',
+                    touched: {
+                        subscriptionId: true,
+                        reason: true,
+                    },
+                },
+            }
+
+            const errors = getCancelSubscriptionNodeErrors(node, [])
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should add an error if subscription id is empty and touched', () => {
+            const node: CancelSubscriptionNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'cancel_subscription',
+                data: {
+                    customerId: '',
+                    integrationId: '',
+                    subscriptionId: '',
+                    reason: '',
+                    touched: {
+                        subscriptionId: true,
+                    },
+                },
+            }
+
+            const errors = getCancelSubscriptionNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                subscriptionId: 'Subscription id is required',
+            })
+        })
+
+        it('should add an error if subscription id contains invalid variables', () => {
+            const node: CancelSubscriptionNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'cancel_subscription',
+                data: {
+                    customerId: '',
+                    integrationId: '',
+                    subscriptionId: '{{variable1}}',
+                    reason: '',
+                    touched: {
+                        subscriptionId: true,
+                    },
+                },
+            }
+
+            const errors = getCancelSubscriptionNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                subscriptionId: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if subscription id has invalid syntax', () => {
+            const node: CancelSubscriptionNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'cancel_subscription',
+                data: {
+                    customerId: '',
+                    integrationId: '',
+                    subscriptionId: '{{',
+                    reason: '',
+                    touched: {
+                        subscriptionId: true,
+                    },
+                },
+            }
+
+            const errors = getCancelSubscriptionNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                subscriptionId: 'Invalid variables syntax',
+            })
+        })
+
+        it('should add an error if reason is empty and touched', () => {
+            const node: CancelSubscriptionNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'cancel_subscription',
+                data: {
+                    customerId: '',
+                    integrationId: '',
+                    subscriptionId: '',
+                    reason: '',
+                    touched: {
+                        reason: true,
+                    },
+                },
+            }
+
+            const errors = getCancelSubscriptionNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                reason: 'Reason is required',
+            })
+        })
+
+        it('should add an error if reason contains invalid variables', () => {
+            const node: CancelSubscriptionNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'cancel_subscription',
+                data: {
+                    customerId: '',
+                    integrationId: '',
+                    subscriptionId: '',
+                    reason: '{{variable1}}',
+                    touched: {
+                        reason: true,
+                    },
+                },
+            }
+
+            const errors = getCancelSubscriptionNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                reason: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if reason has invalid syntax', () => {
+            const node: CancelSubscriptionNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'cancel_subscription',
+                data: {
+                    customerId: '',
+                    integrationId: '',
+                    subscriptionId: '',
+                    reason: '{{',
+                    touched: {
+                        reason: true,
+                    },
+                },
+            }
+
+            const errors = getCancelSubscriptionNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                reason: 'Invalid variables syntax',
+            })
+        })
+    })
+
+    describe('getReplaceItemNodeErrors()', () => {
+        it('should return null if there are no errors', () => {
+            const node: ReplaceItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'replace_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: 'productVariantId',
+                    quantity: 'quantity',
+                    addedProductVariantId: 'addedProductVariantId',
+                    addedQuantity: 'addedQuantity',
+                    touched: {
+                        productVariantId: true,
+                        quantity: true,
+                        addedProductVariantId: true,
+                        addedQuantity: true,
+                    },
+                },
+            }
+
+            const errors = getReplaceItemNodeErrors(node, [])
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should add an error if product variant id is empty and touched', () => {
+            const node: ReplaceItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'replace_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: '',
+                    quantity: '',
+                    addedProductVariantId: '',
+                    addedQuantity: '',
+                    touched: {
+                        productVariantId: true,
+                    },
+                },
+            }
+
+            const errors = getReplaceItemNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                productVariantId: 'Product variant id is required',
+            })
+        })
+
+        it('should add an error if product variant id contains invalid variables', () => {
+            const node: ReplaceItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'replace_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: '{{variable1}}',
+                    quantity: '',
+                    addedProductVariantId: '',
+                    addedQuantity: '',
+                    touched: {
+                        productVariantId: true,
+                    },
+                },
+            }
+
+            const errors = getReplaceItemNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                productVariantId: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if product variant id has invalid syntax', () => {
+            const node: ReplaceItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'replace_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: '{{',
+                    quantity: '',
+                    addedProductVariantId: '',
+                    addedQuantity: '',
+                    touched: {
+                        productVariantId: true,
+                    },
+                },
+            }
+
+            const errors = getReplaceItemNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                productVariantId: 'Invalid variables syntax',
+            })
+        })
+
+        it('should add an error if quantity is empty and touched', () => {
+            const node: ReplaceItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'replace_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: '',
+                    quantity: '',
+                    addedProductVariantId: '',
+                    addedQuantity: '',
+                    touched: {
+                        quantity: true,
+                    },
+                },
+            }
+
+            const errors = getReplaceItemNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                quantity: 'Quantity is required',
+            })
+        })
+
+        it('should add an error if quantity contains invalid variables', () => {
+            const node: ReplaceItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'replace_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: '',
+                    quantity: '{{variable1}}',
+                    addedProductVariantId: '',
+                    addedQuantity: '',
+                    touched: {
+                        quantity: true,
+                    },
+                },
+            }
+
+            const errors = getReplaceItemNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                quantity: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if quantity has invalid syntax', () => {
+            const node: ReplaceItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'replace_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: '',
+                    quantity: '{{',
+                    addedProductVariantId: '',
+                    addedQuantity: '',
+                    touched: {
+                        quantity: true,
+                    },
+                },
+            }
+
+            const errors = getReplaceItemNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                quantity: 'Invalid variables syntax',
+            })
+        })
+
+        it('should add an error if added product variant id is empty and touched', () => {
+            const node: ReplaceItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'replace_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: '',
+                    quantity: '',
+                    addedProductVariantId: '',
+                    addedQuantity: '',
+                    touched: {
+                        addedProductVariantId: true,
+                    },
+                },
+            }
+
+            const errors = getReplaceItemNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                addedProductVariantId: 'Added product variant id is required',
+            })
+        })
+
+        it('should add an error if added product variant id contains invalid variables', () => {
+            const node: ReplaceItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'replace_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: '',
+                    quantity: '',
+                    addedProductVariantId: '{{variable1}}',
+                    addedQuantity: '',
+                    touched: {
+                        addedProductVariantId: true,
+                    },
+                },
+            }
+
+            const errors = getReplaceItemNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                addedProductVariantId: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if added product variant id has invalid syntax', () => {
+            const node: ReplaceItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'replace_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: '',
+                    quantity: '',
+                    addedProductVariantId: '{{',
+                    addedQuantity: '',
+                    touched: {
+                        addedProductVariantId: true,
+                    },
+                },
+            }
+
+            const errors = getReplaceItemNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                addedProductVariantId: 'Invalid variables syntax',
+            })
+        })
+
+        it('should add an error if added quantity is empty and touched', () => {
+            const node: ReplaceItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'replace_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: '',
+                    quantity: '',
+                    addedProductVariantId: '',
+                    addedQuantity: '',
+                    touched: {
+                        addedQuantity: true,
+                    },
+                },
+            }
+
+            const errors = getReplaceItemNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                addedQuantity: 'Added quantity is required',
+            })
+        })
+
+        it('should add an error if added quantity contains invalid variables', () => {
+            const node: ReplaceItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'replace_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: '',
+                    quantity: '',
+                    addedProductVariantId: '',
+                    addedQuantity: '{{variable1}}',
+                    touched: {
+                        addedQuantity: true,
+                    },
+                },
+            }
+
+            const errors = getReplaceItemNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                addedQuantity: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if added quantity has invalid syntax', () => {
+            const node: ReplaceItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'replace_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: '',
+                    quantity: '',
+                    addedProductVariantId: '',
+                    addedQuantity: '{{',
+                    touched: {
+                        addedQuantity: true,
+                    },
+                },
+            }
+
+            const errors = getReplaceItemNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                addedQuantity: 'Invalid variables syntax',
+            })
+        })
+    })
+
+    describe('getRemoveItemNodeErrors()', () => {
+        it('should return null if there are no errors', () => {
+            const node: RemoveItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'remove_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: 'productVariantId',
+                    quantity: 'quantity',
+                    touched: {
+                        productVariantId: true,
+                        quantity: true,
+                    },
+                },
+            }
+
+            const errors = getRemoveItemNodeErrors(node, [])
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should add an error if product variant id is empty and touched', () => {
+            const node: RemoveItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'remove_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: '',
+                    quantity: '',
+                    touched: {
+                        productVariantId: true,
+                    },
+                },
+            }
+
+            const errors = getRemoveItemNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                productVariantId: 'Product variant id is required',
+            })
+        })
+
+        it('should add an error if product variant id contains invalid variables', () => {
+            const node: RemoveItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'remove_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: '{{variable1}}',
+                    quantity: '',
+                    touched: {
+                        productVariantId: true,
+                    },
+                },
+            }
+
+            const errors = getRemoveItemNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                productVariantId: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if product variant id has invalid syntax', () => {
+            const node: RemoveItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'remove_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: '{{',
+                    quantity: '',
+                    touched: {
+                        productVariantId: true,
+                    },
+                },
+            }
+
+            const errors = getRemoveItemNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                productVariantId: 'Invalid variables syntax',
+            })
+        })
+
+        it('should add an error if quantity is empty and touched', () => {
+            const node: RemoveItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'remove_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: '',
+                    quantity: '',
+                    touched: {
+                        quantity: true,
+                    },
+                },
+            }
+
+            const errors = getRemoveItemNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                quantity: 'Quantity is required',
+            })
+        })
+
+        it('should add an error if quantity contains invalid variables', () => {
+            const node: RemoveItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'remove_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: '',
+                    quantity: '{{variable1}}',
+                    touched: {
+                        quantity: true,
+                    },
+                },
+            }
+
+            const errors = getRemoveItemNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                quantity: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if quantity has invalid syntax', () => {
+            const node: RemoveItemNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'remove_item',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    productVariantId: '',
+                    quantity: '{{',
+                    touched: {
+                        quantity: true,
+                    },
+                },
+            }
+
+            const errors = getRemoveItemNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                quantity: 'Invalid variables syntax',
+            })
+        })
+    })
+
+    describe('getUpdateShippingAddressNodeErrors()', () => {
+        it('should return null if there are no errors', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: 'name',
+                    address1: 'address1',
+                    address2: 'address2',
+                    city: 'city',
+                    zip: 'zip',
+                    province: 'province',
+                    country: 'country',
+                    phone: 'phone',
+                    lastName: 'lastName',
+                    firstName: 'firstName',
+                    touched: {
+                        name: true,
+                        address1: true,
+                        address2: true,
+                        city: true,
+                        zip: true,
+                        province: true,
+                        country: true,
+                        phone: true,
+                        lastName: true,
+                        firstName: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should add an error if name is empty and touched', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        name: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                name: 'Name is required',
+            })
+        })
+
+        it('should add an error if name contains invalid variables', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '{{variable1}}',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        name: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                name: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if name has invalid syntax', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '{{',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        name: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                name: 'Invalid variables syntax',
+            })
+        })
+
+        it('should add an error if address1 is empty and touched', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        address1: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                address1: 'Address line 1 is required',
+            })
+        })
+
+        it('should add an error if address1 contains invalid variables', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '{{variable1}}',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        address1: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                address1: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if address1 has invalid syntax', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '{{',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        address1: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                address1: 'Invalid variables syntax',
+            })
+        })
+
+        it('should add an error if address2 is empty and touched', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        address2: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                address2: 'Address line 2 is required',
+            })
+        })
+
+        it('should add an error if address2 contains invalid variables', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '{{variable1}}',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        address2: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                address2: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if address2 has invalid syntax', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '{{',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        address2: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                address2: 'Invalid variables syntax',
+            })
+        })
+
+        it('should add an error if city is empty and touched', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        city: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                city: 'City is required',
+            })
+        })
+
+        it('should add an error if city contains invalid variables', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '{{variable1}}',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        city: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                city: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if city has invalid syntax', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '{{',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        city: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                city: 'Invalid variables syntax',
+            })
+        })
+
+        it('should add an error if zip is empty and touched', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        zip: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                zip: 'ZIP code is required',
+            })
+        })
+
+        it('should add an error if zip contains invalid variables', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '{{variable1}}',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        zip: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                zip: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if zip has invalid syntax', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '{{',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        zip: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                zip: 'Invalid variables syntax',
+            })
+        })
+
+        it('should add an error if province is empty and touched', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        province: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                province: 'State is required',
+            })
+        })
+
+        it('should add an error if province contains invalid variables', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '{{variable1}}',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        province: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                province: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if province has invalid syntax', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '{{',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        province: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                province: 'Invalid variables syntax',
+            })
+        })
+
+        it('should add an error if country is empty and touched', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        country: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                country: 'Country is required',
+            })
+        })
+
+        it('should add an error if country contains invalid variables', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '{{variable1}}',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        country: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                country: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if country has invalid syntax', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '{{',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        country: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                country: 'Invalid variables syntax',
+            })
+        })
+
+        it('should add an error if phone is empty and touched', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        phone: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                phone: 'Phone number is required',
+            })
+        })
+
+        it('should add an error if phone contains invalid variables', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '{{variable1}}',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        phone: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                phone: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if phone has invalid syntax', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '{{',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        phone: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                phone: 'Invalid variables syntax',
+            })
+        })
+
+        it('should add an error if lastName is empty and touched', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        lastName: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                lastName: 'Last name is required',
+            })
+        })
+
+        it('should add an error if lastName contains invalid variables', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '{{variable1}}',
+                    firstName: '',
+                    touched: {
+                        lastName: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                lastName: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if lastName has invalid syntax', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '{{',
+                    firstName: '',
+                    touched: {
+                        lastName: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                lastName: 'Invalid variables syntax',
+            })
+        })
+
+        it('should add an error if firstName is empty and touched', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '',
+                    touched: {
+                        firstName: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                firstName: 'First name is required',
+            })
+        })
+
+        it('should add an error if firstName contains invalid variables', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '{{variable1}}',
+                    touched: {
+                        firstName: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                firstName: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if firstName has invalid syntax', () => {
+            const node: UpdateShippingAddressNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'update_shipping_address',
+                data: {
+                    customerId: '',
+                    orderExternalId: '',
+                    integrationId: '',
+                    name: '',
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    zip: '',
+                    province: '',
+                    country: '',
+                    phone: '',
+                    lastName: '',
+                    firstName: '{{',
+                    touched: {
+                        firstName: true,
+                    },
+                },
+            }
+
+            const errors = getUpdateShippingAddressNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                firstName: 'Invalid variables syntax',
+            })
+        })
     })
 })

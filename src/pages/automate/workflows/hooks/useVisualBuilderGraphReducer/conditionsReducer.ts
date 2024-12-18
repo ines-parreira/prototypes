@@ -4,7 +4,6 @@ import {ConditionsSchema} from '../../models/conditions.types'
 import {buildEdgeCommonProperties} from '../../models/visualBuilderGraph.model'
 import {
     ConditionsNodeType,
-    isTriggerNodeType,
     VisualBuilderEdge,
     VisualBuilderGraph,
 } from '../../models/visualBuilderGraph.types'
@@ -119,25 +118,35 @@ export function conditionsReducer(
     }
 }
 
-function insertCondition(graph: VisualBuilderGraph, beforeEndNodeId: string) {
-    const triggerNode = graph.nodes.find(isTriggerNodeType)!
+function insertCondition(graph: VisualBuilderGraph, beforeNodeId: string) {
+    const triggerNode = graph.nodes[0]
 
     return produce(graph, (draft) => {
-        const edge = draft.edges.find((e) => e.target === beforeEndNodeId)
+        const edge = draft.edges.find((e) => e.target === beforeNodeId)
         if (!edge) return
         const conditionsNode = buildConditionsNode()
         const endNode = buildEndNode(
             triggerNode.type === 'channel_trigger'
                 ? 'ask-for-feedback'
-                : 'end-success'
+                : 'end-failure'
         )
+
+        const targetNode = draft.nodes.find((node) => node.id === beforeNodeId)
+
+        if (
+            targetNode?.type === 'end' &&
+            targetNode.data.action === 'end-failure'
+        ) {
+            targetNode.data.action = 'end-success'
+        }
+
         draft.nodes.push(conditionsNode, endNode)
         edge.target = conditionsNode.id
         draft.edges.push(
             {
                 ...buildEdgeCommonProperties(),
                 source: conditionsNode.id,
-                target: beforeEndNodeId,
+                target: beforeNodeId,
                 data: {
                     name: 'Branch 1',
                     conditions: {
@@ -192,7 +201,7 @@ function addConditionBranch(
     conditionNodeId: string,
     edgeId: string
 ) {
-    const triggerNode = graph.nodes.find(isTriggerNodeType)!
+    const triggerNode = graph.nodes[0]
 
     return produce(graph, (draft) => {
         const node = draft.nodes.find((node) => node.id === conditionNodeId)

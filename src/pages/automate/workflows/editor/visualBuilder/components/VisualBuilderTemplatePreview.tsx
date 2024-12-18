@@ -9,6 +9,10 @@ import {
 
 import FitViewIcon from 'pages/automate/common/components/FitViewIcon'
 import {
+    createSelfServiceStoreIntegrationContextForPreview,
+    StoreIntegrationContext,
+} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import {
     createVisualBuilderContextForPreview,
     VisualBuilderContext,
 } from 'pages/automate/workflows/hooks/useVisualBuilder'
@@ -20,12 +24,11 @@ import {
     WorkflowEditorContext,
     createWorkflowEditorContextForPreview,
 } from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-
 import {
-    createSelfServiceStoreIntegrationContextForPreview,
-    StoreIntegrationContext,
-} from '../../../../common/hooks/useSelfServiceStoreIntegration'
+    ChannelTriggerNodeType,
+    VisualBuilderGraph,
+} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+
 import CustomEdge from '../CustomEdge'
 import AutomatedMessageNode from '../nodes/AutomatedMessageNode'
 import ChannelTriggerNode from '../nodes/ChannelTriggerNode'
@@ -108,9 +111,9 @@ function VisualBuilderTemplatePreview({
     )
 }
 
-function withProviders<T extends {visualBuilderGraph: VisualBuilderGraph}>(
-    Component: React.FC<T>
-): React.FC<T> {
+function withProviders<
+    T extends {visualBuilderGraph: VisualBuilderGraph<ChannelTriggerNodeType>},
+>(Component: React.FC<T>): React.FC<T> {
     return (props: PropsWithChildren<T>) => {
         const workflowEditorContextValue =
             createWorkflowEditorContextForPreview(props.visualBuilderGraph)

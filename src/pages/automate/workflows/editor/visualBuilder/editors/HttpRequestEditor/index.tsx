@@ -1,25 +1,25 @@
 import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
+import {produce} from 'immer'
 import _uniq from 'lodash/uniq'
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {useDownloadWorkflowConfigurationStepLogs} from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import useIsHttpRequestNodeErrored from 'pages/automate/workflows/hooks/useIsHttpRequestNodeErrored'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     extractVariablesFromNode,
-    getWorkflowVariableListForNode,
     parseWorkflowVariable,
-    validateJSONWithVariables,
 } from 'pages/automate/workflows/models/variables.model'
 import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
 import {
-    HttpRequestNodeType,
-    isTriggerNodeType,
-} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+    getHTTPRequestNodeErrors,
+    getHTTPRequestNodeTouched,
+} from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Button from 'pages/common/components/button/Button'
 import {Drawer} from 'pages/common/components/Drawer'
+import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {notify} from 'state/notifications/actions'
@@ -52,8 +52,8 @@ export default function HttpRequestEditor({
         visualBuilderGraph,
         checkNewVisualBuilderNode,
         getVariableListInChildren,
+        getVariableListForNode,
     } = useVisualBuilderContext()
-    const {isErrored} = useIsHttpRequestNodeErrored(nodeInEdition, true)
     const {isLoading: isTestRequestLoading, sendTestRequest} =
         useSendTestRequest(nodeInEdition.data, (result) => {
             dispatch({
@@ -88,8 +88,7 @@ export default function HttpRequestEditor({
         try {
             const {data} = await downloadEventLogs([
                 {
-                    internal_id:
-                        visualBuilderGraph.wfConfigurationOriginal.internal_id,
+                    internal_id: visualBuilderGraph.internal_id,
                     step_id: nodeInEdition.id,
                 },
             ])
@@ -113,7 +112,7 @@ export default function HttpRequestEditor({
         }
     }, [
         downloadEventLogs,
-        visualBuilderGraph.wfConfigurationOriginal.internal_id,
+        visualBuilderGraph.internal_id,
         appDispatch,
         nodeInEdition.id,
         nodeInEdition.data.name,
@@ -129,12 +128,8 @@ export default function HttpRequestEditor({
         [nodeInEdition.id, checkNewVisualBuilderNode]
     )
     const workflowVariables = useMemo(
-        () =>
-            getWorkflowVariableListForNode(
-                visualBuilderGraph,
-                nodeInEdition.id
-            ),
-        [visualBuilderGraph, nodeInEdition.id]
+        () => getVariableListForNode(nodeInEdition.id),
+        [getVariableListForNode, nodeInEdition.id]
     )
     const variables = useMemo(() => {
         const variables = _uniq(
@@ -179,9 +174,16 @@ export default function HttpRequestEditor({
         [dispatch, nodeInEdition.id]
     )
 
-    const triggerNode = useMemo(
-        () => visualBuilderGraph.nodes.find(isTriggerNodeType)!,
-        [visualBuilderGraph.nodes]
+    const triggerNode = visualBuilderGraph.nodes[0]
+    const errors = useMemo(
+        () =>
+            getHTTPRequestNodeErrors(
+                produce(nodeInEdition, (draft) => {
+                    draft.data.touched = getHTTPRequestNodeTouched(draft)
+                }),
+                workflowVariables
+            ),
+        [nodeInEdition, workflowVariables]
     )
 
     return (
@@ -227,6 +229,16 @@ export default function HttpRequestEditor({
                                 })
                             }}
                             value={nodeInEdition.data.name}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        name: true,
+                                    },
+                                })
+                            }}
+                            hasError={!!nodeInEdition.data.errors?.name}
                         />
                     </div>
                     <div className={css.urlMethodFormFieldGroup}>
@@ -242,6 +254,16 @@ export default function HttpRequestEditor({
                                     })
                                 }}
                                 variables={workflowVariables}
+                                error={nodeInEdition.data.errors?.url}
+                                onBlur={() => {
+                                    dispatch({
+                                        type: 'SET_TOUCHED',
+                                        nodeId: nodeInEdition.id,
+                                        touched: {
+                                            url: true,
+                                        },
+                                    })
+                                }}
                             />
                         </div>
                         <div className={css.formField}>
@@ -324,6 +346,33 @@ export default function HttpRequestEditor({
                                     httpRequestNodeId: nodeInEdition.id,
                                 })
                             }}
+                            errors={nodeInEdition.data.errors?.headers}
+                            onNameBlur={(index) => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        headers: {
+                                            [index]: {
+                                                name: true,
+                                            },
+                                        },
+                                    },
+                                })
+                            }}
+                            onValueBlur={(index) => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        headers: {
+                                            [index]: {
+                                                value: true,
+                                            },
+                                        },
+                                    },
+                                })
+                            }}
                         />
                     </div>
                     {nodeInEdition.data.bodyContentType && (
@@ -351,20 +400,22 @@ export default function HttpRequestEditor({
                                         })
                                     }}
                                     variables={workflowVariables}
-                                    error={
-                                        validateJSONWithVariables(
-                                            nodeInEdition.data.json ?? '',
-                                            workflowVariables
-                                        )
-                                            ? undefined
-                                            : 'Invalid JSON'
-                                    }
+                                    error={nodeInEdition.data.errors?.json}
                                     allowFilters={
                                         triggerNode.type ===
                                             'llm_prompt_trigger' ||
                                         triggerNode.type ===
                                             'reusable_llm_prompt_trigger'
                                     }
+                                    onBlur={() => {
+                                        dispatch({
+                                            type: 'SET_TOUCHED',
+                                            nodeId: nodeInEdition.id,
+                                            touched: {
+                                                json: true,
+                                            },
+                                        })
+                                    }}
                                 />
                             )}
                             {nodeInEdition.data.bodyContentType ===
@@ -393,6 +444,36 @@ export default function HttpRequestEditor({
                                             httpRequestNodeId: nodeInEdition.id,
                                         })
                                     }}
+                                    errors={
+                                        nodeInEdition.data.errors
+                                            ?.formUrlencoded
+                                    }
+                                    onKeyBlur={(index) => {
+                                        dispatch({
+                                            type: 'SET_TOUCHED',
+                                            nodeId: nodeInEdition.id,
+                                            touched: {
+                                                formUrlencoded: {
+                                                    [index]: {
+                                                        key: true,
+                                                    },
+                                                },
+                                            },
+                                        })
+                                    }}
+                                    onValueBlur={(index) => {
+                                        dispatch({
+                                            type: 'SET_TOUCHED',
+                                            nodeId: nodeInEdition.id,
+                                            touched: {
+                                                formUrlencoded: {
+                                                    [index]: {
+                                                        value: true,
+                                                    },
+                                                },
+                                            },
+                                        })
+                                    }}
                                 />
                             )}
                         </div>
@@ -400,7 +481,12 @@ export default function HttpRequestEditor({
                     <Button
                         className={css.testRequestButton}
                         isLoading={isTestRequestLoading}
-                        isDisabled={isErrored}
+                        isDisabled={
+                            !!errors?.url ||
+                            !!errors?.headers ||
+                            !!errors?.json ||
+                            !!errors?.formUrlencoded
+                        }
                         onClick={() => {
                             if (
                                 !variables.length &&
@@ -419,12 +505,12 @@ export default function HttpRequestEditor({
                             : 'Test request'}
                     </Button>
                     <div className={css.formField}>
-                        <div className={css.withDescription}>
+                        <div>
                             <Label>Output variables</Label>
-                            <div>
+                            <Caption>
                                 Create variables from the request response which
                                 can be used in subsequent steps
-                            </div>
+                            </Caption>
                         </div>
                         <Variables
                             nodeId={nodeInEdition.id}
@@ -433,6 +519,33 @@ export default function HttpRequestEditor({
                             onChange={handleChangeVariable}
                             onDelete={handleDeleteVariable}
                             onAdd={handleAddVariable}
+                            errors={nodeInEdition.data.errors?.variables}
+                            onNameBlur={(index) => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        variables: {
+                                            [index]: {
+                                                name: true,
+                                            },
+                                        },
+                                    },
+                                })
+                            }}
+                            onJSONPathBlur={(index) => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        variables: {
+                                            [index]: {
+                                                jsonpath: true,
+                                            },
+                                        },
+                                    },
+                                })
+                            }}
                         />
                     </div>
                     {(triggerNode.type === 'llm_prompt_trigger' ||

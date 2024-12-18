@@ -21,6 +21,7 @@ type Props = {
         | 'refund_shipping_costs'
         | 'cancel_subscription'
         | 'skip_charge'
+        | 'reusable_llm_prompt_call'
 }
 
 const EdgeLabel = ({children, onClick, isSelected, type}: Props) => {

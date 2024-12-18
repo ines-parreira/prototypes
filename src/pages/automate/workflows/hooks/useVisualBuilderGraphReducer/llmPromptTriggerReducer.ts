@@ -22,11 +22,10 @@ export type VisualBuilderLLMPromptTriggerAction =
       }
     | {
           type: 'DELETE_LLM_PROMPT_TRIGGER_INPUT'
-          index: number
+          id: LLMPromptTriggerNodeType['data']['inputs'][number]['id']
       }
     | {
           type: 'SET_LLM_PROMPT_TRIGGER_INPUT'
-          index: number
           input: LLMPromptTriggerNodeType['data']['inputs'][number]
       }
     | {
@@ -46,6 +45,10 @@ export type VisualBuilderLLMPromptTriggerAction =
           index: number
           condition: LLMPromptTriggerNodeType['data']['conditions'][number]
       }
+    | {
+          type: 'SET_LLM_PROMPT_TRIGGER_DEACTIVATED_DATETIME'
+          deactivated_datetime: string | null
+      }
 
 // bridge between type system and runtime
 // allow to keep a type safe list of all action types for this reducer
@@ -62,6 +65,7 @@ const visualBuilderLLMPromptTriggerActionTypes: ActionTypes = {
     DELETE_LLM_PROMPT_TRIGGER_CONDITION: true,
     ADD_LLM_PROMPT_TRIGGER_CONDITION: true,
     SET_LLM_PROMPT_TRIGGER_CONDITION: true,
+    SET_LLM_PROMPT_TRIGGER_DEACTIVATED_DATETIME: true,
 }
 
 export function isVisualBuilderLLMPromptTriggerAction(action: {
@@ -112,7 +116,13 @@ export function llmPromptTriggerReducer(
                 const node = draft.nodes.find(isLLMPromptTriggerNodeType)
 
                 if (node) {
-                    node.data.inputs.splice(action.index, 1)
+                    const index = node.data.inputs.findIndex(
+                        (input) => input.id === action.id
+                    )
+
+                    if (index !== -1) {
+                        node.data.inputs.splice(index, 1)
+                    }
                 }
             })
         case 'SET_LLM_PROMPT_TRIGGER_INPUT':
@@ -120,7 +130,13 @@ export function llmPromptTriggerReducer(
                 const node = draft.nodes.find(isLLMPromptTriggerNodeType)
 
                 if (node) {
-                    node.data.inputs[action.index] = action.input
+                    const index = node.data.inputs.findIndex(
+                        (input) => input.id === action.input.id
+                    )
+
+                    if (index !== -1) {
+                        node.data.inputs[index] = action.input
+                    }
                 }
             })
         case 'SET_LLM_PROMPT_TRIGGER_CONDITIONS_TYPE':
@@ -157,6 +173,14 @@ export function llmPromptTriggerReducer(
 
                 if (node) {
                     node.data.conditions[action.index] = action.condition
+                }
+            })
+        case 'SET_LLM_PROMPT_TRIGGER_DEACTIVATED_DATETIME':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(isLLMPromptTriggerNodeType)
+
+                if (node) {
+                    node.data.deactivated_datetime = action.deactivated_datetime
                 }
             })
     }

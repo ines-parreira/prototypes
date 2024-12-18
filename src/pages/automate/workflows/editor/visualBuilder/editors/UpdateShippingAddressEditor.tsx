@@ -2,7 +2,6 @@ import {Label} from '@gorgias/merchant-ui-kit'
 import React, {useMemo} from 'react'
 
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
 import {UpdateShippingAddressNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {Drawer} from 'pages/common/components/Drawer'
 
@@ -16,15 +15,11 @@ export default function UpdateShippingAddressEditor({
 }: {
     nodeInEdition: UpdateShippingAddressNodeType
 }) {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const {dispatch, getVariableListForNode} = useVisualBuilderContext()
 
     const workflowVariables = useMemo(
-        () =>
-            getWorkflowVariableListForNode(
-                visualBuilderGraph,
-                nodeInEdition.id
-            ),
-        [visualBuilderGraph, nodeInEdition.id]
+        () => getVariableListForNode(nodeInEdition.id),
+        [getVariableListForNode, nodeInEdition.id]
     )
 
     return (
@@ -33,9 +28,7 @@ export default function UpdateShippingAddressEditor({
             <Drawer.Content>
                 <div className={css.container}>
                     <div className={css.formField}>
-                        <Label className={css.label} isRequired>
-                            Name
-                        </Label>
+                        <Label isRequired>Name</Label>
                         <TextInputWithVariables
                             value={nodeInEdition.data.name}
                             onChange={(nextValue) => {
@@ -48,12 +41,20 @@ export default function UpdateShippingAddressEditor({
                                 })
                             }}
                             variables={workflowVariables}
+                            error={nodeInEdition.data.errors?.name}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        name: true,
+                                    },
+                                })
+                            }}
                         />
                     </div>
                     <div className={css.formField}>
-                        <Label className={css.label} isRequired>
-                            Address line 1
-                        </Label>
+                        <Label isRequired>Address line 1</Label>
                         <TextInputWithVariables
                             value={nodeInEdition.data.address1}
                             onChange={(nextValue) => {
@@ -66,12 +67,20 @@ export default function UpdateShippingAddressEditor({
                                 })
                             }}
                             variables={workflowVariables}
+                            error={nodeInEdition.data.errors?.address1}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        address1: true,
+                                    },
+                                })
+                            }}
                         />
                     </div>
                     <div className={css.formField}>
-                        <Label className={css.label} isRequired>
-                            Address line 2
-                        </Label>
+                        <Label isRequired>Address line 2</Label>
                         <TextInputWithVariables
                             value={nodeInEdition.data.address2}
                             onChange={(nextValue) => {
@@ -84,12 +93,20 @@ export default function UpdateShippingAddressEditor({
                                 })
                             }}
                             variables={workflowVariables}
+                            error={nodeInEdition.data.errors?.address2}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        address2: true,
+                                    },
+                                })
+                            }}
                         />
                     </div>
                     <div className={css.formField}>
-                        <Label className={css.label} isRequired>
-                            City
-                        </Label>
+                        <Label isRequired>City</Label>
                         <TextInputWithVariables
                             value={nodeInEdition.data.city}
                             onChange={(nextValue) => {
@@ -102,12 +119,20 @@ export default function UpdateShippingAddressEditor({
                                 })
                             }}
                             variables={workflowVariables}
+                            error={nodeInEdition.data.errors?.city}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        city: true,
+                                    },
+                                })
+                            }}
                         />
                     </div>
                     <div className={css.formField}>
-                        <Label className={css.label} isRequired>
-                            ZIP code
-                        </Label>
+                        <Label isRequired>ZIP code</Label>
                         <TextInputWithVariables
                             value={nodeInEdition.data.zip}
                             onChange={(nextValue) => {
@@ -120,12 +145,20 @@ export default function UpdateShippingAddressEditor({
                                 })
                             }}
                             variables={workflowVariables}
+                            error={nodeInEdition.data.errors?.zip}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        zip: true,
+                                    },
+                                })
+                            }}
                         />
                     </div>
                     <div className={css.formField}>
-                        <Label className={css.label} isRequired>
-                            State
-                        </Label>
+                        <Label isRequired>State</Label>
                         <TextInputWithVariables
                             value={nodeInEdition.data.province}
                             onChange={(nextValue) => {
@@ -138,12 +171,20 @@ export default function UpdateShippingAddressEditor({
                                 })
                             }}
                             variables={workflowVariables}
+                            error={nodeInEdition.data.errors?.province}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        province: true,
+                                    },
+                                })
+                            }}
                         />
                     </div>
                     <div className={css.formField}>
-                        <Label className={css.label} isRequired>
-                            Country
-                        </Label>
+                        <Label isRequired>Country</Label>
                         <TextInputWithVariables
                             value={nodeInEdition.data.country}
                             onChange={(nextValue) => {
@@ -156,12 +197,20 @@ export default function UpdateShippingAddressEditor({
                                 })
                             }}
                             variables={workflowVariables}
+                            error={nodeInEdition.data.errors?.country}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        country: true,
+                                    },
+                                })
+                            }}
                         />
                     </div>
                     <div className={css.formField}>
-                        <Label className={css.label} isRequired>
-                            Phone number
-                        </Label>
+                        <Label isRequired>Phone number</Label>
                         <TextInputWithVariables
                             value={nodeInEdition.data.phone}
                             onChange={(nextValue) => {
@@ -174,12 +223,20 @@ export default function UpdateShippingAddressEditor({
                                 })
                             }}
                             variables={workflowVariables}
+                            error={nodeInEdition.data.errors?.phone}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        phone: true,
+                                    },
+                                })
+                            }}
                         />
                     </div>
                     <div className={css.formField}>
-                        <Label className={css.label} isRequired>
-                            First name
-                        </Label>
+                        <Label isRequired>First name</Label>
                         <TextInputWithVariables
                             value={nodeInEdition.data.firstName}
                             onChange={(nextValue) => {
@@ -192,12 +249,20 @@ export default function UpdateShippingAddressEditor({
                                 })
                             }}
                             variables={workflowVariables}
+                            error={nodeInEdition.data.errors?.firstName}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        firstName: true,
+                                    },
+                                })
+                            }}
                         />
                     </div>
                     <div className={css.formField}>
-                        <Label className={css.label} isRequired>
-                            Last name
-                        </Label>
+                        <Label isRequired>Last name</Label>
                         <TextInputWithVariables
                             value={nodeInEdition.data.lastName}
                             onChange={(nextValue) => {
@@ -210,6 +275,16 @@ export default function UpdateShippingAddressEditor({
                                 })
                             }}
                             variables={workflowVariables}
+                            error={nodeInEdition.data.errors?.lastName}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        lastName: true,
+                                    },
+                                })
+                            }}
                         />
                     </div>
                 </div>

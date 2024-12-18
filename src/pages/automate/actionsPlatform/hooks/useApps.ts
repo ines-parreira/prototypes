@@ -1,14 +1,14 @@
 import {DefinedUseQueryResult} from '@tanstack/react-query'
 import _keyBy from 'lodash/keyBy'
-import {useEffect, useMemo, useState} from 'react'
+import {useMemo} from 'react'
 
 import {INTEGRATION_TYPE_CONFIG, IntegrationConfig} from 'config'
 import {IntegrationType} from 'models/integration/constants'
 import {useGetApps, useGetAppsByIds} from 'models/integration/queries'
 import {AppData} from 'models/integration/types'
+import {useListActionsApps} from 'models/workflows/queries'
 import {assetsUrl} from 'utils'
 
-import {useListActionsApps} from '../../../../models/workflows/queries'
 import {App} from '../types'
 
 type NativeAppIntegrationConfig = Omit<IntegrationConfig, 'type' | 'image'> & {
@@ -38,9 +38,21 @@ const useApps = <T extends App['type'] = App['type']>(
         data: actionsApps = [],
         isInitialLoading: isActionsAppsInitialLoading,
     } = useListActionsApps()
-    const [missingApps, setMissingApps] = useState<string[]>([])
 
     const {data: appsList = [], isInitialLoading} = useGetApps()
+
+    const missingApps = useMemo(() => {
+        if (isInitialLoading || isActionsAppsInitialLoading) {
+            return []
+        }
+
+        const appById = _keyBy(appsList, 'id')
+
+        return actionsApps
+            .filter((actionsApp) => !(actionsApp.id in appById))
+            .map((actionsApp) => actionsApp.id)
+    }, [appsList, actionsApps, isInitialLoading, isActionsAppsInitialLoading])
+
     const appQueries = useGetAppsByIds(missingApps)
 
     const apps = useMemo<Extract<App, {type: T}>[]>(
@@ -69,18 +81,6 @@ const useApps = <T extends App['type'] = App['type']>(
             ),
         [appsList, appQueries, types]
     )
-
-    useEffect(() => {
-        if (!isInitialLoading && !isActionsAppsInitialLoading) {
-            const appById = _keyBy(appsList, 'id')
-
-            setMissingApps(
-                actionsApps
-                    .filter((actionsApp) => !(actionsApp.id in appById))
-                    .map((actionsApp) => actionsApp.id)
-            )
-        }
-    }, [actionsApps, appsList, isActionsAppsInitialLoading, isInitialLoading])
 
     const isLoading =
         isInitialLoading ||

@@ -82,13 +82,15 @@ describe('parseWorkflowVariable()', () => {
 describe('getAvailableFlowVariables', () => {
     const g = visualBuilderGraphSimpleChoicesFixture
     test('no available variables at the beginning of the flow', () => {
-        expect(getWorkflowVariableListForNode(g, 'multiple_choices1')).toEqual(
-            []
-        )
+        expect(
+            getWorkflowVariableListForNode(g, 'multiple_choices1', [], [])
+        ).toEqual([])
     })
 
     test('selected choice and text input variables available', () => {
-        expect(getWorkflowVariableListForNode(g, 'file_upload1')).toEqual([
+        expect(
+            getWorkflowVariableListForNode(g, 'file_upload1', [], [])
+        ).toEqual([
             {
                 nodeType: 'multiple_choices',
                 name: 'Choices text',
@@ -105,16 +107,16 @@ describe('getAvailableFlowVariables', () => {
     })
 
     test('only selected choice available', () => {
-        expect(getWorkflowVariableListForNode(g, 'automated_message1')).toEqual(
-            [
-                {
-                    nodeType: 'multiple_choices',
-                    name: 'Choices text',
-                    value: 'steps_state.multiple_choices1.selected_choice.label',
-                    type: 'string',
-                },
-            ]
-        )
+        expect(
+            getWorkflowVariableListForNode(g, 'automated_message1', [], [])
+        ).toEqual([
+            {
+                nodeType: 'multiple_choices',
+                name: 'Choices text',
+                value: 'steps_state.multiple_choices1.selected_choice.label',
+                type: 'string',
+            },
+        ])
     })
     test('dont put undefined nodes if ptrNodeId is not present', () => {
         expect(
@@ -129,7 +131,9 @@ describe('getAvailableFlowVariables', () => {
                     ],
                     edges: [{target: 'conditions_end1'}],
                 } as any,
-                'conditions_end1'
+                'conditions_end1',
+                [],
+                []
             )
         ).toEqual([])
     })
@@ -178,26 +182,33 @@ describe('buildWorkflowVariableFromNode()', () => {
         expect(
             buildWorkflowVariableFromNode(
                 {
+                    id: '',
+                    internal_id: '',
+                    is_draft: false,
+                    isTemplate: false,
                     name: '',
                     available_languages: [],
-                    nodes: [node],
+                    nodes: [
+                        {
+                            ...buildNodeCommonProperties(),
+                            id: 'channel_trigger',
+                            type: 'channel_trigger',
+                            data: {
+                                label: '',
+                                label_tkey: ulid(),
+                            },
+                        },
+                        node,
+                    ],
                     edges: [],
                     apps: [{type: 'shopify'}],
-                    wfConfigurationOriginal: {
-                        id: '',
-                        is_draft: false,
-                        name: '',
-                        internal_id: '',
-                        initial_step_id: 'order_selection1',
-                        steps: [],
-                        transitions: [],
-                        available_languages: [],
-                    },
                     nodeEditingId: null,
                     choiceEventIdEditing: null,
                     branchIdsEditing: [],
                 },
-                node
+                node,
+                [],
+                []
             )
         ).toEqual({
             name: 'Order selection',
@@ -349,26 +360,32 @@ describe('buildWorkflowVariableFromNode()', () => {
         expect(
             buildWorkflowVariableFromNode(
                 {
+                    id: '',
+                    internal_id: '',
+                    is_draft: false,
+                    isTemplate: false,
                     name: '',
                     available_languages: [],
-                    nodes: [node],
+                    nodes: [
+                        {
+                            ...buildNodeCommonProperties(),
+                            id: 'channel_trigger',
+                            type: 'channel_trigger',
+                            data: {
+                                label: '',
+                                label_tkey: ulid(),
+                            },
+                        },
+                        node,
+                    ],
                     edges: [],
-                    apps: [],
-                    wfConfigurationOriginal: {
-                        id: '',
-                        is_draft: false,
-                        name: '',
-                        internal_id: '',
-                        initial_step_id: 'order_selection1',
-                        steps: [],
-                        transitions: [],
-                        available_languages: [],
-                    },
                     nodeEditingId: null,
                     choiceEventIdEditing: null,
                     branchIdsEditing: [],
                 },
-                node
+                node,
+                [],
+                []
             )
         ).toEqual({
             name: 'Order selection',
@@ -418,26 +435,33 @@ describe('buildWorkflowVariableFromNode()', () => {
 
         const result = buildWorkflowVariableFromNode(
             {
+                id: '',
+                internal_id: '',
+                is_draft: false,
+                isTemplate: false,
                 name: '',
                 available_languages: [],
-                nodes: [node],
+                nodes: [
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'channel_trigger',
+                        type: 'channel_trigger',
+                        data: {
+                            label: '',
+                            label_tkey: ulid(),
+                        },
+                    },
+                    node,
+                ],
                 edges: [],
-                apps: [],
-                wfConfigurationOriginal: {
-                    id: '',
-                    is_draft: false,
-                    name: '',
-                    internal_id: '',
-                    initial_step_id: 'create_discount_code1',
-                    steps: [],
-                    transitions: [],
-                    available_languages: [],
-                },
+                apps: [{type: 'shopify'}],
                 nodeEditingId: null,
                 choiceEventIdEditing: null,
                 branchIdsEditing: [],
             },
-            node
+            node,
+            [],
+            []
         )
         expect(result).toEqual({
             name: 'Create discount code success',
@@ -460,26 +484,33 @@ describe('buildWorkflowVariableFromNode()', () => {
 
         const result = buildWorkflowVariableFromNode(
             {
+                id: '',
+                internal_id: '',
+                is_draft: false,
+                isTemplate: false,
                 name: '',
                 available_languages: [],
-                nodes: [node],
+                nodes: [
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'channel_trigger',
+                        type: 'channel_trigger',
+                        data: {
+                            label: '',
+                            label_tkey: ulid(),
+                        },
+                    },
+                    node,
+                ],
                 edges: [],
-                apps: [],
-                wfConfigurationOriginal: {
-                    id: '',
-                    is_draft: false,
-                    name: '',
-                    internal_id: '',
-                    initial_step_id: 'refund_shipping_costs1',
-                    steps: [],
-                    transitions: [],
-                    available_languages: [],
-                },
+                apps: [{type: 'shopify'}],
                 nodeEditingId: null,
                 choiceEventIdEditing: null,
                 branchIdsEditing: [],
             },
-            node
+            node,
+            [],
+            []
         )
         expect(result).toEqual({
             name: 'Refund shipping costs success',
@@ -502,26 +533,33 @@ describe('buildWorkflowVariableFromNode()', () => {
 
         const result = buildWorkflowVariableFromNode(
             {
+                id: '',
+                internal_id: '',
+                is_draft: false,
+                isTemplate: false,
                 name: '',
                 available_languages: [],
-                nodes: [node],
+                nodes: [
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'channel_trigger',
+                        type: 'channel_trigger',
+                        data: {
+                            label: '',
+                            label_tkey: ulid(),
+                        },
+                    },
+                    node,
+                ],
                 edges: [],
-                apps: [],
-                wfConfigurationOriginal: {
-                    id: '',
-                    is_draft: false,
-                    name: '',
-                    internal_id: '',
-                    initial_step_id: 'reship_for_free1',
-                    steps: [],
-                    transitions: [],
-                    available_languages: [],
-                },
+                apps: [{type: 'shopify'}],
                 nodeEditingId: null,
                 choiceEventIdEditing: null,
                 branchIdsEditing: [],
             },
-            node
+            node,
+            [],
+            []
         )
         expect(result).toEqual({
             name: 'Reship for free success',
@@ -579,6 +617,10 @@ describe('extractVariablesFromText()', () => {
 describe('buildWorkflowVariableFromTrigger()', () => {
     it('should return product variables', () => {
         const graph: VisualBuilderGraph = {
+            id: '',
+            internal_id: '',
+            is_draft: false,
+            isTemplate: false,
             name: '',
             available_languages: [],
             nodes: [
@@ -603,21 +645,6 @@ describe('buildWorkflowVariableFromTrigger()', () => {
                 },
             ],
             edges: [],
-            wfConfigurationOriginal: {
-                internal_id: 'id_2',
-                id: 'id_2',
-                name: 'Llm prompt trigger configuration',
-                is_draft: false,
-                initial_step_id: 'trigger',
-                entrypoint: null,
-                available_languages: [],
-                steps: [],
-                transitions: [],
-                updated_datetime: '2024-09-17T11:18:00.201Z',
-                triggers: [],
-                entrypoints: [],
-                apps: [],
-            },
             nodeEditingId: null,
             choiceEventIdEditing: null,
             branchIdsEditing: [],

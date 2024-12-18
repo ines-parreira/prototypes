@@ -1,0 +1,25 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        align-items: center;
+    }
+
+    .label {
+        .body-semibold();
+    }
+
+    .asterisk {
+        color: var(--feedback-error);
+        margin-left: @layout-spacing-xxs;
+    }
+
+    .tooltip {
+        ul {
+            margin-bottom: unset;
+            padding-inline-start: 20px;
+        }
+    }
+}

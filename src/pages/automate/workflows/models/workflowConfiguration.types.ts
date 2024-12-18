@@ -275,6 +275,22 @@ export type WorkflowStepSkipCharge = {
     }
 }
 
+export type WorkflowStepReusableLLMPromptCall = {
+    id: string
+    kind: 'reusable-llm-prompt-call'
+    settings: {
+        configuration_id: string
+        configuration_internal_id: string
+        objects?: {
+            customer?: string | null
+            order?: string | null
+            products?: Record<string, string> | null
+        } | null
+        custom_inputs?: Record<string, string> | null
+        values: Record<string, string | number | boolean>
+    }
+}
+
 export type WorkflowStep =
     | WorkflowStepTextInput
     | WorkflowStepAttachmentsInput
@@ -298,7 +314,7 @@ export type WorkflowStep =
     | WorkflowStepRefundShippingCosts
     | WorkflowStepCancelSubscription
     | WorkflowStepSkipCharge
-    | WorkflowStepReusableLlmPromptCall
+    | WorkflowStepReusableLLMPromptCall
 
 export type WorkflowTransition = {
     id: string

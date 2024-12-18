@@ -52,7 +52,7 @@ describe('handleError', () => {
 
         expect(notify).toHaveBeenNthCalledWith(1, {
             message:
-                'An Action already exists with this name. Choose a unique name in order to create this Action.',
+                'An Action with this name already exists. Choose a unique name in order to save.',
             showDismissButton: true,
             status: NotificationStatus.Error,
         })

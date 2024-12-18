@@ -38,7 +38,7 @@ const EditorDrawerHeader = ({
             })}
         >
             <div className={css.headerTop}>
-                {label && <h3>{label}</h3>}
+                {label && <h3 title={label}>{label}</h3>}
                 <Drawer.HeaderActions>
                     {children}
                     <IconButton

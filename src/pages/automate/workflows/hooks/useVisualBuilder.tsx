@@ -1,4 +1,5 @@
 import _noop from 'lodash/noop'
+
 import React, {
     createContext,
     Dispatch,
@@ -7,51 +8,51 @@ import React, {
     useMemo,
 } from 'react'
 
+import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+
 import {
     buildWorkflowVariableFromNode,
     extractVariablesFromNode,
     findManyVariables,
     findVariable,
     getWorkflowVariableListForNode,
-    parseWorkflowVariable,
 } from '../models/variables.model'
-import {WorkflowVariable} from '../models/variables.types'
+import {WorkflowVariable, WorkflowVariableList} from '../models/variables.types'
 import {walkVisualBuilderGraph} from '../models/visualBuilderGraph.model'
 import {
     VisualBuilderGraph,
-    VisualBuilderNode,
+    VisualBuilderTriggerNode,
 } from '../models/visualBuilderGraph.types'
-import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
 import {VisualBuilderGraphAction} from './useVisualBuilderGraphReducer'
-import {validateConditionSteps} from './useWorkflowEditor'
 
-export type VisualBuilderContext = {
-    visualBuilderGraph: VisualBuilderGraph
-    checkInvalidConditionsForNode: (
-        node: UnionPick<VisualBuilderNode, 'id' | 'type' | 'data'>
-    ) => boolean
-    checkInvalidVariablesForNode: (
-        node: UnionPick<VisualBuilderNode, 'id' | 'type' | 'data'>
-    ) => boolean
+export type VisualBuilderContextType<
+    T extends VisualBuilderTriggerNode = VisualBuilderTriggerNode,
+> = {
+    visualBuilderGraph: VisualBuilderGraph<T>
     checkNodeHasVariablesUsedInChildren: (nodeId: string) => boolean
     dispatch: Dispatch<VisualBuilderGraphAction>
     getVariableListInChildren: (nodeId: string) => WorkflowVariable[]
+    getVariableListForNode: (nodeId: string) => WorkflowVariableList
     checkNewVisualBuilderNode: (nodeId: string) => boolean
-    shouldShowErrors: boolean
+    initialVisualBuilderGraph: VisualBuilderGraph<T>
+    isNew: boolean
 }
 
 export const VisualBuilderContext = createContext<
-    VisualBuilderContext | undefined
+    VisualBuilderContextType | undefined
 >(undefined)
 
-export function useVisualBuilderContext() {
+export function useVisualBuilderContext<
+    T extends VisualBuilderTriggerNode = VisualBuilderTriggerNode,
+>() {
     const contextValue = useContext(VisualBuilderContext)
 
     if (!contextValue) {
         throw new Error('Visual builder context is undefined,')
     }
 
-    return contextValue
+    return contextValue as VisualBuilderContextType<T>
 }
 
 export const withVisualBuilderContext =
@@ -59,7 +60,7 @@ export const withVisualBuilderContext =
         WrappedProps extends JSX.IntrinsicAttributes & {
             visualBuilderGraph: VisualBuilderGraph
             dispatch: Dispatch<VisualBuilderGraphAction>
-            shouldShowErrors: boolean
+            isNew: boolean
         },
     >(
         Component: React.FC<WrappedProps>
@@ -68,7 +69,7 @@ export const withVisualBuilderContext =
         const contextValue = useVisualBuilder(
             props.visualBuilderGraph,
             props.dispatch,
-            props.shouldShowErrors
+            props.isNew
         )
 
         return (
@@ -81,46 +82,33 @@ export const withVisualBuilderContext =
 export function useVisualBuilder(
     visualBuilderGraph: VisualBuilderGraph,
     dispatch: Dispatch<VisualBuilderGraphAction>,
-    shouldShowErrors: boolean
-): VisualBuilderContext {
-    const checkInvalidVariablesForNode = useCallback(
-        (node: UnionPick<VisualBuilderNode, 'id' | 'type' | 'data'>) => {
-            const variables = extractVariablesFromNode(node)
-
-            if (!variables.length) {
-                return false
-            }
-
-            const availableVariables = getWorkflowVariableListForNode(
-                visualBuilderGraph,
-                node.id
-            )
-
-            return variables
-                .map((variable) =>
-                    parseWorkflowVariable(variable, availableVariables)
-                )
-                .some((v) => v === null)
-        },
-        [visualBuilderGraph]
+    isNew: boolean
+): VisualBuilderContextType {
+    const initialVisualBuilderGraph = useMemo(
+        () => visualBuilderGraph,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [visualBuilderGraph.internal_id]
     )
 
-    const checkInvalidConditionsForNode = useCallback(
-        (node: UnionPick<VisualBuilderNode, 'id' | 'type' | 'data'>) => {
-            const conditions = visualBuilderGraph.edges
-                .filter(
-                    (edge) => edge.source === node.id && edge.data?.conditions
-                )
-                .map((edge) => ({
-                    conditions: edge?.data?.conditions?.and
-                        ? edge?.data.conditions?.and
-                        : (edge.data?.conditions?.or ?? []),
-                    name: edge.data?.name,
-                }))
-
-            return validateConditionSteps(conditions)
+    const triggerNode = visualBuilderGraph.nodes[0]
+    const {data: steps = []} = useGetWorkflowConfigurationTemplates(
+        {
+            triggers: ['reusable-llm-prompt'],
         },
-        [visualBuilderGraph]
+        {enabled: triggerNode.type === 'llm_prompt_trigger'}
+    )
+    const {apps} = useApps()
+
+    const getVariableListForNode = useCallback(
+        (nodeId: string) => {
+            return getWorkflowVariableListForNode(
+                visualBuilderGraph,
+                nodeId,
+                steps,
+                apps
+            )
+        },
+        [visualBuilderGraph, steps, apps]
     )
 
     const getVariableListInChildren = useCallback(
@@ -133,7 +121,9 @@ export function useVisualBuilder(
 
             const nodeVariable = buildWorkflowVariableFromNode(
                 visualBuilderGraph,
-                node
+                node,
+                steps,
+                apps
             )
 
             if (!nodeVariable) {
@@ -166,7 +156,7 @@ export function useVisualBuilder(
 
             return availableVariables
         },
-        [visualBuilderGraph]
+        [visualBuilderGraph, steps, apps]
     )
 
     const checkNodeHasVariablesUsedInChildren = useCallback(
@@ -179,7 +169,9 @@ export function useVisualBuilder(
 
             const nodeVariable = buildWorkflowVariableFromNode(
                 visualBuilderGraph,
-                node
+                node,
+                steps,
+                apps
             )
 
             if (!nodeVariable) {
@@ -215,59 +207,56 @@ export function useVisualBuilder(
 
             return found
         },
-        [visualBuilderGraph]
+        [visualBuilderGraph, steps, apps]
     )
 
     const checkNewVisualBuilderNode = useCallback(
         (nodeId: string) => {
-            if (!visualBuilderGraph.wfConfigurationOriginal.updated_datetime) {
-                return true
-            }
-
-            const graph = transformWorkflowConfigurationIntoVisualBuilderGraph(
-                visualBuilderGraph.wfConfigurationOriginal
+            return (
+                isNew ||
+                !initialVisualBuilderGraph.nodes.some(
+                    (node) => node.id === nodeId
+                )
             )
-
-            return !graph.nodes.some((node) => node.id === nodeId)
         },
-        [visualBuilderGraph.wfConfigurationOriginal]
+        [isNew, initialVisualBuilderGraph]
     )
 
-    return useMemo<VisualBuilderContext>(
+    return useMemo<VisualBuilderContextType>(
         () => ({
             visualBuilderGraph,
-            checkInvalidConditionsForNode,
-            checkInvalidVariablesForNode,
             checkNodeHasVariablesUsedInChildren,
             dispatch,
             getVariableListInChildren,
             checkNewVisualBuilderNode,
-            shouldShowErrors,
+            getVariableListForNode,
+            initialVisualBuilderGraph,
+            isNew,
         }),
         [
             visualBuilderGraph,
-            checkInvalidConditionsForNode,
-            checkInvalidVariablesForNode,
             checkNodeHasVariablesUsedInChildren,
             dispatch,
             getVariableListInChildren,
             checkNewVisualBuilderNode,
-            shouldShowErrors,
+            getVariableListForNode,
+            initialVisualBuilderGraph,
+            isNew,
         ]
     )
 }
 
 export function createVisualBuilderContextForPreview(
     visualBuilderGraph: VisualBuilderGraph
-): VisualBuilderContext {
+): VisualBuilderContextType {
     return {
         visualBuilderGraph,
-        checkInvalidConditionsForNode: () => false,
-        checkInvalidVariablesForNode: () => false,
+        initialVisualBuilderGraph: visualBuilderGraph,
         checkNodeHasVariablesUsedInChildren: () => false,
         dispatch: _noop,
         getVariableListInChildren: () => [],
         checkNewVisualBuilderNode: () => false,
-        shouldShowErrors: false,
+        getVariableListForNode: () => [],
+        isNew: false,
     }
 }

@@ -25,6 +25,8 @@ type ReplyButtonItemProps = {
     disabledTooltip?: React.ReactNode
     placeholder?: string
     workflowVariables: WorkflowVariableList
+    error?: string
+    onBlur?: () => void
 }
 
 export default function ReplyButtonItem({
@@ -41,6 +43,8 @@ export default function ReplyButtonItem({
     disabledTooltip,
     placeholder,
     workflowVariables,
+    error,
+    onBlur,
 }: ReplyButtonItemProps) {
     const [ref, setRef] = useState<Editor | null>(null)
     const {visualBuilderGraph, dispatch} = useVisualBuilderContext()
@@ -86,8 +90,10 @@ export default function ReplyButtonItem({
                         type: 'SET_CHOICE_EVENT_EDITING_ID',
                         eventId: null,
                     })
+                    onBlur?.()
                 }}
                 variables={workflowVariables}
+                error={error}
             />
             <ConfirmationPopover
                 placement="top"

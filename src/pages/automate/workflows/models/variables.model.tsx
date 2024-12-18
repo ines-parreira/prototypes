@@ -2,20 +2,27 @@ import {Liquid, Output} from 'liquidjs'
 import {PropertyAccessToken, IdentifierToken} from 'liquidjs/dist/src/tokens'
 import _flatten from 'lodash/flatten'
 import _get from 'lodash/get'
+import _keyBy from 'lodash/keyBy'
 import _set from 'lodash/set'
 
-import {validateJSON} from '../../../../utils'
+import React from 'react'
+
+import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
+import {App} from 'pages/automate/actionsPlatform/types'
+import {validateJSON} from 'utils'
+
 import {
     WorkflowVariableList,
     WorkflowVariable,
     WorkflowVariableGroup,
 } from './variables.types'
 import {
-    isTriggerNodeType,
+    isVisualBuilderGraphAppApp,
     VisualBuilderEdge,
     VisualBuilderGraph,
     VisualBuilderNode,
 } from './visualBuilderGraph.types'
+import {WorkflowConfiguration} from './workflowConfiguration.types'
 
 const templateEngine = new Liquid({
     timezoneOffset: 0,
@@ -129,21 +136,39 @@ export function parseWorkflowVariable(
     return variable
 }
 
+export function hasInvalidVariables(
+    value: string,
+    variables: WorkflowVariableList
+): boolean {
+    const variablesInUse = extractVariablesFromText(value).map(
+        (variable) => variable.value
+    )
+
+    return variablesInUse
+        .map((variable) => parseWorkflowVariable(variable, variables))
+        .some((v) => !v)
+}
+
 export const buildWorkflowVariableFromApp = (
-    graph: VisualBuilderGraph
+    graph: VisualBuilderGraph,
+    apps: App[]
 ):
     | WorkflowVariable
     | WorkflowVariableGroup
     | WorkflowVariableList
     | undefined => {
-    if (graph.apps?.[0]?.type === 'app') {
+    const appsById = _keyBy(apps, 'id')
+
+    return graph.apps?.filter(isVisualBuilderGraphAppApp).map((actionApp) => {
+        const appId = actionApp.app_id
+
         return {
-            name: 'App API key',
-            value: `apps.${graph.apps?.[0]?.app_id}.api_key`,
+            name: `${appsById[appId]?.name ?? appId} API key`,
+            value: `apps.${appId}.api_key`,
             nodeType: 'app',
             type: 'string',
         }
-    }
+    })
 }
 
 export const buildWorkflowVariableFromTrigger = (
@@ -153,7 +178,7 @@ export const buildWorkflowVariableFromTrigger = (
     | WorkflowVariableGroup
     | WorkflowVariableList
     | undefined => {
-    const triggerNode = graph.nodes.find(isTriggerNodeType)!
+    const triggerNode = graph.nodes[0]
 
     if (
         triggerNode.type === 'llm_prompt_trigger' ||
@@ -601,7 +626,9 @@ export const buildWorkflowVariableFromTrigger = (
 
 export const buildWorkflowVariableFromNode = (
     graph: VisualBuilderGraph,
-    node: VisualBuilderNode
+    node: VisualBuilderNode,
+    steps: WorkflowConfiguration[],
+    apps: App[]
 ):
     | WorkflowVariable
     | WorkflowVariableGroup
@@ -1131,12 +1158,85 @@ export const buildWorkflowVariableFromNode = (
             value: `steps_state.${node.id}.success`,
             type: 'boolean',
         }
+    } else if (node.type === 'reusable_llm_prompt_call') {
+        const configuration = steps.find(
+            (step) =>
+                step.internal_id === node.data.configuration_internal_id &&
+                step.id === node.data.configuration_id
+        )
+
+        if (!configuration) {
+            return
+        }
+
+        const templateApp = configuration.apps?.[0]
+
+        const app = apps.find((app) => {
+            switch (templateApp?.type) {
+                case 'shopify':
+                case 'recharge':
+                    return app.type === templateApp.type
+                case 'app':
+                    return (
+                        app.type === templateApp.type &&
+                        app.id === templateApp.app_id
+                    )
+                default:
+                    return false
+            }
+        })
+
+        const icon = <AppIcon icon={app?.icon} name={app?.name} />
+
+        const outputs =
+            configuration.triggers?.find(
+                (
+                    trigger
+                ): trigger is Extract<
+                    NonNullable<WorkflowConfiguration['triggers']>[number],
+                    {kind: 'reusable-llm-prompt'}
+                > => trigger.kind === 'reusable-llm-prompt'
+            )?.settings?.outputs ?? []
+
+        if (outputs.length) {
+            return {
+                name: `${configuration.name} in ${app?.name}`,
+                nodeType: 'reusable_llm_prompt_call',
+                variables: [
+                    {
+                        name: `${configuration.name} in ${app?.name} success`,
+                        nodeType: 'reusable_llm_prompt_call',
+                        value: `steps_state.${node.id}.success`,
+                        type: 'boolean',
+                        icon,
+                    },
+                    ...outputs.map((output) => ({
+                        name: output.name,
+                        nodeType: 'reusable_llm_prompt_call' as const,
+                        value: `steps_state.${node.id}.outputs.${output.id}`,
+                        type: output.data_type || ('json' as const),
+                        icon,
+                    })),
+                ],
+                icon,
+            }
+        }
+
+        return {
+            name: `${configuration.name} in ${app?.name} success`,
+            nodeType: 'reusable_llm_prompt_call',
+            value: `steps_state.${node.id}.success`,
+            type: 'boolean',
+            icon,
+        }
     }
 }
 
 export function getWorkflowVariableListForNode(
     g: VisualBuilderGraph,
-    nodeId: string
+    nodeId: string,
+    steps: WorkflowConfiguration[],
+    apps: App[]
 ) {
     const {nodes, edges} = g
     const ancestors: VisualBuilderNode[] = []
@@ -1157,7 +1257,7 @@ export function getWorkflowVariableListForNode(
     const workflowVariableList: WorkflowVariableList = []
 
     const triggerVariable = buildWorkflowVariableFromTrigger(g)
-    const appVariable = buildWorkflowVariableFromApp(g)
+    const appVariable = buildWorkflowVariableFromApp(g, apps)
 
     if (triggerVariable) {
         if (Array.isArray(triggerVariable)) {
@@ -1176,7 +1276,7 @@ export function getWorkflowVariableListForNode(
     }
 
     for (const ancestor of ancestors.reverse()) {
-        const variable = buildWorkflowVariableFromNode(g, ancestor)
+        const variable = buildWorkflowVariableFromNode(g, ancestor, steps, apps)
         if (variable) {
             if (Array.isArray(variable)) {
                 workflowVariableList.push(...variable)
@@ -1409,115 +1509,12 @@ export function toLiquidSyntax(variable: {value: string; filter?: string}) {
     return `{{${variable.value}}}`
 }
 
-export function hasNodesWithInvalidVariables(g: VisualBuilderGraph) {
-    return g.nodes.some((node) => {
-        const availableVariablesForNode = getWorkflowVariableListForNode(
-            g,
-            node.id
-        )
-        const variables = extractVariablesFromNode(node)
-        return variables.some(
-            (variable) =>
-                parseWorkflowVariable(variable, availableVariablesForNode) ===
-                null
-        )
-    })
-}
-
-export function hasNodesWithInvalidLiquidSyntax(g: VisualBuilderGraph) {
-    return g.nodes.some((node) => !isValidLiquidSyntaxInNode(node))
-}
-
-export function checkGraphVariablesValidity(
-    g: VisualBuilderGraph
-): Maybe<string> {
-    if (hasNodesWithInvalidVariables(g)) {
-        return 'Remove unavailable variables in order to save'
-    }
-
-    if (hasNodesWithInvalidLiquidSyntax(g)) {
-        return 'Remove variable errors in order to save.'
-    }
-
-    return null
-}
-
-function isValidLiquidSyntax(string: string) {
+export function isValidLiquidSyntax(string: string) {
     try {
         templateEngine.parse(string)
         return true
     } catch {
         return false
-    }
-}
-
-export function isValidLiquidSyntaxInNode(
-    node: UnionPick<VisualBuilderNode, 'type' | 'data'>
-) {
-    switch (node.type) {
-        case 'multiple_choices':
-            return (
-                isValidLiquidSyntax(node.data.content.text) &&
-                isValidLiquidSyntax(node.data.content.html) &&
-                node.data.choices.every((choice) =>
-                    isValidLiquidSyntax(choice.label)
-                )
-            )
-        case 'automated_message':
-        case 'text_reply':
-        case 'file_upload':
-        case 'order_selection':
-            return (
-                isValidLiquidSyntax(node.data.content.text) &&
-                isValidLiquidSyntax(node.data.content.html)
-            )
-        case 'http_request':
-            return (
-                isValidLiquidSyntax(node.data.url) &&
-                node.data.headers.every((header) =>
-                    isValidLiquidSyntax(header.value)
-                ) &&
-                isValidLiquidSyntax(node.data.json ?? '') &&
-                (node.data.formUrlencoded ?? []).every((item) =>
-                    isValidLiquidSyntax(item.value)
-                )
-            )
-        case 'update_shipping_address':
-            return (
-                isValidLiquidSyntax(node.data.name) &&
-                isValidLiquidSyntax(node.data.address1) &&
-                isValidLiquidSyntax(node.data.address2) &&
-                isValidLiquidSyntax(node.data.city) &&
-                isValidLiquidSyntax(node.data.zip) &&
-                isValidLiquidSyntax(node.data.province) &&
-                isValidLiquidSyntax(node.data.country) &&
-                isValidLiquidSyntax(node.data.phone) &&
-                isValidLiquidSyntax(node.data.lastName) &&
-                isValidLiquidSyntax(node.data.firstName)
-            )
-        case 'cancel_subscription':
-            return (
-                isValidLiquidSyntax(node.data.subscriptionId) &&
-                isValidLiquidSyntax(node.data.reason)
-            )
-        case 'skip_charge':
-            return (
-                isValidLiquidSyntax(node.data.subscriptionId) &&
-                isValidLiquidSyntax(node.data.chargeId)
-            )
-        case 'remove_item':
-            return (
-                isValidLiquidSyntax(node.data.productVariantId) &&
-                isValidLiquidSyntax(node.data.quantity)
-            )
-        case 'create_discount_code':
-            return (
-                isValidLiquidSyntax(node.data.discountType) &&
-                isValidLiquidSyntax(node.data.amount) &&
-                isValidLiquidSyntax(node.data.validFor)
-            )
-        default:
-            return true
     }
 }
 

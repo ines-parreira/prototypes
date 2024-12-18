@@ -1,6 +1,6 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {produce} from 'immer'
 import _noop from 'lodash/noop'
+
+import {renderHookWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 
 import {visualBuilderGraphSimpleChoicesFixture} from '../../tests/visualBuilderGraph.fixtures'
 
@@ -11,12 +11,12 @@ import {
 
 describe('useVisualBuilder()', () => {
     describe('checkNewVisualBuilderNode()', () => {
-        it('should return true if updated_datetime is missing', () => {
-            const {result} = renderHook(() =>
+        it('should return true if graph is new', () => {
+            const {result} = renderHookWithQueryClientProvider(() =>
                 useVisualBuilder(
                     visualBuilderGraphSimpleChoicesFixture,
                     _noop,
-                    false
+                    true
                 )
             )
 
@@ -26,12 +26,9 @@ describe('useVisualBuilder()', () => {
         })
 
         it('should return true if node is missing from original configuration', () => {
-            const {result} = renderHook(() =>
+            const {result} = renderHookWithQueryClientProvider(() =>
                 useVisualBuilder(
-                    produce(visualBuilderGraphSimpleChoicesFixture, (draft) => {
-                        draft.wfConfigurationOriginal.updated_datetime =
-                            '2024-08-28T08:09:09.212Z'
-                    }),
+                    visualBuilderGraphSimpleChoicesFixture,
                     _noop,
                     false
                 )
@@ -42,20 +39,17 @@ describe('useVisualBuilder()', () => {
             ).toEqual(true)
         })
 
-        it('should return false if node is exists in original configuration', () => {
-            const {result} = renderHook(() =>
+        it('should return false if node exists in original configuration', () => {
+            const {result} = renderHookWithQueryClientProvider(() =>
                 useVisualBuilder(
-                    produce(visualBuilderGraphSimpleChoicesFixture, (draft) => {
-                        draft.wfConfigurationOriginal.updated_datetime =
-                            '2024-08-28T08:09:09.212Z'
-                    }),
+                    visualBuilderGraphSimpleChoicesFixture,
                     _noop,
                     false
                 )
             )
 
             expect(
-                result.current.checkNewVisualBuilderNode('messages1')
+                result.current.checkNewVisualBuilderNode('automated_message1')
             ).toEqual(false)
         })
     })
@@ -71,20 +65,6 @@ describe('createVisualBuilderContextForPreview()', () => {
             visualBuilderGraphSimpleChoicesFixture
         )
         expect(
-            contextValue.checkInvalidConditionsForNode({
-                id: 'conditions1',
-                type: 'conditions',
-                data: {name: ''},
-            })
-        ).toEqual(false)
-        expect(
-            contextValue.checkInvalidVariablesForNode({
-                id: 'conditions1',
-                type: 'conditions',
-                data: {name: ''},
-            })
-        ).toEqual(false)
-        expect(
             contextValue.checkNodeHasVariablesUsedInChildren('conditions1')
         ).toEqual(false)
         expect(
@@ -97,6 +77,7 @@ describe('createVisualBuilderContextForPreview()', () => {
         expect(contextValue.checkNewVisualBuilderNode('conditions1')).toEqual(
             false
         )
-        expect(contextValue.shouldShowErrors).toEqual(false)
+        expect(contextValue.getVariableListForNode('conditions1')).toEqual([])
+        expect(contextValue.isNew).toEqual(false)
     })
 })

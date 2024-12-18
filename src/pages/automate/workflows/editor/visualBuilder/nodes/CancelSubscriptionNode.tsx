@@ -1,21 +1,17 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {memo, useMemo} from 'react'
-import {Handle, NodeProps, Position} from 'reactflow'
+import React, {memo} from 'react'
+import {NodeProps} from 'reactflow'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {isValidLiquidSyntaxInNode} from 'pages/automate/workflows/models/variables.model'
 import {CancelSubscriptionNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
-
-import css from './Node.less'
+import VisualBuilderNode from './VisualBuilderNode'
+import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
 type Props = VisualBuilderNodeProps & {
     isErrored: boolean
@@ -23,7 +19,6 @@ type Props = VisualBuilderNodeProps & {
 
 const CancelSubscriptionNode = memo(function CancelSubscriptionNode({
     isSelected,
-    shouldShowErrors,
     isErrored,
     isGreyedOut,
     edgeProps,
@@ -32,31 +27,18 @@ const CancelSubscriptionNode = memo(function CancelSubscriptionNode({
     return (
         <div>
             <EdgeBlock {...edgeProps} />
-            <div
-                className={classNames(css.node, {
-                    [css.nodeErrored]: shouldShowErrors && isErrored,
-                    [css.nodeGreyedOut]: isGreyedOut,
-                    [css.nodeSelected]: isSelected,
-                })}
+            <VisualBuilderNode
+                isClickable
+                isSelected={isSelected}
+                isErrored={isErrored}
+                isGreyedOut={isGreyedOut}
             >
-                <Handle
-                    type="target"
-                    position={Position.Top}
-                    className={css.sourceHandle}
-                />
-                <div className={css.nodeContainer}>
-                    <VisualBuilderActionTag nodeType="cancel_subscription" />
-                    <Label className={css.nodeTitle}>
-                        Cancel active subscription.
-                    </Label>
-                    <NodeDeleteIcon {...deleteProps} />
-                </div>
-                <Handle
-                    type="source"
-                    position={Position.Bottom}
-                    className={classNames(css.targetHandle)}
-                />
-            </div>
+                <VisualBuilderActionTag nodeType="cancel_subscription" />
+                <VisualBuilderNodeContent>
+                    Cancel active subscription.
+                </VisualBuilderNodeContent>
+                <NodeDeleteIcon {...deleteProps} />
+            </VisualBuilderNode>
         </div>
     )
 })
@@ -64,25 +46,12 @@ const CancelSubscriptionNode = memo(function CancelSubscriptionNode({
 export default function CancelSubscriptionNodeWrapper(
     node: NodeProps<CancelSubscriptionNodeType['data']>
 ) {
-    const {checkInvalidVariablesForNode} = useVisualBuilderContext()
-    const hasInvalidVariables = useMemo(
-        () =>
-            checkInvalidVariablesForNode({
-                id: node.id,
-                data: node.data,
-                type: 'cancel_subscription',
-            }),
-        [node.id, node.data, checkInvalidVariablesForNode]
-    )
-    const isErrored =
-        !node.data.subscriptionId ||
-        !node.data.reason ||
-        hasInvalidVariables ||
-        !isValidLiquidSyntaxInNode({
-            data: node.data,
-            type: 'cancel_subscription',
-        })
     const commonProps = useVisualBuilderNodeProps(node)
 
-    return <CancelSubscriptionNode {...commonProps} isErrored={isErrored} />
+    return (
+        <CancelSubscriptionNode
+            {...commonProps}
+            isErrored={!!node.data.errors}
+        />
+    )
 }

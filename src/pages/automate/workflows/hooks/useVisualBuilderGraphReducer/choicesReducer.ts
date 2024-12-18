@@ -125,7 +125,9 @@ export function choicesReducer(
                                 edge.data.conditions,
                                 getWorkflowVariableListForNode(
                                     draft,
-                                    edge.target
+                                    edge.target,
+                                    [],
+                                    []
                                 )
                             )
                         return edge

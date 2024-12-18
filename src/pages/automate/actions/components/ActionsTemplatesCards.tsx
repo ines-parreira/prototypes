@@ -36,7 +36,7 @@ const ActionsTemplatesCards = ({
     const sortedTemplates = useSortedActionTemplates(enabledTemplates)
 
     const isMultiStepActionEnabled = useFlag(
-        FeatureFlagKey.ActionsMultiStep,
+        FeatureFlagKey.ActionsUseCaseTemplates,
         false
     )
 

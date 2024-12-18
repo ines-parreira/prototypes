@@ -11,6 +11,7 @@ type Props = {
         | 'llm_prompt_trigger'
         | 'end'
         | 'reusable_llm_prompt_trigger'
+        | 'reusable_llm_prompt_call'
     >
 }
 

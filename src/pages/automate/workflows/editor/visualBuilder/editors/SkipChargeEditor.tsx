@@ -2,7 +2,6 @@ import {Label} from '@gorgias/merchant-ui-kit'
 import React, {useMemo} from 'react'
 
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
 import {SkipChargeNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {Drawer} from 'pages/common/components/Drawer'
 
@@ -16,15 +15,11 @@ export default function SkipChargeEditor({
 }: {
     nodeInEdition: SkipChargeNodeType
 }) {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const {dispatch, getVariableListForNode} = useVisualBuilderContext()
 
     const workflowVariables = useMemo(
-        () =>
-            getWorkflowVariableListForNode(
-                visualBuilderGraph,
-                nodeInEdition.id
-            ),
-        [visualBuilderGraph, nodeInEdition.id]
+        () => getVariableListForNode(nodeInEdition.id),
+        [getVariableListForNode, nodeInEdition.id]
     )
 
     return (
@@ -33,9 +28,7 @@ export default function SkipChargeEditor({
             <Drawer.Content>
                 <div className={css.container}>
                     <div className={css.formField}>
-                        <Label className={css.label} isRequired>
-                            Subscription id
-                        </Label>
+                        <Label isRequired>Subscription id</Label>
                         <TextInputWithVariables
                             value={nodeInEdition.data.subscriptionId}
                             onChange={(nextValue) => {
@@ -47,12 +40,20 @@ export default function SkipChargeEditor({
                                 })
                             }}
                             variables={workflowVariables}
+                            error={nodeInEdition.data.errors?.subscriptionId}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        subscriptionId: true,
+                                    },
+                                })
+                            }}
                         />
                     </div>
                     <div className={css.formField}>
-                        <Label className={css.label} isRequired>
-                            Charge id
-                        </Label>
+                        <Label isRequired>Charge id</Label>
                         <TextInputWithVariables
                             value={nodeInEdition.data.chargeId}
                             onChange={(nextValue) => {
@@ -64,6 +65,16 @@ export default function SkipChargeEditor({
                                 })
                             }}
                             variables={workflowVariables}
+                            error={nodeInEdition.data.errors?.chargeId}
+                            onBlur={() => {
+                                dispatch({
+                                    type: 'SET_TOUCHED',
+                                    nodeId: nodeInEdition.id,
+                                    touched: {
+                                        chargeId: true,
+                                    },
+                                })
+                            }}
                         />
                     </div>
                 </div>
