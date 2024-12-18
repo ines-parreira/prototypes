@@ -92,8 +92,12 @@ export default function Navbar({
                     {children}
                 </div>
 
-                <div data-candu-id="navbar-menu-spacer" />
-                <UserMenuWithToggle />
+                {!showGlobalNav && (
+                    <>
+                        <div data-candu-id="navbar-menu-spacer" />
+                        <UserMenuWithToggle />
+                    </>
+                )}
             </div>
             {!disableResize && (
                 <div

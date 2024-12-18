@@ -15,6 +15,7 @@ type Props = {
     style: CSSProperties
     badgeColor?: string
     badgeBorderColor?: string
+    badgeSize?: number
     withTooltip?: boolean
     tooltipText?: string
     showFirstInitialOnly?: boolean
@@ -111,6 +112,7 @@ export default class Avatar extends Component<Props, State> {
             style,
             badgeColor,
             badgeBorderColor,
+            badgeSize,
             withTooltip = false,
             tooltipText = '',
             showFirstInitialOnly = false,
@@ -192,6 +194,10 @@ export default class Avatar extends Component<Props, State> {
                                 backgroundColor: badgeColor,
                                 ...(badgeBorderColor && {
                                     borderColor: badgeBorderColor,
+                                }),
+                                ...(badgeSize && {
+                                    width: badgeSize,
+                                    height: badgeSize,
                                 }),
                             }}
                         ></div>

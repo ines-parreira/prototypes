@@ -9,6 +9,7 @@ import useActiveItem from '../hooks/useActiveItem'
 import css from './GlobalNavigation.less'
 import Item from './GlobalNavigationItem'
 import {GlobalNavigationSpotlight} from './GlobalNavigationSpotlight'
+import UserItem from './UserItem'
 
 export default function GlobalNavigation() {
     const currentUser = useAppSelector(getCurrentUser)
@@ -65,6 +66,7 @@ export default function GlobalNavigation() {
                         isActive={activeItem === 'settings'}
                         url="/app/settings"
                     />
+                    <UserItem />
                 </div>
             </section>
         </nav>

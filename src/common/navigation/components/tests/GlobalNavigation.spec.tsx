@@ -6,16 +6,21 @@ import {UserRole} from 'config/types/user'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {assumeMock} from 'utils/testing'
 
+import useActiveItem from '../../hooks/useActiveItem'
+import GlobalNavigation from '../GlobalNavigation'
+
 jest.mock('state/currentUser/selectors', () => ({getCurrentUser: jest.fn()}))
 const getCurrentUserMock = assumeMock(getCurrentUser)
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 
-import useActiveItem from '../../hooks/useActiveItem'
-import GlobalNavigation from '../GlobalNavigation'
-
 jest.mock('../../hooks/useActiveItem', () => jest.fn())
 const useActiveItemMock = assumeMock(useActiveItem)
+
+jest.mock('../GlobalNavigationSpotlight', () => ({
+    GlobalNavigationSpotlight: () => <div>GlobalNavigationSpotlight</div>,
+}))
+jest.mock('../UserItem', () => () => <div>UserItem</div>)
 
 describe('GlobalNavigation', () => {
     beforeEach(() => {
@@ -28,6 +33,11 @@ describe('GlobalNavigation', () => {
     it('should render the home icon', () => {
         const {getByText} = render(<GlobalNavigation />)
         expect(getByText('home')).toBeInTheDocument()
+    })
+
+    it('should render the search icon', () => {
+        const {getByText} = render(<GlobalNavigation />)
+        expect(getByText('GlobalNavigationSpotlight')).toBeInTheDocument()
     })
 
     it('should render the tickets icon', () => {
@@ -74,5 +84,10 @@ describe('GlobalNavigation', () => {
     it('should render the settings icon', () => {
         const {getByText} = render(<GlobalNavigation />)
         expect(getByText('settings')).toBeInTheDocument()
+    })
+
+    it('should render the user item', () => {
+        const {getByText} = render(<GlobalNavigation />)
+        expect(getByText('UserItem')).toBeInTheDocument()
     })
 })

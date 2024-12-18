@@ -120,4 +120,17 @@ describe('Navbar', () => {
         )
         expect(queryByText('PlaceCallNavbarButton')).not.toBeInTheDocument()
     })
+
+    it('should show the user menu if the user does not have the global nav flag', () => {
+        const {getByText} = render(
+            <Navbar {...props} activeContent={ActiveContent.Settings} />
+        )
+        expect(getByText('UserMenuWithToggle')).toBeInTheDocument()
+    })
+
+    it('should hide the user menu if the user has the global nav flag', () => {
+        useFlagMock.mockReturnValue(true)
+        const {queryByText} = render(<Navbar {...props} />)
+        expect(queryByText('UserMenuWithToggle')).not.toBeInTheDocument()
+    })
 })
