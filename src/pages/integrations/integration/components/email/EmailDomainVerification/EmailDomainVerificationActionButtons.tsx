@@ -5,7 +5,6 @@ import {Link} from 'react-router-dom'
 
 import {OutlookIntegration} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
 import LinkButton from 'pages/common/components/button/LinkButton'
@@ -68,10 +67,9 @@ export default function EmailDomainVerificationActionButtons({
                 intent="destructive"
                 isLoading={isDeleting}
                 isDisabled={isDisabled}
+                leadingIcon="delete"
             >
-                <ButtonIconLabel icon="delete">
-                    Delete integration
-                </ButtonIconLabel>
+                Delete integration
             </ConfirmButton>
         </div>
     )

@@ -5,7 +5,6 @@ import {Alert, Card, CardBody} from 'reactstrap'
 
 import {FACEBOOK_INTEGRATION_TYPE} from 'constants/integration'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {assetsUrl} from 'utils'
 
 import css from './CustomInstallationCard.less'
@@ -88,8 +87,8 @@ export default class CustomInstallationCard extends Component<Props, State> {
                         'mr-4': integrationType === FACEBOOK_INTEGRATION_TYPE,
                     })}
                     data-clipboard-target="#code-snippet"
+                    leadingIcon="file_copy"
                 >
-                    <ButtonIconLabel icon="file_copy" />
                     {this.state.isCopied ? 'Copied!' : 'Copy'}
                 </Button>
             </Card>

@@ -19,20 +19,17 @@ exports[`ObjectListField component should display the field as empty 1`] = `
           class="wrapper fill secondary small"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon small"
+          >
+            add
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft small"
-              >
-                add
-              </i>
-              Add 
-              field
-            </span>
+            Add 
+            field
           </span>
         </button>
       </div>
@@ -53,20 +50,17 @@ exports[`ObjectListField component should display the field as empty 1`] = `
         class="wrapper fill secondary small"
         type="button"
       >
+        <i
+          aria-hidden="true"
+          class="material-icons icon small"
+        >
+          add
+        </i>
         <span
           class="content"
         >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft small"
-            >
-              add
-            </i>
-            Add 
-            field
-          </span>
+          Add 
+          field
         </span>
       </button>
     </div>
@@ -218,20 +212,17 @@ exports[`ObjectListField component should display the field with items 1`] = `
           class="wrapper fill secondary small"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon small"
+          >
+            add
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft small"
-              >
-                add
-              </i>
-              Add 
-              field
-            </span>
+            Add 
+            field
           </span>
         </button>
       </div>
@@ -326,20 +317,17 @@ exports[`ObjectListField component should display the field with items 1`] = `
         class="wrapper fill secondary small"
         type="button"
       >
+        <i
+          aria-hidden="true"
+          class="material-icons icon small"
+        >
+          add
+        </i>
         <span
           class="content"
         >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft small"
-            >
-              add
-            </i>
-            Add 
-            field
-          </span>
+          Add 
+          field
         </span>
       </button>
     </div>

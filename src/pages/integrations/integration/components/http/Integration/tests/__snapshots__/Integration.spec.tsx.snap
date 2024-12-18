@@ -448,20 +448,17 @@ exports[`Integration should display data about the integration 1`] = `
             class="wrapper fill secondary small"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon small"
+            >
+              add
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft small"
-                >
-                  add
-                </i>
-                Add 
-                header
-              </span>
+              Add 
+              header
             </span>
           </button>
         </div>
@@ -615,19 +612,16 @@ exports[`Integration should display data about the integration 1`] = `
           id="confirm-10"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            delete
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                delete
-              </i>
-              Delete HTTP integration
-            </span>
+            Delete HTTP integration
           </span>
         </button>
       </div>
@@ -1084,20 +1078,17 @@ exports[`Integration should display data with url-encoded format 1`] = `
             class="wrapper fill secondary small"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon small"
+            >
+              add
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft small"
-                >
-                  add
-                </i>
-                Add 
-                header
-              </span>
+              Add 
+              header
             </span>
           </button>
         </div>
@@ -1252,20 +1243,17 @@ exports[`Integration should display data with url-encoded format 1`] = `
             class="wrapper fill secondary small"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon small"
+            >
+              add
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft small"
-                >
-                  add
-                </i>
-                Add 
-                field
-              </span>
+              Add 
+              field
             </span>
           </button>
         </div>
@@ -1299,19 +1287,16 @@ exports[`Integration should display data with url-encoded format 1`] = `
           id="confirm-15"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            delete
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                delete
-              </i>
-              Delete HTTP integration
-            </span>
+            Delete HTTP integration
           </span>
         </button>
       </div>
@@ -1606,20 +1591,17 @@ exports[`Integration should display default values because there is no integrati
             class="wrapper fill secondary small"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon small"
+            >
+              add
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft small"
-                >
-                  add
-                </i>
-                Add 
-                header
-              </span>
+              Add 
+              header
             </span>
           </button>
         </div>
@@ -1741,19 +1723,16 @@ exports[`Integration should display minimal information because integration is i
           id="confirm-5"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            delete
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                delete
-              </i>
-              Delete HTTP integration
-            </span>
+            Delete HTTP integration
           </span>
         </button>
       </div>

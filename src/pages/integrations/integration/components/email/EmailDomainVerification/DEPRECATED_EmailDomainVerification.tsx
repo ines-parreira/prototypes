@@ -11,7 +11,6 @@ import {
 } from 'models/integration/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 
@@ -130,10 +129,9 @@ export default function DEPRECATED_EmailDomainVerification({
                         fillStyle="ghost"
                         intent="destructive"
                         isLoading={isDeleting}
+                        leadingIcon="delete"
                     >
-                        <ButtonIconLabel icon="delete">
-                            Delete Domain
-                        </ButtonIconLabel>
+                        Delete Domain
                     </ConfirmButton>
                 )}
             </div>

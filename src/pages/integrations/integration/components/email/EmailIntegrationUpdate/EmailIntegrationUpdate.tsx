@@ -31,7 +31,6 @@ import {EmailIntegrationDefaultProviderSetting} from 'models/integration/constan
 import {IntegrationType} from 'models/integration/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import InputField from 'pages/common/forms/input/InputField'
@@ -657,10 +656,9 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                             )}
                             intent="destructive"
                             fillStyle="ghost"
+                            leadingIcon="delete"
                         >
-                            <ButtonIconLabel icon="delete">
-                                Delete Integration
-                            </ButtonIconLabel>
+                            Delete Integration
                         </ConfirmButton>
                     </div>
                 </Form>

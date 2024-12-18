@@ -171,19 +171,16 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
                 id="confirm-4"
                 type="button"
               >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  delete
+                </i>
                 <span
                   class="content"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft medium"
-                    >
-                      delete
-                    </i>
-                    Remove Twitter Account
-                  </span>
+                  Remove Twitter Account
                 </span>
               </button>
             </div>

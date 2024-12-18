@@ -3,7 +3,6 @@ import React from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {useNotificationTextForRemovalMessage} from 'pages/integrations/integration/hooks/useNotificationTextForRemovalMessage'
 import {deleteIntegration} from 'state/integrations/actions'
@@ -78,8 +77,9 @@ export const IntegrationActionButtons = ({
                     onConfirm={() => dispatch(deleteIntegration(integration))}
                     confirmationContent={confirmationOfRemovalContent}
                     intent="destructive"
+                    leadingIcon="delete"
                 >
-                    <ButtonIconLabel icon="delete">Delete App</ButtonIconLabel>
+                    Delete App
                 </ConfirmButton>
             )}
         </div>

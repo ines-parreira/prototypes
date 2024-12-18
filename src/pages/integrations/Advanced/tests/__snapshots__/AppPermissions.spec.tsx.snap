@@ -169,19 +169,16 @@ exports[`AppErrorRow should hide permissions if there are more than 5 1`] = `
     class="wrapper mt-2 ghost primary medium"
     type="button"
   >
+    <i
+      aria-hidden="true"
+      class="material-icons icon medium"
+    >
+      unfold_more
+    </i>
     <span
       class="content"
     >
-      <span
-        class="wrapper"
-      >
-        <i
-          class="material-icons icon isLeft medium"
-        >
-          unfold_more
-        </i>
-        Show all
-      </span>
+      Show all
     </span>
   </button>
 </div>

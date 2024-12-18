@@ -5,7 +5,6 @@ import React, {useState} from 'react'
 import {EmailMigrationSenderVerificationIntegration} from 'models/integration/types'
 import {SenderInformation} from 'models/singleSenderVerification/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 
@@ -149,10 +148,9 @@ export default function SingleSenderVerificationTableRow({
                             fillStyle="ghost"
                             onClick={() => setIsDeleteModalOpen(true)}
                             data-testid="delete-verification-button"
+                            leadingIcon="delete"
                         >
-                            <ButtonIconLabel icon="delete">
-                                Delete verification
-                            </ButtonIconLabel>
+                            Delete verification
                         </Button>
                     </div>
                 )}

@@ -4,7 +4,6 @@ import React, {Component} from 'react'
 import {Row, Col} from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 
@@ -101,10 +100,13 @@ export default class ObjectListField extends Component<Props> {
                         </Col>
                     </Row>
                 ))}
-                <Button intent="secondary" size="small" onClick={this._add}>
-                    <ButtonIconLabel icon="add">
-                        Add {this.props.fieldName}
-                    </ButtonIconLabel>
+                <Button
+                    intent="secondary"
+                    size="small"
+                    onClick={this._add}
+                    leadingIcon="add"
+                >
+                    Add {this.props.fieldName}
                 </Button>
             </div>
         )

@@ -3,7 +3,6 @@ import React, {useRef, useState} from 'react'
 
 import {PhoneIntegration} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -38,15 +37,15 @@ export default function PhoneDeviceDialerIntegrationSelect({
                 onClick={() => setIsDropdownOpen((open) => !open)}
                 ref={targetRef}
                 data-testid="toggle-integration-dropdown"
+                leadingIcon="phone"
+                trailingIcon="arrow_drop_down"
             >
-                <ButtonIconLabel icon="phone" />
                 <div
                     className={css.integrationSelectorLabel}
                     id="integration-selector-label"
                 >
                     {value.name}
                 </div>
-                <ButtonIconLabel icon="arrow_drop_down" />
             </Button>
             <Tooltip target="integration-selector-label">{value.name}</Tooltip>
             <Dropdown

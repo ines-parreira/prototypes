@@ -5,7 +5,6 @@ import {Col, Container, Row} from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import InputGroup from 'pages/common/forms/input/InputGroup'
@@ -136,10 +135,9 @@ const Integration = ({integration, loading}: Props) => {
                                 }
                                 confirmationContent={confirmationContent}
                                 intent="destructive"
+                                leadingIcon="delete"
                             >
-                                <ButtonIconLabel icon="delete">
-                                    Delete App
-                                </ButtonIconLabel>
+                                Delete App
                             </ConfirmButton>
                         </div>
                     </form>

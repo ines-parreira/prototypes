@@ -14,7 +14,6 @@ import {
 } from 'reactstrap'
 
 import {IntegrationType} from 'models/integration/types'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -262,10 +261,9 @@ export default function TwitterIntegrationDetail({
                                         isDisabled={isSubmitting}
                                         isLoading={isDeleting}
                                         intent="destructive"
+                                        leadingIcon="delete"
                                     >
-                                        <ButtonIconLabel icon="delete">
-                                            Remove Twitter Account
-                                        </ButtonIconLabel>
+                                        Remove Twitter Account
                                     </ConfirmButton>
                                 </div>
                             </Col>

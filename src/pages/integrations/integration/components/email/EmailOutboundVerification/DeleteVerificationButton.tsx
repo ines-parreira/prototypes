@@ -5,7 +5,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {deleteVerification} from 'models/singleSenderVerification/resources'
 import {SenderVerification} from 'models/singleSenderVerification/types'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {removeVerification} from 'state/entities/singleSenderVerification/actions'
 import {notify} from 'state/notifications/actions'
@@ -61,8 +60,9 @@ export default function DeleteVerificationButton({
             isDisabled={isDisabled}
             intent="destructive"
             confirmationTitle={'Delete Verification?'}
+            leadingIcon="delete"
         >
-            <ButtonIconLabel icon="delete">Delete verification</ButtonIconLabel>
+            Delete verification
         </ConfirmButton>
     )
 }

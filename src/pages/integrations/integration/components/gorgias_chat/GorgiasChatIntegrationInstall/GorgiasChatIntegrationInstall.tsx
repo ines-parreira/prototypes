@@ -11,7 +11,6 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import NavigatedSuccessModal, {
@@ -286,10 +285,9 @@ const GorgiasChatIntegrationInstall = ({
                                 showCancelButton={true}
                                 intent="destructive"
                                 fillStyle="ghost"
+                                leadingIcon="delete"
                             >
-                                <ButtonIconLabel icon="delete">
-                                    Delete Chat
-                                </ButtonIconLabel>
+                                Delete Chat
                             </ConfirmButton>
                         )}
                     </div>

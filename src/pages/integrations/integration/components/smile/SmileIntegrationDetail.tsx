@@ -10,7 +10,6 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -211,10 +210,9 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
                                     )}
                                     isDisabled={isSubmitting}
                                     intent="destructive"
+                                    leadingIcon="delete"
                                 >
-                                    <ButtonIconLabel icon="delete">
-                                        Delete integration
-                                    </ButtonIconLabel>
+                                    Delete integration
                                 </ConfirmButton>
                             </div>
                         </Col>

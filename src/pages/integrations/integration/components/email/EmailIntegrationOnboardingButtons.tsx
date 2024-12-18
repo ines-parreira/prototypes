@@ -2,7 +2,6 @@ import {EmailIntegration} from '@gorgias/api-queries'
 import React, {useContext, useEffect} from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {WizardContext} from 'pages/common/components/wizard/Wizard'
 import FormSubmitButton from 'pages/settings/SLAs/features/SLAForm/views/FormSubmitButton'
@@ -74,14 +73,11 @@ export default function EmailIntegrationOnboardingButtons(props: Props) {
                         <FormSubmitButton
                             isLoading={isSending}
                             isDisabled={isPending}
+                            leadingIcon={isRequested ? 'markunread' : undefined}
                         >
-                            {isRequested ? (
-                                <ButtonIconLabel icon="markunread">
-                                    Re-Send Verification Email
-                                </ButtonIconLabel>
-                            ) : (
-                                'Begin Verification'
-                            )}
+                            {isRequested
+                                ? 'Re-Send Verification Email'
+                                : 'Begin Verification'}
                         </FormSubmitButton>
                     ))}
                 {currentStep ===
@@ -96,10 +92,9 @@ export default function EmailIntegrationOnboardingButtons(props: Props) {
                     confirmationContent="Are you sure you want to delete this integration?"
                     intent="destructive"
                     onConfirm={deleteIntegration}
+                    leadingIcon="delete"
                 >
-                    <ButtonIconLabel icon="delete">
-                        Delete integration
-                    </ButtonIconLabel>
+                    Delete integration
                 </ConfirmButton>
             )}
         </div>

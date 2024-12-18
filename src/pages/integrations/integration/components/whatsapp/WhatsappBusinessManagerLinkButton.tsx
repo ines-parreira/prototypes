@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 export default function WhatsappBusinessManagerLinkButton() {
     return (
@@ -15,10 +14,9 @@ export default function WhatsappBusinessManagerLinkButton() {
                     )!
                     .focus()
             }
+            leadingIcon="open_in_new"
         >
-            <ButtonIconLabel icon="open_in_new" position="left">
-                Manage & Create Templates
-            </ButtonIconLabel>
+            Manage & Create Templates
         </Button>
     )
 }

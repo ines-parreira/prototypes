@@ -22,7 +22,6 @@ import {
 import {KLAVIYO_INTEGRATION_TYPE} from 'constants/integration'
 import Alert from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -516,10 +515,9 @@ class KlaviyoIntegrationDetail extends React.Component<Props> {
                                                     INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT
                                                 )}
                                                 intent="destructive"
+                                                leadingIcon="delete"
                                             >
-                                                <ButtonIconLabel icon="delete">
-                                                    Delete App
-                                                </ButtonIconLabel>
+                                                Delete App
                                             </ConfirmButton>
                                         )}
                                     </div>

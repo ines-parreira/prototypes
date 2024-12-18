@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import history from 'pages/history'
 
 type Props = {
@@ -15,8 +14,9 @@ export default function BackButton({baseURL}: Props) {
             intent="secondary"
             fillStyle="ghost"
             className="p-0 mb-4"
+            leadingIcon="arrow_back"
         >
-            <ButtonIconLabel icon="arrow_back">Verification</ButtonIconLabel>
+            Verification
         </Button>
     )
 }

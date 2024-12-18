@@ -9,7 +9,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {SmsIntegration, isSmsIntegration} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import css from 'pages/integrations/integration/components/sms/SmsIntegrationPreferences.less'
@@ -147,10 +146,9 @@ export default function SmsIntegrationPreferences({
                                 isLoading={isDeleting}
                                 onConfirm={handleDelete}
                                 confirmationContent={confirmationContent}
+                                leadingIcon="delete"
                             >
-                                <ButtonIconLabel icon="delete">
-                                    Delete integration
-                                </ButtonIconLabel>
+                                Delete integration
                             </ConfirmButton>
                         </div>
                     </Form>

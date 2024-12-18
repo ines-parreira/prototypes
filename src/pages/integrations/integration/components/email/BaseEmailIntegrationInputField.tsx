@@ -5,7 +5,6 @@ import React, {useCallback} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 
@@ -52,10 +51,12 @@ export default function BaseEmailIntegrationInputField({label}: Props) {
             {label && <Label>{label}</Label>}
             <InputGroup>
                 <TextInput value={baseAddress} isDisabled />
-                <Button intent="secondary" onClick={handleCopy}>
-                    <ButtonIconLabel icon="content_copy" position="right">
-                        Copy
-                    </ButtonIconLabel>
+                <Button
+                    intent="secondary"
+                    onClick={handleCopy}
+                    trailingIcon="content_copy"
+                >
+                    Copy
                 </Button>
             </InputGroup>
         </>

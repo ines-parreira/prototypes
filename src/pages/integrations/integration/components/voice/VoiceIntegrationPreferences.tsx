@@ -17,7 +17,6 @@ import {
     isPhoneIntegration,
 } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
@@ -290,10 +289,9 @@ export default function VoiceIntegrationPreferences({
                             isLoading={isDeleting}
                             onConfirm={handleDelete}
                             confirmationContent={confirmationContent}
+                            leadingIcon="delete"
                         >
-                            <ButtonIconLabel icon="delete">
-                                Delete integration
-                            </ButtonIconLabel>
+                            Delete integration
                         </ConfirmButton>
                     </div>
                 </Form>

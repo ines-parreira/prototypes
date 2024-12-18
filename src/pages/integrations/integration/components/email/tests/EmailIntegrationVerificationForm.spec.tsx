@@ -64,7 +64,7 @@ describe('<EmailIntegrationVerificationForm />', () => {
 
         expect(
             screen.getByRole('button', {
-                name: 'markunread Re-Send Verification Email',
+                name: 'Re-Send Verification Email',
             })
         ).toBeInTheDocument()
     })

@@ -78,7 +78,7 @@ describe('VerificationEmailSent', () => {
     it('Should call "delete verification" endpoint', async () => {
         fireEvent.click(
             await screen.findByRole('button', {
-                name: /delete delete verification/i,
+                name: 'Delete verification',
             })
         )
         const tooltip = screen.getByRole('tooltip')

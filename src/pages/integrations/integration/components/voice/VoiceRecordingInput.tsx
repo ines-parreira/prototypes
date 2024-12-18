@@ -2,7 +2,6 @@ import classnames from 'classnames'
 import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Caption from 'pages/common/forms/Caption/Caption'
 import {replaceAttachmentURL} from 'utils'
 
@@ -57,10 +56,9 @@ export default function VoiceRecordingInput({
                     className={classnames({
                         [css.replaceFileButton]: !!voiceRecordingPath,
                     })}
+                    leadingIcon="backup"
                 >
-                    <ButtonIconLabel icon="backup">
-                        {voiceRecordingPath ? replaceLabel : uploadLabel}
-                    </ButtonIconLabel>
+                    {voiceRecordingPath ? replaceLabel : uploadLabel}
                 </Button>
                 <Caption className={css.caption}>
                     Supported file: .mp3{' '}

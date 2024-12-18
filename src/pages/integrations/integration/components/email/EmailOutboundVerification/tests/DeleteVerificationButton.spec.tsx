@@ -96,7 +96,7 @@ describe('DeleteVerificationButton', () => {
 
         fireEvent.click(
             await screen.findByRole('button', {
-                name: /delete delete verification/i,
+                name: 'Delete verification',
             })
         )
         const tooltip = screen.getByRole('tooltip')

@@ -123,19 +123,16 @@ exports[`<RechargeIntegration/> render() should render an integration with a del
             id="confirm-button-delete"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete App
-              </span>
+              Delete App
             </span>
           </button>
         </div>

@@ -112,19 +112,16 @@ exports[`<YotpoIntegrationDetailComponent/> componentDidMount() should set the i
             id="confirm-2"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete App
-              </span>
+              Delete App
             </span>
           </button>
         </div>
@@ -246,19 +243,16 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should n
             id="confirm-8"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete App
-              </span>
+              Delete App
             </span>
           </button>
         </div>
@@ -378,19 +372,16 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should n
             id="confirm-4"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete App
-              </span>
+              Delete App
             </span>
           </button>
         </div>
@@ -512,19 +503,16 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should s
             id="confirm-6"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete App
-              </span>
+              Delete App
             </span>
           </button>
         </div>
@@ -646,19 +634,16 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should s
             id="confirm-10"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete App
-              </span>
+              Delete App
             </span>
           </button>
         </div>
@@ -780,19 +765,16 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should s
             id="confirm-12"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete App
-              </span>
+              Delete App
             </span>
           </button>
         </div>
@@ -912,19 +894,16 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
             id="confirm-24"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete App
-              </span>
+              Delete App
             </span>
           </button>
         </div>
@@ -1060,19 +1039,16 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
             id="confirm-18"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete App
-              </span>
+              Delete App
             </span>
           </button>
         </div>
@@ -1192,19 +1168,16 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
             id="confirm-16"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete App
-              </span>
+              Delete App
             </span>
           </button>
         </div>
@@ -1326,19 +1299,16 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
             id="confirm-20"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete App
-              </span>
+              Delete App
             </span>
           </button>
         </div>
@@ -1458,19 +1428,16 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
             id="confirm-22"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete App
-              </span>
+              Delete App
             </span>
           </button>
         </div>

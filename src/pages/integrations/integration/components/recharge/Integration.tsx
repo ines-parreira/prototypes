@@ -9,7 +9,6 @@ import {IntegrationType} from 'models/integration/constants'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import GroupAddon from 'pages/common/forms/input/GroupAddon'
@@ -128,10 +127,9 @@ export default function Integration({
                                     }
                                     confirmationContent={confirmationContent}
                                     intent="destructive"
+                                    leadingIcon="delete"
                                 >
-                                    <ButtonIconLabel icon="delete">
-                                        Delete App
-                                    </ButtonIconLabel>
+                                    Delete App
                                 </ConfirmButton>
                             </div>
                         </>

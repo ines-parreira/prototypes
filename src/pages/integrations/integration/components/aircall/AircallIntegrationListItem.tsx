@@ -4,7 +4,6 @@ import React, {useState} from 'react'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {AircallIntegration} from 'models/integration/types'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
@@ -78,10 +77,9 @@ export default function AircallIntegrationListItem({
                                 Gorgias.
                             </div>
                         }
+                        leadingIcon="delete"
                     >
-                        <ButtonIconLabel icon="delete">
-                            Delete integration
-                        </ButtonIconLabel>
+                        Delete integration
                     </ConfirmButton>
                 </div>
             </td>

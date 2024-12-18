@@ -15,7 +15,6 @@ import {
 import {FeatureFlagKey} from 'config/featureFlags'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
@@ -223,10 +222,9 @@ export class EmailIntegrationCreateVerification extends Component<
                     isDisabled={this.state.isDisabled}
                     intent="destructive"
                     className="float-right"
+                    leadingIcon="delete"
                 >
-                    <ButtonIconLabel icon="delete">
-                        Delete email address
-                    </ButtonIconLabel>
+                    Delete email address
                 </ConfirmButton>
             </div>
         )

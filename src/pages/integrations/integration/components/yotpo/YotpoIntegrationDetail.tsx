@@ -15,7 +15,6 @@ import {
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -230,10 +229,9 @@ export class YotpoIntegrationDetailComponent extends Component<Props, State> {
                                     )}
                                     isDisabled={!!isSubmitting}
                                     intent="destructive"
+                                    leadingIcon="delete"
                                 >
-                                    <ButtonIconLabel icon="delete">
-                                        Delete App
-                                    </ButtonIconLabel>
+                                    Delete App
                                 </ConfirmButton>
                             </div>
                         </Col>

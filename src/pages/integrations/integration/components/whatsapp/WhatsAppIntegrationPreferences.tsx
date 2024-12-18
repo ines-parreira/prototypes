@@ -12,7 +12,6 @@ import {
     isWhatsAppIntegration,
 } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import css from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationPreferences.less'
@@ -141,10 +140,9 @@ export default function WhatsAppIntegrationPreferences({
                                 isLoading={isDeleting}
                                 onConfirm={handleDelete}
                                 confirmationContent={confirmationContent}
+                                leadingIcon="delete"
                             >
-                                <ButtonIconLabel icon="delete">
-                                    Delete integration
-                                </ButtonIconLabel>
+                                Delete integration
                             </ConfirmButton>
                         </div>
                     </Form>

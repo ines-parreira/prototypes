@@ -195,7 +195,7 @@ describe('<EmailIntegrationConnectForm />', () => {
 
         expect(
             screen.getByRole('button', {
-                name: 'delete Delete integration',
+                name: 'Delete integration',
             })
         ).toBeInTheDocument()
     })

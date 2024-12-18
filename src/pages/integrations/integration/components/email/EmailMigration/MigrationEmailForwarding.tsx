@@ -5,7 +5,6 @@ import {Col} from 'reactstrap'
 import useAppSelector from 'hooks/useAppSelector'
 import {EmailMigrationInboundVerification} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 import useClipboard from 'pages/common/hooks/useClipboard'
@@ -54,10 +53,9 @@ export default function MigrationEmailForwarding({
                         data-clipboard-target="#email-address"
                         id="copy-email-address"
                         intent={'secondary'}
+                        leadingIcon="file_copy"
                     >
-                        <ButtonIconLabel icon="file_copy">
-                            {copyButtonText}
-                        </ButtonIconLabel>
+                        {copyButtonText}
                     </Button>
                 </InputGroup>
 

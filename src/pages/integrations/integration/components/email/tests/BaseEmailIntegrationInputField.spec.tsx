@@ -30,9 +30,7 @@ describe('<BaseEmailIntegrationInputField />', () => {
         expect(screen.getByRole('textbox').getAttribute('value')).toBe(
             'acme123@email.gorgias.com'
         )
-        expect(
-            screen.getByRole('button', {name: 'Copy content_copy'})
-        ).toBeInTheDocument()
+        expect(screen.getByRole('button', {name: 'Copy'})).toBeInTheDocument()
     })
 
     it('should render with label', () => {
@@ -46,7 +44,7 @@ describe('<BaseEmailIntegrationInputField />', () => {
     it('should copy the value when clicking on the auxiliary button', () => {
         render(<BaseEmailIntegrationInputField />)
 
-        fireEvent.click(screen.getByRole('button', {name: 'Copy content_copy'}))
+        fireEvent.click(screen.getByRole('button', {name: 'Copy'}))
 
         expect(copyMock).toHaveBeenCalledWith('acme123@email.gorgias.com')
 
@@ -63,7 +61,7 @@ describe('<BaseEmailIntegrationInputField />', () => {
             throw new Error('copy failed')
         })
 
-        fireEvent.click(screen.getByRole('button', {name: 'Copy content_copy'}))
+        fireEvent.click(screen.getByRole('button', {name: 'Copy'}))
         expect(copyMock).toHaveBeenCalledWith('acme123@email.gorgias.com')
 
         expect(notify).toHaveBeenCalledWith({

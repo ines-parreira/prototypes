@@ -18,7 +18,6 @@ import {
 } from 'models/integration/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -596,10 +595,9 @@ export class Integration extends Component<Props, State> {
                                         INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT
                                     )}
                                     intent="destructive"
+                                    leadingIcon="delete"
                                 >
-                                    <ButtonIconLabel icon="delete">
-                                        Delete HTTP integration
-                                    </ButtonIconLabel>
+                                    Delete HTTP integration
                                 </ConfirmButton>
                             )}
                         </div>

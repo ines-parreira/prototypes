@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import {EmailVerificationStatus} from '../EmailVerificationStatusLabel'
 
@@ -38,8 +37,13 @@ export default function EmailVerificationButton({
     }
 
     return (
-        <Button fillStyle="ghost" intent="secondary" onClick={onRetryClick}>
-            <ButtonIconLabel icon="refresh">Retry verification</ButtonIconLabel>
+        <Button
+            fillStyle="ghost"
+            intent="secondary"
+            onClick={onRetryClick}
+            leadingIcon="refresh"
+        >
+            Retry verification
         </Button>
     )
 }

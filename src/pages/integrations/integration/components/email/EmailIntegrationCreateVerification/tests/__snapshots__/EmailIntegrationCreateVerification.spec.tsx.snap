@@ -125,19 +125,16 @@ exports[`<EmailIntegrationCreateVerification/> render() should render instructio
         id="confirm-2"
         type="button"
       >
+        <i
+          aria-hidden="true"
+          class="material-icons icon medium"
+        >
+          delete
+        </i>
         <span
           class="content"
         >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft medium"
-            >
-              delete
-            </i>
-            Delete email address
-          </span>
+          Delete email address
         </span>
       </button>
     </div>
@@ -329,19 +326,16 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
         id="confirm-1"
         type="button"
       >
+        <i
+          aria-hidden="true"
+          class="material-icons icon medium"
+        >
+          delete
+        </i>
         <span
           class="content"
         >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft medium"
-            >
-              delete
-            </i>
-            Delete email address
-          </span>
+          Delete email address
         </span>
       </button>
     </div>

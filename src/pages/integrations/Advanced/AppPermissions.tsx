@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 
 import {AppOAuthPermission} from 'config/oauthPermissions'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import AppPermission from './AppPermission'
 
@@ -31,12 +30,9 @@ export default function AppPermissions({permissions}: Props) {
                     fillStyle="ghost"
                     onClick={() => setShowAll(!showAll)}
                     className="mt-2"
+                    leadingIcon={showAll ? 'unfold_less' : 'unfold_more'}
                 >
-                    <ButtonIconLabel
-                        icon={showAll ? 'unfold_less' : 'unfold_more'}
-                    >
-                        {showAll ? 'Show less' : 'Show all'}
-                    </ButtonIconLabel>
+                    {showAll ? 'Show less' : 'Show all'}
                 </Button>
             )}
         </>

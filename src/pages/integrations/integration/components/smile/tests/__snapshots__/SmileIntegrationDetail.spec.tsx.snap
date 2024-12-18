@@ -126,19 +126,16 @@ exports[`<SmileIntegrationDetail/> componentDidMount() should set the integratio
             id="confirm-1"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete integration
-              </span>
+              Delete integration
             </span>
           </button>
         </div>
@@ -274,19 +271,16 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do any
             id="confirm-3"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete integration
-              </span>
+              Delete integration
             </span>
           </button>
         </div>
@@ -383,19 +377,16 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do any
             id="confirm-2"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete integration
-              </span>
+              Delete integration
             </span>
           </button>
         </div>
@@ -531,19 +522,16 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
             id="confirm-4"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete integration
-              </span>
+              Delete integration
             </span>
           </button>
         </div>
@@ -679,19 +667,16 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
             id="confirm-5"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete integration
-              </span>
+              Delete integration
             </span>
           </button>
         </div>
@@ -827,19 +812,16 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
             id="confirm-6"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete integration
-              </span>
+              Delete integration
             </span>
           </button>
         </div>
@@ -947,19 +929,16 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
             id="confirm-12"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete integration
-              </span>
+              Delete integration
             </span>
           </button>
         </div>
@@ -1081,19 +1060,16 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
             id="confirm-9"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete integration
-              </span>
+              Delete integration
             </span>
           </button>
         </div>
@@ -1227,19 +1203,16 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
             id="confirm-8"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete integration
-              </span>
+              Delete integration
             </span>
           </button>
         </div>
@@ -1403,19 +1376,16 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
             id="confirm-10"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete integration
-              </span>
+              Delete integration
             </span>
           </button>
         </div>
@@ -1549,19 +1519,16 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
             id="confirm-11"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              delete
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  delete
-                </i>
-                Delete integration
-              </span>
+              Delete integration
             </span>
           </button>
         </div>

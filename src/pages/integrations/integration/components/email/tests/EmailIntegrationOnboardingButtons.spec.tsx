@@ -215,7 +215,7 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
                 renderComponent()
 
                 const button = screen.getByRole('button', {
-                    name: 'markunread Re-Send Verification Email',
+                    name: 'Re-Send Verification Email',
                 })
                 expect(button).toBeInTheDocument()
                 expect(button.getAttribute('type')).toBe('submit')
@@ -280,7 +280,7 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
 
         expect(
             screen.getByRole('button', {
-                name: 'delete Delete integration',
+                name: 'Delete integration',
             })
         ).toBeInTheDocument()
     })

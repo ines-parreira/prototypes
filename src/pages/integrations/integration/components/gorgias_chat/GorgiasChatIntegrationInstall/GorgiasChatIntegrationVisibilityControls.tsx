@@ -19,7 +19,6 @@ import {
 } from 'models/integration/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Collapse from 'pages/common/components/Collapse/Collapse'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
@@ -305,10 +304,12 @@ const GorgiasChatIntegrationVisibilityControls = (
                 )}
                 <div className={css.footer}>
                     {!isShowOnEveryPage && (
-                        <Button fillStyle="ghost" onClick={addCondition}>
-                            <ButtonIconLabel icon="add">
-                                Add URL
-                            </ButtonIconLabel>
+                        <Button
+                            fillStyle="ghost"
+                            onClick={addCondition}
+                            leadingIcon="add"
+                        >
+                            Add URL
                         </Button>
                     )}
                     {isUpdate && !hideUpdateInstallationButton && (
