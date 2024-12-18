@@ -74,7 +74,7 @@ describe('AIAgentBanner', () => {
                 <Provider store={store}>
                     <AIAgentBanner
                         message={mockMessage}
-                        messageIds={[mockMessage.id]}
+                        messages={[mockMessage]}
                     />
                 </Provider>
             </QueryClientProvider>
@@ -110,7 +110,7 @@ describe('AIAgentBanner', () => {
         render(
             <AIAgentBanner
                 message={{...mockMessage, public: false}}
-                messageIds={[mockMessage.id]}
+                messages={[mockMessage]}
             />
         )
 
@@ -144,7 +144,7 @@ describe('AIAgentBanner', () => {
         render(
             <AIAgentBanner
                 message={{...mockMessage, public: true}}
-                messageIds={[mockMessage.id]}
+                messages={[mockMessage]}
             />
         )
 
@@ -175,12 +175,7 @@ describe('AIAgentBanner', () => {
             isError: false,
         } as any)
 
-        render(
-            <AIAgentBanner
-                message={mockMessage}
-                messageIds={[mockMessage.id]}
-            />
-        )
+        render(<AIAgentBanner message={mockMessage} messages={[mockMessage]} />)
 
         expect(screen.getByTestId('feedback')).toBeInTheDocument()
     })
@@ -208,12 +203,7 @@ describe('AIAgentBanner', () => {
             isError: false,
         } as any)
 
-        render(
-            <AIAgentBanner
-                message={mockMessage}
-                messageIds={[mockMessage.id]}
-            />
-        )
+        render(<AIAgentBanner message={mockMessage} messages={[mockMessage]} />)
 
         const message = screen.getByText('summary')
 
@@ -242,7 +232,7 @@ describe('AIAgentBanner', () => {
         const {getByText} = render(
             <AIAgentBanner
                 message={{...mockMessage, public: false}}
-                messageIds={[mockMessage.id]}
+                messages={[mockMessage]}
             />
         )
 
@@ -277,7 +267,7 @@ describe('AIAgentBanner', () => {
                     public: false,
                     body_html: 'body_html123',
                 }}
-                messageIds={[mockMessage.id]}
+                messages={[mockMessage]}
             />
         )
 
@@ -309,10 +299,7 @@ describe('AIAgentBanner', () => {
         } as any)
 
         const {container} = render(
-            <AIAgentBanner
-                message={mockMessage}
-                messageIds={[mockMessage.id]}
-            />
+            <AIAgentBanner message={mockMessage} messages={[mockMessage]} />
         )
 
         expect(container.firstChild).toHaveClass('hasError')
@@ -347,10 +334,10 @@ describe('AIAgentBanner', () => {
         render(
             <AIAgentBanner
                 message={mockMessage}
-                messageIds={[
-                    mockMessage.id,
-                    messageWithFeedback.id,
-                    lastGroupMessageWithoutFeedback.id,
+                messages={[
+                    mockMessage,
+                    messageWithFeedback,
+                    lastGroupMessageWithoutFeedback,
                 ]}
             />
         )

@@ -4,12 +4,14 @@ import _memoize from 'lodash/memoize'
 import moment, {Moment} from 'moment'
 import React, {Component, ReactNode} from 'react'
 
+import {TicketVia} from 'business/types/ticket'
 import {IntegrationType} from 'models/integration/constants'
 import {isFailed, isPending} from 'models/ticket/predicates'
 import {TicketMessage} from 'models/ticket/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import {getDisplayCustomerLastSeenOnChat} from 'pages/common/components/infobar/utils'
 import {scrollToReactNode} from 'pages/common/utils/keyboard'
+import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
 
 import AIAgentBanner from './AIAgentBanner'
 import AIAgentMessageEvents from './AIAgentMessageEvents'
@@ -21,9 +23,12 @@ const classNames = classNamesBind.bind(css)
 
 type Props = {
     id: string
+    isSignal?: boolean
     className?: string
     message: TicketMessage
-    messageIds: Array<TicketMessage['id']>
+    // Ideally we only want to pass the messages but as this is a hotfix I'll only add those and not deprecate the sole message object
+    // https://linear.app/gorgias/issue/AUTIN-1944/handover-close-snooze-icons-dont-appear-in-the-ticket-ui
+    messages: TicketMessage[]
     hasCursor: boolean
     lastMessageDatetimeAfterMount: Moment | null
     children?: ReactNode
@@ -58,7 +63,7 @@ export default class Container extends Component<Props> {
         const {
             children,
             message,
-            messageIds,
+            messages,
             isMessageHidden,
             isMessageDeleted,
             isAIAgentInternalNote = false,
@@ -69,6 +74,7 @@ export default class Container extends Component<Props> {
             containsLastCustomerMessage,
             displayMessageStatusIndicator = false,
             shouldDisplayAuditLogEvents = false,
+            isSignal,
         } = this.props
 
         const sender = fromJS(message.sender || {}) as Map<any, any>
@@ -164,66 +170,83 @@ export default class Container extends Component<Props> {
         const showAIAgentMessageEvents =
             isAIAgentMessage && !shouldDisplayAuditLogEvents
 
+        const lastAIAgentMessage = messages
+            .slice()
+            .reverse()
+            .find(
+                (message) =>
+                    message.via === TicketVia.Api &&
+                    AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS.includes(
+                        message.sender.email
+                    )
+            )
+
         return (
             <>
-                <div
-                    className={classNames(
-                        'ticket-message',
-                        this.props.className,
-                        css.component,
-                        {
-                            internal: !isAIAgentMessage && !message.public,
-                            appear: appear,
-                            hasError: isFailed(message),
-                            'ticket-message-loading': isPending(message),
-                            ticketMessagesHighlighted:
-                                this.props.isBodyHighlighted,
-                            ticketHandledByAIAgent: isAIAgentMessage,
-                            aiMessageSelected: isAIAgentMessageSelected,
-                        }
-                    )}
-                >
-                    {avatar}
+                {!isSignal && (
                     <div
-                        className={classNames(css.bodyWrapper, {
-                            bodyWrapperForHiddenOrDeletedMessage:
-                                (isMessageHidden && !isMessageDuplicated) ||
-                                isMessageDeleted,
-                        })}
-                    >
-                        <Header
-                            id={this.props.id}
-                            message={message}
-                            displayMessageStatusIndicator={
-                                displayMessageStatusIndicator
+                        data-testid={`ticket-message-${this.props.message.id}`}
+                        className={classNames(
+                            'ticket-message',
+                            this.props.className,
+                            css.component,
+                            {
+                                internal: !isAIAgentMessage && !message.public,
+                                appear: appear,
+                                hasError: isFailed(message),
+                                'ticket-message-loading': isPending(message),
+                                ticketMessagesHighlighted:
+                                    this.props.isBodyHighlighted,
+                                ticketHandledByAIAgent: isAIAgentMessage,
+                                aiMessageSelected: isAIAgentMessageSelected,
                             }
-                            timezone={this.props.timezone}
-                            hasError={isFailed(message)}
-                            isMessageHidden={isMessageHidden}
-                            isMessageDeleted={isMessageDeleted}
-                            isMessageFromAIAgent={isAIAgentMessage}
-                        />
-                        {!isAIAgentInternalNote && children}
-                        {isAIAgentMessage && (
-                            <AIAgentBanner
-                                message={message}
-                                messageIds={messageIds}
-                                className={classNames({
-                                    [css.withVerticalSpacing]:
-                                        !isAIAgentInternalNote,
-                                })}
-                            />
                         )}
-                        <Footer
-                            id={this.props.id}
-                            message={message}
-                            isMessageHidden={isMessageHidden}
-                            isMessageDeleted={isMessageDeleted}
-                        />
+                    >
+                        {avatar}
+                        <div
+                            className={classNames(css.bodyWrapper, {
+                                bodyWrapperForHiddenOrDeletedMessage:
+                                    (isMessageHidden && !isMessageDuplicated) ||
+                                    isMessageDeleted,
+                            })}
+                        >
+                            <Header
+                                id={this.props.id}
+                                message={message}
+                                displayMessageStatusIndicator={
+                                    displayMessageStatusIndicator
+                                }
+                                timezone={this.props.timezone}
+                                hasError={isFailed(message)}
+                                isMessageHidden={isMessageHidden}
+                                isMessageDeleted={isMessageDeleted}
+                                isMessageFromAIAgent={isAIAgentMessage}
+                            />
+                            {!isAIAgentInternalNote && children}
+                            {isAIAgentMessage && (
+                                <AIAgentBanner
+                                    message={message}
+                                    messages={messages}
+                                    className={classNames({
+                                        [css.withVerticalSpacing]:
+                                            !isAIAgentInternalNote,
+                                    })}
+                                />
+                            )}
+                            <Footer
+                                id={this.props.id}
+                                message={message}
+                                isMessageHidden={isMessageHidden}
+                                isMessageDeleted={isMessageDeleted}
+                            />
+                        </div>
                     </div>
-                </div>
-                {showAIAgentMessageEvents && (
-                    <AIAgentMessageEvents message={message} />
+                )}
+                {showAIAgentMessageEvents && lastAIAgentMessage && (
+                    <AIAgentMessageEvents
+                        data-testid="ai-agent-message-events"
+                        message={lastAIAgentMessage}
+                    />
                 )}
             </>
         )

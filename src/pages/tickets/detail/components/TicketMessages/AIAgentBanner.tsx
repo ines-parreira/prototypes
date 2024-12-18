@@ -12,18 +12,19 @@ import AIAgentFeedback from './AIAgentFeedback'
 
 export type AIAgentBannerProps = {
     message: TicketMessage
-    messageIds: Array<TicketMessage['id']>
+    messages: TicketMessage[]
     className?: string
 }
 
-const AIAgentBanner = ({
-    message,
-    messageIds,
-    className,
-}: AIAgentBannerProps) => {
+const AIAgentBanner = ({message, messages, className}: AIAgentBannerProps) => {
     const {data} = useGetAiAgentFeedback({
         refetchOnWindowFocus: false,
     })
+
+    const messageIds = useMemo(
+        () => messages.map((message) => message.id),
+        [messages]
+    )
 
     const ticketFeedback = data?.data
 

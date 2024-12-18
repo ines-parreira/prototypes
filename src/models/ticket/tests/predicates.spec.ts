@@ -10,7 +10,7 @@ import {
     isTicketMessageSourceType,
     shouldMessagesBeGrouped,
 } from '../predicates'
-import {TicketMessage, ActionStatus} from '../types'
+import {TicketMessage, ActionStatus, MessageMetadataType} from '../types'
 
 import {action as defaultAction, message as defaultMessage} from './mocks'
 
@@ -261,6 +261,42 @@ describe('predicates', () => {
             }
             expect(shouldMessagesBeGrouped(msg1, msg2)).toBeFalsy()
         })
+
+        it.each([
+            {
+                firstMessageType: MessageMetadataType.Message,
+                secondMessageType: MessageMetadataType.Signal,
+            },
+            {
+                firstMessageType: MessageMetadataType.Signal,
+                secondMessageType: MessageMetadataType.Message,
+            },
+            {
+                firstMessageType: MessageMetadataType.Signal,
+                secondMessageType: MessageMetadataType.Signal,
+            },
+        ])(
+            'should return false if either of the messages is a signal',
+            ({firstMessageType, secondMessageType}) => {
+                const msg1 = {
+                    ...defaultMessage,
+                    channel: TicketChannel.Chat,
+                    created_datetime: '2023-02-02T14:50:00',
+                    meta: {
+                        type: firstMessageType,
+                    },
+                }
+                const msg2 = {
+                    ...defaultMessage,
+                    channel: TicketChannel.Chat,
+                    created_datetime: '2023-02-02T14:54:00',
+                    meta: {
+                        type: secondMessageType,
+                    },
+                }
+                expect(shouldMessagesBeGrouped(msg1, msg2)).toBeFalsy()
+            }
+        )
 
         it('should return true if the messages satisfy all grouping conditions', () => {
             const msg1 = {

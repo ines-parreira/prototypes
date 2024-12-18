@@ -64,7 +64,6 @@ export default function TicketMessages({
     const accountId = useAppSelector(getCurrentAccountId)
 
     const message = buildFirstTicketMessage(messages[0], id, ticketMeta)
-    const messageIds = messages.map((message) => message.id)
 
     const shouldDisplayAuditLogEvents = useAppSelector(
         getShouldDisplayAuditLogEvents
@@ -158,7 +157,7 @@ export default function TicketMessages({
             <AIAgentDraftMessage
                 ticketId={ticketId}
                 message={message}
-                messageIds={messageIds}
+                messages={messages}
             />
         )
     }
@@ -168,21 +167,18 @@ export default function TicketMessages({
             <AIAgentDraftMessage
                 ticketId={ticketId}
                 message={message}
-                messageIds={messageIds}
+                messages={messages}
                 isTrial
             />
         )
     }
 
-    if (isSignal) {
-        return null
-    }
-
     return (
         <Container
             id={id}
+            isSignal={isSignal}
             message={message}
-            messageIds={messageIds}
+            messages={messages}
             hasCursor={hasCursor}
             lastMessageDatetimeAfterMount={lastMessageDatetimeAfterMount}
             timezone={timezone}

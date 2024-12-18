@@ -5,12 +5,13 @@ import moment from 'moment'
 
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 
-import type {
-    GorgiasContactFormTicketMeta,
-    Source,
-    SourceAddress,
-    TicketEvent,
-    TicketMessage,
+import {
+    MessageMetadataType,
+    type GorgiasContactFormTicketMeta,
+    type Source,
+    type SourceAddress,
+    type TicketEvent,
+    type TicketMessage,
 } from 'models/ticket/types'
 
 export const isTicketMessage = (
@@ -131,6 +132,15 @@ export const shouldMessagesBeGrouped = (
     msg2: TicketMessage
 ): boolean => {
     if (!isTicketMessage(msg1) || !isTicketMessage(msg2)) {
+        return false
+    }
+
+    // Signal messages types were introduced for communication between ai-agent and chat
+    // These are empty messages that should not be displayed nor should they impact visibility of other messages. Therefore we enforce that they're never grouped
+    if (
+        msg1.meta?.type === MessageMetadataType.Signal ||
+        msg2.meta?.type === MessageMetadataType.Signal
+    ) {
         return false
     }
 

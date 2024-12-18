@@ -13,6 +13,7 @@ exports[`Container should define a badge color when it's the last message of cus
 exports[`Container should render 1`] = `
 <div
   class="ticket-message component"
+  data-testid="ticket-message-1"
 >
   <div
     class="avatar"

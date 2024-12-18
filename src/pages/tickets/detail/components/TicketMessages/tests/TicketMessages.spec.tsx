@@ -320,7 +320,7 @@ describe('TicketMessages', () => {
         expect(container).toBeEmptyDOMElement()
     })
 
-    it('should identify signal metadata message type', () => {
+    it('should still display a signal ticket message', () => {
         const signalMessageProps = {
             ...defaultProps,
             messages: [
@@ -339,7 +339,6 @@ describe('TicketMessages', () => {
                 <TicketMessages {...signalMessageProps} />
             </Provider>
         )
-
-        expect(container).toBeEmptyDOMElement()
+        expect(container).not.toBeEmptyDOMElement()
     })
 })

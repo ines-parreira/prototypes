@@ -45,9 +45,10 @@ jest.mock('pages/tickets/detail/components/TicketMessages/Header', () => () => (
 describe('Container', () => {
     const props = {
         id: 'some-header',
+        isSignal: false,
         hasCursor: false,
         message,
-        messageIds: [message.id],
+        messages: [message],
         timezone: 'America/Los_Angeles',
         lastMessageDatetimeAfterMount: moment('2017-01-01T12:12:34Z'),
         isMessageHidden: false,
@@ -68,6 +69,13 @@ describe('Container', () => {
         )
 
         expect(queryByText('Avatar')).not.toBeInTheDocument()
+    })
+    it('should not render container if message type is signal', () => {
+        const {queryByTestId} = render(<Container {...props} isSignal={true} />)
+
+        expect(
+            queryByTestId(`ticket-message-${props.message.id}`)
+        ).not.toBeInTheDocument()
     })
 
     it('should render container without an avatar because the message is deleted', () => {
