@@ -110,7 +110,6 @@ const ActionFormInput = ({
                 <TextInput
                     value={input.name}
                     isDisabled={isDisabled}
-                    placeholder="e.g. Address"
                     onChange={(nextValue) => {
                         onChange({
                             ...input,
@@ -123,7 +122,6 @@ const ActionFormInput = ({
                 <TextInput
                     isDisabled={isDisabled}
                     value={input.instructions}
-                    placeholder="e.g. Ask for customer’s shipping address"
                     onChange={(nextValue) => {
                         onChange({
                             ...input,

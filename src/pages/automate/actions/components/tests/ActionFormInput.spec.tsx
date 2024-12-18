@@ -294,13 +294,11 @@ describe('<ActionFormInput />', () => {
             />
         )
 
-        expect(
-            screen.getByPlaceholderText('e.g. Address').parentElement
-        ).toHaveClass('hasError')
-        expect(
-            screen.getByPlaceholderText(
-                'e.g. Ask for customer’s shipping address'
-            ).parentElement
-        ).toHaveClass('hasError')
+        expect(screen.getAllByRole('textbox')[1].parentElement).toHaveClass(
+            'hasError'
+        )
+        expect(screen.getAllByRole('textbox')[2].parentElement).toHaveClass(
+            'hasError'
+        )
     })
 })
