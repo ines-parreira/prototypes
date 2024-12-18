@@ -19,6 +19,7 @@ jest.mock('rest_api/help_center_api/uploadAttachments')
 const mockDispatch = jest.fn()
 const mockIngestFile = jest.fn()
 const mockDeleteIngestedFile = jest.fn()
+const mockOnEmptyStateChange = jest.fn()
 
 const useFileIngestionMock = assumeMock(useFileIngestion)
 const useAppDispatchMock = assumeMock(useAppDispatch)
@@ -33,7 +34,7 @@ let onFailure:
     | undefined
 
 const renderComponent = ({
-    ingestedFiles = null,
+    ingestedFiles = [],
 }: {
     ingestedFiles?: Components.Schemas.RetrieveFileIngestionLogDto[] | null
 } = {}) => {
@@ -50,13 +51,25 @@ const renderComponent = ({
         }
     })
 
-    return renderWithRouter(<ExternalFilesSection helpCenterId={1} />)
+    return renderWithRouter(
+        <ExternalFilesSection
+            helpCenterId={1}
+            onEmptyStateChange={mockOnEmptyStateChange}
+        />
+    )
 }
 
 describe('ExternalFilesSection', () => {
     it('should render correctly', () => {
         renderComponent()
         expect(screen.getByText('External documents')).toBeInTheDocument()
+        expect(mockOnEmptyStateChange).toHaveBeenCalledWith(true)
+    })
+
+    it('should render correctly when still loading', () => {
+        renderComponent({ingestedFiles: null})
+        expect(screen.getByText('External documents')).toBeInTheDocument()
+        expect(mockOnEmptyStateChange).not.toHaveBeenCalled()
     })
 
     it('should handle file upload correctly', async () => {
@@ -129,6 +142,8 @@ describe('ExternalFilesSection', () => {
                 },
             ],
         })
+
+        expect(mockOnEmptyStateChange).toHaveBeenCalledWith(false)
 
         expect(
             screen.getByRole('button', {name: /Uploading../})

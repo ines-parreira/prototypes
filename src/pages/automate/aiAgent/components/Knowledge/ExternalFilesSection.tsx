@@ -88,7 +88,8 @@ export const ExternalFilesSection = ({
                 a.uploaded_datetime > b.uploaded_datetime ? 1 : -1
             ) ?? []
 
-    const isEmpty = successfullyIngestedFiles.length === 0
+    const isEmpty =
+        ingestedFiles !== null ? successfullyIngestedFiles.length === 0 : null
 
     const maxFilesReached =
         successfullyIngestedFiles.length >= MAX_EXTERNAL_FILES
@@ -154,6 +155,7 @@ export const ExternalFilesSection = ({
     }, [isLoading, onLoadingStateChange])
 
     useEffect(() => {
+        if (isEmpty === null) return
         onEmptyStateChange && onEmptyStateChange(isEmpty)
     }, [isEmpty, onEmptyStateChange])
 
