@@ -1,12 +1,17 @@
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import cn from 'classnames'
 
 import React, {useCallback, useRef, useState} from 'react'
+
+import useAppSelector from 'hooks/useAppSelector'
 
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import css from 'pages/tickets/detail/components/TicketActions.less'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {isTeamLead} from 'utils'
 
 export type Action = {
     label: string
@@ -17,11 +22,16 @@ type Props = {
     actions: Action[]
 }
 
+const DISABLED_MENU_TOOLTIP =
+    'Only admin users are able to save, duplicate, or delete saved filters.'
 export const SAVED_FILTER_ACTIONS_MENU_ICON = 'more_vert'
 
 export const SavedFilterMenu = ({actions}: Props) => {
+    const user = useAppSelector(getCurrentUser)
+    const isTeamLeadOrAdmin = isTeamLead(user)
     const [showDropdown, setShowDropdown] = useState(false)
     const toggleRef = useRef<HTMLButtonElement>(null)
+    const tooltipRef = useRef<HTMLElement>(null)
 
     const handleClick = useCallback(() => {
         setShowDropdown((s) => !s)
@@ -41,8 +51,9 @@ export const SavedFilterMenu = ({actions}: Props) => {
                 intent="secondary"
                 onClick={handleClick}
                 size="medium"
+                isDisabled={!isTeamLeadOrAdmin}
             >
-                <i className={cn(css.icon, 'material-icons')}>
+                <i className={cn(css.icon, 'material-icons')} ref={tooltipRef}>
                     {SAVED_FILTER_ACTIONS_MENU_ICON}
                 </i>
             </Button>
@@ -70,6 +81,13 @@ export const SavedFilterMenu = ({actions}: Props) => {
                     })}
                 </DropdownBody>
             </Dropdown>
+            <Tooltip
+                target={tooltipRef}
+                placement={'top'}
+                boundariesElement={'body'}
+            >
+                {DISABLED_MENU_TOOLTIP}
+            </Tooltip>
         </>
     )
 }
