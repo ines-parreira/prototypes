@@ -110,6 +110,7 @@ export const customFieldsTicketCountPerTicketDrillDownQueryFactory = (
         ].reduce(deduplicateCustomFields, []),
         dimensions: [TicketDimension.TicketId],
         limit: DRILLDOWN_QUERY_LIMIT,
+        order: [[TicketDimension.TicketId, sorting ?? OrderDirection.Asc]],
     }
 }
 

@@ -159,6 +159,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     TicketDrillDownFilter,
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
+                order: [[TicketDimension.TicketId, OrderDirection.Asc]],
             })
         })
 
@@ -198,6 +199,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     TicketDrillDownFilter,
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
+                order: [[TicketDimension.TicketId, OrderDirection.Asc]],
             })
         })
 
