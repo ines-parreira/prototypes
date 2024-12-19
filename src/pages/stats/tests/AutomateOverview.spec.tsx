@@ -49,7 +49,9 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('hooks/useId', () => () => 'abc')
 
-jest.mock('react-chartjs-2')
+jest.mock('react-chartjs-2', () => ({
+    Line: () => null,
+}))
 jest.mock(
     'pages/stats/common/filters/DEPRECATED_TagsStatsFilter',
     () =>

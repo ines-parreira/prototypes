@@ -4,17 +4,17 @@ import React from 'react'
 import {CardTemplate} from 'models/widget/types'
 import {assumeMock, getLastMockCall} from 'utils/testing'
 
-import {ActionButtons} from '../ActionButtons/ActionButtons'
+import ActionButtons from '../ActionButtons/ActionButtons'
 import CustomActions from '../index'
-import {Links} from '../Links/Links'
+import Links from '../Links/Links'
 import {Action} from '../types'
 
-jest.mock('../Links/Links')
-jest.mock('../ActionButtons/ActionButtons')
+jest.mock('../Links/Links', () => jest.fn(() => null))
+jest.mock('../ActionButtons/ActionButtons', () => jest.fn(() => null))
 const LinksMock = assumeMock(Links)
 const ActionButtonsMock = assumeMock(ActionButtons)
 
-describe('<ActionButtons/>', () => {
+describe('<CustomActions/>', () => {
     const template = {
         templatePath: 'templatePath',
         absolutePath: ['absolutePath'],

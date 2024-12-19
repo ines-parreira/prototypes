@@ -56,14 +56,30 @@ describe('<EditCustomField/>', () => {
         expect(screen.queryByText(/Use this field/)).not.toBeInTheDocument()
     })
 
-    it('should render text for AI managed field', () => {
+    it('should render specific text only for AI managed field', () => {
         setTicketFieldDefinition(aiManagedTicketInputFieldDefinition)
         render(<EditCustomField objectType={OBJECT_TYPES.TICKET} />)
-        expect(screen.queryByText(/Use this field/)).not.toBeInTheDocument()
         expect(screen.getByText(/This field is managed/)).toBeInTheDocument()
+        expect(screen.queryByText(/Use this field/)).not.toBeInTheDocument()
     })
 
-    it('should render link for ticket managed field', () => {
+    it('should render text for non contact_reason managed field', () => {
+        setTicketFieldDefinition(productManagedTicketInputFieldDefinition)
+        render(<EditCustomField objectType={OBJECT_TYPES.TICKET} />)
+
+        expect(screen.getByText(/For more details/)).toBeInTheDocument()
+        expect(screen.getByText('see this article')).toBeInTheDocument()
+    })
+
+    it('should render text for contact_reason managed field', () => {
+        setTicketFieldDefinition(managedTicketInputFieldDefinition)
+        render(<EditCustomField objectType={OBJECT_TYPES.TICKET} />)
+
+        expect(screen.getByText(/This field is powered /)).toBeInTheDocument()
+        expect(screen.getByText('see this article')).toBeInTheDocument()
+    })
+
+    it('should render link for customer managed field', () => {
         setTicketFieldDefinition(managedCustomerInputFieldDefinition)
         render(<EditCustomField objectType={OBJECT_TYPES.CUSTOMER} />)
         expect(
@@ -71,25 +87,11 @@ describe('<EditCustomField/>', () => {
         ).toEqual('https://link.gorgias.com/tjj')
     })
 
-    it('should render text for contact_reason managed field', () => {
+    it('should render link for ticket managed field', () => {
         setTicketFieldDefinition(managedTicketInputFieldDefinition)
         render(<EditCustomField objectType={OBJECT_TYPES.TICKET} />)
-        expect(screen.getByText(/Use this field /))
-        expect(screen.findByText(/This field is powered /))
         expect(
             screen.getByText('see this article').getAttribute('href')
         ).toEqual('https://docs.gorgias.com/en-US/managed-ticket-fields-273001')
-    })
-
-    it('should render text for non contact_reason managed field', () => {
-        setTicketFieldDefinition(productManagedTicketInputFieldDefinition)
-        render(<EditCustomField objectType={OBJECT_TYPES.TICKET} />)
-
-        expect(
-            screen.queryByText(/This field is powered /)
-        ).not.toBeInTheDocument()
-
-        expect(screen.getByText(/For more details/)).toBeInTheDocument()
-        expect(screen.getByText('see this article')).toBeInTheDocument()
     })
 })
