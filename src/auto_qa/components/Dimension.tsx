@@ -103,6 +103,7 @@ export default function Dimension({
             AI generated, edit to improve AI model
         </>
     )
+    const explanationTextAreaRef = useRef<HTMLDivElement>(null)
 
     return (
         <>
@@ -174,13 +175,23 @@ export default function Dimension({
             </div>
             {isExpanded && (
                 <div className={css.explanation}>
-                    <TextArea
-                        autoRowHeight={true}
-                        placeholder={config.placeholder}
-                        value={dimension.explanation}
-                        onChange={handleChangeExplanation}
-                        isDisabled={!scoreHasBeenSelected}
-                    />
+                    <div ref={explanationTextAreaRef}>
+                        <TextArea
+                            autoRowHeight={true}
+                            placeholder={config.placeholder}
+                            value={dimension.explanation}
+                            onChange={handleChangeExplanation}
+                            isDisabled={!scoreHasBeenSelected}
+                        />
+                    </div>
+                    {!scoreHasBeenSelected && (
+                        <Tooltip
+                            target={explanationTextAreaRef}
+                            placement="top"
+                        >
+                            Please select a score before adding a comment
+                        </Tooltip>
+                    )}
                     <div className={css.lastUpdateActor}>
                         {dimension.user_id ? (
                             <DimensionUser userId={dimension.user_id} />

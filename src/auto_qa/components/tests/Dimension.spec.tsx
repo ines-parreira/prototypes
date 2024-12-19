@@ -3,7 +3,7 @@ import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
 import Dimension from 'auto_qa/components/Dimension'
-import {dimensionConfig} from 'auto_qa/config'
+import {dimensionConfig, SupportedTicketQAScoreDimension} from 'auto_qa/config'
 import {logEvent, SegmentEvent} from 'common/segment'
 
 jest.mock('common/segment', () => ({
@@ -64,7 +64,7 @@ describe('Dimension', () => {
             name: 'accuracy',
             prediction: 5,
             explanation: 'Beepity-boopity',
-        } as TicketQAScoreDimension
+        } as SupportedTicketQAScoreDimension
         const {queryByText} = render(
             <Dimension
                 config={dimensionConfig.accuracy}
@@ -76,6 +76,28 @@ describe('Dimension', () => {
         expect(
             queryByText('AI generated, edit to improve AI model')
         ).not.toBeInTheDocument()
+    })
+
+    it('should show a tooltip when manual dimension explanation is disabled', () => {
+        const onChange = jest.fn()
+        const accuracyDimension = {
+            name: 'accuracy',
+        } as SupportedTicketQAScoreDimension
+        const {container, queryByText} = render(
+            <Dimension
+                config={dimensionConfig.accuracy}
+                dimension={accuracyDimension}
+                onChange={onChange}
+                ticketId={1}
+            />
+        )
+        const content = container.getElementsByClassName('content')[0]
+        fireEvent.click(content)
+        const textArea = container.getElementsByClassName('textarea')[0]
+        fireEvent.focus(textArea)
+        expect(
+            queryByText('Please select a score before adding a comment')
+        ).toBeInTheDocument()
     })
 
     it('should call onChange when the prediction changes', () => {
