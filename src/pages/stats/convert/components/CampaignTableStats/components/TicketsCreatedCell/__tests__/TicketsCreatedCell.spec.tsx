@@ -58,6 +58,30 @@ describe('<TicketsCreatedCell />', () => {
         expect(historySpy).not.toHaveBeenCalled()
     })
 
+    it('should escape invalid characters in the filter', () => {
+        const innerCell = {
+            ...cell,
+            campaign: {
+                ...cell.campaign,
+                message_html: "test's",
+                message_text: "test's",
+                name: "Welcome's visitors",
+            },
+        } as unknown as CampaignTableContentCell
+        const {getByText} = render(
+            <TicketsCreatedCell cell={innerCell} data={2} />
+        )
+        fireEvent.click(getByText('2'))
+        expect(historySpy).toHaveBeenCalledWith({
+            pathname: `/app/tickets/new/public`,
+            state: {
+                filters: `containsAll(ticket.tags.name, ["Chat campaign - ${innerCell.campaign.name}"]) && gte(ticket.created_datetime, "2020-01-01T00:00:00.000Z") && lte(ticket.created_datetime, "2020-01-31T23:59:59.999Z")`,
+                viewName: 'Tickets created by campaign "Welcome\'s visitors"',
+                slug: 'tickets-created-by-campaign-welcomes-visitors',
+            },
+        })
+    })
+
     it('should redirect the page if there are tickets created', () => {
         const {container, getByText} = render(
             <TicketsCreatedCell cell={cell} data={2} />
@@ -70,7 +94,7 @@ describe('<TicketsCreatedCell />', () => {
         expect(historySpy).toHaveBeenCalledWith({
             pathname: `/app/tickets/new/public`,
             state: {
-                filters: `containsAll(ticket.tags.name, ['Chat campaign - ${cell.campaign.name}']) && gte(ticket.created_datetime, '2020-01-01T00:00:00.000Z') && lte(ticket.created_datetime, '2020-01-31T23:59:59.999Z')`,
+                filters: `containsAll(ticket.tags.name, ["Chat campaign - ${cell.campaign.name}"]) && gte(ticket.created_datetime, "2020-01-01T00:00:00.000Z") && lte(ticket.created_datetime, "2020-01-31T23:59:59.999Z")`,
                 viewName: 'Tickets created by campaign "Welcome visitors"',
                 slug: 'tickets-created-by-campaign-welcome-visitors',
             },

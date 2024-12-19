@@ -20,10 +20,13 @@ export const TicketsCreatedCell = ({cell, data, ...props}: Props) => {
     const startDate = new Date(selectedPeriod.start_datetime).toISOString()
     const endDate = new Date(selectedPeriod.end_datetime).toISOString()
     const viewName = `Tickets created by campaign "${cell.campaign.name}"`
+    const safeTag = JSON.stringify(`Chat campaign - ${cell.campaign.name}`)
+    const safeStartDate = JSON.stringify(`${startDate}`)
+    const safeEndDate = JSON.stringify(`${endDate}`)
     const linkTo = {
         pathname: `/app/tickets/new/public`,
         state: {
-            filters: `containsAll(ticket.tags.name, ['Chat campaign - ${cell.campaign.name}']) && gte(ticket.created_datetime, '${startDate}') && lte(ticket.created_datetime, '${endDate}')`,
+            filters: `containsAll(ticket.tags.name, [${safeTag}]) && gte(ticket.created_datetime, ${safeStartDate}) && lte(ticket.created_datetime, ${safeEndDate})`,
             viewName: viewName,
             slug: _kebabCase(viewName).toLowerCase(),
         },
