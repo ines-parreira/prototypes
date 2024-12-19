@@ -1,43 +1,45 @@
 @import '~@gorgias/design-tokens/dist/css/layout.less';
 
 :local {
-    .macroTitle {
-        font-weight: 600;
-    }
+    .tableHead {
+        position: sticky;
+        background-color: var(--neutral-grey-0);
+        top: 0;
+        z-index: 1;
 
-    .dateCell {
-        color: var(--neutral-grey-4);
-    }
+        &::after {
+            content: '';
+            position: absolute;
+            display: block;
+            width: 100%;
+            height: 1px;
+            background-color: var(--neutral-grey-3);
+        }
 
-    .tableBodyRow {
-        &:hover {
-            background: var(--neutral-grey-1) !important;
+        tr {
+            border-bottom: 0;
+        }
+
+        .headerCellProperty {
+            color: var(--neutral-grey-4);
         }
     }
 
-    .actions {
-        :global .btn {
-            box-shadow: none;
-
-            .material-icons,
-            .material-icons-outlined {
-                transition: 0.2s all;
-                opacity: 0.3;
-                color: var(--neutral-grey-6);
-            }
-
-            &:hover .material-icons {
-                opacity: 1;
-            }
-
-            &.btn-loading .material-icons {
-                opacity: 0;
-            }
-        }
+    .spinner {
+        justify-content: center;
+        height: 300px;
     }
 
-    .tags {
+    .actionsHeader {
         display: flex;
-        gap: @layout-spacing-xxs;
+        align-items: center;
+    }
+
+    .checkboxAll {
+        padding-right: @layout-spacing-m;
+    }
+
+    .checkboxAllInput.checkboxAllInput {
+        margin-right: @layout-spacing-m;
     }
 }

@@ -1,32 +1,25 @@
 import {ListMacrosParams, Macro} from '@gorgias/api-queries'
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import React, {useMemo} from 'react'
-import {Link} from 'react-router-dom'
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
+import React, {ComponentProps, useCallback, useMemo} from 'react'
 
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {DateAndTimeFormatting} from 'constants/datetime'
-import {ISO639English} from 'constants/languages'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {OrderDirection} from 'models/api/types'
 import {MacroSortableProperties} from 'models/macro/types'
-import {MacroActionName} from 'models/macroAction/types'
-import Badge, {ColorType} from 'pages/common/components/Badge'
-import IconButton from 'pages/common/components/button/IconButton'
-import Loader from 'pages/common/components/Loader/Loader'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import bodyCellCss from 'pages/common/components/table/cells/BodyCell.less'
-import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import TicketTag from 'pages/common/components/TicketTag'
-import {formatDatetime} from 'utils'
+import CheckBoxField from 'pages/common/forms/CheckBoxField'
 
+import {MacrosSettingsItem} from './MacrosSettingsItem'
 import css from './MacrosSettingsTable.less'
 
 type Props = {
@@ -36,10 +29,14 @@ type Props = {
         orderBy: MacroSortableProperties,
         orderDir: OrderDirection
     ) => void
-    onMacroDelete: (id: number) => Promise<void>
-    onMacroDuplicate: (macro: Macro) => Promise<void>
     options: ListMacrosParams
-}
+} & Pick<
+    ComponentProps<typeof MacrosSettingsItem>,
+    | 'onMacroDelete'
+    | 'onMacroDuplicate'
+    | 'selectedMacrosIds'
+    | 'setSelectedMacrosIds'
+>
 
 export function MacrosSettingsTable({
     isLoading,
@@ -48,11 +45,18 @@ export function MacrosSettingsTable({
     onMacroDelete,
     onMacroDuplicate,
     options,
+    selectedMacrosIds,
+    setSelectedMacrosIds,
 }: Props) {
-    const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.CompactDate
+    const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives, false)
+    const selectedMacrosLength = useMemo(
+        () => selectedMacrosIds.length,
+        [selectedMacrosIds]
     )
-
+    const isAllSelected = useMemo(
+        () => !isLoading && selectedMacrosLength === macros?.length,
+        [isLoading, macros?.length, selectedMacrosLength]
+    )
     const orderByValue = useMemo(
         () => options.order_by?.split(':')[0],
         [options.order_by]
@@ -62,6 +66,9 @@ export function MacrosSettingsTable({
         [options.order_by]
     )
     const hasAgentPrivileges = useHasAgentPrivileges()
+    const datetimeFormat = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.CompactDate
+    )
 
     const defaultDescendingSort = [
         MacroSortableProperties.Usage,
@@ -81,232 +88,150 @@ export function MacrosSettingsTable({
         )
     }
 
+    const onBulkArchive = () => {}
+
+    const checkboxAllLabel = useMemo(
+        () =>
+            !!selectedMacrosLength
+                ? `${selectedMacrosLength} macro${selectedMacrosLength > 1 ? 's' : ''} selected`
+                : 'No macros selected',
+        [selectedMacrosLength]
+    )
+
+    const onChange = useCallback(
+        () =>
+            !!selectedMacrosLength
+                ? setSelectedMacrosIds([])
+                : setSelectedMacrosIds(macros ? macros.map(({id}) => id!) : []),
+        [macros, selectedMacrosLength, setSelectedMacrosIds]
+    )
+
+    const isDisabled = useMemo(
+        () => isLoading || (!isAllSelected && !selectedMacrosLength),
+        [isAllSelected, isLoading, selectedMacrosLength]
+    )
+
     return (
-        <TableWrapper>
-            <TableHead className={css.tableHead}>
-                <HeaderCellProperty
-                    direction={orderDirValue}
-                    isOrderedBy={orderByValue === MacroSortableProperties.Name}
-                    onClick={() =>
-                        handleSortChange(MacroSortableProperties.Name)
-                    }
-                    title="Macro"
-                />
-                <HeaderCellProperty title="Tags" />
-                <HeaderCellProperty
-                    direction={orderDirValue}
-                    isOrderedBy={
-                        orderByValue === MacroSortableProperties.Language
-                    }
-                    onClick={() =>
-                        handleSortChange(MacroSortableProperties.Language)
-                    }
-                    title="Language"
-                />
-                <HeaderCellProperty
-                    direction={orderDirValue}
-                    isOrderedBy={orderByValue === MacroSortableProperties.Usage}
-                    onClick={() =>
-                        handleSortChange(MacroSortableProperties.Usage)
-                    }
-                    title="Usage count"
-                />
-                <HeaderCellProperty
-                    direction={orderDirValue}
-                    isOrderedBy={
-                        orderByValue === MacroSortableProperties.UpdatedDatetime
-                    }
-                    onClick={() =>
-                        handleSortChange(
-                            MacroSortableProperties.UpdatedDatetime
-                        )
-                    }
-                    title="Last updated"
-                />
-                <HeaderCell />
-            </TableHead>
-            <TableBody>
-                {isLoading ? (
-                    <TableBodyRow>
-                        <BodyCell colSpan={4}>
-                            <Loader />
-                        </BodyCell>
-                    </TableBodyRow>
-                ) : (
-                    macros?.map((macro) => {
-                        if (!macro) {
-                            return null
-                        }
-
-                        const {name, language, updated_datetime, usage} = macro
-                        const to = `/app/settings/macros/${macro.id}/edit`
-
-                        const tags = macro.actions
-                            ?.filter(
-                                (action) =>
-                                    action.name === MacroActionName.AddTags
-                            )
-                            .reduce((allTags: string[], action) => {
-                                const tags = (
-                                    action.arguments as {tags: string}
-                                ).tags?.split(',')
-                                if (tags) allTags.push(...tags)
-                                return allTags
-                            }, [])
-                            .map((tag) => tag.trim())
-
-                        if (options.tags?.length && tags) {
-                            const idx = tags.findIndex(
-                                (tag) => tag === options.tags![0]
-                            )
-                            if (idx !== -1) {
-                                const temp = tags[0]
-                                tags[0] = tags[idx]
-                                tags[idx] = temp
+        <>
+            <TableWrapper>
+                <thead className={css.tableHead}>
+                    <tr>
+                        <HeaderCellProperty
+                            titleClassName={css.headerCellProperty}
+                            direction={orderDirValue}
+                            isOrderedBy={
+                                orderByValue === MacroSortableProperties.Name
                             }
-                        }
-
-                        const tagId = `tags-${macro.id}`
-                        const tag = tags?.length ? (
-                            <div className={css.tags} id={tagId}>
-                                <TicketTag text={tags[0]} />
-                                {tags.length > 1 && (
-                                    <>
-                                        <Tooltip target={tagId}>
-                                            {tags.join(', ')}
-                                        </Tooltip>
-                                        <Badge
-                                            type={ColorType.LightDark}
-                                            corner="square"
-                                        >
-                                            +{tags.length - 1}
-                                        </Badge>
-                                    </>
-                                )}
-                            </div>
-                        ) : (
-                            '-'
-                        )
-
-                        return (
-                            <TableBodyRow
-                                className={css.tableBodyRow}
-                                key={macro.id}
-                            >
-                                <td
-                                    className={classnames(
-                                        css.macroTitle,
-                                        bodyCellCss.wrapper
-                                    )}
+                            onClick={() =>
+                                handleSortChange(MacroSortableProperties.Name)
+                            }
+                            title="Macro"
+                        />
+                        <HeaderCellProperty title="Tags" />
+                        <HeaderCellProperty
+                            direction={orderDirValue}
+                            isOrderedBy={
+                                orderByValue ===
+                                MacroSortableProperties.Language
+                            }
+                            onClick={() =>
+                                handleSortChange(
+                                    MacroSortableProperties.Language
+                                )
+                            }
+                            title="Language"
+                        />
+                        <HeaderCellProperty
+                            direction={orderDirValue}
+                            isOrderedBy={
+                                orderByValue === MacroSortableProperties.Usage
+                            }
+                            onClick={() =>
+                                handleSortChange(MacroSortableProperties.Usage)
+                            }
+                            title="Usage count"
+                        />
+                        <HeaderCellProperty
+                            direction={orderDirValue}
+                            isOrderedBy={
+                                orderByValue ===
+                                MacroSortableProperties.UpdatedDatetime
+                            }
+                            onClick={() =>
+                                handleSortChange(
+                                    MacroSortableProperties.UpdatedDatetime
+                                )
+                            }
+                            title="Last updated"
+                        />
+                        <HeaderCell />
+                    </tr>
+                    {isArchivingAvailable && (
+                        <tr>
+                            <HeaderCell className={css.actionsHeader}>
+                                <CheckBoxField
+                                    className={css.checkboxAll}
+                                    inputClassName={css.checkboxAllInput}
+                                    label={checkboxAllLabel}
+                                    name="Select all"
+                                    aria-label="Select all"
+                                    value={isAllSelected}
+                                    isIndeterminate={
+                                        !!selectedMacrosLength &&
+                                        !!macros?.length &&
+                                        selectedMacrosLength < macros?.length
+                                    }
+                                    onChange={onChange}
+                                />
+                                <Button
+                                    aria-label="Archive"
+                                    intent="secondary"
+                                    fillStyle="ghost"
+                                    isDisabled={isDisabled}
+                                    onClick={onBulkArchive}
+                                    size="small"
                                 >
-                                    <Link to={to}>
-                                        <BodyCellContent>
-                                            {name}
-                                        </BodyCellContent>
-                                    </Link>
-                                </td>
-                                <td className={bodyCellCss.wrapper}>
-                                    <Link to={to} tabIndex={-1}>
-                                        <BodyCellContent>{tag}</BodyCellContent>
-                                    </Link>
-                                </td>
-                                <td className={bodyCellCss.wrapper}>
-                                    <Link to={to} tabIndex={-1}>
-                                        <BodyCellContent>
-                                            {language
-                                                ? ISO639English[language]
-                                                : '-'}
-                                        </BodyCellContent>
-                                    </Link>
-                                </td>
-                                <td className={bodyCellCss.wrapper}>
-                                    <Link to={to} tabIndex={-1}>
-                                        <BodyCellContent>
-                                            {usage}
-                                        </BodyCellContent>
-                                    </Link>
-                                </td>
-                                <td
-                                    className={classnames(
-                                        bodyCellCss.wrapper,
-                                        css.dateCell
-                                    )}
-                                >
-                                    <Link to={to} tabIndex={-1}>
-                                        <BodyCellContent>
-                                            {!!updated_datetime &&
-                                                formatDatetime(
-                                                    updated_datetime,
-                                                    datetimeFormat
-                                                )}
-                                        </BodyCellContent>
-                                    </Link>
-                                </td>
-                                <td
-                                    className={classnames(
-                                        bodyCellCss.wrapper,
-                                        bodyCellCss.smallest,
-                                        css.actions
-                                    )}
-                                >
-                                    <BodyCellContent>
-                                        <IconButton
-                                            className="mr-1"
-                                            fillStyle="ghost"
-                                            intent="secondary"
-                                            onClick={() => {
-                                                !!macro.id &&
-                                                    void onMacroDuplicate(macro)
-                                            }}
-                                            title="Duplicate macro"
-                                            isDisabled={!hasAgentPrivileges}
-                                        >
-                                            file_copy
-                                        </IconButton>
-                                        <ConfirmationPopover
-                                            buttonProps={{
-                                                intent: 'destructive',
-                                            }}
-                                            content={
-                                                <>
-                                                    You are about to delete{' '}
-                                                    <b>{name || 'this'}</b>{' '}
-                                                    macro.
-                                                </>
-                                            }
-                                            id={`delete-button-${macro.id}`}
-                                            onConfirm={() =>
-                                                !!macro.id &&
-                                                void onMacroDelete(macro.id)
-                                            }
-                                            placement="left"
-                                        >
-                                            {({uid, onDisplayConfirmation}) => (
-                                                <IconButton
-                                                    className="mr-1"
-                                                    id={uid}
-                                                    fillStyle="ghost"
-                                                    intent="destructive"
-                                                    onClick={
-                                                        onDisplayConfirmation
-                                                    }
-                                                    title="Delete macro"
-                                                    isDisabled={
-                                                        !hasAgentPrivileges
-                                                    }
-                                                >
-                                                    delete
-                                                </IconButton>
-                                            )}
-                                        </ConfirmationPopover>
-                                    </BodyCellContent>
-                                </td>
-                            </TableBodyRow>
-                        )
-                    })
-                )}
-            </TableBody>
-        </TableWrapper>
+                                    <ButtonIconLabel icon="archive">
+                                        Archive
+                                    </ButtonIconLabel>
+                                </Button>
+                            </HeaderCell>
+                            <HeaderCell />
+                            <HeaderCell />
+                            <HeaderCell />
+                            <HeaderCell />
+                            <HeaderCell />
+                        </tr>
+                    )}
+                </thead>
+                <TableBody>
+                    {isLoading ? (
+                        <TableBodyRow>
+                            <BodyCell innerClassName={css.spinner} colSpan={6}>
+                                <LoadingSpinner size="medium" />
+                            </BodyCell>
+                        </TableBodyRow>
+                    ) : !macros ? null : (
+                        <>
+                            {macros.map((macro) => (
+                                <MacrosSettingsItem
+                                    key={macro.id}
+                                    datetimeFormat={datetimeFormat}
+                                    hasAgentPrivileges={hasAgentPrivileges}
+                                    isArchivingAvailable={isArchivingAvailable}
+                                    macro={macro}
+                                    onMacroDelete={onMacroDelete}
+                                    onMacroDuplicate={onMacroDuplicate}
+                                    firstTagFilter={options.tags?.[0]}
+                                    selectedMacrosIds={selectedMacrosIds}
+                                    setSelectedMacrosIds={setSelectedMacrosIds}
+                                />
+                            ))}
+                        </>
+                    )}
+                </TableBody>
+            </TableWrapper>
+        </>
     )
 }
 

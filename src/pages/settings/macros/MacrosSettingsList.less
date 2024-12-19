@@ -1,0 +1,63 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .macroTitle {
+        font-weight: 600;
+        padding: 7px 0px;
+    }
+
+    .dateCell {
+        color: var(--neutral-grey-4);
+    }
+
+    .tableBodyRow {
+        &:hover {
+            background: var(--neutral-grey-1) !important;
+        }
+    }
+
+    .actions {
+        :global .btn {
+            box-shadow: none;
+
+            .material-icons,
+            .material-icons-outlined {
+                transition: 0.2s all;
+                opacity: 0.3;
+                color: var(--neutral-grey-6);
+            }
+
+            &:hover .material-icons {
+                opacity: 1;
+            }
+
+            &.btn-loading .material-icons {
+                opacity: 0;
+            }
+        }
+    }
+
+    .tags {
+        display: flex;
+        gap: @layout-spacing-xxs;
+    }
+
+    .wrapper {
+        display: flex;
+        align-items: center;
+
+        &:first-of-type {
+            > a > div {
+                padding-left: @layout-spacing-s;
+            }
+        }
+    }
+
+    .checkbox {
+        margin: unset;
+    }
+
+    .name {
+        padding: unset @layout-spacing-xs;
+    }
+}

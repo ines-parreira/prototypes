@@ -8,13 +8,13 @@ import {
 } from '@gorgias/api-queries'
 import {useQueryClient} from '@tanstack/react-query'
 import classnames from 'classnames'
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {NavLink} from 'react-router-dom'
 
 import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {OrderDirection, GorgiasApiError} from 'models/api/types'
+import {GorgiasApiError, OrderDirection} from 'models/api/types'
 import {MacroSortableProperties} from 'models/macro/types'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import Navigation from 'pages/common/components/Navigation/Navigation'
@@ -52,6 +52,7 @@ export function MacrosSettingsContent() {
     const {mutateAsync: createMacro} = useCreateMacro()
     const {mutateAsync: deleteMacro} = useDeleteMacro()
     const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives, false)
+    const [selectedMacrosIds, setSelectedMacrosIds] = useState<number[]>([])
 
     useEffect(() => {
         if (isError) {
@@ -147,8 +148,34 @@ export function MacrosSettingsContent() {
         )
     }
 
+    const onSortOptionsChange = useCallback(
+        (order_by: MacroSortableProperties, order_dir: OrderDirection) =>
+            !listMacrosParams.search &&
+            setListMacrosParams({
+                ...listMacrosParams,
+                order_by: `${order_by}:${order_dir}`,
+            }),
+        [listMacrosParams]
+    )
+
+    const fetchNextItems = useCallback(() => {
+        setListMacrosParams({
+            ...listMacrosParams,
+            cursor: data?.data.meta.next_cursor ?? undefined,
+        })
+        setSelectedMacrosIds([])
+    }, [data?.data.meta.next_cursor, listMacrosParams])
+
+    const fetchPrevItems = useCallback(() => {
+        setListMacrosParams({
+            ...listMacrosParams,
+            cursor: data?.data.meta.prev_cursor ?? undefined,
+        })
+        setSelectedMacrosIds([])
+    }, [data?.data.meta.prev_cursor, listMacrosParams])
+
     return (
-        <div className="full-width">
+        <div className={classnames('full-width', css.wrapper)}>
             <PageHeader title="Macros">
                 <div className="d-flex">
                     <Search
@@ -182,7 +209,7 @@ export function MacrosSettingsContent() {
             <div
                 className={classnames(
                     settingsCss.pageContainer,
-                    settingsCss.pb0,
+                    {[settingsCss.pb0]: !isArchivingAvailable},
                     'd-flex',
                     'justify-content-between'
                 )}
@@ -213,41 +240,26 @@ export function MacrosSettingsContent() {
                 </SecondaryNavbar>
             )}
 
-            <MacrosSettingsTable
-                isLoading={isLoading}
-                macros={data?.data.data}
-                onSortOptionsChange={(
-                    order_by: MacroSortableProperties,
-                    order_dir: OrderDirection
-                ) =>
-                    !listMacrosParams.search &&
-                    setListMacrosParams({
-                        ...listMacrosParams,
-                        order_by: `${order_by}:${order_dir}`,
-                    })
-                }
-                options={listMacrosParams}
-                onMacroDelete={onMacroDelete}
-                onMacroDuplicate={onMacroDuplicate}
-            />
+            <div className={css.table}>
+                <MacrosSettingsTable
+                    isLoading={isLoading}
+                    macros={data?.data.data}
+                    onSortOptionsChange={onSortOptionsChange}
+                    options={listMacrosParams}
+                    onMacroDelete={onMacroDelete}
+                    onMacroDuplicate={onMacroDuplicate}
+                    selectedMacrosIds={selectedMacrosIds}
+                    setSelectedMacrosIds={setSelectedMacrosIds}
+                />
 
-            <Navigation
-                className={css.navigation}
-                hasNextItems={!!data?.data.meta.next_cursor}
-                hasPrevItems={!!data?.data.meta.prev_cursor}
-                fetchNextItems={() => {
-                    setListMacrosParams({
-                        ...listMacrosParams,
-                        cursor: data?.data.meta.next_cursor ?? undefined,
-                    })
-                }}
-                fetchPrevItems={() => {
-                    setListMacrosParams({
-                        ...listMacrosParams,
-                        cursor: data?.data.meta.prev_cursor ?? undefined,
-                    })
-                }}
-            />
+                <Navigation
+                    className={css.navigation}
+                    hasNextItems={!!data?.data.meta.next_cursor}
+                    hasPrevItems={!!data?.data.meta.prev_cursor}
+                    fetchNextItems={fetchNextItems}
+                    fetchPrevItems={fetchPrevItems}
+                />
+            </div>
         </div>
     )
 }

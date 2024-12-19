@@ -1,0 +1,22 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import '~@gorgias/design-tokens/dist/css/typographyMixins.less';
+
+:local {
+    .dropdownItem {
+        display: flex;
+        gap: @layout-spacing-xs;
+        .body-regular();
+
+        i {
+            font-size: 20px;
+        }
+
+        &.destructive {
+            color: var(--feedback-error);
+        }
+    }
+
+    .wrapperActions {
+        gap: @layout-spacing-s;
+    }
+}

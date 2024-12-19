@@ -1,16 +1,15 @@
-import {ListMacrosOrderBy} from '@gorgias/api-queries'
 import {act, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import React from 'react'
+import React, {ComponentProps} from 'react'
 
-import {macros as macrosFixtures} from 'fixtures/macro'
+import {useFlag} from 'common/flags'
+import {macros} from 'fixtures/macro'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {OrderDirection} from 'models/api/types'
 import {MacroSortableProperties} from 'models/macro/types'
 
 import {MacrosSettingsTable} from '../MacrosSettingsTable'
 
-jest.mock('models/macro/resources')
 jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
         ...jest.requireActual('@gorgias/merchant-ui-kit'),
@@ -36,8 +35,18 @@ const useHasAgentPrivilegesMock = useHasAgentPrivileges as jest.MockedFunction<
     typeof useHasAgentPrivileges
 >
 
-describe('<MacrosSettingsTable/>', () => {
-    useHasAgentPrivilegesMock.mockReturnValue(true)
+jest.mock('common/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = useFlag as jest.Mock
+
+describe('<MacrosSettingsTable />', () => {
+    beforeEach(() => {
+        useHasAgentPrivilegesMock.mockReturnValue(true)
+        mockUseFlag.mockReturnValue(false)
+    })
+
+    const macrosFixtures = [macros[0], macros[1]]
 
     const minProps = {
         isLoading: false,
@@ -46,20 +55,23 @@ describe('<MacrosSettingsTable/>', () => {
         onMacroDuplicate: jest.fn(),
         onSortOptionsChange: jest.fn(),
         options: {
-            order_by: ListMacrosOrderBy.CreatedDatetimeAsc,
+            orderBy:
+                `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}` as const,
         },
-    }
+        selectedMacrosIds: [],
+        setSelectedMacrosIds: jest.fn(),
+    } as unknown as ComponentProps<typeof MacrosSettingsTable>
 
     it('should display a loading when fetching macros', () => {
         const {rerender} = render(
             <MacrosSettingsTable {...minProps} isLoading={true} />
         )
 
-        expect(document.getElementsByClassName('md-spin')).toHaveLength(1)
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
 
         rerender(<MacrosSettingsTable {...minProps} isLoading={false} />)
 
-        expect(document.getElementsByClassName('md-spin')).toHaveLength(0)
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
     })
 
     it('should display a list of macros', () => {
@@ -96,14 +108,156 @@ describe('<MacrosSettingsTable/>', () => {
         expect(minProps.onMacroDelete).toHaveBeenCalledWith(1)
     })
 
-    it('should change sort column when clicking header cell', () => {
-        render(<MacrosSettingsTable {...minProps} />)
+    it.each([
+        {
+            label: 'Macro',
+            property: MacroSortableProperties.Name,
+        },
+        {
+            label: 'Language',
+            property: MacroSortableProperties.Language,
+        },
+    ])(
+        'should change sort column when clicking header cell',
+        ({label, property}) => {
+            render(<MacrosSettingsTable {...minProps} />)
 
-        userEvent.click(document.getElementsByTagName('th')[0])
+            userEvent.click(screen.getByText(label))
+
+            expect(minProps.onSortOptionsChange).toHaveBeenNthCalledWith(
+                1,
+                property,
+                OrderDirection.Asc
+            )
+        }
+    )
+
+    it('should invert sorting to desc order when clicking on the current sorted property', () => {
+        render(
+            <MacrosSettingsTable
+                {...minProps}
+                options={{
+                    order_by: `${MacroSortableProperties.Name}:${OrderDirection.Asc}`,
+                }}
+            />
+        )
+
+        userEvent.click(screen.getByText('Macro'))
+        userEvent.click(screen.getByText('Macro'))
+
+        expect(minProps.onSortOptionsChange).toHaveBeenCalledWith(
+            MacroSortableProperties.Name,
+            OrderDirection.Desc
+        )
+    })
+
+    it('should invert sorting to asc order', () => {
+        render(
+            <MacrosSettingsTable
+                {...minProps}
+                options={{
+                    order_by: `${MacroSortableProperties.Name}:${OrderDirection.Desc}`,
+                }}
+            />
+        )
+
+        userEvent.click(screen.getByText('Macro'))
+        userEvent.click(screen.getByText('Macro'))
 
         expect(minProps.onSortOptionsChange).toHaveBeenCalledWith(
             MacroSortableProperties.Name,
             OrderDirection.Asc
         )
+    })
+
+    it('should sort by descending order first for Usage and Updated Datetime properties', () => {
+        render(<MacrosSettingsTable {...minProps} />)
+
+        userEvent.click(screen.getByText('Usage count'))
+        expect(minProps.onSortOptionsChange).toHaveBeenLastCalledWith(
+            MacroSortableProperties.Usage,
+            OrderDirection.Desc
+        )
+        userEvent.click(screen.getByText('Last updated'))
+        expect(minProps.onSortOptionsChange).toHaveBeenLastCalledWith(
+            MacroSortableProperties.UpdatedDatetime,
+            OrderDirection.Desc
+        )
+    })
+
+    it('should display new UI for archivable macros', () => {
+        mockUseFlag.mockReturnValue(true)
+        render(<MacrosSettingsTable {...minProps} />)
+
+        expect(screen.getByText('Archive')).toBeInTheDocument()
+    })
+
+    it('should disable bulk archive button when loading', () => {
+        mockUseFlag.mockReturnValue(true)
+        render(<MacrosSettingsTable {...minProps} isLoading />)
+
+        expect(screen.getByLabelText('Archive')).toBeAriaDisabled()
+    })
+
+    it('should set checked state for the top checkbox properly', () => {
+        const macroIds = [1, 2]
+
+        mockUseFlag.mockReturnValue(true)
+        const {rerender} = render(
+            <MacrosSettingsTable
+                {...minProps}
+                macros={macrosFixtures}
+                selectedMacrosIds={[]}
+            />
+        )
+
+        const checkboxAll = screen.getByLabelText('Select all')
+        const firstMacro = screen.getByLabelText(macroIds[0])
+
+        expect(checkboxAll).not.toBeChecked()
+
+        firstMacro.click()
+
+        expect(minProps.setSelectedMacrosIds).toHaveBeenCalledWith([1])
+
+        rerender(
+            <MacrosSettingsTable
+                {...minProps}
+                macros={macrosFixtures}
+                selectedMacrosIds={[1]}
+            />
+        )
+        expect(checkboxAll).toHaveProperty('indeterminate', true)
+
+        firstMacro.click()
+
+        expect(minProps.setSelectedMacrosIds).toHaveBeenCalledWith([])
+
+        rerender(
+            <MacrosSettingsTable
+                {...minProps}
+                macros={macrosFixtures}
+                selectedMacrosIds={[]}
+            />
+        )
+        expect(checkboxAll).toHaveProperty('indeterminate', false)
+        expect(checkboxAll).not.toBeChecked()
+
+        checkboxAll.click()
+
+        expect(minProps.setSelectedMacrosIds).toHaveBeenCalledWith(macroIds)
+
+        rerender(
+            <MacrosSettingsTable
+                {...minProps}
+                macros={macrosFixtures}
+                selectedMacrosIds={macroIds}
+            />
+        )
+        expect(checkboxAll).toBeChecked()
+
+        checkboxAll.click()
+
+        expect(minProps.setSelectedMacrosIds).toHaveBeenCalledWith([])
     })
 })

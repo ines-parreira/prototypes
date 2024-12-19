@@ -5,7 +5,7 @@ import CheckBox from './CheckBox'
 type Props = {
     value: boolean
     label?: string
-} & ComponentProps<typeof CheckBox>
+} & Omit<ComponentProps<typeof CheckBox>, 'value'>
 
 function CheckBoxField(
     {value, label, ...props}: Props,

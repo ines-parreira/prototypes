@@ -1,3 +1,5 @@
+@import '~@gorgias/design-tokens/dist/css/typographyMixins.less';
+
 :local {
     .content {
         align-items: center;
@@ -39,9 +41,7 @@
     }
     .title {
         color: var(--neutral-grey-6);
-        font-size: 11px;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
+        .caption-allcaps();
     }
 
     .cell {
