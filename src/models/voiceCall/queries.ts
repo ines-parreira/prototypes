@@ -32,7 +32,7 @@ export const useListVoiceCalls = (
 ) => {
     return useQuery({
         queryKey: voiceCallsKeys.list(params),
-        queryFn: () => listVoiceCalls(params),
+        queryFn: () => listVoiceCalls({...params, limit: 100}),
         ...overrides,
     })
 }

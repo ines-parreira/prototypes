@@ -105,6 +105,7 @@ export type VoiceCallEvent = {
 
 export type ListVoiceCallsParams = {
     ticket_id?: number
+    limit?: number
 }
 
 export type ListCallRecordingsParams = {
