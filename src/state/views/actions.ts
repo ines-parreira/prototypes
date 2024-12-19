@@ -6,7 +6,6 @@ import {Moment} from 'moment'
 import {notify as updateNotification} from 'reapop'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import * as viewsConfig from 'config/views'
 import {SearchRank} from 'hooks/useSearchRankScenario'
 import client from 'models/api/resources'
@@ -48,8 +47,6 @@ import {
     isCurrentlyOnView,
 } from 'utils'
 import {getMoment} from 'utils/date'
-import {reportError} from 'utils/errors'
-import {getLDClient} from 'utils/launchDarkly'
 import {buildJobMessage} from 'utils/notificationUtils'
 
 export const setViewActive =
@@ -378,7 +375,6 @@ export function fetchViewItems(
         const viewConfig = viewsConfig.getConfigByType(activeViewType)
         const navigation = viewsSelectors.getNavigation(state)
         const shouldRegisterSearchRankRequest = !direction && !cursor
-        const launchDarklyClient = getLDClient()
 
         const viewId: string = activeView.get('id')
 
@@ -403,12 +399,6 @@ export function fetchViewItems(
 
         if (!isDirty && !viewId) {
             return Promise.resolve()
-        }
-
-        try {
-            await launchDarklyClient.waitForInitialization(3)
-        } catch (error) {
-            reportError(error)
         }
 
         const filtersHash = getHashOfObj(
@@ -438,15 +428,12 @@ export function fetchViewItems(
             undefined
 
         if (isTicketSearch) {
-            const isAdvancedSearchSortingEnabled = launchDarklyClient.variation(
-                FeatureFlagKey.AdvancedSearchSorting
-            )
             promise = searchTicketsWithHighlights({
                 search: activeView.get('search'),
                 filters: activeView.get('filters'),
                 cursor: cursorParam,
                 cancelToken,
-                ...(isAdvancedSearchSortingEnabled && params),
+                ...params,
             })
         } else if (isCustomerSearch) {
             promise = searchCustomersWithHighlights({
