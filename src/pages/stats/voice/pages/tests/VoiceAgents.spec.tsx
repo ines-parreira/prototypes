@@ -90,6 +90,8 @@ const getState = (featureEnabled: boolean) =>
                 filters: {
                     cleanStatsFilters: fromLegacyStatsFilters(statsFilters),
                     isFilterDirty: false,
+                    appliedSavedFilterId: null,
+                    savedFilterDraft: null,
                 },
                 fetchingMap: {},
                 statsTables: {

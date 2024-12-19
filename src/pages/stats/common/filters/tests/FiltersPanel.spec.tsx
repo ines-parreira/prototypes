@@ -770,6 +770,69 @@ describe('FiltersPanel', () => {
         ).not.toBeInTheDocument()
     })
 
+    it('should hide and unhide optional filters', async () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsCustomFieldsFilter]: false,
+        })
+
+        const state = {
+            ...defaultState,
+            [statsSlice.name]: {
+                filters: fromLegacyStatsFilters({
+                    period: initialState.filters.period,
+                    [optionalFilter]: ['1', '2'],
+                }),
+            },
+        } as RootState
+
+        const {rerenderComponent} = renderWithStore(
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={optionalFilters}
+            />,
+            state
+        )
+        userEvent.click(
+            screen.getByRole('button', {
+                name: new RegExp(ADD_FILTER_BUTTON_LABEL),
+            })
+        )
+        userEvent.click(screen.getByText(FilterLabels[FilterKey.Channels]))
+
+        expect(
+            screen.getByText(FilterLabels[FilterKey.Channels])
+        ).toBeInTheDocument()
+
+        rerenderComponent(
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={optionalFilters}
+                shouldHideFilters
+            />,
+            state
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText(FilterLabels[FilterKey.Channels])
+            ).not.toBeInTheDocument()
+        })
+
+        rerenderComponent(
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={optionalFilters}
+            />,
+            state
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(FilterLabels[FilterKey.Channels])
+            ).toBeInTheDocument()
+        })
+    })
+
     describe('TagsFilter', () => {
         it('should render two instances of the Tags filter', () => {
             const optionalFilters = [FilterKey.Tags]

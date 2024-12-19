@@ -14,9 +14,12 @@ import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {initialiseSavedFilterDraftFromFilters} from 'state/ui/stats/filtersSlice'
 import {isAdmin} from 'utils'
 
-type Props = {optionalFilters: OptionalFilter[]; isDisabled?: boolean}
+type Props = {optionalFilters: OptionalFilter[]; shouldHideFilters?: boolean}
 
-export const SavedFiltersActions = ({optionalFilters, isDisabled}: Props) => {
+export const SavedFiltersActions = ({
+    optionalFilters,
+    shouldHideFilters,
+}: Props) => {
     const dispatch = useAppDispatch()
 
     const currentUser = useAppSelector(getCurrentUser)
@@ -42,12 +45,15 @@ export const SavedFiltersActions = ({optionalFilters, isDisabled}: Props) => {
     return (
         <div className={css.buttonsWrapper}>
             {showSaveFilters && (
-                <SaveFilters onClick={onSaveFilters} isDisabled={isDisabled} />
+                <SaveFilters
+                    onClick={onSaveFilters}
+                    isDisabled={shouldHideFilters}
+                />
             )}
             <ApplySavedFilters
                 savedFilters={savedFilters}
                 isAdmin={isCurrentUserAdmin}
-                isDisabled={isDisabled}
+                isDisabled={shouldHideFilters}
             />
         </div>
     )

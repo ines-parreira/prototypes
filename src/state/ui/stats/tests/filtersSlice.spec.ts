@@ -34,7 +34,7 @@ import {
     initialiseSavedFilterDraftFromFilters,
     duplicateSavedFilterDraftFromSavedFilter,
     upsertSavedFilterCustomFieldFilter,
-    getShouldDisableFiltersPanelActions,
+    getHideFiltersPanelOptionalFilters,
 } from 'state/ui/stats/filtersSlice'
 
 describe('filtersSlice', () => {
@@ -831,7 +831,7 @@ describe('filtersSlice', () => {
 
         it('should return true', () => {
             expect(
-                getShouldDisableFiltersPanelActions(
+                getHideFiltersPanelOptionalFilters(
                     getState({
                         savedFilterDraft: savedFilterDraft,
                         appliedSavedFilterId: null,
@@ -840,7 +840,7 @@ describe('filtersSlice', () => {
             ).toBeTruthy()
 
             expect(
-                getShouldDisableFiltersPanelActions(
+                getHideFiltersPanelOptionalFilters(
                     getState({
                         savedFilterDraft: null,
                         appliedSavedFilterId: 1,
@@ -849,7 +849,7 @@ describe('filtersSlice', () => {
             ).toBeTruthy()
 
             expect(
-                getShouldDisableFiltersPanelActions(
+                getHideFiltersPanelOptionalFilters(
                     getState({
                         savedFilterDraft: {name: null},
                         appliedSavedFilterId: 1,
@@ -860,7 +860,7 @@ describe('filtersSlice', () => {
 
         it('should return false', () => {
             expect(
-                getShouldDisableFiltersPanelActions(
+                getHideFiltersPanelOptionalFilters(
                     getState({
                         savedFilterDraft: null,
                         appliedSavedFilterId: null,

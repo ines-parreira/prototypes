@@ -56,7 +56,7 @@ type FilterSettingOverrides = {
 
 export type FiltersPanelProps = {
     warning?: 'not-applicable' | 'non-existent' | undefined
-    isDisabled?: boolean
+    shouldHideFilters?: boolean
     persistentFilters?: StaticFilter[]
     optionalFilters?: OptionalFilter[]
     applicableFilters?: (StaticFilter | OptionalFilter)[]
@@ -203,19 +203,31 @@ const useCustomFieldFilters = (
 
 export const FiltersPanelComponent = ({
     persistentFilters = [],
-    optionalFilters = [],
+    optionalFilters: initialOptionalFilters = [],
     applicableFilters = [],
     filterSettingsOverrides,
     cleanStatsFilters,
     filterComponentMap,
-    isDisabled,
+    shouldHideFilters,
 }: FiltersPanelProps) => {
+    const optionalFilters = useMemo(
+        () => (shouldHideFilters ? [] : initialOptionalFilters),
+        [initialOptionalFilters, shouldHideFilters]
+    )
     const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>(
         getActiveFilters(optionalFilters, cleanStatsFilters)
     )
 
     const previousCleanStatsFilters = usePrevious(cleanStatsFilters)
     const customFieldFilters = useCustomFieldFilters(cleanStatsFilters)
+
+    useEffect(() => {
+        if (!optionalFilters.length && activeFilters.length) {
+            setActiveFilters(
+                getActiveFilters(optionalFilters, cleanStatsFilters)
+            )
+        }
+    }, [activeFilters.length, cleanStatsFilters, optionalFilters])
 
     useEffect(() => {
         const newFilters = optionalFilters.filter(
@@ -227,6 +239,7 @@ export const FiltersPanelComponent = ({
                     (activeFilter) => activeFilter.key === filter
                 ) === undefined
         )
+
         const updatedActiveFilters = activeFilters.map((filter) => {
             if (filter.type === FilterKey.CustomFields) {
                 const getCustomFieldFilter = customFieldFilters.find(
@@ -377,7 +390,6 @@ export const FiltersPanelComponent = ({
                     filterKey: filter.type,
                     applicableFilters,
                 }),
-                isDisabled,
                 ...getFilterSettings(filter.key, filterSettingsOverrides),
             }),
         [
@@ -386,7 +398,6 @@ export const FiltersPanelComponent = ({
             filterSettingsOverrides,
             setActiveFilters,
             applicableFilters,
-            isDisabled,
         ]
     )
 
@@ -407,7 +418,7 @@ export const FiltersPanelComponent = ({
                 <AddFilterButton
                     optionGroups={options}
                     onClick={handleOnClick}
-                    isDisabled={isDisabled}
+                    isDisabled={shouldHideFilters}
                 />
             )}
         </div>

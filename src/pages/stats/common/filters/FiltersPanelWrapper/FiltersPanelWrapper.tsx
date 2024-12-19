@@ -10,7 +10,7 @@ import {
 import css from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper.less'
 import {SavedFiltersActions} from 'pages/stats/common/filters/SavedFiltersActions/SavedFiltersActions'
 import {SavedFiltersPanel} from 'pages/stats/common/filters/SavedFiltersPanel'
-import {getShouldDisableFiltersPanelActions} from 'state/ui/stats/filtersSlice'
+import {getHideFiltersPanelOptionalFilters} from 'state/ui/stats/filtersSlice'
 
 type Props = Omit<
     FiltersPanelProps,
@@ -28,7 +28,7 @@ export const FiltersPanelWrapper = ({
     const isAnalyticsSavedFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsSavedFilters]
 
-    const isDisabled = useAppSelector(getShouldDisableFiltersPanelActions)
+    const shouldHideFilters = useAppSelector(getHideFiltersPanelOptionalFilters)
 
     return (
         <div className={css.outerWrapper}>
@@ -41,12 +41,12 @@ export const FiltersPanelWrapper = ({
                         ...(persistentFilters || []),
                         ...optionalFilters,
                     ]}
-                    isDisabled={isDisabled}
+                    shouldHideFilters={shouldHideFilters}
                 />
                 {isAnalyticsSavedFilters && withSavedFilters && (
                     <SavedFiltersActions
                         optionalFilters={optionalFilters}
-                        isDisabled={isDisabled}
+                        shouldHideFilters={shouldHideFilters}
                     />
                 )}
             </div>

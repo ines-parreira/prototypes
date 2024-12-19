@@ -282,7 +282,7 @@ export const getSavedFilterAppliedId = createSelector(
     (state) => state.appliedSavedFilterId
 )
 
-export const getShouldDisableFiltersPanelActions = createSelector(
+export const getHideFiltersPanelOptionalFilters = createSelector(
     getSliceState,
     (state) =>
         state.appliedSavedFilterId !== null || state.savedFilterDraft !== null
