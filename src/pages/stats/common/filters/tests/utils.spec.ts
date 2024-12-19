@@ -12,6 +12,9 @@ import {
     getValidMemberName,
     isFilterApplicable,
     areFiltersApplicable,
+    createFilterOptions,
+    filterValidOptions,
+    NON_EXISTENT_VALUES_WARNING_MESSAGE,
 } from 'pages/stats/common/filters/utils'
 
 describe('utils', () => {
@@ -115,8 +118,7 @@ describe('getFilterError', () => {
 
         expect(result).toEqual({
             warningType: 'non-existent',
-            warningMessage:
-                'Option 5 no longer exists and has been removed from filters results.',
+            warningMessage: NON_EXISTENT_VALUES_WARNING_MESSAGE,
         })
     })
 
@@ -134,8 +136,7 @@ describe('getFilterError', () => {
 
         expect(result).toEqual({
             warningType: 'non-existent',
-            warningMessage:
-                'Option 5, Option 6 no longer exist and have been removed from filters results.',
+            warningMessage: NON_EXISTENT_VALUES_WARNING_MESSAGE,
         })
     })
 
@@ -424,5 +425,54 @@ describe('areFiltersApplicable function', () => {
         })
 
         expect(result).toBeUndefined()
+    })
+})
+
+describe('createFilterOptions', () => {
+    const tagsMapping = {
+        '1': {name: 'tag1'},
+        '2': {name: 'tag2'},
+    }
+
+    const existingTagIds = Object.keys(tagsMapping).map(Number)
+
+    it('should return an array of tag options', () => {
+        const actual = createFilterOptions(existingTagIds, tagsMapping)
+
+        const expected = [
+            {value: '1', label: tagsMapping[1].name},
+            {value: '2', label: tagsMapping[2].name},
+        ]
+
+        expect(actual).toEqual(expected)
+    })
+
+    it('should return an array of tag options with undefined labels for missing tag ids', () => {
+        const lastTagId = existingTagIds[existingTagIds.length - 1]
+        const missingTagId = lastTagId + 1
+        const missingTagIds = [missingTagId]
+
+        const actual = createFilterOptions(missingTagIds, tagsMapping)
+
+        const expected = [{value: String(missingTagId), label: undefined}]
+
+        expect(actual).toEqual(expected)
+    })
+})
+
+describe('filterValidOptions', () => {
+    it('should return only options with a label', () => {
+        const validOptions = [
+            {value: '1', label: 'tag1'},
+            {value: '2', label: 'tag2'},
+        ]
+
+        const invalidOption = {value: '3', label: undefined}
+
+        const options = [...validOptions, invalidOption]
+
+        const actual = filterValidOptions(options)
+
+        expect(actual).toEqual(validOptions)
     })
 })

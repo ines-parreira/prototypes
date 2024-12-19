@@ -26,7 +26,11 @@ import {
     LogicalOperatorEnum,
 } from 'pages/stats/common/components/Filter/constants'
 import css from 'pages/stats/common/components/Filter/Filter.less'
-import {getFilterError} from 'pages/stats/common/filters/utils'
+import {
+    filterValidOptions,
+    getFilterError,
+    FilterOptionWithOptionalLabel,
+} from 'pages/stats/common/filters/utils'
 import {DropdownOption, FilterOptionGroup} from 'pages/stats/types'
 
 type Props = {
@@ -50,7 +54,7 @@ type Props = {
     onSearch?: (search: string) => void
     onSelectAll: () => void
     selectedLogicalOperator?: LogicalOperatorEnum | null
-    selectedOptions: FilterOptionGroup['options']
+    selectedOptions: FilterOptionWithOptionalLabel[]
     showQuickSelect?: boolean
     showSearch?: boolean
     filterErrors?: {
@@ -104,7 +108,7 @@ const Filter = ({
     onSearch,
     onSelectAll,
     selectedLogicalOperator = null,
-    selectedOptions,
+    selectedOptions: selectedPartialOptions,
     showQuickSelect = true,
     showSearch = true,
     filterErrors,
@@ -133,6 +137,8 @@ const Filter = ({
             option.options.map((option) => option.label)
         )
     }, [filterOptionGroups])
+
+    const selectedOptions = filterValidOptions(selectedPartialOptions)
 
     const {selectedValues, selectedLabels} = useMemo(() => {
         const values: string[] = []

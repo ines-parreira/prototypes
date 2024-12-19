@@ -9,6 +9,7 @@ import {
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
 import Filter from 'pages/stats/common/components/Filter/Filter'
+import {NON_EXISTENT_VALUES_WARNING_MESSAGE} from 'pages/stats/common/filters/utils'
 
 describe('Filter', () => {
     const filterName = 'Test Filter'
@@ -323,9 +324,7 @@ describe('Filter', () => {
         userEvent.hover(warningIcon)
         await waitFor(() => {
             expect(
-                screen.getByText(
-                    'New Option no longer exists and has been removed from filters results.'
-                )
+                screen.getByText(NON_EXISTENT_VALUES_WARNING_MESSAGE)
             ).toBeInTheDocument()
         })
     })

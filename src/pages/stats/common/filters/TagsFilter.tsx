@@ -18,7 +18,10 @@ import {
     OptionalFilterProps,
     RemovableFilter,
 } from 'pages/stats/common/filters/types'
-import {getFilterError} from 'pages/stats/common/filters/utils'
+import {
+    createFilterOptions,
+    getFilterError,
+} from 'pages/stats/common/filters/utils'
 import {DropdownOption} from 'pages/stats/types'
 import {
     getPageStatsFiltersWithLogicalOperators,
@@ -77,15 +80,7 @@ export const TagsFilter = ({
     const {handleTagsSearch, onLoad, tags, shouldLoadMore, tagsState} =
         useTagSearch()
 
-    const selectedOptions = value.values
-        .filter((id) => tagsState[String(id)] !== undefined)
-        .map((id) => {
-            const idAsAString = String(id)
-            return {
-                value: idAsAString,
-                label: tagsState[idAsAString].name,
-            }
-        })
+    const tagOptions = createFilterOptions(value.values, tagsState)
 
     const options = tags
         .filter((tag) => !otherValue?.values.includes(tag.id))
@@ -161,7 +156,7 @@ export const TagsFilter = ({
         ? {warningType: tagsWarningType, warningMessage: undefined}
         : getFilterError({
               options: [{options: [...stateOptions]}],
-              selectedOptions,
+              selectedOptions: tagOptions,
           })
 
     return (
@@ -169,7 +164,7 @@ export const TagsFilter = ({
             filterName={FilterLabels[FilterKey.Tags]}
             filterErrors={{warningType, warningMessage}}
             filterOptionGroups={[{options}]}
-            selectedOptions={selectedOptions}
+            selectedOptions={tagOptions}
             logicalOperators={tagsFilterLogicalOperators.filter(
                 (operator) => operator !== otherValue?.operator
             )}

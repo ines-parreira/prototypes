@@ -4,7 +4,7 @@ import React, {ComponentProps, useMemo, useState} from 'react'
 
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import Filter from 'pages/stats/common/components/Filter/Filter'
-import {DropdownOption, FilterOptionGroup} from 'pages/stats/types'
+import {DropdownOption} from 'pages/stats/types'
 
 const storyConfig: Meta = {
     title: 'Stats/Filter',
@@ -12,9 +12,7 @@ const storyConfig: Meta = {
 }
 
 const Template: StoryFn<ComponentProps<typeof Filter>> = (props) => {
-    const [selectedValues, setSelectedValues] = useState<
-        FilterOptionGroup['options']
-    >(props.selectedOptions)
+    const [selectedValues, setSelectedValues] = useState(props.selectedOptions)
 
     const [selectedLogicalOperator, setSelectedLogicalOperator] =
         useState<LogicalOperatorEnum | null>(

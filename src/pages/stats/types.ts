@@ -46,3 +46,12 @@ export type FilterOptionGroup = {
 export type MaybeData<T> = {
     data?: T
 }
+
+export type Prettify<T> = {
+    [K in keyof T]: T[K]
+    // eslint-disable-next-line @typescript-eslint/ban-types
+} & {}
+
+export type OptionalProperty<T, K extends keyof T> = Prettify<
+    Omit<T, K> & Partial<Pick<T, K>>
+>

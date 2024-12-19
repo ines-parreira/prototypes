@@ -8,7 +8,11 @@ import {
     SavedFilter,
     SavedFilterDraft,
 } from 'models/stat/types'
-import {FilterOptionGroup} from 'pages/stats/types'
+import {
+    OptionalProperty,
+    DropdownOption,
+    FilterOptionGroup,
+} from 'pages/stats/types'
 
 export const getScoreLabelsAndValues = (
     maxScoreNumber: number,
@@ -41,11 +45,14 @@ export const getScoreLabelByValue = (
     )
 }
 
+export const NON_EXISTENT_VALUES_WARNING_MESSAGE =
+    'Some values no longer exist and have been removed from filters results.'
+
 export const getFilterError = ({
     options,
     selectedOptions,
 }: {
-    selectedOptions?: FilterOptionGroup['options']
+    selectedOptions?: FilterOptionWithOptionalLabel[]
     options: FilterOptionGroup[]
 }): {warningType?: 'non-existent'; warningMessage?: string} => {
     const nonExistentValues =
@@ -68,7 +75,7 @@ export const getFilterError = ({
     if (nonExistentValues.length >= 1) {
         return {
             warningType: 'non-existent',
-            warningMessage: `${nonExistentValues.join(', ')} no longer ${nonExistentValues.length > 1 ? 'exist and have' : 'exists and has'} been removed from filters results.`,
+            warningMessage: NON_EXISTENT_VALUES_WARNING_MESSAGE,
         }
     }
 
@@ -179,3 +186,31 @@ export const areFiltersEqual = (
     filtersDraft: SavedFilterDraft | null | undefined
 ) =>
     _isEqual(getFormattedFilter(savedFilters), getFormattedFilter(filtersDraft))
+
+export type FilterOptionWithOptionalLabel = OptionalProperty<
+    DropdownOption,
+    'label'
+>
+
+type EntityLike = {[key: string]: unknown; name: string}
+
+export const createFilterOptions = (
+    entityIds: number[],
+    entityMapping: Record<string, EntityLike>
+): FilterOptionWithOptionalLabel[] => {
+    return entityIds.map((id) => {
+        const idAsAString = String(id)
+        return {
+            value: idAsAString,
+            label: entityMapping[idAsAString]?.name || undefined,
+        }
+    })
+}
+
+export const filterValidOptions = (
+    options: FilterOptionWithOptionalLabel[]
+): DropdownOption[] => {
+    return options.filter((option): option is DropdownOption => {
+        return option.label !== undefined
+    })
+}
