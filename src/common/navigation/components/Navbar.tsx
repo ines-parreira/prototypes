@@ -7,9 +7,7 @@ import {NotificationsButton} from 'common/notifications'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
-import CreateTicketNavbarButton from 'pages/common/components/CreateTicket/CreateTicketNavbarButton'
 import HomePageLink from 'pages/common/components/HomePageLink'
-import PlaceCallNavbarButton from 'pages/common/components/PlaceCallNavbarButton'
 import SpotlightButton from 'pages/common/components/Spotlight/SpotlightButton'
 import {isOpenedPanel as getIsOpenedPanel} from 'state/layout/selectors'
 
@@ -22,6 +20,7 @@ type Props = {
     activeContent: ActiveContent
     children: ReactNode
     disableResize?: boolean
+    headerContent?: ReactNode
     navbarContentRef?: RefObject<HTMLDivElement>
     splitTicketViewToggle?: ReactNode
     title: string
@@ -31,6 +30,7 @@ export default function Navbar({
     activeContent,
     children,
     disableResize,
+    headerContent,
     navbarContentRef,
     splitTicketViewToggle,
     title,
@@ -75,16 +75,7 @@ export default function Navbar({
                     )}
                     {!showGlobalNav && <SpotlightButton />}
                     <NotificationsButton />
-                    {activeContent === ActiveContent.Tickets ? (
-                        <>
-                            <CreateTicketNavbarButton
-                                isDisabled={window.location.pathname.includes(
-                                    '/ticket/new'
-                                )}
-                            />
-                            <PlaceCallNavbarButton />
-                        </>
-                    ) : null}
+                    {headerContent}
                 </div>
 
                 <div ref={navbarContentRef} className={css['navbar-content']}>

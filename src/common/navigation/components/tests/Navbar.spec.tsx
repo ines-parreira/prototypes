@@ -97,28 +97,11 @@ describe('Navbar', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should render the create ticket button if on the ticket page', () => {
-        const {getByText} = render(<Navbar {...props} />)
-        expect(getByText('CreateTicketNavbarButton')).toBeInTheDocument()
-    })
-
-    it('should not render the create ticket button if on not the ticket page', () => {
-        const {queryByText} = render(
-            <Navbar {...props} activeContent={ActiveContent.Settings} />
+    it('should render header content if given', () => {
+        const {getByText} = render(
+            <Navbar {...props} headerContent={<div>HeaderContent</div>} />
         )
-        expect(queryByText('CreateTicketNavbarButton')).not.toBeInTheDocument()
-    })
-
-    it('should render the place call button if on the ticket page', () => {
-        const {getByText} = render(<Navbar {...props} />)
-        expect(getByText('PlaceCallNavbarButton')).toBeInTheDocument()
-    })
-
-    it('should not render the place call button if on not the ticket page', () => {
-        const {queryByText} = render(
-            <Navbar {...props} activeContent={ActiveContent.Settings} />
-        )
-        expect(queryByText('PlaceCallNavbarButton')).not.toBeInTheDocument()
+        expect(getByText('HeaderContent')).toBeInTheDocument()
     })
 
     it('should show the user menu if the user does not have the global nav flag', () => {

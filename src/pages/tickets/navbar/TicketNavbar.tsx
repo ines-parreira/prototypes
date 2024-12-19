@@ -27,7 +27,9 @@ import {Section, SectionDraft} from 'models/section/types'
 import {createUserSetting, updateUserSetting} from 'models/user/resources'
 import {fetchViewsPaginated, updateView} from 'models/view/resources'
 import {View, ViewCategoryNavbar, ViewVisibility} from 'models/view/types'
+import CreateTicketNavbarButton from 'pages/common/components/CreateTicket/CreateTicketNavbarButton'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
+import PlaceCallNavbarButton from 'pages/common/components/PlaceCallNavbarButton'
 import RecentChats from 'pages/common/components/RecentChats'
 import useAutoScrollOnDragging from 'pages/common/hooks/useAutoScrollOnDragging'
 import {tryLocalStorage} from 'services/common/utils'
@@ -447,6 +449,16 @@ export function TicketNavbarContainer({
         <Navbar
             activeContent={ActiveContent.Tickets}
             disableResize={disableResize}
+            headerContent={
+                <>
+                    <CreateTicketNavbarButton
+                        isDisabled={window.location.pathname.includes(
+                            '/ticket/new'
+                        )}
+                    />
+                    <PlaceCallNavbarButton />
+                </>
+            }
             navbarContentRef={scrollableAreaRef}
             splitTicketViewToggle={
                 isTicketPath(window.location.pathname) ? (
