@@ -967,7 +967,7 @@ const AppMenuCategoryItems = ({
             _groupBy(steps, (step) => {
                 if (
                     Array.isArray(enabledSteps) &&
-                    !!enabledSteps.includes(step.internal_id)
+                    !enabledSteps.includes(step.internal_id)
                 ) {
                     return null
                 }
