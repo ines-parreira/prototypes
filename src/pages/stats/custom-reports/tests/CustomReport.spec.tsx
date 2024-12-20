@@ -1,11 +1,9 @@
 import React from 'react'
 
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-
 import {CustomReport} from 'pages/stats/custom-reports/CustomReport'
 import {CustomReportChart} from 'pages/stats/custom-reports/CustomReportChart'
 import {CustomReportSection} from 'pages/stats/custom-reports/CustomReportSection'
-
 import {
     CustomReportSchema,
     CustomReportChartSchema,

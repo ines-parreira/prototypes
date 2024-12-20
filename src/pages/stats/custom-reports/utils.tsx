@@ -5,7 +5,6 @@ import {
     AnalyticsCustomReportSectionSchema,
 } from '@gorgias/api-queries'
 import {AnalyticsCustomReportChildrenItem} from '@gorgias/api-types'
-
 import React from 'react'
 
 import {CustomReportChart} from 'pages/stats/custom-reports/CustomReportChart'
