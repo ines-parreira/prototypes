@@ -17,7 +17,11 @@ import {renderWithRouter, assumeMock, mockStore} from 'utils/testing'
 
 import EmailIntegrationList from '../EmailIntegrationList'
 import EmailIntegrationListVerificationStatus from '../EmailIntegrationListVerificationStatus'
-import {isBaseEmailIntegration, isOutboundVerifiedSendgrid} from '../helpers'
+import {
+    canIntegrationDomainBeVerified,
+    isBaseEmailIntegration,
+    isOutboundVerifiedSendgrid,
+} from '../helpers'
 import {useEmailOnboardingCompleteCheck} from '../hooks/useEmailOnboarding'
 import {fetchEmailDomains} from '../resources'
 
@@ -37,6 +41,9 @@ const EmailIntegrationListVerificationStatusMock = assumeMock(
     EmailIntegrationListVerificationStatus
 )
 const isBaseEmailIntegrationMock = assumeMock(isBaseEmailIntegration)
+const canIntegrationDomainBeVerifiedMock = assumeMock(
+    canIntegrationDomainBeVerified
+)
 const isOutboundVerifiedSendgridMock = assumeMock(isOutboundVerifiedSendgrid)
 const useEmailOnboardingCompleteCheckMock = assumeMock(
     useEmailOnboardingCompleteCheck
@@ -121,6 +128,7 @@ describe('<EmailIntegrationList/>', () => {
             [FeatureFlagKey.NewDomainVerification]: false,
         }))
         isBaseEmailIntegrationMock.mockReturnValue(false)
+        canIntegrationDomainBeVerifiedMock.mockReturnValue(true)
         EmailIntegrationListVerificationStatusMock.mockImplementation(() => (
             <div>EmailIntegrationListVerificationStatus</div>
         ))
@@ -489,6 +497,13 @@ describe('<EmailIntegrationList/>', () => {
                 },
                 {
                     description:
+                        'should redirect to preferences - unverifiable domain',
+                    integration: getGmailIntegration(1, false, true),
+                    canDomainBeVerified: false,
+                    expected: `/app/settings/channels/email/${1}`,
+                },
+                {
+                    description:
                         'should redirect to domain verification - outlook',
                     integration: getOutlookIntegration(1, false, true),
                     expected: `/app/settings/channels/email/${1}/dns`,
@@ -506,6 +521,17 @@ describe('<EmailIntegrationList/>', () => {
                     newDomainVerificationFFEnabled: true,
                 },
                 {
+                    description: `should redirect to preferences when onboarding is not complete and domain can't be verified - forward email`,
+                    integration: getEmailIntegration(
+                        1,
+                        false,
+                        EmailProvider.Mailgun
+                    ),
+                    expected: `/app/settings/channels/email/${1}`,
+                    onboardingComplete: false,
+                    canDomainBeVerified: false,
+                },
+                {
                     description:
                         'should redirect to domain verification tab when onboarding is complete but domain verification is incomplete - forward email',
                     integration: getEmailIntegration(
@@ -517,7 +543,6 @@ describe('<EmailIntegrationList/>', () => {
                     onboardingComplete: true,
                     newDomainVerificationFFEnabled: true,
                 },
-
                 {
                     description:
                         'should not redirect to onboarding wizard domain verification when onboardingComplete state is false - gmail',
@@ -533,7 +558,11 @@ describe('<EmailIntegrationList/>', () => {
                     expected,
                     newDomainVerificationFFEnabled,
                     onboardingComplete,
+                    canDomainBeVerified = true,
                 }) => {
+                    canIntegrationDomainBeVerifiedMock.mockReturnValue(
+                        canDomainBeVerified
+                    )
                     mockFlags({
                         [FeatureFlagKey.NewDomainVerification]:
                             newDomainVerificationFFEnabled ?? false,
@@ -679,16 +708,16 @@ describe('<EmailIntegrationList/>', () => {
                         false,
                         EmailProvider.Sendgrid
                     ),
-                    isBaseIntegration: true,
+                    canDomainBeVerified: false,
                     expected: `/app/settings/channels/email/${1}`,
                 },
             ])(
                 '(outbound verified) should redirect to the correct page when clicking on the integration - $description',
-                async ({integration, expected, isBaseIntegration}) => {
+                async ({integration, expected, canDomainBeVerified = true}) => {
                     fetchEmailDomainsMock.mockResolvedValueOnce([])
                     isOutboundVerifiedSendgridMock.mockReturnValue(true)
-                    isBaseEmailIntegrationMock.mockReturnValue(
-                        !!isBaseIntegration
+                    canIntegrationDomainBeVerifiedMock.mockReturnValue(
+                        canDomainBeVerified
                     )
 
                     const component = renderWithRouter(

@@ -7,13 +7,18 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {Integration} from 'models/integration/types'
 import {assumeMock} from 'utils/testing'
 
-import {isBaseEmailIntegration, isGenericEmailIntegration} from '../../helpers'
+import {
+    canIntegrationDomainBeVerified,
+    isGenericEmailIntegration,
+} from '../../helpers'
 import EmailIntegrationUpdateLayout from '../EmailIntegrationUpdateLayout'
 
 jest.mock('../../helpers')
 
 const isGenericEmailIntegrationMock = assumeMock(isGenericEmailIntegration)
-const isBaseEmailIntegrationMock = assumeMock(isBaseEmailIntegration)
+const canIntegrationDomainBeVerifiedMock = assumeMock(
+    canIntegrationDomainBeVerified
+)
 
 const integration = {
     id: 1,
@@ -35,7 +40,7 @@ describe('EmailIntegrationUpdateLayout', () => {
             [FeatureFlagKey.NewDomainVerification]: false,
         })
         isGenericEmailIntegrationMock.mockReturnValue(true)
-        isBaseEmailIntegrationMock.mockReturnValue(false)
+        canIntegrationDomainBeVerifiedMock.mockReturnValue(true)
     })
 
     it('should not render anything if the integration is not of type email', () => {
@@ -121,8 +126,8 @@ describe('EmailIntegrationUpdateLayout', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should only render preferences tab for base email integration', () => {
-        isBaseEmailIntegrationMock.mockReturnValue(true)
+    it(`should only render preferences tab for domains that can't be verified`, () => {
+        canIntegrationDomainBeVerifiedMock.mockReturnValue(false)
 
         renderComponent(minProps)
 

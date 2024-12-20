@@ -71,3 +71,26 @@ export const supportContentDropdownOptions: SupportContentDropdownOption[] = [
             'https://help.shopify.com/en/manual/domains/managing-domains/edit-dns-settings',
     },
 ]
+
+export const commonDomains = [
+    'gmail.',
+    'yahoo.',
+    'hotmail.',
+    'aol.',
+    'hotmail.',
+    'msn.',
+    'wanadoo.',
+    'orange.',
+    'cast.',
+    'live.',
+    'rediffmail.',
+    'comcast.',
+    'free.',
+    'gmx.',
+    'web.',
+    'yandex.',
+    'ymail.',
+    'libero.',
+    'outlook.',
+    'googlemail.',
+]

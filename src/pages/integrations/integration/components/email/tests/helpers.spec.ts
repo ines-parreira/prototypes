@@ -12,6 +12,7 @@ import {
 
 import {
     canEnableEmailingViaInternalProvider,
+    canIntegrationDomainBeVerified,
     getDNSRecord,
     getDomainFromEmailAddress,
     isBaseEmailAddress,
@@ -24,7 +25,12 @@ import {
     parseRecordsCurrentValues,
     populateCurrentValuesForDNSRecords,
     removeDomainFromDNSRecord,
+    isCommonDomain,
 } from '../helpers'
+import * as helpers from '../helpers'
+
+const isBaseEmailIntegrationSpy = jest.spyOn(helpers, 'isBaseEmailIntegration')
+const isCommonDomainSpy = jest.spyOn(helpers, 'isCommonDomain')
 
 const integration = {
     provider: EmailProvider.Sendgrid,
@@ -187,6 +193,60 @@ describe('helpers', () => {
         })
     })
 
+    describe('isCommonDomain', () => {
+        it.each(['abc@gmail.com', 'abc@yahoo.com', 'abc@outlook.com'])(
+            'should return true for common domain %s',
+            (domain) => {
+                expect(isCommonDomain(domain)).toBe(true)
+            }
+        )
+
+        it('should return false for non-common domain', () => {
+            expect(isCommonDomain('gorgias.com')).toBe(false)
+        })
+    })
+
+    describe('canIntegrationDomainBeVerified', () => {
+        it('should return false for common domains', () => {
+            isBaseEmailIntegrationSpy.mockReturnValue(false)
+            isCommonDomainSpy.mockReturnValue(true)
+
+            expect(
+                canIntegrationDomainBeVerified({
+                    meta: {
+                        address: '',
+                    },
+                } as any)
+            ).toBe(false)
+        })
+
+        it('should return true for non-base email integrations with non-common domains', () => {
+            isBaseEmailIntegrationSpy.mockReturnValue(false)
+            isCommonDomainSpy.mockReturnValue(false)
+
+            expect(
+                canIntegrationDomainBeVerified({
+                    meta: {
+                        address: '',
+                    },
+                } as any)
+            ).toBe(true)
+        })
+
+        it('should return false for base email integrations', () => {
+            isBaseEmailIntegrationSpy.mockReturnValue(true)
+            isCommonDomainSpy.mockReturnValue(false)
+
+            expect(
+                canIntegrationDomainBeVerified({
+                    meta: {
+                        address: '',
+                    },
+                } as any)
+            ).toBe(false)
+        })
+    })
+
     describe('isBaseEmailIntegration', () => {
         window.GORGIAS_STATE = {
             integrations: {
@@ -197,6 +257,10 @@ describe('helpers', () => {
                 },
             },
         } as any
+
+        beforeEach(() => {
+            isBaseEmailIntegrationSpy.mockRestore()
+        })
 
         it('should return false', () => {
             expect(

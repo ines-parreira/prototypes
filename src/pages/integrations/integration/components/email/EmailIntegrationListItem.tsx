@@ -26,6 +26,7 @@ import DefaultIntegrationBadge from './DefaultIntegrationBadge'
 import css from './EmailIntegrationList.less'
 import EmailIntegrationListVerificationStatus from './EmailIntegrationListVerificationStatus'
 import {
+    canIntegrationDomainBeVerified,
     getDomainFromEmailAddress,
     isBaseEmailIntegration,
     isOutboundVerifiedSendgrid,
@@ -66,6 +67,7 @@ export default function EmailIntegrationListItem({
     const domain = getDomainFromEmailAddress(address)
 
     const isBaseIntegration = isBaseEmailIntegration(integration)
+    const canDomainBeVerified = canIntegrationDomainBeVerified(integration)
     const isDefault =
         showDefaultIntegration &&
         defaultIntegrations?.data?.email === integration.id
@@ -89,7 +91,10 @@ export default function EmailIntegrationListItem({
         isVerified
 
     const getTabURL = () => {
-        if (isBaseIntegration || (!isForwardEmail && !active)) {
+        if (
+            (isVerified && !canDomainBeVerified) ||
+            (!isForwardEmail && !active)
+        ) {
             return ''
         }
 
@@ -187,18 +192,17 @@ export default function EmailIntegrationListItem({
                 </td>
             )}
             <td className="smallest align-middle text-left p-0">
-                {!isBaseIntegration && (
-                    <EmailIntegrationListVerificationStatus
-                        active={active}
-                        isForwardEmail={isForwardEmail}
-                        isVerified={isVerified}
-                        isRowSubmitting={isRowSubmitting}
-                        redirectURI={adapter.uri}
-                        isDomainVerificationWarningVisible={
-                            shouldDisplayDomainVerificationWarning
-                        }
-                    />
-                )}
+                <EmailIntegrationListVerificationStatus
+                    active={active}
+                    isForwardEmail={isForwardEmail}
+                    isVerified={isVerified}
+                    isRowSubmitting={isRowSubmitting}
+                    redirectURI={adapter.uri}
+                    isDomainVerificationWarningVisible={
+                        shouldDisplayDomainVerificationWarning
+                    }
+                    integration={integration}
+                />
             </td>
             <td className="smallest align-middle">
                 <i className="material-icons md-2 align-middle icon-go-forward">

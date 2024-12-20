@@ -21,6 +21,9 @@ import {
     DNSRecordType,
 } from 'models/integration/types'
 
+import {commonDomains} from './EmailDomainVerification/constants'
+import * as helpers from './helpers'
+
 export const isSingleSenderVerificationInProgress = (
     integration: EmailIntegration
 ): boolean => {
@@ -99,6 +102,28 @@ export const isBaseEmailIntegration = (
         | NEW_GmailIntegration
 ): boolean => {
     return isBaseEmailAddress(emailIntegration.meta.address)
+}
+
+export const isCommonDomain = (emailAddress: string): boolean => {
+    const domain = getDomainFromEmailAddress(emailAddress)
+
+    return !!commonDomains.find((commonDomain) =>
+        domain.startsWith(commonDomain)
+    )
+}
+
+export const canIntegrationDomainBeVerified = (
+    emailIntegration:
+        | EmailIntegration
+        | GmailIntegration
+        | OutlookIntegration
+        | NEW_EmailIntegration
+        | NEW_GmailIntegration
+): boolean => {
+    return (
+        !helpers.isBaseEmailIntegration(emailIntegration) &&
+        !helpers.isCommonDomain(emailIntegration.meta.address)
+    )
 }
 
 export const canEnableEmailingViaInternalProvider = (

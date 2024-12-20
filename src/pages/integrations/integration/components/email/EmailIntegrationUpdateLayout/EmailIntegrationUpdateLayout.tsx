@@ -9,7 +9,10 @@ import {Integration} from 'models/integration/types'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
-import {isBaseEmailIntegration, isGenericEmailIntegration} from '../helpers'
+import {
+    canIntegrationDomainBeVerified,
+    isGenericEmailIntegration,
+} from '../helpers'
 
 type Props = {
     integration: Integration
@@ -25,7 +28,8 @@ const EmailIntegrationUpdateLayout = ({integration, children}: Props) => {
         return null
     }
 
-    const isBaseIntegration = isBaseEmailIntegration(integration)
+    const displayDomainVerification =
+        canIntegrationDomainBeVerified(integration)
     const integrationProvider = integration.meta?.provider
 
     return (
@@ -54,7 +58,7 @@ const EmailIntegrationUpdateLayout = ({integration, children}: Props) => {
                 >
                     Preferences
                 </NavLink>
-                {!isBaseIntegration &&
+                {displayDomainVerification &&
                     integrationProvider !== EmailProvider.Sendgrid && (
                         <NavLink
                             to={`/app/settings/channels/email/${integrationId}/dns`}
@@ -63,7 +67,7 @@ const EmailIntegrationUpdateLayout = ({integration, children}: Props) => {
                             Domain Verification
                         </NavLink>
                     )}
-                {!isBaseIntegration &&
+                {displayDomainVerification &&
                     integrationProvider === EmailProvider.Sendgrid && (
                         <NavLink
                             to={`/app/settings/channels/email/${integrationId}/outbound-verification`}
