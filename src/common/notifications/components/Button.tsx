@@ -1,10 +1,3 @@
-import {FeedItem, FeedItem as KnockFeedItem} from '@knocklabs/client'
-import {
-    NotificationFeedHeaderProps,
-    NotificationFeedPopover,
-    RenderItemProps,
-    useKnockFeed,
-} from '@knocklabs/react'
 import cn from 'classnames'
 import React, {useCallback, useRef, useState} from 'react'
 
@@ -13,19 +6,14 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {NotificationCenterEventTypes} from 'common/segment/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
 
 import useCount from '../hooks/useCount'
-import {RawNotification} from '../types'
-import transformKnockNotification from '../utils/transformKnockNotification'
-
 import css from './Button.less'
-import FeedHeader from './FeedHeader'
-import FeedItemComponent from './FeedItem'
-import './Feed.less'
+import Feed from './Feed'
 
 export default function NotificationsButton() {
     const count = useCount()
-    const {feedClient} = useKnockFeed()
 
     const buttonRef = useRef<HTMLButtonElement>(null)
     const [isVisible, setIsVisible] = useState(false)
@@ -39,66 +27,9 @@ export default function NotificationsButton() {
         setIsVisible(!isVisible)
     }, [isVisible])
 
-    const handleClickNotification = useCallback(
-        (item: KnockFeedItem) => {
-            logEvent(SegmentEvent.NotificationCenter, {
-                type: NotificationCenterEventTypes.FeedItemClicked,
-            })
-            void feedClient.markAsRead(item)
-            setIsVisible(false)
-        },
-        [feedClient]
-    )
-
-    const handleToggleRead = useCallback(
-        (item: KnockFeedItem) => {
-            const isRead = !!item.read_at
-
-            logEvent(SegmentEvent.NotificationCenter, {
-                type: NotificationCenterEventTypes.StatusToggled,
-                status: isRead ? 'unread' : 'read',
-            })
-            isRead
-                ? void feedClient.markAsUnread(item)
-                : void feedClient.markAsRead(item)
-        },
-        [feedClient]
-    )
-
-    const handleClose = useCallback((e: Event) => {
-        if (buttonRef.current?.contains(e.target as Node)) {
-            e.stopPropagation()
-        }
+    const handleClose = useCallback(() => {
         setIsVisible(false)
     }, [])
-
-    const renderItem = useCallback(
-        ({item}: RenderItemProps) => {
-            const notification = transformKnockNotification(
-                // remove cast after consultation with knock team
-                item as FeedItem<RawNotification>
-            )
-            return !notification ? null : (
-                <FeedItemComponent
-                    key={notification.id}
-                    notification={notification}
-                    onClick={() => handleClickNotification(item)}
-                    onToggleRead={() => handleToggleRead(item)}
-                />
-            )
-        },
-        [handleClickNotification, handleToggleRead]
-    )
-
-    const renderHeader = useCallback(
-        (renderHeaderProps: NotificationFeedHeaderProps) => (
-            <FeedHeader
-                {...renderHeaderProps}
-                toggleVisibility={() => setIsVisible(false)}
-            />
-        ),
-        []
-    )
 
     return (
         <>
@@ -121,14 +52,16 @@ export default function NotificationsButton() {
                     </span>
                 )}
             </Button>
-            <NotificationFeedPopover
-                buttonRef={buttonRef}
-                isVisible={isVisible}
+            <Dropdown
+                className={css.dropdown}
+                isOpen={isVisible}
+                offset={10}
                 placement="right-start"
-                renderItem={renderItem}
-                onClose={handleClose}
-                renderHeader={renderHeader}
-            />
+                target={buttonRef}
+                onToggle={handleClose}
+            >
+                <Feed />
+            </Dropdown>
         </>
     )
 }

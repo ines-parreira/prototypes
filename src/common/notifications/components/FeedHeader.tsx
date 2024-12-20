@@ -27,13 +27,13 @@ const OrderedFilterStatuses = [
 ]
 
 type FeedHeaderProps = NotificationFeedHeaderProps & {
-    toggleVisibility: () => void
+    onToggleVisibility: () => void
 }
 
 export default function FeedHeader({
     filterStatus,
     setFilterStatus,
-    toggleVisibility,
+    onToggleVisibility,
 }: FeedHeaderProps) {
     const {feedClient} = useKnockFeed()
     const count = useCount()
@@ -121,7 +121,7 @@ export default function FeedHeader({
                             logEvent(SegmentEvent.NotificationCenter, {
                                 type: NotificationCenterEventTypes.GoToSettings,
                             })
-                            toggleVisibility()
+                            onToggleVisibility()
                         }}
                     >
                         settings

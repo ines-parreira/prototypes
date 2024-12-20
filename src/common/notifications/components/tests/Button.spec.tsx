@@ -1,163 +1,60 @@
-import {FilterStatus, NotificationFeedPopover} from '@knocklabs/react'
 import {render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import userEvent from '@testing-library/user-event'
+import React from 'react'
 
 import {
     logEvent,
     NotificationCenterEventTypes,
     SegmentEvent,
 } from 'common/segment'
+import {assumeMock} from 'utils/testing'
 
+import useCount from '../../hooks/useCount'
 import Button from '../Button'
 
-const mockMarkAsRead = jest.fn()
-const mockMarkAsUnread = jest.fn()
-const mockUseFeedStore = jest.fn()
-const MockNotificationFeedPopover = 'MockNotificationFeedPopover'
-
-const item = {
-    id: '1',
-    data: {
-        type: 'ticket.assigned',
-        payload: {
-            ticket: {},
-        },
-    },
-    inserted_at: '2024-10-25T19:15:01.313273+00:00',
-}
-
-jest.mock('common/segment', () => ({
-    logEvent: jest.fn(),
-    SegmentEvent: {
-        NotificationCenter: 'notification-center',
-    },
-    NotificationCenterEventTypes: {
-        FeedItemClicked: 'feed-item-clicked',
-        GoToSettings: 'go-to-settings',
-        Opened: 'opened',
-        StatusToggled: 'status-toggled',
-    },
-}))
-
-const mockFilterStatus = FilterStatus.All
-const mockGetState = jest.fn()
-let mockItem = item
-
 jest.mock(
-    '@knocklabs/react',
+    'common/segment',
     () =>
         ({
-            ...jest.requireActual('@knocklabs/react'),
-            NotificationFeedPopover: ({
-                renderHeader,
-                renderItem,
-            }: ComponentProps<typeof NotificationFeedPopover>) => (
-                <div>
-                    {renderHeader?.({
-                        filterStatus: mockFilterStatus,
-                        setFilterStatus: () => {},
-                    })}
-                    {renderItem?.({
-                        item: mockItem,
-                    } as any)}
-
-                    {MockNotificationFeedPopover}
-                </div>
-            ),
-            useKnockFeed: () => ({
-                feedClient: {
-                    markAsRead: mockMarkAsRead,
-                    markAsUnread: mockMarkAsUnread,
-                    store: {
-                        getState: mockGetState,
-                    },
-                },
-                useFeedStore: mockUseFeedStore,
-            }),
-        }) as Record<string, unknown>
+            ...jest.requireActual('common/segment'),
+            logEvent: jest.fn(),
+        }) as typeof import('common/segment')
 )
 
-jest.mock(
-    '../FeedItem',
-    () =>
-        ({
-            onClick,
-            onToggleRead,
-        }: {
-            onClick: () => void
-            onToggleRead: () => void
-        }) => (
-            <div onClick={onClick}>
-                <p>You’ve been assigned to a ticket</p>
-                <button onClick={onToggleRead}>check_box</button>
-            </div>
-        )
-)
+jest.mock('../../hooks/useCount', () => jest.fn())
+const useCountMock = assumeMock(useCount)
 
-describe('<Button />', () => {
+jest.mock('../Feed', () => () => <div>Feed</div>)
+
+describe('Button', () => {
     beforeEach(() => {
-        mockUseFeedStore.mockReturnValue(0)
-        mockItem = item
-        mockGetState.mockImplementation(() => ({
-            items: [mockItem],
-        }))
+        useCountMock.mockReturnValue(0)
     })
 
-    it('should display notification feed', () => {
+    it('should display the notification button', () => {
         render(<Button />)
-
-        expect(screen.getAllByText('Notifications')).toHaveLength(2)
+        expect(screen.getByText('Notifications')).toBeInTheDocument()
     })
 
-    it('should display notification count', () => {
-        mockUseFeedStore.mockReturnValue(11)
-
+    it('should display the notification count when more than 0', () => {
+        useCountMock.mockReturnValue(12)
         render(<Button />)
-
-        expect(screen.getByText('11')).toBeInTheDocument()
+        expect(screen.getByText('12')).toBeInTheDocument()
     })
 
-    it('should mark as read an unread notification on toggle', () => {
+    it('should render the feed when the button is clicked', () => {
         render(<Button />)
-
-        screen.getByText('check_box').click()
-
+        userEvent.click(screen.getByText('Notifications'))
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.NotificationCenter, {
-            type: NotificationCenterEventTypes.StatusToggled,
-            status: 'read',
+            type: NotificationCenterEventTypes.Opened,
         })
-        expect(mockMarkAsRead).toHaveBeenCalled()
+        expect(screen.getByText('Feed')).toBeInTheDocument()
     })
 
-    it('should mark as unread a read notification on toggle', () => {
-        const readItem = {
-            ...item,
-            read_at: 'x',
-        }
-        mockItem = readItem
-        mockGetState.mockImplementation(() => ({
-            items: [readItem],
-        }))
+    it('should close the dropdown when the dropdown toggles', () => {
         render(<Button />)
-
-        const buttons = screen.getAllByRole('button')
-        buttons[buttons.length - 1].click()
-
-        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.NotificationCenter, {
-            type: NotificationCenterEventTypes.StatusToggled,
-            status: 'unread',
-        })
-        expect(mockMarkAsUnread).toHaveBeenCalled()
-    })
-
-    it('should mark as read an unread notification on item click', () => {
-        render(<Button />)
-
-        screen.getByText('You’ve been assigned to a ticket').click()
-
-        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.NotificationCenter, {
-            type: NotificationCenterEventTypes.FeedItemClicked,
-        })
-        expect(mockMarkAsRead).toHaveBeenCalled()
+        userEvent.click(screen.getByText('Notifications'))
+        userEvent.click(screen.getByTestId('floating-overlay'))
+        expect(screen.queryByText('Feed')).not.toBeInTheDocument()
     })
 })

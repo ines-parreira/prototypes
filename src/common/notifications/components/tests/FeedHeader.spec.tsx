@@ -42,7 +42,7 @@ describe('<FeedHeader />', () => {
     const props = {
         filterStatus: FilterStatus.All,
         setFilterStatus: jest.fn(),
-        toggleVisibility: jest.fn(),
+        onToggleVisibility: jest.fn(),
     }
 
     beforeEach(() => {
@@ -92,6 +92,6 @@ describe('<FeedHeader />', () => {
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.NotificationCenter, {
             type: NotificationCenterEventTypes.GoToSettings,
         })
-        expect(props.toggleVisibility).toHaveBeenCalled()
+        expect(props.onToggleVisibility).toHaveBeenCalled()
     })
 })
