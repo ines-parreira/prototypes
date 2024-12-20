@@ -1,12 +1,15 @@
 import {act, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React, {ComponentProps} from 'react'
+import {useParams} from 'react-router-dom'
 
 import {useFlag} from 'common/flags'
 import {macros} from 'fixtures/macro'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {OrderDirection} from 'models/api/types'
 import {MacroSortableProperties} from 'models/macro/types'
+
+import {assumeMock} from 'utils/testing'
 
 import {MacrosSettingsTable} from '../MacrosSettingsTable'
 
@@ -35,6 +38,20 @@ const useHasAgentPrivilegesMock = useHasAgentPrivileges as jest.MockedFunction<
     typeof useHasAgentPrivileges
 >
 
+jest.mock(
+    'react-router-dom',
+    () =>
+        ({
+            ...jest.requireActual('react-router-dom'),
+            useParams: jest.fn(),
+            Link: jest.fn(
+                ({children}: {children: React.ReactNode}) => children
+            ),
+            NavLink: ({children}: {children: React.ReactNode}) => children,
+        }) as Record<string, unknown>
+)
+const mockUseParams = assumeMock(useParams)
+
 jest.mock('common/flags', () => ({
     useFlag: jest.fn(),
 }))
@@ -44,6 +61,9 @@ describe('<MacrosSettingsTable />', () => {
     beforeEach(() => {
         useHasAgentPrivilegesMock.mockReturnValue(true)
         mockUseFlag.mockReturnValue(false)
+        mockUseParams.mockReturnValue({
+            activeTab: '',
+        })
     })
 
     const macrosFixtures = [macros[0], macros[1]]
@@ -197,6 +217,16 @@ describe('<MacrosSettingsTable />', () => {
         render(<MacrosSettingsTable {...minProps} isLoading />)
 
         expect(screen.getByLabelText('Archive')).toBeAriaDisabled()
+    })
+
+    it('should disable bulk archive button when loading', () => {
+        mockUseFlag.mockReturnValue(true)
+        mockUseParams.mockReturnValue({
+            activeTab: 'archived',
+        })
+        render(<MacrosSettingsTable {...minProps} />)
+
+        expect(screen.getByLabelText('Unarchive')).toBeInTheDocument()
     })
 
     it('should set checked state for the top checkbox properly', () => {

@@ -1,6 +1,7 @@
 import {ListMacrosParams, Macro} from '@gorgias/api-queries'
 import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React, {ComponentProps, useCallback, useMemo} from 'react'
+import {useParams} from 'react-router-dom'
 
 import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -48,6 +49,8 @@ export function MacrosSettingsTable({
     selectedMacrosIds,
     setSelectedMacrosIds,
 }: Props) {
+    const {activeTab} = useParams<{activeTab: string}>()
+    const isArchiveTab = activeTab === 'archived'
     const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives, false)
     const selectedMacrosLength = useMemo(
         () => selectedMacrosIds.length,
@@ -127,8 +130,12 @@ export function MacrosSettingsTable({
                             }
                             title="Macro"
                         />
-                        <HeaderCellProperty title="Tags" />
                         <HeaderCellProperty
+                            titleClassName={css.headerCellProperty}
+                            title="Tags"
+                        />
+                        <HeaderCellProperty
+                            titleClassName={css.headerCellProperty}
                             direction={orderDirValue}
                             isOrderedBy={
                                 orderByValue ===
@@ -142,6 +149,7 @@ export function MacrosSettingsTable({
                             title="Language"
                         />
                         <HeaderCellProperty
+                            titleClassName={css.headerCellProperty}
                             direction={orderDirValue}
                             isOrderedBy={
                                 orderByValue === MacroSortableProperties.Usage
@@ -152,6 +160,7 @@ export function MacrosSettingsTable({
                             title="Usage count"
                         />
                         <HeaderCellProperty
+                            titleClassName={css.headerCellProperty}
                             direction={orderDirValue}
                             isOrderedBy={
                                 orderByValue ===
@@ -184,15 +193,23 @@ export function MacrosSettingsTable({
                                     onChange={onChange}
                                 />
                                 <Button
-                                    aria-label="Archive"
+                                    aria-label={
+                                        isArchiveTab ? 'Unarchive' : 'Archive'
+                                    }
                                     intent="secondary"
                                     fillStyle="ghost"
                                     isDisabled={isDisabled}
                                     onClick={onBulkArchive}
                                     size="small"
                                 >
-                                    <ButtonIconLabel icon="archive">
-                                        Archive
+                                    <ButtonIconLabel
+                                        icon={
+                                            isArchiveTab
+                                                ? 'unarchive'
+                                                : 'archive'
+                                        }
+                                    >
+                                        {isArchiveTab ? 'Unarchive' : 'Archive'}
                                     </ButtonIconLabel>
                                 </Button>
                             </HeaderCell>

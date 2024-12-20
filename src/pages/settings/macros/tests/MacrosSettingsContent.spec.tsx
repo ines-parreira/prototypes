@@ -9,8 +9,10 @@ import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
+import {useParams} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import {useFlag} from 'common/flags'
 import {macros as macrosFixtures} from 'fixtures/macro'
 import {user} from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -51,6 +53,31 @@ const useAppDispatchMock = useAppDispatch as jest.Mock
 const mockMutateAsyncCreate = jest.fn()
 const mockMutateAsyncDelete = jest.fn()
 const invalidateQueriesMock = jest.fn()
+
+jest.mock(
+    'react-router-dom',
+    () =>
+        ({
+            ...jest.requireActual('react-router-dom'),
+            useParams: jest.fn(),
+            Link: jest.fn(
+                ({children}: {children: React.ReactNode}) => children
+            ),
+            NavLink: ({
+                children,
+                onClick,
+            }: {
+                children: React.ReactNode
+                onClick: () => void
+            }) => <div onClick={onClick}>{children}</div>,
+        }) as Record<string, unknown>
+)
+const mockUseParams = assumeMock(useParams)
+
+jest.mock('common/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = useFlag as jest.Mock
 
 jest.mock('@gorgias/api-queries', () => ({
     __esModule: true,
@@ -95,6 +122,10 @@ describe('<MacrosSettingsContent/>', () => {
         mockUseDeleteMacro.mockReturnValue({
             mutateAsync: mockMutateAsyncDelete,
         } as unknown as ReturnType<typeof useDeleteMacro>)
+        mockUseFlag.mockImplementation(() => false)
+        mockUseParams.mockReturnValue({
+            activeTab: '',
+        })
     })
 
     it('should display list of macros', () => {
@@ -512,5 +543,37 @@ describe('<MacrosSettingsContent/>', () => {
                 },
             }
         )
+    })
+
+    it('should reset selected macros on tab change', () => {
+        mockUseFlag.mockImplementation(() => true)
+        render(
+            <Provider
+                store={mockStore({
+                    currentUser: fromJS(user),
+                })}
+            >
+                <MacrosSettingsContent />
+            </Provider>
+        )
+
+        const checkboxAll = screen.getByLabelText('Select all')
+        const checkboxFirstMacro = screen.getByLabelText(macrosFixtures[0].id!)
+        const checkboxSecondMacro = screen.getByLabelText(macrosFixtures[1].id!)
+        checkboxAll.click()
+        screen.getByText('Active').click()
+
+        expect(checkboxAll).not.toBeChecked()
+        expect(checkboxFirstMacro).not.toBeChecked()
+        expect(checkboxSecondMacro).not.toBeChecked()
+
+        checkboxFirstMacro.click()
+
+        expect(checkboxFirstMacro).toBeChecked()
+        expect(checkboxAll).not.toBeChecked()
+
+        screen.getByText('Archived').click()
+
+        expect(checkboxFirstMacro).not.toBeChecked()
     })
 })

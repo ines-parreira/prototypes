@@ -231,10 +231,18 @@ export function MacrosSettingsContent() {
 
             {isArchivingAvailable && (
                 <SecondaryNavbar>
-                    <NavLink to="/app/settings/macros/active" exact>
+                    <NavLink
+                        onClick={() => setSelectedMacrosIds([])}
+                        to="/app/settings/macros/active"
+                        exact
+                    >
                         Active
                     </NavLink>
-                    <NavLink to="/app/settings/macros/archived" exact>
+                    <NavLink
+                        onClick={() => setSelectedMacrosIds([])}
+                        to="/app/settings/macros/archived"
+                        exact
+                    >
                         Archived
                     </NavLink>
                 </SecondaryNavbar>

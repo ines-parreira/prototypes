@@ -1,13 +1,35 @@
 import {Macro} from '@gorgias/api-queries'
 import {render, screen} from '@testing-library/react'
 import React from 'react'
+import {useParams} from 'react-router-dom'
 
 import {macros as macrosFixtures} from 'fixtures/macro'
 import {MacrosState} from 'state/entities/macros/types'
+import {assumeMock} from 'utils/testing'
 
 import MoreActions from '../MoreActions'
 
+jest.mock(
+    'react-router-dom',
+    () =>
+        ({
+            ...jest.requireActual('react-router-dom'),
+            useParams: jest.fn(),
+            Link: jest.fn(
+                ({children}: {children: React.ReactNode}) => children
+            ),
+            NavLink: ({children}: {children: React.ReactNode}) => children,
+        }) as Record<string, unknown>
+)
+const mockUseParams = assumeMock(useParams)
+
 describe('<MoreActions />', () => {
+    beforeEach(() => {
+        mockUseParams.mockReturnValue({
+            activeTab: '',
+        })
+    })
+
     const macrosState: MacrosState = macrosFixtures.reduce(
         (acc: MacrosState, macro: Macro) => ({
             ...acc,
@@ -62,5 +84,15 @@ describe('<MoreActions />', () => {
 
         expect(props.handleMacroDelete).toHaveBeenCalled()
         expect(props.handleMacroDelete).toHaveBeenCalled()
+    })
+
+    it('should display `unarchive` action', () => {
+        mockUseParams.mockReturnValue({
+            activeTab: 'archived',
+        })
+        render(<MoreActions {...props} hasAgentPrivileges />)
+
+        expect(screen.getByLabelText('Unarchive macro')).toBeInTheDocument()
+        expect(screen.getByText('unarchive')).toBeInTheDocument()
     })
 })

@@ -1,6 +1,7 @@
 import {Macro} from '@gorgias/api-queries'
 import classNames from 'classnames'
 import React, {useRef, useState} from 'react'
+import {useParams} from 'react-router-dom'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -27,6 +28,10 @@ export default function MoreActions({
     const handleMacroArchive = (__macro: Macro) => {}
     const ref = useRef<HTMLButtonElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const {activeTab} = useParams<{activeTab: string}>()
+    const isArchiveTab = activeTab === 'archived'
+
+    const archiveLabel = `${isArchiveTab ? 'Unarchive' : 'Archive'} macro`
 
     return (
         <BodyCellContent className={css.wrapperActions}>
@@ -36,11 +41,11 @@ export default function MoreActions({
                 onClick={() => {
                     void handleMacroArchive(macro)
                 }}
-                title="Archive macro"
-                aria-label="Archive macro"
+                title={archiveLabel}
+                aria-label={archiveLabel}
                 isDisabled={!hasAgentPrivileges}
             >
-                archive
+                {isArchiveTab ? 'unarchive' : 'archive'}
             </IconButton>
             <ConfirmationPopover
                 buttonProps={{

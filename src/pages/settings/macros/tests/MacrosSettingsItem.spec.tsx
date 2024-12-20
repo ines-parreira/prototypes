@@ -1,10 +1,12 @@
 import {act, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+import {useParams} from 'react-router-dom'
 
 import {macros} from 'fixtures/macro'
 import {OrderDirection} from 'models/api/types'
 import {MacroSortableProperties} from 'models/macro/types'
+import {assumeMock} from 'utils/testing'
 
 import {MacrosSettingsItem} from '../MacrosSettingsItem'
 
@@ -27,6 +29,20 @@ jest.mock('reactstrap', () => {
     }
 })
 
+jest.mock(
+    'react-router-dom',
+    () =>
+        ({
+            ...jest.requireActual('react-router-dom'),
+            useParams: jest.fn(),
+            Link: jest.fn(
+                ({children}: {children: React.ReactNode}) => children
+            ),
+            NavLink: ({children}: {children: React.ReactNode}) => children,
+        }) as Record<string, unknown>
+)
+const mockUseParams = assumeMock(useParams)
+
 describe('<MacrosSettingsItem />', () => {
     const minProps = {
         datetimeFormat: '"MM/DD/YYYY"',
@@ -42,6 +58,12 @@ describe('<MacrosSettingsItem />', () => {
         selectedMacrosIds: [],
         setSelectedMacrosIds: jest.fn(),
     }
+
+    beforeEach(() => {
+        mockUseParams.mockReturnValue({
+            activeTab: '',
+        })
+    })
 
     it('should display a macro row', () => {
         render(<MacrosSettingsItem {...minProps} />)
