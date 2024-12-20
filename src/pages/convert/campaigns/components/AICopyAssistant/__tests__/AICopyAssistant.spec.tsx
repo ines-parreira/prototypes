@@ -5,13 +5,11 @@ import {logEvent} from 'common/segment'
 import {useSuggestCampaignCopy} from 'models/convert/campaign/queries'
 import {DEFAULT_CAMPAIGN_NAME} from 'pages/convert/campaigns/constants/labels'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {useIsAICopyAssistantEnabled} from 'pages/convert/common/hooks/useIsAICopyAssistantEnabled'
 
 import {assumeMock} from 'utils/testing'
 
 import {AICopyAssistant} from '../AICopyAssistant'
 
-jest.mock('pages/convert/common/hooks/useIsAICopyAssistantEnabled')
 jest.mock('models/convert/campaign/queries')
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
@@ -46,7 +44,6 @@ describe('AICopyAssistant', () => {
     }
 
     beforeEach(() => {
-        ;(useIsAICopyAssistantEnabled as jest.Mock).mockReturnValue(true)
         ;(useSuggestCampaignCopy as jest.Mock).mockReturnValue({
             mutateAsync: mockGenerateSuggestions,
         })
@@ -58,16 +55,6 @@ describe('AICopyAssistant', () => {
         expect(
             screen.getByText('Uplift your message with AI Copy Assistant')
         ).toBeInTheDocument()
-    })
-
-    it('should not render AICopyAssistant when the flag is disabled', () => {
-        ;(useIsAICopyAssistantEnabled as jest.Mock).mockReturnValue(false)
-
-        render(<AICopyAssistant {...defaultProps} />)
-
-        expect(
-            screen.queryByText('Uplift your message with AI Copy Assistant')
-        ).not.toBeInTheDocument()
     })
 
     it('should call onGenerateClick when Generate button is clicked', () => {

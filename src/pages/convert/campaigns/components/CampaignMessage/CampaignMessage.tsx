@@ -37,7 +37,6 @@ import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
 import {checkShopifyProductAvailabity} from 'pages/convert/campaigns/utils/checkProductAvailability'
 import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
 import useCanAddContactFormFlag from 'pages/convert/common/hooks/useContactFormFlag'
-import {useIsAICopyAssistantEnabled} from 'pages/convert/common/hooks/useIsAICopyAssistantEnabled'
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
 
 import {getNewMessageAttachments} from 'state/newMessage/selectors'
@@ -92,7 +91,6 @@ export const CampaignMessage = memo(
         const {shopifyIntegration} = useIntegrationContext()
         const {getStepConfiguration, getTourConfiguration} =
             useCampaignFormContext()
-        const isAssistantEnabled = useIsAICopyAssistantEnabled()
         const stepConfiguration = useMemo(() => {
             return getStepConfiguration(CampaignStepsKeys.Message)
         }, [getStepConfiguration])
@@ -293,9 +291,7 @@ export const CampaignMessage = memo(
         }
 
         const placeholder =
-            isConvertSubscriber &&
-            isAiCopyAssistantEnabled &&
-            isAssistantEnabled
+            isConvertSubscriber && isAiCopyAssistantEnabled
                 ? SUBSCRIBERS_PLACEHOLDER
                 : NONSUBSCRIBERS_PLACEHOLDER
 

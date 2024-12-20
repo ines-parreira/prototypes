@@ -10,7 +10,6 @@ import {VerticalTextCarousel} from 'pages/common/components/VerticalTextCarousel
 import {DEFAULT_CAMPAIGN_NAME} from 'pages/convert/campaigns/constants/labels'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
-import {useIsAICopyAssistantEnabled} from 'pages/convert/common/hooks/useIsAICopyAssistantEnabled'
 import {getCurrentAccountId} from 'state/currentAccount/selectors'
 
 import css from './AICopyAssistant.less'
@@ -44,7 +43,6 @@ export const AICopyAssistant = ({
     const currentAccountId = useAppSelector(getCurrentAccountId)
 
     const {mutateAsync: generateSuggestions} = useSuggestCampaignCopy()
-    const isAssistantEnabled = useIsAICopyAssistantEnabled()
 
     const context = useMemo(() => {
         const title =
@@ -84,7 +82,6 @@ export const AICopyAssistant = ({
 
     useEffect(() => {
         if (
-            isAssistantEnabled &&
             isEnabled &&
             shouldGenerateInitialSuggestion &&
             !hasGeneratedInitialSuggestion.current
@@ -92,12 +89,7 @@ export const AICopyAssistant = ({
             void onGenerateClick()
             hasGeneratedInitialSuggestion.current = true
         }
-    }, [
-        isAssistantEnabled,
-        isEnabled,
-        shouldGenerateInitialSuggestion,
-        onGenerateClick,
-    ])
+    }, [isEnabled, shouldGenerateInitialSuggestion, onGenerateClick])
 
     const applyButton = (
         <Button size="small" intent="primary" fillStyle="ghost">
@@ -128,10 +120,6 @@ export const AICopyAssistant = ({
             ? 'Regenerate'
             : 'Generate'
     }, [isRegenerating, shouldGenerateInitialSuggestion, suggestions])
-
-    if (!isAssistantEnabled) {
-        return null
-    }
 
     return (
         <AIBanner className={css.banner} hasError={hasError}>

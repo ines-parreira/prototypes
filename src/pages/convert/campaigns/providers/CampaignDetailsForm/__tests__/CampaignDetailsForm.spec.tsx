@@ -31,7 +31,6 @@ import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreview
 import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
 import {CampaignScheduleModeEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {useIsAICopyAssistantEnabled} from 'pages/convert/common/hooks/useIsAICopyAssistantEnabled'
 import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
 import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
 import {getNewMessageAttachments} from 'state/newMessage/selectors'
@@ -61,7 +60,6 @@ jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 jest.mock('pages/convert/campaigns/hooks/useUtm.ts')
 jest.mock('pages/stats/convert/hooks/useConvertGeneralSettings')
 jest.mock('pages/convert/common/hooks/useIsCampaignProritizationEnabled')
-jest.mock('pages/convert/common/hooks/useIsAICopyAssistantEnabled')
 jest.mock('models/convert/campaign/queries')
 const useGetOrCreateChannelConnectionMock = assumeMock(
     useGetOrCreateChannelConnection
@@ -145,7 +143,6 @@ describe('<CampaignDetailsForm />', () => {
         ;(useSuggestCampaignCopy as jest.Mock).mockReturnValue({
             mutateAsync: mockGenerateSuggestions,
         })
-        ;(useIsAICopyAssistantEnabled as jest.Mock).mockReturnValue(true)
     })
 
     beforeEach(() => {

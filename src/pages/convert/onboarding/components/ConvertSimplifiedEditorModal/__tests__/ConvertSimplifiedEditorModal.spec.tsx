@@ -26,7 +26,6 @@ import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscri
 import {CART_ABANDONMENT} from 'pages/convert/campaigns/templates/onboarding/cartAbandonment'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {useIsAICopyAssistantEnabled} from 'pages/convert/common/hooks/useIsAICopyAssistantEnabled'
 import {getNewMessageAttachments} from 'state/newMessage/selectors'
 import {RootState, StoreDispatch} from 'state/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
@@ -37,7 +36,6 @@ import {assumeMock, flushPromises} from 'utils/testing'
 import ConvertSimplifiedEditorModal from '../ConvertSimplifiedEditorModal'
 
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
-jest.mock('pages/convert/common/hooks/useIsAICopyAssistantEnabled')
 jest.mock('models/convert/campaign/queries')
 
 jest.mock('models/convert/campaign/queries')
@@ -112,7 +110,6 @@ describe('<ConvertSimplifiedEditorModal />', () => {
         ;(useSuggestCampaignCopy as jest.Mock).mockReturnValue({
             mutateAsync: mockGenerateSuggestions,
         })
-        ;(useIsAICopyAssistantEnabled as jest.Mock).mockReturnValue(true)
     })
 
     it('renders a template', async () => {

@@ -18,7 +18,6 @@ import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscri
 import * as integrationHook from 'pages/convert/campaigns/containers/IntegrationProvider'
 import {CampaignDetailsFormContext} from 'pages/convert/campaigns/providers/CampaignDetailsForm/context'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {useIsAICopyAssistantEnabled} from 'pages/convert/common/hooks/useIsAICopyAssistantEnabled'
 import * as integrationHelpers from 'state/integrations/helpers'
 import {RootState, StoreDispatch} from 'state/types'
 import {flushPromises} from 'utils/testing'
@@ -26,7 +25,6 @@ import {flushPromises} from 'utils/testing'
 import {AddContactCaptureFormProps} from '../../ContactCaptureForm/AddContactCaptureForm'
 import {CampaignMessage} from '../CampaignMessage'
 
-jest.mock('pages/convert/common/hooks/useIsAICopyAssistantEnabled')
 jest.mock('models/convert/campaign/queries')
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
 jest.mock('pages/convert/common/hooks/useContactFormFlag')
@@ -128,7 +126,6 @@ describe('<CampaignMessage>', () => {
         ;(useSuggestCampaignCopy as jest.Mock).mockReturnValue({
             mutateAsync: mockGenerateSuggestions,
         })
-        ;(useIsAICopyAssistantEnabled as jest.Mock).mockReturnValue(true)
     })
 
     describe('is not convert subscriber', () => {
