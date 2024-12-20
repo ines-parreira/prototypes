@@ -1,6 +1,4 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import _ from 'lodash'
-import _groupBy from 'lodash/groupBy'
 import _keyBy from 'lodash/keyBy'
 import React, {
     Dispatch,
@@ -13,12 +11,11 @@ import React, {
     useState,
 } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import {useStoreAppsContext} from 'pages/automate/actions/providers/StoreAppsContext'
 import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
+import useEnabledActionStepsByApp from 'pages/automate/actionsPlatform/hooks/useEnabledActionStepsByApp'
 import {useSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import VisualBuilderActionIcon from 'pages/automate/workflows/components/VisualBuilderActionIcon'
 import {labelByVisualBuilderNodeType} from 'pages/automate/workflows/constants'
@@ -948,11 +945,6 @@ const AppMenuCategoryItems = ({
     nodeId: string
     setMenuItems: Dispatch<SetStateAction<ReactNode>>
 }) => {
-    const enabledSteps:
-        | ActionTemplate['internal_id'][]
-        | Record<never, never>
-        | undefined = useFlags()[FeatureFlagKey.ActionSteps]
-
     const {visualBuilderGraph} = useVisualBuilderContext()
     const {data: steps = []} = useGetWorkflowConfigurationTemplates({
         triggers: ['reusable-llm-prompt'],
@@ -962,26 +954,7 @@ const AppMenuCategoryItems = ({
 
     const appsById = _keyBy(apps, 'id')
 
-    const stepsByApp = useMemo(
-        () =>
-            _groupBy(steps, (step) => {
-                if (
-                    Array.isArray(enabledSteps) &&
-                    !enabledSteps.includes(step.internal_id)
-                ) {
-                    return null
-                }
-
-                switch (step.apps[0].type) {
-                    case 'shopify':
-                    case 'recharge':
-                        return step.apps[0].type
-                    case 'app':
-                        return step.apps[0].app_id
-                }
-            }),
-        [steps, enabledSteps]
-    )
+    const stepsByApp = useEnabledActionStepsByApp(steps)
 
     return (
         <>
