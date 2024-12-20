@@ -55,6 +55,12 @@ jest.mock('react-cookie', () => ({
     ),
 }))
 
+jest.mock('@gorgias/realtime', () => ({
+    AgentActivityProvider: ({children}: {children: React.ReactNode}) => (
+        <div data-testid="realtime-provider">{children}</div>
+    ),
+}))
+
 jest.mock('../App', () => ({
     __esModule: true,
     default: ({children}: {children: React.ReactNode}) => (
@@ -83,5 +89,6 @@ describe('Main', () => {
         expect(screen.getByTestId('cookies-provider')).toBeInTheDocument()
         expect(screen.getByTestId('app')).toBeInTheDocument()
         expect(screen.getByText(childrenText)).toBeInTheDocument()
+        expect(screen.getByTestId('realtime-provider')).toBeInTheDocument()
     })
 })

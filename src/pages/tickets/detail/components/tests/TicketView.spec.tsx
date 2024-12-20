@@ -12,7 +12,9 @@ jest.mock('../TicketBody', () => () => <div>TicketBody</div>)
 jest.mock('../TicketBodyNonVirtualized', () => () => (
     <div>TicketBodyNonVirtualized</div>
 ))
-jest.mock('../TicketHeaderWrapper', () => () => <div>TicketHeaderWrapper</div>)
+jest.mock('../TicketHeaderWrapper/TicketHeaderWrapper', () => () => (
+    <div>TicketHeaderWrapper</div>
+))
 jest.mock('../ReplyForm', () => () => <div>ReplyForm</div>)
 
 jest.mock('hooks/useAppSelector')

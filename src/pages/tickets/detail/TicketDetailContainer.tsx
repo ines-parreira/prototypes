@@ -1,3 +1,4 @@
+import {useAgentActivity} from '@gorgias/realtime'
 import {fromJS, List, Map} from 'immutable'
 import _pick from 'lodash/pick'
 import React, {useEffect, useMemo, useRef, useState} from 'react'
@@ -639,6 +640,18 @@ export const TicketDetailContainer = ({
             callback()
         })
     }
+
+    const {joinTicket, leaveTicket} = useAgentActivity()
+
+    useEffect(() => {
+        if (ticketIdParam && ticketIdParam !== 'new') {
+            joinTicket(Number(ticketIdParam))
+
+            return () => {
+                leaveTicket()
+            }
+        }
+    }, [joinTicket, leaveTicket, ticketIdParam])
 
     if (isLoading || isLoadingPhoneTicketData) {
         return <Loader className={css.loader} message="Loading ticket..." />

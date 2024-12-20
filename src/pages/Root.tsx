@@ -1,3 +1,4 @@
+import {RealtimeProvider} from '@gorgias/realtime'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {createDragDropManager} from 'dnd-core'
 import Immutable from 'immutable'
@@ -69,11 +70,16 @@ const Root = ({store}: Props) => {
                         }}
                         context={LDContext}
                     >
-                        <Router history={history}>
-                            <Main>
-                                <Routes />
-                            </Main>
-                        </Router>
+                        <RealtimeProvider
+                            publishKey={window.PUBNUB_PUBLISH_KEY}
+                            subscribeKey={window.PUBNUB_SUBSCRIBE_KEY}
+                        >
+                            <Router history={history}>
+                                <Main>
+                                    <Routes />
+                                </Main>
+                            </Router>
+                        </RealtimeProvider>
                     </LDProvider>
                 </DndProvider>
             </Provider>

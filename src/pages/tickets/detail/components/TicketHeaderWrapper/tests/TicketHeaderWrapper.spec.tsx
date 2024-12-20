@@ -8,7 +8,9 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import client from 'models/api/resources'
-import TicketHeaderWrapper from 'pages/tickets/detail/components/TicketHeaderWrapper'
+import useCollisionDetection from 'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection'
+
+import TicketHeaderWrapper from '../TicketHeaderWrapper'
 
 jest.mock('launchdarkly-react-client-sdk', () => ({
     useFlags: jest.fn(),
@@ -21,6 +23,12 @@ jest.mock(
     'pages/tickets/detail/components/TicketFields/TicketFields',
     () => () => <div>TicketFields</div>
 )
+
+jest.mock(
+    'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection'
+)
+
+const mockUseCollisionDetection = useCollisionDetection as jest.Mock
 
 const mockedServer = new MockAdapter(client)
 const mockStore = configureMockStore([thunk])
@@ -41,6 +49,12 @@ describe('<TicketHeaderWrapper/>', () => {
     beforeEach(() => {
         mockedServer.reset()
         useFlagsMock.mockReturnValue(false)
+        mockUseCollisionDetection.mockReturnValue({
+            agentsViewing: [],
+            agentsViewingNotTyping: [],
+            agentsTyping: [],
+            hasBoth: false,
+        })
     })
 
     it('should render history button, ticket header and separator, and ticket fields', () => {

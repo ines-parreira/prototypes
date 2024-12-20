@@ -1,3 +1,4 @@
+import {AgentActivityProvider} from '@gorgias/realtime'
 import React, {ReactElement} from 'react'
 
 import {CookiesProvider} from 'react-cookie'
@@ -24,13 +25,15 @@ export default function Main({children}: Props) {
                     <BannersContextProvider>
                         <SpotlightProvider>
                             <VoiceDeviceProvider>
-                                <SplitTicketViewProvider>
-                                    <CookiesProvider
-                                        defaultSetOptions={{path: '/'}}
-                                    >
-                                        <App>{children}</App>
-                                    </CookiesProvider>
-                                </SplitTicketViewProvider>
+                                <AgentActivityProvider>
+                                    <SplitTicketViewProvider>
+                                        <CookiesProvider
+                                            defaultSetOptions={{path: '/'}}
+                                        >
+                                            <App>{children}</App>
+                                        </CookiesProvider>
+                                    </SplitTicketViewProvider>
+                                </AgentActivityProvider>
                             </VoiceDeviceProvider>
                         </SpotlightProvider>
                     </BannersContextProvider>
