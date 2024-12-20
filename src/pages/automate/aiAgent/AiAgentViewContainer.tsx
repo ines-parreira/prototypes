@@ -27,6 +27,7 @@ const AiAgentViewContainer = () => {
     }>()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountId = currentAccount.get('id')
+    const accountDomain = currentAccount.get('domain')
 
     const history = useHistory()
     const {routes} = useAiAgentNavigation({shopName})
@@ -40,7 +41,10 @@ const AiAgentViewContainer = () => {
     const isAiAgentOptimizeTabEnabled =
         useFlags()[FeatureFlagKey.AiAgentOptimizeTab]
 
-    const welcomePageAcknowledged = useWelcomePageAcknowledged({shopName})
+    const welcomePageAcknowledged = useWelcomePageAcknowledged({
+        accountDomain,
+        shopName,
+    })
 
     const {isLoading: isLoadingStoreConfiguration, storeConfiguration} =
         useAiAgentStoreConfigurationContext()
@@ -69,12 +73,14 @@ const AiAgentViewContainer = () => {
         return showDynamic ? (
             <AIAgentWelcomePageDynamic
                 state="dynamic"
+                accountDomain={accountDomain}
                 shopType={shopType}
                 shopName={shopName}
             />
         ) : (
             <AIAgentWelcomePageView
                 state="static"
+                accountDomain={accountDomain}
                 shopType={shopType}
                 shopName={shopName}
             />
@@ -99,6 +105,7 @@ const AiAgentViewContainer = () => {
     return (
         <AIAgentWelcomePageDynamic
             state="onboardingWizard"
+            accountDomain={accountDomain}
             shopType={shopType}
             shopName={shopName}
             storeConfiguration={storeConfiguration}

@@ -94,12 +94,14 @@ describe('<AIAgentWelcomePageDynamic />', () => {
 
     const baseLoadingProps = {
         state: 'loading',
+        accountDomain: 'my-account-domain',
         shopType: 'shopify',
         shopName: 'my-shop',
     }
 
     const baseDynamicProps = {
         state: 'dynamic',
+        accountDomain: 'my-account-domain',
         shopType: 'shopify',
         shopName: 'my-shop',
         emailConnected: {
@@ -132,6 +134,7 @@ describe('<AIAgentWelcomePageDynamic />', () => {
         render(
             <AIAgentWelcomePageDynamic
                 state="dynamic"
+                accountDomain="my-account-domain"
                 shopType="shopify"
                 shopName={shopName}
             />
@@ -152,6 +155,7 @@ describe('<AIAgentWelcomePageDynamic />', () => {
         render(
             <AIAgentWelcomePageDynamic
                 state="onboardingWizard"
+                accountDomain="my-account-domain"
                 shopType="shopify"
                 shopName={shopName}
             />

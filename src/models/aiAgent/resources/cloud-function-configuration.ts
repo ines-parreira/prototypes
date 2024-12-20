@@ -117,13 +117,22 @@ export const createStoreSnippetHelpCenter = async (
 /**
  * Endpoints "/stores/<storeName>/welcome-page-acknowledged"
  */
-export const getWelcomePageAcknowledged = async (storeName: string) => {
+
+// accountDomain is unused in this function but we keep it in the arguments list
+// to be iso with the new implementation of getWelcomePageAcknowledged in `configuration.ts`
+export const getWelcomePageAcknowledged = async (
+    accountDomain: string,
+    storeName: string
+) => {
     return await apiClient.get<WelcomePageAcknowledgedResponse>(
         `/stores/${storeName}/welcome-page-acknowledged`
     )
 }
 
-export const createWelcomePageAcknowledged = async (storeName: string) => {
+export const createWelcomePageAcknowledged = async (
+    accountDomain: string,
+    storeName: string
+) => {
     return await apiClient.post<WelcomePageAcknowledgedResponse>(
         `/stores/${storeName}/welcome-page-acknowledged`
     )

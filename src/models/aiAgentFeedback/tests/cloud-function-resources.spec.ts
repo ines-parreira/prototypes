@@ -1,12 +1,12 @@
 import {InternalAxiosRequestConfig} from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import {apiClient} from 'models/aiAgent/resources/configuration'
+import {apiClient} from 'models/aiAgent/resources/cloud-function-configuration'
 import {
     getAIAgentTicketMessagesFeedback,
     submitAIAgentTicketMessagesFeedback,
     deleteAIAgentTicketMessagesFeedback,
-} from 'models/aiAgentFeedback/resources'
+} from 'models/aiAgentFeedback/cloud-function-resources'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 import {assumeMock} from 'utils/testing'
 
@@ -22,7 +22,7 @@ jest.mock('utils/gorgiasAppsAuth', () => ({
 
 const mockedGorgiasAppsAuthInterceptor = assumeMock(gorgiasAppsAuthInterceptor)
 
-describe('AI Agent Feedback resources', () => {
+describe('AI Agent Feedback Cloud Function resources', () => {
     beforeEach(() => {
         mockedServer.reset()
 

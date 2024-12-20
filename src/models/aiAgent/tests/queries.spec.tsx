@@ -22,7 +22,7 @@ import {
 import {
     createWelcomePageAcknowledged,
     getWelcomePageAcknowledged,
-} from '../resources/account-configuration'
+} from '../resources/cloud-function-configuration'
 import * as guidanceResources from '../resources/guidances'
 import {createContextAndGenerateCustomToneOfVoicePreview} from '../resources/message-processing'
 
@@ -30,7 +30,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useHelpCenterApi: jest.fn(),
 }))
 
-jest.mock('models/aiAgent/resources/account-configuration', () => ({
+jest.mock('models/aiAgent/resources/cloud-function-configuration', () => ({
     createWelcomePageAcknowledged: jest.fn(),
     getWelcomePageAcknowledged: jest.fn(),
 }))
@@ -150,6 +150,7 @@ describe('queries', () => {
 
     describe('useGetWelcomePageAcknowledged', () => {
         it('should call useQuery with the correct parameters', async () => {
+            const accountDomain = 'myAccountDomain'
             const storeName = 'myStore'
             const mockData = {acknowledged: true}
             const overrides = {staleTime: 1000}
@@ -159,7 +160,12 @@ describe('queries', () => {
             )
 
             renderHook(
-                () => useGetWelcomePageAcknowledged(storeName, overrides),
+                () =>
+                    useGetWelcomePageAcknowledged(
+                        accountDomain,
+                        storeName,
+                        overrides
+                    ),
                 {wrapper}
             )
 

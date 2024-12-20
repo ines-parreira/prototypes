@@ -20,6 +20,7 @@ type Props = AiAgentWelcomePageProps & {
 }
 
 export const AIAgentWelcomePageDynamic = ({
+    accountDomain,
     shopType,
     shopName,
     storeConfiguration,
@@ -116,6 +117,7 @@ export const AIAgentWelcomePageDynamic = ({
         return (
             <AIAgentWelcomePageView
                 state="loading"
+                accountDomain={accountDomain}
                 shopType={shopType}
                 shopName={shopName}
             />
@@ -125,6 +127,7 @@ export const AIAgentWelcomePageDynamic = ({
     return (
         <AIAgentWelcomePageView
             state={state}
+            accountDomain={accountDomain}
             shopType={shopType}
             shopName={shopName}
             storeConfiguration={storeConfiguration}

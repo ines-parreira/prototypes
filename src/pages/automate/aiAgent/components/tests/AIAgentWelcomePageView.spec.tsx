@@ -98,6 +98,7 @@ describe('<AIAgentWelcomePageView />', () => {
     it('should render loading state correctly', async () => {
         render(
             <AIAgentWelcomePageView
+                accountDomain="my-account-domain"
                 shopType="shopify"
                 shopName="my-store"
                 state="loading"
@@ -110,6 +111,7 @@ describe('<AIAgentWelcomePageView />', () => {
     it('should render static state correctly', () => {
         render(
             <AIAgentWelcomePageView
+                accountDomain="my-account-domain"
                 shopType="shopify"
                 shopName="my-store"
                 state="static"
@@ -163,6 +165,7 @@ describe('<AIAgentWelcomePageView />', () => {
         render(
             <AIAgentWelcomePageView
                 state="static"
+                accountDomain="my-account-domain"
                 shopType="shopify"
                 shopName="my-shop"
             />
@@ -175,6 +178,7 @@ describe('<AIAgentWelcomePageView />', () => {
         fireEvent.click(button)
 
         expect(createWelcomePageAcknowledgedMock).toHaveBeenCalledWith([
+            'my-account-domain',
             'my-shop',
         ])
 
@@ -189,6 +193,7 @@ describe('<AIAgentWelcomePageView />', () => {
     it('should render dynamic state correctly when nothing is checked', () => {
         render(
             <AIAgentWelcomePageView
+                accountDomain="my-account-domain"
                 shopType="shopify"
                 shopName="my-store"
                 state="dynamic"
@@ -235,6 +240,7 @@ describe('<AIAgentWelcomePageView />', () => {
     it('should render dynamic state correctly when some are checked', () => {
         render(
             <AIAgentWelcomePageView
+                accountDomain="my-account-domain"
                 shopType="shopify"
                 shopName="my-store"
                 state="dynamic"
@@ -272,6 +278,7 @@ describe('<AIAgentWelcomePageView />', () => {
     it('should render dynamic state correctly when all are checked', () => {
         render(
             <AIAgentWelcomePageView
+                accountDomain="my-account-domain"
                 shopType="shopify"
                 shopName="my-store"
                 state="dynamic"
@@ -305,7 +312,7 @@ describe('<AIAgentWelcomePageView />', () => {
         assertText('checked', 3)
     })
 
-    it('should call createWelcomePageAcknowledged with correct parameters on button click in static state', async () => {
+    it('should call createWelcomePageAcknowledged with correct parameters on button click in dynamic state', async () => {
         const createWelcomePageAcknowledgedMock = jest.fn()
         ;(useWelcomePageAcknowledgedMutation as jest.Mock).mockReturnValue({
             createWelcomePageAcknowledged: createWelcomePageAcknowledgedMock,
@@ -314,6 +321,7 @@ describe('<AIAgentWelcomePageView />', () => {
 
         render(
             <AIAgentWelcomePageView
+                accountDomain="my-account-domain"
                 shopType="shopify"
                 shopName="my-store"
                 state="dynamic"
@@ -336,6 +344,7 @@ describe('<AIAgentWelcomePageView />', () => {
         fireEvent.click(button)
 
         expect(createWelcomePageAcknowledgedMock).toHaveBeenCalledWith([
+            'my-account-domain',
             'my-store',
         ])
 
@@ -357,6 +366,7 @@ describe('<AIAgentWelcomePageView />', () => {
         render(
             <AIAgentWelcomePageView
                 state="static"
+                accountDomain="my-account-domain"
                 shopType="shopify"
                 shopName="my-shop"
             />
@@ -392,6 +402,7 @@ describe('<AIAgentWelcomePageView />', () => {
         render(
             <AIAgentWelcomePageView
                 state="static"
+                accountDomain="my-account-domain"
                 shopType="shopify"
                 shopName="my-shop"
             />
@@ -430,6 +441,7 @@ describe('<AIAgentWelcomePageView />', () => {
     it('should render onboardingWizard state with the correct copy', () => {
         render(
             <AIAgentWelcomePageView
+                accountDomain="my-account-domain"
                 shopType="shopify"
                 shopName="my-store"
                 state="onboardingWizard"
@@ -466,6 +478,7 @@ describe('<AIAgentWelcomePageView />', () => {
 
         renderWithRouter(
             <AIAgentWelcomePageView
+                accountDomain="my-account-domain"
                 shopType={SHOP_TYPE}
                 shopName={SHOP_NAME}
                 state="onboardingWizard"
@@ -506,6 +519,7 @@ describe('<AIAgentWelcomePageView />', () => {
 
         renderWithRouter(
             <AIAgentWelcomePageView
+                accountDomain="my-account-domain"
                 shopType={SHOP_TYPE}
                 shopName={SHOP_NAME}
                 storeConfiguration={getStoreConfigurationFixture(
@@ -543,6 +557,7 @@ describe('<AIAgentWelcomePageView />', () => {
     it('should render dynamic state for Onboarding Wizard update when storeConfiguration is exist', () => {
         render(
             <AIAgentWelcomePageView
+                accountDomain="my-account-domain"
                 shopType="shopify"
                 shopName="my-store"
                 storeConfiguration={getStoreConfigurationFixture(

@@ -23,6 +23,7 @@ export type DynamicItem = {
 }
 
 export type AiAgentWelcomePageProps = {
+    accountDomain: string
     shopType: string
     shopName: string
     storeConfiguration?: StoreConfiguration
@@ -80,7 +81,10 @@ export const AIAgentWelcomePageView = (props: Props) => {
 
     const onAcknowledgedClick = async () => {
         try {
-            await createWelcomePageAcknowledged([props.shopName])
+            await createWelcomePageAcknowledged([
+                props.accountDomain,
+                props.shopName,
+            ])
 
             logEvent(SegmentEvent.AiAgentWelcomePageCtaClicked, {
                 version: props.state === 'dynamic' ? 'Dynamic' : 'Basic',

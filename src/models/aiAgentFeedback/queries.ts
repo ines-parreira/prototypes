@@ -1,15 +1,26 @@
 import {UseQueryOptions, useMutation, useQuery} from '@tanstack/react-query'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import useAppSelector from 'hooks/useAppSelector'
 import {DATE_FEATURE_AVAILABLE} from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import {getAIAgentMessages} from 'state/ticket/selectors'
 import {MutationOverrides} from 'types/query'
 
+import {FeatureFlagKey} from '../../config/featureFlags'
+import * as CloudFunctionConfig from './cloud-function-resources'
 import {
     getAIAgentTicketMessagesFeedback,
     submitAIAgentTicketMessagesFeedback,
     deleteAIAgentTicketMessagesFeedback,
 } from './resources'
+
+import * as KubernetesConfig from './resources'
+
+// Factory function to select the appropriate manager
+function getConfigManager(useKubernetes: boolean) {
+    return useKubernetes ? KubernetesConfig : CloudFunctionConfig
+}
 
 export const aiAgentFeedbackKeys = {
     all: () => ['aiAgentFeedback'] as const,
@@ -23,6 +34,12 @@ export const useGetAiAgentFeedback = (
         Awaited<ReturnType<typeof getAIAgentTicketMessagesFeedback>>
     >
 ) => {
+    const useKubernetesConfigManager =
+        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
+    const {getAIAgentTicketMessagesFeedback} = getConfigManager(
+        useKubernetesConfigManager
+    )
+
     const aiMessages = useAppSelector(getAIAgentMessages)
     const messageIds = aiMessages
         .filter(
@@ -46,6 +63,12 @@ export const useSubmitAIAgentTicketMessagesFeedback = <TContext = unknown>(
         TContext
     >
 ) => {
+    const useKubernetesConfigManager =
+        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
+    const {submitAIAgentTicketMessagesFeedback} = getConfigManager(
+        useKubernetesConfigManager
+    )
+
     return useMutation({
         mutationFn: (params) => submitAIAgentTicketMessagesFeedback(...params),
         ...overrides,
@@ -55,6 +78,12 @@ export const useSubmitAIAgentTicketMessagesFeedback = <TContext = unknown>(
 export const useDeleteAIAgentTicketMessagesFeedback = (
     overrides?: MutationOverrides<typeof deleteAIAgentTicketMessagesFeedback>
 ) => {
+    const useKubernetesConfigManager =
+        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
+    const {deleteAIAgentTicketMessagesFeedback} = getConfigManager(
+        useKubernetesConfigManager
+    )
+
     return useMutation({
         mutationFn: (params) => deleteAIAgentTicketMessagesFeedback(...params),
         ...overrides,

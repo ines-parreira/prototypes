@@ -1,4 +1,4 @@
-import {apiClient} from 'models/aiAgent/resources/configuration'
+import {apiClient} from 'models/aiAgent/resources/cloud-function-configuration'
 
 import {ResourceSection} from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 

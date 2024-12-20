@@ -1,18 +1,25 @@
 import {useQuery, UseQueryOptions} from '@tanstack/react-query'
 import axios from 'axios'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     CACHE_TIME_MS,
     STALE_TIME_MS,
     accountConfigurationKeys,
 } from 'models/aiAgent/queries'
-import {
-    getAccountConfiguration,
-    createAccountConfiguration,
-} from 'models/aiAgent/resources/account-configuration'
+import * as CloudFunctionConfig from 'models/aiAgent/resources/cloud-function-configuration'
+import * as KubernetesConfig from 'models/aiAgent/resources/configuration'
+import {getAccountConfiguration} from 'models/aiAgent/resources/configuration'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+
+// Factory function to select the appropriate manager
+function getConfigManager(useKubernetes: boolean) {
+    return useKubernetes ? KubernetesConfig : CloudFunctionConfig
+}
 
 export function useGetOrCreateAccountConfiguration(
     params: {
@@ -25,6 +32,12 @@ export function useGetOrCreateAccountConfiguration(
     >
 ) {
     const dispatch = useAppDispatch()
+
+    const useKubernetesConfigManager =
+        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
+    const {getAccountConfiguration, createAccountConfiguration} =
+        getConfigManager(useKubernetesConfigManager)
+
     const {accountId, accountDomain, storeNames} = params
     return useQuery({
         queryKey: accountConfigurationKeys.detail(accountDomain),

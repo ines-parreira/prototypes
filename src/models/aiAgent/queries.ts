@@ -3,12 +3,8 @@ import {UseQueryOptions, useMutation, useQuery} from '@tanstack/react-query'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {searchCustomer} from 'models/aiAgentPlayground/resources'
-import {SearchCustomerRequest} from 'models/aiAgentPlayground/types'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {Paths} from 'rest_api/help_center_api/client.generated'
-import {MutationOverrides} from 'types/query'
-
+import * as CloudFunctionConfig from 'models/aiAgent/resources/cloud-function-configuration'
+import * as KubernetesConfig from 'models/aiAgent/resources/configuration'
 import {
     createStoreConfiguration,
     createStoreSnippetHelpCenter,
@@ -18,7 +14,13 @@ import {
     getWelcomePageAcknowledged,
     upsertAccountConfiguration,
     upsertStoreConfiguration,
-} from './resources/account-configuration'
+} from 'models/aiAgent/resources/configuration'
+import {searchCustomer} from 'models/aiAgentPlayground/resources'
+import {SearchCustomerRequest} from 'models/aiAgentPlayground/types'
+import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import {Paths} from 'rest_api/help_center_api/client.generated'
+import {MutationOverrides} from 'types/query'
+
 import {getAIGeneratedGuidances} from './resources/guidances'
 import {
     createContextAndGenerateCustomToneOfVoicePreview,
@@ -28,6 +30,11 @@ import {GetStoreConfigurationParams} from './types'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
 export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
+
+// Factory function to select the appropriate manager
+function getConfigManager(useKubernetes: boolean) {
+    return useKubernetes ? KubernetesConfig : CloudFunctionConfig
+}
 
 export const accountConfigurationKeys = {
     all: () => ['aiAgentAccountConfigurations'] as const,
@@ -42,6 +49,13 @@ export const useGetAccountConfiguration = (
         Awaited<ReturnType<typeof getAccountConfiguration>>
     >
 ) => {
+    const useKubernetesConfigManager =
+        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
+
+    const {getAccountConfiguration} = getConfigManager(
+        useKubernetesConfigManager
+    )
+
     return useQuery({
         queryKey: accountConfigurationKeys.detail(accountDomain),
         queryFn: () => getAccountConfiguration(accountDomain),
@@ -54,6 +68,13 @@ export const useGetAccountConfiguration = (
 export const useUpsertAccountConfigurationPure = (
     overrides?: MutationOverrides<typeof upsertAccountConfiguration>
 ) => {
+    const useKubernetesConfigManager =
+        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
+
+    const {upsertAccountConfiguration} = getConfigManager(
+        useKubernetesConfigManager
+    )
+
     return useMutation({
         mutationFn: (params) => upsertAccountConfiguration(...params),
         ...overrides,
@@ -76,6 +97,11 @@ export const useGetStoreConfigurationPure = (
         Awaited<ReturnType<typeof getStoreConfiguration>>
     >
 ) => {
+    const useKubernetesConfigManager =
+        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
+
+    const {getStoreConfiguration} = getConfigManager(useKubernetesConfigManager)
+
     return useQuery({
         queryKey: storeConfigurationKeys.detail(params),
         queryFn: () => getStoreConfiguration(params),
@@ -88,6 +114,13 @@ export const useGetStoreConfigurationPure = (
 export const useCreateStoreConfigurationPure = (
     overrides?: MutationOverrides<typeof createStoreConfiguration>
 ) => {
+    const useKubernetesConfigManager =
+        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
+
+    const {createStoreConfiguration} = getConfigManager(
+        useKubernetesConfigManager
+    )
+
     return useMutation({
         mutationFn: (params) => createStoreConfiguration(...params),
         ...overrides,
@@ -97,6 +130,13 @@ export const useCreateStoreConfigurationPure = (
 export const useUpsertStoreConfigurationPure = (
     overrides?: MutationOverrides<typeof upsertStoreConfiguration>
 ) => {
+    const useKubernetesConfigManager =
+        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
+
+    const {upsertStoreConfiguration} = getConfigManager(
+        useKubernetesConfigManager
+    )
+
     return useMutation({
         mutationFn: (params) => upsertStoreConfiguration(...params),
         ...overrides,
@@ -106,6 +146,13 @@ export const useUpsertStoreConfigurationPure = (
 export const useCreateStoreSnippetHelpCenter = (
     overrides?: MutationOverrides<typeof createStoreSnippetHelpCenter>
 ) => {
+    const useKubernetesConfigManager =
+        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
+
+    const {createStoreSnippetHelpCenter} = getConfigManager(
+        useKubernetesConfigManager
+    )
+
     return useMutation({
         mutationFn: (params) => createStoreSnippetHelpCenter(...params),
         ...overrides,
@@ -199,14 +246,22 @@ export const getWelcomePageAcknowledgedKey = (storeName: string) =>
     ['ai-agent-welcome-page-acknowledged', storeName] as const
 
 export const useGetWelcomePageAcknowledged = (
+    accountDomain: string,
     storeName: string,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getWelcomePageAcknowledged>>
     >
 ) => {
+    const useKubernetesConfigManager =
+        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
+
+    const {getWelcomePageAcknowledged} = getConfigManager(
+        useKubernetesConfigManager
+    )
+
     return useQuery({
         queryKey: getWelcomePageAcknowledgedKey(storeName),
-        queryFn: () => getWelcomePageAcknowledged(storeName),
+        queryFn: () => getWelcomePageAcknowledged(accountDomain, storeName),
         ...overrides,
     })
 }
@@ -214,8 +269,16 @@ export const useGetWelcomePageAcknowledged = (
 export const useCreateWelcomePageAcknowledged = (
     overrides?: MutationOverrides<typeof createWelcomePageAcknowledged>
 ) => {
+    const useKubernetesConfigManager =
+        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
+
+    const {createWelcomePageAcknowledged} = getConfigManager(
+        useKubernetesConfigManager
+    )
+
     return useMutation({
-        mutationFn: ([storeName]) => createWelcomePageAcknowledged(storeName),
+        mutationFn: ([accountDomain, storeName]) =>
+            createWelcomePageAcknowledged(accountDomain, storeName),
         ...overrides,
     })
 }

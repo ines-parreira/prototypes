@@ -10,20 +10,20 @@ import {RootState, StoreDispatch} from 'state/types'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
+import {
+    deleteAIAgentTicketMessagesFeedback,
+    getAIAgentTicketMessagesFeedback,
+    submitAIAgentTicketMessagesFeedback,
+} from '../cloud-function-resources'
 import {ReportIssueOption} from '../constants'
 import {
     useGetAiAgentFeedback,
     useSubmitAIAgentTicketMessagesFeedback,
     useDeleteAIAgentTicketMessagesFeedback,
 } from '../queries'
-import {
-    deleteAIAgentTicketMessagesFeedback,
-    getAIAgentTicketMessagesFeedback,
-    submitAIAgentTicketMessagesFeedback,
-} from '../resources'
 import {DeleteMessageFeedback, SubmitMessageFeedback} from '../types'
 
-jest.mock('../resources', () => ({
+jest.mock('../cloud-function-resources', () => ({
     getAIAgentTicketMessagesFeedback: jest.fn(),
     submitAIAgentTicketMessagesFeedback: jest.fn(),
     deleteAIAgentTicketMessagesFeedback: jest.fn(),

@@ -8,6 +8,7 @@ import {useWelcomePageAcknowledged} from '../useWelcomePageAcknowledged'
 jest.mock('models/aiAgent/queries')
 
 describe('useWelcomePageAcknowledged', () => {
+    const accountDomain = 'my-account-domain'
     const shopName = 'test-shop'
 
     beforeEach(() => {
@@ -15,7 +16,9 @@ describe('useWelcomePageAcknowledged', () => {
     })
 
     const renderUseWelcomePageAcknowledgedHook = () => {
-        return renderHook(() => useWelcomePageAcknowledged({shopName}))
+        return renderHook(() =>
+            useWelcomePageAcknowledged({accountDomain, shopName})
+        )
     }
 
     const mockUseGetWelcomePageAcknowledged = (
