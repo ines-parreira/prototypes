@@ -182,7 +182,7 @@ function WorkflowEditorViewWrapped({
     }
 
     const handleTest = () => {
-        const configurationError = workflowEditorContext.handleValidate(true)
+        const configurationError = !workflowEditorContext.handleValidate(true)
 
         if (configurationError) {
             notifyMerchant({

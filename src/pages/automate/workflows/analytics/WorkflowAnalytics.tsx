@@ -87,7 +87,7 @@ export default function WorkflowAnalytics({
             workflowEditorContext.setIsTesting(true)
         } else {
             const configurationError =
-                workflowEditorContext.handleValidate(true)
+                !workflowEditorContext.handleValidate(true)
 
             if (configurationError) {
                 notifyMerchant({
