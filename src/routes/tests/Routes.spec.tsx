@@ -29,7 +29,6 @@ import Satisfaction from 'pages/stats/quality-management/satisfaction/Satisfacti
 import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
 import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
 import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsReport'
-import SupportPerformanceTags from 'pages/stats/SupportPerformanceTags'
 import {Tags} from 'pages/stats/ticket-insights/tags/Tags'
 import Routes from 'routes/Routes'
 import {initialState} from 'state/billing/reducers'
@@ -153,8 +152,6 @@ jest.mock('pages/stats/LiveOverview')
 const LiveOverviewMock = assumeMock(LiveOverview)
 jest.mock('pages/stats/ticket-insights/tags/Tags')
 const TagsMock = assumeMock(Tags)
-jest.mock('pages/stats/SupportPerformanceTags')
-const OldTagsMock = assumeMock(SupportPerformanceTags)
 jest.mock('pages/stats/quality-management/satisfaction/Satisfaction')
 const SatisfactionMock = assumeMock(Satisfaction)
 jest.mock('pages/stats/custom-reports/CustomReports')
@@ -184,7 +181,6 @@ describe('<Routes/>', () => {
         AutoQAMock.mockImplementation(() => <div />)
         SatisfactionMock.mockImplementation(() => <div />)
         TagsMock.mockImplementation(() => <div />)
-        OldTagsMock.mockImplementation(() => <div />)
         LiveOverviewMock.mockImplementation(() => <div />)
         CustomReportPageMock.mockImplementation(() => <div />)
         CustomReportsMock.mockImplementation(() => <div />)
@@ -567,10 +563,6 @@ describe('<Routes/>', () => {
         })
 
         it('should render NewTagsPage page', () => {
-            mockFlags({
-                [FeatureFlagKey.NewTagsReport]: true,
-            })
-
             renderWithStore(
                 <MemoryRouter initialEntries={['/app/stats/tags']}>
                     <Routes />
@@ -579,23 +571,6 @@ describe('<Routes/>', () => {
             )
 
             expect(TagsMock).toHaveBeenCalled()
-            expect(OldTagsMock).not.toHaveBeenCalled()
-        })
-
-        it('should render OldTagsPage page', () => {
-            mockFlags({
-                [FeatureFlagKey.NewTagsReport]: false,
-            })
-
-            renderWithStore(
-                <MemoryRouter initialEntries={['/app/stats/tags']}>
-                    <Routes />
-                </MemoryRouter>,
-                state
-            )
-
-            expect(OldTagsMock).toHaveBeenCalled()
-            expect(TagsMock).not.toHaveBeenCalled()
         })
 
         it('should render Automate AI Agent page', () => {

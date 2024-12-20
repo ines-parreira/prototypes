@@ -138,7 +138,6 @@ import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsR
 import SupportPerformanceOverviewReport from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReport'
 import SupportPerformanceRevenue from 'pages/stats/support-performance/revenue/SupportPerformanceRevenue'
 import SupportPerformanceSatisfaction from 'pages/stats/support-performance/satisfaction/SupportPerformanceSatisfaction'
-import SupportPerformanceTags from 'pages/stats/SupportPerformanceTags'
 import {Tags} from 'pages/stats/ticket-insights/tags/Tags'
 import {SupportPerformanceTicketInsights} from 'pages/stats/ticket-insights/ticket-fields/SupportPerformanceTicketInsights'
 import LiveVoice from 'pages/stats/voice/pages/LiveVoice'
@@ -463,9 +462,6 @@ export function StatsRoutes() {
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
     const hasAutomate = useAppSelector(getHasAutomate)
 
-    const isNewTagsReportEnabled: FeatureFlag =
-        useFlags()[FeatureFlagKey.NewTagsReport]
-
     const isAiAgentStatsPageEnabled: FeatureFlag =
         useFlags()[FeatureFlagKey.AIAgentStatsPage]
 
@@ -585,16 +581,9 @@ export function StatsRoutes() {
                 <Route
                     exact
                     path={`${path}/tags`}
-                    render={() =>
-                        !!isNewTagsReportEnabled ? (
-                            <App content={Tags} navbar={StatsNavbarContainer} />
-                        ) : (
-                            <App
-                                content={SupportPerformanceTags}
-                                navbar={StatsNavbarContainer}
-                            />
-                        )
-                    }
+                    render={() => (
+                        <App content={Tags} navbar={StatsNavbarContainer} />
+                    )}
                 />
                 {!!isNewSatisfactionReportEnabled && (
                     <Route

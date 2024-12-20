@@ -204,33 +204,7 @@ describe('StatsNavbarView', () => {
         }
     )
 
-    it('should render the link to the Old Tags Report Page when NewTagsReport is disabled', () => {
-        mockFlags({
-            [FeatureFlagKey.NewTagsReport]: false,
-        })
-
-        const {container} = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <DndProvider backend={HTML5Backend}>
-                    <StatsNavbarView />
-                </DndProvider>
-            </Provider>
-        )
-
-        const TagsReportLink = container.querySelector(
-            'a[href="/app/stats/tags"]'
-        )
-        const newBadgeText = TagsReportLink?.children?.[0]?.innerHTML
-
-        expect(TagsReportLink).toBeInTheDocument()
-        expect(newBadgeText).toBeUndefined()
-    })
-
-    it('should render the link to the New Tags Report page when NewTagsReport is enabled', () => {
-        mockFlags({
-            [FeatureFlagKey.NewTagsReport]: true,
-        })
-
+    it('should render the link to the New Tags Report page', () => {
         const {container} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <DndProvider backend={HTML5Backend}>
