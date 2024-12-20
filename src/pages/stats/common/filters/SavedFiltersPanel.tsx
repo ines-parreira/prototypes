@@ -444,6 +444,7 @@ export const SavedFiltersPanel = ({
                                     <div className={classnames(css.buttons)}>
                                         <Button
                                             intent={'secondary'}
+                                            fillStyle="ghost"
                                             onClick={cancelHandler}
                                         >
                                             {CANCEL_BUTTON_LABEL}
