@@ -9,7 +9,7 @@ import {
 import {useQueryClient} from '@tanstack/react-query'
 import classnames from 'classnames'
 import React, {useCallback, useEffect, useState} from 'react'
-import {NavLink} from 'react-router-dom'
+import {NavLink, useParams} from 'react-router-dom'
 
 import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -39,19 +39,27 @@ export function MacrosSettingsContent() {
     const queryClient = useQueryClient()
     const queryKey = queryKeys.macros.listMacros() as string[]
     queryKey.pop()
+    const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives, false)
+    const {activeTab} = useParams<{activeTab: string}>()
+    const isArchiveTab = activeTab === 'archived'
 
     const [listMacrosParams, setListMacrosParams] = useState<ListMacrosParams>({
         order_by: 'created_datetime:asc',
     })
-    const {data, isLoading, isError} = useListMacros(listMacrosParams, {
-        query: {
-            staleTime: STALE_TIME_MS,
+    const {data, isLoading, isError} = useListMacros(
+        {
+            ...listMacrosParams,
+            ...(isArchivingAvailable && isArchiveTab ? {archived: true} : {}),
         },
-    })
+        {
+            query: {
+                staleTime: STALE_TIME_MS,
+            },
+        }
+    )
 
     const {mutateAsync: createMacro} = useCreateMacro()
     const {mutateAsync: deleteMacro} = useDeleteMacro()
-    const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives, false)
     const [selectedMacrosIds, setSelectedMacrosIds] = useState<number[]>([])
 
     useEffect(() => {

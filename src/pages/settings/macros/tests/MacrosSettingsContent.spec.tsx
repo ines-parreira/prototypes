@@ -576,4 +576,32 @@ describe('<MacrosSettingsContent/>', () => {
 
         expect(checkboxFirstMacro).not.toBeChecked()
     })
+
+    it('should display list of archived macros', () => {
+        mockUseFlag.mockImplementation(() => true)
+        mockUseParams.mockReturnValue({
+            activeTab: 'archived',
+        })
+        render(
+            <Provider
+                store={mockStore({
+                    currentUser: fromJS(user),
+                })}
+            >
+                <MacrosSettingsContent />
+            </Provider>
+        )
+
+        expect(useListMacros).toHaveBeenCalledWith(
+            {
+                archived: true,
+                order_by: 'created_datetime:asc',
+            },
+            {
+                query: {
+                    staleTime: expect.any(Number),
+                },
+            }
+        )
+    })
 })
