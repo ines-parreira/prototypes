@@ -14,8 +14,8 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {formatDatetime} from 'utils'
 
+import css from './MacrosSettingsItem.less'
 import {MacrosSettingsItemTag} from './MacrosSettingsItemTag'
-import css from './MacrosSettingsList.less'
 import MoreActions from './MoreActions'
 
 type Props = {
@@ -95,9 +95,7 @@ export function MacrosSettingsItem({
                     />
                 )}
                 <Link to={to}>
-                    <BodyCellContent className={css.name}>
-                        {name}
-                    </BodyCellContent>
+                    <BodyCellContent>{name}</BodyCellContent>
                 </Link>
             </td>
             <td className={bodyCellCss.wrapper}>

@@ -4,7 +4,7 @@ import React from 'react'
 import Badge, {ColorType} from 'pages/common/components/Badge'
 import TicketTag from 'pages/common/components/TicketTag'
 
-import css from './MacrosSettingsList.less'
+import css from './MacrosSettingsItem.less'
 
 type Props = {
     id: string
