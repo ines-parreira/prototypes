@@ -20,6 +20,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
 import {
+    isCommonDomain,
     parseRecordsCurrentValues,
     populateCurrentValuesForDNSRecords,
 } from '../helpers'
@@ -69,6 +70,8 @@ export default function DomainVerificationProvider({
         },
     })
 
+    const isCommonDomainAddress = isCommonDomain(domainName)
+
     const [domain, setDomain] = useState<EmailDomain | undefined>()
 
     const isPending = isRequestPending && !domain?.verified
@@ -77,7 +80,8 @@ export default function DomainVerificationProvider({
         if (
             domainError?.status === 404 &&
             !isCreatingDomain &&
-            !domainCreationError
+            !domainCreationError &&
+            !isCommonDomainAddress
         ) {
             createDomain({
                 domainName,
@@ -91,6 +95,7 @@ export default function DomainVerificationProvider({
         domain,
         isCreatingDomain,
         domainCreationError,
+        isCommonDomainAddress,
     ])
 
     useEffect(() => {

@@ -8,7 +8,11 @@ import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
 
 import {getIntegrationsLoading} from 'state/integrations/selectors'
 
-import {getDomainFromEmailAddress, isBaseEmailAddress} from '../helpers'
+import {
+    getDomainFromEmailAddress,
+    isBaseEmailAddress,
+    isCommonDomainEmail,
+} from '../helpers'
 import RecordsTable from './components/RecordsTable'
 import useDomainVerification from './useDomainVerification'
 
@@ -22,13 +26,18 @@ export default function EmailDomainVerificationContent({integration}: Props) {
 
     const address = integration.meta?.address || ''
     const isBaseIntegration = isBaseEmailAddress(address)
+    const isCommonDomainAddress = isCommonDomainEmail(address)
     const domainName = getDomainFromEmailAddress(address)
 
     const {domain, isCreatingDomain, errors, isFetching} =
         useDomainVerification()
 
     const shouldDisplayLoadingState =
-        isLoadingIntegration || isFetching || !domain || isCreatingDomain
+        isLoadingIntegration ||
+        isFetching ||
+        !domain ||
+        isCreatingDomain ||
+        !isCommonDomainAddress
 
     if (isBaseIntegration) {
         return (
@@ -38,7 +47,16 @@ export default function EmailDomainVerificationContent({integration}: Props) {
         )
     }
 
-    if (!domain && errors.createDomain) {
+    if (isCommonDomainAddress) {
+        return (
+            <Alert className="mb-5">
+                The domain associated with this email address is a common domain
+                and cannot be verified.
+            </Alert>
+        )
+    }
+
+    if (!domain && errors.createDomain && !isCommonDomainAddress) {
         return (
             <FormSection
                 title="There was an issue processing your request"

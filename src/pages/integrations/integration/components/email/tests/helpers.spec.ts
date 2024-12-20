@@ -25,12 +25,12 @@ import {
     parseRecordsCurrentValues,
     populateCurrentValuesForDNSRecords,
     removeDomainFromDNSRecord,
-    isCommonDomain,
+    isCommonDomainEmail,
 } from '../helpers'
 import * as helpers from '../helpers'
 
 const isBaseEmailIntegrationSpy = jest.spyOn(helpers, 'isBaseEmailIntegration')
-const isCommonDomainSpy = jest.spyOn(helpers, 'isCommonDomain')
+const isCommonDomainSpy = jest.spyOn(helpers, 'isCommonDomainEmail')
 
 const integration = {
     provider: EmailProvider.Sendgrid,
@@ -197,12 +197,12 @@ describe('helpers', () => {
         it.each(['abc@gmail.com', 'abc@yahoo.com', 'abc@outlook.com'])(
             'should return true for common domain %s',
             (domain) => {
-                expect(isCommonDomain(domain)).toBe(true)
+                expect(isCommonDomainEmail(domain)).toBe(true)
             }
         )
 
         it('should return false for non-common domain', () => {
-            expect(isCommonDomain('gorgias.com')).toBe(false)
+            expect(isCommonDomainEmail('gorgias.com')).toBe(false)
         })
     })
 

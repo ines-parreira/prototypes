@@ -1,6 +1,8 @@
 import {EmailIntegration} from '@gorgias/api-queries'
 import React, {useEffect} from 'react'
 
+import {isCommonDomainEmail} from 'pages/integrations/integration/components/email/helpers'
+
 import EmailDomainVerificationContent from './EmailDomainVerification/EmailDomainVerificationContent'
 import useDomainVerification from './EmailDomainVerification/useDomainVerification'
 import EmailIntegrationOnboardingButtons from './EmailIntegrationOnboardingButtons'
@@ -16,18 +18,21 @@ export default function EmailIntegrationOnboardingDomainVerification({
 }: Props) {
     const {completeOnboarding} = useEmailOnboardingCompleteCheck(integration)
     const {domain} = useDomainVerification()
+    const isCommonDomainAddress = isCommonDomainEmail(integration.meta?.address)
 
     useEffect(() => {
-        if (domain?.verified) {
+        if (domain?.verified || isCommonDomainAddress) {
             completeOnboarding()
         }
-    }, [domain?.verified, completeOnboarding])
+    }, [domain?.verified, completeOnboarding, isCommonDomainAddress])
 
     return (
         <>
             <EmailDomainVerificationContent integration={integration} />
             <EmailIntegrationOnboardingButtons integration={integration} />
-            <OnboardingDomainVerificationPrompt when={!domain?.verified} />
+            <OnboardingDomainVerificationPrompt
+                when={!domain?.verified && !isCommonDomainAddress}
+            />
         </>
     )
 }

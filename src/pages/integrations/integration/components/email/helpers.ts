@@ -104,9 +104,13 @@ export const isBaseEmailIntegration = (
     return isBaseEmailAddress(emailIntegration.meta.address)
 }
 
-export const isCommonDomain = (emailAddress: string): boolean => {
+export const isCommonDomainEmail = (emailAddress: string): boolean => {
     const domain = getDomainFromEmailAddress(emailAddress)
 
+    return isCommonDomain(domain)
+}
+
+export const isCommonDomain = (domain: string): boolean => {
     return !!commonDomains.find((commonDomain) =>
         domain.startsWith(commonDomain)
     )
@@ -122,7 +126,7 @@ export const canIntegrationDomainBeVerified = (
 ): boolean => {
     return (
         !helpers.isBaseEmailIntegration(emailIntegration) &&
-        !helpers.isCommonDomain(emailIntegration.meta.address)
+        !helpers.isCommonDomainEmail(emailIntegration.meta.address)
     )
 }
 
