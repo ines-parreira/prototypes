@@ -17,13 +17,13 @@ export const IntentTableWidget = ({
     tableHint,
 }: IntentWidget) => {
     return (
-        <>
+        <div>
             <div className={css.title}>{title}</div>
             <div className={css.description}>{description}</div>
             <IntentTableWithDefaultState
                 tableTitle={tableTitle}
                 tableHint={tableHint}
             />
-        </>
+        </div>
     )
 }

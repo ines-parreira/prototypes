@@ -1,0 +1,178 @@
+import {render} from '@testing-library/react'
+import React from 'react'
+
+import {useAIAgentMetrics} from 'hooks/reporting/automate/useAIAgentInsightsDataset'
+import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
+import useAppSelector from 'hooks/useAppSelector'
+
+import {IntentsPerformance} from '../IntentsPerformance/IntentsPerformance'
+import {Level1IntentsPerformance} from './Level1IntentsPerformance'
+
+jest.mock('../IntentsPerformance/IntentsPerformance', () => ({
+    IntentsPerformance: jest.fn(() => <></>),
+}))
+
+jest.mock('hooks/reporting/automate/useAIAgentInsightsDataset')
+const useAIAgentMetricsMock = useAIAgentMetrics as jest.Mock
+
+jest.mock('hooks/reporting/automate/useNewAutomateFilters')
+const useNewAutomateFiltersMock = useNewAutomateFilters as jest.Mock
+
+jest.mock('state/stats/selectors')
+jest.mock('hooks/useAppSelector')
+const useAppSelectorMock = useAppSelector as jest.Mock
+
+const aiAgentAutomatedInteractionTrend = {
+    data: {
+        isFetching: false,
+        isError: false,
+        data: {value: 420, prevValue: 450},
+    },
+    isError: false,
+    isFetching: false,
+}
+
+const aiAgentCSAT = {
+    data: {prevValue: 3.5, value: 3.7},
+    isError: false,
+    isFetching: true,
+}
+
+const aiAgentSuccessRate = {
+    data: {prevValue: 0.23, value: 0.3},
+    isError: true,
+    isFetching: false,
+}
+
+const coverageTrend = {
+    data: {
+        isFetching: false,
+        isError: false,
+        data: {value: 30, prevValue: 27},
+    },
+    isError: false,
+    isFetching: false,
+}
+
+describe('OptimizeContainer', () => {
+    beforeEach(() => {
+        useNewAutomateFiltersMock.mockReturnValueOnce({userTimezone: 'UTC'})
+
+        useAppSelectorMock.mockReturnValueOnce({
+            period: {
+                start_datetime: '2024-12-13T00:00:00.000',
+                end_datetime: '2024-12-20T00:00:00.000',
+            },
+        })
+    })
+
+    it('renders the component correctly', () => {
+        useAIAgentMetricsMock.mockReturnValueOnce({
+            aiAgentAutomatedInteractionTrend,
+            aiAgentCSAT,
+            aiAgentSuccessRate,
+            coverageTrend,
+        })
+        render(<Level1IntentsPerformance />)
+        expect(IntentsPerformance).toHaveBeenCalledWith(
+            expect.objectContaining({
+                period: {
+                    start_datetime: '2024-12-13T00:00:00.000',
+                    end_datetime: '2024-12-20T00:00:00.000',
+                },
+                metrics: [
+                    expect.objectContaining({
+                        title: 'Coverage rate',
+                        trend: coverageTrend,
+                    }),
+                    expect.objectContaining({
+                        title: 'Automated interactions',
+                        trend: aiAgentAutomatedInteractionTrend,
+                    }),
+                    expect.objectContaining({
+                        title: 'Automation rate',
+                        trend: aiAgentSuccessRate,
+                    }),
+                    expect.objectContaining({
+                        title: 'Customer satisfaction',
+                        trend: aiAgentCSAT,
+                    }),
+                ],
+            }),
+            {}
+        )
+    })
+
+    it('renders the component correctly with loading and error', () => {
+        useAIAgentMetricsMock.mockReturnValueOnce({
+            aiAgentAutomatedInteractionTrend: {
+                ...aiAgentAutomatedInteractionTrend,
+                isLoading: true,
+            },
+            aiAgentCSAT: {
+                ...aiAgentCSAT,
+                data: {
+                    ...aiAgentCSAT.data,
+                    value: 2,
+                },
+            },
+            aiAgentSuccessRate: {
+                ...aiAgentSuccessRate,
+                data: {
+                    ...aiAgentCSAT.data,
+                    value: 0,
+                },
+            },
+            coverageTrend: {
+                ...coverageTrend,
+                isLoading: true,
+            },
+        })
+        render(<Level1IntentsPerformance />)
+        expect(IntentsPerformance).toHaveBeenCalledWith(
+            expect.objectContaining({
+                period: {
+                    start_datetime: '2024-12-13T00:00:00.000',
+                    end_datetime: '2024-12-20T00:00:00.000',
+                },
+                metrics: [
+                    expect.objectContaining({
+                        title: 'Coverage rate',
+                        trend: {
+                            ...coverageTrend,
+                            isLoading: true,
+                        },
+                    }),
+                    expect.objectContaining({
+                        title: 'Automated interactions',
+                        trend: {
+                            ...aiAgentAutomatedInteractionTrend,
+                            isLoading: true,
+                        },
+                    }),
+                    expect.objectContaining({
+                        title: 'Automation rate',
+                        trend: {
+                            ...aiAgentSuccessRate,
+                            data: {
+                                ...aiAgentCSAT.data,
+                                value: 0,
+                            },
+                        },
+                    }),
+                    expect.objectContaining({
+                        title: 'Customer satisfaction',
+                        trend: {
+                            ...aiAgentCSAT,
+                            data: {
+                                ...aiAgentCSAT.data,
+                                value: 2,
+                            },
+                        },
+                    }),
+                ],
+            }),
+            {}
+        )
+    })
+})

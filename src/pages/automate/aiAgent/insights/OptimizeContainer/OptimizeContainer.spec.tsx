@@ -1,30 +1,56 @@
 import {QueryClientProvider} from '@tanstack/react-query'
-import {screen, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 
 import {account} from 'fixtures/account'
-import history from 'pages/history'
 
+import {PeriodFilter} from 'pages/stats/common/filters/PeriodFilter'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {mockStore, renderWithRouter} from 'utils/testing'
 
+import {IntentTableWidget} from '../IntentTableWidget/IntentTableWidget'
+import {Level1IntentsPerformance} from '../widgets/Level1IntentsPerformance/Level1IntentsPerformance'
 import {OptimizeContainer} from './OptimizeContainer'
+
+jest.mock('pages/stats/common/filters/PeriodFilter', () => ({
+    PeriodFilter: jest.fn(() => <></>),
+}))
+
+jest.mock('../IntentTableWidget/IntentTableWidget', () => ({
+    IntentTableWidget: jest.fn(() => <></>),
+}))
+
+jest.mock(
+    '../widgets/Level1IntentsPerformance/Level1IntentsPerformance',
+    () => ({
+        Level1IntentsPerformance: jest.fn(() => <></>),
+    })
+)
 
 jest.mock('pages/automate/aiAgent/hooks/useAiAgentEnabled', () => ({
     useAiAgentEnabled: jest.fn().mockReturnValue(true),
 }))
 
-const defaultStore = mockStore({
+const defaultStore = {
     currentAccount: fromJS({
         ...account,
     }),
-})
+    stats: {
+        filters: {
+            period: {
+                start_datetime: null,
+                end_datetime: null,
+            },
+        },
+    },
+}
 const SHOP_NAME = 'shopify-store'
 const SHOP_TYPE = 'shopify'
 
-const renderComponent = () =>
+const renderComponent = () => {
+    jest.useFakeTimers().setSystemTime(new Date('2024-12-20T00:00:00Z'))
+
     renderWithRouter(
         <Provider store={mockStore(defaultStore)}>
             <QueryClientProvider client={mockQueryClient()}>
@@ -36,24 +62,14 @@ const renderComponent = () =>
             route: `/${SHOP_TYPE}/${SHOP_NAME}/ai-agent/optimize`,
         }
     )
+}
 
 describe('OptimizeContainer', () => {
-    beforeEach(() => {})
-
-    it('renders the component', () => {
+    it('renders the component correctly', () => {
         renderComponent()
 
-        expect(screen.getByText('OptimizeContainer')).toBeInTheDocument()
-    })
-
-    it('calls history.push with the correct route on button click', () => {
-        renderComponent()
-
-        const button = screen.getByText('Click me')
-        fireEvent.click(button)
-
-        expect(history.push).toHaveBeenCalledWith(
-            `/app/automation/${SHOP_TYPE}/${SHOP_NAME}/ai-agent/optimize/intentId`
-        )
+        expect(PeriodFilter).toHaveBeenCalled()
+        expect(Level1IntentsPerformance).toHaveBeenCalled()
+        expect(IntentTableWidget).toHaveBeenCalled()
     })
 })
