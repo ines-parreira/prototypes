@@ -29,7 +29,8 @@ describe('toolbar plugin', () => {
                 {
                     key: 'k',
                     ctrlKey: true,
-                } as KeyboardEvent,
+                    stopPropagation: jest.fn(),
+                } as unknown as KeyboardEvent,
                 mockedPluginMethods
             )
             expect(ctrlA).not.toBe('insert-link')

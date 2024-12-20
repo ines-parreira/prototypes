@@ -99,6 +99,7 @@ export default function toolbarPlugin(config: Config): Plugin {
                 e.key === 'k' &&
                 KeyBindingUtil.hasCommandModifier(e)
             ) {
+                e.stopPropagation()
                 return 'insert-link'
             }
         },
