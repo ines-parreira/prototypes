@@ -172,7 +172,7 @@ function insertReusableLLMPromptCall(
                         '{{objects.customer}}'
                     break
                 case 'order':
-                    reusableLLMPromptCallNode.data.objects.customer =
+                    reusableLLMPromptCallNode.data.objects.order =
                         '{{objects.order}}'
                     break
                 case 'product': {

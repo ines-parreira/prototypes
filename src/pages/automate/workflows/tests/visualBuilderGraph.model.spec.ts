@@ -934,11 +934,19 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                     },
                     {
                         ...buildNodeCommonProperties(),
+                        id: 'conditions1',
+                        type: 'conditions',
+                        data: {
+                            name: '',
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
                         id: 'http_request1',
                         type: 'http_request',
                         data: {
                             name: '',
-                            url: 'https://example.com?order_name={{objects.order.name}}',
+                            url: 'https://example.com',
                             method: 'GET',
                             headers: [],
                             variables: [
@@ -982,7 +990,25 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                     {
                         ...buildEdgeCommonProperties(),
                         source: 'trigger',
+                        target: 'conditions1',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        id: 'conditions1_branch1',
+                        source: 'conditions1',
                         target: 'http_request1',
+                        data: {
+                            conditions: {
+                                and: [
+                                    {
+                                        equals: [
+                                            {var: 'objects.order.name'},
+                                            'test',
+                                        ],
+                                    },
+                                ],
+                            },
+                        },
                     },
                     {
                         ...buildEdgeCommonProperties(),
@@ -1218,6 +1244,26 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
             []
         )
 
+        expect(configuration.triggers).toEqual([
+            {
+                kind: 'llm-prompt',
+                settings: {
+                    conditions: null,
+                    custom_inputs: [],
+                    object_inputs: [
+                        {
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                            kind: 'customer',
+                        },
+                        {
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                            kind: 'order',
+                        },
+                    ],
+                    outputs: [],
+                },
+            },
+        ])
         expect(configuration.steps).toEqual([
             {
                 id: 'reusable_llm_prompt_call1',
@@ -1240,6 +1286,176 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                         value2: 1,
                         value3: true,
                     },
+                },
+            },
+        ])
+    })
+
+    it('should transform graph with LLM prompt trigger', () => {
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration(
+            {
+                id: '',
+                internal_id: '',
+                is_draft: false,
+                isTemplate: false,
+                name: 'LLM prompt trigger',
+                available_languages: [],
+                nodes: [
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'trigger',
+                        type: 'llm_prompt_trigger',
+                        data: {
+                            instructions: '',
+                            requires_confirmation: false,
+                            inputs: [
+                                {
+                                    data_type: 'string',
+                                    id: 'input1',
+                                    name: 'Input 1',
+                                    instructions: 'some instructions',
+                                },
+                            ],
+                            conditionsType: null,
+                            conditions: [],
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'conditions1',
+                        type: 'conditions',
+                        data: {
+                            name: '',
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'http_request1',
+                        type: 'http_request',
+                        data: {
+                            name: '',
+                            url: 'https://example.com',
+                            method: 'GET',
+                            headers: [],
+                            variables: [
+                                {
+                                    id: 'variable1',
+                                    name: 'test',
+                                    jsonpath: '$.string',
+                                    data_type: 'string',
+                                },
+                            ],
+                            json: null,
+                            formUrlencoded: null,
+                            bodyContentType: null,
+                            outputs: [
+                                {
+                                    id: 'output1',
+                                    path: 'steps_state.http_request1.content.variable1',
+                                    description: 'some description',
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end_success',
+                        type: 'end',
+                        data: {
+                            action: 'end',
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end_failure',
+                        type: 'end',
+                        data: {
+                            action: 'end',
+                        },
+                    },
+                ],
+                edges: [
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'trigger',
+                        target: 'conditions1',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        id: 'conditions1_branch1',
+                        source: 'conditions1',
+                        target: 'http_request1',
+                        data: {
+                            conditions: {
+                                and: [
+                                    {
+                                        equals: [
+                                            {var: 'objects.order.name'},
+                                            'test',
+                                        ],
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'http_request1',
+                        target: 'end_success',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'http_request1',
+                        target: 'end_failure',
+                    },
+                ],
+                nodeEditingId: null,
+                choiceEventIdEditing: null,
+                branchIdsEditing: [],
+            },
+            true,
+            []
+        )
+        expect(configuration.entrypoints).toEqual([
+            {
+                kind: 'llm-conversation',
+                trigger: 'llm-prompt',
+                settings: {
+                    requires_confirmation: false,
+                    instructions: '',
+                },
+            },
+        ])
+        expect(configuration.triggers).toEqual([
+            {
+                kind: 'llm-prompt',
+                settings: {
+                    custom_inputs: [
+                        {
+                            data_type: 'string',
+                            id: 'input1',
+                            name: 'Input 1',
+                            instructions: 'some instructions',
+                        },
+                    ],
+                    object_inputs: [
+                        {
+                            kind: 'customer',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                        },
+                        {
+                            kind: 'order',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                        },
+                    ],
+                    outputs: [
+                        {
+                            id: 'output1',
+                            path: 'steps_state.http_request1.content.variable1',
+                            description: 'some description',
+                        },
+                    ],
+                    conditions: null,
                 },
             },
         ])

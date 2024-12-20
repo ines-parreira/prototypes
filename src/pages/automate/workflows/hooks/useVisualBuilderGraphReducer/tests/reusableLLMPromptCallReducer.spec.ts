@@ -87,6 +87,7 @@ describe('reusableLLMPromptCallReducer', () => {
             },
             objects: {
                 customer: '{{objects.customer}}',
+                order: '{{objects.order}}',
                 products: {
                     input2: expect.stringMatching(/{{objects\.products\.\w+}}/),
                 },

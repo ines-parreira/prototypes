@@ -275,6 +275,42 @@ export function cleanConditionsFromEmptyVariables(
     return conditions
 }
 
+function setLLMPromptCustomerObjectInput(
+    trigger: Extract<
+        NonNullable<WorkflowConfiguration['triggers']>[number],
+        {kind: 'llm-prompt'}
+    >
+): void {
+    if (
+        trigger.settings.object_inputs.every(
+            (input) => input.kind !== 'customer'
+        )
+    ) {
+        trigger.settings.object_inputs.push({
+            kind: 'customer',
+            integration_id: '{{store.helpdesk_integration_id}}',
+        })
+    }
+}
+
+function setLLMPromptOrderObjectInput(
+    trigger: Extract<
+        NonNullable<WorkflowConfiguration['triggers']>[number],
+        {kind: 'llm-prompt'}
+    >
+): void {
+    setLLMPromptCustomerObjectInput(trigger)
+
+    if (
+        trigger.settings.object_inputs.every((input) => input.kind !== 'order')
+    ) {
+        trigger.settings.object_inputs.push({
+            kind: 'order',
+            integration_id: '{{store.helpdesk_integration_id}}',
+        })
+    }
+}
+
 function setLLMPromptObjectInputs(
     g: VisualBuilderGraph,
     node: VisualBuilderNode,
@@ -283,7 +319,7 @@ function setLLMPromptObjectInputs(
         {kind: 'llm-prompt'}
     >
 ) {
-    const variables = extractVariablesFromNode(node)
+    const variables = extractVariablesFromNode(node, g.edges)
     const availableVariables = getWorkflowVariableListForNode(
         g,
         node.id,
@@ -296,80 +332,10 @@ function setLLMPromptObjectInputs(
         .forEach((variable) => {
             switch (variable?.nodeType) {
                 case 'shopper_authentication':
-                    {
-                        if (
-                            trigger.settings.object_inputs.every(
-                                (input) => input.kind !== 'customer'
-                            )
-                        ) {
-                            const index =
-                                trigger.settings.object_inputs.findIndex(
-                                    (input) => input.kind === 'order'
-                                )
-
-                            if (index !== -1) {
-                                trigger.settings.object_inputs.splice(
-                                    index,
-                                    0,
-                                    {
-                                        kind: 'customer',
-                                        integration_id:
-                                            '{{store.helpdesk_integration_id}}',
-                                    }
-                                )
-                            } else {
-                                trigger.settings.object_inputs.push({
-                                    kind: 'customer',
-                                    integration_id:
-                                        '{{store.helpdesk_integration_id}}',
-                                })
-                            }
-                        }
-                    }
+                    setLLMPromptCustomerObjectInput(trigger)
                     break
                 case 'order_selection':
-                    {
-                        if (
-                            trigger.settings.object_inputs.every(
-                                (input) => input.kind !== 'customer'
-                            )
-                        ) {
-                            const index =
-                                trigger.settings.object_inputs.findIndex(
-                                    (input) => input.kind === 'order'
-                                )
-
-                            if (index !== -1) {
-                                trigger.settings.object_inputs.splice(
-                                    index,
-                                    0,
-                                    {
-                                        kind: 'customer',
-                                        integration_id:
-                                            '{{store.helpdesk_integration_id}}',
-                                    }
-                                )
-                            } else {
-                                trigger.settings.object_inputs.push({
-                                    kind: 'customer',
-                                    integration_id:
-                                        '{{store.helpdesk_integration_id}}',
-                                })
-                            }
-                        }
-
-                        if (
-                            trigger.settings.object_inputs.every(
-                                (input) => input.kind !== 'order'
-                            )
-                        ) {
-                            trigger.settings.object_inputs.push({
-                                kind: 'order',
-                                integration_id:
-                                    '{{store.helpdesk_integration_id}}',
-                            })
-                        }
-                    }
+                    setLLMPromptOrderObjectInput(trigger)
                     break
             }
         })
@@ -383,7 +349,7 @@ function setReusableLLMPromptObjectInputs(
         {kind: 'reusable-llm-prompt'}
     >
 ) {
-    const variables = extractVariablesFromNode(node)
+    const variables = extractVariablesFromNode(node, g.edges)
     const availableVariables = getWorkflowVariableListForNode(
         g,
         node.id,
@@ -753,6 +719,16 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 }
                 c.steps.push(step)
                 stepIdByNodeId[node.id] = step.id
+
+                const trigger = c.triggers?.[0]
+
+                if (trigger?.kind === 'llm-prompt') {
+                    setLLMPromptObjectInputs(g, node, trigger)
+                }
+
+                if (trigger?.kind === 'reusable-llm-prompt') {
+                    setReusableLLMPromptObjectInputs(g, node, trigger)
+                }
             } else if (node.type === 'reusable_llm_prompt_call') {
                 const step: WorkflowStepReusableLLMPromptCall = {
                     id: node.id,
@@ -768,6 +744,18 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 }
                 c.steps.push(step)
                 stepIdByNodeId[node.id] = step.id
+
+                const trigger = c.triggers?.[0]
+
+                if (trigger?.kind === 'llm-prompt') {
+                    if (node.data.objects?.customer) {
+                        setLLMPromptCustomerObjectInput(trigger)
+                    }
+
+                    if (node.data.objects?.order) {
+                        setLLMPromptOrderObjectInput(trigger)
+                    }
+                }
             } else if (node.type === 'http_request') {
                 const headers = node.data.headers.reduce<
                     Record<string, string>
