@@ -1,31 +1,48 @@
 import classnames from 'classnames'
-import React from 'react'
+import {fromJS, Map} from 'immutable'
+import React, {useMemo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {AgentLabel} from 'pages/common/utils/labels'
 import TicketHeader from 'pages/tickets/detail/components/TicketHeader'
+import {
+    getOtherAgentsOnTicket,
+    getOtherAgentsTypingOnTicket,
+} from 'state/agents/selectors'
 import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
-import TicketFields from '../TicketFields/TicketFields'
-import useCollisionDetection from './hooks/useCollisionDetection'
-
+import TicketFields from './TicketFields/TicketFields'
 import css from './TicketHeaderWrapper.less'
 
-const CollisionDetection = ({ticketId}: {ticketId: number}) => {
-    const {agentsViewing, agentsViewingNotTyping, agentsTyping, hasBoth} =
-        useCollisionDetection(ticketId)
+const CollisionDetection = () => {
+    const agentsViewing =
+        useAppSelector((state) =>
+            getOtherAgentsOnTicket(state.ticket.get('id'))(state)
+        ) || fromJS([])
+    const agentsTyping =
+        useAppSelector((state) =>
+            getOtherAgentsTypingOnTicket(state.ticket.get('id'))(state)
+        ) || fromJS([])
+
+    const agentsViewingNotTyping = useMemo(
+        () => agentsViewing.filter((userId) => !agentsTyping.contains(userId)),
+        [agentsViewing, agentsTyping]
+    )
+    const hasBoth = useMemo(
+        () => agentsTyping.size > 0 && agentsViewingNotTyping.size > 0,
+        [agentsTyping, agentsViewingNotTyping]
+    )
 
     return (
         <div
             className={classnames(css.viewersBanner, {
-                [css.hidden]:
-                    agentsViewing.length <= 0 && agentsTyping.length <= 0,
+                [css.hidden]: agentsViewing.size <= 0 && agentsTyping.size <= 0,
                 [css.bothCollisions]: hasBoth,
             })}
         >
             {
                 // we want to hide text during animation if there is no agents viewing
-                agentsTyping.length > 0 && (
+                agentsTyping.size > 0 && (
                     <div className={css.collisionCategory}>
                         <i className={classnames(css.icon, 'material-icons')}>
                             mode_edit
@@ -36,10 +53,10 @@ const CollisionDetection = ({ticketId}: {ticketId: number}) => {
                         {agentsTyping.map((agent, index) => (
                             <AgentLabel
                                 key={index}
-                                name={agent.name}
-                                profilePictureUrl={
-                                    agent.meta?.profile_picture_url
-                                }
+                                name={(agent as Map<any, any>).get('name')}
+                                profilePictureUrl={(
+                                    agent as Map<any, any>
+                                ).getIn(['meta', 'profile_picture_url'])}
                                 className={css.collisionAgent}
                                 shouldDisplayAvatar
                             />
@@ -49,7 +66,7 @@ const CollisionDetection = ({ticketId}: {ticketId: number}) => {
             }
             {
                 // we want to hide text during animation if there is no agents viewing
-                agentsViewingNotTyping.length > 0 && (
+                agentsViewingNotTyping.size > 0 && (
                     <div className={css.collisionCategory}>
                         <i className={classnames(css.icon, 'material-icons')}>
                             remove_red_eye
@@ -60,10 +77,10 @@ const CollisionDetection = ({ticketId}: {ticketId: number}) => {
                         {agentsViewingNotTyping.map((agent, index) => (
                             <AgentLabel
                                 key={index}
-                                name={agent.name}
-                                profilePictureUrl={
-                                    agent.meta?.profile_picture_url
-                                }
+                                name={(agent as Map<any, any>).get('name')}
+                                profilePictureUrl={(
+                                    agent as Map<any, any>
+                                ).getIn(['meta', 'profile_picture_url'])}
                                 className={css.collisionAgent}
                                 shouldDisplayAvatar
                             />
@@ -104,7 +121,7 @@ const TicketHeaderWrapper = ({
                     onToggleUnread={onToggleUnread}
                 />
                 <TicketFields />
-                <CollisionDetection ticketId={ticket.get('id')} />
+                <CollisionDetection />
             </div>
             {isExistingTicket && <div style={{height: 8}} />}
         </>

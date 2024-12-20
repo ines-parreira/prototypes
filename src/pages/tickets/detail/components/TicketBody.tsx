@@ -24,7 +24,7 @@ import MessageQuoteContext from './MessageQuoteContext'
 import css from './TicketBody.less'
 import TicketBodyElement from './TicketBodyElement'
 import TicketFooter, {TicketFooterContext} from './TicketFooter'
-import TicketHeaderWrapper from './TicketHeaderWrapper/TicketHeaderWrapper'
+import TicketHeaderWrapper from './TicketHeaderWrapper'
 
 interface Props {
     customScrollParentRef?: React.RefObject<HTMLDivElement>
