@@ -47,7 +47,7 @@ export default function UserMenu({onClose}: Props) {
             <Screen name={ActiveScreen.Main}>
                 <AvailabilityToggle />
                 <hr className={css.separator} />
-                <div
+                <button
                     onClick={() => {
                         setActiveScreen(ActiveScreen.Theme)
                     }}
@@ -72,7 +72,7 @@ export default function UserMenu({onClose}: Props) {
                                 selectedTheme?.label}
                         </span>
                     </DropdownItemLabel>
-                </div>
+                </button>
                 <hr className={css.separator} />
                 <DropdownBody>
                     <NavbarLink
@@ -90,7 +90,7 @@ export default function UserMenu({onClose}: Props) {
                         </i>
                         Your profile
                     </NavbarLink>
-                    <div
+                    <button
                         onClick={() => {
                             setActiveScreen(ActiveScreen.Updates)
                         }}
@@ -114,8 +114,8 @@ export default function UserMenu({onClose}: Props) {
                             </i>
                             Gorgias updates
                         </DropdownItemLabel>
-                    </div>
-                    <div
+                    </button>
+                    <button
                         className={cn(css['dropdown-item-user-menu'])}
                         onClick={() => {
                             setActiveScreen(ActiveScreen.Learn)
@@ -139,7 +139,7 @@ export default function UserMenu({onClose}: Props) {
                             </i>
                             Learn
                         </DropdownItemLabel>
-                    </div>
+                    </button>
                     <OfficeHours onToggleDropdown={onClose} />
                     <NavbarLink
                         to="/app/referral-program"
@@ -157,7 +157,7 @@ export default function UserMenu({onClose}: Props) {
                         Refer a friend & earn
                     </NavbarLink>
 
-                    <div
+                    <button
                         className={cn(css['dropdown-item-user-menu'])}
                         onClick={() => {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
@@ -173,7 +173,7 @@ export default function UserMenu({onClose}: Props) {
                             exit_to_app
                         </i>
                         Log out
-                    </div>
+                    </button>
                 </DropdownBody>
             </Screen>
 
@@ -190,17 +190,15 @@ export default function UserMenu({onClose}: Props) {
                     Back
                 </DropdownHeader>
                 <DropdownBody>
-                    <div
+                    <a
+                        href="https://docs.gorgias.com/"
+                        target="_blank"
+                        rel="noreferrer"
                         className={cn(css['dropdown-item-user-menu'])}
                         onClick={() => {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'helpdocs',
                             })
-                            window.open(
-                                'https://docs.gorgias.com/',
-                                '_blank',
-                                'noopener'
-                            )
                             onClose()
                         }}
                     >
@@ -211,18 +209,16 @@ export default function UserMenu({onClose}: Props) {
                             help
                         </i>
                         Help Center
-                    </div>
-                    <div
+                    </a>
+                    <a
+                        href="https://app.getcontrast.io/gorgias?utm_source=in_app&utm_medium=menu&utm_campaign=user_menu"
+                        target="_blank"
+                        rel="noreferrer"
                         className={cn(css['dropdown-item-user-menu'])}
                         onClick={() => {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'gorgiaswebinars',
                             })
-                            window.open(
-                                'https://app.getcontrast.io/gorgias?utm_source=in_app&utm_medium=menu&utm_campaign=user_menu',
-                                '_blank',
-                                'noopener'
-                            )
                             onClose()
                         }}
                     >
@@ -236,18 +232,16 @@ export default function UserMenu({onClose}: Props) {
                             subscriptions
                         </i>
                         Gorgias Webinars
-                    </div>
-                    <div
+                    </a>
+                    <a
+                        href="https://academy.gorgias.com/trainings?utm_source=in_app&utm_medium=menu&utm_campaign=user_menu"
+                        target="_blank"
+                        rel="noreferrer"
                         className={css['dropdown-item-user-menu']}
                         onClick={() => {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'gorgiasacademy',
                             })
-                            window.open(
-                                'https://academy.gorgias.com/trainings?utm_source=in_app&utm_medium=menu&utm_campaign=user_menu',
-                                '_blank',
-                                'noopener'
-                            )
                             onClose()
                         }}
                     >
@@ -258,18 +252,16 @@ export default function UserMenu({onClose}: Props) {
                             school
                         </i>
                         Gorgias Academy
-                    </div>
-                    <div
+                    </a>
+                    <a
+                        href="https://community.gorgias.com/"
+                        target="_blank"
+                        rel="noreferrer"
                         className={css['dropdown-item-user-menu']}
                         onClick={() => {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'gorgiascommunity',
                             })
-                            window.open(
-                                'https://community.gorgias.com/',
-                                '_blank',
-                                'noopener'
-                            )
                             onClose()
                         }}
                     >
@@ -280,8 +272,8 @@ export default function UserMenu({onClose}: Props) {
                             people_alt
                         </i>
                         Gorgias Community
-                    </div>
-                    <div
+                    </a>
+                    <button
                         className={css['dropdown-item-user-menu']}
                         onClick={() => {
                             shortcutManager.triggerAction(
@@ -298,7 +290,7 @@ export default function UserMenu({onClose}: Props) {
                             keyboard
                         </i>
                         Keyboard shortcuts
-                    </div>
+                    </button>
                 </DropdownBody>
             </Screen>
 
@@ -315,7 +307,7 @@ export default function UserMenu({onClose}: Props) {
                     Back
                 </DropdownHeader>
                 <DropdownBody>
-                    <div
+                    <button
                         className={cn(
                             css['dropdown-item-user-menu'],
                             css.justify
@@ -337,18 +329,16 @@ export default function UserMenu({onClose}: Props) {
                             Latest updates
                         </div>
                         <NoticeableIndicator />
-                    </div>
-                    <div
+                    </button>
+                    <a
+                        href="https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/tabs/3-planned/"
+                        target="_blank"
+                        rel="noreferrer"
                         className={css['dropdown-item-user-menu']}
                         onClick={() => {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'roadmap',
                             })
-                            window.open(
-                                'https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/tabs/3-planned/',
-                                '_blank',
-                                'noopener'
-                            )
                             onClose()
                         }}
                     >
@@ -356,18 +346,16 @@ export default function UserMenu({onClose}: Props) {
                             map
                         </i>
                         Roadmap
-                    </div>
-                    <div
+                    </a>
+                    <a
+                        href="https://status.gorgias.com/"
+                        target="_blank"
+                        rel="noreferrer"
                         className={css['dropdown-item-user-menu']}
                         onClick={() => {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'service-status',
                             })
-                            window.open(
-                                'https://status.gorgias.com/',
-                                '_blank',
-                                'noopener'
-                            )
                             onClose()
                         }}
                     >
@@ -378,7 +366,7 @@ export default function UserMenu({onClose}: Props) {
                             query_stats
                         </i>
                         Service status
-                    </div>
+                    </a>
                 </DropdownBody>
             </Screen>
 

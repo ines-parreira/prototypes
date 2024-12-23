@@ -30,7 +30,7 @@ export default function AvailabilityToggle() {
     }, [currentUserPreferences, dispatch])
 
     return (
-        <div
+        <button
             className={cn(
                 css['dropdown-item-user-menu'],
                 css.availabilityToggle
@@ -39,6 +39,6 @@ export default function AvailabilityToggle() {
         >
             <span>Available</span>
             <ToggleInput isToggled={isAvailable} isLoading={isLoading} />
-        </div>
+        </button>
     )
 }

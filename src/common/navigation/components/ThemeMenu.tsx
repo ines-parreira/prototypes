@@ -24,7 +24,7 @@ export default function ThemeMenu() {
     return (
         <>
             {THEME_CONFIGS.map(({label, name}) => (
-                <div
+                <button
                     key={name}
                     className={cn(css['dropdown-item-user-menu'], css.justify)}
                     onClick={() => updateTheme(name)}
@@ -35,7 +35,7 @@ export default function ThemeMenu() {
                             done
                         </span>
                     )}
-                </div>
+                </button>
             ))}
         </>
     )

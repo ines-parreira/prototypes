@@ -64,11 +64,9 @@ const wrapper = ({children}: {children: ReactNode}) => (
 
 describe('UserMenu', () => {
     let onClose: jest.Mock
-    let windowOpen: jest.SpyInstance
 
     beforeEach(() => {
         onClose = jest.fn()
-        windowOpen = jest.spyOn(window, 'open')
         useThemeMock.mockReturnValue({
             name: THEME_NAME.Classic,
             resolvedName: THEME_NAME.Classic,
@@ -136,39 +134,24 @@ describe('UserMenu', () => {
     })
 
     it.each([
-        ['Help Center', 'helpdocs', 'https://docs.gorgias.com/'],
-        [
-            'Gorgias Webinars',
-            'gorgiaswebinars',
-            'https://app.getcontrast.io/gorgias?utm_source=in_app&utm_medium=menu&utm_campaign=user_menu',
-        ],
-        [
-            'Gorgias Academy',
-            'gorgiasacademy',
-            'https://academy.gorgias.com/trainings?utm_source=in_app&utm_medium=menu&utm_campaign=user_menu',
-        ],
-        [
-            'Gorgias Community',
-            'gorgiascommunity',
-            'https://community.gorgias.com/',
-        ],
-    ])(
-        'should handle clicks for %s on the learn screen',
-        (label, link, url) => {
-            const {getByText} = render(<UserMenu onClose={onClose} />, {
-                wrapper,
-            })
+        ['Help Center', 'helpdocs'],
+        ['Gorgias Webinars', 'gorgiaswebinars'],
+        ['Gorgias Academy', 'gorgiasacademy'],
+        ['Gorgias Community', 'gorgiascommunity'],
+    ])('should handle clicks for %s on the learn screen', (label, link) => {
+        const {getByText} = render(<UserMenu onClose={onClose} />, {
+            wrapper,
+        })
 
-            userEvent.click(getByText('Learn'))
-            userEvent.click(getByText(label))
-            expect(logEvent).toHaveBeenCalledWith(
-                SegmentEvent.MenuUserLinkClicked,
-                {link}
-            )
-            expect(windowOpen).toHaveBeenCalledWith(url, '_blank', 'noopener')
-            expect(onClose).toHaveBeenCalledWith()
-        }
-    )
+        userEvent.click(getByText('Learn'))
+        userEvent.click(getByText(label))
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.MenuUserLinkClicked,
+            {link}
+        )
+
+        expect(onClose).toHaveBeenCalledWith()
+    })
 
     it('should handle clicks for Keyboard shortcuts on the learn screen', () => {
         const {getByText} = render(<UserMenu onClose={onClose} />, {
@@ -219,29 +202,21 @@ describe('UserMenu', () => {
     })
 
     it.each([
-        [
-            'Roadmap',
-            'roadmap',
-            'https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/tabs/3-planned/',
-        ],
-        ['Service status', 'service-status', 'https://status.gorgias.com/'],
-    ])(
-        'should handle clicks for %s on the updates screen',
-        (label, link, url) => {
-            const {getByText} = render(<UserMenu onClose={onClose} />, {
-                wrapper,
-            })
+        ['Roadmap', 'roadmap'],
+        ['Service status', 'service-status'],
+    ])('should handle clicks for %s on the updates screen', (label, link) => {
+        const {getByText} = render(<UserMenu onClose={onClose} />, {
+            wrapper,
+        })
 
-            userEvent.click(getByText('Gorgias updates'))
-            userEvent.click(getByText(label))
-            expect(logEvent).toHaveBeenCalledWith(
-                SegmentEvent.MenuUserLinkClicked,
-                {link}
-            )
-            expect(windowOpen).toHaveBeenCalledWith(url, '_blank', 'noopener')
-            expect(onClose).toHaveBeenCalledWith()
-        }
-    )
+        userEvent.click(getByText('Gorgias updates'))
+        userEvent.click(getByText(label))
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.MenuUserLinkClicked,
+            {link}
+        )
+        expect(onClose).toHaveBeenCalledWith()
+    })
 
     it('should render the theme screen', () => {
         const {getByText} = render(<UserMenu onClose={onClose} />, {wrapper})
