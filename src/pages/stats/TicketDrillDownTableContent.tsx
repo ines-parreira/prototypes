@@ -30,7 +30,12 @@ import {SLAStatusCell} from 'pages/stats/sla/components/SlaStatusCell'
 import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {AutoQACompletenessCell} from 'pages/stats/support-performance/auto-qa/AutoQACompletenessCell'
 import {
+    ACCURACY_LABEL,
+    BRAND_VOICE_LABEL,
     COMMUNICATION_SKILLS_LABEL,
+    EFFICIENCY_LABEL,
+    INTERNAL_COMPLIANCE_LABEL,
+    LANGUAGE_PROFICIENCY_SKILLS_LABEL,
     RESOLUTION_COMPLETENESS_SHORT_LABEL,
     TrendCardConfig,
 } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
@@ -208,6 +213,63 @@ export const TicketDrillDownTableContent = ({
                                 />
                             }
                         />
+                        <HeaderCellProperty
+                            title={LANGUAGE_PROFICIENCY_SKILLS_LABEL}
+                            width={columnWidths.metric}
+                            className={css.headerCell}
+                            tooltip={
+                                <HintTooltipContent
+                                    {...TrendCardConfig[
+                                        AutoQAMetric.LanguageProficiency
+                                    ].hint}
+                                />
+                            }
+                        />
+                        <HeaderCellProperty
+                            title={ACCURACY_LABEL}
+                            width={columnWidths.metric}
+                            className={css.headerCell}
+                            tooltip={
+                                <HintTooltipContent
+                                    {...TrendCardConfig[AutoQAMetric.Accuracy]
+                                        .hint}
+                                />
+                            }
+                        />
+                        <HeaderCellProperty
+                            title={EFFICIENCY_LABEL}
+                            width={columnWidths.metric}
+                            className={css.headerCell}
+                            tooltip={
+                                <HintTooltipContent
+                                    {...TrendCardConfig[AutoQAMetric.Efficiency]
+                                        .hint}
+                                />
+                            }
+                        />
+                        <HeaderCellProperty
+                            title={INTERNAL_COMPLIANCE_LABEL}
+                            width={columnWidths.metric}
+                            className={css.headerCell}
+                            tooltip={
+                                <HintTooltipContent
+                                    {...TrendCardConfig[
+                                        AutoQAMetric.InternalCompliance
+                                    ].hint}
+                                />
+                            }
+                        />
+                        <HeaderCellProperty
+                            title={BRAND_VOICE_LABEL}
+                            width={columnWidths.metric}
+                            className={css.headerCell}
+                            tooltip={
+                                <HintTooltipContent
+                                    {...TrendCardConfig[AutoQAMetric.BrandVoice]
+                                        .hint}
+                                />
+                            }
+                        />
                     </>
                 )}
                 <HeaderCellProperty
@@ -307,6 +369,41 @@ export const TicketDrillDownTableContent = ({
                                             item.qaScore[
                                                 TicketQAScoreDimensionName
                                                     .CommunicationSkills
+                                            ]}
+                                    </BodyCell>
+                                    <BodyCell width={columnWidths.metric}>
+                                        {item?.qaScore &&
+                                            item.qaScore[
+                                                TicketQAScoreDimensionName
+                                                    .LanguageProficiency
+                                            ]}
+                                    </BodyCell>
+                                    <BodyCell width={columnWidths.metric}>
+                                        {item?.qaScore &&
+                                            item.qaScore[
+                                                TicketQAScoreDimensionName
+                                                    .Accuracy
+                                            ]}
+                                    </BodyCell>
+                                    <BodyCell width={columnWidths.metric}>
+                                        {item?.qaScore &&
+                                            item.qaScore[
+                                                TicketQAScoreDimensionName
+                                                    .Efficiency
+                                            ]}
+                                    </BodyCell>
+                                    <BodyCell width={columnWidths.metric}>
+                                        {item?.qaScore &&
+                                            item.qaScore[
+                                                TicketQAScoreDimensionName
+                                                    .InternalCompliance
+                                            ]}
+                                    </BodyCell>
+                                    <BodyCell width={columnWidths.metric}>
+                                        {item?.qaScore &&
+                                            item.qaScore[
+                                                TicketQAScoreDimensionName
+                                                    .BrandVoice
                                             ]}
                                     </BodyCell>
                                 </>
