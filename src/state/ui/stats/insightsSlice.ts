@@ -1,8 +1,5 @@
 import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit'
 
-import {useDispatch} from 'react-redux'
-
-import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {
     Intent,
@@ -21,12 +18,12 @@ export type IntentSorting<T> = {
 export type IntentState<T> = {
     sorting: IntentSorting<T> & {
         isLoading: boolean
-        lastSortingMetric: Maybe<ReportingMetricItem[]>
     }
     pagination: {
         currentPage: number
         perPage: number
     }
+    intents: Intent[] | null | undefined
 }
 
 export const DEFAULT_SORTING_DIRECTION = OrderDirection.Desc
@@ -38,12 +35,12 @@ export const initialState: IntentState<IntentTableColumn> = {
         field: IntentTableColumn.AutomationOpportunities,
         direction: OrderDirection.Desc,
         isLoading: true,
-        lastSortingMetric: null,
     },
     pagination: {
         currentPage: 1,
         perPage: INTENTS_PER_PAGE,
     },
+    intents: null,
 }
 
 export const intentSlice = createSlice({
@@ -65,11 +62,11 @@ export const intentSlice = createSlice({
         },
         sortingLoaded(
             state,
-            action: PayloadAction<Maybe<ReportingMetricItem[]>>
+            action: PayloadAction<Intent[] | null | undefined>
         ) {
             state.sorting.isLoading = false
-            state.sorting.lastSortingMetric = action.payload
             state.pagination.currentPage = 1
+            state.intents = action.payload || []
         },
         pageSet(state, action: PayloadAction<number>) {
             if (action.payload < 1) {
@@ -103,77 +100,25 @@ export const getIntentPagination = createSelector(
     (state) => state.pagination
 )
 
-// TODO this is just a mock function to simulate fetching data. Should be replaced with actual API call and hook
-const getIntents = () => {
-    const data = [
-        {
-            id: 1,
-            intent_name: 'order/cancel',
-            automation_opportunities: 26,
-            tickets: 275,
-            automation_rate: 26,
-            avg_customer_satisfaction: 4.2,
-            resources: 3,
-        },
-        {
-            id: 2,
-            intent_name: 'order/track',
-            automation_opportunities: 10,
-            tickets: 175,
-            automation_rate: 8,
-            avg_customer_satisfaction: 4.5,
-            resources: 2,
-        },
-        {
-            id: 3,
-            intent_name: 'order/return',
-            automation_opportunities: 15,
-            tickets: 125,
-            automation_rate: 12,
-            avg_customer_satisfaction: 4.3,
-            resources: 1,
-        },
-        {
-            id: 4,
-            intent_name: 'order/modify',
-            automation_opportunities: 20,
-            tickets: 75,
-            automation_rate: 18,
-            avg_customer_satisfaction: 4.1,
-            resources: 0,
-        },
-        {
-            id: 5,
-            intent_name: 'order/confirm',
-            automation_opportunities: 5,
-            tickets: 50,
-            automation_rate: 3,
-            avg_customer_satisfaction: 4.7,
-            resources: 1,
-        },
-    ]
+export const getIntentIntents = createSelector(
+    getSliceState,
+    (state) => state.intents
+)
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const dispatch = useDispatch()
-    setTimeout(() => {
-        dispatch(sortingLoaded())
-    }, 2000)
-
-    return {
-        isFetching: false,
-        data: data,
-        isError: false,
-    }
-}
+const getIntents = createSelector(getSliceState, (state) => state.intents)
 
 export const getSortedIntents = createSelector(
     getIntents,
     getIntentSorting,
-    (intents, {field, direction}) => {
-        const sortedIntents = intents.data.sort((a, b) => {
-            if (a[field] > b[field]) {
+    (intentsList, {field, direction}) => {
+        const intents = intentsList ? [...intentsList] : []
+        const sortedIntents = intents.sort((a, b) => {
+            const aField = isNaN(Number(a[field])) ? a[field] : Number(a[field])
+            const bField = isNaN(Number(b[field])) ? b[field] : Number(b[field])
+
+            if (aField > bField) {
                 return direction === OrderDirection.Asc ? 1 : -1
-            } else if (a[field] < b[field]) {
+            } else if (aField < bField) {
                 return direction === OrderDirection.Asc ? -1 : 1
             }
             return 0

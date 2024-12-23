@@ -1,20 +1,20 @@
 export enum IntentTableColumn {
-    IntentName = 'intent_name',
-    AutomationOpportunities = 'automation_opportunities',
+    IntentName = 'name',
+    AutomationOpportunities = 'automationOpportunity',
     Tickets = 'tickets',
-    AutomationRate = 'automation_rate',
-    AvgCustomerSatisfaction = 'avg_customer_satisfaction',
-    Resources = 'resources',
+    AutomationRate = 'automationRate',
+    AvgCustomerSatisfaction = 'avgCustomerSatisfaction',
+    // Resources = 'resources',
 }
 
 export type Intent = {
     id: number
-    intent_name: string
-    automation_opportunities: number
-    tickets: number
-    automation_rate: number
-    avg_customer_satisfaction: number
-    resources: number
+    [IntentTableColumn.IntentName]: string
+    [IntentTableColumn.AutomationOpportunities]: number
+    [IntentTableColumn.Tickets]: number
+    [IntentTableColumn.AutomationRate]: number
+    [IntentTableColumn.AvgCustomerSatisfaction]: number
+    // [IntentTableColumn.Resources]: number
 }
 
 export type PaginatedIntents = {
@@ -22,4 +22,14 @@ export type PaginatedIntents = {
     allIntents: Intent[]
     currentPage: number
     perPage: number
+}
+
+export type IntentMetrics = {
+    id?: string | null
+    [IntentTableColumn.IntentName]: string
+    [IntentTableColumn.AutomationOpportunities]: number | null
+    [IntentTableColumn.Tickets]: number | null
+    [IntentTableColumn.AutomationRate]: number | null
+    [IntentTableColumn.AvgCustomerSatisfaction]: number | null
+    // [IntentTableColumn.Resources]: number | null
 }

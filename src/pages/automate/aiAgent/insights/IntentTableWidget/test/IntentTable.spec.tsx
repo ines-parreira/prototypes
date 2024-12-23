@@ -1,3 +1,4 @@
+import {QueryClientProvider} from '@tanstack/react-query'
 import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
@@ -7,47 +8,56 @@ import configureMockStore from 'redux-mock-store'
 
 import thunk from 'redux-thunk'
 
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import {pageSet} from 'state/ui/stats/insightsSlice'
-
 import {
     IntentTable,
     LoadingTableRows,
     IntentTableWithDefaultState,
-} from '../IntentTable'
+} from 'pages/automate/aiAgent/insights/IntentTableWidget/IntentTable'
+import {TableLabels} from 'pages/automate/aiAgent/insights/IntentTableWidget/IntentTableConfig'
+import {
+    IntentTableColumn,
+    PaginatedIntents,
+} from 'pages/automate/aiAgent/insights/IntentTableWidget/types'
+import TableBody from 'pages/common/components/table/TableBody'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
+import {pageSet} from 'state/ui/stats/insightsSlice'
 
-import {TableLabels} from '../IntentTableConfig'
-import {IntentTableColumn, PaginatedIntents} from '../types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
+import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = jest.mocked(useAppSelector)
+
+jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
 const mockStore = configureMockStore([thunk])
 const defaultPaginatedIntents = {
     intents: [
         {
             id: 1,
-            intent_name: 'order/track',
-            automation_opportunities: 10,
+            [IntentTableColumn.IntentName]: 'order/track',
+            [IntentTableColumn.AutomationOpportunities]: 10,
         },
         {
             id: 2,
-            intent_name: 'order/cancel',
-            automation_opportunities: 20,
+            [IntentTableColumn.IntentName]: 'order/cancel',
+            [IntentTableColumn.AutomationOpportunities]: 20,
         },
     ],
     allIntents: [
         {
             id: 1,
-            intent_name: 'order/track',
-            automation_opportunities: 10,
+            [IntentTableColumn.IntentName]: 'order/track',
+            [IntentTableColumn.AutomationOpportunities]: 10,
         },
         {
             id: 2,
-            intent_name: 'order/cancel',
-            automation_opportunities: 20,
+            [IntentTableColumn.IntentName]: 'order/cancel',
+            [IntentTableColumn.AutomationOpportunities]: 20,
         },
     ],
     currentPage: 1,
@@ -64,15 +74,36 @@ const initialState = {
     },
 }
 
+const queryClient = mockQueryClient()
+
+const startDate = '2021-05-01T00:00:00+02:00'
+const endDate = '2021-05-04T23:59:59+02:00'
+const filters = {
+    period: {
+        start_datetime: startDate,
+        end_datetime: endDate,
+    },
+}
+const userTimezone = 'UTC'
+
 const renderWithProvider = (
     ui: React.ReactElement,
     store: ReturnType<typeof mockStore>
-) => render(<Provider store={store}>{ui}</Provider>)
+) =>
+    render(
+        <QueryClientProvider client={queryClient}>
+            <Provider store={store}>{ui}</Provider>
+        </QueryClientProvider>
+    )
 
 describe('Intent Table components', () => {
     describe('IntentTable', () => {
         beforeEach(() => {
             useAppSelectorMock.mockReturnValue(false)
+            useNewStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: filters,
+                userTimezone,
+            } as unknown as ReturnType<typeof useNewStatsFilters>)
         })
         it('renders table with data', () => {
             const store = mockStore(initialState)

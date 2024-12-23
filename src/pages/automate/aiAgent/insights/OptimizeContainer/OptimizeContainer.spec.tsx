@@ -32,6 +32,13 @@ jest.mock('pages/automate/aiAgent/hooks/useAiAgentEnabled', () => ({
     useAiAgentEnabled: jest.fn().mockReturnValue(true),
 }))
 
+jest.mock(
+    'pages/automate/aiAgent/insights/IntentTableWidget/IntentTableWidget',
+    () => ({
+        IntentTableWidget: jest.fn(() => <div>IntentTableWidget</div>),
+    })
+)
+
 const defaultStore = {
     currentAccount: fromJS({
         ...account,

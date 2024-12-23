@@ -27,10 +27,7 @@ const calculateTierRange = (
     const start = min + tierSize * tierIndex
     const end = min + tierSize * (tierIndex + 1)
 
-    const startRounded = Math.round(start * 100) / 100
-    const endRounded = Math.round(end * 100) / 100
-
-    return [startRounded, endRounded]
+    return [start, end]
 }
 
 const createTier = (

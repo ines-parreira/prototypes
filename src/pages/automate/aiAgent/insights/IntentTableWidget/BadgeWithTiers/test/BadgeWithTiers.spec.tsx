@@ -30,6 +30,7 @@ describe('BadgeWithTiers Component', () => {
                 values={[5, 15, 25]}
                 value={12}
                 formattedValue="12%"
+                hasValue={true}
             />
         )
 
@@ -49,6 +50,7 @@ describe('BadgeWithTiers Component', () => {
                 values={[5, 15, 25]}
                 value={10}
                 formattedValue="10%"
+                hasValue={true}
             />
         )
 
@@ -68,6 +70,7 @@ describe('BadgeWithTiers Component', () => {
                 values={[5, 15, 25]}
                 value={50}
                 formattedValue="50%"
+                hasValue={true}
             />
         )
 
@@ -83,7 +86,12 @@ describe('BadgeWithTiers Component', () => {
 
     test('calls useGetBadgeTiers with the correct values', () => {
         render(
-            <BadgeWithTiers values={[1, 2, 3]} value={2} formattedValue="2%" />
+            <BadgeWithTiers
+                values={[1, 2, 3]}
+                value={2}
+                formattedValue="2%"
+                hasValue={true}
+            />
         )
 
         expect(useGetBadgeTiers).toHaveBeenCalledWith([1, 2, 3])

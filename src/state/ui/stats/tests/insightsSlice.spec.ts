@@ -1,6 +1,5 @@
 import {configureStore} from '@reduxjs/toolkit'
 
-import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {
     Intent,
@@ -18,6 +17,7 @@ import {
     getIntentPagination,
     getPaginatedIntents,
     getSortedIntents,
+    getIntentIntents,
 } from 'state/ui/stats/insightsSlice'
 
 describe('Intent Slice', () => {
@@ -28,11 +28,11 @@ describe('Intent Slice', () => {
             },
         })
 
-        test('should return the initial state', () => {
+        it('should return the initial state', () => {
             expect(store.getState().intent).toEqual(initialState)
         })
 
-        test('should handle sortingSet action', () => {
+        it('should handle sortingSet action', () => {
             const sortingPayload = {
                 field: IntentTableColumn.Tickets,
                 direction: OrderDirection.Asc,
@@ -47,7 +47,7 @@ describe('Intent Slice', () => {
             expect(state.pagination.currentPage).toBe(1)
         })
 
-        test('should handle sortingLoading action', () => {
+        it('should handle sortingLoading action', () => {
             store.dispatch(sortingLoading())
             const state = store.getState().intent
 
@@ -55,22 +55,20 @@ describe('Intent Slice', () => {
             expect(state.pagination.currentPage).toBe(1)
         })
 
-        test('should handle sortingLoaded action', () => {
+        it('should handle sortingLoaded action', () => {
             const lastSortingMetricMock = [
-                {name: 'order/cancel', value: 5},
-                {name: 'order/return', value: 3},
-            ] as unknown as ReportingMetricItem[]
+                {name: 'order/cancel', automationOpportunity: 5},
+                {name: 'order/return', automationOpportunity: 3},
+            ] as unknown as Intent[]
 
             store.dispatch(sortingLoaded(lastSortingMetricMock))
             const state = store.getState().intent
 
             expect(state.sorting.isLoading).toBe(false)
-            expect(state.sorting.lastSortingMetric).toEqual(
-                lastSortingMetricMock
-            )
+            expect(state.intents).toEqual(lastSortingMetricMock)
         })
 
-        test('should handle pageSet action', () => {
+        it('should handle pageSet action', () => {
             store.dispatch(pageSet(3))
             const state = store.getState().intent
 
@@ -91,26 +89,43 @@ describe('Intent Slice', () => {
             },
         }
 
-        test('getIntentSorting selector', () => {
+        it('getIntentSorting selector', () => {
             const sorting = getIntentSorting(mockState as any)
             expect(sorting).toEqual(initialState.sorting)
         })
 
-        test('isSortingMetricLoading selector', () => {
+        it('isSortingMetricLoading selector', () => {
             const isLoading = isSortingMetricLoading(mockState as any)
             expect(isLoading).toBe(initialState.sorting.isLoading)
         })
 
-        test('getIntentPagination selector', () => {
+        it('getIntentPagination selector', () => {
             const pagination = getIntentPagination(mockState as any)
             expect(pagination).toEqual(initialState.pagination)
         })
 
-        test('getPaginatedIntents selector', () => {
+        it('getIntentIntents selector', () => {
+            const intents = getIntentIntents(mockState as any)
+            expect(intents).toEqual(initialState.intents)
+        })
+
+        it('getPaginatedIntents selector', () => {
             const allIntents = [
-                {id: 1, intent_name: 'intent1', automation_opportunities: 10},
-                {id: 2, intent_name: 'intent2', automation_opportunities: 20},
-                {id: 3, intent_name: 'intent3', automation_opportunities: 30},
+                {
+                    id: 1,
+                    [IntentTableColumn.IntentName]: 'intent1',
+                    [IntentTableColumn.AutomationOpportunities]: 10,
+                },
+                {
+                    id: 2,
+                    [IntentTableColumn.IntentName]: 'intent2',
+                    [IntentTableColumn.AutomationOpportunities]: 20,
+                },
+                {
+                    id: 3,
+                    [IntentTableColumn.IntentName]: 'intent3',
+                    [IntentTableColumn.AutomationOpportunities]: 30,
+                },
             ] as unknown as Intent[]
 
             const pagination = {
@@ -132,20 +147,20 @@ describe('Intent Slice', () => {
         const mockIntents = [
             {
                 id: 1,
-                intent_name: 'order/cancel',
-                automation_opportunities: 26,
+                [IntentTableColumn.IntentName]: 'order/cancel',
+                [IntentTableColumn.AutomationOpportunities]: 26,
             },
             {
                 id: 2,
-                intent_name: 'order/track',
-                automation_opportunities: 10,
+                [IntentTableColumn.IntentName]: 'order/track',
+                [IntentTableColumn.AutomationOpportunities]: 10,
             },
             {
                 id: 3,
-                intent_name: 'order/return',
-                automation_opportunities: 15,
+                [IntentTableColumn.IntentName]: 'order/return',
+                [IntentTableColumn.AutomationOpportunities]: 15,
             },
-        ]
+        ] as unknown as Intent[]
 
         const mockSorting = {
             field: IntentTableColumn.AutomationOpportunities,
@@ -154,63 +169,54 @@ describe('Intent Slice', () => {
             lastSortingMetric: null,
         }
 
-        const mockSelectorData = {
-            data: mockIntents as unknown as Intent[],
-            isError: false,
-            isFetching: false,
-        }
-
-        it('should sort intents in descending order by automation_opportunities', () => {
-            const result = getSortedIntents.resultFunc(
-                mockSelectorData,
-                mockSorting
-            )
+        it('should sort intents in descending order by automationOpportunity', () => {
+            const result = getSortedIntents.resultFunc(mockIntents, mockSorting)
 
             expect(result).toEqual([
                 {
                     id: 1,
-                    intent_name: 'order/cancel',
-                    automation_opportunities: 26,
+                    [IntentTableColumn.IntentName]: 'order/cancel',
+                    [IntentTableColumn.AutomationOpportunities]: 26,
                 },
                 {
                     id: 3,
-                    intent_name: 'order/return',
-                    automation_opportunities: 15,
+                    [IntentTableColumn.IntentName]: 'order/return',
+                    [IntentTableColumn.AutomationOpportunities]: 15,
                 },
                 {
                     id: 2,
-                    intent_name: 'order/track',
-                    automation_opportunities: 10,
+                    [IntentTableColumn.IntentName]: 'order/track',
+                    [IntentTableColumn.AutomationOpportunities]: 10,
                 },
             ])
         })
 
-        it('should sort intents in ascending order by automation_opportunities', () => {
+        it('should sort intents in ascending order by automationOpportunity', () => {
             const ascendingSorting = {
                 ...mockSorting,
                 direction: OrderDirection.Asc,
             }
 
             const result = getSortedIntents.resultFunc(
-                mockSelectorData,
+                mockIntents,
                 ascendingSorting
             )
 
             expect(result).toEqual([
                 {
                     id: 2,
-                    intent_name: 'order/track',
-                    automation_opportunities: 10,
+                    [IntentTableColumn.IntentName]: 'order/track',
+                    [IntentTableColumn.AutomationOpportunities]: 10,
                 },
                 {
                     id: 3,
-                    intent_name: 'order/return',
-                    automation_opportunities: 15,
+                    [IntentTableColumn.IntentName]: 'order/return',
+                    [IntentTableColumn.AutomationOpportunities]: 15,
                 },
                 {
                     id: 1,
-                    intent_name: 'order/cancel',
-                    automation_opportunities: 26,
+                    [IntentTableColumn.IntentName]: 'order/cancel',
+                    [IntentTableColumn.AutomationOpportunities]: 26,
                 },
             ])
         })
@@ -222,7 +228,7 @@ describe('Intent Slice', () => {
             }
 
             const result = getSortedIntents.resultFunc(
-                mockSelectorData,
+                mockIntents,
                 invalidSorting
             )
 

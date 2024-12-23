@@ -594,3 +594,8 @@ export const enrichWithSuccessRate = (
     })
     return sortAllData(enrichedData, 'successRate', sorting)
 }
+
+/**
+ * Transform intent name from aaa::bbb to aaa/bbb format
+ */
+export const transformIntentName = (name: string) => name.replace(/::/g, '/')

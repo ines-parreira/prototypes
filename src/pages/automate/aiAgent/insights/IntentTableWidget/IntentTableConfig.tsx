@@ -1,7 +1,11 @@
+import {useEffect} from 'react'
 import {useDispatch} from 'react-redux'
 
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import {opposite} from 'models/api/types'
+import {opposite, OrderDirection} from 'models/api/types'
+import {StatsFilters} from 'models/stat/types'
+import {IntentTableColumn} from 'pages/automate/aiAgent/insights/IntentTableWidget/types'
 import {
     isExtraLargeScreen,
     isMediumOrSmallScreen,
@@ -12,9 +16,9 @@ import {
     DEFAULT_SORTING_DIRECTION,
     sortingSet,
     getIntentSorting,
+    sortingLoaded,
+    sortingLoading,
 } from 'state/ui/stats/insightsSlice'
-
-import {IntentTableColumn} from './types'
 
 export const TableColumnsOrder: IntentTableColumn[] = [
     IntentTableColumn.IntentName,
@@ -22,16 +26,16 @@ export const TableColumnsOrder: IntentTableColumn[] = [
     IntentTableColumn.Tickets,
     IntentTableColumn.AutomationRate,
     IntentTableColumn.AvgCustomerSatisfaction,
-    IntentTableColumn.Resources,
+    // IntentTableColumn.Resources,
 ]
 
 export const TableLabels: Record<IntentTableColumn, string> = {
     [IntentTableColumn.IntentName]: 'Intent',
-    [IntentTableColumn.AutomationOpportunities]: 'Automation opportunities',
+    [IntentTableColumn.AutomationOpportunities]: 'Automation opportunity',
     [IntentTableColumn.Tickets]: 'Tickets',
     [IntentTableColumn.AutomationRate]: 'Automation rate',
     [IntentTableColumn.AvgCustomerSatisfaction]: 'AVG CSAT',
-    [IntentTableColumn.Resources]: 'Resources',
+    // [IntentTableColumn.Resources]: 'Resources',
 }
 
 export const IntentsColumnsConfig: Partial<
@@ -41,38 +45,44 @@ export const IntentsColumnsConfig: Partial<
             format: MetricValueFormat
             hint: TooltipData | null
             perAgent: boolean
+            notAvailableText?: string
         }
     >
 > = {
     [IntentTableColumn.AutomationOpportunities]: {
-        format: 'percent',
+        format: 'decimal-to-percent',
         hint: {
             title: 'Estimated potential to improve your automation rate, based on the potential uplift between your current automation rate and the ticket volume of the intent. ',
         },
         perAgent: true,
+        notAvailableText: '-',
     },
     [IntentTableColumn.Tickets]: {
         format: 'decimal',
         hint: null,
         perAgent: true,
+        notAvailableText: '-',
     },
     [IntentTableColumn.AutomationRate]: {
-        format: 'percent',
+        format: 'decimal-to-percent',
         hint: null,
         perAgent: true,
+        notAvailableText: '-',
     },
     [IntentTableColumn.AvgCustomerSatisfaction]: {
         format: 'decimal',
         hint: null,
         perAgent: true,
+        notAvailableText: '-',
     },
-    [IntentTableColumn.Resources]: {
-        format: 'decimal',
-        hint: {
-            title: 'Number of unique Guidance, articles, URLs, external documents or Actions used to answer tickets in this intent',
-        },
-        perAgent: true,
-    },
+    // TODO uncomment when the feature is ready
+    // [IntentTableColumn.Resources]: {
+    //     format: 'decimal',
+    //     hint: {
+    //         title: 'Number of unique Guidance, articles, URLs, external documents or Actions used to answer tickets in this intent',
+    //     },
+    //     perAgent: true,
+    // },
 }
 
 export const INTENT_NAME_COLUMN_WIDTH = isExtraLargeScreen() ? 160 : 300
@@ -101,9 +111,47 @@ export const IntentRowConfig: Partial<
     },
 }
 
-export function useIntentSoringQuery(column: IntentTableColumn) {
+export function useIntentSoringQuery(
+    column: IntentTableColumn,
+    useQuery: (
+        filters: StatsFilters,
+        timezone: string,
+        sorting?: OrderDirection
+    ) => {
+        data: any
+        isFetching: boolean
+    }
+) {
     const dispatch = useDispatch()
     const sorting = useAppSelector(getIntentSorting)
+
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+
+    const queryData = useQuery(
+        cleanStatsFilters,
+        userTimezone,
+        sorting?.direction
+    )
+    const isFetching = queryData?.isFetching
+    const data = queryData?.data
+
+    useEffect(() => {
+        if (sorting?.field === column) {
+            if (!sorting?.isLoading) {
+                isFetching && dispatch(sortingLoading())
+            } else {
+                !isFetching && dispatch(sortingLoaded(data))
+            }
+        }
+    }, [
+        column,
+        dispatch,
+        data,
+        sorting?.field,
+        sorting?.isLoading,
+        sorting.direction,
+        isFetching,
+    ])
 
     return {
         sortCallback: () => {

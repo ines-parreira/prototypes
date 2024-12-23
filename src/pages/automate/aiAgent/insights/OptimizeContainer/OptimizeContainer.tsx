@@ -6,11 +6,11 @@ import {useParams} from 'react-router-dom'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import {IntentTableWidget} from 'pages/automate/aiAgent/insights/IntentTableWidget/IntentTableWidget'
 import {PeriodFilter} from 'pages/stats/common/filters/PeriodFilter'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {setStatsFilters} from 'state/stats/statsSlice'
 
-import {IntentTableWidget} from '../IntentTableWidget/IntentTableWidget'
 import {Level1IntentsPerformance} from '../widgets/Level1IntentsPerformance/Level1IntentsPerformance'
 import css from './OptimizeContainer.less'
 

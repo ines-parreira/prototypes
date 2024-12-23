@@ -2,6 +2,11 @@ import {useMemo} from 'react'
 
 import {AI_MANAGED_TYPES} from 'custom-fields/constants'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import {
+    transformIntentName,
+    enrichWithAutomationOpportunity,
+    enrichWithSuccessRate,
+} from 'hooks/reporting/automate/utils'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
 import {OrderDirection} from 'models/api/types'
@@ -17,6 +22,7 @@ import {
 import {customerSatisfactionMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {customFieldsTicketTotalCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {FilterKey, StatsFilters} from 'models/stat/types'
+import {IntentMetrics} from 'pages/automate/aiAgent/insights/IntentTableWidget/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {activeParams} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {getPreviousPeriod} from 'utils/reporting'
@@ -36,7 +42,6 @@ import {
     CUSTOM_FIELD_AI_AGENT_HANDOVER,
 } from './types'
 import {useAIAgentUserId} from './useAIAgentUserId'
-import {enrichWithAutomationOpportunity, enrichWithSuccessRate} from './utils'
 
 // COVERAGE_RATE: #AI_AGENT_TICKETS / Billable interactions (same as automation rate denomitor)
 // AUTOMATED INTERACTIONS: fully automated interactions by AI Agent
@@ -390,4 +395,125 @@ export const useCustomerSatisfactionPerIntent = (
     )
 
     return csatPerIntent
+}
+
+export const addMetricDataToResults = (
+    results: Record<string, IntentMetrics>,
+    metricData: Record<string, string | number | null>[],
+    metricKey: string,
+    resultKey?: string
+) => {
+    metricData.forEach((item: Record<string, any>) => {
+        const intent = item['TicketCustomFieldsEnriched.valueString'] as string
+        const resultKeyToUse = resultKey || metricKey
+        if (intent) {
+            results[intent] = {
+                ...results[intent],
+                [resultKeyToUse]: item[metricKey],
+            }
+        }
+    })
+}
+
+const useFetchAllIntentsMetrics = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+) => {
+    // Fetch all metrics for all intents
+    const automationOpportunityPerIntent = useAutomationOpportunityPerIntent(
+        filters,
+        timezone,
+        sorting
+    )
+
+    const ticketsPerIntent = useAIAgentTicketsPerIntent(
+        filters,
+        timezone,
+        sorting
+    )
+
+    const successRatePerIntent = useSuccessRatePerIntent(
+        filters,
+        timezone,
+        sorting
+    )
+
+    const customerSatisfactionPerIntent = useCustomerSatisfactionPerIntent(
+        filters,
+        timezone,
+        sorting
+    )
+
+    return {
+        automationOpportunityPerIntent,
+        ticketsPerIntent,
+        successRatePerIntent,
+        customerSatisfactionPerIntent,
+    }
+}
+
+export const convertResultToTableArrayFormat = (
+    results: Record<string, IntentMetrics>
+) => {
+    const convertedArray = Object.entries(results).map(
+        ([key, value]: [string, IntentMetrics]) => ({
+            ...value,
+            name: transformIntentName(key),
+        })
+    )
+    return convertedArray
+}
+
+export const useAIAgentInsightsDataset = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+) => {
+    const {
+        automationOpportunityPerIntent,
+        ticketsPerIntent,
+        successRatePerIntent,
+        customerSatisfactionPerIntent,
+    } = useFetchAllIntentsMetrics(filters, timezone, sorting)
+
+    const results: Record<string, IntentMetrics> = {}
+    const metrics = [
+        {
+            data: automationOpportunityPerIntent.data,
+            metricKey: 'automationOpportunity',
+        },
+        {
+            data: ticketsPerIntent.data?.allData || [],
+            metricKey: 'TicketCustomFieldsEnriched.ticketCount',
+            resultKey: 'tickets',
+        },
+        {
+            data: successRatePerIntent.data,
+            metricKey: 'successRate',
+            resultKey: 'automationRate',
+        },
+        {
+            data: customerSatisfactionPerIntent.data?.allData || [],
+            metricKey: 'customerSatisfaction',
+        },
+    ]
+
+    metrics.forEach(({data, metricKey, resultKey}) =>
+        addMetricDataToResults(results, data, metricKey, resultKey)
+    )
+
+    // Convert object to array of objects
+    const convertedArray = convertResultToTableArrayFormat(results)
+
+    const isFetching =
+        automationOpportunityPerIntent.isFetching ||
+        ticketsPerIntent.isFetching ||
+        successRatePerIntent.isFetching ||
+        customerSatisfactionPerIntent.isFetching
+
+    return {
+        data: convertedArray,
+        isFetching: isFetching,
+    }
 }

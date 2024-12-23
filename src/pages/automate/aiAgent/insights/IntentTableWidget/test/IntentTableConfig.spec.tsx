@@ -61,7 +61,7 @@ describe('TableConfig Utilities and Hooks', () => {
         it('contains correct label for each column', () => {
             expect(TableLabels[IntentTableColumn.IntentName]).toBe('Intent')
             expect(TableLabels[IntentTableColumn.AutomationOpportunities]).toBe(
-                'Automation opportunities'
+                'Automation opportunity'
             )
             expect(TableLabels[IntentTableColumn.Tickets]).toBe('Tickets')
         })
@@ -71,16 +71,20 @@ describe('TableConfig Utilities and Hooks', () => {
         it('returns the correct sorting state', () => {
             const column = IntentTableColumn.Tickets
             const mockSorting = {field: column, direction: 'desc'}
+            const query = jest.fn()
 
             useAppSelectorMock.mockReturnValue(mockSorting)
 
-            const {result} = renderHook(() => useIntentSoringQuery(column), {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
-            })
+            const {result} = renderHook(
+                () => useIntentSoringQuery(column, query),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(defaultState)}>
+                            {children}
+                        </Provider>
+                    ),
+                }
+            )
 
             expect(result.current.field).toBe(column)
             expect(result.current.direction).toBe('desc')

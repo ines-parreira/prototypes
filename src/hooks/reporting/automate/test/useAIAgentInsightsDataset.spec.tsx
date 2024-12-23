@@ -15,6 +15,10 @@ import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
 import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {StatsFilters} from 'models/stat/types'
+import {
+    IntentMetrics,
+    IntentTableColumn,
+} from 'pages/automate/aiAgent/insights/IntentTableWidget/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 
@@ -25,6 +29,8 @@ import {
     useAutomationOpportunityPerIntent,
     useCustomerSatisfactionPerIntent,
     useSuccessRatePerIntent,
+    addMetricDataToResults,
+    convertResultToTableArrayFormat,
 } from '../useAIAgentInsightsDataset'
 import {useAIAgentUserId} from '../useAIAgentUserId'
 
@@ -413,5 +419,158 @@ describe('useCustomerSatisfactionPerIntent', () => {
             }
         )
         expect(result.current).toEqual(csatPerIntentMetric)
+    })
+})
+
+describe('addMetricDataToResults', () => {
+    it('adds metric data correctly when intents are present', () => {
+        const results: Record<string, any> = {}
+        const metricData = [
+            {
+                'TicketCustomFieldsEnriched.valueString': 'intentA',
+                metricKey: 10,
+            },
+            {
+                'TicketCustomFieldsEnriched.valueString': 'intentB',
+                metricKey: 20,
+            },
+        ]
+
+        addMetricDataToResults(results, metricData, 'metricKey')
+
+        expect(results).toEqual({
+            intentA: {metricKey: 10},
+            intentB: {metricKey: 20},
+        })
+    })
+
+    it('uses resultKey when provided to rename the metric key', () => {
+        const results: Record<string, any> = {}
+        const metricData = [
+            {
+                'TicketCustomFieldsEnriched.valueString': 'intentA',
+                ticketCount: 5,
+            },
+            {
+                'TicketCustomFieldsEnriched.valueString': 'intentB',
+                ticketCount: 8,
+            },
+        ]
+
+        addMetricDataToResults(results, metricData, 'ticketCount', 'tickets')
+
+        expect(results).toEqual({
+            intentA: {tickets: 5},
+            intentB: {tickets: 8},
+        })
+    })
+
+    it('merges new metrics with existing results', () => {
+        const results: Record<string, any> = {
+            intentA: {metricKey: 10},
+        }
+        const metricData = [
+            {
+                'TicketCustomFieldsEnriched.valueString': 'intentA',
+                ticketCount: 15,
+            },
+            {
+                'TicketCustomFieldsEnriched.valueString': 'intentB',
+                ticketCount: 20,
+            },
+        ]
+
+        addMetricDataToResults(results, metricData, 'ticketCount', 'tickets')
+
+        expect(results).toEqual({
+            intentA: {metricKey: 10, tickets: 15},
+            intentB: {tickets: 20},
+        })
+    })
+
+    it('handles empty metricData array gracefully', () => {
+        const results: Record<string, any> = {}
+        const metricData: Record<string, string | number | null>[] = []
+
+        addMetricDataToResults(results, metricData, 'metricKey')
+
+        expect(results).toEqual({})
+    })
+
+    it('overwrites existing metric keys with new values', () => {
+        const results: Record<string, any> = {
+            intentA: {metricKey: 10},
+        }
+        const metricData: Record<string, string | number | null>[] = [
+            {
+                'TicketCustomFieldsEnriched.valueString': 'intentA',
+                metricKey: 25,
+            },
+        ]
+
+        addMetricDataToResults(results, metricData, 'metricKey')
+
+        expect(results).toEqual({
+            intentA: {metricKey: 25},
+        })
+    })
+})
+
+describe('convertResultToTableArrayFormat', () => {
+    it('converts results object to array format with transformed names', () => {
+        const results = {
+            'intentA::subIntentA': {
+                [IntentTableColumn.AutomationOpportunities]: 10,
+                [IntentTableColumn.Tickets]: 20,
+            },
+            'intentB::subIntentB': {
+                [IntentTableColumn.AutomationOpportunities]: 15,
+                [IntentTableColumn.Tickets]: 25,
+            },
+        } as unknown as Record<string, IntentMetrics>
+
+        const result = convertResultToTableArrayFormat(results)
+
+        expect(result).toEqual([
+            {
+                [IntentTableColumn.AutomationOpportunities]: 10,
+                [IntentTableColumn.Tickets]: 20,
+                [IntentTableColumn.IntentName]: 'intentA/subIntentA',
+            },
+            {
+                [IntentTableColumn.AutomationOpportunities]: 15,
+                [IntentTableColumn.Tickets]: 25,
+                [IntentTableColumn.IntentName]: 'intentB/subIntentB',
+            },
+        ])
+    })
+
+    it('handles empty results object gracefully', () => {
+        const results: Record<string, IntentMetrics> = {}
+
+        const result = convertResultToTableArrayFormat(results)
+
+        expect(result).toEqual([])
+    })
+
+    it('preserves all metric fields in the converted array', () => {
+        const results = {
+            intentA: {
+                [IntentTableColumn.AutomationOpportunities]: 5,
+                [IntentTableColumn.Tickets]: 10,
+                [IntentTableColumn.AutomationRate]: 15,
+            },
+        } as unknown as Record<string, IntentMetrics>
+
+        const result = convertResultToTableArrayFormat(results)
+
+        expect(result).toEqual([
+            {
+                [IntentTableColumn.AutomationOpportunities]: 5,
+                [IntentTableColumn.Tickets]: 10,
+                [IntentTableColumn.AutomationRate]: 15,
+                [IntentTableColumn.IntentName]: 'intentA',
+            },
+        ])
     })
 })

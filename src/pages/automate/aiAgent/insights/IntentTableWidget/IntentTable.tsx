@@ -3,6 +3,7 @@ import React, {UIEventHandler, useState} from 'react'
 
 import {useDispatch} from 'react-redux'
 
+import {useAIAgentInsightsDataset} from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
 import {NumberedPagination} from 'pages/common/components/Paginations'
@@ -27,7 +28,6 @@ import {
     IntentAutomationOpportunitiesCellContent,
     IntentDefaultCellContent,
     IntentNameCellContent,
-    IntentResourcesCellContent,
     LoadingIntentCellContent,
 } from './IntentTableCells'
 import {
@@ -40,7 +40,7 @@ import {
 import {PaginatedIntents, IntentTableColumn} from './types'
 
 const getSortingQuery = (column: IntentTableColumn) => {
-    return () => useIntentSoringQuery(column)
+    return () => useIntentSoringQuery(column, useAIAgentInsightsDataset)
 }
 
 export const IntentTable = ({
@@ -66,8 +66,8 @@ export const IntentTable = ({
                 return IntentNameCellContent
             case IntentTableColumn.AutomationOpportunities:
                 return IntentAutomationOpportunitiesCellContent
-            case IntentTableColumn.Resources:
-                return IntentResourcesCellContent
+            // case IntentTableColumn.Resources:
+            //     return IntentResourcesCellContent
             default:
                 return IntentDefaultCellContent
         }
@@ -93,10 +93,7 @@ export const IntentTable = ({
                                 hint={
                                     IntentsColumnsConfig[column]?.hint || null
                                 }
-                                useSortingQuery={getSortingQuery(
-                                    column
-                                    // statsFilters
-                                )}
+                                useSortingQuery={getSortingQuery(column)}
                                 width={getColumnWidth(column)}
                                 className={classNames(
                                     css.BodyCell,
@@ -113,7 +110,9 @@ export const IntentTable = ({
                     <TableBody>
                         {!isSortingLoading ? (
                             intents.map((intent) => (
-                                <TableBodyRow key={intent.id}>
+                                <TableBodyRow
+                                    key={intent[IntentTableColumn.IntentName]}
+                                >
                                     {TableColumnsOrder.map((column) => (
                                         <React.Fragment key={column}>
                                             {React.createElement(
@@ -173,11 +172,13 @@ export const IntentTableWithDefaultState = ({
     tableHint?: string
 }) => {
     const paginatedIntents = useAppSelector(getPaginatedIntents)
+    const isSortingLoading = useAppSelector(isSortingMetricLoading)
 
     return (
         <div>
             <ChartCard title={tableTitle} hint={{title: tableHint}} noPadding>
-                {paginatedIntents && paginatedIntents.intents.length > 0 ? (
+                {(paginatedIntents && paginatedIntents.intents.length > 0) ||
+                isSortingLoading ? (
                     <IntentTable paginatedIntents={paginatedIntents} />
                 ) : (
                     <div className={intentTableCss.noData}>

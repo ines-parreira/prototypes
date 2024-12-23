@@ -41,7 +41,6 @@ export const IntentDefaultCellContent = ({
 }) => {
     const id = useId()
     const tooltipId = `${column}-row-tooltip-${id}`
-
     return (
         <BodyCellWrapper
             bodyCellProps={{
@@ -51,8 +50,9 @@ export const IntentDefaultCellContent = ({
         >
             <span id={tooltipId}>
                 {formatMetricValue(
-                    Number(intent[column]),
-                    IntentsColumnsConfig[column]?.format
+                    intent[column] as number,
+                    IntentsColumnsConfig[column]?.format,
+                    IntentsColumnsConfig[column]?.notAvailableText
                 )}
             </span>
             {IntentRowConfig[column]?.hint && (
@@ -103,15 +103,18 @@ export const IntentAutomationOpportunitiesCellContent = ({
     column: IntentTableColumn
     allIntents: Intent[]
 }) => {
+    const value = intent[column] as number
+
     const formattedMetricValue = formatMetricValue(
-        Number(intent[column]),
-        IntentsColumnsConfig[column]?.format
+        value,
+        IntentsColumnsConfig[column]?.format,
+        IntentsColumnsConfig[column]?.notAvailableText
     )
 
     const values = useMemo(
-        () => allIntents.map((intent) => Number(intent[column])),
+        () => allIntents.map((intent) => intent[column] || 0),
         [allIntents, column]
-    )
+    ) as number[]
 
     return (
         <BodyCellWrapper
@@ -121,9 +124,10 @@ export const IntentAutomationOpportunitiesCellContent = ({
             }}
         >
             <BadgeWithTiers
-                value={Number(intent[column])}
+                value={value}
                 values={values}
                 formattedValue={formattedMetricValue}
+                hasValue={!!value}
             />
         </BodyCellWrapper>
     )

@@ -8,10 +8,12 @@ export const BadgeWithTiers = ({
     values,
     value,
     formattedValue,
+    hasValue,
 }: {
     values: number[]
     value: number
     formattedValue: string
+    hasValue: boolean
 }) => {
     const tiers = useGetBadgeTiers(values)
     const getTier = (val: number) => {
@@ -21,6 +23,7 @@ export const BadgeWithTiers = ({
     }
 
     const tier = getTier(value)
+    const displayValue = hasValue ? `+${formattedValue}` : formattedValue
     return (
         <div
             className={css.container}
@@ -29,7 +32,7 @@ export const BadgeWithTiers = ({
                 backgroundColor: tier?.background,
             }}
         >
-            <span>+{formattedValue}</span>
+            <span>{displayValue}</span>
         </div>
     )
 }

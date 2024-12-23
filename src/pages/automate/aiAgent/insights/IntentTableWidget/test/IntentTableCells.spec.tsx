@@ -13,7 +13,6 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 import {
     IntentNameCellContent,
     IntentDefaultCellContent,
-    IntentResourcesCellContent,
     IntentAutomationOpportunitiesCellContent,
     LoadingIntentCellContent,
     BodyCellWrapper,
@@ -34,16 +33,16 @@ const renderTableCell = (cellContent: React.ReactNode) => {
 describe('IntentTableCells', () => {
     const mockIntent = {
         id: '1',
-        intent_name: 'Mock Intent Name',
-        automation_opportunities: 50,
-        resources: 0,
-        tickets: 200,
+        [IntentTableColumn.IntentName]: 'Mock Intent Name',
+        [IntentTableColumn.AutomationOpportunities]: 0.5,
+        // [IntentTableColumn.Resources]: 0,
+        [IntentTableColumn.Tickets]: 200,
     } as unknown as Intent
 
     const mockAllIntents = [
-        {id: '1', automation_opportunities: 50},
-        {id: '2', automation_opportunities: 70},
-        {id: '3', automation_opportunities: 30},
+        {id: '1', [IntentTableColumn.AutomationOpportunities]: 0.5},
+        {id: '2', [IntentTableColumn.AutomationOpportunities]: 0.7},
+        {id: '3', [IntentTableColumn.AutomationOpportunities]: 0.3},
     ] as unknown as Intent[]
 
     describe('IntentNameCellContent', () => {
@@ -71,28 +70,28 @@ describe('IntentTableCells', () => {
         })
     })
 
-    describe('IntentResourcesCellContent', () => {
-        it('renders "Missing" if the resource value is 0', () => {
-            renderTableCell(
-                <IntentResourcesCellContent
-                    intent={mockIntent}
-                    column={IntentTableColumn.Resources}
-                />
-            )
-            expect(screen.getByText('Missing')).toBeInTheDocument()
-        })
-
-        it('renders the resource value if it is greater than 0', () => {
-            const intentWithResources = {...mockIntent, resources: 5}
-            renderTableCell(
-                <IntentResourcesCellContent
-                    intent={intentWithResources}
-                    column={IntentTableColumn.Resources}
-                />
-            )
-            expect(screen.getByText('5')).toBeInTheDocument()
-        })
-    })
+    // describe('IntentResourcesCellContent', () => {
+    //     it('renders "Missing" if the resource value is 0', () => {
+    //         renderTableCell(
+    //             <IntentResourcesCellContent
+    //                 intent={mockIntent}
+    //                 // column={IntentTableColumn.Resources}
+    //             />
+    //         )
+    //         expect(screen.getByText('Missing')).toBeInTheDocument()
+    //     })
+    //
+    //     it('renders the resource value if it is greater than 0', () => {
+    //         const intentWithResources = {...mockIntent, resources: 5}
+    //         renderTableCell(
+    //             <IntentResourcesCellContent
+    //                 intent={intentWithResources}
+    //                 column={IntentTableColumn.Resources}
+    //             />
+    //         )
+    //         expect(screen.getByText('5')).toBeInTheDocument()
+    //     })
+    // })
 
     describe('IntentAutomationOpportunitiesCellContent', () => {
         it('renders BadgeWithTiers with correct props', () => {
