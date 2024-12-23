@@ -16,15 +16,18 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {formatMetricValue} from 'pages/stats/common/utils'
 
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+
 import intentTableCss from './IntentTable.less'
 
-export const IntentNameCellContent = ({
-    intent,
-    column,
-}: {
+type TableCellProps = {
     intent: Intent
     column: IntentTableColumn
-}) => {
+    drillDownMetricData?: DrillDownMetric | null | undefined
+    allIntents?: Intent[]
+}
+export const IntentNameCellContent = ({intent, column}: TableCellProps) => {
     return (
         <BodyCellWrapper bodyCellProps={{width: getColumnWidth(column)}}>
             <div>{intent[column]}</div>
@@ -35,10 +38,8 @@ export const IntentNameCellContent = ({
 export const IntentDefaultCellContent = ({
     intent,
     column,
-}: {
-    intent: Intent
-    column: IntentTableColumn
-}) => {
+    drillDownMetricData,
+}: TableCellProps) => {
     const id = useId()
     const tooltipId = `${column}-row-tooltip-${id}`
     return (
@@ -48,25 +49,30 @@ export const IntentDefaultCellContent = ({
                 width: getColumnWidth(column),
             }}
         >
-            <span id={tooltipId}>
-                {formatMetricValue(
-                    intent[column] as number,
-                    IntentsColumnsConfig[column]?.format,
-                    IntentsColumnsConfig[column]?.notAvailableText
+            <DrillDownModalWrapper
+                drillDownMetricData={drillDownMetricData}
+                metricValue={intent[column] as number}
+            >
+                <span id={tooltipId}>
+                    {formatMetricValue(
+                        intent[column] as number,
+                        IntentsColumnsConfig[column]?.format,
+                        IntentsColumnsConfig[column]?.notAvailableText
+                    )}
+                </span>{' '}
+                {IntentRowConfig[column]?.hint && (
+                    <Tooltip
+                        target={tooltipId}
+                        innerProps={{
+                            style: {
+                                textAlign: 'left',
+                            },
+                        }}
+                    >
+                        Industry average for this intent: 14%
+                    </Tooltip>
                 )}
-            </span>
-            {IntentRowConfig[column]?.hint && (
-                <Tooltip
-                    target={tooltipId}
-                    innerProps={{
-                        style: {
-                            textAlign: 'left',
-                        },
-                    }}
-                >
-                    Industry average for this intent: 14%
-                </Tooltip>
-            )}
+            </DrillDownModalWrapper>
         </BodyCellWrapper>
     )
 }
@@ -74,10 +80,7 @@ export const IntentDefaultCellContent = ({
 export const IntentResourcesCellContent = ({
     intent,
     column,
-}: {
-    intent: Intent
-    column: IntentTableColumn
-}) => {
+}: TableCellProps) => {
     return (
         <BodyCellWrapper
             bodyCellProps={{
@@ -98,11 +101,7 @@ export const IntentAutomationOpportunitiesCellContent = ({
     intent,
     column,
     allIntents,
-}: {
-    intent: Intent
-    column: IntentTableColumn
-    allIntents: Intent[]
-}) => {
+}: TableCellProps) => {
     const value = intent[column] as number
 
     const formattedMetricValue = formatMetricValue(
@@ -112,7 +111,7 @@ export const IntentAutomationOpportunitiesCellContent = ({
     )
 
     const values = useMemo(
-        () => allIntents.map((intent) => intent[column] || 0),
+        () => allIntents?.map((intent) => intent[column] || 0),
         [allIntents, column]
     ) as number[]
 
@@ -170,5 +169,31 @@ export const BodyCellWrapper = ({
                 children
             )}
         </BodyCell>
+    )
+}
+
+const DrillDownModalWrapper = ({
+    metricValue,
+    drillDownMetricData,
+    children,
+}: {
+    metricValue: number | null
+    drillDownMetricData: DrillDownMetric | null | undefined
+    children: React.ReactNode
+}) => {
+    return (
+        <>
+            {drillDownMetricData ? (
+                <DrillDownModalTrigger
+                    enabled={!!metricValue}
+                    metricData={drillDownMetricData}
+                    useNewFilterData={true}
+                >
+                    {children}
+                </DrillDownModalTrigger>
+            ) : (
+                children
+            )}
+        </>
     )
 }

@@ -9,7 +9,7 @@ import {VoiceCallDimension} from 'models/reporting/cubes/VoiceCallCube'
 import {
     formatTicketDrillDownRowData,
     formatVoiceDrillDownRowData,
-} from '../DrillDownFormatters'
+} from 'pages/stats/DrillDownFormatters'
 
 describe('DrillDownFormatters', () => {
     describe('formatVoiceDrillDownRowData', () => {
@@ -142,6 +142,78 @@ describe('DrillDownFormatters', () => {
                     },
                 })
             )
+        })
+    })
+
+    describe('format row data for AI agent insights', () => {
+        it('should return the formatted row data with outcome', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': null,
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'Ticket.custom_fields': {1: '1::1', 2: '2::2'},
+                'TicketEnriched.ticketId': '1',
+            }
+            const result = formatTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {
+                    outcomeCustomFieldId: 1,
+                },
+            })
+
+            expect(result).toEqual({
+                assignee: null,
+                ticket: {
+                    channel: 'chat',
+                    contactReason: null,
+                    created: '2024-12-19T17:13:00.291264',
+                    description: null,
+                    id: null,
+                    isRead: false,
+                    status: null,
+                    subject: null,
+                },
+                intent: undefined,
+                outcome: 'Automated',
+                metricValue: undefined,
+            })
+        })
+
+        it('should return the formatted row data with intent', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': null,
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'Ticket.custom_fields': {1: '1::1', 2: '2::2'},
+                'TicketEnriched.ticketId': '1',
+            }
+            const result = formatTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {
+                    intentCustomFieldId: 2,
+                },
+            })
+
+            expect(result).toEqual({
+                assignee: null,
+                ticket: {
+                    channel: 'chat',
+                    contactReason: null,
+                    created: '2024-12-19T17:13:00.291264',
+                    description: null,
+                    id: null,
+                    isRead: false,
+                    status: null,
+                    subject: null,
+                },
+                intent: '2/2',
+                outcome: undefined,
+                metricValue: undefined,
+            })
         })
     })
 })

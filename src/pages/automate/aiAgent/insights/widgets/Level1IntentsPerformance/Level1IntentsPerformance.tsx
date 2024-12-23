@@ -1,12 +1,16 @@
 import React from 'react'
 
 import {useAIAgentMetrics} from 'hooks/reporting/automate/useAIAgentInsightsDataset'
+import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
 import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
 import useAppSelector from 'hooks/useAppSelector'
+import {useGetCustomTicketsFieldsDefinitionData} from 'pages/automate/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import {AUTOMATION_RATE_FIXED_STATS} from 'pages/automate/automate-metrics/constants'
 import {toPercentage} from 'pages/automate/automate-metrics/utils'
 import PerformanceTip from 'pages/stats/PerformanceTip'
 import {getPageStatsFilters} from 'state/stats/selectors'
+
+import {AIInsightsMetric} from 'state/ui/stats/types'
 
 import {IntentsPerformance} from '../IntentsPerformance/IntentsPerformance'
 
@@ -22,11 +26,17 @@ const getPerformanceTipType = (
     return 'neutral'
 }
 
+const AUTOMATED_OUTCOMS = ['Close::With message', 'Close::Without message']
+
 export const Level1IntentsPerformance = () => {
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
 
     const {userTimezone} = useNewAutomateFilters()
     const aiAgentMetrics = useAIAgentMetrics(pageStatsFilters, userTimezone)
+
+    const aiAgentUserId = useAIAgentUserId()
+    const {intentCustomFieldId, outcomeCustomFieldId} =
+        useGetCustomTicketsFieldsDefinitionData()
 
     return (
         <IntentsPerformance
@@ -51,6 +61,11 @@ export const Level1IntentsPerformance = () => {
                             to improve this metric.
                         </PerformanceTip>
                     ),
+                    drillDownMetric:
+                        AIInsightsMetric.TicketDrillDownPerCoverageRate,
+                    drillDownMetricAdditionalData: {
+                        customFieldId: intentCustomFieldId,
+                    },
                 },
                 {
                     title: 'Automated interactions',
@@ -80,6 +95,12 @@ export const Level1IntentsPerformance = () => {
                             for you.
                         </PerformanceTip>
                     ),
+                    drillDownMetric:
+                        AIInsightsMetric.TicketDrillDownPerAutomatedInteractions,
+                    drillDownMetricAdditionalData: {
+                        customFieldId: outcomeCustomFieldId,
+                        customFieldValue: AUTOMATED_OUTCOMS,
+                    },
                 },
                 {
                     title: 'Automation rate',
@@ -115,6 +136,12 @@ export const Level1IntentsPerformance = () => {
                             channels.
                         </PerformanceTip>
                     ),
+                    drillDownMetric:
+                        AIInsightsMetric.TicketDrillDownPerAutomatedInteractions,
+                    drillDownMetricAdditionalData: {
+                        customFieldId: outcomeCustomFieldId,
+                        customFieldValue: AUTOMATED_OUTCOMS,
+                    },
                 },
                 {
                     title: 'Customer satisfaction',
@@ -139,6 +166,12 @@ export const Level1IntentsPerformance = () => {
                             for a review.
                         </PerformanceTip>
                     ),
+                    drillDownMetric:
+                        AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
+                    drillDownMetricAdditionalData: {
+                        perAgentId: aiAgentUserId,
+                        customFieldId: outcomeCustomFieldId,
+                    },
                 },
             ]}
         />

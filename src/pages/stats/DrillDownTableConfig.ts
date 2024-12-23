@@ -28,7 +28,12 @@ import {oneTouchTicketsPerTicketQueryFactory} from 'models/reporting/queryFactor
 import {openTicketsPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/openTickets'
 import {ticketsCreatedPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
-import {customFieldsTicketCountPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import {
+    customFieldsTicketCountPerTicketDrillDownQueryFactory,
+    coverageRateTicketDrillDownQueryFactory,
+    automatedInteractionsTicketDrillDownQueryFactory,
+    aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
+} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {tagsTicketCountDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 import {
     isFilterWithLogicalOperator,
@@ -56,6 +61,7 @@ import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {
     AgentsTableColumn,
+    AIInsightsMetric,
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
@@ -299,6 +305,7 @@ export const getDrillDownQuery = (
                     sorting
                 )
         case TicketFieldsMetric.TicketCustomFieldsTicketCount:
+        case AIInsightsMetric.TicketCustomFieldsTicketCount:
             return (
                 statsFilters: StatsFilters,
                 timezone: string,
@@ -312,6 +319,49 @@ export const getDrillDownQuery = (
                     metricName.dateRange || statsFilters.period,
                     sorting
                 )
+        case AIInsightsMetric.TicketDrillDownPerCoverageRate:
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection
+            ) =>
+                coverageRateTicketDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    String(metricName.customFieldId),
+                    metricName.customFieldValue,
+                    metricName.dateRange || statsFilters.period,
+                    sorting
+                )
+        case AIInsightsMetric.TicketDrillDownPerAutomatedInteractions:
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection
+            ) =>
+                automatedInteractionsTicketDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    String(metricName.customFieldId),
+                    metricName.customFieldValue,
+                    metricName.dateRange || statsFilters.period,
+                    sorting
+                )
+
+        case AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction:
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection
+            ) =>
+                aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    String(metricName.customFieldId),
+                    String(metricName.perAgentId),
+                    sorting
+                )
+
         case ConvertMetric.CampaignSalesCount:
             return (
                 statsFilters: StatsFilters,

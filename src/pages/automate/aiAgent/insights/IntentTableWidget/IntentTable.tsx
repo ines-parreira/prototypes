@@ -6,6 +6,11 @@ import {useDispatch} from 'react-redux'
 import {useAIAgentInsightsDataset} from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
+import {
+    Intent,
+    IntentTableColumn,
+    PaginatedIntents,
+} from 'pages/automate/aiAgent/insights/IntentTableWidget/types'
 import {NumberedPagination} from 'pages/common/components/Paginations'
 import css from 'pages/common/components/table/cells/HeaderCellProperty.less'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -18,10 +23,13 @@ import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/Ag
 
 import {
     getPaginatedIntents,
-    pageSet,
     isSortingMetricLoading,
+    pageSet,
 } from 'state/ui/stats/insightsSlice'
 
+import {AIInsightsMetric} from 'state/ui/stats/types'
+
+import {useGetCustomTicketsFieldsDefinitionData} from './hooks/useGetCustomTicketsFieldsDefinitionData'
 import intentTableCss from './IntentTable.less'
 
 import {
@@ -37,7 +45,6 @@ import {
     TableLabels,
     useIntentSoringQuery,
 } from './IntentTableConfig'
-import {PaginatedIntents, IntentTableColumn} from './types'
 
 const getSortingQuery = (column: IntentTableColumn) => {
     return () => useIntentSoringQuery(column, useAIAgentInsightsDataset)
@@ -55,6 +62,8 @@ export const IntentTable = ({
     const {intents, allIntents, currentPage, perPage} = paginatedIntents
 
     const isSortingLoading = useAppSelector(isSortingMetricLoading)
+
+    const {intentCustomFieldId} = useGetCustomTicketsFieldsDefinitionData()
 
     const onPageChangeCallback = (page: number) => {
         dispatch(pageSet(page))
@@ -78,6 +87,29 @@ export const IntentTable = ({
             setIsTableScrolled(true)
         } else {
             setIsTableScrolled(false)
+        }
+    }
+
+    const getDrillDownMetricData = ({
+        column,
+        intent,
+    }: {
+        column: IntentTableColumn
+        intent: Intent
+    }) => {
+        const intentName = intent[IntentTableColumn.IntentName]
+        // Transform intent name from aaa/bbb to aaa::bbb format
+        const intentNameOriginalFormat = intentName.replace(/\//g, '::')
+        switch (column) {
+            case IntentTableColumn.Tickets:
+                return {
+                    metricName: AIInsightsMetric.TicketCustomFieldsTicketCount,
+                    title: intentName,
+                    customFieldValue: [intentNameOriginalFormat],
+                    customFieldId: intentCustomFieldId ?? null,
+                }
+            default:
+                return null
         }
     }
 
@@ -121,6 +153,11 @@ export const IntentTable = ({
                                                     intent,
                                                     column,
                                                     allIntents,
+                                                    drillDownMetricData:
+                                                        getDrillDownMetricData({
+                                                            column,
+                                                            intent,
+                                                        }),
                                                 }
                                             )}
                                         </React.Fragment>

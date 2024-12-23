@@ -40,6 +40,7 @@ import {
     VoiceAgentsMetric,
     TagsMetric,
     ChannelsTableColumns,
+    AIInsightsMetric,
 } from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 
@@ -288,6 +289,27 @@ describe('getDrillDownQuery', () => {
         },
     ]
 
+    const aiInsightsMetrics: DrillDownMetric[] = [
+        {
+            metricName: AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
+            perAgentId: '1',
+            customFieldId: 1,
+            customFieldValue: null,
+        },
+        {
+            metricName: AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
+            perAgentId: '1',
+            customFieldId: 1,
+            customFieldValue: ['value'],
+        },
+        {
+            metricName: AIInsightsMetric.TicketDrillDownPerCoverageRate,
+            perAgentId: '1',
+            customFieldId: 1,
+            customFieldValue: null,
+        },
+    ]
+
     it.each([
         ...supportedMetrics,
         ...agentsMetrics,
@@ -298,6 +320,7 @@ describe('getDrillDownQuery', () => {
         ...convertMetrics,
         ...voiceMetrics,
         ...tagsMetrics,
+        ...aiInsightsMetrics,
     ])(
         'should return a query for every DrillDown metric: $metricName',
         (metricName: DrillDownMetric) => {

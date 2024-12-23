@@ -23,7 +23,13 @@ import {
 import TipsToggle from 'pages/stats/TipsToggle'
 import {TooltipData} from 'pages/stats/types'
 import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
-import {AutoQAMetric, SatisfactionMetric, SlaMetric} from 'state/ui/stats/types'
+import {AIInsightsMetrics, DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+import {
+    AIInsightsMetric,
+    AutoQAMetric,
+    SatisfactionMetric,
+    SlaMetric,
+} from 'state/ui/stats/types'
 
 import css from './IntentPerformance.less'
 
@@ -48,6 +54,8 @@ export const IntentsPerformance = ({
             | SlaMetric
             | AutoQAMetric
             | SatisfactionMetric
+            | AIInsightsMetric
+        drillDownMetricAdditionalData?: Partial<AIInsightsMetrics>
     }>
 }) => {
     const {isAnalyticsNewFilters} = useNewStatsFilters()
@@ -128,10 +136,13 @@ export const IntentsPerformance = ({
                             {config.drillDownMetric ? (
                                 <DrillDownModalTrigger
                                     enabled={!!config.trend.data?.value}
-                                    metricData={{
-                                        title: config.title,
-                                        metricName: config.drillDownMetric,
-                                    }}
+                                    metricData={
+                                        {
+                                            title: config.title,
+                                            metricName: config.drillDownMetric,
+                                            ...config.drillDownMetricAdditionalData,
+                                        } as DrillDownMetric
+                                    }
                                     useNewFilterData={isAnalyticsNewFilters}
                                 >
                                     {config.formattedMetric}

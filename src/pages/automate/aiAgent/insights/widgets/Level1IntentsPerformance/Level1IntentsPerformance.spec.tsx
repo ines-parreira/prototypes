@@ -22,6 +22,17 @@ jest.mock('state/stats/selectors')
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock
 
+jest.mock('hooks/reporting/automate/useAIAgentUserId')
+jest.mock(
+    'pages/automate/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
+    () => ({
+        useGetCustomTicketsFieldsDefinitionData: jest.fn(() => ({
+            intentCustomFieldId: 'intentCustomFieldId',
+            outcomeCustomFieldId: 'outcomeCustomFieldId',
+        })),
+    })
+)
+
 const aiAgentAutomatedInteractionTrend = {
     data: {
         isFetching: false,
@@ -56,7 +67,7 @@ const coverageTrend = {
 
 describe('OptimizeContainer', () => {
     beforeEach(() => {
-        useNewAutomateFiltersMock.mockReturnValueOnce({userTimezone: 'UTC'})
+        useNewAutomateFiltersMock.mockReturnValue({userTimezone: 'UTC'})
 
         useAppSelectorMock.mockReturnValueOnce({
             period: {

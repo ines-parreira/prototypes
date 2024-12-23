@@ -1,5 +1,10 @@
 import {TicketChannel, TicketStatus} from 'business/types/ticket'
 import {User} from 'config/types/user'
+import {
+    AI_AGENT_OUTCOME_DISPLAY_LABELS,
+    CUSTOM_FIELD_AI_AGENT_HANDOVER,
+} from 'hooks/reporting/automate/types'
+import {transformIntentName} from 'hooks/reporting/automate/utils'
 import {MergedRecord} from 'hooks/reporting/withEnrichment'
 import {
     TicketQAScoreDimensionName,
@@ -43,6 +48,8 @@ export interface TicketDrillDownRowData extends BaseDrillDownRowData {
         | TicketQAScoreDimensionName.BrandVoice,
         string | undefined
     >
+    outcome?: string | null
+    intent?: string | null
 }
 
 export interface CampaignSaleDetails {
@@ -66,6 +73,10 @@ export type DrillDownFormatterProps = {
     metricField: string
     agents?: User[]
     ticketIdField?: string
+    customFieldsIds?: {
+        outcomeCustomFieldId?: number
+        intentCustomFieldId?: number
+    }
 }
 
 const getQAMetric = (
@@ -81,72 +92,131 @@ const getQAMetric = (
     return dataArray.find((item) => item?.dimension === key)?.prediction
 }
 
+const getAIOutcome = ({
+    row,
+    customFieldsIds,
+}: {
+    row: MergedRecord<any, any>
+    customFieldsIds?: {
+        outcomeCustomFieldId?: number
+        intentCustomFieldId?: number
+    }
+}): string | undefined => {
+    const outcomeId = customFieldsIds?.outcomeCustomFieldId
+    if (outcomeId) {
+        const outcome = (
+            row[EnrichmentFields.CustomFields] as Record<string, any>
+        )?.[outcomeId] as string | undefined
+        if (outcome?.startsWith(CUSTOM_FIELD_AI_AGENT_HANDOVER)) {
+            return AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover
+        }
+
+        return AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated
+    }
+    return undefined
+}
+
+const getAIIntent = ({
+    row,
+    customFieldsIds,
+}: {
+    row: MergedRecord<any, any>
+    customFieldsIds?: {
+        outcomeCustomFieldId?: number
+        intentCustomFieldId?: number
+    }
+}): string | undefined => {
+    const intentId = customFieldsIds?.intentCustomFieldId
+    if (intentId) {
+        const intent = (
+            row[EnrichmentFields.CustomFields] as Record<string, any>
+        )?.[intentId] as string | undefined
+
+        if (intent) {
+            return transformIntentName(intent)
+        }
+    }
+    return undefined
+}
+
 export const formatTicketDrillDownRowData = ({
     row,
     agents,
     metricField,
     ticketIdField,
-}: DrillDownFormatterProps): TicketDrillDownRowData => ({
-    ticket: {
-        id: (ticketIdField && row[ticketIdField]) || null,
-        subject: row[EnrichmentFields.TicketName] || null,
-        description: row[EnrichmentFields.Description] || null,
-        channel: row[EnrichmentFields.Channel] || null,
-        isRead: !(row[EnrichmentFields.IsUnread] ?? true),
-        created: row[EnrichmentFields.CreatedDatetime] || null,
-        contactReason: row[EnrichmentFields.ContactReason] || null,
-        status: row[EnrichmentFields.Status] || null,
-    },
-    metricValue: row[metricField],
-    assignee: row[EnrichmentFields.AssigneeId]
-        ? {
-              id: row[EnrichmentFields.AssigneeId],
-              name:
-                  agents?.find(
-                      (agent) => agent.id === row[EnrichmentFields.AssigneeId]
-                  )?.name || '',
-          }
-        : null,
-    ...(row?.['slas'] ? {rowData: row['slas']} : {}),
-    ...(row?.[TicketQAScoreMeasure.QAScoreData]
-        ? {rowData: row[TicketQAScoreMeasure.QAScoreData]}
-        : {}),
-    ...(row?.[TicketQAScoreMeasure.QAScoreData]
-        ? {
-              qaScore: {
-                  [TicketQAScoreDimensionName.ResolutionCompleteness]:
-                      getQAMetric(
-                          TicketQAScoreDimensionName.ResolutionCompleteness,
+    customFieldsIds,
+}: DrillDownFormatterProps): TicketDrillDownRowData => {
+    const outcome = getAIOutcome({row, customFieldsIds})
+    const intent = getAIIntent({row, customFieldsIds})
+
+    return {
+        ticket: {
+            id: (ticketIdField && row[ticketIdField]) || null,
+            subject: row[EnrichmentFields.TicketName] || null,
+            description: row[EnrichmentFields.Description] || null,
+            channel: row[EnrichmentFields.Channel] || null,
+            isRead: !(row[EnrichmentFields.IsUnread] ?? true),
+            created: row[EnrichmentFields.CreatedDatetime] || null,
+            contactReason: row[EnrichmentFields.ContactReason] || null,
+            status: row[EnrichmentFields.Status] || null,
+        },
+        metricValue: row[metricField],
+        assignee: row[EnrichmentFields.AssigneeId]
+            ? {
+                  id: row[EnrichmentFields.AssigneeId],
+                  name:
+                      agents?.find(
+                          (agent) =>
+                              agent.id === row[EnrichmentFields.AssigneeId]
+                      )?.name || '',
+              }
+            : null,
+        ...(row?.['slas'] ? {rowData: row['slas']} : {}),
+        ...(row?.[TicketQAScoreMeasure.QAScoreData]
+            ? {rowData: row[TicketQAScoreMeasure.QAScoreData]}
+            : {}),
+        ...(row?.[TicketQAScoreMeasure.QAScoreData]
+            ? {
+                  qaScore: {
+                      [TicketQAScoreDimensionName.ResolutionCompleteness]:
+                          getQAMetric(
+                              TicketQAScoreDimensionName.ResolutionCompleteness,
+                              row[TicketQAScoreMeasure.QAScoreData]
+                          ),
+                      [TicketQAScoreDimensionName.CommunicationSkills]:
+                          getQAMetric(
+                              TicketQAScoreDimensionName.CommunicationSkills,
+                              row[TicketQAScoreMeasure.QAScoreData]
+                          ),
+                      [TicketQAScoreDimensionName.LanguageProficiency]:
+                          getQAMetric(
+                              TicketQAScoreDimensionName.LanguageProficiency,
+                              row[TicketQAScoreMeasure.QAScoreData]
+                          ),
+                      [TicketQAScoreDimensionName.Accuracy]: getQAMetric(
+                          TicketQAScoreDimensionName.Accuracy,
                           row[TicketQAScoreMeasure.QAScoreData]
                       ),
-                  [TicketQAScoreDimensionName.CommunicationSkills]: getQAMetric(
-                      TicketQAScoreDimensionName.CommunicationSkills,
-                      row[TicketQAScoreMeasure.QAScoreData]
-                  ),
-                  [TicketQAScoreDimensionName.LanguageProficiency]: getQAMetric(
-                      TicketQAScoreDimensionName.LanguageProficiency,
-                      row[TicketQAScoreMeasure.QAScoreData]
-                  ),
-                  [TicketQAScoreDimensionName.Accuracy]: getQAMetric(
-                      TicketQAScoreDimensionName.Accuracy,
-                      row[TicketQAScoreMeasure.QAScoreData]
-                  ),
-                  [TicketQAScoreDimensionName.Efficiency]: getQAMetric(
-                      TicketQAScoreDimensionName.Efficiency,
-                      row[TicketQAScoreMeasure.QAScoreData]
-                  ),
-                  [TicketQAScoreDimensionName.InternalCompliance]: getQAMetric(
-                      TicketQAScoreDimensionName.InternalCompliance,
-                      row[TicketQAScoreMeasure.QAScoreData]
-                  ),
-                  [TicketQAScoreDimensionName.BrandVoice]: getQAMetric(
-                      TicketQAScoreDimensionName.BrandVoice,
-                      row[TicketQAScoreMeasure.QAScoreData]
-                  ),
-              },
-          }
-        : {}),
-})
+                      [TicketQAScoreDimensionName.Efficiency]: getQAMetric(
+                          TicketQAScoreDimensionName.Efficiency,
+                          row[TicketQAScoreMeasure.QAScoreData]
+                      ),
+                      [TicketQAScoreDimensionName.InternalCompliance]:
+                          getQAMetric(
+                              TicketQAScoreDimensionName.InternalCompliance,
+                              row[TicketQAScoreMeasure.QAScoreData]
+                          ),
+                      [TicketQAScoreDimensionName.BrandVoice]: getQAMetric(
+                          TicketQAScoreDimensionName.BrandVoice,
+                          row[TicketQAScoreMeasure.QAScoreData]
+                      ),
+                  },
+              }
+            : {}),
+        outcome: outcome,
+        intent: intent,
+    }
+}
 
 export const formatConvertCampaignSalesDrillDownRowData = ({
     row,

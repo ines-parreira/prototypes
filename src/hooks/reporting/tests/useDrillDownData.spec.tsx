@@ -86,6 +86,10 @@ const useMetricPerDimensionWithEnrichmentMock = assumeMock(
 )
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
 
+jest.mock(
+    'pages/automate/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+)
+
 describe('DrillDownData hooks', () => {
     const periodStart = formatReportingQueryDate(moment())
     const periodEnd = formatReportingQueryDate(moment())

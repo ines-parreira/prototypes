@@ -89,3 +89,8 @@ export type SortingField =
 
 export const CUSTOM_FIELD_AI_AGENT_HANDOVER = 'Handover'
 export const CUSTOM_FIELD_AI_AGENT_CLOSE = 'Close'
+
+export enum AI_AGENT_OUTCOME_DISPLAY_LABELS {
+    Handover = 'Handover',
+    Automated = 'Automated',
+}

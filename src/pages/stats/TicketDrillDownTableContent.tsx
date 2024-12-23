@@ -46,7 +46,7 @@ import {
     getDrillDownMetricColumn,
     SLA_FORMAT,
 } from 'state/ui/stats/drillDownSlice'
-import {AutoQAMetric} from 'state/ui/stats/types'
+import {AIInsightsMetric, AutoQAMetric} from 'state/ui/stats/types'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
 
 const tooltipHints = {
@@ -66,6 +66,9 @@ const tooltipHints = {
             </a>
         </span>
     ),
+    outcome:
+        'The resolution or result of the ticket after being processed by the AI Agent.',
+    intent: 'The primary topic or issue identified by the AI Agent for this ticket.',
 }
 
 const isAutoQAMetric = (
@@ -124,6 +127,17 @@ export const TicketDrillDownTableContent = ({
         getDrillDownMetricColumn
     )
 
+    const isAiInsightsMetric =
+        metricData.metricName === AIInsightsMetric.TicketCustomFieldsTicketCount
+
+    const isAiPerformanceMetric =
+        metricData.metricName ===
+            AIInsightsMetric.TicketDrillDownPerCoverageRate ||
+        metricData.metricName ===
+            AIInsightsMetric.TicketDrillDownPerAutomatedInteractions ||
+        metricData.metricName ===
+            AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction
+
     const {data, isFetching} = useEnrichedDrillDownData(
         metricData,
         defaultEnrichmentFields,
@@ -131,12 +145,26 @@ export const TicketDrillDownTableContent = ({
         EnrichmentFields.TicketId
     )
 
+    const getTicketColumnWidth = () => {
+        if (isAiInsightsMetric || isAiPerformanceMetric) {
+            return 280
+        }
+
+        if (showMetric) {
+            return 300
+        }
+
+        return 440
+    }
+
     const columnWidths = {
-        ticket: showMetric ? 300 : 440,
+        ticket: getTicketColumnWidth(),
         metric: 140,
         assignee: 180,
         created: 180,
         contactReason: 200,
+        outcome: 140,
+        intent: 180,
     }
     const columnWidthsForSkeleton = [
         columnWidths.ticket,
@@ -144,6 +172,8 @@ export const TicketDrillDownTableContent = ({
         columnWidths.assignee,
         columnWidths.created,
         columnWidths.contactReason,
+        columnWidths.outcome,
+        columnWidths.intent,
     ].map((width) => width - 40)
 
     return (
@@ -154,6 +184,14 @@ export const TicketDrillDownTableContent = ({
                     width={columnWidths.ticket}
                     className={css.headerCell}
                 />
+                {(isAiInsightsMetric || isAiPerformanceMetric) && (
+                    <HeaderCellProperty
+                        title="Outcome"
+                        width={columnWidths.outcome}
+                        className={css.headerCell}
+                        tooltip={tooltipHints.outcome}
+                    />
+                )}
                 {showMetric && (
                     <HeaderCellProperty
                         title={metricTitle}
@@ -272,12 +310,23 @@ export const TicketDrillDownTableContent = ({
                         />
                     </>
                 )}
-                <HeaderCellProperty
-                    title="Contact Reason"
-                    width={columnWidths.contactReason}
-                    className={css.headerCell}
-                    tooltip={tooltipHints.contactReason}
-                />
+                {!(isAiInsightsMetric || isAiPerformanceMetric) && (
+                    <HeaderCellProperty
+                        title="Contact Reason"
+                        width={columnWidths.contactReason}
+                        className={css.headerCell}
+                        tooltip={tooltipHints.contactReason}
+                    />
+                )}
+
+                {isAiPerformanceMetric && (
+                    <HeaderCellProperty
+                        title="Intent"
+                        width={columnWidths.intent}
+                        className={css.headerCell}
+                        tooltip={tooltipHints.intent}
+                    />
+                )}
             </TableHead>
             <TableBody>
                 {isFetching ? (
@@ -302,6 +351,19 @@ export const TicketDrillDownTableContent = ({
                                     width: columnWidths.ticket,
                                 }}
                             />
+                            {(isAiInsightsMetric || isAiPerformanceMetric) && (
+                                <BodyCell width={columnWidths.outcome}>
+                                    {item.outcome ? (
+                                        <TruncateCellContent
+                                            content={item.outcome}
+                                        />
+                                    ) : (
+                                        <span className={css.noData}>
+                                            {NOT_AVAILABLE_PLACEHOLDER}
+                                        </span>
+                                    )}
+                                </BodyCell>
+                            )}
                             {showMetric && (
                                 <BodyCell width={columnWidths.metric}>
                                     {metricValueFormat !== SLA_FORMAT
@@ -409,18 +471,34 @@ export const TicketDrillDownTableContent = ({
                                 </>
                             )}
 
-                            <BodyCell width={columnWidths.contactReason}>
-                                {item.ticket.contactReason ? (
-                                    <TruncateCellContent
-                                        content={item.ticket.contactReason}
-                                        left
-                                    />
-                                ) : (
-                                    <span className={css.noData}>
-                                        {NOT_AVAILABLE_PLACEHOLDER}
-                                    </span>
-                                )}
-                            </BodyCell>
+                            {!(isAiInsightsMetric || isAiPerformanceMetric) && (
+                                <BodyCell width={columnWidths.contactReason}>
+                                    {item.ticket.contactReason ? (
+                                        <TruncateCellContent
+                                            content={item.ticket.contactReason}
+                                            left
+                                        />
+                                    ) : (
+                                        <span className={css.noData}>
+                                            {NOT_AVAILABLE_PLACEHOLDER}
+                                        </span>
+                                    )}
+                                </BodyCell>
+                            )}
+
+                            {isAiPerformanceMetric && (
+                                <BodyCell width={columnWidths.intent}>
+                                    {item.intent ? (
+                                        <TruncateCellContent
+                                            content={item.intent}
+                                        />
+                                    ) : (
+                                        <span className={css.noData}>
+                                            {NOT_AVAILABLE_PLACEHOLDER}
+                                        </span>
+                                    )}
+                                </BodyCell>
+                            )}
                         </TableBodyRow>
                     ))
                 )}

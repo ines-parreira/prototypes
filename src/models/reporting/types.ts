@@ -125,6 +125,7 @@ export enum EnrichmentFields {
     IsUnread = 'Ticket.is_unread',
     CustomerIntegrationDataByExternalId = 'CustomerIntegrationDataByExternalId.id',
     OrderCustomerId = 'OrderConversion.customerId',
+    CustomFields = 'Ticket.custom_fields',
 }
 
 export const SAVABLE_FILTERS: Exclude<FilterKey, FilterKey.Period>[] = [

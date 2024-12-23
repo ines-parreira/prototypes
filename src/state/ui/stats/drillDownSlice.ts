@@ -37,6 +37,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     AgentsTableColumn,
+    AIInsightsMetric,
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
@@ -132,6 +133,17 @@ export type TicketFieldsMetrics = {
     }
 } & CommonMetrics
 
+export type AIInsightsMetrics = {
+    metricName: AIInsightsMetric
+    customFieldId: number | null
+    customFieldValue: string[] | null
+    dateRange?: {
+        end_datetime: string
+        start_datetime: string
+    }
+    perAgentId?: string
+} & CommonMetrics
+
 export type TagsFieldsMetrics = {
     metricName: TagsMetric.TicketCount
     tagId: string
@@ -171,6 +183,7 @@ export type DrillDownMetric =
     | AgentsMetrics
     | AutoQAMetrics
     | AutoQAAgentMetrics
+    | AIInsightsMetrics
     | ChannelsMetrics
     | PerformanceOverviewMetrics
     | TicketFieldsMetrics
@@ -211,6 +224,9 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     AgentsTableColumn.ClosedTicketsPerHour,
     AutoQAMetric.ReviewedClosedTickets,
     AutoQAMetric.ResolutionCompleteness,
+    AIInsightsMetric.TicketCustomFieldsTicketCount,
+    AIInsightsMetric.TicketDrillDownPerCoverageRate,
+    AIInsightsMetric.TicketDrillDownPerAutomatedInteractions,
     SatisfactionMetric.SatisfactionScore,
     SatisfactionMetric.ResponseRate,
     SatisfactionMetric.SurveysSent,
@@ -424,6 +440,17 @@ export const getDrillDownMetricColumn = (
         metricData.metricName === TagsMetric.TicketCount
     ) {
         metricTitle = ''
+    } else if (
+        metricData.metricName ===
+            AIInsightsMetric.TicketCustomFieldsTicketCount ||
+        metricData.metricName ===
+            AIInsightsMetric.TicketDrillDownPerCoverageRate ||
+        metricData.metricName ===
+            AIInsightsMetric.TicketDrillDownPerAutomatedInteractions ||
+        metricData.metricName ===
+            AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction
+    ) {
+        metricTitle = metricData.title || ''
     } else if ('perAgentId' in metricData) {
         metricTitle = TableLabels[metricData.metricName]
         metricValueFormat = AgentsColumnConfig[metricData.metricName].format

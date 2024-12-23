@@ -11,6 +11,7 @@ import {OrderDirection} from 'models/api/types'
 import {DrillDownReportingQuery} from 'models/job/types'
 import {TicketSLADimension} from 'models/reporting/cubes/sla/TicketSLACube'
 import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
+import {useGetCustomTicketsFieldsDefinitionData} from 'pages/automate/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import {
     BaseDrillDownRowData,
     DrillDownFormatterProps,
@@ -57,6 +58,7 @@ export const defaultEnrichmentFields: EnrichmentFields[] = [
     EnrichmentFields.CreatedDatetime,
     EnrichmentFields.ContactReason,
     EnrichmentFields.IsUnread,
+    EnrichmentFields.CustomFields,
 ]
 
 export const getDrillDownMetricOrder = (
@@ -136,6 +138,8 @@ export function useEnrichedDrillDownData<T>(
         enrichmentIdField
     )
 
+    const customFieldsIds = useGetCustomTicketsFieldsDefinitionData()
+
     const rowData = useMemo(
         () => aggregateSlas(someData?.allData, metricData, query.dimensions[0]),
         [metricData, query.dimensions, someData?.allData]
@@ -164,6 +168,7 @@ export function useEnrichedDrillDownData<T>(
                     metricField: query.dimensions[1] ?? query.measures[0],
                     agents,
                     ticketIdField: query.dimensions[0],
+                    customFieldsIds,
                 })
             )
             .slice(

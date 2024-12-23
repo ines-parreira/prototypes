@@ -39,6 +39,10 @@ jest.mock(
     })
 )
 
+jest.mock('pages/stats/DrillDownModal', () => ({
+    DrillDownModal: jest.fn(() => <></>),
+}))
+
 const defaultStore = {
     currentAccount: fromJS({
         ...account,

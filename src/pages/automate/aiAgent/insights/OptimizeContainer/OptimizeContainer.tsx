@@ -8,12 +8,14 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {IntentTableWidget} from 'pages/automate/aiAgent/insights/IntentTableWidget/IntentTableWidget'
 import {PeriodFilter} from 'pages/stats/common/filters/PeriodFilter'
+import {DrillDownModal} from 'pages/stats/DrillDownModal'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {setStatsFilters} from 'state/stats/statsSlice'
 
 import {Level1IntentsPerformance} from '../widgets/Level1IntentsPerformance/Level1IntentsPerformance'
 import css from './OptimizeContainer.less'
 
+const HOURS_TO_REMOVE = 72
 export const OptimizeContainer = () => {
     const {shopName} = useParams<{
         shopName: string
@@ -30,9 +32,14 @@ export const OptimizeContainer = () => {
             setStatsFilters({
                 period: {
                     start_datetime: moment(
-                        moment().subtract(1, 'week').toDate()
+                        moment()
+                            .subtract(HOURS_TO_REMOVE, 'hours')
+                            .subtract(1, 'week')
+                            .toDate()
                     ).format(),
-                    end_datetime: moment(moment().toDate()).format(),
+                    end_datetime: moment(
+                        moment().subtract(HOURS_TO_REMOVE, 'hours').toDate()
+                    ).format(),
                 },
             })
         )
@@ -50,6 +57,12 @@ export const OptimizeContainer = () => {
                                 pageStatsFilters.period.start_datetime,
                             end_datetime: pageStatsFilters.period.end_datetime,
                         }}
+                        initialSettings={{
+                            maxDate: moment().subtract(
+                                HOURS_TO_REMOVE,
+                                'hours'
+                            ),
+                        }}
                     />
                 )}
 
@@ -64,6 +77,7 @@ export const OptimizeContainer = () => {
                     tableHint="List of intents in tickets that involved AI Agent engagement. Learn about intents"
                 />
             </div>
+            <DrillDownModal />
         </AiAgentLayout>
     )
 }
