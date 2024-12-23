@@ -1,14 +1,12 @@
 import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
-import {LDFlagSet} from 'launchdarkly-js-client-sdk'
+
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import _isArray from 'lodash/isArray'
 import {parse, stringify} from 'qs'
 import React, {Component, ComponentType, ContextType, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {RouteComponentProps} from 'react-router-dom'
-
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {getConfigByName} from 'config/views'
 import {EntityType, ViewType, ViewVisibility} from 'models/view/types'
@@ -55,7 +53,6 @@ type OwnProps = {
     urlViewId: Maybe<string>
     ActionsComponent: Maybe<ComponentType>
     viewButtons: ReactNode
-    flags: LDFlagSet
 }
 
 type Props = OwnProps &
@@ -97,29 +94,26 @@ export class ViewTableContainer extends Component<Props> {
             updateView,
             activeViewIdSet,
             match: {params},
-            flags,
         } = this.props
         const viewType = config.get('type') as ViewType
 
         if (isSearch) {
             let fieldConfig: string[] | null = null
-            if (flags[FeatureFlagKey.AdvancedSearchSorting] !== false) {
-                tryLocalStorage(() => {
-                    const storedFieldConfig = localStorage.getItem(
-                        SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY
+            tryLocalStorage(() => {
+                const storedFieldConfig = localStorage.getItem(
+                    SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY
+                )
+
+                try {
+                    const parsedFieldConfig = JSON.parse(
+                        storedFieldConfig as string
                     )
 
-                    try {
-                        const parsedFieldConfig = JSON.parse(
-                            storedFieldConfig as string
-                        )
-
-                        if (_isArray(parsedFieldConfig)) {
-                            fieldConfig = parsedFieldConfig
-                        }
-                    } catch {}
-                })
-            }
+                    if (_isArray(parsedFieldConfig)) {
+                        fieldConfig = parsedFieldConfig
+                    }
+                } catch {}
+            })
 
             updateView(
                 urlSearchView.merge({

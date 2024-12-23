@@ -8,7 +8,6 @@ import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {baseView, getExpirationTimeForCount} from 'config/views'
 import {customer} from 'fixtures/customer'
 import {mockSearchRank} from 'fixtures/searchRank'
@@ -919,11 +918,7 @@ describe('actions', () => {
                 })
             })
 
-            it('should include search params when AdvancedSearchSorting feature flag is enabled', async () => {
-                variationMock.mockImplementation(
-                    (name: FeatureFlagKey) =>
-                        name === FeatureFlagKey.AdvancedSearchSorting
-                )
+            it('should include search params', async () => {
                 const store = mockStore({
                     views: fromJS({
                         active: ticketSearchView,

@@ -7,7 +7,6 @@ export enum FeatureFlagKey {
     ActionSteps = 'action-steps',
     ActionsUseCaseTemplates = 'actions-use-case-templates',
     ActionTemplates = 'action-templates',
-    AdvancedSearchSorting = 'advanced-search-sorting',
     AgentActivityTracking = 'agent-activity-tracking',
     AiAgentAIGeneratedGuidances = 'ai-agent-ai-generated-guidances',
     AiAgentAssistant = 'ai-agent-assistant',

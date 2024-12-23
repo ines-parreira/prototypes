@@ -3,7 +3,6 @@ import {fireEvent, render, waitFor} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getConfigByName} from 'config/views'
 import {view as viewsFixture} from 'fixtures/views'
 import {newViews} from 'models/view/mocks'
@@ -118,7 +117,7 @@ describe('ViewTable::Header', () => {
         expect(getByText(viewsFixture.name)).toBeInTheDocument()
     })
 
-    it('should update search of the active view and not fetch view items on search input submit', async () => {
+    it('should update search and ordering of the active view and not fetch view items on search input submit', async () => {
         render(<HeaderContainer {...minProps} isSearch />)
         const searchTerm = 'term1'
         const searchInput = screen.getByPlaceholderText(/Search/i)
@@ -128,43 +127,18 @@ describe('ViewTable::Header', () => {
             expect(screen.getByDisplayValue(searchTerm)).toBeInTheDocument()
             fireEvent.keyDown(searchInput, {key: 'Enter'})
             expect(minProps.updateView).toHaveBeenLastCalledWith(
-                (fromJS({...viewsFixture}) as Map<any, any>).set(
-                    'search',
-                    searchTerm
-                ),
+                (
+                    fromJS({
+                        ...viewsFixture,
+                        order_by: undefined,
+                        order_dir: undefined,
+                    }) as Map<any, any>
+                ).set('search', searchTerm),
                 false
             )
         })
 
         expect(fetchViewItems).not.toHaveBeenCalled()
-    })
-
-    it('should remove ordering preferences when advanced search sorting feature flag is enabled', async () => {
-        render(
-            <HeaderContainer
-                {...minProps}
-                isSearch
-                flags={{
-                    [FeatureFlagKey.AdvancedSearchSorting]: true,
-                }}
-            />
-        )
-        const searchTerm = 'term1'
-        const searchInput = screen.getByPlaceholderText(/Search/i)
-        fireEvent.change(searchInput, {target: {value: searchTerm}})
-
-        await waitFor(() => {
-            expect(screen.getByDisplayValue(searchTerm)).toBeInTheDocument()
-            fireEvent.keyDown(searchInput, {key: 'Enter'})
-            expect(minProps.updateView).toHaveBeenLastCalledWith(
-                (fromJS({...viewsFixture}) as Map<any, any>).merge({
-                    search: searchTerm,
-                    order_by: undefined,
-                    order_dir: undefined,
-                }),
-                false
-            )
-        })
     })
 
     it('update view name', () => {

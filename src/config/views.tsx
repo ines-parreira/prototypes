@@ -3,7 +3,6 @@ import _isUndefined from 'lodash/isUndefined'
 import React from 'react'
 
 import {fromAST} from 'common/utils'
-import {FeatureFlagKey} from 'config/featureFlags'
 import ticketLanguages from 'config/ticketLanguages'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {BASE_VIEW_ID} from 'constants/view'
@@ -22,7 +21,6 @@ import {STATUSES} from 'tickets/common/config'
 import {fieldPath, getAST, getLanguageDisplayName, stripHTML} from 'utils'
 import {getMomentUtcISOString} from 'utils/date'
 import {sanitizeHtmlDefault} from 'utils/html'
-import {getLDClient} from 'utils/launchDarkly'
 
 import {TicketChannel} from '../business/types/ticket'
 
@@ -493,11 +491,6 @@ export const defaultTicketView = {
         return view
     },
     searchView: (query: string, filters?: string) => {
-        const isAdvancedSearchSortingEnabled = !!getLDClient().variation(
-            FeatureFlagKey.AdvancedSearchSorting,
-            false
-        )
-
         const searchView = baseView().merge({
             name: `Search "${query}"`,
             search: query,
@@ -511,11 +504,8 @@ export const defaultTicketView = {
                 ViewField.Created,
             ],
             type: ViewType.TicketList,
-            order_by: 'created_datetime',
-            ...(isAdvancedSearchSortingEnabled && {
-                order_by: undefined,
-                order_dir: undefined,
-            }),
+            order_by: undefined,
+            order_dir: undefined,
         })
 
         if (filters) {

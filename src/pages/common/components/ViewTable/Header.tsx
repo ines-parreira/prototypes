@@ -7,7 +7,6 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 
 import closeIcon from 'assets/img/icons/close.svg'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getConfigByName} from 'config/views'
 import {EntityType, ViewCategory} from 'models/view/types'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -85,12 +84,8 @@ export class HeaderContainer extends React.Component<Props, State> {
             updateView(
                 activeView.merge({
                     search: searchTerm,
-                    ...(!!this.props.flags?.[
-                        FeatureFlagKey.AdvancedSearchSorting
-                    ] && {
-                        order_by: undefined,
-                        order_dir: undefined,
-                    }),
+                    order_by: undefined,
+                    order_dir: undefined,
                 }),
                 false
             )

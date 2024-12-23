@@ -1,9 +1,8 @@
 import classnames from 'classnames'
 import {fromJS, Map, List} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import React, {ComponentType, useCallback, useMemo} from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getConfigByName} from 'config/views'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -50,8 +49,6 @@ const HeaderCell = ({
     ) as TicketSearchSortableProperties
     const orderDirection = useAppSelector(getActiveViewOrderDirection)
     const selectedItemsIds = useAppSelector(getSelectedItemsIds)
-    const isAdvancedSearchSortingEnabled: boolean =
-        useFlags()[FeatureFlagKey.AdvancedSearchSorting]
 
     const fieldPath = useMemo(
         () => getFieldPath(field),
@@ -59,11 +56,8 @@ const HeaderCell = ({
     ) as TicketSearchSortableProperties
 
     const isSearchSortingEnabled = useMemo(
-        () =>
-            isAdvancedSearchSortingEnabled &&
-            isSearch &&
-            type === EntityType.Ticket,
-        [isAdvancedSearchSortingEnabled, isSearch, type]
+        () => isSearch && type === EntityType.Ticket,
+        [isSearch, type]
     )
 
     const action = useMemo(

@@ -881,23 +881,6 @@ describe('ticket actions', () => {
             })
         })
 
-        it('should not check for view ordering if FF is disabled', (done) => {
-            variationMock.mockImplementation(() => false)
-            store = mockStore({
-                ticket: initialState,
-                views: fromJS({
-                    active: {
-                        id: 1,
-                    },
-                }),
-            })
-
-            void store.dispatch(actions.goToNextTicket(1)).then(() => {
-                expect(history.push).not.toHaveBeenCalled()
-                done()
-            })
-        })
-
         it('should fetch next ticket and go to the active view because there is no ticket', (done) => {
             mockServer.onPut('/api/views/1/tickets/1/next').reply(200)
             store = mockStore({
