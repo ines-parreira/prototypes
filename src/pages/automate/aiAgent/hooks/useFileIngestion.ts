@@ -26,6 +26,7 @@ export const useFileIngestion = ({
     ingestedFiles: Components.Schemas.RetrieveFileIngestionLogDto[] | null
     deleteIngestedFile: (ingestedFileId: number) => Promise<void>
     isIngesting: boolean
+    isLoading: boolean
 } => {
     const queryClient = useQueryClient()
     const [ingestingFileId, setIngestingFileId] = useState<number | null>(null)
@@ -42,7 +43,7 @@ export const useFileIngestion = ({
         onSuccess: invalidateQueries,
     })
 
-    const {data: ingestedFiles} = useGetFileIngestion(
+    const {data: ingestedFiles, isLoading} = useGetFileIngestion(
         {
             help_center_id: helpCenterId,
         },
@@ -108,5 +109,6 @@ export const useFileIngestion = ({
         ingestedFiles: ingestedFiles ? ingestedFiles.data : null,
         deleteIngestedFile,
         isIngesting: ingestingFileId !== null,
+        isLoading,
     }
 }

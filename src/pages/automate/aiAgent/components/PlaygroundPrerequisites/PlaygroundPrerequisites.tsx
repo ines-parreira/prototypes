@@ -3,6 +3,7 @@ import React, {ReactNode} from 'react'
 
 import {StoreConfiguration} from 'models/aiAgent/types'
 
+import {useFileIngestion} from '../../hooks/useFileIngestion'
 import {usePublicResources} from '../../hooks/usePublicResources'
 import css from './PlaygroundPrerequisites.less'
 import {MissingKnowledgeSourceAlert} from './PlaygroundPrerequisitesAlerts'
@@ -24,19 +25,19 @@ export const CheckPlaygroundPrerequisites = ({
         }
 
         return (
-            <CheckKnowledgeHasAtLeastPublicSources
+            <CheckExternalKnowledgeSources
                 snippetHelpCenterId={snippetHelpCenterId}
                 shopName={shopName}
             >
                 {children}
-            </CheckKnowledgeHasAtLeastPublicSources>
+            </CheckExternalKnowledgeSources>
         )
     }
 
     return <>{children}</>
 }
 
-const CheckKnowledgeHasAtLeastPublicSources = ({
+const CheckExternalKnowledgeSources = ({
     snippetHelpCenterId,
     children,
     shopName,
@@ -49,7 +50,13 @@ const CheckKnowledgeHasAtLeastPublicSources = ({
         helpCenterId: snippetHelpCenterId,
     })
 
-    if (isSourceItemsListLoading) {
+    const {ingestedFiles, isLoading: isExternalFilesLoading} = useFileIngestion(
+        {
+            helpCenterId: snippetHelpCenterId,
+        }
+    )
+
+    if (isSourceItemsListLoading || isExternalFilesLoading) {
         return (
             <div className={css.spinner}>
                 <LoadingSpinner role="alert" size="big" />
@@ -57,7 +64,16 @@ const CheckKnowledgeHasAtLeastPublicSources = ({
         )
     }
 
-    if (!sourceItems || !sourceItems.some(({status}) => status === 'done')) {
+    const hasPublicUrlSources =
+        sourceItems && sourceItems.some(({status}) => status === 'done')
+
+    const hasExternalFiles =
+        ingestedFiles &&
+        ingestedFiles.some(
+            (ingestedFile) => ingestedFile.status === 'SUCCESSFUL'
+        )
+
+    if (!hasPublicUrlSources && !hasExternalFiles) {
         return <MissingKnowledgeSourceAlert shopName={shopName} />
     }
 

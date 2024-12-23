@@ -4,13 +4,21 @@ import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getStoreConfigurationFixture} from 'pages/automate/aiAgent/fixtures/storeConfiguration.fixtures'
+
+import {useFileIngestion} from 'pages/automate/aiAgent/hooks/useFileIngestion'
 import {usePublicResources} from 'pages/automate/aiAgent/hooks/usePublicResources'
 
 import {CheckPlaygroundPrerequisites} from '../PlaygroundPrerequisites'
 
+jest.mock('pages/automate/aiAgent/hooks/useFileIngestion', () => ({
+    useFileIngestion: jest.fn(),
+}))
+
 jest.mock('pages/automate/aiAgent/hooks/usePublicResources', () => ({
     usePublicResources: jest.fn(),
 }))
+
+const mockUseFileIngestion = useFileIngestion as jest.Mock
 
 const mockUsePublicResources = jest.mocked(usePublicResources)
 
@@ -26,6 +34,11 @@ const renderComponent = (
 
 describe('CheckPlaygroundPrerequisites', () => {
     beforeEach(() => {
+        mockUseFileIngestion.mockReturnValue({
+            ingestedFiles: [],
+            isLoading: false,
+        })
+
         mockUsePublicResources.mockReturnValue({
             sourceItems: [],
             isSourceItemsListLoading: false,
@@ -88,12 +101,29 @@ describe('CheckPlaygroundPrerequisites', () => {
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
-    it('renders missing knowledge base alert when no source items are done', () => {
+    it('renders Loader when external files are loading', () => {
+        mockUseFileIngestion.mockReturnValue({
+            ingestedFiles: [],
+            isLoading: true,
+        })
+
+        renderComponent({snippetHelpCenterId: 123})
+
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
+    })
+
+    it('renders missing knowledge base alert when no source items and external files are present', () => {
         mockUsePublicResources.mockReturnValue({
             sourceItems: [{status: 'loading', id: 0}],
             isSourceItemsListLoading: false,
         })
-        renderComponent()
+
+        mockUseFileIngestion.mockReturnValue({
+            ingestedFiles: [{status: 'FAILED'}],
+            isLoading: false,
+        })
+
+        renderComponent({snippetHelpCenterId: 123})
 
         expect(screen.getByRole('alert')).toHaveTextContent(
             'Test AI Agent as a customerAt least one knowledge source is required to use test mode'
@@ -105,6 +135,17 @@ describe('CheckPlaygroundPrerequisites', () => {
             sourceItems: [{status: 'done', id: 0}],
             isSourceItemsListLoading: false,
         })
+        renderComponent({snippetHelpCenterId: 123})
+
+        expect(screen.getByText('Child Component')).toBeInTheDocument()
+    })
+
+    it('renders children when at least one external file is present', () => {
+        mockUseFileIngestion.mockReturnValue({
+            ingestedFiles: [{status: 'SUCCESSFUL'}],
+            isLoading: false,
+        })
+
         renderComponent({snippetHelpCenterId: 123})
 
         expect(screen.getByText('Child Component')).toBeInTheDocument()

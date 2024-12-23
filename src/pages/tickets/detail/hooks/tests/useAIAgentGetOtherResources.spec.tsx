@@ -62,6 +62,7 @@ describe('useAIAgentGetOtherResources', () => {
                 ingestFile: jest.fn(),
                 deleteIngestedFile: jest.fn(),
                 isIngesting: false,
+                isLoading: false,
             })
 
             mockedUseGuidanceArticles.mockReturnValue({

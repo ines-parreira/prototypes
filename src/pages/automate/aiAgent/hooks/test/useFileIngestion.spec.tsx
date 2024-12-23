@@ -30,7 +30,7 @@ const mockCreateFileIngestion = jest.fn().mockResolvedValue({
 
 const mockDeleteFileIngestion = jest.fn().mockResolvedValue(null)
 
-const renderUseFileIngestion = () => {
+const renderUseFileIngestion = (isLoading = false) => {
     ;(useCreateFileIngestion as jest.Mock).mockReturnValue({
         mutateAsync: mockCreateFileIngestion,
     })
@@ -39,6 +39,7 @@ const renderUseFileIngestion = () => {
     })
     ;(useGetFileIngestion as jest.Mock).mockReturnValue({
         data: {data: []},
+        isLoading,
     })
 
     return renderHook(
@@ -64,6 +65,12 @@ describe('useFileIngestion', () => {
 
         expect(result.current.ingestedFiles).toEqual([])
         expect(result.current.isIngesting).toBe(false)
+        expect(result.current.isLoading).toEqual(false)
+    })
+
+    it('should return a loading state', () => {
+        const {result} = renderUseFileIngestion(true)
+        expect(result.current.isLoading).toEqual(true)
     })
 
     it('should handle ingestFile correctly', async () => {

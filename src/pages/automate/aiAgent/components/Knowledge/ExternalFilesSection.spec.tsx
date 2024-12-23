@@ -48,6 +48,7 @@ const renderComponent = ({
             deleteIngestedFile: mockDeleteIngestedFile,
             isIngesting:
                 ingestedFiles?.some((x) => x.status === 'PENDING') ?? false,
+            isLoading: false,
         }
     })
 

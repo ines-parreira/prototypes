@@ -125,6 +125,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             ingestFile: jest.fn(),
             deleteIngestedFile: jest.fn(),
             isIngesting: false,
+            isLoading: false,
         })
         mockUsePublicResourcesPooling.mockReturnValue({
             articleIngestionLogsStatus: [],
@@ -487,6 +488,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             ingestFile: jest.fn(),
             deleteIngestedFile: jest.fn(),
             isIngesting: true,
+            isLoading: false,
         })
 
         renderComponent({})
