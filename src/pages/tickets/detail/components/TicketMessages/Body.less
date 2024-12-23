@@ -20,4 +20,42 @@
         display: block;
         margin: 6px 0;
     }
+
+    :global .message-content {
+        .row.content {
+            margin-left: 0;
+            padding: 0;
+        }
+
+        .row.actions {
+            .mail-button {
+                margin-left: 15px;
+                padding-left: 15px;
+            }
+        }
+
+        .row.subtotal-table {
+            margin-left: 10px;
+        }
+
+        .subtotal-line__title,
+        .subtotal-line__value {
+            width: 50%;
+        }
+
+        .subtotal-line__title {
+            text-align: left;
+        }
+        .subtotal-line__value {
+            text-align: right;
+        }
+
+        .subtotal-table tbody {
+            width: 100%;
+        }
+
+        .order-list__item td img {
+            max-width: unset;
+        }
+    }
 }
