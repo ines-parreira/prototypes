@@ -755,6 +755,22 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     if (node.data.objects?.order) {
                         setLLMPromptOrderObjectInput(trigger)
                     }
+
+                    const configuration = steps.find(
+                        (step) => step.id === node.data.configuration_id
+                    )
+
+                    configuration?.triggers?.forEach((t) => {
+                        if (t.kind === 'reusable-llm-prompt') {
+                            t.settings.outputs.forEach((output) => {
+                                trigger.settings.outputs.push({
+                                    id: ulid(),
+                                    description: output.description,
+                                    path: `steps_state.${node.id}.outputs.${output.id}`,
+                                })
+                            })
+                        }
+                    })
                 }
             } else if (node.type === 'http_request') {
                 const headers = node.data.headers.reduce<
@@ -1089,6 +1105,14 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 }
 
                 if (trigger?.kind === 'reusable-llm-prompt') {
+                    trigger.settings.outputs.push({
+                        id: node.id,
+                        name: 'Discount code',
+                        description: '',
+                        path: `steps_state.${node.id}.discount_code`,
+                        data_type: 'string',
+                    })
+
                     setReusableLLMPromptObjectInputs(g, node, trigger)
                 }
             } else if (node.type === 'reship_for_free') {

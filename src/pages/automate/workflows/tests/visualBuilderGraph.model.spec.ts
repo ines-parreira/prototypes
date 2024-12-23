@@ -444,6 +444,89 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
         ])
     })
 
+    it('should transform reusable graph with a create discount code step', () => {
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration(
+            {
+                id: '',
+                internal_id: '',
+                is_draft: false,
+                isTemplate: false,
+                name: 'Create discount code',
+                available_languages: [],
+                nodes: [
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'trigger',
+                        type: 'reusable_llm_prompt_trigger',
+                        data: {
+                            requires_confirmation: false,
+                            inputs: [],
+                            conditionsType: null,
+                            conditions: [],
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'create_discount_code',
+                        type: 'create_discount_code',
+                        data: {
+                            customerId: '{{objects.customer.id}}',
+                            integrationId: '{{store.helpdesk_integration_id}}',
+                            amount: '',
+                            discountType: '',
+                            validFor: '',
+                        },
+                    },
+                ],
+                edges: [
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'trigger',
+                        target: 'create_discount_code',
+                    },
+                ],
+                nodeEditingId: null,
+                choiceEventIdEditing: null,
+                branchIdsEditing: [],
+            },
+            true,
+            []
+        )
+        expect(configuration.entrypoints).toEqual([
+            {
+                kind: 'reusable-llm-prompt-call-step',
+                trigger: 'reusable-llm-prompt',
+                settings: {
+                    conditions: null,
+                    requires_confirmation: false,
+                },
+                deactivated_datetime: null,
+            },
+        ])
+        expect(configuration.triggers).toEqual([
+            {
+                kind: 'reusable-llm-prompt',
+                settings: {
+                    custom_inputs: [],
+                    object_inputs: [
+                        {
+                            kind: 'customer',
+                        },
+                    ],
+                    outputs: [
+                        {
+                            data_type: 'string',
+                            description: '',
+                            id: 'create_discount_code',
+                            name: 'Discount code',
+                            path: 'steps_state.create_discount_code.discount_code',
+                        },
+                    ],
+                },
+            },
+        ])
+    })
+
     it('should transform graph with a reship for free step', () => {
         const configuration = transformVisualBuilderGraphIntoWfConfiguration(
             {
@@ -1241,7 +1324,47 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 branchIdsEditing: [],
             },
             true,
-            []
+            [
+                {
+                    id: 'configurationid1',
+                    internal_id: 'configurationinternalid1',
+                    is_draft: false,
+                    name: '',
+                    initial_step_id: '',
+                    entrypoints: [
+                        {
+                            kind: 'reusable-llm-prompt-call-step',
+                            trigger: 'reusable-llm-prompt',
+                            settings: {
+                                requires_confirmation: false,
+                                conditions: null,
+                            },
+                            deactivated_datetime: null,
+                        },
+                    ],
+                    triggers: [
+                        {
+                            kind: 'reusable-llm-prompt',
+                            settings: {
+                                custom_inputs: [],
+                                object_inputs: [],
+                                outputs: [
+                                    {
+                                        data_type: 'string',
+                                        description: 'somedescription',
+                                        id: 'someid',
+                                        name: '',
+                                        path: '',
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                    steps: [],
+                    transitions: [],
+                    available_languages: [],
+                },
+            ]
         )
 
         expect(configuration.triggers).toEqual([
@@ -1260,7 +1383,13 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                             kind: 'order',
                         },
                     ],
-                    outputs: [],
+                    outputs: [
+                        {
+                            description: 'somedescription',
+                            id: expect.any(String),
+                            path: 'steps_state.reusable_llm_prompt_call1.outputs.someid',
+                        },
+                    ],
                 },
             },
         ])
