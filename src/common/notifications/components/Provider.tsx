@@ -6,7 +6,10 @@ import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {getCurrentUserId} from 'state/currentUser/selectors'
 
 import useAuthentication from '../hooks/useAuthentication'
+import useNotificationsContext from '../hooks/useNotificationsContext'
+import OverlayContext from '../OverlayContext'
 import ClientProvider from './ClientProvider'
+import Overlay from './Overlay'
 
 import '@knocklabs/react/dist/index.css'
 
@@ -17,6 +20,9 @@ type Props = {
 export const KNOCK_FEED_ID = '975be13d-82a9-4ac4-b8d6-7b6abd4516ae'
 
 export default function Provider({children}: Props) {
+    const ctx = useNotificationsContext()
+    const [isVisible, onToggle] = ctx
+
     const currentAccountId = useAppSelector(getCurrentAccountId)
     const currentUserId = useAppSelector(getCurrentUserId)
 
@@ -35,7 +41,12 @@ export default function Provider({children}: Props) {
             onUserTokenExpiring={refreshToken}
         >
             <KnockFeedProvider feedId={KNOCK_FEED_ID}>
-                <ClientProvider>{children}</ClientProvider>
+                <ClientProvider>
+                    <OverlayContext.Provider value={ctx}>
+                        {children}
+                        <Overlay isVisible={isVisible} onClose={onToggle} />
+                    </OverlayContext.Provider>
+                </ClientProvider>
             </KnockFeedProvider>
         </KnockProvider>
     )

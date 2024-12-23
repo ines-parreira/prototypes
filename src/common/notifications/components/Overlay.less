@@ -1,0 +1,53 @@
+:local {
+    .backdrop {
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .container {
+        overflow: hidden;
+        position: fixed;
+        z-index: 1001;
+        top: var(--layout-spacing-s);
+        left: 64px;
+        bottom: var(--layout-spacing-s);
+        width: 402px;
+        border-radius: 10px;
+        box-shadow:
+            0 0 10px 0 #0000000d,
+            0 5px 18px 0 #0000000a,
+            0 10px 24px 0 #00000008,
+            0 15px 28px 0 #00000003,
+            0 20px 31px 0 #00000005;
+    }
+
+    .enter {
+        opacity: 0;
+        transform: translateX(-20px);
+        transition:
+            opacity 0.2s ease-out,
+            transform 0.2s ease-out;
+    }
+
+    .enterActive {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .exit {
+        opacity: 1;
+        transform: translateX(0);
+        transition:
+            opacity 0.2s ease-out,
+            transform 0.2s ease-out;
+    }
+
+    .exitActive {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+}

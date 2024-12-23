@@ -9,6 +9,7 @@ import useActiveItem from '../hooks/useActiveItem'
 import css from './GlobalNavigation.less'
 import Item from './GlobalNavigationItem'
 import {GlobalNavigationSpotlight} from './GlobalNavigationSpotlight'
+import NotificationsItem from './NotificationsItem'
 import UserItem from './UserItem'
 
 export default function GlobalNavigation() {
@@ -25,6 +26,7 @@ export default function GlobalNavigation() {
                         url="/app/home"
                     />
                     <GlobalNavigationSpotlight />
+                    <NotificationsItem />
                 </div>
                 <hr className={css.separator} />
                 <div className={css.items}>

@@ -7,7 +7,9 @@ import {
     NotificationCenterEventTypes,
     SegmentEvent,
 } from 'common/segment'
+import {assumeMock} from 'utils/testing'
 
+import useCount from '../../hooks/useCount'
 import FeedHeader from '../FeedHeader'
 
 const mockUseFeedStore = jest.fn()
@@ -38,6 +40,9 @@ jest.mock('common/segment', () => ({
     },
 }))
 
+jest.mock('../../hooks/useCount', () => jest.fn())
+const useCountMock = assumeMock(useCount)
+
 describe('<FeedHeader />', () => {
     const props = {
         filterStatus: FilterStatus.All,
@@ -46,6 +51,7 @@ describe('<FeedHeader />', () => {
     }
 
     beforeEach(() => {
+        useCountMock.mockReturnValue(0)
         mockUseFeedStore.mockReturnValue(0)
     })
 
@@ -56,7 +62,7 @@ describe('<FeedHeader />', () => {
     })
 
     it('should trigger Mark all as read action', () => {
-        mockUseFeedStore.mockReturnValue(1)
+        useCountMock.mockReturnValue(1)
 
         render(<FeedHeader {...props} />)
 
@@ -69,7 +75,7 @@ describe('<FeedHeader />', () => {
     })
 
     it('should trigger the change of filtered notification status', () => {
-        mockUseFeedStore.mockReturnValue(1)
+        useCountMock.mockReturnValue(1)
         const newStatus = 'unread'
 
         render(<FeedHeader {...props} />)

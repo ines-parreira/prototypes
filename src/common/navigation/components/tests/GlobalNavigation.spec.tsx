@@ -20,6 +20,7 @@ const useActiveItemMock = assumeMock(useActiveItem)
 jest.mock('../GlobalNavigationSpotlight', () => ({
     GlobalNavigationSpotlight: () => <div>GlobalNavigationSpotlight</div>,
 }))
+jest.mock('../NotificationsItem', () => () => <div>NotificationsItem</div>)
 jest.mock('../UserItem', () => () => <div>UserItem</div>)
 
 describe('GlobalNavigation', () => {
@@ -38,6 +39,11 @@ describe('GlobalNavigation', () => {
     it('should render the search icon', () => {
         const {getByText} = render(<GlobalNavigation />)
         expect(getByText('GlobalNavigationSpotlight')).toBeInTheDocument()
+    })
+
+    it('should render the notifications icon', () => {
+        const {getByText} = render(<GlobalNavigation />)
+        expect(getByText('NotificationsItem')).toBeInTheDocument()
     })
 
     it('should render the tickets icon', () => {

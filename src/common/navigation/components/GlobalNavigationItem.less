@@ -3,6 +3,7 @@
 
 :local {
     .icon {
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -17,15 +18,15 @@
         transition:
             background-color 0.2s ease-out,
             color 0.2s ease-out;
-    }
 
-    .icon:hover {
-        background-color: var(--navigation-selected);
-        color: var(--navigation-text-item);
-    }
+        &:hover {
+            background-color: var(--navigation-selected);
+            color: var(--navigation-text-item);
+        }
 
-    .icon:focus {
-        outline: none;
+        &:focus {
+            outline: 0;
+        }
     }
 
     .active,

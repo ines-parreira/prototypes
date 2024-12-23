@@ -71,10 +71,10 @@ export default function Navbar({
                         <>
                             <HomePageLink />
                             <div data-candu-id="navbar-home-spacer" />
+                            <SpotlightButton />
+                            <NotificationsButton />
                         </>
                     )}
-                    {!showGlobalNav && <SpotlightButton />}
-                    <NotificationsButton />
                     {headerContent}
                 </div>
 

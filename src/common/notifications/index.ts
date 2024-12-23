@@ -1,3 +1,4 @@
+export {default as Badge} from './components/Badge'
 export {default as NotificationsButton} from './components/Button'
 export {default as Content} from './components/NotificationContent'
 export {default as Excerpt} from './components/Excerpt'
@@ -8,6 +9,7 @@ export {default as NotificationsProvider} from './components/Provider'
 export {default as SoundSelect} from './components/SoundSelect'
 export {default as NotificationsToasts} from './components/Toasts'
 export {default as useNotifications} from './hooks/useNotifications'
+export {default as useNotificationsOverlay} from './hooks/useNotificationsOverlay'
 export {default as registerCategory} from './registerCategory'
 export {default as registerNotification} from './registerNotification'
 
