@@ -1,4 +1,4 @@
-import {CustomFieldObjectType} from '@gorgias/api-queries'
+import {ObjectType} from '@gorgias/api-queries'
 import {useQueryClient} from '@tanstack/react-query'
 
 import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
@@ -46,7 +46,7 @@ export const useUpdateOrDeleteCustomerFieldValue = (
     const overrides = {
         onSuccess: (
             data: unknown,
-            params: [{fieldType: CustomFieldObjectType; holderId: number}]
+            params: [{fieldType: ObjectType; holderId: number}]
         ) => {
             void queryClient.invalidateQueries({
                 queryKey: customFieldValueKeys.objectType(

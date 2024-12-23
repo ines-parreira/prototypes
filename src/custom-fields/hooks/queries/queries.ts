@@ -1,5 +1,5 @@
 // Will be autogenerate with API SDK
-import {CustomFieldObjectType} from '@gorgias/api-queries'
+import {ObjectType} from '@gorgias/api-queries'
 import {useMutation, useQuery, UseQueryOptions} from '@tanstack/react-query'
 
 import {
@@ -30,7 +30,7 @@ export const customFieldDefinitionKeys = {
 
 export const customFieldValueKeys = {
     all: () => ['customFieldValues'] as const,
-    objectType: (objectType: CustomFieldObjectType, holderId: number) =>
+    objectType: (objectType: ObjectType, holderId: number) =>
         [...customFieldValueKeys.all(), objectType, holderId] as const,
     value: (id: number) => [...customFieldValueKeys.all(), id] as const,
 }
@@ -114,7 +114,7 @@ export const useGetCustomFieldValues = <
         object_type,
         holderId,
     }: {
-        object_type: CustomFieldObjectType
+        object_type: ObjectType
         holderId: number
     },
     overrides?: UseQueryOptions<

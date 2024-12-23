@@ -1,7 +1,11 @@
+import {
+    UpdatePhoneIntegrationSettings,
+    useUpdatePhoneSettings,
+} from '@gorgias/api-queries'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import {isEmpty, isEqual} from 'lodash'
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Form, Label} from 'reactstrap'
 
@@ -11,9 +15,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {
     PhoneIntegration,
-    PhoneIntegrationMeta,
     PhoneIntegrationPreferences,
-    PhoneRingingBehaviour,
     isPhoneIntegration,
 } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
@@ -40,10 +42,10 @@ import settingsCss from 'pages/settings/settings.less'
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
-import {
-    deleteIntegration,
-    updateOrCreateIntegration,
-} from 'state/integrations/actions'
+import {deleteIntegration, fetchIntegrations} from 'state/integrations/actions'
+import {UPDATE_INTEGRATION_ERROR} from 'state/integrations/constants'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 type Props = {
     integration: PhoneIntegration
@@ -52,66 +54,74 @@ type Props = {
 export default function VoiceIntegrationPreferences({
     integration,
 }: Props): JSX.Element {
-    const [isInitialized, setIsInitialized] = useState(false)
-    const [title, setTitle] = useState('')
-    const [emoji, setEmoji] = useState<string | null>(null)
+    const [backendTitle, setBackendTitle] = useState(integration.name)
+    const [backendMeta, setBackendMeta] = useState(integration.meta)
+
+    const [title, setTitle] = useState(integration.name)
+    const [emoji, setEmoji] = useState<string | null>(integration.meta.emoji)
     const [phoneTeamId, setPhoneTeamId] = useState<Maybe<number | undefined>>(
-        integration?.meta?.phone_team_id
+        integration.meta.phone_team_id
     )
     const [preferences, setPreferences] = useState<PhoneIntegrationPreferences>(
-        {
-            record_inbound_calls: false,
-            voicemail_outside_business_hours: false,
-            record_outbound_calls: false,
-            ringing_behaviour: PhoneRingingBehaviour.RoundRobin,
-        }
+        integration.meta.preferences
     )
 
-    const phoneNumberId = integration?.meta?.phone_number_id
+    const phoneNumberId = integration.meta.phone_number_id
     const phoneNumber = useAppSelector(getNewPhoneNumber(phoneNumberId))
     const dispatch = useAppDispatch()
 
     const confirmationContent = useNotificationTextForRemovalMessage()
 
-    const [{loading: isLoading}, handleSubmit] = useAsyncFn(
-        async (event?: React.FormEvent) => {
+    const {mutate: updatePhoneSettings, isLoading} = useUpdatePhoneSettings({
+        mutation: {
+            onSuccess: () => {
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Success,
+                        message: 'Integration settings successfully updated.',
+                    })
+                )
+                void dispatch(fetchIntegrations())
+            },
+            onError: (error) => {
+                void dispatch({
+                    type: UPDATE_INTEGRATION_ERROR,
+                    error,
+                    verbose: true,
+                })
+            },
+        },
+    })
+
+    const handleSubmit = useCallback(
+        (event?: React.FormEvent) => {
             event?.preventDefault()
 
-            const newMeta: Partial<PhoneIntegrationMeta> = {
+            const newSettings: UpdatePhoneIntegrationSettings = {
+                name: title,
                 emoji,
                 preferences,
                 phone_team_id: phoneTeamId,
             }
 
-            await dispatch(
-                updateOrCreateIntegration(
-                    fromJS({
-                        id: integration.id,
-                        name: title,
-                        meta: newMeta,
-                    })
-                )
-            )
+            updatePhoneSettings({
+                integrationId: integration.id,
+                data: newSettings,
+            })
         },
-        [integration, title, emoji, preferences, dispatch, phoneTeamId]
+        [
+            emoji,
+            integration.id,
+            phoneTeamId,
+            preferences,
+            title,
+            updatePhoneSettings,
+        ]
     )
 
     const [{loading: isDeleting}, handleDelete] = useAsyncFn(async () => {
         await dispatch(deleteIntegration(fromJS(integration)))
     }, [integration, dispatch])
-
-    useEffect(() => {
-        if (!isPhoneIntegration(integration) || isInitialized) {
-            return
-        }
-        const {meta} = integration
-        const {preferences} = meta
-
-        setTitle(integration.name)
-        setEmoji(meta.emoji)
-        setPreferences(preferences)
-        setIsInitialized(true)
-    }, [integration, isInitialized])
 
     const validationErrors = useMemo(() => {
         const errors: Record<string, string> = {}
@@ -159,7 +169,20 @@ export default function VoiceIntegrationPreferences({
         }
     }
 
-    const canSubmit = () => {
+    useEffect(() => {
+        if (!isEqual(backendTitle, integration.name)) {
+            setTitle(integration.name)
+            setBackendTitle(integration.name)
+        }
+        if (!isEqual(integration.meta, backendMeta)) {
+            setEmoji(integration.meta.emoji)
+            setPhoneTeamId(integration.meta.phone_team_id)
+            setPreferences(integration.meta.preferences)
+            setBackendMeta(integration.meta)
+        }
+    }, [backendMeta, backendTitle, integration.meta, integration.name])
+
+    const canSubmit = useCallback(() => {
         if (!isEmpty(validationErrors)) {
             return false
         }
@@ -169,7 +192,7 @@ export default function VoiceIntegrationPreferences({
             meta: {
                 ...integration.meta,
                 preferences: preferencesWithDefaultValues(
-                    integration.meta.preferences
+                    backendMeta.preferences
                 ),
             },
         }
@@ -191,7 +214,15 @@ export default function VoiceIntegrationPreferences({
             ...unsubmittedSettingsWithDefaults,
         }
         return !isEqual(integrationWithDefaults, updatedIntegration)
-    }
+    }, [
+        backendMeta,
+        emoji,
+        integration,
+        phoneTeamId,
+        preferences,
+        title,
+        validationErrors,
+    ])
 
     const isSubmittable = canSubmit()
     const handlePreferencesChange = (
@@ -276,7 +307,7 @@ export default function VoiceIntegrationPreferences({
                     <div>
                         <Button
                             type="submit"
-                            isDisabled={!isInitialized || !isSubmittable}
+                            isDisabled={!isSubmittable}
                             isLoading={isLoading}
                         >
                             Save changes
@@ -285,7 +316,6 @@ export default function VoiceIntegrationPreferences({
                             className="float-right"
                             intent="destructive"
                             fillStyle="ghost"
-                            isDisabled={!isInitialized}
                             isLoading={isDeleting}
                             onConfirm={handleDelete}
                             confirmationContent={confirmationContent}

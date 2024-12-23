@@ -48,14 +48,19 @@ export default function NewPhoneNumber({customerId}: Props) {
 
     const {mutate: updateCustomer, isLoading} = useUpdateCustomer({
         mutation: {
-            onError: (error) => {
+            onError: (error: {
+                response?: {
+                    data?: {
+                        error?: {data?: {channels?: {_schema?: string[]}[]}}
+                    }
+                }
+            }) => {
                 const customerChannelsLength =
                     customerDetails?.data?.channels?.length ?? 0
-                const phoneNumberError = (
-                    error.response?.data as {
-                        error?: {data?: {channels?: {_schema?: string}[]}}
-                    }
-                ).error?.data?.channels?.[customerChannelsLength]._schema?.[0]
+                const phoneNumberError =
+                    error.response?.data?.error?.data?.channels?.[
+                        customerChannelsLength
+                    ]?._schema?.[0]
 
                 void dispatch(
                     notify({

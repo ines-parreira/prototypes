@@ -1,3 +1,4 @@
+import {HttpResponse, updatePhoneSettings} from '@gorgias/api-client'
 import {
     RenderResult,
     cleanup,
@@ -12,6 +13,7 @@ import {BrowserRouter} from 'react-router-dom'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {integrationsState} from 'fixtures/integrations'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {IntegrationType} from 'models/integration/constants'
 import {isValueInRange} from 'pages/integrations/integration/components/voice/utils'
 import VoiceIntegrationPreferences from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences'
@@ -19,12 +21,28 @@ import {
     INTEGRATION_REMOVAL_CONFIGURATION_TEXT,
     INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT,
 } from 'pages/integrations/integration/constants'
+import * as actions from 'state/integrations/actions'
+import {UPDATE_INTEGRATION_ERROR} from 'state/integrations/constants'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {mockStore} from 'utils/testing'
+import {assumeMock, mockStore} from 'utils/testing'
+
+jest.mock('@gorgias/api-client')
+const updatePhoneSettingsMock = assumeMock(updatePhoneSettings)
+
+jest.mock('hooks/useAppDispatch')
+const dispatchMock = jest.fn()
+assumeMock(useAppDispatch).mockReturnValue(dispatchMock)
+
+jest.mock('state/notifications/actions')
+const notifyMock = assumeMock(notify)
 
 const phoneIntegration = integrationsState.integrations.find(
     (integration) => integration.type === IntegrationType.Phone
 )
+
+const fetchIntegratonsMock = jest.spyOn(actions, 'fetchIntegrations')
 
 jest.mock(
     '../VoiceIntegrationPreferencesInboundCalls',
@@ -108,6 +126,7 @@ describe('<VoiceIntegrationPreferences />', () => {
         mockFlags({
             [FeatureFlagKey.AnalyticsSavedFilters]: false,
         })
+        dispatchMock.mockReset()
     })
 
     it('should render the component', () => {
@@ -450,5 +469,109 @@ describe('<VoiceIntegrationPreferences />', () => {
         })
 
         expect(isValueInRange).toHaveBeenCalledWith(waitTime, 10, 3600)
+    })
+
+    it('should call the endpoint successfully', async () => {
+        updatePhoneSettingsMock.mockReturnValue(
+            Promise.resolve({} as HttpResponse<void>)
+        )
+
+        const {rerender, getByLabelText, getAllByLabelText, getByRole} =
+            renderComponent(props)
+
+        const titleInput = getByLabelText('App title')
+        fireEvent.change(titleInput, {target: {value: 'New title'}})
+
+        const callToggles = getAllByLabelText('Start recording automatically')
+        fireEvent.click(callToggles[0])
+
+        await waitFor(() => {
+            expect(
+                getByRole('button', {name: 'Save changes'})
+            ).toBeAriaEnabled()
+        })
+
+        fireEvent.click(getByRole('button', {name: 'Save changes'}))
+
+        await waitFor(() => {
+            expect(updatePhoneSettingsMock).toHaveBeenCalledWith(
+                phoneIntegration?.id,
+                {
+                    name: 'New title',
+                    emoji: phoneIntegration?.meta?.emoji,
+                    preferences: {
+                        ...phoneIntegration?.meta?.preferences,
+                        record_inbound_calls: true,
+                    },
+                    phone_team_id: 1,
+                },
+                undefined
+            )
+            expect(dispatchMock).toHaveBeenCalled()
+            expect(notifyMock).toHaveBeenCalledWith({
+                status: NotificationStatus.Success,
+                message: 'Integration settings successfully updated.',
+            })
+            expect(fetchIntegratonsMock).toHaveBeenCalledWith()
+        })
+
+        const newProps = {
+            ...props,
+            integration: {
+                ...props.integration,
+                name: 'New title',
+                meta: {
+                    ...props.integration.meta,
+                    preferences: {
+                        ...props.integration.meta.preferences,
+                        record_inbound_calls: true,
+                    },
+                },
+            },
+        } as any
+        rerender(
+            <BrowserRouter>
+                <Provider store={mockStore({} as any)}>
+                    <VoiceIntegrationPreferences {...newProps} />
+                </Provider>
+            </BrowserRouter>
+        )
+    })
+
+    it('should call the endpoint with error', async () => {
+        updatePhoneSettingsMock.mockRejectedValue('An error occurred')
+
+        renderComponent(props)
+
+        const titleInput = screen.getByLabelText('App title')
+        fireEvent.change(titleInput, {target: {value: 'New title'}})
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', {name: 'Save changes'})
+            ).toBeAriaEnabled()
+        })
+
+        fireEvent.click(screen.getByRole('button', {name: 'Save changes'}))
+
+        await waitFor(() => {
+            expect(updatePhoneSettingsMock).toHaveBeenCalledWith(
+                phoneIntegration?.id,
+                {
+                    name: 'New title',
+                    emoji: phoneIntegration?.meta?.emoji,
+                    preferences: phoneIntegration?.meta?.preferences,
+                    phone_team_id: 1,
+                },
+                undefined
+            )
+            expect(dispatchMock).toHaveBeenCalledWith({
+                type: UPDATE_INTEGRATION_ERROR,
+                error: 'An error occurred',
+                verbose: true,
+            })
+            expect(notifyMock).not.toHaveBeenCalled()
+            expect(fetchIntegratonsMock).not.toHaveBeenCalled()
+        })
     })
 })

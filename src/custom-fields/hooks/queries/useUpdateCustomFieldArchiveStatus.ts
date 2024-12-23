@@ -1,4 +1,4 @@
-import {CustomFieldObjectType} from '@gorgias/api-queries'
+import {ObjectType} from '@gorgias/api-queries'
 import {useQueryClient} from '@tanstack/react-query'
 import moment from 'moment'
 
@@ -15,7 +15,7 @@ import {errorToChildren} from 'utils'
 
 export const useUpdateCustomFieldArchiveStatus = (
     id: number,
-    objectType: CustomFieldObjectType
+    objectType: ObjectType
 ) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
