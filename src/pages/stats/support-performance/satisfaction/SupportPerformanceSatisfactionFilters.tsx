@@ -43,7 +43,12 @@ export const SupportPerformanceSatisfactionFilters = () => {
             />
             <ChannelsStatsFilter
                 value={statsFilters.channels}
-                channelsFilter={[TicketChannel.Chat, TicketChannel.Email]}
+                channelsFilter={[
+                    TicketChannel.Chat,
+                    TicketChannel.ContactForm,
+                    TicketChannel.Email,
+                    TicketChannel.HelpCenter,
+                ]}
             />
             <DEPRECATED_ScoreStatsFilter
                 value={statsFilters.score}
