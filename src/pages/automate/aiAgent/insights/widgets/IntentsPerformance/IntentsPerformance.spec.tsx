@@ -46,10 +46,10 @@ const metric1 = {
     trend: {
         isFetching: false,
         isError: false,
-        data: {value: 30, prevValue: 27},
+        data: {value: 0.3, prevValue: 0.27},
     },
     interpretAs,
-    metricFormat: 'percent' as MetricTrendFormat,
+    metricFormat: 'decimal-to-percent' as MetricTrendFormat,
     tip: <div>Coverage rate tip</div>,
     drillDownMetric: OverviewMetric.TicketsClosed,
 }
@@ -76,10 +76,10 @@ const metric3 = {
     trend: {
         isFetching: false,
         isError: false,
-        data: {value: 16, prevValue: 14},
+        data: {value: 0.16, prevValue: 0.14},
     },
     interpretAs,
-    metricFormat: 'percent' as MetricTrendFormat,
+    metricFormat: 'decimal-to-percent' as MetricTrendFormat,
     tip: <div>Automation rate tip</div>,
 }
 

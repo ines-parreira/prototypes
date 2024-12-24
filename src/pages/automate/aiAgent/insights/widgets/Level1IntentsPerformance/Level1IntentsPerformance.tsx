@@ -51,7 +51,7 @@ export const Level1IntentsPerformance = () => {
                     },
                     trend: aiAgentMetrics.coverageTrend,
                     interpretAs: 'more-is-better',
-                    metricFormat: 'percent',
+                    metricFormat: 'decimal-to-percent',
                     tip: (
                         <PerformanceTip showBenchmark={false}>
                             Consider{' '}
@@ -110,7 +110,7 @@ export const Level1IntentsPerformance = () => {
                     },
                     trend: aiAgentMetrics.aiAgentSuccessRate,
                     interpretAs: 'more-is-better',
-                    metricFormat: 'percent',
+                    metricFormat: 'decimal-to-percent',
                     tip: (
                         <PerformanceTip
                             topTen={toPercentage(
