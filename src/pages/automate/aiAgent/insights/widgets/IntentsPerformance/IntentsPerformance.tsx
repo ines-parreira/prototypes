@@ -63,7 +63,7 @@ export const IntentsPerformance = ({
 
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         STATS_TIPS_VISIBILITY_KEY,
-        true
+        false
     )
 
     const metricsConfig = metrics.map((metric) => {
