@@ -70,8 +70,8 @@ export const Level1IntentsPerformance = () => {
                 {
                     title: 'Automated interactions',
                     hint: {
-                        title: 'Fully automated AI Agent interactions solved without any agent intervention.',
-                        link: 'https://www.gorgias.com',
+                        title: 'Total of fully automated AI Agent interactions solved without any agent intervention?',
+                        link: 'https://docs.gorgias.com/en-US/1024587-4ee311de71bc4401985c37a2907b7911',
                     },
                     trend: aiAgentMetrics.aiAgentAutomatedInteractionTrend,
                     interpretAs: 'more-is-better',
@@ -103,10 +103,10 @@ export const Level1IntentsPerformance = () => {
                     },
                 },
                 {
-                    title: 'Automation rate',
+                    title: 'Success rate',
                     hint: {
-                        title: 'Automated interactions by AI Agent as a percent of all customer interactions.',
-                        link: 'https://www.gorgias.com',
+                        title: 'Automated interactions by AI Agent as a percent of all AI Agent interactions.',
+                        link: 'https://docs.gorgias.com/en-US/1024587-4ee311de71bc4401985c37a2907b7911',
                     },
                     trend: aiAgentMetrics.aiAgentSuccessRate,
                     interpretAs: 'more-is-better',

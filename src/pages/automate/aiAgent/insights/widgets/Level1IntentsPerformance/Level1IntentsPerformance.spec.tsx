@@ -101,7 +101,7 @@ describe('OptimizeContainer', () => {
                         trend: aiAgentAutomatedInteractionTrend,
                     }),
                     expect.objectContaining({
-                        title: 'Automation rate',
+                        title: 'Success rate',
                         trend: aiAgentSuccessRate,
                     }),
                     expect.objectContaining({
@@ -162,7 +162,7 @@ describe('OptimizeContainer', () => {
                         },
                     }),
                     expect.objectContaining({
-                        title: 'Automation rate',
+                        title: 'Success rate',
                         trend: {
                             ...aiAgentSuccessRate,
                             data: {
