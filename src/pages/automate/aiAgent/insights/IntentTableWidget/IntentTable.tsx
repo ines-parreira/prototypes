@@ -39,6 +39,7 @@ import {
     LoadingIntentCellContent,
 } from './IntentTableCells'
 import {
+    getColumnContentAlignment,
     getColumnWidth,
     IntentsColumnsConfig,
     TableColumnsOrder,
@@ -141,6 +142,9 @@ export const IntentTable = ({
                                         [css.withShadow]:
                                             index === 0 && isTableScrolled,
                                     }
+                                )}
+                                justifyContent={getColumnContentAlignment(
+                                    column
                                 )}
                             />
                         ))}

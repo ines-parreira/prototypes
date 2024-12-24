@@ -15,6 +15,7 @@ import {
     TableLabels,
     INTENT_NAME_COLUMN_WIDTH,
     MOBILE_INTENT_NAME_COLUMN_WIDTH,
+    getColumnContentAlignment,
 } from '../IntentTableConfig'
 import {IntentTableColumn} from '../types'
 
@@ -89,6 +90,22 @@ describe('TableConfig Utilities and Hooks', () => {
             expect(result.current.field).toBe(column)
             expect(result.current.direction).toBe('desc')
             expect(result.current.isOrderedBy).toBe(true)
+        })
+    })
+
+    describe('getColumnContentAlignment', () => {
+        it('returns correct alignment for IntentName column', () => {
+            const columnAlignment = getColumnContentAlignment(
+                IntentTableColumn.IntentName
+            )
+            expect(columnAlignment).toBe('left')
+        })
+
+        it('returns correct alignment for other columns', () => {
+            const columnAlignment = getColumnContentAlignment(
+                IntentTableColumn.AutomationOpportunities
+            )
+            expect(columnAlignment).toBe('right')
         })
     })
 })

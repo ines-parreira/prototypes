@@ -49,6 +49,13 @@ export const IntentsColumnsConfig: Partial<
         }
     >
 > = {
+    [IntentTableColumn.IntentName]: {
+        format: 'decimal',
+        hint: {
+            title: 'The primary topic or issue identified by the AI Agent in a ticket',
+        },
+        perAgent: false,
+    },
     [IntentTableColumn.AutomationOpportunities]: {
         format: 'decimal-to-percent',
         hint: {
@@ -99,6 +106,10 @@ export const getColumnWidth = (column: IntentTableColumn) => {
     return column === IntentTableColumn.IntentName
         ? INTENT_NAME_COLUMN_WIDTH
         : METRIC_COLUMN_WIDTH
+}
+
+export const getColumnContentAlignment = (column: IntentTableColumn) => {
+    return column === IntentTableColumn.IntentName ? 'left' : 'right'
 }
 
 export const IntentRowConfig: Partial<

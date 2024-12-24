@@ -74,7 +74,7 @@ export const OptimizeContainer = () => {
                     title="Intents"
                     description="Explore intents detected from AI Agent tickets to assess performance, review knowledge recommendations, and analyze topics within each intent. "
                     tableTitle="All intents"
-                    tableHint="List of intents in tickets that involved AI Agent engagement. Learn about intents"
+                    tableHint="List of all intents detected in tickets that involved AI Agent."
                 />
             </div>
             <DrillDownModal />
