@@ -159,7 +159,11 @@ export function RuleRow({
     })
 
     const handleActivate = useCallback(() => {
-        if (!hasAutomate && rule.type === RuleType.Managed) {
+        if (
+            !hasAutomate &&
+            rule.type === RuleType.Managed &&
+            !rule.name.includes('[Auto Close]')
+        ) {
             handleUpgrade(rule.id)
             return
         }

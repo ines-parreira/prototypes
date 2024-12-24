@@ -115,7 +115,10 @@ export const ManagedRuleEditor = (
     ] = useState(false)
 
     const toggleActivation = () => {
-        if (!hasAutomate) {
+        if (
+            !hasAutomate &&
+            rule.settings.slug !== ManagedRulesSlugs.AutoCloseSpam
+        ) {
             setShowAutomationSubscriptionModal(true)
             return
         }
