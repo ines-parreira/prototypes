@@ -113,13 +113,10 @@ export const getColumnContentAlignment = (column: IntentTableColumn) => {
 }
 
 export const IntentRowConfig: Partial<
-    Record<IntentTableColumn, {hint: TooltipData | null}>
+    Record<IntentTableColumn, {hint?: TooltipData | null}>
 > = {
-    [IntentTableColumn.AutomationRate]: {
-        hint: {
-            title: 'Industry average for this intent: 14%',
-        },
-    },
+    // TODO we are hiding the hint for now, but we will need to add it back when the industry average feature is ready
+    [IntentTableColumn.AutomationRate]: {},
 }
 
 export function useIntentSoringQuery(
