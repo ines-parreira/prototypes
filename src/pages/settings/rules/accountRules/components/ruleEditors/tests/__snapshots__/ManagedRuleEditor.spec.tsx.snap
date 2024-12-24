@@ -4174,8 +4174,8 @@ exports[`<ManagedRuleEditor/> non-support-related-emails editor should render co
     >
       <div>
         <button
-          aria-disabled="true"
-          class="wrapper fill primary medium isDisabled"
+          aria-disabled="false"
+          class="wrapper fill primary medium"
           form="rule-form"
           id="rule-item-save"
           type="button"

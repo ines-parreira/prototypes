@@ -107,7 +107,10 @@ export const ManagedRuleEditor = (
         useState<InstallationError | null>()
 
     const dispatch = useAppDispatch()
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const hasAutomate =
+        useAppSelector(getHasAutomate) ||
+        // Treat auto close spam rule as the user having automate
+        slug === ManagedRulesSlugs.AutoCloseSpam
     const hasAgentPrivileges = useHasAgentPrivileges()
     const [
         showAutomationSubscriptionModal,
