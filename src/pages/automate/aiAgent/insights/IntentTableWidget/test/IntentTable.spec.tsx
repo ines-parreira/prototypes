@@ -69,6 +69,11 @@ const initialState = {
             insightsSlice: {
                 paginatedIntents: defaultPaginatedIntents,
                 isSortingLoading: false,
+                sorting: {
+                    field: IntentTableColumn.AutomationOpportunities,
+                    direction: 'desc',
+                    isLoading: false,
+                },
             },
         },
     },
@@ -149,6 +154,29 @@ describe('Intent Table components', () => {
             const actions = store.getActions()
             expect(actions).toContainEqual(pageSet(2)) // Ensure pageSet action is dispatched
         })
+
+        it('do not show pagination when data can fit in one page', () => {
+            const paginatedIntents = {
+                ...defaultPaginatedIntents,
+                perPage: 10,
+            }
+            const store = mockStore({
+                ...initialState,
+                ui: {
+                    stats: {
+                        insightsSlice: {paginatedIntents: paginatedIntents},
+                    },
+                },
+            })
+
+            renderWithProvider(
+                <IntentTable paginatedIntents={paginatedIntents} />,
+                store
+            )
+
+            expect(screen.queryByText('1')).toBeNull()
+            expect(screen.getByText('Intent')).toBeInTheDocument()
+        })
     })
     describe('LoadingTableRows', () => {
         it('renders correct number of loading rows', async () => {
@@ -194,6 +222,43 @@ describe('Intent Table components', () => {
             expect(
                 screen.getByText('Try adjusting filters to get results.')
             ).toBeInTheDocument()
+        })
+
+        it('renders table without pagination when intents can fit in one page', () => {
+            const paginatedIntents = {
+                ...defaultPaginatedIntents,
+                perPage: 10,
+            }
+
+            useAppSelectorMock.mockReturnValue(paginatedIntents)
+            useNewStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: filters,
+                userTimezone,
+            } as unknown as ReturnType<typeof useNewStatsFilters>)
+            const store = mockStore({
+                ...initialState,
+                ui: {
+                    stats: {
+                        insightsSlice: {
+                            paginatedIntents: paginatedIntents,
+                            isSortingLoading: false,
+                            sorting: {
+                                field: IntentTableColumn.AutomationOpportunities,
+                                direction: 'desc',
+                                isLoading: false,
+                            },
+                        },
+                    },
+                },
+            })
+
+            renderWithProvider(
+                <IntentTableWithDefaultState tableTitle="Test Table" />,
+                store
+            )
+
+            expect(screen.queryByText('1')).toBeNull()
+            expect(screen.getByText('Intent')).toBeInTheDocument
         })
     })
 })

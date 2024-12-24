@@ -116,7 +116,13 @@ export const IntentTable = ({
     return (
         <>
             <div ref={ref} className={css.container} onScroll={handleScroll}>
-                <TableWrapper className={css.table} style={{width}}>
+                <TableWrapper
+                    className={classNames(
+                        css.table,
+                        intentTableCss.tableWrapper
+                    )}
+                    style={{width}}
+                >
                     <TableHead>
                         {TableColumnsOrder.map((column, index) => (
                             <AgentsHeaderCellContent
@@ -170,16 +176,16 @@ export const IntentTable = ({
                     </TableBody>
                 </TableWrapper>
             </div>
-            <div className={intentTableCss.pagination}>
-                {allIntents.length > perPage && (
+            {allIntents.length > perPage && (
+                <div className={intentTableCss.pagination}>
                     <NumberedPagination
                         count={Math.ceil(allIntents.length / perPage)}
                         page={currentPage}
                         onChange={onPageChangeCallback}
                         className={css.pagination}
                     />
-                )}
-            </div>
+                </div>
+            )}
         </>
     )
 }
@@ -211,9 +217,19 @@ export const IntentTableWithDefaultState = ({
     const paginatedIntents = useAppSelector(getPaginatedIntents)
     const isSortingLoading = useAppSelector(isSortingMetricLoading)
 
+    const shouldRemoveButtonBorder =
+        paginatedIntents &&
+        paginatedIntents?.allIntents.length <= paginatedIntents.perPage
     return (
         <div>
-            <ChartCard title={tableTitle} hint={{title: tableHint}} noPadding>
+            <ChartCard
+                title={tableTitle}
+                hint={{title: tableHint}}
+                noPadding
+                className={
+                    shouldRemoveButtonBorder ? intentTableCss.noBorder : ''
+                }
+            >
                 {(paginatedIntents && paginatedIntents.intents.length > 0) ||
                 isSortingLoading ? (
                     <IntentTable paginatedIntents={paginatedIntents} />
