@@ -4,7 +4,6 @@ import React, {useState} from 'react'
 
 import useId from 'hooks/useId'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import css from './CodeEditor.less'
 import ReactACE from './WithACEEditor/ReactACE'
@@ -93,10 +92,9 @@ function CodeEditor({title, tooltip, disabled, ...props}: Props) {
                             onClick={onCopy}
                             className={css.copyButton}
                             intent="secondary"
+                            leadingIcon="content_copy"
                         >
-                            <ButtonIconLabel icon="content_copy">
-                                {isCopied ? 'Copied!' : 'Copy'}
-                            </ButtonIconLabel>
+                            {isCopied ? 'Copied!' : 'Copy'}
                         </Button>
                     )}
                     <div className={css.modeWrapper}>{props.mode}</div>

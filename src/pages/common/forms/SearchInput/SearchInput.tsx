@@ -12,7 +12,6 @@ import React, {
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import GorgiasApi, {SearchResultType} from 'services/gorgiasApi'
@@ -291,10 +290,9 @@ export default class SearchInput<
                         size="small"
                         intent="secondary"
                         onClick={this._onBackClicked}
+                        leadingIcon="arrow_back"
                     >
-                        <ButtonIconLabel icon="arrow_back">
-                            Back
-                        </ButtonIconLabel>
+                        Back
                     </Button>
                 ) : null}
 

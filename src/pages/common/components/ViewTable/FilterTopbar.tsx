@@ -41,8 +41,6 @@ import {
     ViewVisibility,
 } from 'models/view/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import IconButton from 'pages/common/components/button/IconButton'
 import Group from 'pages/common/components/layout/Group'
@@ -392,10 +390,9 @@ export const FilterTopbar = ({
                                 onClick={createExportTicketJob}
                                 isDisabled={isLaunchingJob}
                                 title="Export all view tickets"
+                                leadingIcon="file_download"
                             >
-                                <ButtonIconLabel icon="file_download">
-                                    Export tickets
-                                </ButtonIconLabel>
+                                Export tickets
                             </Button>
                         )}
                         <ViewSharingButton view={activeView} />
@@ -586,10 +583,9 @@ export const FilterTopbar = ({
                                             )
                                         )
                                     }}
+                                    leadingIcon="delete"
                                 >
-                                    <ButtonIconLabel icon="delete">
-                                        Delete view
-                                    </ButtonIconLabel>
+                                    Delete view
                                 </ConfirmButton>
                             )}
                         </div>

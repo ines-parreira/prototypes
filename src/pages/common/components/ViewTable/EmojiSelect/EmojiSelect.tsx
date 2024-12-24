@@ -11,7 +11,6 @@ import {Popover} from 'reactstrap'
 
 import {useAppNode} from 'appNode'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import EmojiPicker from 'pages/common/components/EmojiPicker/EmojiPicker'
 
 import css from './EmojiSelect.less'
@@ -87,10 +86,9 @@ const EmojiSelect = ({
                                     onEmojiClear(event)
                                     setIsOpen(false)
                                 }}
+                                leadingIcon="clear"
                             >
-                                <ButtonIconLabel icon="clear">
-                                    Clear icon
-                                </ButtonIconLabel>
+                                Clear icon
                             </Button>
                         )}
                     </div>

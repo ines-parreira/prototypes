@@ -13,7 +13,6 @@ import {
 } from 'config'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import {reportError} from 'utils/errors'
@@ -98,12 +97,12 @@ const TimedeltaPicker = ({
             />
             <UncontrolledDropdown>
                 <DropdownToggle tag="span">
-                    <Button intent="secondary" className={css.button}>
+                    <Button
+                        intent="secondary"
+                        className={css.button}
+                        trailingIcon="arrow_drop_down"
+                    >
                         {unitLabel}
-                        <ButtonIconLabel
-                            icon="arrow_drop_down"
-                            position="right"
-                        />
                     </Button>
                 </DropdownToggle>
                 <DropdownMenu>

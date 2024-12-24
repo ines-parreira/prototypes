@@ -5,7 +5,6 @@ import {connect, ConnectedProps} from 'react-redux'
 import {logEvent, SegmentEvent} from 'common/segment'
 import goToTicket from 'common/utils/goToTicket'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -157,10 +156,9 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                                     this.setState({targetTicket: null})
                                 }
                                 isDisabled={isLoading}
+                                leadingIcon="arrow_back"
                             >
-                                <ButtonIconLabel icon="arrow_back">
-                                    Back
-                                </ButtonIconLabel>
+                                Back
                             </Button>
                         }
                     >

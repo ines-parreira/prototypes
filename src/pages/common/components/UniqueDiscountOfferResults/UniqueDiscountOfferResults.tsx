@@ -22,7 +22,6 @@ import {
 } from 'models/discountCodes/constants'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -193,10 +192,9 @@ export default function UniqueDiscountCodeResults({
                             onClick={onResetStoreChoice}
                             size="small"
                             tabIndex={-1}
+                            leadingIcon="arrow_back"
                         >
-                            <ButtonIconLabel icon="arrow_back">
-                                Back
-                            </ButtonIconLabel>
+                            Back
                         </Button>
                     )}
                     {hasShopifyDiscountScope && (
@@ -220,10 +218,9 @@ export default function UniqueDiscountCodeResults({
                                 size="small"
                                 tabIndex={-1}
                                 isDisabled={discountCodeCount >= MAX_LIMIT}
+                                leadingIcon="add"
                             >
-                                <ButtonIconLabel icon="add">
-                                    Add
-                                </ButtonIconLabel>
+                                Add
                             </Button>
                         </>
                     )}

@@ -6,7 +6,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {Source} from 'models/widget/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
     Link as LinkType,
     SubmitLink,
@@ -157,14 +156,11 @@ export function Links(props: Props) {
                             size="small"
                             className={css.showMore}
                             onClick={handleToggle}
+                            leadingIcon={
+                                collapseOpen ? 'expand_less' : 'expand_more'
+                            }
                         >
-                            <ButtonIconLabel
-                                icon={
-                                    collapseOpen ? 'expand_less' : 'expand_more'
-                                }
-                            >
-                                Show {collapseOpen ? 'less' : 'more'}
-                            </ButtonIconLabel>
+                            Show {collapseOpen ? 'less' : 'more'}
                         </Button>
                     )}
                 </>
@@ -176,8 +172,8 @@ export function Links(props: Props) {
                         className={css.addButton}
                         intent="secondary"
                         size="small"
+                        leadingIcon="add"
                     >
-                        <ButtonIconLabel icon="add" />
                         Add Link
                     </Button>
                     <Editor target={targetId} onSubmit={handleSubmit} />

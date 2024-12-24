@@ -4,7 +4,6 @@ import {Popover, PopoverHeader, PopoverBody, PopoverProps} from 'reactstrap'
 
 import {useAppNode} from 'appNode'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import css from './PopoverModal.less'
 
@@ -37,10 +36,9 @@ const PopoverModal = ({
                 ref={ref}
                 intent="secondary"
                 onClick={togglePopover}
+                leadingIcon="info_outline"
             >
-                <ButtonIconLabel icon="info_outline">
-                    {buttonText}
-                </ButtonIconLabel>
+                {buttonText}
             </Button>
             {isOpen && <div className={css.backdrop} />}
             {ref.current && (

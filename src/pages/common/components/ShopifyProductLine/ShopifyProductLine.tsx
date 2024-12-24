@@ -13,7 +13,6 @@ import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import {IntegrationType} from 'models/integration/constants'
 import {IntegrationDataItem, ProductCardDetails} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import ProductAutomations from 'pages/common/components/ProductAutomations/ProductAutomations'
 import {transformShopifyProductToProductCardDetails} from 'pages/common/draftjs/plugins/toolbar/utils'
@@ -278,10 +277,9 @@ export default function ShopifyProductLine({
                                         }
                                         size="small"
                                         tabIndex={-1}
+                                        leadingIcon="arrow_back"
                                     >
-                                        <ButtonIconLabel icon="arrow_back">
-                                            Back
-                                        </ButtonIconLabel>
+                                        Back
                                     </Button>
                                 </div>
                             )}

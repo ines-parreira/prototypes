@@ -68,16 +68,13 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
           class="content"
         >
           week(s) ago
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isRight medium"
-            >
-              arrow_drop_down
-            </i>
-          </span>
         </span>
+        <i
+          aria-hidden="true"
+          class="material-icons icon medium"
+        >
+          arrow_drop_down
+        </i>
       </button>
     </span>
     <div

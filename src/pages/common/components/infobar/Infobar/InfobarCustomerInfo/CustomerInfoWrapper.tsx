@@ -1,7 +1,6 @@
 import React, {Children, ReactNode, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import css from './CustomerInfoWrapper.less'
 
@@ -28,13 +27,9 @@ export default function CustomerInfoWrapper({
                     size="small"
                     className={css.container}
                     onClick={() => setOpen((prevState) => !prevState)}
+                    trailingIcon={isOpen ? 'expand_less' : 'expand_more'}
                 >
-                    <ButtonIconLabel
-                        icon={isOpen ? 'expand_less' : 'expand_more'}
-                        position="right"
-                    >
-                        Show {isOpen ? 'less' : 'more'}
-                    </ButtonIconLabel>
+                    Show {isOpen ? 'less' : 'more'}
                 </Button>
             )}
         </div>

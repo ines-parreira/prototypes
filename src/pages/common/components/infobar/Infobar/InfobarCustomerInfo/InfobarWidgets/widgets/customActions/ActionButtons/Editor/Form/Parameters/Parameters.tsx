@@ -3,7 +3,6 @@ import React, {memo, useCallback, useMemo} from 'react'
 import {ulid} from 'ulidx'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
     Parameter as ParameterType,
     OnChangeAction,
@@ -83,8 +82,12 @@ function Parameters({addLabel = 'Parameter', value, path, onChange}: Props) {
                     error=" Beware, you have duplicate keys, only one will be kept."
                 />
             )}
-            <Button intent="secondary" size="small" onClick={onAdd}>
-                <ButtonIconLabel icon="add" />
+            <Button
+                intent="secondary"
+                size="small"
+                onClick={onAdd}
+                leadingIcon="add"
+            >
                 Add {addLabel}
             </Button>
         </div>

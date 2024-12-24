@@ -3,7 +3,6 @@ import {ListGroup, ListGroupItem} from 'reactstrap'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import css from 'pages/common/components/ProductAutomations/ProductAutomations.less'
 import ProductRecommendationScenarioPicker from 'pages/convert/campaigns/components/ProductRecommendationScenarioPicker/ProductRecommendationScenarioPicker'
 
@@ -74,10 +73,9 @@ const ProductAutomations = ({
                             onClick={handleOnBackClick}
                             size="small"
                             tabIndex={-1}
+                            leadingIcon="arrow_back"
                         >
-                            <ButtonIconLabel icon="arrow_back">
-                                Back
-                            </ButtonIconLabel>
+                            Back
                         </Button>
                         <div className={css.backHeader}>{title}</div>
                         {AiBadgeElement}

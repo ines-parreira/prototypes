@@ -3,7 +3,6 @@ import React, {useRef, useState} from 'react'
 
 import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
 import Button, {ButtonSize} from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import WorkflowVariableDropdown from './WorkflowVariableDropdown'
 
@@ -41,10 +40,9 @@ const WorkflowVariablePicker = ({
                 ref={anchorEl}
                 isDisabled={disabled}
                 onClick={handleToggle}
+                trailingIcon="arrow_drop_down"
             >
-                <ButtonIconLabel icon="arrow_drop_down" position="right">
-                    {label}
-                </ButtonIconLabel>
+                {label}
             </Button>
             {tooltipMessage && (
                 <Tooltip target={anchorEl}>{tooltipMessage}</Tooltip>

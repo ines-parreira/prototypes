@@ -11,7 +11,6 @@ import {
 } from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
 import {getVariables} from 'tickets/common/utils'
 import {insertText} from 'utils'
@@ -81,13 +80,9 @@ export default class RichFieldWithVariables extends Component<Props> {
                                         <Button
                                             fillStyle="ghost"
                                             intent="secondary"
+                                            trailingIcon="arrow_drop_down"
                                         >
-                                            <ButtonIconLabel
-                                                icon="arrow_drop_down"
-                                                position="right"
-                                            >
-                                                {category.name}
-                                            </ButtonIconLabel>
+                                            {category.name}
                                         </Button>
                                     </DropdownToggle>
                                     <DropdownMenu>

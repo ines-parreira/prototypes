@@ -195,19 +195,16 @@ exports[`<SearchInput/> render() should render sub results 1`] = `
         class="wrapper mr-2 backButton fill secondary small"
         type="button"
       >
+        <i
+          aria-hidden="true"
+          class="material-icons icon small"
+        >
+          arrow_back
+        </i>
         <span
           class="content"
         >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft small"
-            >
-              arrow_back
-            </i>
-            Back
-          </span>
+          Back
         </span>
       </button>
       2 sub results

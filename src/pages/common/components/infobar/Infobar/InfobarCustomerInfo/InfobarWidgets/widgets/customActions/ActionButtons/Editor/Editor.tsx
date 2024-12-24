@@ -3,7 +3,6 @@ import React, {useCallback, useMemo, useState} from 'react'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {Source} from 'models/widget/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
     Button as ButtonType,
     OnOpenForm,
@@ -118,8 +117,8 @@ export function Editor({templatePath, absolutePath, source, buttons}: Props) {
                 type="button"
                 size="small"
                 onClick={() => handleOpenForm()}
+                leadingIcon="add"
             >
-                <ButtonIconLabel icon="add" />
                 Add Button
             </Button>
             <Modal isOpen={isFormOpen} onClose={handleCloseForm} size="huge">

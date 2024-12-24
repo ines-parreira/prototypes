@@ -162,18 +162,15 @@ exports[`<Editor/> should render with buttons and "add button" button 1`] = `
     class="wrapper addButton fill secondary small"
     type="button"
   >
+    <i
+      aria-hidden="true"
+      class="material-icons icon small"
+    >
+      add
+    </i>
     <span
       class="content"
     >
-      <span
-        class="wrapper"
-      >
-        <i
-          class="material-icons icon isLeft small"
-        >
-          add
-        </i>
-      </span>
       Add Button
     </span>
   </button>

@@ -2,7 +2,6 @@ import React from 'react'
 
 import useCopyToClipboard from 'hooks/useCopyToClipboard'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import css from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet.less'
 
 type Props = {
@@ -32,10 +31,13 @@ const InstallationCodeSnippet = ({code, onCopy}: Props) => {
     return (
         <div className={css.container}>
             <code className={css.code}>{code.trim()}</code>
-            <Button intent="secondary" size="small" onClick={handleCopyCode}>
-                <ButtonIconLabel icon={isCopied ? 'check' : 'content_copy'}>
-                    {isCopied ? 'Copied' : 'Copy Code'}
-                </ButtonIconLabel>
+            <Button
+                intent="secondary"
+                size="small"
+                onClick={handleCopyCode}
+                leadingIcon={isCopied ? 'check' : 'content_copy'}
+            >
+                {isCopied ? 'Copied' : 'Copy Code'}
             </Button>
         </div>
     )

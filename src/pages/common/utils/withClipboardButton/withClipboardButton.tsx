@@ -4,7 +4,6 @@ import React, {useState, useEffect, useRef, ComponentType} from 'react'
 import useId from 'hooks/useId'
 
 import Button from '../../components/button/Button'
-import ButtonIconLabel from '../../components/button/ButtonIconLabel'
 import css from './withClipboardButton.less'
 
 export function withClipboardButton(
@@ -53,10 +52,9 @@ export function withClipboardButton(
                         className={css['copy-button']}
                         data-clipboard-target={`#${id}`}
                         intent="secondary"
+                        leadingIcon="content_copy"
                     >
-                        <ButtonIconLabel icon="content_copy">
-                            {isCopied ? 'Copied!' : 'Copy'}
-                        </ButtonIconLabel>
+                        {isCopied ? 'Copied!' : 'Copy'}
                     </Button>
                 )}
             </div>

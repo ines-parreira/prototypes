@@ -22,19 +22,16 @@ exports[`StatsPage should render the title, children and filters 1`] = `
           class="wrapper wrapper ml-3 fill secondary medium"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            info_outline
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                info_outline
-              </i>
-              Learn
-            </span>
+            Learn
           </span>
         </button>
       </h1>

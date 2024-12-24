@@ -79,19 +79,16 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
           class="wrapper fill secondary medium"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            arrow_back
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                arrow_back
-              </i>
-              Back
-            </span>
+            Back
           </span>
         </button>
       </div>
@@ -232,19 +229,16 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
             class="wrapper mr-2 fill primary medium"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              call_merge
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  call_merge
-                </i>
-                Merge
-              </span>
+              Merge
             </span>
           </button>
         </div>
@@ -468,19 +462,16 @@ exports[`<Infobar/> should render search results 1`] = `
           class="wrapper fill secondary medium"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            arrow_back
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                arrow_back
-              </i>
-              Back
-            </span>
+            Back
           </span>
         </button>
       </div>
@@ -550,19 +541,16 @@ exports[`<Infobar/> should render selected customer 1`] = `
             class="wrapper selectionBackButton fill secondary medium"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              arrow_back
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  arrow_back
-                </i>
-                Back
-              </span>
+              Back
             </span>
           </button>
           <div
@@ -644,19 +632,16 @@ exports[`<Infobar/> should render the error when loading error 1`] = `
           class="wrapper fill secondary medium"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            arrow_back
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                arrow_back
-              </i>
-              Back
-            </span>
+            Back
           </span>
         </button>
       </div>

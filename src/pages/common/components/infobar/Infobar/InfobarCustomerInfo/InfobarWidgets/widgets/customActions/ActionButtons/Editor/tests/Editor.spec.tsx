@@ -54,7 +54,7 @@ describe('<Editor/>', () => {
                 <Editor {...props} />
             </Provider>
         )
-        fireEvent.click(screen.getByRole('button', {name: 'add Add Button'}))
+        fireEvent.click(screen.getByRole('button', {name: 'Add Button'}))
         await waitFor(() => {
             expect(screen.queryByRole('button', {name: 'Save'})).toBeTruthy()
         })
@@ -69,7 +69,7 @@ describe('<Editor/>', () => {
                 <Editor {...props} />
             </Provider>
         )
-        fireEvent.click(screen.getByRole('button', {name: 'add Add Button'}))
+        fireEvent.click(screen.getByRole('button', {name: 'Add Button'}))
         await screen.findByRole('button', {name: 'Save'})
         fireEvent.click(screen.getByRole('button', {name: 'Cancel'}))
         await waitFor(() => {
@@ -101,7 +101,7 @@ describe('<Editor/>', () => {
                 <Editor {...props} />
             </Provider>
         )
-        fireEvent.click(screen.getByRole('button', {name: 'add Add Button'}))
+        fireEvent.click(screen.getByRole('button', {name: 'Add Button'}))
         await screen.findByRole('button', {name: 'Save'})
         fireEvent.change(screen.getByLabelText(/Button title/), {
             target: {value: 'ok'},

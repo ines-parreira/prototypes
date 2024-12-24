@@ -56,19 +56,16 @@ exports[`<EmojiSelect/> .render() show emoji picker on icon click 1`] = `
               class="wrapper clearButton ghost primary medium"
               type="button"
             >
+              <i
+                aria-hidden="true"
+                class="material-icons icon medium"
+              >
+                clear
+              </i>
               <span
                 class="content"
               >
-                <span
-                  class="wrapper"
-                >
-                  <i
-                    class="material-icons icon isLeft medium"
-                  >
-                    clear
-                  </i>
-                  Clear icon
-                </span>
+                Clear icon
               </span>
             </button>
           </div>

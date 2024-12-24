@@ -12,7 +12,6 @@ import usePrevious from 'hooks/usePrevious'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import {Customer} from 'models/customer/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import css from 'pages/common/components/infobar/Infobar.less'
 import InfobarCustomerActions from 'pages/common/components/infobar/Infobar/InfobarCustomerActions'
@@ -302,10 +301,9 @@ export const Infobar = ({
                                     className={css.selectionBackButton}
                                     intent="secondary"
                                     onClick={resetSelected}
+                                    leadingIcon="arrow_back"
                                 >
-                                    <ButtonIconLabel icon="arrow_back">
-                                        Back
-                                    </ButtonIconLabel>
+                                    Back
                                 </Button>
                                 <InfobarCustomerActions
                                     customer={customer}
@@ -365,10 +363,9 @@ export const Infobar = ({
                                 <Button
                                     intent="secondary"
                                     onClick={() => resetSearch()}
+                                    leadingIcon="arrow_back"
                                 >
-                                    <ButtonIconLabel icon="arrow_back">
-                                        Back
-                                    </ButtonIconLabel>
+                                    Back
                                 </Button>
                             </div>
                             <InfobarSearchResultsList
@@ -436,10 +433,9 @@ export const Infobar = ({
                                                             true
                                                         )
                                                     }}
+                                                    leadingIcon="call_merge"
                                                 >
-                                                    <ButtonIconLabel icon="call_merge">
-                                                        Merge
-                                                    </ButtonIconLabel>
+                                                    Merge
                                                 </Button>
                                             </div>
                                         </div>

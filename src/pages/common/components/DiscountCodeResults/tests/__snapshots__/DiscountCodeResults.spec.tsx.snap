@@ -32,19 +32,16 @@ exports[`<DiscountCodeResults /> should render no results 1`] = `
           tabindex="-1"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon small"
+          >
+            arrow_back
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft small"
-              >
-                arrow_back
-              </i>
-              Back
-            </span>
+            Back
           </span>
         </button>
         <button
@@ -53,19 +50,16 @@ exports[`<DiscountCodeResults /> should render no results 1`] = `
           tabindex="-1"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon small"
+          >
+            add
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft small"
-              >
-                add
-              </i>
-              Add
-            </span>
+            Add
           </span>
         </button>
       </div>
@@ -136,19 +130,16 @@ exports[`<DiscountCodeResults /> should render the component 1`] = `
         tabindex="-1"
         type="button"
       >
+        <i
+          aria-hidden="true"
+          class="material-icons icon small"
+        >
+          arrow_back
+        </i>
         <span
           class="content"
         >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft small"
-            >
-              arrow_back
-            </i>
-            Back
-          </span>
+          Back
         </span>
       </button>
       <button
@@ -157,19 +148,16 @@ exports[`<DiscountCodeResults /> should render the component 1`] = `
         tabindex="-1"
         type="button"
       >
+        <i
+          aria-hidden="true"
+          class="material-icons icon small"
+        >
+          add
+        </i>
         <span
           class="content"
         >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft small"
-            >
-              add
-            </i>
-            Add
-          </span>
+          Add
         </span>
       </button>
     </div>
@@ -240,19 +228,16 @@ exports[`<DiscountCodeResults /> should render the discount codes 1`] = `
           tabindex="-1"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon small"
+          >
+            arrow_back
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft small"
-              >
-                arrow_back
-              </i>
-              Back
-            </span>
+            Back
           </span>
         </button>
         <button
@@ -261,19 +246,16 @@ exports[`<DiscountCodeResults /> should render the discount codes 1`] = `
           tabindex="-1"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon small"
+          >
+            add
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft small"
-              >
-                add
-              </i>
-              Add
-            </span>
+            Add
           </span>
         </button>
       </div>

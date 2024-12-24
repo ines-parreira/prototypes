@@ -20,7 +20,6 @@ import {
 import {DiscountCode} from 'models/discountCodes/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import DiscountCodeCreateModal from 'pages/common/components/DiscountCodeCreateModal/DiscountCodeCreateModal'
 import Loader from 'pages/common/components/Loader/Loader'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
@@ -160,10 +159,9 @@ export default function DiscountCodeResults({
                             onClick={onResetStoreChoice}
                             size="small"
                             tabIndex={-1}
+                            leadingIcon="arrow_back"
                         >
-                            <ButtonIconLabel icon="arrow_back">
-                                Back
-                            </ButtonIconLabel>
+                            Back
                         </Button>
                     )}
                     {hasShopifyDiscountScope && (
@@ -172,8 +170,9 @@ export default function DiscountCodeResults({
                             onClick={handleOpenModal}
                             size="small"
                             tabIndex={-1}
+                            leadingIcon="add"
                         >
-                            <ButtonIconLabel icon="add">Add</ButtonIconLabel>
+                            Add
                         </Button>
                     )}
                 </div>

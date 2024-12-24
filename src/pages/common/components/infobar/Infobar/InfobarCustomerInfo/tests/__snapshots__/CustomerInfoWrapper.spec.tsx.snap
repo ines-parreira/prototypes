@@ -16,18 +16,15 @@ exports[`CustomerInfoWrapper component should only 2 children and a Show More bu
     <span
       class="content"
     >
-      <span
-        class="wrapper"
-      >
-        Show 
-        more
-        <i
-          class="material-icons icon isRight small"
-        >
-          expand_more
-        </i>
-      </span>
+      Show 
+      more
     </span>
+    <i
+      aria-hidden="true"
+      class="material-icons icon small"
+    >
+      expand_more
+    </i>
   </button>
 </div>
 `;
@@ -54,18 +51,15 @@ exports[`CustomerInfoWrapper component should render all 4 children and a Show L
     <span
       class="content"
     >
-      <span
-        class="wrapper"
-      >
-        Show 
-        less
-        <i
-          class="material-icons icon isRight small"
-        >
-          expand_less
-        </i>
-      </span>
+      Show 
+      less
     </span>
+    <i
+      aria-hidden="true"
+      class="material-icons icon small"
+    >
+      expand_less
+    </i>
   </button>
 </div>
 `;
@@ -86,18 +80,15 @@ exports[`CustomerInfoWrapper component should render child a and child b with th
     <span
       class="content"
     >
-      <span
-        class="wrapper"
-      >
-        Show 
-        more
-        <i
-          class="material-icons icon isRight small"
-        >
-          expand_more
-        </i>
-      </span>
+      Show 
+      more
     </span>
+    <i
+      aria-hidden="true"
+      class="material-icons icon small"
+    >
+      expand_more
+    </i>
   </button>
 </div>
 `;
