@@ -33,6 +33,7 @@ export const OptimizeContainer = () => {
                 period: {
                     start_datetime: moment(
                         moment()
+                            .endOf('day')
                             .subtract(HOURS_TO_REMOVE, 'hours')
                             .subtract(1, 'week')
                             .toDate()
@@ -63,6 +64,7 @@ export const OptimizeContainer = () => {
                                 'hours'
                             ),
                         }}
+                        tooltipMessageForPreviousPeriod="There is no data available on this date yet."
                     />
                 )}
 
