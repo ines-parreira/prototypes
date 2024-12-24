@@ -30,7 +30,7 @@ type TableCellProps = {
 export const IntentNameCellContent = ({intent, column}: TableCellProps) => {
     return (
         <BodyCellWrapper bodyCellProps={{width: getColumnWidth(column)}}>
-            <div>{intent[column]}</div>
+            <div className="body-medium">{intent[column]}</div>
         </BodyCellWrapper>
     )
 }
