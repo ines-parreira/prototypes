@@ -67,8 +67,8 @@ const tooltipHints = {
         </span>
     ),
     outcome:
-        'The resolution or result of the ticket after being processed by the AI Agent.',
-    intent: 'The primary topic or issue identified by the AI Agent for this ticket.',
+        'The resolution or result of the ticket after being processed by AI Agent.',
+    intent: 'The primary topic or issue identified by AI Agent for this ticket.',
 }
 
 const isAutoQAMetric = (
