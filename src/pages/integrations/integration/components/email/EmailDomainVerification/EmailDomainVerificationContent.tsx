@@ -33,11 +33,7 @@ export default function EmailDomainVerificationContent({integration}: Props) {
         useDomainVerification()
 
     const shouldDisplayLoadingState =
-        isLoadingIntegration ||
-        isFetching ||
-        !domain ||
-        isCreatingDomain ||
-        !isCommonDomainAddress
+        isLoadingIntegration || isFetching || !domain || isCreatingDomain
 
     if (isBaseIntegration) {
         return (
