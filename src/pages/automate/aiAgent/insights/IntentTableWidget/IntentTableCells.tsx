@@ -158,7 +158,10 @@ export const BodyCellWrapper = ({
     bodyCellProps: {width: number; justifyContent?: 'right'}
 }) => {
     return (
-        <BodyCell justifyContent={bodyCellProps.justifyContent}>
+        <BodyCell
+            justifyContent={bodyCellProps.justifyContent}
+            innerClassName={intentTableCss.cellCursor}
+        >
             {isLoading ? (
                 <Skeleton
                     width={bodyCellProps.width - 36}
