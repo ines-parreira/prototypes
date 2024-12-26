@@ -11,8 +11,8 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
 import {StoreConfiguration} from 'models/aiAgent/types'
 import {IntegrationType} from 'models/integration/constants'
-import {getStoreConfigurationFixture} from 'pages/automate/aiAgent/fixtures/storeConfiguration.fixtures'
-import {useStoreConfiguration} from 'pages/automate/aiAgent/hooks/useStoreConfiguration'
+import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
 import {getHasAutomate} from 'state/billing/selectors'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 
@@ -26,7 +26,7 @@ const mockGetHasAutomate = jest.mocked(getHasAutomate)
 const mockStore = configureMockStore([thunk])
 const MOCK_EMAIL_ADDRESS = 'test@mail.com'
 
-jest.mock('pages/automate/aiAgent/hooks/useStoreConfiguration')
+jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
 const useStoreConfigurationMock = assumeMock(useStoreConfiguration)
 
 const defaultStoreConfiguration: StoreConfiguration =

@@ -2,7 +2,7 @@ import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import {useGetWorkflowConfigurationTemplate} from 'models/workflows/queries'
-import ActionFormMerchantInputValue from 'pages/automate/actions/components/ActionFormMerchantInputValue'
+import ActionFormMerchantInputValue from 'pages/aiAgent/actions/components/ActionFormMerchantInputValue'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'

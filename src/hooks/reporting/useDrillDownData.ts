@@ -11,7 +11,7 @@ import {OrderDirection} from 'models/api/types'
 import {DrillDownReportingQuery} from 'models/job/types'
 import {TicketSLADimension} from 'models/reporting/cubes/sla/TicketSLACube'
 import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
-import {useGetCustomTicketsFieldsDefinitionData} from 'pages/automate/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+import {useGetCustomTicketsFieldsDefinitionData} from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import {
     BaseDrillDownRowData,
     DrillDownFormatterProps,

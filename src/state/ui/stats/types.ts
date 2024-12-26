@@ -1,4 +1,4 @@
-import {IntentTableColumn} from 'pages/automate/aiAgent/insights/IntentTableWidget/types'
+import {IntentTableColumn} from 'pages/aiAgent/insights/IntentTableWidget/types'
 import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
 import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 

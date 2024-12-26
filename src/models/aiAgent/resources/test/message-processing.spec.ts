@@ -2,7 +2,7 @@ import MockAdapter from 'axios-mock-adapter'
 
 import {CreatePlaygroundBody} from 'models/aiAgentPlayground/types'
 
-import {customToneOfVoicePreviewFixture} from 'pages/automate/aiAgent/fixtures/customToneOfVoicePreview.fixture'
+import {customToneOfVoicePreviewFixture} from 'pages/aiAgent/fixtures/customToneOfVoicePreview.fixture'
 
 import authClient from '../../../../models/api/resources'
 import {

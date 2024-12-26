@@ -11,7 +11,7 @@ import AiAgentNotification from '../AiAgentNotification'
 
 const mockAiAgentTicketViewId = 123
 
-jest.mock('pages/automate/aiAgent/hooks/useAccountStoreConfiguration', () => ({
+jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
     useAccountStoreConfiguration: jest.fn(() => ({
         aiAgentTicketViewId: mockAiAgentTicketViewId,
     })),

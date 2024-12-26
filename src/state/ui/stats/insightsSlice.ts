@@ -4,7 +4,7 @@ import {OrderDirection} from 'models/api/types'
 import {
     Intent,
     IntentTableColumn,
-} from 'pages/automate/aiAgent/insights/IntentTableWidget/types'
+} from 'pages/aiAgent/insights/IntentTableWidget/types'
 
 import {RootState} from 'state/types'
 

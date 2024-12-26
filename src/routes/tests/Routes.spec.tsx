@@ -95,7 +95,7 @@ jest.mock('pages/stats/automate/ai-agent/AutomateAiAgentStats', () => () => (
     <div>AutomateAiAgentStats</div>
 ))
 jest.mock(
-    'pages/automate/aiAgent/providers/AiAgentAccountConfigurationProvider',
+    'pages/aiAgent/providers/AiAgentAccountConfigurationProvider',
     () => ({
         AiAgentAccountConfigurationProvider: ({
             children,
@@ -108,7 +108,7 @@ jest.mock(
     })
 )
 jest.mock(
-    'pages/automate/aiAgent/providers/AiAgentStoreConfigurationProvider',
+    'pages/aiAgent/providers/AiAgentStoreConfigurationProvider',
     () =>
         ({children}: PropsWithChildren<any>) => (
             <>
@@ -117,7 +117,7 @@ jest.mock(
             </>
         )
 )
-jest.mock('pages/automate/aiAgent/AiAgentKnowledgeContainer', () => ({
+jest.mock('pages/aiAgent/AiAgentKnowledgeContainer', () => ({
     AiAgentKnowledgeContainer: () => <div>AiAgentKnowledgeContainer</div>,
 }))
 jest.mock(

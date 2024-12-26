@@ -20,7 +20,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
-import {isAiAgentCustomField} from 'pages/automate/aiAgent/util'
+import {isAiAgentCustomField} from 'pages/aiAgent/util'
 import {useTimeSeriesFormattedData} from 'pages/stats/AutomateOverviewContent'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {formatDates} from 'pages/stats/utils'
@@ -69,7 +69,7 @@ const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 
-jest.mock('pages/automate/aiAgent/util')
+jest.mock('pages/aiAgent/util')
 const isAiAgentCustomFieldMock = assumeMock(isAiAgentCustomField)
 
 jest.mock('hooks/reporting/useTimeSeries')

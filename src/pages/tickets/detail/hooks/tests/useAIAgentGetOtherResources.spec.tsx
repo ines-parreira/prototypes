@@ -4,18 +4,18 @@ import React from 'react'
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import {useGetAICompatibleMacros} from 'models/macro/queries'
 import {useGetStoreWorkflowsConfigurations} from 'models/workflows/queries'
-import {useFileIngestion} from 'pages/automate/aiAgent/hooks/useFileIngestion'
-import {useGuidanceArticles} from 'pages/automate/aiAgent/hooks/useGuidanceArticles'
-import {usePublicResources} from 'pages/automate/aiAgent/hooks/usePublicResources'
+import {useFileIngestion} from 'pages/aiAgent/hooks/useFileIngestion'
+import {useGuidanceArticles} from 'pages/aiAgent/hooks/useGuidanceArticles'
+import {usePublicResources} from 'pages/aiAgent/hooks/usePublicResources'
 import {assumeMock} from 'utils/testing'
 
 import * as useAIAgentGetOtherResources from '../useAIAgentGetOtherResources'
 
 jest.mock('models/helpCenter/queries')
 jest.mock('models/macro/queries')
-jest.mock('pages/automate/aiAgent/hooks/usePublicResources')
-jest.mock('pages/automate/aiAgent/hooks/useFileIngestion')
-jest.mock('pages/automate/aiAgent/hooks/useGuidanceArticles')
+jest.mock('pages/aiAgent/hooks/usePublicResources')
+jest.mock('pages/aiAgent/hooks/useFileIngestion')
+jest.mock('pages/aiAgent/hooks/useGuidanceArticles')
 jest.mock('models/workflows/queries')
 
 const mockedUseGetHelpCenterArticleList = assumeMock(

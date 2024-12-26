@@ -2,7 +2,7 @@ import {Label} from '@gorgias/merchant-ui-kit'
 import _noop from 'lodash/noop'
 import React, {useMemo} from 'react'
 
-import ActionFormInputs from 'pages/automate/actions/components/ActionFormInputs'
+import ActionFormInputs from 'pages/aiAgent/actions/components/ActionFormInputs'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {ReusableLLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {Drawer} from 'pages/common/components/Drawer'

@@ -22,7 +22,7 @@ import {
 import {customerSatisfactionMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {customFieldsTicketTotalCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {FilterKey, StatsFilters} from 'models/stat/types'
-import {IntentMetrics} from 'pages/automate/aiAgent/insights/IntentTableWidget/types'
+import {IntentMetrics} from 'pages/aiAgent/insights/IntentTableWidget/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {activeParams} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {getPreviousPeriod} from 'utils/reporting'

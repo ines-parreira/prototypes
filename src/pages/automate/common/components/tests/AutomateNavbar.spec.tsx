@@ -14,8 +14,8 @@ import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {integrationsState} from 'fixtures/integrations'
 import {user} from 'fixtures/users'
-import {getStoreConfigurationFixture} from 'pages/automate/aiAgent/fixtures/storeConfiguration.fixtures'
-import {useStoreConfiguration} from 'pages/automate/aiAgent/hooks/useStoreConfiguration'
+import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
 import {RootState} from 'state/types'
 import {ThemeProvider} from 'theme'
 import {getLDClient} from 'utils/launchDarkly'
@@ -29,7 +29,7 @@ jest.mock('common/flags', () => ({
     useFlag: jest.fn(),
 }))
 
-jest.mock('pages/automate/aiAgent/hooks/useStoreConfiguration')
+jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
 
 const allFlagsMock = getLDClient().allFlags as jest.Mock
 allFlagsMock.mockReturnValue({})

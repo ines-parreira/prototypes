@@ -14,7 +14,7 @@ import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigS
 import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'
 import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
-import {isAiAgentCustomField} from 'pages/automate/aiAgent/util'
+import {isAiAgentCustomField} from 'pages/aiAgent/util'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {useTimeSeriesFormattedData} from 'pages/stats/AutomateOverviewContent'

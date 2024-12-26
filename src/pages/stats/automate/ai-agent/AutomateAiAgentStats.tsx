@@ -15,7 +15,7 @@ import {calculateGreyArea} from 'hooks/reporting/automate/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
-import {isAiAgentCustomField} from 'pages/automate/aiAgent/util'
+import {isAiAgentCustomField} from 'pages/aiAgent/util'
 import {
     AUTOMATED_INTERACTION_TOOLTIP,
     AutomatedInteractionsMetric,

@@ -1,5 +1,7 @@
 :local {
-    .navbar {
+    // The `:global(.navbar)` is to target explicitly the navbar component from reactstrap
+    // This will force this style to overwrite the one from Bootstrap
+    :global(.navbar).navbar {
         background-color: var(--neutral-grey-1);
         border-bottom: 1px solid var(--neutral-grey-3);
         height: 52px;

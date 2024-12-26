@@ -18,7 +18,7 @@ import {StatsFilters} from 'models/stat/types'
 import {
     IntentMetrics,
     IntentTableColumn,
-} from 'pages/automate/aiAgent/insights/IntentTableWidget/types'
+} from 'pages/aiAgent/insights/IntentTableWidget/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 

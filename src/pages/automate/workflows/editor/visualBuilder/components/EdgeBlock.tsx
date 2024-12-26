@@ -12,7 +12,7 @@ import React, {
 } from 'react'
 
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
-import {useStoreAppsContext} from 'pages/automate/actions/providers/StoreAppsContext'
+import {useStoreAppsContext} from 'pages/aiAgent/actions/providers/StoreAppsContext'
 import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useEnabledActionStepsByApp from 'pages/automate/actionsPlatform/hooks/useEnabledActionStepsByApp'

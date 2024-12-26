@@ -1,0 +1,67 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+@import '~css/new/mixins';
+
+:local {
+    // The `:global(.container-fluid)` explicitly targets the navbar component from reactstrap
+    // This will force this style to overwrite the one from Bootstrap
+    :global(.container-fluid).container {
+        // Remove grid from the AutomateView component
+        display: block !important;
+        padding: 0;
+    }
+
+    .actionsListContainer {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        .actionListDescription {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            padding: @layout-spacing-m;
+            gap: @layout-spacing-s;
+
+            @media @desktops {
+                flex-direction: row;
+            }
+
+            & > div:first-child {
+                .body-regular;
+                margin: 0;
+                min-width: 328px;
+                max-width: 768px;
+            }
+        }
+    }
+
+    .templateCards {
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-m;
+        gap: @layout-spacing-s;
+
+        .templateHeader {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: @layout-spacing-xxs;
+
+            & > p {
+                .heading-section-semibold;
+                margin: 0;
+            }
+        }
+    }
+
+    .actionButtons {
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+
+    .actionsFormContainer {
+        padding: @layout-spacing-m @layout-spacing-m 0 @layout-spacing-m;
+        grid-template-columns: minmax(480px, 680px) 1fr;
+    }
+}

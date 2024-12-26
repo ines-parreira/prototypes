@@ -1,4 +1,4 @@
-import {getAIGuidanceFixture} from 'pages/automate/aiAgent/fixtures/aiGuidance.fixture'
+import {getAIGuidanceFixture} from 'pages/aiAgent/fixtures/aiGuidance.fixture'
 import {HelpCenterClient} from 'rest_api/help_center_api/client'
 
 import {getAIGeneratedGuidances} from '../resources/guidances'

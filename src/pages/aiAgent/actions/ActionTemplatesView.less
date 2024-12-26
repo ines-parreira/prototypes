@@ -1,0 +1,49 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    // The `:global(.container-fluid)` explicitly targets the navbar component from reactstrap
+    // This will force this style to overwrite the one from Bootstrap
+    :global(.container-fluid).container {
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-m;
+        gap: @layout-spacing-s;
+    }
+
+    .backButtonContainer {
+        align-self: flex-start;
+    }
+
+    .header {
+        .heading-section-semibold();
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: @layout-spacing-xxs;
+    }
+
+    .requestBannerContainer {
+        display: flex;
+        padding: @layout-spacing-m;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+        align-items: center;
+        background-color: var(--main-latte);
+        border-radius: 8px;
+    }
+
+    .requestBannerContent {
+        .body-regular();
+
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+        flex-direction: column;
+    }
+
+    .requestBannerTitle {
+        .heading-section-semibold();
+    }
+}

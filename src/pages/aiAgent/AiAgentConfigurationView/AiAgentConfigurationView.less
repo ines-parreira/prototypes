@@ -1,0 +1,22 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    // The `:global(.container-fluid)` explicitly targets the navbar component from reactstrap
+    // This will force this style to overwrite the one from Bootstrap
+    :global(.container-fluid).container {
+        // Remove grid from the Automation component
+        display: block;
+    }
+
+    .warningContainer {
+        max-width: 728px;
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .spinner {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

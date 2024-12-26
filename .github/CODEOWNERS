@@ -136,7 +136,7 @@ src/models/reporting/queryFactories/automate_v2/ @gorgias/automate-observability
 src/models/reporting/cubes/automate/ @gorgias/automate-observability-adoption
 src/models/reporting/cubes/automate_v2/ @gorgias/automate-observability-adoption
 src/pages/stats/Automate* @gorgias/automate-observability-adoption
-src/pages/automate/aiAgent/AiAgentOnboardingWizard @gorgias/automate-observability-adoption
+src/pages/aiAgent/AiAgentOnboardingWizard @gorgias/automate-observability-adoption
 
 # Automate AI Agent scope @gorgias/automate-ai-agent
-src/pages/automate/aiAgent/ @gorgias/automate-ai-agent
+src/pages/aiAgent/ @gorgias/automate-ai-agent

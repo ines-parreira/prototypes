@@ -10,10 +10,10 @@ import thunk from 'redux-thunk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {billingState} from 'fixtures/billing'
-import {getStoreConfigurationFixture} from 'pages/automate/aiAgent/fixtures/storeConfiguration.fixtures'
-import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
-import {useStoreConfiguration} from 'pages/automate/aiAgent/hooks/useStoreConfiguration'
-import {useStoreConfigurationMutation} from 'pages/automate/aiAgent/hooks/useStoreConfigurationMutation'
+import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
+import {useStoreConfigurationMutation} from 'pages/aiAgent/hooks/useStoreConfigurationMutation'
 import history from 'pages/history'
 import {notify} from 'state/notifications/actions'
 import {RootState} from 'state/types'
@@ -25,8 +25,8 @@ jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('state/notifications/actions')
 const mockNotify = jest.mocked(notify)
 
-jest.mock('pages/automate/aiAgent/hooks/useStoreConfiguration')
-jest.mock('pages/automate/aiAgent/hooks/useStoreConfigurationMutation')
+jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
+jest.mock('pages/aiAgent/hooks/useStoreConfigurationMutation')
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(() => ({
@@ -34,7 +34,7 @@ jest.mock('react-router-dom', () => ({
         shopName: 'shopName',
     })),
 }))
-jest.mock('pages/automate/aiAgent/hooks/useAiAgentEnabled')
+jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 const mockStore = configureMockStore([thunk])

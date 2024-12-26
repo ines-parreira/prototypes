@@ -1,0 +1,17 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    // The `:global(.container-fluid)` explicitly targets the navbar component from reactstrap
+    // This will force this style to overwrite the one from Bootstrap
+    :global(.container-fluid).container {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xl;
+    }
+
+    .section {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+    }
+}

@@ -5,9 +5,9 @@ import {ResourceFeedbackOnMessage} from 'models/aiAgentFeedback/types'
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import {useGetAICompatibleMacros} from 'models/macro/queries'
 import {useGetStoreWorkflowsConfigurations} from 'models/workflows/queries'
-import {useFileIngestion} from 'pages/automate/aiAgent/hooks/useFileIngestion'
-import {useGuidanceArticles} from 'pages/automate/aiAgent/hooks/useGuidanceArticles'
-import {usePublicResources} from 'pages/automate/aiAgent/hooks/usePublicResources'
+import {useFileIngestion} from 'pages/aiAgent/hooks/useFileIngestion'
+import {useGuidanceArticles} from 'pages/aiAgent/hooks/useGuidanceArticles'
+import {usePublicResources} from 'pages/aiAgent/hooks/usePublicResources'
 
 import {mapResourceLabelToType} from '../components/AIAgentFeedbackBar/utils'
 

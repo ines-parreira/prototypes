@@ -3,7 +3,7 @@ import React from 'react'
 import {Content, Subtitle} from 'common/notifications'
 import type {ContentProps, Notification} from 'common/notifications'
 
-import {useAccountStoreConfiguration} from 'pages/automate/aiAgent/hooks/useAccountStoreConfiguration'
+import {useAccountStoreConfiguration} from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
 
 import {AI_AGENT_ICON} from 'pages/common/components/SourceIcon'
 

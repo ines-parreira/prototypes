@@ -1,8 +1,8 @@
 import MockAdapter from 'axios-mock-adapter'
 
 import authClient from '../../../../models/api/resources'
-import {getAccountConfigurationWithHttpIntegrationFixture} from '../../../../pages/automate/aiAgent/fixtures/accountConfiguration.fixture'
-import {getStoreConfigurationFixture} from '../../../../pages/automate/aiAgent/fixtures/storeConfiguration.fixtures'
+import {getAccountConfigurationWithHttpIntegrationFixture} from '../../../../pages/aiAgent/fixtures/accountConfiguration.fixture'
+import {getStoreConfigurationFixture} from '../../../../pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import {getSingleHelpCenterResponseFixture} from '../../../../pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {HelpCenter} from '../../../helpCenter/types'
 import {

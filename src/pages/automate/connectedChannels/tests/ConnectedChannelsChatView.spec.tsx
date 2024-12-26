@@ -15,8 +15,8 @@ import {useGetHelpCenter} from 'models/helpCenter/queries'
 import {
     applicationAutomationSettingsFixture,
     applicationsAutomationSettingsStateFixture,
-} from 'pages/automate/aiAgent/fixtures/applicationAutomationSettings.fixture'
-import {mockChatChannels} from 'pages/automate/aiAgent/fixtures/chatChannels.fixture'
+} from 'pages/aiAgent/fixtures/applicationAutomationSettings.fixture'
+import {mockChatChannels} from 'pages/aiAgent/fixtures/chatChannels.fixture'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
