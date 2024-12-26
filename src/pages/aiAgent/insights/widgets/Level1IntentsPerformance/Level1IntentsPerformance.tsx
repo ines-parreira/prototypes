@@ -1,5 +1,7 @@
 import React from 'react'
 
+import {useParams} from 'react-router-dom'
+
 import {useAIAgentMetrics} from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
 import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
@@ -31,6 +33,10 @@ const AUTOMATED_OUTCOMS = ['Close::With message', 'Close::Without message']
 export const Level1IntentsPerformance = () => {
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
 
+    const {shopName} = useParams<{
+        shopName: string
+    }>()
+
     const {userTimezone} = useNewAutomateFilters()
     const aiAgentMetrics = useAIAgentMetrics(pageStatsFilters, userTimezone)
 
@@ -54,11 +60,14 @@ export const Level1IntentsPerformance = () => {
                     metricFormat: 'decimal-to-percent',
                     tip: (
                         <PerformanceTip showBenchmark={false}>
-                            Consider{' '}
-                            <a target="blank" href="https://www.gorgias.com">
-                                using XYZ
+                            Set up all{' '}
+                            <a
+                                target="blank"
+                                href={`/app/automation/shopify/${shopName}/ai-agent/settings`}
+                            >
+                                channels & email addresses
                             </a>{' '}
-                            to improve this metric.
+                            to improve your ticket coverage rate of AI Agent
                         </PerformanceTip>
                     ),
                     drillDownMetric:

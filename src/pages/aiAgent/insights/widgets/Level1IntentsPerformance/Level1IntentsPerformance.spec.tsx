@@ -33,6 +33,10 @@ jest.mock(
     })
 )
 
+jest.mock('react-router-dom', () => ({
+    useParams: jest.fn(() => ({shopName: 'shopName'})),
+}))
+
 const aiAgentAutomatedInteractionTrend = {
     data: {
         isFetching: false,
