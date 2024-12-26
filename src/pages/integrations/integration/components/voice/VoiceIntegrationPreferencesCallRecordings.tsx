@@ -1,24 +1,37 @@
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Label} from 'reactstrap'
 
-import {PhoneIntegrationPreferences} from 'models/integration/types'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {
+    PhoneIntegrationPreferences,
+    VoiceMessage,
+} from 'models/integration/types'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import settingsCss from 'pages/settings/settings.less'
 
 import css from './VoiceIntegrationPreferences.less'
+import VoiceMessageField from './VoiceMessageField'
 
 type Props = {
     preferences: PhoneIntegrationPreferences
     onPreferencesChange: (
         preferences: Partial<PhoneIntegrationPreferences>
     ) => void
+    recordingNotification: VoiceMessage
+    onRecordingNotificationChange: (message: VoiceMessage) => void
 }
 
 export default function VoiceIntegrationPreferencesCallRecordings({
     preferences,
     onPreferencesChange,
+    recordingNotification,
+    onRecordingNotificationChange,
 }: Props): JSX.Element {
+    const showCustomRecordingNotificationSection: boolean | undefined =
+        useFlags()[FeatureFlagKey.CustomRecordingNotification]
+
     return (
         <div className={css.callRecordingFormSection}>
             <div>
@@ -60,6 +73,23 @@ export default function VoiceIntegrationPreferencesCallRecordings({
                     Start recording automatically
                 </ToggleInput>
             </div>
+            {showCustomRecordingNotificationSection && (
+                <div>
+                    <Label className="control-label">
+                        Call recording notifications
+                    </Label>
+                    <VoiceMessageField
+                        value={recordingNotification}
+                        onChange={onRecordingNotificationChange}
+                        allowNone
+                        horizontal={true}
+                        isDisabled={
+                            !preferences.record_inbound_calls &&
+                            !preferences.record_outbound_calls
+                        }
+                    />
+                </div>
+            )}
         </div>
     )
 }

@@ -30,6 +30,7 @@ export type PhoneIntegrationMeta = {
     ivr?: PhoneIntegrationIvrSettings
     phone_team_id?: Maybe<number>
     wait_music?: LocalWaitMusicPreferences
+    recording_notification?: VoiceMessage
 }
 
 export enum PhoneRingingBehaviour {
@@ -88,10 +89,11 @@ export type VoiceMessageNone = {
     voice_message_type: VoiceMessageType.None
 }
 
-export type VoiceMessage =
-    | VoiceMessageTextToSpeech
-    | VoiceMessageRecording
-    | VoiceMessageNone
+export type VoiceMessage = {
+    voice_message_type: VoiceMessageType
+    text_to_speech_content?: Maybe<string>
+    voice_recording_file_path?: string
+} & (VoiceMessageTextToSpeech | VoiceMessageRecording | VoiceMessageNone)
 
 export type IvrMenuAction =
     | IvrPlayVoiceMessageAction

@@ -123,3 +123,9 @@ export const TAGS_LIMIT = 30
 export const TEXT_TO_SPEECH_MAX_LENGTH = 1000
 export const MAX_VOICE_RECORDING_FILE_SIZE_MB = 2
 export const MAX_WAIT_MUSIC_CUSTOM_RECORDING_FILE_SIZE_MB = 3
+
+export const DEFAULT_RECORDING_NOTIFICATION = {
+    voice_message_type: VoiceMessageType.TextToSpeech,
+    text_to_speech_content:
+        'This call may be monitored and recorded for record keeping, training, or quality-assurance purposes.',
+}

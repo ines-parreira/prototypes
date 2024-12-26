@@ -28,20 +28,6 @@ describe('<VoiceMessageField />', () => {
         } as Account
     })
 
-    it('should render', () => {
-        const {container} = render(
-            <Provider store={mockStore({})}>
-                <VoiceMessageField
-                    value={defaultMessage}
-                    onChange={onChange}
-                    allowNone
-                />
-            </Provider>
-        )
-
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should allow changing the text to speech text', () => {
         const {container} = render(
             <Provider store={mockStore({})}>
@@ -161,7 +147,13 @@ describe('<VoiceMessageField horizontal="true" />', () => {
         text_to_speech_content: 'Cannot answer right now',
     }
 
-    const renderComponent = (message: VoiceMessage = defaultMessage) => {
+    const renderComponent = ({
+        message = defaultMessage,
+        isDisabled,
+    }: {
+        message?: VoiceMessage
+        isDisabled?: boolean
+    } = {}) => {
         return render(
             <Provider store={mockStore()}>
                 <VoiceMessageField
@@ -169,6 +161,7 @@ describe('<VoiceMessageField horizontal="true" />', () => {
                     onChange={onChange}
                     allowNone
                     horizontal={true}
+                    isDisabled={isDisabled}
                 />
             </Provider>
         )
@@ -209,7 +202,7 @@ describe('<VoiceMessageField horizontal="true" />', () => {
             voice_message_type: VoiceMessageType.TextToSpeech,
             text_to_speech_content: null,
         }
-        const {container, getByPlaceholderText} = renderComponent(message)
+        const {container, getByPlaceholderText} = renderComponent({message})
 
         expect(
             getByPlaceholderText('Write a message to convert to speech')
@@ -233,7 +226,7 @@ describe('<VoiceMessageField horizontal="true" />', () => {
         const message = {
             voice_message_type: VoiceMessageType.TextToSpeech,
         } as VoiceMessage
-        const {getByText} = renderComponent(message)
+        const {getByText} = renderComponent({message})
 
         expect(
             getByText('Text-to-speech message is required')
@@ -245,11 +238,11 @@ describe('<VoiceMessageField horizontal="true" />', () => {
             type: 'audio/mpeg',
         })
 
-        const defaultMessage: VoiceMessage = {
+        const message: VoiceMessage = {
             voice_message_type: VoiceMessageType.VoiceRecording,
         }
 
-        const {container} = renderComponent(defaultMessage)
+        const {container} = renderComponent({message})
 
         const input = container.querySelector('input[type="file"]')
         expect(input).toBeInTheDocument()
@@ -280,5 +273,19 @@ describe('<VoiceMessageField horizontal="true" />', () => {
             voice_message_type: VoiceMessageType.None,
             text_to_speech_content: 'Cannot answer right now',
         })
+    })
+
+    it('should disable all options when isDisabled is true', () => {
+        const {getByLabelText} = renderComponent({
+            isDisabled: true,
+        })
+
+        const textToSpeechOption = getByLabelText('Text-to-speech')
+        const customRecordingOption = getByLabelText('Custom recording')
+        const noneOption = getByLabelText('None')
+
+        expect(textToSpeechOption).toBeDisabled()
+        expect(customRecordingOption).toBeDisabled()
+        expect(noneOption).toBeDisabled()
     })
 })

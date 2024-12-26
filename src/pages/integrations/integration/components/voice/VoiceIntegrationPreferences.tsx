@@ -14,8 +14,13 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {
+    DEFAULT_RECORDING_NOTIFICATION,
+    VoiceMessageType,
+} from 'models/integration/constants'
+import {
     PhoneIntegration,
     PhoneIntegrationPreferences,
+    VoiceMessage,
     isPhoneIntegration,
 } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
@@ -31,7 +36,10 @@ import {
     WAIT_TIME_MAX_VALUE,
     WAIT_TIME_MIN_VALUE,
 } from 'pages/integrations/integration/components/voice/constants'
-import {isValueInRange} from 'pages/integrations/integration/components/voice/utils'
+import {
+    getVoiceMessagePayload,
+    isValueInRange,
+} from 'pages/integrations/integration/components/voice/utils'
 import css from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences.less'
 import VoiceIntegrationPreferencesCallRecordings from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferencesCallRecordings'
 import VoiceIntegrationPreferencesInboundCalls from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferencesInboundCalls'
@@ -47,6 +55,8 @@ import {UPDATE_INTEGRATION_ERROR} from 'state/integrations/constants'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
+import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
+
 type Props = {
     integration: PhoneIntegration
 }
@@ -54,6 +64,8 @@ type Props = {
 export default function VoiceIntegrationPreferences({
     integration,
 }: Props): JSX.Element {
+    const {areVoiceMessagesTheSame} = useVoiceMessageValidation()
+
     const [backendTitle, setBackendTitle] = useState(integration.name)
     const [backendMeta, setBackendMeta] = useState(integration.meta)
 
@@ -65,6 +77,11 @@ export default function VoiceIntegrationPreferences({
     const [preferences, setPreferences] = useState<PhoneIntegrationPreferences>(
         integration.meta.preferences
     )
+    const [recordingNotification, setRecordingNotification] =
+        useState<VoiceMessage>(
+            integration.meta.recording_notification ??
+                DEFAULT_RECORDING_NOTIFICATION
+        )
 
     const phoneNumberId = integration.meta.phone_number_id
     const phoneNumber = useAppSelector(getNewPhoneNumber(phoneNumberId))
@@ -92,32 +109,6 @@ export default function VoiceIntegrationPreferences({
             },
         },
     })
-
-    const handleSubmit = useCallback(
-        (event?: React.FormEvent) => {
-            event?.preventDefault()
-
-            const newSettings: UpdatePhoneIntegrationSettings = {
-                name: title,
-                emoji,
-                preferences,
-                phone_team_id: phoneTeamId,
-            }
-
-            updatePhoneSettings({
-                integrationId: integration.id,
-                data: newSettings,
-            })
-        },
-        [
-            emoji,
-            integration.id,
-            phoneTeamId,
-            preferences,
-            title,
-            updatePhoneSettings,
-        ]
-    )
 
     const [{loading: isDeleting}, handleDelete] = useAsyncFn(async () => {
         await dispatch(deleteIntegration(fromJS(integration)))
@@ -178,53 +169,129 @@ export default function VoiceIntegrationPreferences({
             setEmoji(integration.meta.emoji)
             setPhoneTeamId(integration.meta.phone_team_id)
             setPreferences(integration.meta.preferences)
+            setRecordingNotification(
+                integration.meta.recording_notification ??
+                    DEFAULT_RECORDING_NOTIFICATION
+            )
             setBackendMeta(integration.meta)
         }
     }, [backendMeta, backendTitle, integration.meta, integration.name])
 
-    const canSubmit = useCallback(() => {
-        if (!isEmpty(validationErrors)) {
+    const isRecordingNotificationValid = useMemo(() => {
+        if (
+            !preferences.record_inbound_calls &&
+            !preferences.record_outbound_calls
+        ) {
+            return true
+        }
+
+        if (
+            recordingNotification.voice_message_type ===
+                VoiceMessageType.TextToSpeech &&
+            !recordingNotification.text_to_speech_content
+        ) {
             return false
         }
 
-        const integrationWithDefaults = {
-            ...integration,
-            meta: {
-                ...integration.meta,
-                preferences: preferencesWithDefaultValues(
-                    backendMeta.preferences
-                ),
-            },
+        if (
+            recordingNotification.voice_message_type ===
+                VoiceMessageType.VoiceRecording &&
+            !recordingNotification.new_voice_recording_file &&
+            !backendMeta.recording_notification?.voice_recording_file_path
+        ) {
+            return false
         }
-
-        const unsubmittedSettingsWithDefaults = {
-            name: title,
-            meta: {
-                ...integration.meta,
-                ...(phoneTeamId !== undefined
-                    ? {phone_team_id: phoneTeamId}
-                    : {}),
-                emoji,
-                preferences: preferencesWithDefaultValues(preferences),
-            },
-        }
-
-        const updatedIntegration = {
-            ...integration,
-            ...unsubmittedSettingsWithDefaults,
-        }
-        return !isEqual(integrationWithDefaults, updatedIntegration)
+        return true
     }, [
-        backendMeta,
-        emoji,
-        integration,
-        phoneTeamId,
-        preferences,
-        title,
-        validationErrors,
+        backendMeta.recording_notification,
+        preferences.record_inbound_calls,
+        preferences.record_outbound_calls,
+        recordingNotification,
     ])
 
-    const isSubmittable = canSubmit()
+    const isRecordingNotificationDirty = useMemo(() => {
+        return !areVoiceMessagesTheSame(
+            recordingNotification,
+            backendMeta.recording_notification || DEFAULT_RECORDING_NOTIFICATION
+        )
+    }, [
+        areVoiceMessagesTheSame,
+        backendMeta.recording_notification,
+        recordingNotification,
+    ])
+
+    const arePreferencesDirty = useMemo(() => {
+        return !isEqual(
+            preferencesWithDefaultValues(backendMeta.preferences),
+            preferencesWithDefaultValues(preferences)
+        )
+    }, [backendMeta, preferences])
+
+    const areRootSettingsDirty = useMemo(() => {
+        return (
+            title !== backendTitle ||
+            emoji !== backendMeta.emoji ||
+            phoneTeamId !== backendMeta.phone_team_id
+        )
+    }, [backendMeta, backendTitle, emoji, phoneTeamId, title])
+
+    const isDirty =
+        isRecordingNotificationDirty ||
+        arePreferencesDirty ||
+        areRootSettingsDirty
+
+    const isValid = isEmpty(validationErrors) && isRecordingNotificationValid
+    const isSubmittable = isDirty && isValid
+
+    const handleSubmit = useCallback(
+        (event?: React.FormEvent) => {
+            event?.preventDefault()
+
+            let newSettings: UpdatePhoneIntegrationSettings = {}
+
+            if (areRootSettingsDirty) {
+                newSettings = {
+                    name: title,
+                    emoji,
+                    phone_team_id: phoneTeamId,
+                }
+            }
+
+            if (arePreferencesDirty) {
+                newSettings = {...newSettings, preferences}
+            }
+
+            if (isRecordingNotificationDirty) {
+                const recordingNotificationPayload = getVoiceMessagePayload(
+                    recordingNotification
+                )
+                newSettings = recordingNotificationPayload
+                    ? {
+                          ...newSettings,
+                          recording_notification: recordingNotificationPayload,
+                      }
+                    : newSettings
+            }
+
+            updatePhoneSettings({
+                integrationId: integration.id,
+                data: newSettings,
+            })
+        },
+        [
+            arePreferencesDirty,
+            areRootSettingsDirty,
+            emoji,
+            integration.id,
+            isRecordingNotificationDirty,
+            phoneTeamId,
+            preferences,
+            recordingNotification,
+            title,
+            updatePhoneSettings,
+        ]
+    )
+
     const handlePreferencesChange = (
         newPreferences: Partial<PhoneIntegrationPreferences>
     ) =>
@@ -297,6 +364,10 @@ export default function VoiceIntegrationPreferences({
                             <VoiceIntegrationPreferencesCallRecordings
                                 preferences={preferences}
                                 onPreferencesChange={handlePreferencesChange}
+                                recordingNotification={recordingNotification}
+                                onRecordingNotificationChange={
+                                    setRecordingNotification
+                                }
                             />
                             <VoiceIntegrationPreferencesTranscription
                                 preferences={preferences}

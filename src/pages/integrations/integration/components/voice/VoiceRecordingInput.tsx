@@ -16,6 +16,7 @@ type PropsVoiceRecordingInput = {
     replaceLabel?: string
     className?: string
     maxSizeInMB?: number
+    isDisabled?: boolean
 }
 
 export default function VoiceRecordingInput({
@@ -25,6 +26,7 @@ export default function VoiceRecordingInput({
     replaceLabel = 'Select file',
     className = css.optionContent,
     maxSizeInMB,
+    isDisabled = false,
 }: PropsVoiceRecordingInput) {
     const voiceRecordingFileInput = React.useRef<HTMLInputElement>(null)
 
@@ -49,6 +51,7 @@ export default function VoiceRecordingInput({
                     accept=".mp3"
                     ref={voiceRecordingFileInput}
                     onChange={onVoiceRecordingUpload}
+                    disabled={isDisabled}
                 />
                 <Button
                     intent="secondary"
@@ -57,6 +60,7 @@ export default function VoiceRecordingInput({
                         [css.replaceFileButton]: !!voiceRecordingPath,
                     })}
                     leadingIcon="backup"
+                    isDisabled={isDisabled}
                 >
                     {voiceRecordingPath ? replaceLabel : uploadLabel}
                 </Button>

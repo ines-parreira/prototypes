@@ -560,7 +560,6 @@ describe('<VoiceIntegrationPreferences />', () => {
                 {
                     name: 'New title',
                     emoji: phoneIntegration?.meta?.emoji,
-                    preferences: phoneIntegration?.meta?.preferences,
                     phone_team_id: 1,
                 },
                 undefined

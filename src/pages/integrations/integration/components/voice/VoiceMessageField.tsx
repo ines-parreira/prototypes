@@ -26,6 +26,7 @@ type Props = {
     maxRecordingDuration?: number
     horizontal?: boolean
     radioButtonId?: string
+    isDisabled?: boolean
 }
 
 const VoiceMessageField = ({
@@ -35,6 +36,7 @@ const VoiceMessageField = ({
     maxRecordingDuration,
     horizontal = false,
     radioButtonId = '',
+    isDisabled = false,
 }: Props): JSX.Element => {
     const {validateVoiceRecordingUpload} = useVoiceMessageValidation()
     const [voiceRecordingPath, setVoiceRecordingPath] = useState<
@@ -98,17 +100,20 @@ const VoiceMessageField = ({
                         selectedVoiceMessageType={value.voice_message_type}
                         onChange={handleVoiceMessageTypeChange}
                         id={radioButtonId}
+                        isDisabled={isDisabled}
                     />
                     <CustomRecordingRadioButton
                         selectedVoiceMessageType={value.voice_message_type}
                         onChange={handleVoiceMessageTypeChange}
                         id={radioButtonId}
+                        isDisabled={isDisabled}
                     />
                     {allowNone && (
                         <NoneRadioButton
                             selectedVoiceMessageType={value.voice_message_type}
                             onChange={handleVoiceMessageTypeChange}
                             id={radioButtonId}
+                            isDisabled={isDisabled}
                         />
                     )}
                 </div>
@@ -121,6 +126,7 @@ const VoiceMessageField = ({
                         replaceLabel={'Replace File'}
                         uploadLabel={'Upload File'}
                         maxSizeInMB={MAX_VOICE_RECORDING_FILE_SIZE_MB}
+                        isDisabled={isDisabled}
                     />
                 )}
                 {value.voice_message_type === VoiceMessageType.TextToSpeech && (
@@ -128,6 +134,7 @@ const VoiceMessageField = ({
                         onChange={onChange}
                         selectedValue={value}
                         className={css.optionContentHorizontal}
+                        isDisabled={isDisabled}
                     />
                 )}
             </>
@@ -159,6 +166,7 @@ const VoiceMessageField = ({
                     replaceLabel={'Replace File'}
                     uploadLabel={'Upload File'}
                     maxSizeInMB={MAX_VOICE_RECORDING_FILE_SIZE_MB}
+                    isDisabled={isDisabled}
                 />
             )}
             {allowNone && (
@@ -178,6 +186,7 @@ type VoiceMessageRadioButtonProps = {
     label?: string
     caption?: string
     id?: string
+    isDisabled?: boolean
 }
 
 const NoneRadioButton = ({
@@ -185,6 +194,7 @@ const NoneRadioButton = ({
     onChange,
     label = 'None',
     id = '',
+    isDisabled = false,
 }: VoiceMessageRadioButtonProps) => {
     return (
         <RadioButton
@@ -194,6 +204,7 @@ const NoneRadioButton = ({
             isSelected={selectedVoiceMessageType === VoiceMessageType.None}
             onChange={onChange}
             id={`${id}${VoiceMessageType.None}`}
+            isDisabled={isDisabled}
         />
     )
 }
@@ -203,6 +214,7 @@ const TextToSpeechRadioButton = ({
     onChange,
     label = 'Text-to-speech',
     id = '',
+    isDisabled = false,
 }: VoiceMessageRadioButtonProps) => {
     return (
         <RadioButton
@@ -214,6 +226,7 @@ const TextToSpeechRadioButton = ({
             }
             onChange={onChange}
             id={`${id}${VoiceMessageType.TextToSpeech}`}
+            isDisabled={isDisabled}
         />
     )
 }
@@ -224,6 +237,7 @@ const CustomRecordingRadioButton = ({
     label = 'Custom recording',
     caption = '',
     id = '',
+    isDisabled = false,
 }: VoiceMessageRadioButtonProps) => {
     return (
         <RadioButton
@@ -236,6 +250,7 @@ const CustomRecordingRadioButton = ({
             onChange={onChange}
             caption={caption}
             id={`${id}${VoiceMessageType.VoiceRecording}`}
+            isDisabled={isDisabled}
         />
     )
 }
@@ -244,12 +259,14 @@ type PropsTextToSpeechRecordingInput = {
     selectedValue: VoiceMessageTextToSpeech
     onChange: (value: VoiceMessage) => void
     className?: string
+    isDisabled?: boolean
 }
 
 const TextToSpeechRecordingInput = ({
     selectedValue,
     onChange,
     className = css.optionContent,
+    isDisabled = false,
 }: PropsTextToSpeechRecordingInput) => {
     const textToSpeechLines =
         selectedValue.voice_message_type === VoiceMessageType.TextToSpeech &&
@@ -277,6 +294,7 @@ const TextToSpeechRecordingInput = ({
                         ? 'Text-to-speech message is required'
                         : ''
                 }
+                isDisabled={isDisabled}
             />
         </div>
     )
