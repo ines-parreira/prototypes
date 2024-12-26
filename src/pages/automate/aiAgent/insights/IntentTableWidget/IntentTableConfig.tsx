@@ -52,7 +52,7 @@ export const IntentsColumnsConfig: Partial<
     [IntentTableColumn.IntentName]: {
         format: 'decimal',
         hint: {
-            title: 'The primary topic or issue identified by the AI Agent in a ticket',
+            title: 'The primary topic or issue identified by AI Agent in a ticket',
         },
         perAgent: false,
     },
