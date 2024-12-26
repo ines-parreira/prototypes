@@ -7,7 +7,11 @@ type IntentWidget = {
     title: string
     description: string
     tableTitle: string
-    tableHint?: string
+    tableHint?: {
+        title: string
+        link: string
+        linkText: string
+    }
 }
 
 export const IntentTableWidget = ({

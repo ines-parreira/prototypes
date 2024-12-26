@@ -76,7 +76,11 @@ export const OptimizeContainer = () => {
                     title="Intents"
                     description="Explore intents detected from AI Agent tickets to assess performance, review knowledge recommendations, and analyze topics within each intent. "
                     tableTitle="All intents"
-                    tableHint="List of all intents detected in tickets that involved AI Agent."
+                    tableHint={{
+                        title: 'List of all intents detected in tickets that involved AI Agent.',
+                        link: 'https://docs.gorgias.com/en-US/customer-intents-81924',
+                        linkText: 'Learn about intents',
+                    }}
                 />
             </div>
             <DrillDownModal />

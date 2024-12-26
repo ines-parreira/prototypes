@@ -15,7 +15,11 @@ describe('IntentTableWidget Component', () => {
         title: 'Widget Title',
         description: 'This is the widget description.',
         tableTitle: 'Table Title',
-        tableHint: 'Table Hint',
+        tableHint: {
+            title: 'Table Hint',
+            link: 'https://example.com',
+            linkText: 'Learn more',
+        },
     }
 
     test('renders title and description correctly', () => {

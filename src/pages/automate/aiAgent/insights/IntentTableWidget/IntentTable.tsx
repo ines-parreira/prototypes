@@ -216,7 +216,11 @@ export const IntentTableWithDefaultState = ({
     tableHint,
 }: {
     tableTitle: string
-    tableHint?: string
+    tableHint?: {
+        title: string
+        link: string
+        linkText: string
+    }
 }) => {
     const paginatedIntents = useAppSelector(getPaginatedIntents)
     const isSortingLoading = useAppSelector(isSortingMetricLoading)
@@ -228,7 +232,11 @@ export const IntentTableWithDefaultState = ({
         <div>
             <ChartCard
                 title={tableTitle}
-                hint={{title: tableHint}}
+                hint={{
+                    title: tableHint?.title,
+                    link: tableHint?.link,
+                    linkText: tableHint?.linkText,
+                }}
                 noPadding
                 className={
                     shouldRemoveButtonBorder ? intentTableCss.noBorder : ''
