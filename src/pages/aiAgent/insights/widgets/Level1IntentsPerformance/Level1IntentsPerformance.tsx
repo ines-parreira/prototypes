@@ -79,7 +79,7 @@ export const Level1IntentsPerformance = () => {
                 {
                     title: 'Automated interactions',
                     hint: {
-                        title: 'Total of fully automated AI Agent interactions solved without any agent intervention?',
+                        title: 'Total of fully automated AI Agent interactions solved without any agent intervention.',
                         link: 'https://docs.gorgias.com/en-US/1024587-4ee311de71bc4401985c37a2907b7911',
                     },
                     trend: aiAgentMetrics.aiAgentAutomatedInteractionTrend,
