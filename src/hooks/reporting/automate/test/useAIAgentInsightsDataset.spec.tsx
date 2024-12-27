@@ -558,7 +558,7 @@ describe('convertResultToTableArrayFormat', () => {
             intentA: {
                 [IntentTableColumn.AutomationOpportunities]: 5,
                 [IntentTableColumn.Tickets]: 10,
-                [IntentTableColumn.AutomationRate]: 15,
+                [IntentTableColumn.SuccessRate]: 15,
             },
         } as unknown as Record<string, IntentMetrics>
 
@@ -568,7 +568,7 @@ describe('convertResultToTableArrayFormat', () => {
             {
                 [IntentTableColumn.AutomationOpportunities]: 5,
                 [IntentTableColumn.Tickets]: 10,
-                [IntentTableColumn.AutomationRate]: 15,
+                [IntentTableColumn.SuccessRate]: 15,
                 [IntentTableColumn.IntentName]: 'intentA',
             },
         ])

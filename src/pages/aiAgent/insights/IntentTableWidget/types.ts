@@ -2,7 +2,7 @@ export enum IntentTableColumn {
     IntentName = 'name',
     AutomationOpportunities = 'automationOpportunity',
     Tickets = 'tickets',
-    AutomationRate = 'automationRate',
+    SuccessRate = 'automationRate',
     AvgCustomerSatisfaction = 'avgCustomerSatisfaction',
     // Resources = 'resources',
 }
@@ -12,7 +12,7 @@ export type Intent = {
     [IntentTableColumn.IntentName]: string
     [IntentTableColumn.AutomationOpportunities]: number
     [IntentTableColumn.Tickets]: number
-    [IntentTableColumn.AutomationRate]: number
+    [IntentTableColumn.SuccessRate]: number
     [IntentTableColumn.AvgCustomerSatisfaction]: number
     // [IntentTableColumn.Resources]: number
 }
@@ -29,7 +29,7 @@ export type IntentMetrics = {
     [IntentTableColumn.IntentName]: string
     [IntentTableColumn.AutomationOpportunities]: number | null
     [IntentTableColumn.Tickets]: number | null
-    [IntentTableColumn.AutomationRate]: number | null
+    [IntentTableColumn.SuccessRate]: number | null
     [IntentTableColumn.AvgCustomerSatisfaction]: number | null
     // [IntentTableColumn.Resources]: number | null
 }

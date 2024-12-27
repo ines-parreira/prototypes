@@ -24,7 +24,7 @@ export const TableColumnsOrder: IntentTableColumn[] = [
     IntentTableColumn.IntentName,
     IntentTableColumn.AutomationOpportunities,
     IntentTableColumn.Tickets,
-    IntentTableColumn.AutomationRate,
+    IntentTableColumn.SuccessRate,
     IntentTableColumn.AvgCustomerSatisfaction,
     // IntentTableColumn.Resources,
 ]
@@ -33,7 +33,7 @@ export const TableLabels: Record<IntentTableColumn, string> = {
     [IntentTableColumn.IntentName]: 'Intent',
     [IntentTableColumn.AutomationOpportunities]: 'Automation opportunity',
     [IntentTableColumn.Tickets]: 'Tickets',
-    [IntentTableColumn.AutomationRate]: 'Automation rate',
+    [IntentTableColumn.SuccessRate]: 'Success Rate',
     [IntentTableColumn.AvgCustomerSatisfaction]: 'AVG CSAT',
     // [IntentTableColumn.Resources]: 'Resources',
 }
@@ -70,7 +70,7 @@ export const IntentsColumnsConfig: Partial<
         perAgent: true,
         notAvailableText: '-',
     },
-    [IntentTableColumn.AutomationRate]: {
+    [IntentTableColumn.SuccessRate]: {
         format: 'decimal-to-percent',
         hint: null,
         perAgent: true,
@@ -116,7 +116,7 @@ export const IntentRowConfig: Partial<
     Record<IntentTableColumn, {hint?: TooltipData | null}>
 > = {
     // TODO we are hiding the hint for now, but we will need to add it back when the industry average feature is ready
-    [IntentTableColumn.AutomationRate]: {},
+    [IntentTableColumn.SuccessRate]: {},
 }
 
 export function useIntentSoringQuery(

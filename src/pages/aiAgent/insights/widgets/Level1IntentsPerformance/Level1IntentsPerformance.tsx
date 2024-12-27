@@ -7,8 +7,6 @@ import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
 import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGetCustomTicketsFieldsDefinitionData} from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import {AUTOMATION_RATE_FIXED_STATS} from 'pages/automate/automate-metrics/constants'
-import {toPercentage} from 'pages/automate/automate-metrics/utils'
 import PerformanceTip from 'pages/stats/PerformanceTip'
 import {getPageStatsFilters} from 'state/stats/selectors'
 
@@ -121,19 +119,7 @@ export const Level1IntentsPerformance = () => {
                     interpretAs: 'more-is-better',
                     metricFormat: 'decimal-to-percent',
                     tip: (
-                        <PerformanceTip
-                            topTen={toPercentage(
-                                AUTOMATION_RATE_FIXED_STATS.top10P
-                            )}
-                            avgMerchant={toPercentage(
-                                AUTOMATION_RATE_FIXED_STATS.avg
-                            )}
-                            type={getPerformanceTipType(
-                                AUTOMATION_RATE_FIXED_STATS.top10P,
-                                AUTOMATION_RATE_FIXED_STATS.avg,
-                                aiAgentMetrics.aiAgentSuccessRate.data?.value
-                            )}
-                        >
+                        <PerformanceTip showBenchmark={false}>
                             Set up all{' '}
                             <a
                                 target="blank"
