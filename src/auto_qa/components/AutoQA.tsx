@@ -30,7 +30,7 @@ export default function AutoQA() {
         <div className={css.container}>
             <header className={css.header}>
                 <div className={css.titleWrapper}>
-                    <h2 className={css.title}>Auto QA Score</h2>
+                    <h2 className={css.title}>QA Score</h2>
                     <i
                         id="auto-qa-score"
                         className={cn('material-icons-outlined', css.icon)}
@@ -38,7 +38,11 @@ export default function AutoQA() {
                         info
                     </i>
                     <Tooltip target="auto-qa-score" placement="top-end">
-                        AI generated results, edit to improve AI model.
+                        Evaluate how well the agent handled your ticket to track
+                        their performance and help them improve. While some
+                        performance metrics are automatically calculated, you
+                        can adjust both the scores and feedback to improve the
+                        AI model.
                     </Tooltip>
                     <Badge type={ColorType.Magenta}>BETA</Badge>
                 </div>
