@@ -89,7 +89,8 @@ export const FormContainer: React.FC<
                 <Card title="Payment Method">
                     <div className={css.cardContent}>
                         <StripePaymentFields />
-                        {selectedPaymentMethodType === 'card' ? (
+                        {selectedPaymentMethodType === 'card' ||
+                        selectedPaymentMethodType === null ? (
                             <VerificationChargeDisclaimer />
                         ) : null}
                         {shouldDisplayBillingInformationFields ? (
