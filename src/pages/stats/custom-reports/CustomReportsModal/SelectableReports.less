@@ -1,0 +1,42 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/new/mixins';
+@import (reference) '~css/typography';
+
+:local {
+    .category {
+        .body-medium();
+        color: #0075ff;
+        margin: @layout-spacing-s 0 @layout-spacing-xs 0;
+        padding-left: @layout-spacing-xs;
+    }
+
+    .subcategory {
+        .body-regular();
+        cursor: pointer;
+        border-radius: @layout-spacing-xxs;
+        padding: @layout-spacing-xs;
+        margin-right: @layout-spacing-xs;
+        margin-bottom: @layout-spacing-xs;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &:hover {
+            background: var(--neutral-grey-2);
+        }
+
+        .selection {
+            .caption-regular();
+            color: var(--neutral-grey-5);
+        }
+
+        .icon {
+            font-size: 20px;
+            color: var(--neutral-grey-4);
+        }
+
+        &.isSelected {
+            background: var(--neutral-grey-2);
+        }
+    }
+}

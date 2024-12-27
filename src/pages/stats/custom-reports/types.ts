@@ -4,6 +4,12 @@ export enum CustomReportChildType {
     Chart = 'chart',
 }
 
+export enum ChartType {
+    Card = 'card',
+    Graph = 'graph',
+    Table = 'table',
+}
+
 export type CustomReportRowSchema = {
     type: CustomReportChildType.Row
     children: CustomReportChartSchema[]

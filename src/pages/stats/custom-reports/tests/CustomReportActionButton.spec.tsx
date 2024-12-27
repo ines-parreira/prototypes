@@ -1,12 +1,9 @@
-import {
-    AnalyticsCustomReport,
-    AnalyticsCustomReportType,
-} from '@gorgias/api-queries'
 import {render, screen, waitFor, within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
 import {
+    CUSTOM_REPORT_ADD_CHARTS_CTA,
     CUSTOM_REPORT_ID_CTA,
     CustomReportActionButton,
 } from 'pages/stats/custom-reports/CustomReportActionButton'
@@ -18,6 +15,10 @@ import {
     ADD_OR_REMOVE_REPORT_LABEL,
     getDeleteConfirmationTitle,
 } from 'pages/stats/custom-reports/CustomReportsPageActions'
+import {
+    CustomReportChildType,
+    CustomReportSchema,
+} from 'pages/stats/custom-reports/types'
 
 const mockPush = jest.fn()
 const baseURL = '/some/path'
@@ -34,6 +35,7 @@ jest.mock('react-router-dom', () => ({
 
 const mockDuplicateReport = jest.fn()
 const mockDeleteReport = jest.fn()
+const mockSetOpenModal = jest.fn()
 
 jest.mock('hooks/reporting/custom-reports/useCustomReportActions', () => ({
     useCustomReportActions: () => ({
@@ -43,21 +45,28 @@ jest.mock('hooks/reporting/custom-reports/useCustomReportActions', () => ({
 }))
 
 describe('CustomReportActionButton', () => {
-    const customReport: AnalyticsCustomReport = {
+    const customReport: CustomReportSchema = {
         id: 1,
         name: 'Test Report',
-        type: 'CUSTOM' as AnalyticsCustomReportType,
         analytics_filter_id: 123,
-        account_id: 1,
-        created_by: 1,
-        updated_by: 1,
-        created_datetime: '2023-01-01T00:00:00Z',
-        updated_datetime: '2023-01-01T00:00:00Z',
-        children: [],
+        children: [
+            {
+                config_id: '',
+                type: CustomReportChildType.Chart,
+            },
+        ],
+        emoji: '',
     }
 
     it('should check that all actions are present in the actions dropdown', async () => {
-        render(<CustomReportActionButton customReport={customReport} />)
+        render(
+            <CustomReportActionButton
+                customReport={customReport}
+                setOpenModal={mockSetOpenModal}
+                isModalOpen={false}
+                isEditMode
+            />
+        )
 
         userEvent.click(
             screen.getByRole('button', {name: CUSTOM_REPORT_ID_CTA})
@@ -70,10 +79,20 @@ describe('CustomReportActionButton', () => {
                 screen.getByText(ADD_OR_REMOVE_REPORT_LABEL)
             ).toBeInTheDocument()
         })
+
+        userEvent.click(screen.getByText(ADD_OR_REMOVE_REPORT_LABEL))
+        expect(mockSetOpenModal).toHaveBeenCalledWith(true)
     })
 
     it('should call delete mutation on delete action', async () => {
-        render(<CustomReportActionButton customReport={customReport} />)
+        render(
+            <CustomReportActionButton
+                customReport={customReport}
+                setOpenModal={mockSetOpenModal}
+                isModalOpen={false}
+                isEditMode
+            />
+        )
 
         userEvent.click(
             screen.getByRole('button', {name: CUSTOM_REPORT_ID_CTA})
@@ -103,33 +122,55 @@ describe('CustomReportActionButton', () => {
         })
     })
 
-    it('should not call delete mutation on delete action when there is no custom report', async () => {
-        render(<CustomReportActionButton customReport={undefined} />)
-
-        userEvent.click(
-            screen.getByRole('button', {name: CUSTOM_REPORT_ID_CTA})
+    it('should show Add charts CTA if theres not customReport', async () => {
+        render(
+            <CustomReportActionButton
+                customReport={undefined}
+                setOpenModal={mockSetOpenModal}
+                isModalOpen={false}
+                isEditMode={false}
+            />
         )
+
+        expect(
+            screen.getByRole('button', {name: CUSTOM_REPORT_ADD_CHARTS_CTA})
+                .className
+        ).toEqual('wrapper fill primary medium')
 
         await waitFor(() => {
-            userEvent.click(screen.getByText(DELETE_REPORT_LABEL))
+            userEvent.click(
+                screen.getByRole('button', {name: CUSTOM_REPORT_ADD_CHARTS_CTA})
+            )
         })
 
-        const confirmationModal = screen.getByRole('dialog')
-        expect(confirmationModal).toBeInTheDocument()
-        expect(
-            within(confirmationModal).getByText(getDeleteConfirmationTitle(''))
-        ).toBeInTheDocument()
-        userEvent.click(
-            within(confirmationModal).getByText(
-                DELETE_CONFIRMATION_BUTTON_LABEL
-            )
+        expect(mockSetOpenModal).toHaveBeenCalledWith(true)
+    })
+
+    it('should have the right className', () => {
+        render(
+            <CustomReportActionButton
+                customReport={undefined}
+                setOpenModal={mockSetOpenModal}
+                isModalOpen
+                isEditMode={false}
+            />
         )
 
-        expect(mockDeleteReport).not.toHaveBeenCalled()
+        expect(
+            screen.getByRole('button', {name: CUSTOM_REPORT_ADD_CHARTS_CTA})
+                .className
+        ).toEqual('wrapper fill secondary medium')
     })
 
     it('should not call delete mutation on confirmation modal cancel', async () => {
-        render(<CustomReportActionButton customReport={customReport} />)
+        render(
+            <CustomReportActionButton
+                customReport={customReport}
+                setOpenModal={mockSetOpenModal}
+                isEditMode
+                isModalOpen={false}
+            />
+        )
 
         userEvent.click(
             screen.getByRole('button', {name: CUSTOM_REPORT_ID_CTA})

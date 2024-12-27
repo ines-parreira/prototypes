@@ -38,9 +38,9 @@ import {MetricTrendFetch, MetricTrendHook} from 'hooks/reporting/useMetricTrend'
 import {TimeSeriesFetch, TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
 import {FilterKey} from 'models/stat/types'
 import {MetricTrendFormat} from 'pages/stats/common/utils'
-
 import {TooltipData} from 'pages/stats/types'
 import {
+    CREATED_VS_CLOSED_TICKETS_LABEL,
     CUSTOMER_SATISFACTION_LABEL,
     MEDIAN_FIRST_RESPONSE_TIME_LABEL,
     MEDIAN_RESOLUTION_TIME_LABEL,
@@ -52,6 +52,7 @@ import {
     TICKETS_CLOSED_LABEL,
     TICKETS_CREATED_LABEL,
     TICKETS_REPLIED_LABEL,
+    TOTAL_WORKLOAD_BY_CHANNEL_LABEL,
 } from 'services/reporting/constants'
 
 export enum OverviewMetric {
@@ -246,12 +247,16 @@ export const OverviewChartConfig: Record<
 }
 
 export const WORKLOAD_BY_CHANNEL_HINT = {
-    title: 'Total number of tickets that had to be handled during the selected timeframe(all closed tickets plus tickets that are still open at the end of the period) broken down by channel.\n\nFor open tickets, only counts tickets that have been created during or within the 180 days preceding the start of the period.',
+    title: TOTAL_WORKLOAD_BY_CHANNEL_LABEL,
+    description:
+        'Total number of tickets that had to be handled during the selected timeframe(all closed tickets plus tickets that are still open at the end of the period) broken down by channel.\n\nFor open tickets, only counts tickets that have been created during or within the 180 days preceding the start of the period.',
     link: 'https://link.gorgias.com/wub',
 }
 
 export const TICKETS_CREATED_VS_CLOSED_HINT = {
-    title: 'Number of tickets created vs closed over time.',
+    title: CREATED_VS_CLOSED_TICKETS_LABEL,
+    description:
+        'Total number of tickets that had to be handled during the selected timeframe broken down by channel',
     link: 'https://link.gorgias.com/q3m',
 }
 

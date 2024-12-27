@@ -4,12 +4,18 @@ import {
     AnalyticsCustomReportRowSchema,
     AnalyticsCustomReportSectionSchema,
 } from '@gorgias/api-queries'
-import {AnalyticsCustomReportChildrenItem} from '@gorgias/api-types'
+import {
+    AnalyticsCustomReportChildrenItem,
+    UpdateAnalyticsCustomReportBodyChildrenItem,
+} from '@gorgias/api-types'
 import React from 'react'
 
+import {ChartConfig} from 'pages/stats/common/CustomReport/types'
+import {REPORTS_MODAL_CONFIG} from 'pages/stats/custom-reports/config'
 import {CustomReportChart} from 'pages/stats/custom-reports/CustomReportChart'
 import {CustomReportRow} from 'pages/stats/custom-reports/CustomReportRow'
 import {CustomReportSection} from 'pages/stats/custom-reports/CustomReportSection'
+import {ReportsModalConfig} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
 import {
     CustomReportSchema,
     CustomReportChartSchema,
@@ -110,8 +116,11 @@ export const customReportChildFromApi = (
 }
 
 export const customReportFromApi = (
-    report: AnalyticsCustomReport
-): CustomReportSchema => {
+    report?: AnalyticsCustomReport
+): CustomReportSchema | undefined => {
+    if (!report) {
+        return undefined
+    }
     return {
         analytics_filter_id: report.analytics_filter_id,
         id: report.id,
@@ -122,3 +131,89 @@ export const customReportFromApi = (
             .filter(notNull),
     }
 }
+
+export const getSavedChartsIds = (report: CustomReportSchema) => {
+    const savedIds: string[] = []
+
+    report?.children?.forEach((child) => {
+        if (child?.type === CustomReportChildType.Chart) {
+            savedIds.push(child.config_id)
+        } else {
+            child?.children?.forEach((chart) => {
+                if (chart && chart.type === CustomReportChildType.Chart) {
+                    savedIds.push(chart.config_id)
+                }
+            })
+        }
+    })
+
+    return savedIds
+}
+
+export const getGroupChartsIntoRows = (
+    charts: string[],
+    chartsByRow: number = 4
+): UpdateAnalyticsCustomReportBodyChildrenItem[] => {
+    const rowsLength = charts.length
+        ? Math.ceil(charts.length / chartsByRow)
+        : 1
+    return Array.from({
+        length: rowsLength,
+    }).map((_, index) => ({
+        children: charts
+            .slice(index * chartsByRow, (index + 1) * chartsByRow)
+            .map((chartId) => ({
+                config_id: chartId,
+                metadata: {},
+                type: CustomReportChildType.Chart,
+            })),
+        type: CustomReportChildType.Row,
+        metadata: {},
+    }))
+}
+
+export const getSearchConfig = (value: string) => {
+    const config: ReportsModalConfig = []
+    REPORTS_MODAL_CONFIG.forEach((category) => {
+        category.children.forEach((report) => {
+            const similarCharts: Record<string, ChartConfig> = {}
+
+            Object.entries(report.charts).forEach(([chartId, chart]) => {
+                if (
+                    String(chart.label)
+                        .toLowerCase()
+                        .includes(value.toLowerCase())
+                ) {
+                    similarCharts[chartId] = chart
+                }
+            })
+
+            if (Object.keys(similarCharts).length) {
+                config.push({
+                    category: category.category,
+                    children: [
+                        {
+                            ...report,
+                            charts: similarCharts,
+                        },
+                    ],
+                })
+            }
+        })
+    })
+    return config
+}
+
+export const getNumberOfSelections = (
+    charts: Record<string, ChartConfig>,
+    checkedCharts: string[]
+): number =>
+    Object.keys(charts).reduce((acc, chartId) => {
+        let total = acc
+        checkedCharts.forEach((currentChartId) => {
+            if (currentChartId === chartId) {
+                total += 1
+            }
+        })
+        return total
+    }, 0)

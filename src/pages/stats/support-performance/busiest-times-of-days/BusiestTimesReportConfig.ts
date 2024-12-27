@@ -1,4 +1,5 @@
 import {ReportConfig} from 'pages/stats/common/CustomReport/types'
+import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
 import {BusiestTimesOfDaysTableChart} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTableChart'
 
 export const BUSIEST_TIME_OF_DAY_PAGE_TITLE = 'Busiest times'
@@ -15,6 +16,9 @@ export const BusiestTimesReportConfig: ReportConfig<BusiestTimesChart> = {
             chartComponent: BusiestTimesOfDaysTableChart,
             label: 'Busiest times',
             csvProducer: null,
+            description:
+                'Selected metric broken down per hour per day of the week',
+            icon: CHARTS_MODAL_ICONS.table,
         },
     },
 }

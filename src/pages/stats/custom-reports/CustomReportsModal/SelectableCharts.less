@@ -1,0 +1,26 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/new/mixins';
+@import (reference) '~css/typography';
+
+:local {
+    .wrapper {
+        &:hover {
+            background: var(--neutral-grey-2);
+            border-radius: @layout-spacing-xxs;
+        }
+        > label {
+            padding: @layout-spacing-xs;
+        }
+        .icon {
+            margin-right: @layout-spacing-xs;
+            font-size: 20px;
+        }
+        .title {
+            .body-regular();
+        }
+        .description {
+            .caption-regular();
+            color: var(--neutral-grey-4);
+        }
+    }
+}

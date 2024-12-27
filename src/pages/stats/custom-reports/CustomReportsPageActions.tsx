@@ -1,4 +1,3 @@
-import {AnalyticsCustomReport} from '@gorgias/api-queries'
 import cn from 'classnames'
 import debounce from 'lodash/debounce'
 import React, {useState} from 'react'
@@ -10,6 +9,7 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import {ConfirmationModal} from 'pages/settings/helpCenter/components/ConfirmationModal'
 import css from 'pages/stats/custom-reports/CustomReportsPageActions.less'
+import {CustomReportSchema} from 'pages/stats/custom-reports/types'
 
 export const DOWNLOAD_REPORT_LABEL = 'Download Data'
 export const DELETE_REPORT_LABEL = 'Delete Report'
@@ -33,7 +33,8 @@ interface Props {
     showDropdown: boolean
     toggleRef: React.RefObject<HTMLElement>
     handleToggleDropdown: () => void
-    customReport: AnalyticsCustomReport | undefined
+    customReport?: CustomReportSchema
+    setOpenModal: (isOpen: boolean) => void
 }
 
 export const CustomReportsPageActions = ({
@@ -41,6 +42,7 @@ export const CustomReportsPageActions = ({
     toggleRef,
     handleToggleDropdown,
     customReport,
+    setOpenModal,
 }: Props) => {
     const history = useHistory()
     const location = useLocation()
@@ -50,7 +52,7 @@ export const CustomReportsPageActions = ({
 
     const basePath = location.pathname.split('/').slice(0, 3).join('/')
 
-    //added this, because of the notification didn't show up
+    // added this, because of the notification didn't show up
     const debouncedHistoryPush = debounce(() => {
         history.push(`${basePath}/live-overview`)
     }, 500)
@@ -69,7 +71,7 @@ export const CustomReportsPageActions = ({
     const actions = [
         {
             label: ADD_OR_REMOVE_REPORT_LABEL,
-            callback: () => {},
+            callback: () => setOpenModal(true),
             icon: 'edit',
         },
         {

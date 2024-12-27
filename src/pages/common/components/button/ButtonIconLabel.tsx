@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, {ReactNode, useContext} from 'react'
+import React, {ForwardedRef, forwardRef, ReactNode, useContext} from 'react'
 
 import {BaseButtonContext} from 'pages/common/components/button/BaseButton'
 import css from 'pages/common/components/button/ButtonIconLabel.less'
@@ -14,15 +14,12 @@ type Props = {
     position?: ButtonIconPosition
 }
 
-export default function ButtonIconLabel({
-    children,
-    className,
-    icon,
-    iconClassName,
-    position = 'left',
-}: Props) {
+function ButtonIconLabel(
+    {children, className, icon, iconClassName, position = 'left'}: Props,
+    ref: ForwardedRef<HTMLButtonElement>
+) {
     return (
-        <span className={classnames(css.wrapper, className)}>
+        <span className={classnames(css.wrapper, className)} ref={ref}>
             {position === 'left' && (
                 <Icon
                     className={classnames(css.icon, css.isLeft, iconClassName)}
@@ -41,6 +38,8 @@ export default function ButtonIconLabel({
         </span>
     )
 }
+
+export default forwardRef<HTMLButtonElement, Props>(ButtonIconLabel)
 
 type IconProps = {
     className?: string

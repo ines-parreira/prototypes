@@ -1,0 +1,64 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/new/mixins';
+@import (reference) '~css/typography';
+
+:local {
+    .body {
+        display: flex;
+        padding: 0 @layout-spacing-s;
+        height: 450px;
+
+        .left {
+            width: 45%;
+            overflow-y: auto;
+            border-right: 1px solid var(--neutral-grey-3);
+            padding-right: @layout-spacing-s;
+
+            .separator {
+                width: 95%;
+                height: 1px;
+                margin: 0 @layout-spacing-xs;
+                background: var(--neutral-grey-3);
+            }
+
+            .title {
+                .body-semibold();
+                margin: @layout-spacing-s 0;
+            }
+        }
+
+        .right {
+            width: 55%;
+            overflow-y: auto;
+            padding: 14px;
+
+            .link {
+                color: #0075ff;
+            }
+            .noResult {
+                justify-items: center;
+                top: 45%;
+                position: relative;
+                .caption-regular();
+                color: var(--neutral-grey-5);
+            }
+
+            .SVGWrapper {
+                padding-top: 27px;
+                margin-left: 32px;
+
+                .footer {
+                    display: flex;
+                    flex-direction: column;
+                    text-align: center;
+                    margin-top: @layout-spacing-s;
+                    .caption-regular();
+                    .description {
+                        color: var(--neutral-grey-5);
+                        margin-right: @layout-spacing-xxs;
+                    }
+                }
+            }
+        }
+    }
+}

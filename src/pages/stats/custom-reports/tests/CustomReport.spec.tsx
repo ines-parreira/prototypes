@@ -40,7 +40,7 @@ describe('CustomReport', () => {
     }
     const customReport: CustomReportSchema = {
         id: 2,
-        analytics_filter_id: null,
+        analytics_filter_id: 1,
         name: 'some report',
         emoji: null,
         children: [row, section],

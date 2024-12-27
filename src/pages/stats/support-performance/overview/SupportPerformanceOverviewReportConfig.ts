@@ -3,7 +3,7 @@ import {
     fetchWorkloadPerChannelDistributionForPreviousPeriod,
 } from 'hooks/reporting/distributions'
 import {ReportConfig} from 'pages/stats/common/CustomReport/types'
-
+import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
 import {CustomerSatisfactionTrendCard} from 'pages/stats/support-performance/overview/charts/CustomerSatisfactionTrendCard'
 import {MedianResolutionTimeTrendCard} from 'pages/stats/support-performance/overview/charts/MedianResolutionTimeTrendCard'
 import {MedianFirstResponseTimeTrendCard} from 'pages/stats/support-performance/overview/charts/MedianResponseTimeTrendCard'
@@ -27,7 +27,8 @@ import {
     WORKLOAD_BY_CHANNEL_HINT,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 
-const SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE = 'Support performance overview'
+export const SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE =
+    'Support performance overview'
 
 export enum OverviewChart {
     CustomerSatisfactionTrendCard = 'customer_satisfaction_trend_card',
@@ -55,58 +56,83 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
             [OverviewChart.CustomerSatisfactionTrendCard]: {
                 chartComponent: CustomerSatisfactionTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.CustomerSatisfaction]
-                    .hint.title,
+                    .title,
                 csvProducer:
                     OverviewMetricConfig[OverviewMetric.CustomerSatisfaction]
                         .fetchTrend,
+                description:
+                    OverviewMetricConfig[OverviewMetric.CustomerSatisfaction]
+                        .hint.title,
+                icon: CHARTS_MODAL_ICONS.card,
             },
             [OverviewChart.MedianFirstResponseTimeTrendCard]: {
                 chartComponent: MedianFirstResponseTimeTrendCard,
                 label: OverviewMetricConfig[
                     OverviewMetric.MedianFirstResponseTime
-                ].hint.title,
+                ].title,
                 csvProducer:
                     OverviewMetricConfig[OverviewMetric.MedianFirstResponseTime]
                         .fetchTrend,
+                description:
+                    OverviewMetricConfig[OverviewMetric.MedianFirstResponseTime]
+                        .hint.title,
+                icon: CHARTS_MODAL_ICONS.card,
             },
             [OverviewChart.MedianResolutionTimeTrendCard]: {
                 chartComponent: MedianResolutionTimeTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.MedianResolutionTime]
-                    .hint.title,
+                    .title,
                 csvProducer:
                     OverviewMetricConfig[OverviewMetric.MedianResolutionTime]
                         .fetchTrend,
+                description:
+                    OverviewMetricConfig[OverviewMetric.MedianResolutionTime]
+                        .hint.title,
+                icon: CHARTS_MODAL_ICONS.card,
             },
             [OverviewChart.MessagesPerTicketTrendCard]: {
                 chartComponent: MessagesPerTicketTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.MessagesPerTicket]
-                    .hint.title,
+                    .title,
                 csvProducer:
                     OverviewMetricConfig[OverviewMetric.MessagesPerTicket]
                         .fetchTrend,
+                description:
+                    OverviewMetricConfig[OverviewMetric.MessagesPerTicket].hint
+                        .title,
+                icon: CHARTS_MODAL_ICONS.card,
             },
             [OverviewChart.TicketsCreatedTrendCard]: {
                 chartComponent: TicketsCreatedTrendCard,
-                label: OverviewMetricConfig[OverviewMetric.TicketsCreated].hint
+                label: OverviewMetricConfig[OverviewMetric.TicketsCreated]
                     .title,
                 csvProducer:
                     OverviewMetricConfig[OverviewMetric.TicketsCreated]
                         .fetchTrend,
+                description:
+                    OverviewMetricConfig[OverviewMetric.TicketsCreated].hint
+                        .title,
+                icon: CHARTS_MODAL_ICONS.card,
             },
             [OverviewChart.TicketsClosedTrendCard]: {
                 chartComponent: TicketsClosedTrendCard,
-                label: OverviewMetricConfig[OverviewMetric.TicketsClosed].hint
-                    .title,
+                label: OverviewMetricConfig[OverviewMetric.TicketsClosed].title,
                 csvProducer:
                     OverviewMetricConfig[OverviewMetric.TicketsClosed]
                         .fetchTrend,
+                description:
+                    OverviewMetricConfig[OverviewMetric.TicketsClosed].hint
+                        .title,
+                icon: CHARTS_MODAL_ICONS.card,
             },
             [OverviewChart.OpenTicketsTrendCard]: {
                 chartComponent: OpenTicketsTrendCard,
-                label: OverviewMetricConfig[OverviewMetric.OpenTickets].hint
-                    .title,
+                label: OverviewMetricConfig[OverviewMetric.OpenTickets].title,
                 csvProducer:
                     OverviewMetricConfig[OverviewMetric.OpenTickets].fetchTrend,
+                description:
+                    OverviewMetricConfig[OverviewMetric.OpenTickets].hint.title,
+                icon: CHARTS_MODAL_ICONS.card,
             },
             [OverviewChart.WorkloadPerChannelChart]: {
                 chartComponent: WorkloadPerChannelChart,
@@ -115,59 +141,83 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                     fetchWorkloadPerChannelDistribution,
                     fetchWorkloadPerChannelDistributionForPreviousPeriod,
                 ],
+                description: WORKLOAD_BY_CHANNEL_HINT.description,
+                icon: CHARTS_MODAL_ICONS.graph,
             },
             [OverviewChart.TicketsCreatedVsClosedChart]: {
                 chartComponent: TicketsCreatedVsClosedChart,
                 label: TICKETS_CREATED_VS_CLOSED_HINT.title,
                 csvProducer: null,
+                description: TICKETS_CREATED_VS_CLOSED_HINT.description,
+                icon: CHARTS_MODAL_ICONS.graph,
             },
             [OverviewChart.TicketsRepliedTrendCard]: {
                 chartComponent: TicketsRepliedTrendCard,
-                label: OverviewMetricConfig[OverviewMetric.TicketsReplied].hint
+                label: OverviewMetricConfig[OverviewMetric.TicketsReplied]
                     .title,
                 csvProducer:
                     OverviewMetricConfig[OverviewMetric.TicketsReplied]
                         .fetchTrend,
+                description:
+                    OverviewMetricConfig[OverviewMetric.TicketsReplied].hint
+                        .title,
+                icon: CHARTS_MODAL_ICONS.graph,
             },
             [OverviewChart.MessagesSentTrendCard]: {
                 chartComponent: MessagesSentTrendCard,
-                label: OverviewMetricConfig[OverviewMetric.MessagesSent].hint
-                    .title,
+                label: OverviewMetricConfig[OverviewMetric.MessagesSent].title,
                 csvProducer:
                     OverviewMetricConfig[OverviewMetric.MessagesSent]
                         .fetchTrend,
+                description:
+                    OverviewMetricConfig[OverviewMetric.MessagesSent].hint
+                        .title,
+                icon: CHARTS_MODAL_ICONS.graph,
             },
             [OverviewChart.TicketHandleTimeTrendCard]: {
                 chartComponent: TicketHandleTimeTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.TicketHandleTime]
-                    .hint.title,
+                    .title,
                 csvProducer:
                     OverviewMetricConfig[OverviewMetric.TicketHandleTime]
                         .fetchTrend,
+                description:
+                    OverviewMetricConfig[OverviewMetric.TicketHandleTime].hint
+                        .title,
+                icon: CHARTS_MODAL_ICONS.card,
             },
             [OverviewChart.OneTouchTicketsTrendCard]: {
                 chartComponent: OneTouchTicketsTrendCard,
-                label: OverviewMetricConfig[OverviewMetric.OneTouchTickets].hint
+                label: OverviewMetricConfig[OverviewMetric.OneTouchTickets]
                     .title,
                 csvProducer:
                     OverviewMetricConfig[OverviewMetric.OneTouchTickets]
                         .fetchTrend,
+                description:
+                    OverviewMetricConfig[OverviewMetric.OneTouchTickets].hint
+                        .title,
+                icon: CHARTS_MODAL_ICONS.card,
             },
             [OverviewChart.TicketsRepliedGraph]: {
                 chartComponent: TicketsRepliedGraph,
-                label: OverviewChartConfig[OverviewMetric.TicketsReplied].hint
-                    .title,
+                label: OverviewChartConfig[OverviewMetric.TicketsReplied].title,
                 csvProducer:
                     OverviewChartConfig[OverviewMetric.TicketsReplied]
                         .fetchTimeSeries,
+                description:
+                    OverviewChartConfig[OverviewMetric.TicketsReplied].hint
+                        .title,
+                icon: CHARTS_MODAL_ICONS.graph,
             },
             [OverviewChart.MessagesSentGraph]: {
                 chartComponent: MessagesSentGraph,
-                label: OverviewChartConfig[OverviewMetric.MessagesSent].hint
-                    .title,
+                label: OverviewChartConfig[OverviewMetric.MessagesSent].title,
                 csvProducer:
                     OverviewChartConfig[OverviewMetric.MessagesSent]
                         .fetchTimeSeries,
+                description:
+                    OverviewChartConfig[OverviewMetric.MessagesSent].hint.title,
+                icon: CHARTS_MODAL_ICONS.card,
             },
         },
     }

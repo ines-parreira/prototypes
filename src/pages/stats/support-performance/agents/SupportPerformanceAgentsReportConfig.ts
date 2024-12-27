@@ -1,7 +1,6 @@
 import {ReportConfig} from 'pages/stats/common/CustomReport/types'
-
+import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
 import {AGENTS_SHOUT_OUTS_TITLE} from 'pages/stats/support-performance/agents/AgentsShoutout'
-
 import AgentsShoutOuts from 'pages/stats/support-performance/agents/AgentsShoutouts'
 import {
     AGENT_PERFORMANCE_SECTION_TITLE,
@@ -21,11 +20,16 @@ export const SupportPerformanceAgentsReportConfig: ReportConfig<AgentsChart> = {
             chartComponent: AgentsTableChart,
             label: AGENT_PERFORMANCE_SECTION_TITLE,
             csvProducer: null,
+            description:
+                'Selected metrics broken by agent (e.g Closed tickets, CSAT, FRT, Ticket Handle Time...)',
+            icon: CHARTS_MODAL_ICONS.table,
         },
         [AgentsChart.TopPerformers]: {
             chartComponent: AgentsShoutOuts,
             label: AGENTS_SHOUT_OUTS_TITLE,
             csvProducer: null,
+            description: '',
+            icon: CHARTS_MODAL_ICONS.card,
         },
     },
 }
