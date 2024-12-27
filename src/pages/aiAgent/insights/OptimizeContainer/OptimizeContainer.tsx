@@ -1,4 +1,4 @@
-import moment from 'moment'
+import moment, {Moment} from 'moment'
 import React, {useState} from 'react'
 import {useDispatch} from 'react-redux'
 import {useParams} from 'react-router-dom'
@@ -8,6 +8,22 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {IntentTableWidget} from 'pages/aiAgent/insights/IntentTableWidget/IntentTableWidget'
 import {PeriodFilter} from 'pages/stats/common/filters/PeriodFilter'
+import {
+    dateInPastFromStartOfToday,
+    endOfLastMonth,
+    endOfToday,
+    last365DaysStartingFromToday,
+    lastWeekDateRange,
+    StartDayOfWeek,
+    startOfLastMonth,
+    startOfMonth,
+} from 'pages/stats/common/utils'
+import {
+    PAST_30_DAYS,
+    PAST_60_DAYS,
+    PAST_7_DAYS,
+    PAST_90_DAYS,
+} from 'pages/stats/constants'
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {setStatsFilters} from 'state/stats/statsSlice'
@@ -16,6 +32,19 @@ import {Level1IntentsPerformance} from '../widgets/Level1IntentsPerformance/Leve
 import css from './OptimizeContainer.less'
 
 const HOURS_TO_REMOVE = 72
+
+export const subtractsPeriodWithoutData = (momentDate: Moment) => {
+    return momentDate.subtract(HOURS_TO_REMOVE, 'hours')
+}
+
+export const subtractsPeriodWithoutDataIfNeeded = (momentDate: Moment) => {
+    if (momentDate.isAfter(moment().subtract(HOURS_TO_REMOVE, 'hours'))) {
+        return momentDate.subtract(HOURS_TO_REMOVE, 'hours')
+    }
+
+    return momentDate
+}
+
 export const OptimizeContainer = () => {
     const {shopName} = useParams<{
         shopName: string
@@ -32,14 +61,12 @@ export const OptimizeContainer = () => {
             setStatsFilters({
                 period: {
                     start_datetime: moment(
-                        moment()
-                            .endOf('day')
-                            .subtract(HOURS_TO_REMOVE, 'hours')
-                            .subtract(1, 'week')
-                            .toDate()
+                        subtractsPeriodWithoutData(
+                            dateInPastFromStartOfToday(7)
+                        )
                     ).format(),
                     end_datetime: moment(
-                        moment().subtract(HOURS_TO_REMOVE, 'hours').toDate()
+                        subtractsPeriodWithoutData(endOfToday())
                     ).format(),
                 },
             })
@@ -47,6 +74,51 @@ export const OptimizeContainer = () => {
 
         setIsPeriodFilterSet(true)
     })
+
+    const getCalendarRangeFilters = (): {[label: string]: [Moment, Moment]} => {
+        return {
+            'Month to date': [
+                startOfMonth(),
+                subtractsPeriodWithoutData(endOfToday()),
+            ],
+            'Last week (start on Sun)': [
+                lastWeekDateRange(StartDayOfWeek.Sunday).start,
+                subtractsPeriodWithoutDataIfNeeded(
+                    lastWeekDateRange(StartDayOfWeek.Sunday).end
+                ),
+            ],
+            'Last week (start on Mon)': [
+                lastWeekDateRange(StartDayOfWeek.Monday).start,
+                subtractsPeriodWithoutDataIfNeeded(
+                    lastWeekDateRange(StartDayOfWeek.Monday).end
+                ),
+            ],
+            'Last month': [
+                startOfLastMonth(),
+                subtractsPeriodWithoutDataIfNeeded(endOfLastMonth()),
+            ],
+            [PAST_7_DAYS]: [
+                subtractsPeriodWithoutData(dateInPastFromStartOfToday(7)),
+                subtractsPeriodWithoutData(endOfToday()),
+            ],
+            [PAST_30_DAYS]: [
+                subtractsPeriodWithoutData(dateInPastFromStartOfToday(30)),
+                subtractsPeriodWithoutData(endOfToday()),
+            ],
+            [PAST_60_DAYS]: [
+                subtractsPeriodWithoutData(dateInPastFromStartOfToday(60)),
+                subtractsPeriodWithoutData(endOfToday()),
+            ],
+            [PAST_90_DAYS]: [
+                subtractsPeriodWithoutData(dateInPastFromStartOfToday(90)),
+                subtractsPeriodWithoutData(endOfToday()),
+            ],
+            'Past year': [
+                subtractsPeriodWithoutData(last365DaysStartingFromToday()),
+                subtractsPeriodWithoutData(endOfToday()),
+            ],
+        }
+    }
 
     return (
         <AiAgentLayout shopName={shopName} className={css.container}>
@@ -65,6 +137,9 @@ export const OptimizeContainer = () => {
                             ),
                         }}
                         tooltipMessageForPreviousPeriod="There is no data available on this date yet."
+                        initialV2Props={{
+                            dateRanges: getCalendarRangeFilters(),
+                        }}
                     />
                 )}
 

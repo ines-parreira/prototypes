@@ -1,5 +1,6 @@
 import {Options as InitialSettings} from 'daterangepicker'
 import moment from 'moment-timezone'
+import {Moment} from 'moment/moment'
 import React, {ComponentProps, useCallback} from 'react'
 
 import {connect} from 'react-redux'
@@ -29,12 +30,16 @@ type Props = {
     initialSettings?: Omit<InitialSettings, 'maxSpan'> & {maxSpan?: number}
     value: StatsFilters[FilterKey.Period]
     tooltipMessageForPreviousPeriod?: string
+    initialV2Props?: {
+        dateRanges?: {[label: string]: [Moment, Moment]}
+    }
 } & RemovableFilter
 
 export function PeriodFilter({
     initialSettings: initialSettingsProp,
     value,
     tooltipMessageForPreviousPeriod,
+    initialV2Props,
 }: Props) {
     const dispatch = useAppDispatch()
     const compactDateBasedOnUserPreferences = useGetDateAndTimeFormat(
@@ -45,7 +50,7 @@ export function PeriodFilter({
     )
 
     const pickerV2Props = {
-        dateRanges: getNewSetOfRanges(),
+        dateRanges: initialV2Props?.dateRanges || getNewSetOfRanges(),
         pickerV2Styles: true,
         rangesOnLeft: true,
         showRangesLabel: false,
