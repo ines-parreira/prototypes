@@ -1,4 +1,5 @@
 import {createBillingPaymentMethodSetup} from '@gorgias/api-client'
+import {loadStripe, type Stripe} from '@stripe/stripe-js'
 import {screen, waitFor} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
@@ -14,6 +15,11 @@ import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQue
 import {assumeMock} from 'utils/testing'
 
 import {PaymentMethodSetupView} from '../PaymentMethodSetupView'
+
+jest.mock('@stripe/stripe-js')
+
+assumeMock(loadStripe).mockResolvedValue({} as Stripe)
+window.STRIPE_PUBLIC_KEY = 'pk_test_123'
 
 jest.mock('@stripe/react-stripe-js', () => ({
     useStripe: jest.fn(() => ({confirmSetup: jest.fn()})),

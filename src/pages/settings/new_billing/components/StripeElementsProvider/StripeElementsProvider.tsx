@@ -1,24 +1,40 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import {Elements} from '@stripe/react-stripe-js'
-import {loadStripe} from '@stripe/stripe-js'
-import React from 'react'
+import {loadStripe, Stripe} from '@stripe/stripe-js'
 
+import React, {useEffect} from 'react'
+
+import Button from 'pages/common/components/button/Button'
+import {reportCRMGrowthError} from 'pages/settings/new_billing/utils/reportCRMGrowthError'
 import {useTheme} from 'theme'
 
-const stripePromise = loadStripe(window.STRIPE_PUBLIC_KEY!, {locale: 'en'})
-
-type IStripeElementsProviderProps = {
+type StripeElementsProviderProps = {
     clientSecret?: string
 }
 
-export const StripeElementsProvider: React.FC<IStripeElementsProviderProps> = ({
+export const StripeElementsProvider: React.FC<StripeElementsProviderProps> = ({
     children,
     clientSecret,
 }) => {
     const {tokens} = useTheme()
+    const [stripe, setStripe] = React.useState<Stripe | null>()
+    const [error, setError] = React.useState<Error | null>(null)
+
+    const load = () => getStripe().then(setStripe).catch(setError)
+
+    useEffect(() => {
+        void load()
+    }, [])
+
+    const reload = () => {
+        setStripe(undefined)
+        setError(null)
+        void load()
+    }
 
     return (
         <Elements
-            stripe={stripePromise}
+            stripe={stripe ?? null}
             options={{
                 clientSecret,
                 appearance: {
@@ -58,7 +74,53 @@ export const StripeElementsProvider: React.FC<IStripeElementsProviderProps> = ({
                 },
             }}
         >
-            {children}
+            {error ? (
+                <>
+                    <p>Failed to load form</p>
+                    <Button onClick={reload} size="small">
+                        Retry
+                    </Button>
+                </>
+            ) : stripe === undefined ? (
+                <LoadingSpinner />
+            ) : (
+                children
+            )}
         </Elements>
     )
 }
+
+/**
+ * Attempts to load Stripe.
+ * Retries up to 3 times to mitigate intermittent loading failures.
+ * (commonly seen as "Failed to load Stripe.js" error).
+ **/
+const getStripe = (() => {
+    let totalAttempts = 0
+
+    return async () => {
+        if (!window.STRIPE_PUBLIC_KEY) {
+            throw new Error('Stripe public key is not set')
+        }
+
+        let error: unknown = null
+
+        for (let attempt = 0; attempt < 3; attempt++) {
+            totalAttempts++
+
+            try {
+                const stripe = await loadStripe(window.STRIPE_PUBLIC_KEY)
+                return stripe
+            } catch (err) {
+                error = err
+            }
+        }
+
+        reportCRMGrowthError(
+            error,
+            `Failed to load stripe (trial: ${totalAttempts}`
+        )
+
+        throw new Error('Failed to load Stripe.js')
+    }
+})()

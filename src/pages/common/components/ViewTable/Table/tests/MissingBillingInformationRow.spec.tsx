@@ -1,5 +1,9 @@
 import {AddressElement, Elements, useElements} from '@stripe/react-stripe-js'
-import type {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
+import {
+    loadStripe,
+    type StripeAddressElementChangeEvent,
+    type Stripe,
+} from '@stripe/stripe-js'
 import {act, fireEvent, screen, waitFor} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS, Map} from 'immutable'
@@ -15,6 +19,10 @@ import {PaymentMethodType} from '../../../../../../state/billing/types'
 import MissingBillingInformationRow from '../MissingBillingInformationRow'
 
 jest.mock('@stripe/stripe-js')
+
+assumeMock(loadStripe).mockResolvedValue({} as Stripe)
+window.STRIPE_PUBLIC_KEY = 'pk_test_123'
+
 jest.mock('@stripe/react-stripe-js')
 
 assumeMock(Elements).mockImplementation(({children}: any) => (

@@ -1,5 +1,9 @@
 import {AddressElement, Elements, useElements} from '@stripe/react-stripe-js'
-import {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
+import {
+    loadStripe,
+    StripeAddressElementChangeEvent,
+    type Stripe,
+} from '@stripe/stripe-js'
 import {fireEvent, screen, waitFor, act} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import {mockFlags} from 'jest-launchdarkly-mock'
@@ -16,6 +20,10 @@ import {BillingAddressSetupView} from '../BillingAddressSetupView'
 jest.mock('hooks/useAppSelector')
 
 jest.mock('@stripe/stripe-js')
+
+assumeMock(loadStripe).mockResolvedValue({} as Stripe)
+window.STRIPE_PUBLIC_KEY = 'pk_test_123'
+
 jest.mock('@stripe/react-stripe-js')
 
 assumeMock(Elements).mockImplementation(({children}: any) => (

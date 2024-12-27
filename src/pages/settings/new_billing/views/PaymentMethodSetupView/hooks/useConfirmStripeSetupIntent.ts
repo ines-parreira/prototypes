@@ -6,13 +6,12 @@ import {
 } from '@stripe/stripe-js'
 import {useMutation} from '@tanstack/react-query'
 
-import {CRM_GROWTH_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {useBillingContact} from 'models/billing/queries'
+import {reportCRMGrowthError} from 'pages/settings/new_billing/utils/reportCRMGrowthError'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {MutationOverrides} from 'types/query'
-import {reportError} from 'utils/errors'
 
 export const useConfirmStripeSetupIntent = (
     overrides?: MutationOverrides<() => Promise<SetupIntentResult>>
@@ -78,7 +77,10 @@ export const useConfirmStripeSetupIntent = (
                 !stripeError.code
             ) {
                 // We only want to report errors that are not related to the user's input.
-                handleError(error, 'Failed to confirm stripe setup intent')
+                reportCRMGrowthError(
+                    error,
+                    'Failed to confirm stripe setup intent'
+                )
             }
 
             const userFacingErrorTypes: StripeErrorType[] = [
@@ -110,14 +112,5 @@ export const useConfirmStripeSetupIntent = (
             throw error
         },
         ...overrides,
-    })
-}
-
-const handleError = (error: unknown, context: string) => {
-    reportError(error, {
-        tags: {team: CRM_GROWTH_SENTRY_TEAM},
-        extra: {
-            context,
-        },
     })
 }
