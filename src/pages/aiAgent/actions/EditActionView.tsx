@@ -35,6 +35,7 @@ import {NotificationStatus} from 'state/notifications/types'
 
 import ActionFormView from './components/ActionFormView'
 import css from './CreateActionView.less'
+import use3plIntegrations from './hooks/use3plIntegrations'
 import useDeleteAction from './hooks/useDeleteAction'
 import useTouchActionGraph from './hooks/useTouchActionGraph'
 import useUpsertAction from './hooks/useUpsertAction'
@@ -74,11 +75,13 @@ const EditActionView = ({configuration}: Props) => {
         useState<HTMLButtonElement | null>(null)
     const [isSaveAndTestButtonClicked, setIsSaveAndTestButtonClicked] =
         useState(false)
+    const availableIntegrations = use3plIntegrations()
 
     const [visualBuilderGraphDirty, dispatch] = useVisualBuilderGraphReducer(
         computeNodesPositions(
             transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(
-                configuration
+                configuration,
+                false
             )
         )
     )
@@ -89,7 +92,8 @@ const EditActionView = ({configuration}: Props) => {
     const visualBuilderContextValue = useVisualBuilder(
         visualBuilderGraphDirty,
         dispatch,
-        false
+        false,
+        availableIntegrations
     )
 
     const isVisualBuilderGraphDirty = useMemo(
@@ -153,7 +157,8 @@ const EditActionView = ({configuration}: Props) => {
             transformVisualBuilderGraphIntoWfConfiguration(
                 visualBuilderGraphDirty,
                 false,
-                steps
+                steps,
+                availableIntegrations
             )
 
         await editAction([
@@ -174,6 +179,7 @@ const EditActionView = ({configuration}: Props) => {
         shopName,
         shopType,
         appDispatch,
+        availableIntegrations,
     ])
 
     const [isEditingSteps, setIsEditingSteps] = useState(false)

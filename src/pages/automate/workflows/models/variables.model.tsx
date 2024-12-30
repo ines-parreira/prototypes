@@ -5,7 +5,7 @@ import _get from 'lodash/get'
 import _keyBy from 'lodash/keyBy'
 import _set from 'lodash/set'
 
-import React from 'react'
+import React, {ReactNode} from 'react'
 
 import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
 import {App} from 'pages/automate/actionsPlatform/types'
@@ -15,6 +15,9 @@ import {
     WorkflowVariableList,
     WorkflowVariable,
     WorkflowVariableGroup,
+    SHIPMONK_APPLICATION_ID,
+    AVAILABLE_3PL_INTEGRATIONS,
+    AvailableIntegrations,
 } from './variables.types'
 import {
     isVisualBuilderGraphAppApp,
@@ -169,6 +172,113 @@ export const buildWorkflowVariableFromApp = (
             type: 'string',
         }
     })
+}
+
+const INTEGRATION_VARIABLE_MAP: Record<
+    (typeof AVAILABLE_3PL_INTEGRATIONS)[number],
+    (icon: ReactNode) => WorkflowVariable | WorkflowVariableGroup
+> = {
+    [SHIPMONK_APPLICATION_ID]: (icon: ReactNode) => ({
+        name: 'Shipmonk order',
+        nodeType: 'order_shipmonk',
+        icon,
+        variables: [
+            {
+                name: 'Order number',
+                value: 'objects.order_shipmonk.order_number',
+                nodeType: 'order_shipmonk',
+                type: 'string',
+                icon,
+            },
+            {
+                name: 'Fulfillment status',
+                value: 'objects.order_shipmonk.status',
+                nodeType: 'order_shipmonk',
+                type: 'string',
+                icon,
+                options: [
+                    {value: 'invalid', label: 'Invalid'},
+                    {value: 'cancelled', label: 'Cancelled'},
+                    {value: 'processing', label: 'Processing'},
+                    {value: 'submitted', label: 'Submitted'},
+                    {value: 'complete', label: 'Complete'},
+                    {value: 'onHold', label: 'On hold'},
+                    {value: 'pick_in_progress', label: 'Pick in progress'},
+                    {value: 'pending_batching', label: 'Pending batching'},
+                    {
+                        value: 'fulfilled_by_3rd',
+                        label: 'Aulfilled by 3rd party',
+                    },
+                    {
+                        value: 'awaiting_package_forwarding',
+                        label: 'Awaiting package forwarding',
+                    },
+                ],
+            },
+            {
+                name: 'Shipping method',
+                value: 'objects.order_shipmonk.shipping_method',
+                nodeType: 'order_shipmonk',
+                type: 'string',
+                icon,
+            },
+            {
+                name: 'Store name',
+                value: 'objects.order_shipmonk.store_name',
+                nodeType: 'order_shipmonk',
+                type: 'string',
+                icon,
+            },
+            {
+                name: 'Submitted at',
+                value: 'objects.order_shipmonk.date_submitted',
+                nodeType: 'order_shipmonk',
+                type: 'date',
+                icon,
+            },
+            {
+                name: 'Delivered at',
+                value: 'objects.order_shipmonk.order_tracking_data_output.0.delivered_at',
+                nodeType: 'order_shipmonk',
+                type: 'date',
+                icon,
+            },
+            {
+                name: 'Tracking number',
+                value: 'objects.order_shipmonk.order_tracking_data_output.0.tracking_number',
+                nodeType: 'order_shipmonk',
+                type: 'string',
+                icon,
+            },
+            {
+                name: 'Tracking link',
+                value: 'objects.order_shipmonk.order_tracking_data_output.0.tracking_link',
+                nodeType: 'order_shipmonk',
+                type: 'string',
+                icon,
+            },
+            {
+                name: 'Packages count',
+                value: 'objects.order_shipmonk.packages_count',
+                nodeType: 'order_shipmonk',
+                type: 'number',
+                icon,
+            },
+        ],
+    }),
+}
+
+export const buildWorkflowVariableFromIntegration = (
+    availableIntegrations: AvailableIntegrations,
+    apps: App[]
+): WorkflowVariableList => {
+    return (
+        availableIntegrations?.map(({application_id}) => {
+            const app = apps.find((app) => app.id === application_id)
+            const icon = <AppIcon icon={app?.icon} name={app?.name} />
+            return INTEGRATION_VARIABLE_MAP[application_id](icon)
+        }) || []
+    )
 }
 
 export const buildWorkflowVariableFromTrigger = (
@@ -1236,7 +1346,8 @@ export function getWorkflowVariableListForNode(
     g: VisualBuilderGraph,
     nodeId: string,
     steps: WorkflowConfiguration[],
-    apps: App[]
+    apps: App[],
+    availableIntegrations: AvailableIntegrations = []
 ) {
     const {nodes, edges} = g
     const ancestors: VisualBuilderNode[] = []
@@ -1258,6 +1369,10 @@ export function getWorkflowVariableListForNode(
 
     const triggerVariable = buildWorkflowVariableFromTrigger(g)
     const appVariable = buildWorkflowVariableFromApp(g, apps)
+    const integrationVariable = buildWorkflowVariableFromIntegration(
+        availableIntegrations,
+        apps
+    )
 
     if (triggerVariable) {
         if (Array.isArray(triggerVariable)) {
@@ -1273,6 +1388,10 @@ export function getWorkflowVariableListForNode(
         } else {
             workflowVariableList.push(appVariable)
         }
+    }
+
+    if (integrationVariable) {
+        workflowVariableList.push(...integrationVariable)
     }
 
     for (const ancestor of ancestors.reverse()) {
@@ -1364,6 +1483,18 @@ export function extractVariablesFromNode(
                     }, []) ?? []
             break
         }
+        case 'llm_prompt_trigger':
+            for (const condition of node.data.conditions) {
+                const key = Object.keys(condition)[0] as AllKeys<
+                    typeof condition
+                >
+                const schema = condition[key]
+
+                if (schema) {
+                    variables.push(schema[0].var)
+                }
+            }
+            break
         case 'cancel_order':
         case 'refund_order':
         case 'refund_shipping_costs':

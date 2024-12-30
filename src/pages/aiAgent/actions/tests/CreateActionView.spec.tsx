@@ -14,6 +14,7 @@ import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
+import use3plIntegrations from 'pages/aiAgent/actions/hooks/use3plIntegrations'
 import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
@@ -33,6 +34,7 @@ jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')
+jest.mock('pages/aiAgent/actions/hooks/use3plIntegrations')
 
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates
@@ -42,6 +44,7 @@ const mockUseApps = jest.mocked(useApps)
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 const mockUseAppDispatch = jest.mocked(useAppDispatch)
 const mockUseGetStoreApps = jest.mocked(useGetStoreApps)
+const mockuse3plIntegrations = jest.mocked(use3plIntegrations)
 const mockUseAddStoreApp = jest.mocked(useAddStoreApp)
 const mockUseDownloadWorkflowConfigurationStepLogs = jest.mocked(
     useDownloadWorkflowConfigurationStepLogs
@@ -87,6 +90,7 @@ describe('<CreateActionView />', () => {
         mockUseGetStoreWorkflowsConfigurations.mockReturnValue({
             data: [],
         } as unknown as ReturnType<typeof useGetStoreWorkflowsConfigurations>)
+        mockuse3plIntegrations.mockReturnValue([])
     })
 
     it('should render create action page', () => {

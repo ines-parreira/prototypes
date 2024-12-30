@@ -37,6 +37,7 @@ import {NotificationStatus} from 'state/notifications/types'
 
 import ActionFormView from './components/ActionFormView'
 import css from './CreateActionView.less'
+import use3plIntegrations from './hooks/use3plIntegrations'
 import useTouchActionGraph from './hooks/useTouchActionGraph'
 import useUpsertAction from './hooks/useUpsertAction'
 import useValidateActionGraph from './hooks/useValidateActionGraph'
@@ -109,10 +110,13 @@ const CreateActionView = () => {
         triggers: ['reusable-llm-prompt'],
     })
 
+    const availableIntegrations = use3plIntegrations()
+
     const [visualBuilderGraphDirty, dispatch] = useVisualBuilderGraphReducer(
         computeNodesPositions(
             transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(
-                configuration
+                configuration,
+                false
             )
         )
     )
@@ -123,7 +127,8 @@ const CreateActionView = () => {
     const visualBuilderContextValue = useVisualBuilder(
         visualBuilderGraphDirty,
         dispatch,
-        true
+        true,
+        availableIntegrations
     )
 
     const {getVariableListForNode} = visualBuilderContextValue
@@ -180,7 +185,8 @@ const CreateActionView = () => {
             transformVisualBuilderGraphIntoWfConfiguration(
                 visualBuilderGraphDirty,
                 false,
-                steps
+                steps,
+                availableIntegrations
             ) as StoreWorkflowsConfiguration,
         ])
     }, [
@@ -193,6 +199,7 @@ const CreateActionView = () => {
         shopName,
         shopType,
         appDispatch,
+        availableIntegrations,
     ])
 
     const [isEditingSteps, setIsEditingSteps] = useState(false)

@@ -9,7 +9,10 @@ import {
     parseWorkflowVariable,
     prerenderVariables,
 } from '../models/variables.model'
-import {WorkflowVariableList} from '../models/variables.types'
+import {
+    WorkflowVariableList,
+    SHIPMONK_APPLICATION_ID,
+} from '../models/variables.types'
 import {buildNodeCommonProperties} from '../models/visualBuilderGraph.model'
 import {
     CreateDiscountCodeNodeType,
@@ -136,6 +139,31 @@ describe('getAvailableFlowVariables', () => {
                 []
             )
         ).toEqual([])
+    })
+    test('returns available variables if available integrations are there', () => {
+        const graphWithIntegrations = {
+            ...g,
+        }
+        expect(
+            expect(
+                getWorkflowVariableListForNode(
+                    graphWithIntegrations,
+                    'multiple_choices1',
+                    [],
+                    [],
+                    [
+                        {
+                            application_id: SHIPMONK_APPLICATION_ID,
+                            integration_id: 1,
+                        },
+                    ]
+                )
+            ).toEqual([
+                expect.objectContaining({
+                    nodeType: 'order_shipmonk',
+                }),
+            ])
+        )
     })
 })
 
@@ -734,5 +762,30 @@ describe('extractVariablesFromNode()', () => {
                 },
             })
         ).toEqual(['variable1', 'variable2', 'variable3'])
+    })
+    it('should extract varialbes from llm_prompt_trigger conditions', () => {
+        expect(
+            extractVariablesFromNode({
+                ...buildNodeCommonProperties(),
+                id: 'trigger',
+                type: 'llm_prompt_trigger',
+                data: {
+                    instructions: '',
+                    requires_confirmation: false,
+                    inputs: [],
+                    conditionsType: 'and',
+                    conditions: [
+                        {
+                            equals: [
+                                {
+                                    var: 'objects.order.external_fulfillment_status',
+                                },
+                                'fulfilled',
+                            ],
+                        },
+                    ],
+                },
+            })
+        ).toEqual(['objects.order.external_fulfillment_status'])
     })
 })

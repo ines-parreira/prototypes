@@ -378,6 +378,10 @@ export type WorkflowConfiguration = {
                             integration_id: number | string
                         }
                       | {
+                            kind: 'order-shipmonk'
+                            integration_id: number | string
+                        }
+                      | {
                             kind: 'product'
                             integration_id: number | string
                             name: string
@@ -414,6 +418,10 @@ export type WorkflowConfiguration = {
                             name: string
                             instructions: string
                             id: string
+                        }
+                      | {
+                            kind: 'order_shipmonk'
+                            integration_id: number
                         }
                   )[]
                   outputs: {

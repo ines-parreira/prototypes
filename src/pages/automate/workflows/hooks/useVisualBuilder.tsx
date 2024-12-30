@@ -18,7 +18,11 @@ import {
     findVariable,
     getWorkflowVariableListForNode,
 } from '../models/variables.model'
-import {WorkflowVariable, WorkflowVariableList} from '../models/variables.types'
+import {
+    AvailableIntegrations,
+    WorkflowVariable,
+    WorkflowVariableList,
+} from '../models/variables.types'
 import {walkVisualBuilderGraph} from '../models/visualBuilderGraph.model'
 import {
     VisualBuilderGraph,
@@ -82,7 +86,8 @@ export const withVisualBuilderContext =
 export function useVisualBuilder(
     visualBuilderGraph: VisualBuilderGraph,
     dispatch: Dispatch<VisualBuilderGraphAction>,
-    isNew: boolean
+    isNew: boolean,
+    availableIntegrations: AvailableIntegrations = []
 ): VisualBuilderContextType {
     const initialVisualBuilderGraph = useMemo(
         () => visualBuilderGraph,
@@ -105,10 +110,11 @@ export function useVisualBuilder(
                 visualBuilderGraph,
                 nodeId,
                 steps,
-                apps
+                apps,
+                availableIntegrations
             )
         },
-        [visualBuilderGraph, steps, apps]
+        [visualBuilderGraph, steps, apps, availableIntegrations]
     )
 
     const getVariableListInChildren = useCallback(

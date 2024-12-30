@@ -1,3 +1,4 @@
+import {SHIPMONK_APPLICATION_ID} from '../models/variables.types'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
@@ -1585,6 +1586,171 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                         },
                     ],
                     conditions: null,
+                },
+            },
+        ])
+    })
+
+    it('should transform graph with shipmonk variables', () => {
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration(
+            {
+                id: '',
+                internal_id: '',
+                is_draft: false,
+                isTemplate: false,
+                name: 'LLM prompt trigger',
+                available_languages: [],
+                nodes: [
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'trigger',
+                        type: 'llm_prompt_trigger',
+                        data: {
+                            instructions: '',
+                            requires_confirmation: false,
+                            inputs: [],
+                            conditionsType: 'and',
+                            conditions: [
+                                {
+                                    equals: [
+                                        {var: 'objects.order_shipmonk.status'},
+                                        'complete',
+                                    ],
+                                },
+                                {
+                                    equals: [
+                                        {
+                                            var: 'objects.order.external_fulfillment_status',
+                                        },
+                                        'fulfilled',
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'http_request1',
+                        type: 'http_request',
+                        data: {
+                            name: '',
+                            url: 'https://test.com?orderNumber={{objects.order_shipmonk.order_number}}&orderId={{objects.order.external_id}}',
+                            method: 'GET',
+                            headers: [],
+                            variables: [
+                                {
+                                    id: 'variable1',
+                                    name: 'test',
+                                    jsonpath: '$.string',
+                                    data_type: 'string',
+                                },
+                            ],
+                            json: null,
+                            formUrlencoded: null,
+                            bodyContentType: null,
+                            outputs: [
+                                {
+                                    id: 'output1',
+                                    path: 'steps_state.http_request1.content.variable1',
+                                    description: 'some description',
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end_success',
+                        type: 'end',
+                        data: {
+                            action: 'end',
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end_failure',
+                        type: 'end',
+                        data: {
+                            action: 'end',
+                        },
+                    },
+                ],
+                edges: [
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'trigger',
+                        target: 'http_request1',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'http_request1',
+                        target: 'end_success',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'http_request1',
+                        target: 'end_failure',
+                    },
+                ],
+                nodeEditingId: null,
+                choiceEventIdEditing: null,
+                branchIdsEditing: [],
+            },
+            true,
+            [],
+            [
+                {
+                    application_id: SHIPMONK_APPLICATION_ID,
+                    integration_id: 1,
+                },
+            ]
+        )
+
+        expect(configuration.triggers).toEqual([
+            {
+                kind: 'llm-prompt',
+                settings: {
+                    custom_inputs: [],
+                    object_inputs: [
+                        {
+                            kind: 'customer',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                        },
+                        {
+                            kind: 'order-shipmonk',
+                            integration_id: 1,
+                        },
+                        {
+                            kind: 'order',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                        },
+                    ],
+                    conditions: {
+                        and: [
+                            {
+                                equals: [
+                                    {
+                                        var: 'objects.order_shipmonk.status',
+                                    },
+                                    'complete',
+                                ],
+                            },
+                            {
+                                equals: [
+                                    {
+                                        var: 'objects.order.external_fulfillment_status',
+                                    },
+                                    'fulfilled',
+                                ],
+                            },
+                        ],
+                    },
+                    outputs: [
+                        {
+                            id: 'output1',
+                            path: 'steps_state.http_request1.content.variable1',
+                            description: 'some description',
+                        },
+                    ],
                 },
             },
         ])

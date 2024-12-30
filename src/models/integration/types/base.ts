@@ -14,6 +14,7 @@ export type IntegrationBase = {
         id: number
     }
     managed: boolean
+    application_id?: string | null
 }
 
 export type IntegrationDecoration = {

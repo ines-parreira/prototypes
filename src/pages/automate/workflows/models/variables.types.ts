@@ -34,6 +34,7 @@ type BaseWorkflowVariable<T extends WorkflowVariableType> = {
         | 'custom_input'
         | 'reusable_llm_prompt_call'
         | 'merchant_input'
+        | 'order_shipmonk'
     type: T
     format?: WorkflowVariableFormat
     filter?: string
@@ -69,9 +70,18 @@ export type WorkflowVariableGroup = {
         | 'shopper_authentication'
         | 'custom_input'
         | 'merchant_input'
+        | 'order_shipmonk'
         | 'reusable_llm_prompt_call'
     variables: (WorkflowVariable | WorkflowVariableGroup)[]
     icon?: ReactNode
 }
 
 export type WorkflowVariableList = (WorkflowVariable | WorkflowVariableGroup)[]
+
+export const SHIPMONK_APPLICATION_ID = '6227229308665b40d624fd4c' as const
+export const AVAILABLE_3PL_INTEGRATIONS = [SHIPMONK_APPLICATION_ID] as const
+
+export type AvailableIntegrations = {
+    application_id: (typeof AVAILABLE_3PL_INTEGRATIONS)[number]
+    integration_id: number
+}[]

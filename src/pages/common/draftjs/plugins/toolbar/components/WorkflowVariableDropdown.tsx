@@ -214,7 +214,8 @@ const WorkflowVariableDropdown = ({
                                     ? option.icon
                                     : option.nodeType &&
                                       option.nodeType !==
-                                          'reusable_llm_prompt_call' && (
+                                          'reusable_llm_prompt_call' &&
+                                      option.nodeType !== 'order_shipmonk' && (
                                           <VisualBuilderActionIcon
                                               nodeType={option.nodeType}
                                           />

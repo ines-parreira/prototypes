@@ -21,7 +21,11 @@ import {
     unescapeUrlEncodedVariables,
     validateJSONWithVariables,
 } from './variables.model'
-import {WorkflowVariableList} from './variables.types'
+import {
+    WorkflowVariableList,
+    SHIPMONK_APPLICATION_ID,
+    AvailableIntegrations,
+} from './variables.types'
 import {
     VisualBuilderEdge,
     VisualBuilderGraph,
@@ -282,8 +286,8 @@ function setLLMPromptCustomerObjectInput(
     >
 ): void {
     if (
-        trigger.settings.object_inputs.every(
-            (input) => input.kind !== 'customer'
+        !trigger.settings.object_inputs.find(
+            (input) => input.kind === 'customer'
         )
     ) {
         trigger.settings.object_inputs.push({
@@ -302,11 +306,36 @@ function setLLMPromptOrderObjectInput(
     setLLMPromptCustomerObjectInput(trigger)
 
     if (
-        trigger.settings.object_inputs.every((input) => input.kind !== 'order')
+        !trigger.settings.object_inputs.find((input) => input.kind === 'order')
     ) {
         trigger.settings.object_inputs.push({
             kind: 'order',
             integration_id: '{{store.helpdesk_integration_id}}',
+        })
+    }
+}
+
+function setLLMPromptShipmonkOrderObjectInput(
+    trigger: Extract<
+        NonNullable<WorkflowConfiguration['triggers']>[number],
+        {kind: 'llm-prompt'}
+    >,
+    availableIntegrations: AvailableIntegrations
+): void {
+    const shipmonkIntegration = availableIntegrations?.find(
+        (integration) => integration.application_id === SHIPMONK_APPLICATION_ID
+    )
+    if (!shipmonkIntegration) return
+    setLLMPromptCustomerObjectInput(trigger)
+
+    if (
+        !trigger.settings.object_inputs.find(
+            (input) => input.kind === 'order-shipmonk'
+        )
+    ) {
+        trigger.settings.object_inputs.push({
+            kind: 'order-shipmonk',
+            integration_id: shipmonkIntegration.integration_id,
         })
     }
 }
@@ -317,14 +346,16 @@ function setLLMPromptObjectInputs(
     trigger: Extract<
         NonNullable<WorkflowConfiguration['triggers']>[number],
         {kind: 'llm-prompt'}
-    >
+    >,
+    availableIntegrations: AvailableIntegrations = []
 ) {
     const variables = extractVariablesFromNode(node, g.edges)
     const availableVariables = getWorkflowVariableListForNode(
         g,
         node.id,
         [],
-        []
+        [],
+        availableIntegrations
     )
 
     variables
@@ -336,6 +367,12 @@ function setLLMPromptObjectInputs(
                     break
                 case 'order_selection':
                     setLLMPromptOrderObjectInput(trigger)
+                    break
+                case 'order_shipmonk':
+                    setLLMPromptShipmonkOrderObjectInput(
+                        trigger,
+                        availableIntegrations
+                    )
                     break
             }
         })
@@ -364,8 +401,8 @@ function setReusableLLMPromptObjectInputs(
                 case 'shopper_authentication':
                     {
                         if (
-                            trigger.settings.object_inputs.every(
-                                (input) => input.kind !== 'customer'
+                            !trigger.settings.object_inputs.find(
+                                (input) => input.kind === 'customer'
                             )
                         ) {
                             const index =
@@ -390,8 +427,8 @@ function setReusableLLMPromptObjectInputs(
                 case 'order_selection':
                     {
                         if (
-                            trigger.settings.object_inputs.every(
-                                (input) => input.kind !== 'customer'
+                            !trigger.settings.object_inputs.find(
+                                (input) => input.kind === 'customer'
                             )
                         ) {
                             const index =
@@ -413,8 +450,8 @@ function setReusableLLMPromptObjectInputs(
                         }
 
                         if (
-                            trigger.settings.object_inputs.every(
-                                (input) => input.kind !== 'order'
+                            !trigger.settings.object_inputs.find(
+                                (input) => input.kind === 'order'
                             )
                         ) {
                             trigger.settings.object_inputs.push({kind: 'order'})
@@ -443,7 +480,8 @@ function setStaticInputs(
 export function transformVisualBuilderGraphIntoWfConfiguration(
     g: VisualBuilderGraph,
     isDraft = true,
-    steps: WorkflowConfiguration[]
+    steps: WorkflowConfiguration[],
+    availableIntegrations: AvailableIntegrations = []
 ) {
     const c: WorkflowConfiguration = {
         id: g.id,
@@ -473,53 +511,60 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 }
                 return
             } else if (node.type === 'llm_prompt_trigger') {
-                c.triggers = [
-                    {
-                        kind: 'llm-prompt',
-                        settings: {
-                            custom_inputs: node.data.inputs.filter(
+                const trigger: Extract<
+                    NonNullable<WorkflowConfiguration['triggers']>[number],
+                    {kind: 'llm-prompt'}
+                > = {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: node.data.inputs.filter(
+                            (
+                                input
+                            ): input is Extract<
+                                NonNullable<
+                                    WorkflowConfiguration['triggers']
+                                >[number],
+                                {kind: 'llm-prompt'}
+                            >['settings']['custom_inputs'][number] =>
+                                'data_type' in input
+                        ),
+                        object_inputs: node.data.inputs
+                            .filter(
                                 (
                                     input
                                 ): input is Extract<
-                                    NonNullable<
-                                        WorkflowConfiguration['triggers']
-                                    >[number],
-                                    {kind: 'llm-prompt'}
-                                >['settings']['custom_inputs'][number] =>
-                                    'data_type' in input
-                            ),
-                            object_inputs: node.data.inputs
-                                .filter(
-                                    (
-                                        input
-                                    ): input is Extract<
-                                        LLMPromptTriggerNodeType['data']['inputs'][number],
-                                        {kind: 'product'}
-                                    > =>
-                                        'kind' in input &&
-                                        input.kind === 'product'
-                                )
-                                .map((input) => ({
-                                    ...input,
-                                    integration_id:
-                                        '{{store.helpdesk_integration_id}}',
-                                })),
-                            conditions:
-                                node.data.conditionsType === 'or'
-                                    ? {
-                                          [node.data.conditionsType]:
-                                              node.data.conditions,
-                                      }
-                                    : node.data.conditionsType === 'and'
-                                      ? {
-                                            [node.data.conditionsType]:
-                                                node.data.conditions,
-                                        }
-                                      : null,
-                            outputs: [],
-                        },
+                                    LLMPromptTriggerNodeType['data']['inputs'][number],
+                                    {kind: 'product'}
+                                > => 'kind' in input && input.kind === 'product'
+                            )
+                            .map((input) => ({
+                                ...input,
+                                integration_id:
+                                    '{{store.helpdesk_integration_id}}',
+                            })),
+                        conditions:
+                            node.data.conditionsType === 'or'
+                                ? {
+                                      [node.data.conditionsType]:
+                                          node.data.conditions,
+                                  }
+                                : node.data.conditionsType === 'and'
+                                  ? {
+                                        [node.data.conditionsType]:
+                                            node.data.conditions,
+                                    }
+                                  : null,
+                        outputs: [],
                     },
-                ]
+                }
+                setLLMPromptObjectInputs(
+                    g,
+                    node,
+                    trigger,
+                    availableIntegrations
+                )
+
+                c.triggers = [trigger]
                 c.entrypoints = [
                     {
                         kind: 'llm-conversation',
@@ -532,6 +577,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         deactivated_datetime: node.data.deactivated_datetime,
                     },
                 ]
+
                 return
             } else if (node.type === 'reusable_llm_prompt_trigger') {
                 c.triggers = [
@@ -723,7 +769,12 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 const trigger = c.triggers?.[0]
 
                 if (trigger?.kind === 'llm-prompt') {
-                    setLLMPromptObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(
+                        g,
+                        node,
+                        trigger,
+                        availableIntegrations
+                    )
                 }
 
                 if (trigger?.kind === 'reusable-llm-prompt') {
@@ -838,7 +889,12 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         )
                     )
 
-                    setLLMPromptObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(
+                        g,
+                        node,
+                        trigger,
+                        availableIntegrations
+                    )
                 }
 
                 if (
@@ -905,7 +961,12 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.success`,
                     })
 
-                    setLLMPromptObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(
+                        g,
+                        node,
+                        trigger,
+                        availableIntegrations
+                    )
                 }
 
                 if (trigger?.kind === 'reusable-llm-prompt') {
@@ -933,7 +994,12 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.success`,
                     })
 
-                    setLLMPromptObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(
+                        g,
+                        node,
+                        trigger,
+                        availableIntegrations
+                    )
                 }
 
                 if (trigger?.kind === 'reusable-llm-prompt') {
@@ -971,7 +1037,12 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.success`,
                     })
 
-                    setLLMPromptObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(
+                        g,
+                        node,
+                        trigger,
+                        availableIntegrations
+                    )
                 }
 
                 if (trigger?.kind === 'reusable-llm-prompt') {
@@ -1001,7 +1072,12 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.success`,
                     })
 
-                    setLLMPromptObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(
+                        g,
+                        node,
+                        trigger,
+                        availableIntegrations
+                    )
                 }
 
                 if (trigger?.kind === 'reusable-llm-prompt') {
@@ -1034,7 +1110,12 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.success`,
                     })
 
-                    setLLMPromptObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(
+                        g,
+                        node,
+                        trigger,
+                        availableIntegrations
+                    )
                 }
 
                 if (trigger?.kind === 'reusable-llm-prompt') {
@@ -1101,7 +1182,12 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.discount_code`,
                     })
 
-                    setLLMPromptObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(
+                        g,
+                        node,
+                        trigger,
+                        availableIntegrations
+                    )
                 }
 
                 if (trigger?.kind === 'reusable-llm-prompt') {
@@ -1137,7 +1223,12 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.success`,
                     })
 
-                    setLLMPromptObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(
+                        g,
+                        node,
+                        trigger,
+                        availableIntegrations
+                    )
                 }
 
                 if (trigger?.kind === 'reusable-llm-prompt') {
@@ -1165,7 +1256,12 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.success`,
                     })
 
-                    setLLMPromptObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(
+                        g,
+                        node,
+                        trigger,
+                        availableIntegrations
+                    )
                 }
 
                 if (trigger?.kind === 'reusable-llm-prompt') {
@@ -1194,7 +1290,12 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.success`,
                     })
 
-                    setLLMPromptObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(
+                        g,
+                        node,
+                        trigger,
+                        availableIntegrations
+                    )
                 }
 
                 if (trigger?.kind === 'reusable-llm-prompt') {
@@ -1223,7 +1324,12 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.success`,
                     })
 
-                    setLLMPromptObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(
+                        g,
+                        node,
+                        trigger,
+                        availableIntegrations
+                    )
                 }
 
                 if (trigger?.kind === 'reusable-llm-prompt') {
