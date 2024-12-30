@@ -1,19 +1,32 @@
-import React, {useState} from 'react'
+import {
+    CustomFieldCondition,
+    useListCustomFieldConditions,
+} from '@gorgias/api-queries'
+import classNames from 'classnames'
+import React, {useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
+import {Container} from 'reactstrap'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import useCallbackRef from 'hooks/useCallbackRef'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import useTitle from 'hooks/useTitle'
-// import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-// import Loader from 'pages/common/components/Loader/Loader'
+import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import Search from 'pages/common/components/Search'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import TableBody from 'pages/common/components/table/TableBody'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
+import Video from 'pages/common/components/Video/Video'
+import settingsCss from 'pages/settings/settings.less'
 
 import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
 
+import ConditionalFieldRow from './ConditionalFieldRow'
 import css from './ConditionalFields.less'
 
 export const MAX_CONDITIONS = 70
@@ -29,15 +42,22 @@ export default function ConditionalFields() {
     const [search, setSearch] = useState('')
     const debouncedSearch = useDebouncedValue(search, 300)
 
-    // const isLoading = false
-    const conditions: unknown[] = []
+    const {data: response, isLoading} = useListCustomFieldConditions({
+        http: {params: {object_type: 'Ticket'}},
+    })
+    const conditions = useMemo(() => response?.data.data || [], [response])
 
-    const displayList = conditions.length || debouncedSearch
+    const filteredConditions = useMemo(() => {
+        return conditions.filter((condition: CustomFieldCondition) =>
+            condition.name.includes(debouncedSearch)
+        )
+    }, [conditions, debouncedSearch])
+    const displayList = conditions.length > 0
+    const limitReached = conditions.length >= MAX_CONDITIONS
 
-    const createConditionButton = (
-        // conditions.length >= MAX_CONDITIONS ? (
-        //     <Button isDisabled>Create Field</Button>
-        // ) : (
+    const createConditionButton = limitReached ? (
+        <Button isDisabled>Create Field</Button>
+    ) : (
         <Link
             to={`/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}/add`}
             onClick={() => {
@@ -47,7 +67,6 @@ export default function ConditionalFields() {
             <Button>Create Condition</Button>
         </Link>
     )
-    // )
 
     return (
         <div className={`full-width overflow-auto ${css.pageContainer}`}>
@@ -60,7 +79,7 @@ export default function ConditionalFields() {
                                 name="custom-fields-search"
                                 value={search}
                                 onChange={setSearch}
-                                placeholder={`Search condition...`}
+                                placeholder="Search condition..."
                                 className="mr-2"
                             />
                             {createConditionButton}
@@ -68,43 +87,70 @@ export default function ConditionalFields() {
                     )}
                 </PageHeader>
                 {displayList && (
-                    <>
+                    <Container
+                        fluid
+                        className={classNames(
+                            css.info,
+                            settingsCss.pageContainer
+                        )}
+                    >
                         <div
                             ref={setListingNode}
                             data-candu-id="conditional-fields-listing-educational-material"
-                        />
-                    </>
+                            className="pr-4"
+                        >
+                            <p className="mb-3">
+                                Set Field Conditions to control visibility and
+                                requirements for ticket fields based on specific
+                                factors like other field values or channels.
+                            </p>
+                            <a
+                                className="d-block mb-3"
+                                href="https://docs.gorgias.com/en-US/articles/rules-18380"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                <i className="material-icons">menu_book</i>{' '}
+                                <span>Learn more about conditions</span>
+                            </a>
+                        </div>
+                        <div className="d-flex">
+                            <Video
+                                youtubeId="HFylY2x3T_Y"
+                                legend="How to set up conditions?"
+                            />
+                        </div>
+                    </Container>
                 )}
             </div>
 
-            {/* {isLoading ? (
+            {isLoading ? (
                 <Loader minHeight="60px" />
-            ) : ( */}
-            <>
-                {!displayList ? (
-                    <div className={css.emptyViewContainer}>
-                        <h2 className={css.emptyViewContainerHeader}>
-                            Get started with Conditional Fields
-                        </h2>
-                        <p className={css.emptyViewContainerText}>
-                            Create condition to display ticket fields.
-                        </p>
-                        <div
-                            ref={setLandingNode}
-                            data-candu-id="conditional-fields-landing-educational-material"
-                        />
-                        {createConditionButton}
-                    </div>
-                ) : (
-                    <div className="p-0">
-                        {/* replace `conditions` with matched conditions */}
-                        {debouncedSearch && !conditions.length ? (
-                            <div className={css.emptyListTextWrapper}>
-                                No results found.
-                            </div>
-                        ) : (
-                            <>
-                                {/* {conditions.length >= MAX_CONDITIONS && (
+            ) : (
+                <>
+                    {!displayList ? (
+                        <div className={css.emptyViewContainer}>
+                            <h2 className={css.emptyViewContainerHeader}>
+                                Get started with Conditional Fields
+                            </h2>
+                            <p className={css.emptyViewContainerText}>
+                                Create condition to display ticket fields.
+                            </p>
+                            <div
+                                ref={setLandingNode}
+                                data-candu-id="conditional-fields-landing-educational-material"
+                            />
+                            {createConditionButton}
+                        </div>
+                    ) : (
+                        <div className="p-0">
+                            {debouncedSearch && !filteredConditions.length ? (
+                                <div className={css.emptyListTextWrapper}>
+                                    No results found.
+                                </div>
+                            ) : (
+                                <>
+                                    {limitReached && (
                                         <Alert
                                             type={AlertType.Info}
                                             icon
@@ -113,14 +159,44 @@ export default function ConditionalFields() {
                                             {`You can only have ${MAX_CONDITIONS}
                                                 conditions at a time.`}
                                         </Alert>
-                                    )} */}
-                                {/* Display conditions list here */}
-                            </>
-                        )}
-                    </div>
-                )}
-            </>
-            {/* )} */}
+                                    )}
+
+                                    <TableWrapper>
+                                        <TableHead>
+                                            <HeaderCell size="smallest" />
+                                            <HeaderCell
+                                                className={css.headerCell}
+                                            >
+                                                Condition Name
+                                            </HeaderCell>
+                                            <HeaderCell
+                                                size="smallest"
+                                                className={css.headerCell}
+                                            >
+                                                Last Updated
+                                            </HeaderCell>
+                                            <HeaderCell size="smallest" />
+                                        </TableHead>
+                                        <TableBody>
+                                            {filteredConditions.map(
+                                                (condition) => (
+                                                    <ConditionalFieldRow
+                                                        key={condition.id}
+                                                        condition={condition}
+                                                        canDuplicate={
+                                                            !limitReached
+                                                        }
+                                                    />
+                                                )
+                                            )}
+                                        </TableBody>
+                                    </TableWrapper>
+                                </>
+                            )}
+                        </div>
+                    )}
+                </>
+            )}
         </div>
     )
 }

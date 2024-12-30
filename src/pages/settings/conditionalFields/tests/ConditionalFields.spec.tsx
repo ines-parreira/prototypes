@@ -1,14 +1,20 @@
+import {useListCustomFieldConditions} from '@gorgias/api-queries'
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {Link} from 'react-router-dom'
 
 import {SegmentEvent, logEvent} from 'common/segment'
-// import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
+import {
+    apiListCursorPaginationResponse,
+    axiosSuccessResponse,
+} from 'fixtures/axiosResponse'
+import {customFieldCondition} from 'fixtures/customFieldCondition'
 import useDebouncedValue from 'hooks/useDebouncedValue'
+import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
 import {assumeMock, getLastMockCall} from 'utils/testing'
 
-import ConditionalFields /*, {MAX_CONDITIONS} */ from '../ConditionalFields'
+import ConditionalFields, {MAX_CONDITIONS} from '../ConditionalFields'
 
 jest.mock(
     'common/segment',
@@ -28,16 +34,41 @@ jest.mock(
             ),
         }) as Record<string, unknown>
 )
+jest.mock(
+    '@gorgias/api-queries',
+    () =>
+        ({
+            ...jest.requireActual('@gorgias/api-queries'),
+            useListCustomFieldConditions: jest.fn(),
+            useCreateCustomFieldCondition: jest
+                .fn()
+                .mockReturnValue({mutateAsync: jest.fn(), isLoading: false}),
+            useUpdateCustomFieldCondition: jest
+                .fn()
+                .mockReturnValue({mutateAsync: jest.fn(), isLoading: false}),
+            useDeleteCustomFieldCondition: jest
+                .fn()
+                .mockReturnValue({mutateAsync: jest.fn(), isLoading: false}),
+        }) as Record<string, unknown>
+)
 
 jest.mock('hooks/useDebouncedValue')
 
 const useDebouncedValueMock = assumeMock(useDebouncedValue)
 const mockedLogEvent = assumeMock(logEvent)
 const mockedLink = assumeMock(Link)
+const useListCustomFieldConditionsMock = assumeMock(
+    useListCustomFieldConditions
+)
 
 describe('<CustomFields/>', () => {
     beforeEach(() => {
         useDebouncedValueMock.mockReturnValue('')
+
+        useListCustomFieldConditionsMock.mockReturnValue({
+            data: axiosSuccessResponse(apiListCursorPaginationResponse([])),
+            isLoading: false,
+        } as ReturnType<typeof useListCustomFieldConditions>)
     })
 
     it('should render get started', () => {
@@ -64,25 +95,34 @@ describe('<CustomFields/>', () => {
         )
     })
 
-    // it('should disable the create button when max limit is reached and display an alert', () => {
-    //     useFieldConditionsMock.mockReturnValue({
-    //         data: apiListCursorPaginationResponse(
-    //             Array.from({length: MAX_CONDITIONS}, () => FieldCondition)
-    //         ),
-    //         isLoading: false,
-    //     } as unknown as ReturnType<typeof useFieldConditions>)
+    it('should disable the create button when max limit is reached and display an alert', () => {
+        useListCustomFieldConditionsMock.mockReturnValue({
+            data: axiosSuccessResponse(
+                apiListCursorPaginationResponse(
+                    Array.from(
+                        {length: MAX_CONDITIONS},
+                        () => customFieldCondition
+                    )
+                )
+            ),
+            isLoading: false,
+        } as ReturnType<typeof useListCustomFieldConditions>)
 
-    //     render(<ConditionalFields />)
+        renderWithStoreAndQueryClientProvider(<ConditionalFields />)
 
-    //     expect(
-    //         screen.getByText(/Please archive some fields before creating/)
-    //     ).toBeDefined()
-    //     expect(
-    //         screen.getByRole('button', {name: 'Create Field'})
-    //     ).toBeAriaDisabled()
-    // })
+        expect(screen.getByText(/You can only have/)).toBeDefined()
+        expect(
+            screen.getByRole('button', {name: 'Create Field'})
+        ).toBeAriaDisabled()
+    })
 
     it('should render no results found', async () => {
+        useListCustomFieldConditionsMock.mockReturnValue({
+            data: axiosSuccessResponse(
+                apiListCursorPaginationResponse([customFieldCondition])
+            ),
+            isLoading: false,
+        } as ReturnType<typeof useListCustomFieldConditions>)
         useDebouncedValueMock.mockReturnValue('foo')
 
         render(<ConditionalFields />)

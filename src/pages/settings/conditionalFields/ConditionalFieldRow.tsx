@@ -1,0 +1,171 @@
+import {CustomFieldCondition} from '@gorgias/api-queries'
+import moment from 'moment'
+import React, {MouseEvent, useCallback} from 'react'
+import {Link} from 'react-router-dom'
+
+import {DateAndTimeFormatting} from 'constants/datetime'
+import IconButton from 'pages/common/components/button/IconButton'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import history from 'pages/history'
+
+import css from './ConditionalFieldRow.less'
+import useCreateCustomFieldCondition from './queries/useCreateCustomFieldCondition'
+import useDeleteCustomFieldCondition from './queries/useDeleteCustomFieldCondition'
+import useUpdateCustomFieldCondition from './queries/useUpdateCustomFieldCondition'
+
+interface ConditionalFieldRowProps {
+    condition: CustomFieldCondition
+    canDuplicate?: boolean
+}
+
+export default function ConditionalFieldRow({
+    condition,
+    canDuplicate,
+}: ConditionalFieldRowProps) {
+    const {mutateAsync: updateCondition, isLoading: isUpdating} =
+        useUpdateCustomFieldCondition()
+    const {mutateAsync: createCondition, isLoading: isCreating} =
+        useCreateCustomFieldCondition()
+    const {mutateAsync: deleteCondition, isLoading: isDeleting} =
+        useDeleteCustomFieldCondition()
+
+    const handleActivate = useCallback(() => {
+        void updateCondition({
+            id: condition.id,
+            data: {deactivated_datetime: null},
+        })
+    }, [condition, updateCondition])
+    const handleDeactivate = useCallback(() => {
+        void updateCondition({
+            id: condition.id,
+            data: {deactivated_datetime: moment().toISOString()},
+        })
+    }, [condition, updateCondition])
+    const handleToggleClick = useCallback(
+        (onDisplayConfirmation: (event: MouseEvent) => void) =>
+            (value: boolean, event: MouseEvent) => {
+                event.stopPropagation()
+                if (!!condition.deactivated_datetime) {
+                    void handleActivate()
+                } else {
+                    onDisplayConfirmation(event)
+                }
+            },
+        [condition, handleActivate]
+    )
+
+    const handleDuplicate = async () => {
+        try {
+            const newCondition = await createCondition({
+                data: {
+                    name: `(Copy) ${condition.name}`,
+                    object_type: condition.object_type,
+                    expression: condition.expression,
+                    requirements: condition.requirements,
+                    sort_order: condition.sort_order,
+                    deactivated_datetime: null,
+                },
+            })
+            history.push(
+                `/app/settings/ticket-field-conditions/${newCondition.data.id}`
+            )
+        } catch (error) {
+            /* no-op */
+        }
+    }
+
+    const handleDelete = () => deleteCondition({id: condition.id})
+
+    return (
+        <TableBodyRow>
+            <BodyCell>
+                <ConfirmationPopover
+                    buttonProps={{
+                        intent: 'destructive',
+                    }}
+                    content={
+                        <>
+                            You are about to deactivate <b>{condition.name}</b>.
+                        </>
+                    }
+                    id={`toggle-condition-${condition.id}`}
+                    onConfirm={handleDeactivate}
+                    placement="bottom"
+                >
+                    {({uid, onDisplayConfirmation}) => (
+                        <div id={uid}>
+                            <ToggleInput
+                                isToggled={!condition.deactivated_datetime}
+                                isLoading={isUpdating}
+                                onClick={handleToggleClick(
+                                    onDisplayConfirmation
+                                )}
+                            />
+                        </div>
+                    )}
+                </ConfirmationPopover>
+            </BodyCell>
+            <BodyCell className={css.nameCell}>
+                <Link
+                    to={`/app/settings/ticket-field-conditions/${condition.id}`}
+                >
+                    {condition.name}
+                </Link>
+            </BodyCell>
+            <BodyCell>
+                {/* FIXME(Nicolas): should be updated_datetime */}
+                <DatetimeLabel
+                    className="text-faded"
+                    dateTime={condition.created_datetime}
+                    labelFormat={DateAndTimeFormatting.CompactDate}
+                />
+            </BodyCell>
+            <BodyCell className={css.actionsCell}>
+                <IconButton
+                    className="mr-1"
+                    fillStyle="ghost"
+                    intent="secondary"
+                    title="Duplicate Condition"
+                    isDisabled={!canDuplicate}
+                    isLoading={isCreating}
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        void handleDuplicate()
+                    }}
+                >
+                    file_copy
+                </IconButton>
+                <ConfirmationPopover
+                    buttonProps={{
+                        intent: 'destructive',
+                    }}
+                    id={`delete-condition-${condition.id}`}
+                    content={
+                        <>
+                            You are about to delete <b>{condition.name}</b>.
+                            This action will not be reversible.
+                        </>
+                    }
+                    onConfirm={handleDelete}
+                >
+                    {({uid, onDisplayConfirmation}) => (
+                        <IconButton
+                            fillStyle="ghost"
+                            intent="destructive"
+                            title="Delete Condition"
+                            isLoading={isDeleting}
+                            onClick={onDisplayConfirmation}
+                            id={uid}
+                        >
+                            delete
+                        </IconButton>
+                    )}
+                </ConfirmationPopover>
+            </BodyCell>
+        </TableBodyRow>
+    )
+}

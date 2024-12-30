@@ -1,4 +1,5 @@
 @import '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
 
 :local {
     .pageContainer {
@@ -46,5 +47,18 @@
     .emptyViewContainerText {
         line-height: @layout-spacing-s;
         font-size: 12px;
+    }
+
+    .info {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .headerCell {
+        color: var(--neutral-grey-4);
+        .caption-allcaps();
     }
 }
