@@ -77,6 +77,13 @@ jest.mock(
 
 jest.mock('common/segment')
 
+const mockViewTickets = jest.fn()
+jest.mock('@gorgias/realtime', () => ({
+    useAgentActivity: () => ({
+        viewTickets: mockViewTickets,
+    }),
+}))
+
 const mockStore = configureMockStore([thunk])
 const store = mockStore({
     tickets: fromJS({items: []}),
@@ -294,5 +301,25 @@ describe('<TicketList />', () => {
         fireEvent.click(getByText('openMacroModal'))
         fireEvent.click(getByText('MacroContainer'))
         expect(updateSelectedItemsIdsMock).toHaveBeenCalledWith(mockItemsIds)
+    })
+
+    it('should call viewTickets with ticket ids', () => {
+        renderWithRouter(
+            <Provider
+                store={mockStore({
+                    tickets: fromJS({items: [{id: 1}, {id: 2}]}),
+                    views: fromJS({
+                        active: fixtureView,
+                        _internal: {
+                            selectedItemsIds: [],
+                        },
+                    }),
+                })}
+            >
+                <TicketList />
+            </Provider>
+        )
+
+        expect(mockViewTickets).toHaveBeenCalledWith([1, 2])
     })
 })

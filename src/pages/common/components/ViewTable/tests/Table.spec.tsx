@@ -75,6 +75,12 @@ jest.mock(
 )
 jest.mock('services/shortcutManager/shortcutManager')
 
+jest.mock('@gorgias/realtime', () => ({
+    useAgentActivity: () => ({
+        viewTickets: jest.fn(),
+    }),
+}))
+
 describe('<Table />', () => {
     const viewConfig = viewsConfig.views.first() as Map<any, any>
     const defaultState: Partial<RootState> = {}

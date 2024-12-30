@@ -170,10 +170,6 @@ export const getOtherAgentsOnTicket = (ticketId?: string) =>
         }
     )
 
-export const makeGetOtherAgentsOnTicket =
-    (state: RootState) => (ticketId: string) =>
-        getOtherAgentsOnTicket(ticketId)(state)
-
 // Location of typing agents in the app by their ids
 export const getAgentsIdsTypingStatus = createSelector(
     getState,

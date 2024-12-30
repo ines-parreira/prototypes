@@ -1,6 +1,7 @@
+import {useAgentActivity} from '@gorgias/realtime'
 import classnames from 'classnames'
 import decorateComponentWithProps from 'decorate-component-with-props'
-import {List} from 'immutable'
+import {List, Map} from 'immutable'
 import React, {
     ComponentProps,
     useCallback,
@@ -42,6 +43,15 @@ const TicketList = () => {
     const selectedItemsIds = useAppSelector(getSelectedItemsIds)
     const tickets = useAppSelector(getTickets)
     const allViewItemsSelected = useAppSelector(areAllActiveViewItemsSelected)
+
+    const {viewTickets} = useAgentActivity()
+
+    useEffect(() => {
+        const ticketIds = tickets.map(
+            (item: Map<any, any>) => item.get('id') as number
+        )
+        viewTickets(ticketIds.toJS())
+    }, [tickets, viewTickets])
 
     const [isMacroModalOpen, setIsMacroModalOpen] = useState(false)
 

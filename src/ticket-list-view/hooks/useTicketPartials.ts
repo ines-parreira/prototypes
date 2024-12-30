@@ -5,6 +5,7 @@ import {CursorMeta} from 'models/api/types'
 import TicketUpdatesManager from '../TicketUpdatesManager'
 import {TicketPartial} from '../types'
 import {SortOrder} from './useSortOrder'
+import useViewTickets from './useViewTickets'
 
 type State = {
     cursor: CursorMeta['next_cursor']
@@ -44,6 +45,8 @@ export default function useTicketPartials(
 
         void client.loadMore()
     }, [client, cursor])
+
+    useViewTickets(partials)
 
     return useMemo(
         () => ({

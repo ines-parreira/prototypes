@@ -1,3 +1,4 @@
+import {User} from '@gorgias/api-queries'
 import {Syntax} from 'esprima'
 import {BaseCallExpression, BaseNode} from 'estree'
 import {fromJS, List, Map, Seq} from 'immutable'
@@ -313,11 +314,9 @@ export function sortViews(view1: Map<any, any>, view2: Map<any, any>): number {
     return view1.get('display_order', 0) - view2.get('display_order', 0)
 }
 
-export function agentsViewingMessage(agents: Agents): string {
-    const agentsNames = agents
-        .map((agent: Map<any, any>) => agent.get('name') as string)
-        .join(', ')
-    return `${agentsNames} ${agents.size > 1 ? 'are' : 'is'} viewing`
+export function agentsViewingMessage(agents: User[]): string {
+    const agentsNames = agents.map((agent) => agent.name).join(', ')
+    return `${agentsNames} ${agents.length > 1 ? 'are' : 'is'} viewing`
 }
 
 export function agentsTypingMessage(agents: Agents): string {

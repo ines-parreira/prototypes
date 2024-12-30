@@ -1,20 +1,20 @@
 import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import useAgentsViewing from 'hooks/realtime/useAgentsViewing'
 import * as viewUtils from 'state/views/utils'
-import {assumeMock} from 'utils/testing'
 
 import useIsTicketViewed from '../useIsTicketViewed'
 
 jest.mock('hooks/useAppSelector')
-const mockUseAppSelector = assumeMock(useAppSelector)
 
 const agentsViewingMessageSpy = jest.spyOn(viewUtils, 'agentsViewingMessage')
 
+jest.mock('hooks/realtime/useAgentsViewing')
+const mockUseAgentsViewing = useAgentsViewing as jest.Mock
+
 describe('useIsTicketViewed', () => {
     beforeEach(() => {
-        mockUseAppSelector.mockReturnValue(fromJS([]))
+        mockUseAgentsViewing.mockReturnValue({agentsViewing: []})
         agentsViewingMessageSpy.mockReturnValue('')
     })
 
@@ -26,7 +26,7 @@ describe('useIsTicketViewed', () => {
     })
 
     it('should return true when agents are viewing the ticket', () => {
-        mockUseAppSelector.mockReturnValue(fromJS([{}]))
+        mockUseAgentsViewing.mockReturnValue({agentsViewing: [{}]})
 
         const {result} = renderHook(() => useIsTicketViewed(1))
 

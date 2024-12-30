@@ -2,6 +2,8 @@ import {act, renderHook} from '@testing-library/react-hooks'
 
 import {CursorMeta} from 'models/api/types'
 
+import useViewTickets from 'ticket-list-view/hooks/useViewTickets'
+
 import TicketUpdatesManager from '../../TicketUpdatesManager'
 import {TicketPartial} from '../../types'
 import useTicketPartials from '../useTicketPartials'
@@ -13,6 +15,9 @@ type Listener = (
     partials: TicketPartial[],
     cursor: CursorMeta['next_cursor']
 ) => void
+
+jest.mock('../useViewTickets')
+const mockUseViewTickets = useViewTickets as jest.Mock
 
 describe('useTicketPartials', () => {
     let loadMore: jest.Mock
@@ -91,5 +96,20 @@ describe('useTicketPartials', () => {
         rerender({viewId: 456})
 
         expect(result.current.initialLoaded).toEqual(false)
+    })
+
+    it('should call useViewTickets with partials', () => {
+        const partials = [{id: 1, updated_datetime: 1}]
+        mockUseViewTickets.mockReturnValue({viewTickets: jest.fn()})
+
+        renderHook(() => useTicketPartials(123, 'created_datetime:asc'))
+
+        const [[listener]] = subscribe.mock.calls as [[Listener]]
+
+        act(() => {
+            listener(partials, null)
+        })
+
+        expect(mockUseViewTickets).toHaveBeenCalledWith(partials)
     })
 })
