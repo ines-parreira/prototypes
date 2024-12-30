@@ -311,7 +311,12 @@ const CreateActionView = () => {
                 </div>
             </div>
             <Prompt when={!isCreateActionSuccess} message={onNavigateAway} />
-            <Modal isOpen={isOpen} isClosable={false} onClose={_noop}>
+            <Modal
+                isOpen={isOpen}
+                isClosable={false}
+                onClose={_noop}
+                size="small"
+            >
                 <ModalHeader title="Discard new Action?" />
                 <ModalBody>
                     You will lose all information entered for this Action.
