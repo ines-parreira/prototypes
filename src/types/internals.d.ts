@@ -86,6 +86,8 @@ declare global {
         ) => void
         KNOCK_PUBLIC_KEY: string
         KNOCK_TOKEN: string
+        PUBNUB_PUBLISH_KEY: string
+        PUBNUB_SUBSCRIBE_KEY: string
     }
 
     function jestSetTimeout(

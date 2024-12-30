@@ -1,3 +1,4 @@
+import {useAgentActivity} from '@gorgias/realtime'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {act, waitFor, fireEvent} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -138,6 +139,11 @@ const mockUseGoToNextTicket = useGoToNextTicket as jest.Mock
 jest.mock('pages/tickets/detail/hooks/useTicketActivityTracking')
 const mockUseTicketActivityTracking = useTicketActivityTracking as jest.Mock
 
+jest.mock('@gorgias/realtime')
+const mockUseAgentActivity = useAgentActivity as jest.Mock
+const mockJoinTicket = jest.fn()
+const mockLeaveTicket = jest.fn()
+
 describe('TicketDetailContainer component', () => {
     const prepareTicketMessageMock = jest.fn()
     const newTicket = fromJS({
@@ -245,6 +251,17 @@ describe('TicketDetailContainer component', () => {
         mockUseGoToNextTicket.mockReturnValue({
             goToTicket: mockGoToNextTicket,
             isEnabled: false,
+        })
+
+        mockUseAgentActivity.mockReturnValue({
+            getTicketActivity: () => {
+                return {
+                    typing: [],
+                    viewing: [],
+                }
+            },
+            joinTicket: mockJoinTicket,
+            leaveTicket: mockLeaveTicket,
         })
     })
 
@@ -1577,5 +1594,24 @@ describe('TicketDetailContainer component', () => {
         )
 
         expect(mockUseTicketActivityTracking).toHaveBeenCalledWith(undefined)
+    })
+
+    it('should call joinTicket and leaveTicket from realtime package on mount / unmount', () => {
+        const {unmount} = renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer {...minProps} />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/1',
+            }
+        )
+
+        expect(mockJoinTicket).toHaveBeenCalled()
+
+        unmount()
+        expect(mockLeaveTicket).toHaveBeenCalled()
     })
 })

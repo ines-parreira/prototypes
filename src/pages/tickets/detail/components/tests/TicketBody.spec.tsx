@@ -31,9 +31,10 @@ jest.mock('pages/tickets/detail/components/TicketBodyElement', () =>
     jest.fn(({index}: {index: number}) => <p>TicketBodyElement {index}</p>)
 )
 
-jest.mock('pages/tickets/detail/components/TicketHeaderWrapper', () => () => (
-    <p>TicketHeaderWrapper</p>
-))
+jest.mock(
+    'pages/tickets/detail/components/TicketHeaderWrapper/TicketHeaderWrapper',
+    () => () => <p>TicketHeaderWrapper</p>
+)
 
 jest.mock(
     'state/queries/selectors',
