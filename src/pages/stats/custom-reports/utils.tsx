@@ -7,22 +7,30 @@ import {
 import {
     AnalyticsCustomReportChildrenItem,
     UpdateAnalyticsCustomReportBodyChildrenItem,
+    AnalyticsCustomReportChartSchemaType,
+    AnalyticsCustomReportRowSchemaType,
+    AnalyticsCustomReportSectionSchemaType,
+    CreateAnalyticsCustomReportBody,
+    CreateAnalyticsCustomReportBodyChildrenItem,
 } from '@gorgias/api-types'
 import React from 'react'
 
+import {isGorgiasApiError} from 'models/api/types'
 import {ChartConfig} from 'pages/stats/common/CustomReport/types'
 import {REPORTS_MODAL_CONFIG} from 'pages/stats/custom-reports/config'
+
 import {CustomReportChart} from 'pages/stats/custom-reports/CustomReportChart'
 import {CustomReportRow} from 'pages/stats/custom-reports/CustomReportRow'
 import {CustomReportSection} from 'pages/stats/custom-reports/CustomReportSection'
 import {ReportsModalConfig} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
 import {
-    CustomReportSchema,
     CustomReportChartSchema,
     CustomReportChild,
     CustomReportChildType,
     CustomReportRowSchema,
+    CustomReportSchema,
     CustomReportSectionSchema,
+    DashboardInput,
 } from 'pages/stats/custom-reports/types'
 import {notNull} from 'utils/types'
 
@@ -217,3 +225,103 @@ export const getNumberOfSelections = (
         })
         return total
     }, 0)
+
+function isObjectWithKeys(data: unknown): data is Record<string, unknown> {
+    return (
+        typeof data === 'object' &&
+        data !== null &&
+        !Array.isArray(data) &&
+        Object.keys(data).length > 0
+    )
+}
+
+export function getErrorMessage(
+    error: unknown,
+    defaultMessage = 'Oops! Something went wrong.'
+) {
+    if (isGorgiasApiError(error)) {
+        const responseError = error.response.data
+        let message = responseError.error.msg
+        const data = responseError.error.data
+        if (isObjectWithKeys(data)) {
+            Object.keys(data).forEach((key) => {
+                const value = data[key]
+
+                if (typeof value === 'string') {
+                    message += ' ' + value
+                    return
+                }
+
+                if (Array.isArray(value)) {
+                    message += ' ' + value.join(' ')
+                    return
+                }
+            })
+        }
+        return message
+    }
+
+    if (error instanceof Error) {
+        return error.message
+    }
+
+    return defaultMessage
+}
+
+const createChildrenWithMetadata = (
+    children: CustomReportChild[]
+): CreateAnalyticsCustomReportBodyChildrenItem[] => {
+    return children.map((child) => {
+        switch (child.type) {
+            case CustomReportChildType.Chart:
+                return {
+                    type: AnalyticsCustomReportChartSchemaType.Chart,
+                    config_id: child.config_id,
+                    metadata: {},
+                } as AnalyticsCustomReportChartSchema
+
+            case CustomReportChildType.Row:
+                return {
+                    type: AnalyticsCustomReportRowSchemaType.Row,
+                    metadata: {},
+                    children: createChildrenWithMetadata(child.children),
+                } as AnalyticsCustomReportRowSchema
+
+            case CustomReportChildType.Section:
+                return {
+                    type: AnalyticsCustomReportSectionSchemaType.Section,
+                    metadata: {},
+                    children: createChildrenWithMetadata(child.children),
+                } as AnalyticsCustomReportSectionSchema
+        }
+    })
+}
+
+const dummyChildren: CustomReportChild[] = [
+    {
+        type: CustomReportChildType.Row,
+        children: [
+            {
+                type: CustomReportChildType.Chart,
+                config_id: 'median_first_response_time_trend_card',
+            },
+        ],
+    },
+]
+
+export const createDashboardPayload = ({
+    name,
+    emoji,
+    analytics_filter_id,
+    children,
+}: DashboardInput): CreateAnalyticsCustomReportBody => {
+    return {
+        name,
+        emoji: emoji ?? null,
+        // FIXME: This is a known issue in the API. It should accept null values
+        // Remove type casting when the API is fixed, related tickets: #3195 & #3196
+        analytics_filter_id: (analytics_filter_id ?? null) as unknown as number,
+        type: 'custom',
+        children: createChildrenWithMetadata(children ?? dummyChildren),
+    }
+}

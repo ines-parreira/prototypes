@@ -9,19 +9,23 @@ import {
     AnalyticsCustomReportSectionSchemaType,
     AnalyticsCustomReportType,
 } from '@gorgias/api-types'
+import {AxiosError} from 'axios'
 import React from 'react'
 
 import {ChartConfig} from 'pages/stats/common/CustomReport/types'
 import {
     CustomReportSchema,
     CustomReportChildType,
+    DashboardInput,
 } from 'pages/stats/custom-reports/types'
 import {
+    createDashboardPayload,
     customReportFromApi,
     getGroupChartsIntoRows,
     getNumberOfSelections,
     getSavedChartsIds,
     getSearchConfig,
+    getErrorMessage,
 } from 'pages/stats/custom-reports/utils'
 import {
     OverviewMetric,
@@ -555,5 +559,142 @@ describe('getSavedChartsIds', () => {
 
         const result = getSavedChartsIds(report)
         expect(result).toEqual([])
+    })
+})
+
+const createError = (error: any) =>
+    new AxiosError(undefined, undefined, undefined, undefined, {
+        data: {error},
+    } as any)
+
+describe('getErrorMessage(error, defaultMessage)', () => {
+    it('should return string', () => {
+        const actual = getErrorMessage(null)
+
+        expect(typeof actual).toBe('string')
+    })
+
+    it('should return `defaultMessage` if given error is not formatted correctly', () => {
+        const defaultMessage = 'Oops! Something went wrong.'
+
+        const actual = getErrorMessage(null, defaultMessage)
+
+        expect(actual).toBe(defaultMessage)
+    })
+
+    it('should return error message if `error` is an instance of `Error`', () => {
+        const error = new Error('Not Found.')
+
+        const actual = getErrorMessage(error)
+
+        expect(actual).toBe(error.message)
+    })
+
+    it('should construct simple error message', () => {
+        const msg = 'Bad Request.'
+        const error = createError({msg})
+
+        const actual = getErrorMessage(error)
+
+        expect(actual).toBe(msg)
+    })
+
+    it('should construct error message from error data', () => {
+        const msg = 'Bad Request.'
+        const nameError = 'Name is missing.'
+        const emojiErrors = ['Inappropriate emoji.']
+
+        const error = createError({
+            msg,
+            data: {name: nameError, emoji: emojiErrors},
+        })
+
+        const actual = getErrorMessage(error)
+
+        expect(actual).toBe(msg + ' ' + nameError + ' ' + emojiErrors.join(' '))
+    })
+})
+
+describe('createDashboardPayload', () => {
+    it('should create a custom report with the correct payload', () => {
+        const input: DashboardInput = {
+            name: 'Test Dashboard',
+            emoji: '🖖',
+            analytics_filter_id: 123,
+            children: [
+                {
+                    type: CustomReportChildType.Section,
+                    children: [
+                        {
+                            type: CustomReportChildType.Row,
+                            children: [
+                                {
+                                    type: CustomReportChildType.Chart,
+                                    config_id: 'config_id',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        }
+
+        const expected = {
+            name: 'Test Dashboard',
+            emoji: '🖖',
+            analytics_filter_id: 123,
+            type: 'custom',
+            children: [
+                {
+                    type: CustomReportChildType.Section,
+                    metadata: {},
+                    children: [
+                        {
+                            type: CustomReportChildType.Row,
+                            metadata: {},
+                            children: [
+                                {
+                                    type: CustomReportChildType.Chart,
+                                    config_id: 'config_id',
+                                    metadata: {},
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        }
+
+        const actual = createDashboardPayload(input)
+
+        expect(actual).toEqual(expected)
+    })
+
+    it('should provide defaults if not provided in the Dashboard object', () => {
+        const input = {name: 'Test Dashboard'}
+
+        const expected = {
+            name: 'Test Dashboard',
+            emoji: null,
+            analytics_filter_id: null,
+            type: 'custom',
+            children: [
+                {
+                    type: CustomReportChildType.Row,
+                    metadata: {},
+                    children: [
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: 'median_first_response_time_trend_card',
+                            metadata: {},
+                        },
+                    ],
+                },
+            ],
+        }
+
+        const actual = createDashboardPayload(input)
+
+        expect(actual).toEqual(expected)
     })
 })

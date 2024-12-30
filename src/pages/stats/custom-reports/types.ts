@@ -37,3 +37,10 @@ export type CustomReportSchema = {
     children: CustomReportChild[]
     emoji: string | null | undefined
 }
+
+export type DashboardInput = {
+    name: string
+    emoji?: string | null
+    analytics_filter_id?: number | null
+    children?: CustomReportChild[]
+}
