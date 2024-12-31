@@ -34,6 +34,7 @@ describe('TicketReplyEditor component', () => {
         const generateKey = createDraftJSKeyGeneratorMock()
         const generateRandomKeyFunction = generateRandomKey as jest.SpyInstance
         generateRandomKeyFunction.mockImplementation(generateKey)
+        jest.useRealTimers()
     })
 
     const minProps: ComponentProps<typeof TicketReplyEditorContainer> = {
@@ -51,6 +52,7 @@ describe('TicketReplyEditor component', () => {
         addAttachments: jest.fn(),
         notify: jest.fn(),
         setResponseText: jest.fn(),
+        handleTypingActivity: jest.fn(),
     }
 
     it('should render empty ticket', () => {
@@ -392,5 +394,28 @@ describe('TicketReplyEditor component', () => {
         expect(queryByText(/insert video/i)).not.toBeInTheDocument()
         expect(queryByText('shopify')).not.toBeInTheDocument()
         expect(queryByText('discount')).not.toBeInTheDocument()
+    })
+
+    it('should call onTypingActivity', () => {
+        jest.useFakeTimers()
+        const mockHandleTypingActivity = jest.fn()
+        render(
+            <Provider store={store}>
+                <TicketReplyEditorContainer
+                    {...minProps}
+                    newMessage={fromJS({
+                        state: {
+                            cacheAdded: true,
+                        },
+                    })}
+                    newMessageType={TicketMessageSourceType.Email}
+                    handleTypingActivity={mockHandleTypingActivity}
+                />
+            </Provider>
+        )
+
+        jest.advanceTimersByTime(100)
+
+        expect(mockHandleTypingActivity).toHaveBeenCalled()
     })
 })

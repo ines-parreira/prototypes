@@ -1,3 +1,4 @@
+import {useAgentActivity} from '@gorgias/realtime'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
@@ -20,6 +21,9 @@ jest.mock('draft-js-plugins-editor', () => ({
     default: () => <div>Editor</div>,
     composeDecorators: jest.fn(),
 }))
+
+jest.mock('@gorgias/realtime')
+const mockUseAgentActivity = useAgentActivity as jest.Mock
 
 const mockStore = configureMockStore([thunk])
 
@@ -46,6 +50,14 @@ describe('<TicketReply />', () => {
             },
         }),
     }
+
+    beforeEach(() => {
+        mockUseAgentActivity.mockReturnValue({
+            startTyping: jest.fn(),
+            stopTyping: jest.fn(),
+            getTicketActivity: jest.fn().mockReturnValue({typing: []}),
+        })
+    })
 
     it('should render the editor', () => {
         const {container} = render(

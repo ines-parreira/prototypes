@@ -16,6 +16,9 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
 import RichField from 'pages/common/forms/RichField/RichField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
+import withTypingActivity, {
+    TypingActivityProps,
+} from 'pages/tickets/detail/components/ReplyArea/withTypingActivity'
 import {isNewChannel} from 'services/channels'
 import {getOtherAgents} from 'state/agents/selectors'
 import {addAttachments, setResponseText} from 'state/newMessage/actions'
@@ -43,18 +46,28 @@ type Props = {
     shouldDisplayQuickReply: boolean
     ticket: Map<any, any>
     flags?: LDFlagSet
-} & ConnectedProps<typeof connector>
+} & ConnectedProps<typeof connector> &
+    TypingActivityProps
 
 // debounce the updating of the redux because it's slow otherwise when we type
 export const updateMessageText = _debounce(
-    ({newMessage, setResponseText}: Props, editorState: EditorState) => {
+    (
+        {
+            newMessage,
+            setResponseText,
+            handleTypingActivity,
+        }: Props & TypingActivityProps,
+        editorState: EditorState
+    ) => {
         if (!newMessage.getIn(['state', 'cacheAdded'])) {
             return
         }
 
+        const contentState = editorState.getCurrentContent()
+        handleTypingActivity(contentState)
         setResponseText(
             Map({
-                contentState: editorState.getCurrentContent(),
+                contentState,
                 selectionState: editorState.getSelection(),
                 forceUpdate: false,
                 forceFocus: false,
@@ -503,4 +516,6 @@ const connector = connect(
     }
 )
 
-export default connector(withLDConsumer()(TicketReplyEditorContainer))
+export default connector(
+    withTypingActivity(withLDConsumer()(TicketReplyEditorContainer))
+)
