@@ -17,6 +17,12 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {PageSection} from 'config/pages'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import useAppSelector from 'hooks/useAppSelector'
+// DON'T add 'pages/*' imports above to ensure CSS ordering is preserved. Placing this import elsewhere
+// may cause unexpected CSS precedence issues, breaking the intended design.
+//
+// cf. https://github.com/gorgias/helpdesk-web-app/pull/6154
+// eslint-disable-next-line import/order
+import App from 'pages/App'
 import ActionEventsViewContainer from 'pages/aiAgent/actions/ActionEventsViewContainer'
 import ActionsTemplatesViewContainer from 'pages/aiAgent/actions/ActionsTemplatesViewContainer'
 import ActionsViewContainer from 'pages/aiAgent/actions/ActionsViewContainer'
@@ -41,7 +47,6 @@ import {OptimizeContainer} from 'pages/aiAgent/insights/OptimizeContainer/Optimi
 import {AiAgentAccountConfigurationProvider} from 'pages/aiAgent/providers/AiAgentAccountConfigurationProvider'
 import {AiAgentErrorBoundary} from 'pages/aiAgent/providers/AiAgentErrorBoundary'
 import AiAgentStoreConfigurationProvider from 'pages/aiAgent/providers/AiAgentStoreConfigurationProvider'
-import App from 'pages/App'
 import ActionsPlatformAppsView from 'pages/automate/actionsPlatform/ActionsPlatformAppsView'
 import ActionsPlatformCreateAppFormView from 'pages/automate/actionsPlatform/ActionsPlatformCreateAppFormView'
 import ActionsPlatformCreateStepView from 'pages/automate/actionsPlatform/ActionsPlatformCreateStepView'
