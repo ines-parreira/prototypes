@@ -5,14 +5,17 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {ReportConfig} from 'pages/stats/common/CustomReport/types'
 import {ChartsDefaultFrame} from 'pages/stats/custom-reports/ChartsDefaultFrame'
 import {REPORTS_MODAL_CONFIG} from 'pages/stats/custom-reports/config'
 import css from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal.less'
 import {ModalSearchBar} from 'pages/stats/custom-reports/CustomReportsModal/ModalSearchBar'
 import {SelectableCharts} from 'pages/stats/custom-reports/CustomReportsModal/SelectableCharts'
 import {SelectableReports} from 'pages/stats/custom-reports/CustomReportsModal/SelectableReports'
-import {CustomReportSchema} from 'pages/stats/custom-reports/types'
+import {
+    ReportConfig,
+    ReportsModalConfig,
+    CustomReportSchema,
+} from 'pages/stats/custom-reports/types'
 import {useUpdateCustomReport} from 'pages/stats/custom-reports/useUpdateCustomReport'
 import {getSavedChartsIds} from 'pages/stats/custom-reports/utils'
 
@@ -21,11 +24,6 @@ type Props = {
     setIsOpen: (isOpen: boolean) => void
     customReport?: CustomReportSchema
 }
-
-export type ReportsModalConfig = {
-    category: string
-    children: ReportConfig<string>[]
-}[]
 
 export const MODAL_TITLE = 'Select charts to display'
 export const GRAPH_DESCRIPTION =

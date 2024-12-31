@@ -2,8 +2,8 @@ import {
     fetchWorkloadPerChannelDistribution,
     fetchWorkloadPerChannelDistributionForPreviousPeriod,
 } from 'hooks/reporting/distributions'
-import {ReportConfig} from 'pages/stats/common/CustomReport/types'
 import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
+import {ReportConfig} from 'pages/stats/custom-reports/types'
 import {CustomerSatisfactionTrendCard} from 'pages/stats/support-performance/overview/charts/CustomerSatisfactionTrendCard'
 import {MedianResolutionTimeTrendCard} from 'pages/stats/support-performance/overview/charts/MedianResolutionTimeTrendCard'
 import {MedianFirstResponseTimeTrendCard} from 'pages/stats/support-performance/overview/charts/MedianResponseTimeTrendCard'

@@ -14,6 +14,7 @@ import {
     CustomReportNameFormSubmitHandler,
 } from 'pages/stats/custom-reports/CustomReportNameForm'
 import {CustomReportsModal} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
+import {CustomReportSchema} from 'pages/stats/custom-reports/types'
 import {
     customReportFromApi,
     getErrorMessage,
@@ -47,7 +48,9 @@ export const CustomReportPage = () => {
 
     const [isModalOpen, setOpenModal] = useState<boolean>(false)
 
-    const customReport = customReportFromApi(data?.data)
+    const customReport: CustomReportSchema | undefined = customReportFromApi(
+        data?.data
+    )
 
     const isEditMode = !!customReport?.children.length
 

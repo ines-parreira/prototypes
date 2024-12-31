@@ -1,5 +1,5 @@
-import {ReportConfig} from 'pages/stats/common/CustomReport/types'
 import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
+import {ReportConfig} from 'pages/stats/custom-reports/types'
 import {BusiestTimesOfDaysTableChart} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTableChart'
 
 export const BUSIEST_TIME_OF_DAY_PAGE_TITLE = 'Busiest times'

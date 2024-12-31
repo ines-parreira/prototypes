@@ -46,7 +46,12 @@ describe('ModalSearchBar', () => {
         expect(setConfig).toHaveBeenLastCalledWith([
             {
                 category: 'Support Performance',
-                children: [calledCharts],
+                children: [
+                    {
+                        type: OverviewChart,
+                        config: calledCharts,
+                    },
+                ],
             },
         ])
 

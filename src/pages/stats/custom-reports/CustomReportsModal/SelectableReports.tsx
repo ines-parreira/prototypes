@@ -2,9 +2,11 @@ import classnames from 'classnames'
 import React from 'react'
 
 import IconInput from 'pages/common/forms/input/IconInput'
-import {ReportConfig} from 'pages/stats/common/CustomReport/types'
-import {ReportsModalConfig} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
 import css from 'pages/stats/custom-reports/CustomReportsModal/SelectableReports.less'
+import {
+    ReportConfig,
+    ReportsModalConfig,
+} from 'pages/stats/custom-reports/types'
 import {getNumberOfSelections} from 'pages/stats/custom-reports/utils'
 
 export const SelectableReports = ({
@@ -29,22 +31,23 @@ export const SelectableReports = ({
                     <div className={css.category}>{report.category}</div>
                     {Object.values(report.children).map((chart) => {
                         const isReportSelected =
-                            selectedReport?.reportPath === chart.reportPath
+                            selectedReport?.reportPath ===
+                            chart.config.reportPath
                         const numberOfSelections = getNumberOfSelections(
-                            chart.charts,
+                            chart.config.charts,
                             checkedCharts
                         )
 
                         return (
                             <div
-                                key={chart.reportPath}
+                                key={chart.config.reportPath}
                                 className={classnames(css.subcategory, {
                                     [css.isSelected]: isReportSelected,
                                 })}
-                                onClick={() => setSelectedReport(chart)}
+                                onClick={() => setSelectedReport(chart.config)}
                             >
                                 <div>
-                                    {chart.reportName}
+                                    {chart.config.reportName}
                                     {numberOfSelections > 0 && (
                                         <div
                                             className={css.selection}

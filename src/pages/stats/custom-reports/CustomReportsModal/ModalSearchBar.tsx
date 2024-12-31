@@ -1,9 +1,12 @@
+import _get from 'lodash/get'
 import React from 'react'
 
 import {SearchBar} from 'pages/common/components/SearchBar/SearchBar'
-import {ReportConfig} from 'pages/stats/common/CustomReport/types'
 import {REPORTS_MODAL_CONFIG} from 'pages/stats/custom-reports/config'
-import {ReportsModalConfig} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
+import {
+    ReportConfig,
+    ReportsModalConfig,
+} from 'pages/stats/custom-reports/types'
 import {getSearchConfig} from 'pages/stats/custom-reports/utils'
 
 const placeholder = 'Select a maximum of 20 charts to add'
@@ -17,8 +20,8 @@ export const ModalSearchBar = ({setConfig, setSelectedReport}: Props) => {
     const onSearchValue = (value: string) => {
         const config = getSearchConfig(value)
 
-        setConfig(config.length ? config : null)
-        setSelectedReport(config.length ? config[0].children[0] : null)
+        setConfig(config)
+        setSelectedReport(_get(config, '0.children.0.config') || null)
     }
 
     const onClearSearch = () => {

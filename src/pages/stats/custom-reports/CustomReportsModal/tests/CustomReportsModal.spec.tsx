@@ -16,10 +16,9 @@ import {
     NO_SEARCH_RESULT,
 } from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
 import {
-    CustomReportChartSchema,
     CustomReportChildType,
-    CustomReportRowSchema,
     CustomReportSchema,
+    ReportsModalConfig,
 } from 'pages/stats/custom-reports/types'
 import {
     OverviewMetric,
@@ -34,20 +33,22 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {assumeMock} from 'utils/testing'
 
-const chart: CustomReportChartSchema = {
-    type: CustomReportChildType.Chart,
-    config_id: OverviewMetric.MedianFirstResponseTime,
-}
-const row: CustomReportRowSchema = {
-    type: CustomReportChildType.Row,
-    children: [chart],
-}
 const customReport: CustomReportSchema = {
     id: 2,
     analytics_filter_id: 1,
     name: 'some report',
     emoji: null,
-    children: [row],
+    children: [
+        {
+            type: CustomReportChildType.Row,
+            children: [
+                {
+                    type: CustomReportChildType.Chart,
+                    config_id: OverviewMetric.MedianFirstResponseTime,
+                },
+            ],
+        },
+    ],
 }
 
 const props = {
@@ -73,6 +74,17 @@ const customerSatisfactionMetric = OverviewChart.CustomerSatisfactionTrendCard
 const firstChartDescription =
     SupportPerformanceOverviewReportConfig.charts[customerSatisfactionMetric]
         .label
+const mockConfig: ReportsModalConfig = [
+    {
+        category: 'Support Performance',
+        children: [
+            {
+                type: OverviewChart,
+                config: SupportPerformanceOverviewReportConfig,
+            },
+        ],
+    },
+]
 
 const updateReportResponse = () =>
     ({
@@ -83,12 +95,7 @@ const updateReportResponse = () =>
 describe('AddChartsModal', () => {
     beforeEach(() => {
         Object.defineProperty(constants, 'REPORTS_MODAL_CONFIG', {
-            value: [
-                {
-                    category: 'Support Performance',
-                    children: [SupportPerformanceOverviewReportConfig],
-                },
-            ],
+            value: mockConfig,
         })
 
         useAppDispatchMock.mockReturnValue(dispatchMock)
@@ -113,14 +120,16 @@ describe('AddChartsModal', () => {
         expect(screen.getByText(READ_MORE_ABOUT_CHARTS)).toBeInTheDocument()
     })
 
-    it.each(constants.REPORTS_MODAL_CONFIG)(
+    it.each(mockConfig)(
         'should render category name and their reports names',
         (category) => {
             render(<CustomReportsModal {...props} />, {})
 
             expect(screen.getByText(category.category)).toBeInTheDocument()
             category.children.map((child) => {
-                expect(screen.getByText(child.reportName)).toBeInTheDocument()
+                expect(
+                    screen.getByText(child.config.reportName)
+                ).toBeInTheDocument()
             })
         }
     )
@@ -166,30 +175,31 @@ describe('AddChartsModal', () => {
 
         expect(mutateUpdateReportMock).toHaveBeenCalledWith({
             data: {
-                analytics_filter_id: customReport.analytics_filter_id,
+                analytics_filter_id: 1,
                 children: [
                     {
                         children: [
                             {
-                                config_id: chart.config_id,
+                                config_id:
+                                    OverviewMetric.MedianFirstResponseTime,
                                 metadata: {},
-                                type: 'chart',
+                                type: CustomReportChildType.Chart,
                             },
                             {
                                 config_id: customerSatisfactionMetric,
                                 metadata: {},
-                                type: 'chart',
+                                type: CustomReportChildType.Chart,
                             },
                         ],
                         metadata: {},
-                        type: 'row',
+                        type: CustomReportChildType.Row,
                     },
                 ],
                 emoji: customReport.emoji,
                 name: customReport.name,
                 type: 'custom',
             },
-            id: 2,
+            id: customReport.id,
         })
     })
 
@@ -262,18 +272,11 @@ describe('AddChartsModal', () => {
     })
 
     it('should have a separator if we have 2 or more elements', () => {
-        Object.defineProperty(constants, 'REPORTS_MODAL_CONFIG', {
-            value: [
-                {
-                    category: 'Support Performance',
-                    children: [SupportPerformanceOverviewReportConfig],
-                },
-                {
-                    category: 'Support Performance',
-                    children: [SupportPerformanceOverviewReportConfig],
-                },
-            ],
-        })
+        Object.defineProperty(
+            constants,
+            'REPORTS_MODAL_CONFIG',
+            constants.REPORTS_MODAL_CONFIG
+        )
 
         const {container} = render(<CustomReportsModal {...props} />, {})
 

@@ -1,5 +1,5 @@
-import {ReportConfig} from 'pages/stats/common/CustomReport/types'
 import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
+import {ReportConfig} from 'pages/stats/custom-reports/types'
 import {
     CHANNEL_PERFORMANCE_TABLE_TITLE,
     ChannelsPerformanceTableChart,

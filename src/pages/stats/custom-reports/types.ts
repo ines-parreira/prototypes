@@ -1,3 +1,13 @@
+import {FunctionComponent, ReactNode} from 'react'
+
+import {MetricPerDimensionFetch} from 'hooks/reporting/distributions'
+import {MetricTrendFetch} from 'hooks/reporting/useMetricTrend'
+import {TimeSeriesFetch} from 'hooks/reporting/useTimeSeries'
+import {AgentsChart} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
+import {BusiestTimesChart} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
+import {ChannelsChart} from 'pages/stats/support-performance/channels/ChannelsReportConfig'
+import {OverviewChart} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+
 export enum CustomReportChildType {
     Row = 'row',
     Section = 'section',
@@ -44,3 +54,38 @@ export type DashboardInput = {
     analytics_filter_id?: number | null
     children?: CustomReportChild[]
 }
+
+type DataExportFetch =
+    | MetricTrendFetch
+    | TimeSeriesFetch
+    | MetricPerDimensionFetch[]
+
+export type ChartConfig = {
+    chartComponent: FunctionComponent
+    label: ReactNode
+    csvProducer: DataExportFetch | null
+    description: ReactNode
+    icon: {name: string; tooltip: string}
+}
+
+export type ReportConfig<T extends string> = {
+    reportName: string
+    reportPath: string
+    charts: Record<T, ChartConfig>
+}
+
+export type AvailableChartIds =
+    | typeof OverviewChart
+    | typeof AgentsChart
+    | typeof BusiestTimesChart
+    | typeof ChannelsChart
+
+export type ReportChildrenConfig = {
+    type: AvailableChartIds
+    config: ReportConfig<string>
+}[]
+
+export type ReportsModalConfig = {
+    category: string
+    children: ReportChildrenConfig
+}[]

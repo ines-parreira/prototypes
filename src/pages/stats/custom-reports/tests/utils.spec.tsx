@@ -12,8 +12,9 @@ import {
 import {AxiosError} from 'axios'
 import React from 'react'
 
-import {ChartConfig} from 'pages/stats/common/CustomReport/types'
+import {REPORTS_MODAL_CONFIG} from 'pages/stats/custom-reports/config'
 import {
+    ChartConfig,
     CustomReportSchema,
     CustomReportChildType,
     DashboardInput,
@@ -35,8 +36,6 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-
-import {REPORTS_MODAL_CONFIG} from '../config'
 
 describe('customReportFromApi', () => {
     const apiReportWithoutChildren: AnalyticsCustomReport = {
@@ -329,37 +328,37 @@ describe('getNumberOfSelections', () => {
         },
     }
 
-    test('returns 0 when no charts are selected', () => {
+    it('should return 0 when no charts are selected', () => {
         const checkedCharts: string[] = []
         const result = getNumberOfSelections(mockCharts, checkedCharts)
         expect(result).toBe(0)
     })
 
-    test('returns correct number of selections when some charts are selected', () => {
+    it('should return correct number of selections when some charts are selected', () => {
         const checkedCharts: string[] = ['chart1', 'chart2']
         const result = getNumberOfSelections(mockCharts, checkedCharts)
         expect(result).toBe(2)
     })
 
-    test('returns 0 if checkedCharts is empty', () => {
+    it('should return 0 if checkedCharts is empty', () => {
         const checkedCharts: string[] = []
         const result = getNumberOfSelections(mockCharts, checkedCharts)
         expect(result).toBe(0)
     })
 
-    test('returns correct count if the same chart is selected multiple times', () => {
+    it('should return correct count if the same chart is selected multiple times', () => {
         const checkedCharts: string[] = ['chart1', 'chart1', 'chart2']
         const result = getNumberOfSelections(mockCharts, checkedCharts)
         expect(result).toBe(3)
     })
 
-    test('returns correct count when all charts are selected', () => {
+    it('should return correct count when all charts are selected', () => {
         const checkedCharts: string[] = ['chart1', 'chart2', 'chart3']
         const result = getNumberOfSelections(mockCharts, checkedCharts)
         expect(result).toBe(3)
     })
 
-    test('returns 0 when no matching chart ids in checkedCharts', () => {
+    it('should return 0 when no matching chart ids in checkedCharts', () => {
         const checkedCharts: string[] = ['chart4', 'chart5']
         const result = getNumberOfSelections(mockCharts, checkedCharts)
         expect(result).toBe(0)
@@ -367,7 +366,7 @@ describe('getNumberOfSelections', () => {
 })
 
 describe('getSearchConfig', () => {
-    test('should return matching charts based on case-insensitive search query', () => {
+    it('should return matching charts based on case-insensitive search query', () => {
         const searchValue =
             OverviewMetricConfig[OverviewMetric.CustomerSatisfaction].title
         const result = getSearchConfig(searchValue)
@@ -377,12 +376,17 @@ describe('getSearchConfig', () => {
                 category: 'Support Performance',
                 children: [
                     {
-                        ...SupportPerformanceOverviewReportConfig,
-                        charts: {
-                            [OverviewChart.CustomerSatisfactionTrendCard]:
-                                SupportPerformanceOverviewReportConfig.charts[
-                                    OverviewChart.CustomerSatisfactionTrendCard
-                                ],
+                        type: OverviewChart,
+                        config: {
+                            ...SupportPerformanceOverviewReportConfig,
+                            charts: {
+                                [OverviewChart.CustomerSatisfactionTrendCard]:
+                                    SupportPerformanceOverviewReportConfig
+                                        .charts[
+                                        OverviewChart
+                                            .CustomerSatisfactionTrendCard
+                                    ],
+                            },
                         },
                     },
                 ],
@@ -390,14 +394,14 @@ describe('getSearchConfig', () => {
         ])
     })
 
-    test('should return an empty array if no charts match the search query', () => {
+    it('should return null if no charts match the search query', () => {
         const searchValue = 'Nonexistent'
         const result = getSearchConfig(searchValue)
 
-        expect(result).toEqual([])
+        expect(result).toEqual(null)
     })
 
-    test('should correctly match partial chart labels', () => {
+    it('should correctly match partial chart labels', () => {
         const searchValue = 'Messages'
         const result = getSearchConfig(searchValue)
 
@@ -406,20 +410,26 @@ describe('getSearchConfig', () => {
                 category: 'Support Performance',
                 children: [
                     {
-                        ...SupportPerformanceOverviewReportConfig,
-                        charts: {
-                            [OverviewChart.MessagesPerTicketTrendCard]:
-                                SupportPerformanceOverviewReportConfig.charts[
-                                    OverviewChart.MessagesPerTicketTrendCard
-                                ],
-                            [OverviewChart.MessagesSentGraph]:
-                                SupportPerformanceOverviewReportConfig.charts[
-                                    OverviewChart.MessagesSentGraph
-                                ],
-                            [OverviewChart.MessagesSentTrendCard]:
-                                SupportPerformanceOverviewReportConfig.charts[
-                                    OverviewChart.MessagesSentTrendCard
-                                ],
+                        type: OverviewChart,
+                        config: {
+                            ...SupportPerformanceOverviewReportConfig,
+                            charts: {
+                                [OverviewChart.MessagesPerTicketTrendCard]:
+                                    SupportPerformanceOverviewReportConfig
+                                        .charts[
+                                        OverviewChart.MessagesPerTicketTrendCard
+                                    ],
+                                [OverviewChart.MessagesSentGraph]:
+                                    SupportPerformanceOverviewReportConfig
+                                        .charts[
+                                        OverviewChart.MessagesSentGraph
+                                    ],
+                                [OverviewChart.MessagesSentTrendCard]:
+                                    SupportPerformanceOverviewReportConfig
+                                        .charts[
+                                        OverviewChart.MessagesSentTrendCard
+                                    ],
+                            },
                         },
                     },
                 ],
@@ -427,7 +437,7 @@ describe('getSearchConfig', () => {
         ])
     })
 
-    test('should return all charts if the search query is empty', () => {
+    it('should return all charts if the search query is empty', () => {
         const searchValue = ''
         const result = getSearchConfig(searchValue)
 
@@ -436,7 +446,7 @@ describe('getSearchConfig', () => {
 })
 
 describe('getSavedChartsIds', () => {
-    test('should return chart config_ids from the report children', () => {
+    it('should return chart config_ids from the report children', () => {
         const report = {
             id: 1,
             name: 'Report 1',
@@ -460,7 +470,7 @@ describe('getSavedChartsIds', () => {
         expect(result).toEqual(['chart-1'])
     })
 
-    test('should return chart config_ids from nested children', () => {
+    it('should return chart config_ids from nested children', () => {
         const report: CustomReportSchema = {
             id: 2,
             name: 'Report 2',
@@ -490,7 +500,7 @@ describe('getSavedChartsIds', () => {
         expect(result).toEqual(['chart-3', 'chart-1'])
     })
 
-    test('should return an empty array when no charts are present', () => {
+    it('should return an empty array when no charts are present', () => {
         const report: CustomReportSchema = {
             id: 3,
             name: 'Report 3',
@@ -514,7 +524,7 @@ describe('getSavedChartsIds', () => {
         expect(result).toEqual([])
     })
 
-    test('should handle empty children array', () => {
+    it('should handle empty children array', () => {
         const report: CustomReportSchema = {
             id: 4,
             name: 'Report 4',
@@ -527,7 +537,7 @@ describe('getSavedChartsIds', () => {
         expect(result).toEqual([])
     })
 
-    test('should handle null children in the report', () => {
+    it('should handle null children in the report', () => {
         const report: CustomReportSchema = {
             id: 5,
             name: 'Report 5',
@@ -548,7 +558,7 @@ describe('getSavedChartsIds', () => {
         expect(result).toEqual(['chart-4'])
     })
 
-    test('should return an empty array for reports with no children or charts', () => {
+    it('should return an empty array for reports with no children or charts', () => {
         const report: CustomReportSchema = {
             id: 6,
             name: 'Report 6',

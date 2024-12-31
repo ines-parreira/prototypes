@@ -16,14 +16,12 @@ import {
 import React from 'react'
 
 import {isGorgiasApiError} from 'models/api/types'
-import {ChartConfig} from 'pages/stats/common/CustomReport/types'
 import {REPORTS_MODAL_CONFIG} from 'pages/stats/custom-reports/config'
-
 import {CustomReportChart} from 'pages/stats/custom-reports/CustomReportChart'
 import {CustomReportRow} from 'pages/stats/custom-reports/CustomReportRow'
 import {CustomReportSection} from 'pages/stats/custom-reports/CustomReportSection'
-import {ReportsModalConfig} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
 import {
+    ChartConfig,
     CustomReportChartSchema,
     CustomReportChild,
     CustomReportChildType,
@@ -31,6 +29,8 @@ import {
     CustomReportSchema,
     CustomReportSectionSchema,
     DashboardInput,
+    ReportsModalConfig,
+    ReportChildrenConfig,
 } from 'pages/stats/custom-reports/types'
 import {notNull} from 'utils/types'
 
@@ -112,11 +112,11 @@ export const customReportChildFromApi = (
     child: AnalyticsCustomReportChildrenItem
 ): CustomReportChild | null => {
     switch (child.type) {
-        case 'section':
+        case CustomReportChildType.Section:
             return fromApiSection(child)
-        case 'row':
+        case CustomReportChildType.Row:
             return fromApiRow(child)
-        case 'chart':
+        case CustomReportChildType.Chart:
             return fromApiChart(child)
         default:
             return null
@@ -180,36 +180,45 @@ export const getGroupChartsIntoRows = (
     }))
 }
 
-export const getSearchConfig = (value: string) => {
+export const getSearchConfig = (value: string): ReportsModalConfig | null => {
+    const searchValue = value.toLowerCase()
+
     const config: ReportsModalConfig = []
-    REPORTS_MODAL_CONFIG.forEach((category) => {
-        category.children.forEach((report) => {
-            const similarCharts: Record<string, ChartConfig> = {}
 
-            Object.entries(report.charts).forEach(([chartId, chart]) => {
-                if (
-                    String(chart.label)
-                        .toLowerCase()
-                        .includes(value.toLowerCase())
-                ) {
-                    similarCharts[chartId] = chart
+    for (const reportConfig of REPORTS_MODAL_CONFIG) {
+        const filteredChildren: ReportChildrenConfig = []
+
+        for (const report of reportConfig.children) {
+            const filteredCharts: Record<string, ChartConfig> = {}
+
+            for (const [chartId, chart] of Object.entries(
+                report.config.charts
+            )) {
+                if (String(chart.label).toLowerCase().includes(searchValue)) {
+                    filteredCharts[chartId] = chart
                 }
-            })
+            }
 
-            if (Object.keys(similarCharts).length) {
-                config.push({
-                    category: category.category,
-                    children: [
-                        {
-                            ...report,
-                            charts: similarCharts,
-                        },
-                    ],
+            if (Object.keys(filteredCharts).length > 0) {
+                filteredChildren.push({
+                    type: report.type,
+                    config: {
+                        ...report.config,
+                        charts: filteredCharts,
+                    },
                 })
             }
-        })
-    })
-    return config
+        }
+
+        if (filteredChildren.length > 0) {
+            config.push({
+                category: reportConfig.category,
+                children: filteredChildren,
+            })
+        }
+    }
+
+    return config.length ? config : null
 }
 
 export const getNumberOfSelections = (

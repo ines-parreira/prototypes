@@ -2,10 +2,10 @@ import React, {useCallback} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {ChartConfig} from 'pages/stats/common/CustomReport/types'
 import {MAX_CHECKED_CHARTS} from 'pages/stats/custom-reports/config'
 import {ChartIcon} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
 import css from 'pages/stats/custom-reports/CustomReportsModal/SelectableCharts.less'
+import {ChartConfig} from 'pages/stats/custom-reports/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 

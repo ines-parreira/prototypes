@@ -1,6 +1,6 @@
 import {createElement, memo} from 'react'
 
-import {ReportConfig} from 'pages/stats/common/CustomReport/types'
+import {ReportConfig} from 'pages/stats/custom-reports/types'
 
 type Props<T extends string> = {
     chart: T

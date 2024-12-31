@@ -1,31 +1,33 @@
+import _flatten from 'lodash/flatten'
 import React from 'react'
 
 import {CustomReportComponent} from 'pages/stats/common/CustomReport/CustomReportComponent'
-import {CustomReportChartSchema} from 'pages/stats/custom-reports/types'
+import {REPORTS_MODAL_CONFIG} from 'pages/stats/custom-reports/config'
 import {
-    OverviewChart,
-    SupportPerformanceOverviewReportConfig,
-} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+    ReportConfig,
+    CustomReportChartSchema,
+} from 'pages/stats/custom-reports/types'
 
 type Props = {
     schema: CustomReportChartSchema
 }
 
-const getChartId = (configId: string): OverviewChart | undefined => {
-    return Object.values(OverviewChart).find((x) => String(x) === configId)
-}
-
-const getComponentConfig = (configId: string) => {
-    const chartId = getChartId(configId)
-
-    if (!chartId) {
-        return {chart: null, config: null}
+const getComponentConfig = (
+    configId: string
+): {config: ReportConfig<string> | null; chart: string | null} => {
+    const availableCharts = _flatten(
+        REPORTS_MODAL_CONFIG.map((report) => report.children)
+    )
+    for (const chart of availableCharts) {
+        if (Object.values(chart.type).includes(configId)) {
+            return {
+                config: chart.config,
+                chart: configId,
+            }
+        }
     }
 
-    return {
-        chart: chartId,
-        config: SupportPerformanceOverviewReportConfig,
-    }
+    return {chart: null, config: null}
 }
 
 export const CustomReportChart = ({schema}: Props) => {
