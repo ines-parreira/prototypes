@@ -1,0 +1,43 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .modalFooterBackButton {
+        margin-left: inherit;
+        width: auto !important;
+    }
+
+    .modalBodyTitle {
+        .heading-subsection-semibold();
+    }
+
+    .modalBodyListIcon {
+        margin-right: @layout-spacing-xs;
+        color: var(--feedback-success-3);
+    }
+
+    .modalBodyContent {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .modalBodyList {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+        margin-bottom: 0;
+        .heading-subsection-regular();
+        color: var(--neutral-grey-5);
+    }
+
+    .modalActionsFooter {
+        :first-child {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}

@@ -73,7 +73,10 @@ const getInitialTemplate = () => {
         available_languages: [],
     })
 
-    return b.build()
+    return {
+        ...b.build(),
+        advanced_datetime: new Date().toISOString(),
+    }
 }
 
 const ActionsPlatformCreateTemplateView = () => {

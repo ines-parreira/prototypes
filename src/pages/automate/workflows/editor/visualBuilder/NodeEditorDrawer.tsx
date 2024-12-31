@@ -84,6 +84,7 @@ const NodeEditorDrawer = ({nodeInEdition, onClose}: Props) => {
             isLoading={false}
             portalRootId="app-root"
             transitionDurationMs={300}
+            containerZIndices={[10, 10]}
         >
             <NodeEditorDrawerContext.Provider
                 key={nodeInEdition?.id}

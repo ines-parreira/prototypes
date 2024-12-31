@@ -1,8 +1,9 @@
 import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import React, {memo, ReactNode} from 'react'
+import React, {memo} from 'react'
 import {NodeProps} from 'reactflow'
 
 import {useGetWorkflowConfigurationTemplate} from 'models/workflows/queries'
+import {getCredentialsStatus} from 'pages/aiAgent/actions/utils'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
@@ -15,11 +16,11 @@ import {
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
+import ReusableLLMPromptCallNodeStatusLabel from '../../../components/ReusableLLMPromptCallNodeStatusLabel'
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
 import ReusableLLMPromptCallNodeLabel from './ReusableLLMPromptCallNodeLabel'
 import VisualBuilderNode from './VisualBuilderNode'
-import VisualBuilderNodeIconContent from './VisualBuilderNodeIconContent'
 
 type Props = VisualBuilderNodeProps & {
     configurationId: string
@@ -77,10 +78,11 @@ const ReusableLLMPromptCallNode = memo(function ReusableLLMPromptCallNode({
         }
     })
 
-    const hasMissingCredentials =
-        graphApp?.type === 'app' && !isTemplate && !graphApp.api_key?.trim()
-    const hasCredentials =
-        templateApp.type === 'app' && !isTemplate && !hasMissingCredentials
+    const {hasMissingCredentials, hasCredentials} = getCredentialsStatus(
+        graphApp,
+        templateApp,
+        isTemplate
+    )
 
     const isClickable = (templateApp.type === 'app' && !isTemplate) || hasInputs
 
@@ -99,46 +101,6 @@ const ReusableLLMPromptCallNode = memo(function ReusableLLMPromptCallNode({
         )
     }
 
-    let content: ReactNode = null
-
-    if (hasMissingCredentials && hasMissingValues) {
-        content = (
-            <VisualBuilderNodeIconContent icon="warning" type="warning">
-                Authentication and values required
-            </VisualBuilderNodeIconContent>
-        )
-    } else if (hasMissingCredentials) {
-        content = (
-            <VisualBuilderNodeIconContent icon="warning" type="warning">
-                Authentication required
-            </VisualBuilderNodeIconContent>
-        )
-    } else if (hasMissingValues) {
-        content = (
-            <VisualBuilderNodeIconContent icon="warning" type="warning">
-                Values required
-            </VisualBuilderNodeIconContent>
-        )
-    } else if (hasCredentials && hasAllValues) {
-        content = (
-            <VisualBuilderNodeIconContent icon="edit">
-                Edit authentication and values
-            </VisualBuilderNodeIconContent>
-        )
-    } else if (hasCredentials) {
-        content = (
-            <VisualBuilderNodeIconContent icon="edit">
-                Edit authentication
-            </VisualBuilderNodeIconContent>
-        )
-    } else if (hasAllValues) {
-        content = (
-            <VisualBuilderNodeIconContent icon="edit">
-                Edit values
-            </VisualBuilderNodeIconContent>
-        )
-    }
-
     return (
         <div>
             <EdgeBlock {...edgeProps} />
@@ -149,7 +111,12 @@ const ReusableLLMPromptCallNode = memo(function ReusableLLMPromptCallNode({
                 isErrored={!!graphApp?.errors}
             >
                 <ReusableLLMPromptCallNodeLabel app={app} name={step.name} />
-                {content}
+                <ReusableLLMPromptCallNodeStatusLabel
+                    hasMissingCredentials={hasMissingCredentials}
+                    hasCredentials={hasCredentials}
+                    hasAllValues={hasAllValues}
+                    hasMissingValues={hasMissingValues}
+                />
                 <NodeDeleteIcon {...deleteProps} />
             </VisualBuilderNode>
         </div>

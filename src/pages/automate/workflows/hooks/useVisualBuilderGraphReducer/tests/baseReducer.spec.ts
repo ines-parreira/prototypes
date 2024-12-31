@@ -14,6 +14,7 @@ import {
     SkipChargeNodeType,
     TextReplyNodeType,
     UpdateShippingAddressNodeType,
+    VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {
     visualBuilderGraphLlmPromptTriggerFixture,
@@ -919,6 +920,48 @@ describe('baseReducer', () => {
         ])
     })
 
+    test('SET_APP_API_KEY when app is not found', () => {
+        const graph = {
+            ...visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+            apps: [
+                {
+                    type: 'shopify' as const,
+                },
+            ],
+        }
+        const nextG = baseReducer(graph, {
+            type: 'SET_APP_API_KEY',
+            appId: '123',
+            apiKey: 'some api key',
+        })
+
+        // Should not modify the apps array when app is not found
+        expect(nextG.apps).toEqual([{type: 'shopify'}])
+    })
+
+    test('SET_APP_API_KEY with multiple apps sets key on correct app', () => {
+        const graph = {
+            ...visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+            apps: [
+                {type: 'shopify' as const},
+                {type: 'app' as const, app_id: '123', api_key: 'old key'},
+                {type: 'app' as const, app_id: '456', api_key: 'other key'},
+            ],
+        }
+        const nextG = baseReducer(graph, {
+            type: 'SET_APP_API_KEY',
+            appId: '123',
+            apiKey: 'new key',
+        })
+
+        // Should only modify the API key of the matching app
+        expect(nextG.apps).toEqual([
+            {type: 'shopify'},
+            {type: 'app', app_id: '123', api_key: 'new key'},
+            {type: 'app', app_id: '456', api_key: 'other key'},
+        ])
+    })
+
     test('SET_ERRORS', () => {
         let nextG = baseReducer(
             visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
@@ -955,6 +998,39 @@ describe('baseReducer', () => {
         })
     })
 
+    test('SET_ERRORS when node is not found', () => {
+        const nextG = baseReducer(
+            visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+            {
+                type: 'SET_ERRORS',
+                nodeId: 'non-existent-node',
+                errors: {
+                    instructions: 'error',
+                },
+            }
+        )
+        // Graph should remain unchanged when node is not found
+        expect(nextG).toEqual(
+            visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture
+        )
+    })
+
+    test('SET_ERRORS when apps is undefined', () => {
+        const graph = {
+            ...visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+            apps: undefined,
+        }
+        const nextG = baseReducer(graph, {
+            type: 'SET_ERRORS',
+            appId: '123',
+            errors: {
+                api_key: 'error',
+            },
+        })
+        // Graph should remain unchanged when apps is undefined
+        expect(nextG).toEqual(graph)
+    })
+
     test('SET_TOUCHED', () => {
         let nextG = baseReducer(
             visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
@@ -989,5 +1065,103 @@ describe('baseReducer', () => {
         expect(nextG.apps?.[0]?.touched).toEqual({
             api_key: true,
         })
+    })
+
+    test('MIGRATE_TO_ADVANCED_STEP_BUILDER sets advanced_datetime', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'MIGRATE_TO_ADVANCED_STEP_BUILDER',
+        })
+        expect(nextG.advanced_datetime).toBeDefined()
+    })
+
+    test('SET_NODE_EDITING_ID clears choiceEventIdEditing and branchIdsEditing', () => {
+        const g = {
+            ...visualBuilderGraphSimpleChoicesFixture,
+            choiceEventIdEditing: 'some-id',
+            branchIdsEditing: ['branch-1'],
+        }
+        const nextG = baseReducer(g, {
+            type: 'SET_NODE_EDITING_ID',
+            nodeId: 'new-node',
+        })
+        expect(nextG.nodeEditingId).toBe('new-node')
+        expect(nextG.choiceEventIdEditing).toBeNull()
+        expect(nextG.branchIdsEditing).toEqual([])
+    })
+
+    test('ADD_BRANCH_ID_EDITING initializes array if empty', () => {
+        const g = {
+            ...visualBuilderGraphSimpleChoicesFixture,
+            branchIdsEditing: [],
+        }
+        const nextG = baseReducer(g, {
+            type: 'ADD_BRANCH_ID_EDITING',
+            branchId: 'new-branch',
+        })
+        expect(nextG.branchIdsEditing).toEqual(['new-branch'])
+    })
+
+    test('DELETE_NODE preserves apps in template mode', () => {
+        const g: VisualBuilderGraph = {
+            ...visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+            apps: [
+                {type: 'app' as const, app_id: '123'},
+                {type: 'shopify' as const},
+                {type: 'recharge' as const},
+            ],
+            isTemplate: true,
+        }
+
+        const nextG = baseReducer(g, {
+            type: 'DELETE_NODE',
+            nodeId: 'reusable_llm_prompt_call1',
+            steps: [],
+            apps: [],
+        })
+
+        // Apps should remain unchanged in template mode
+        expect(nextG.apps).toEqual(g.apps)
+    })
+
+    test('DELETE_BRANCH cleans up apps', () => {
+        const g: VisualBuilderGraph = {
+            ...visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+            apps: [
+                {type: 'app' as const, app_id: '123'},
+                {type: 'shopify' as const},
+                {type: 'recharge' as const},
+            ],
+            isTemplate: false,
+        }
+
+        const nextG = baseReducer(g, {
+            type: 'DELETE_BRANCH',
+            nodeId: 'reusable_llm_prompt_call1',
+            steps: [],
+        })
+
+        // No apps should remain since none are in use after branch deletion
+        expect(nextG.apps).toEqual([])
+    })
+
+    test('DELETE_BRANCH preserves apps in template mode', () => {
+        const g: VisualBuilderGraph = {
+            ...visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+            apps: [
+                {type: 'app' as const, app_id: '123'},
+                {type: 'shopify' as const},
+                {type: 'recharge' as const},
+            ],
+            isTemplate: true,
+        }
+
+        const nextG = baseReducer(g, {
+            type: 'DELETE_BRANCH',
+            nodeId: 'reusable_llm_prompt_call1',
+            steps: [],
+        })
+
+        expect(nextG.apps).toEqual(g.apps)
     })
 })

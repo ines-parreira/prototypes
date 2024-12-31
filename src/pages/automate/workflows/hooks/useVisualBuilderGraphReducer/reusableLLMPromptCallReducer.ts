@@ -38,6 +38,10 @@ export type VisualBuilderReusableLLMPromptCallAction =
           inputId: keyof ReusableLLMPromptCallNodeType['data']['values']
           value: ReusableLLMPromptCallNodeType['data']['values'][keyof ReusableLLMPromptCallNodeType['data']['values']]
       }
+    | {
+          type: 'REUSABLE_LLM_PROMPT_CALL_NODE'
+          nodeIds: string[]
+      }
 
 // bridge between type system and runtime
 // allow to keep a type safe list of all action types for this reducer
@@ -47,6 +51,7 @@ type ActionTypes = {
 const visualBuilderReusableLLMPromptCallActionTypes: ActionTypes = {
     INSERT_REUSABLE_LLM_PROMPT_CALL_NODE: true,
     SET_REUSABLE_LLM_PROMPT_CALL_VALUE: true,
+    REUSABLE_LLM_PROMPT_CALL_NODE: true,
 }
 
 export function isVisualBuilderReusableLLMPromptCallAction(action: {
@@ -87,6 +92,8 @@ export function reusableLLMPromptCallReducer(
                     node.data.values[action.inputId] = action.value
                 }
             })
+        case 'REUSABLE_LLM_PROMPT_CALL_NODE':
+            return computeNodesPositions(reorderNodes(graph, action.nodeIds))
     }
 }
 
@@ -240,4 +247,67 @@ function insertReusableLLMPromptCall(
             draft.branchIdsEditing = []
         }
     })
+}
+
+export function reorderNodes(
+    graph: VisualBuilderGraph,
+    nodeIds: string[]
+): VisualBuilderGraph {
+    // Create ordered reusable nodes
+    const orderedReusableNodes = nodeIds
+        .map((id) => {
+            const nodeIndex = graph.nodes.findIndex((node) => node.id === id)
+            if (nodeIndex === -1) return undefined
+            return [graph.nodes[nodeIndex], graph.nodes[nodeIndex + 1]]
+        })
+        .filter(Boolean)
+        .reduce((acc, node) => (acc ?? []).concat(node ?? []), [])
+
+    const triggerNode = graph.nodes[0]
+    const endNode = graph.nodes.find(
+        (node) => node.type === 'end' && node.data.action === 'end-success'
+    )
+
+    if (!triggerNode || !endNode || !orderedReusableNodes) return graph
+
+    const newEdges = [
+        {
+            ...graph.edges[0],
+            target: orderedReusableNodes[0].id,
+        },
+    ]
+    // Connect reusable nodes in sequence
+    orderedReusableNodes.forEach((node, index) => {
+        if (node.type === 'reusable_llm_prompt_call') {
+            const nextNode = orderedReusableNodes[index + 2] // Skip the failure node
+            const failureNode = orderedReusableNodes[index + 1]
+
+            newEdges.push({
+                ...buildEdgeCommonProperties(),
+                source: node.id,
+                target: nextNode ? nextNode.id : endNode.id,
+                data: {
+                    name: 'Success',
+                    conditions: getFallibleNodeSuccessConditions(node.id),
+                },
+            })
+
+            if (failureNode && failureNode.type === 'end') {
+                newEdges.push({
+                    ...buildEdgeCommonProperties(),
+                    source: node.id,
+                    target: failureNode.id,
+                    data: {
+                        name: 'Error',
+                    },
+                })
+            }
+        }
+    })
+
+    return {
+        ...graph,
+        nodes: [triggerNode, endNode, ...orderedReusableNodes],
+        edges: newEdges,
+    }
 }

@@ -488,6 +488,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
         internal_id: g.internal_id,
         is_draft: isDraft,
         name: g.name,
+        advanced_datetime: g.advanced_datetime?.toISOString(),
         initial_step_id: null,
         available_languages: g.available_languages,
         steps: [],

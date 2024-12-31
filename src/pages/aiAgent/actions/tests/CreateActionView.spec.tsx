@@ -7,6 +7,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import {useFlag} from 'common/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useDownloadWorkflowConfigurationStepLogs,
@@ -35,6 +36,7 @@ jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')
 jest.mock('pages/aiAgent/actions/hooks/use3plIntegrations')
+jest.mock('common/flags')
 
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates
@@ -49,6 +51,7 @@ const mockUseAddStoreApp = jest.mocked(useAddStoreApp)
 const mockUseDownloadWorkflowConfigurationStepLogs = jest.mocked(
     useDownloadWorkflowConfigurationStepLogs
 )
+const mockUseFlag = jest.mocked(useFlag)
 const mockUseGetStoreWorkflowsConfigurations = jest.mocked(
     useGetStoreWorkflowsConfigurations
 )
@@ -87,6 +90,7 @@ describe('<CreateActionView />', () => {
         } as unknown as ReturnType<
             typeof useDownloadWorkflowConfigurationStepLogs
         >)
+        mockUseFlag.mockReturnValue(true)
         mockUseGetStoreWorkflowsConfigurations.mockReturnValue({
             data: [],
         } as unknown as ReturnType<typeof useGetStoreWorkflowsConfigurations>)
@@ -313,7 +317,7 @@ describe('<CreateActionView />', () => {
         expect(mockUpsertAction).not.toHaveBeenCalled()
     })
 
-    it('should create Action', () => {
+    it('should create Action in advanced view', () => {
         const mockUpsertAction = jest.fn()
 
         mockUseUpsertAction.mockReturnValue({
@@ -340,18 +344,29 @@ describe('<CreateActionView />', () => {
             }
         )
 
+        // Fill in the basic form
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[0], {
-                target: {value: 'Some name'},
+                target: {value: 'Advanced Action'},
             })
         })
 
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[1], {
-                target: {value: 'Some description'},
+                target: {value: 'Advanced description'},
             })
         })
 
+        // Switch to advanced view
+        act(() => {
+            fireEvent.click(screen.getByText(/Advanced options/i))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Convert To Advanced View'))
+        })
+
+        // Add a step in advanced view
         act(() => {
             fireEvent.click(screen.getByText('Edit'))
         })
@@ -404,7 +419,8 @@ describe('<CreateActionView />', () => {
                 store_type: 'shopify',
             },
             expect.objectContaining({
-                name: 'Some name',
+                name: 'Advanced Action',
+                advanced_datetime: expect.any(String),
                 steps: [
                     {
                         id: expect.any(String),
@@ -437,7 +453,7 @@ describe('<CreateActionView />', () => {
                         kind: 'llm-conversation',
                         trigger: 'llm-prompt',
                         settings: {
-                            instructions: 'Some description',
+                            instructions: 'Advanced description',
                             requires_confirmation: false,
                         },
                         deactivated_datetime: null,
@@ -473,8 +489,21 @@ describe('<CreateActionView />', () => {
             </Provider>
         )
 
+        // Switch to advanced view
+        act(() => {
+            fireEvent.click(screen.getByText(/Advanced options/i))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Convert To Advanced View'))
+        })
+
         act(() => {
             fireEvent.click(screen.getByText('Edit'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('add'))
         })
 
         expect(

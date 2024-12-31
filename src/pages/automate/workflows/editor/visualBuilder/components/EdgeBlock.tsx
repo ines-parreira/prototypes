@@ -11,6 +11,8 @@ import React, {
     useState,
 } from 'react'
 
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import {useStoreAppsContext} from 'pages/aiAgent/actions/providers/StoreAppsContext'
 import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
@@ -1066,12 +1068,17 @@ const AppMenuCategoryItems = ({
     )
 }
 
-function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
+export function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
     const {visualBuilderGraph} = useVisualBuilderContext()
 
     const triggerNode = visualBuilderGraph.nodes[0]
 
     const [menuItems, setMenuItems] = useState<ReactNode>(null)
+
+    const isSimplifiedStepBuilderEnabled = useFlag(
+        FeatureFlagKey.SimplifiedStepBuilder,
+        false
+    )
 
     const initialMenuItems = useMemo<ReactNode>(() => {
         switch (triggerNode.type) {
@@ -1124,10 +1131,12 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
                             nodeId={nodeId}
                             floatingRef={floatingRef}
                         />
+
                         <ConditionsMenuItem
                             nodeId={nodeId}
                             floatingRef={floatingRef}
                         />
+
                         <LLMPromptTemplateShopifyMenuItems
                             nodeId={nodeId}
                             floatingRef={floatingRef}
@@ -1141,14 +1150,19 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
             case 'llm_prompt_trigger':
                 return (
                     <DropdownBody>
-                        <HttpRequestMenuItem
-                            nodeId={nodeId}
-                            floatingRef={floatingRef}
-                        />
-                        <ConditionsMenuItem
-                            nodeId={nodeId}
-                            floatingRef={floatingRef}
-                        />
+                        {(!!visualBuilderGraph.advanced_datetime ||
+                            !isSimplifiedStepBuilderEnabled) && (
+                            <>
+                                <HttpRequestMenuItem
+                                    nodeId={nodeId}
+                                    floatingRef={floatingRef}
+                                />
+                                <ConditionsMenuItem
+                                    nodeId={nodeId}
+                                    floatingRef={floatingRef}
+                                />
+                            </>
+                        )}
                         {visualBuilderGraph.isTemplate && (
                             <>
                                 <LLMPromptTemplateShopifyMenuItems
@@ -1168,7 +1182,14 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
                     </DropdownBody>
                 )
         }
-    }, [visualBuilderGraph.isTemplate, nodeId, floatingRef, triggerNode.type])
+    }, [
+        visualBuilderGraph.isTemplate,
+        nodeId,
+        floatingRef,
+        triggerNode.type,
+        visualBuilderGraph.advanced_datetime,
+        isSimplifiedStepBuilderEnabled,
+    ])
 
     useEffect(() => {
         setMenuItems(initialMenuItems)

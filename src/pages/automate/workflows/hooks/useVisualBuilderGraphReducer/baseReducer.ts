@@ -303,6 +303,9 @@ export type VisualBuilderBaseAction =
           appId?: string
           touched: VisualBuilderTouched | null
       }
+    | {
+          type: 'MIGRATE_TO_ADVANCED_STEP_BUILDER'
+      }
 
 export function baseReducer(
     graph: VisualBuilderGraph,
@@ -311,6 +314,10 @@ export function baseReducer(
     switch (action.type) {
         case 'RESET_GRAPH':
             return computeNodesPositions(action.graph)
+        case 'MIGRATE_TO_ADVANCED_STEP_BUILDER':
+            return produce(graph, (draft) => {
+                draft.advanced_datetime = new Date()
+            })
         case 'SET_NODE_EDITING_ID':
             return produce(graph, (draft) => {
                 if (draft.nodeEditingId !== action.nodeId) {
@@ -469,6 +476,8 @@ export function baseReducer(
                     )
                     if (nodeIndex === -1) return
 
+                    const node = draft.nodes[nodeIndex]
+
                     draft.nodes.splice(nodeIndex, 1)
                     const incomingEdge = draft.edges.find(
                         (e) => e.target === action.nodeId
@@ -476,8 +485,23 @@ export function baseReducer(
                     const outgoingEdges = draft.edges.filter(
                         (e) => e.source === action.nodeId
                     )
-                    if (incomingEdge && outgoingEdges.length === 1) {
+
+                    if (incomingEdge) {
                         incomingEdge.target = outgoingEdges[0].target
+
+                        for (
+                            let index = 1;
+                            index < outgoingEdges.length;
+                            index++
+                        ) {
+                            const {nodes, edges} = deleteBranch(
+                                draft,
+                                outgoingEdges[index].target
+                            )
+
+                            draft.nodes = nodes
+                            draft.edges = edges
+                        }
 
                         // preserve edge ordering
                         draft.edges = [
@@ -501,6 +525,24 @@ export function baseReducer(
                                     return edge
                                 }),
                         ]
+                    }
+
+                    if (
+                        node.type === 'reusable_llm_prompt_call' &&
+                        draft.apps &&
+                        !draft.isTemplate
+                    ) {
+                        const appUsage = computeAppUsage(draft, action.steps)
+
+                        draft.apps = draft.apps.filter((app) => {
+                            switch (app.type) {
+                                case 'shopify':
+                                case 'recharge':
+                                    return app.type in appUsage
+                                case 'app':
+                                    return app.app_id in appUsage
+                            }
+                        })
                     }
                 })
             )

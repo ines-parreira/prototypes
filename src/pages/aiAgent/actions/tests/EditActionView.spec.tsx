@@ -9,6 +9,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {ulid} from 'ulidx'
 
+import {useFlag} from 'common/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreApps,
@@ -39,6 +40,7 @@ jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')
 jest.mock('pages/aiAgent/actions/hooks/use3plIntegrations')
+jest.mock('common/flags')
 
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates
@@ -51,6 +53,7 @@ const mockUseAppDispatch = jest.mocked(useAppDispatch)
 const mockUseGetStoreApps = jest.mocked(useGetStoreApps)
 const mockuse3plIntegrations = jest.mocked(use3plIntegrations)
 const mockUseAddStoreApp = jest.mocked(useAddStoreApp)
+const mockUseFlag = jest.mocked(useFlag)
 const mockUseGetStoreWorkflowsConfigurations = jest.mocked(
     useGetStoreWorkflowsConfigurations
 )
@@ -128,6 +131,7 @@ describe('<EditActionView />', () => {
         mockUseEnableAiAgent.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),
         })
+        mockUseFlag.mockReturnValue(true)
         mockUseAppDispatch.mockReturnValue(jest.fn())
         mockUseGetStoreApps.mockReturnValue({
             data: [],
@@ -485,6 +489,15 @@ describe('<EditActionView />', () => {
                 </QueryClientProvider>
             </Provider>
         )
+
+        // Switch to advanced view
+        act(() => {
+            fireEvent.click(screen.getByText(/Advanced options/i))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Convert To Advanced View'))
+        })
 
         act(() => {
             fireEvent.click(screen.getByText('Edit'))

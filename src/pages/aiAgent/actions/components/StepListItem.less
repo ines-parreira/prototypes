@@ -1,0 +1,64 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .wrapper {
+        &:not(:last-child) {
+            padding-bottom: @layout-spacing-xs;
+            margin-bottom: @layout-spacing-xs;
+            border-bottom: 1px solid var(--neutral-grey-2);
+        }
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+    }
+
+    .clickable {
+        cursor: pointer;
+    }
+
+    .stepName {
+        .caption-regular();
+        color: var(--neutral-grey-5);
+        font-size: 12px;
+    }
+
+    .dragIcon {
+        color: var(--neutral-grey-5);
+        cursor: grab;
+        font-size: 20px !important;
+    }
+
+    .stepListItemButtons {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+        gap: @layout-spacing-xxs;
+    }
+
+    .stepListItem {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-s;
+    }
+
+    .stepListItemContent {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+    }
+
+    .warningIcon {
+        color: var(--feedback-warning);
+        font-size: 16px !important;
+    }
+
+    .stepListItemIcon {
+        width: 20px;
+        height: 20px;
+        object-fit: cover;
+    }
+}

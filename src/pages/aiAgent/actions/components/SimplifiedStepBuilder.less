@@ -1,0 +1,73 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .buttonIcon {
+        font-size: 20px !important;
+    }
+
+    .dropdown {
+        width: 272px;
+    }
+
+    .backButton {
+        max-width: 100%;
+        height: auto;
+        padding: 0 !important;
+        font-weight: 600;
+    }
+
+    .description {
+        color: var(--neutral-grey-5);
+    }
+
+    .missingValuesAlert {
+        margin-top: @layout-spacing-xxs;
+    }
+
+    .button {
+        padding: 0 !important;
+        text-transform: none !important;
+    }
+
+    .dontSeeApp {
+        margin-top: @layout-spacing-xs;
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+    }
+
+    .dontSeeAppButtons {
+        display: flex;
+        gap: @layout-spacing-s;
+    }
+
+    .backButtonIconLabel {
+        overflow: hidden;
+    }
+
+    .stepList {
+        list-style: none;
+        padding: 0;
+        margin-bottom: @layout-spacing-xs;
+        margin-top: @layout-spacing-xs;
+    }
+
+    .itemContent {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-s;
+    }
+
+    .item {
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .appIcon {
+        width: 20px;
+        height: 20px;
+    }
+}

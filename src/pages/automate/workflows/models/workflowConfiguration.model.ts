@@ -241,6 +241,9 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
             id: c.id,
             internal_id: c.internal_id,
             is_draft: c.is_draft,
+            advanced_datetime: c.advanced_datetime
+                ? new Date(c.advanced_datetime)
+                : null,
             name: c.name,
             available_languages: c.available_languages,
             template_internal_id: c.template_internal_id,
@@ -707,6 +710,9 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
         id: c.id,
         internal_id: c.internal_id,
         is_draft: c.is_draft,
+        advanced_datetime: c.advanced_datetime
+            ? new Date(c.advanced_datetime)
+            : null,
         name: c.name,
         available_languages: c.available_languages,
         template_internal_id: c.template_internal_id,

@@ -688,6 +688,7 @@ export type VisualBuilderGraph<
     is_draft: boolean
     name: string
     template_internal_id?: string | null
+    advanced_datetime?: Date | null
     available_languages: LanguageCode[]
     nodes: [T, ...VisualBuilderNode[]]
     edges: VisualBuilderEdge[]

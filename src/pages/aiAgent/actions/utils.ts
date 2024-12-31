@@ -1,5 +1,6 @@
 import {ulid} from 'ulidx'
 
+import {VisualBuilderGraphApp} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
 
 export const getInitialConfiguration = () => {
@@ -58,4 +59,21 @@ export const getInitialConfiguration = () => {
     })
 
     return b.build()
+}
+
+export const getCredentialsStatus = (
+    graphApp: VisualBuilderGraphApp | undefined,
+    templateApp: {type: string},
+    isTemplate: boolean
+): {hasMissingCredentials: boolean; hasCredentials: boolean} => {
+    const hasMissingCredentials =
+        graphApp?.type === 'app' && !isTemplate && !graphApp.api_key?.trim()
+
+    const hasCredentials =
+        templateApp.type === 'app' && !isTemplate && !hasMissingCredentials
+
+    return {
+        hasMissingCredentials,
+        hasCredentials,
+    }
 }

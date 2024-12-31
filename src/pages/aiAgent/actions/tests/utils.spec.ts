@@ -1,4 +1,4 @@
-import {getInitialConfiguration} from '../utils'
+import {getCredentialsStatus, getInitialConfiguration} from '../utils'
 
 describe('getInitialConfiguration()', () => {
     it('should return initial Action configuration', () => {
@@ -57,6 +57,52 @@ describe('getInitialConfiguration()', () => {
                     },
                 },
             ],
+        })
+    })
+})
+
+describe('getCredentialsStatus()', () => {
+    it('returns hasCredentials true when app type is app, not template, and has api_key', () => {
+        const result = getCredentialsStatus(
+            {type: 'app', app_id: '123', api_key: 'valid-key'},
+            {type: 'app'},
+            false
+        )
+        expect(result).toEqual({
+            hasMissingCredentials: false,
+            hasCredentials: true,
+        })
+    })
+
+    it('returns both false when app type is not app', () => {
+        const result = getCredentialsStatus(
+            {type: 'shopify'},
+            {type: 'shopify'},
+            false
+        )
+        expect(result).toEqual({
+            hasMissingCredentials: false,
+            hasCredentials: false,
+        })
+    })
+
+    it('returns both false when isTemplate is true', () => {
+        const result = getCredentialsStatus(
+            {type: 'app', app_id: '123'},
+            {type: 'app'},
+            true
+        )
+        expect(result).toEqual({
+            hasMissingCredentials: false,
+            hasCredentials: false,
+        })
+    })
+
+    it('returns hasMissingCredentials true when graphApp is undefined', () => {
+        const result = getCredentialsStatus(undefined, {type: 'app'}, false)
+        expect(result).toEqual({
+            hasCredentials: true,
+            hasMissingCredentials: false,
         })
     })
 })

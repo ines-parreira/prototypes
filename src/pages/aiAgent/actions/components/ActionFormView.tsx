@@ -2,6 +2,8 @@ import classnames from 'classnames'
 
 import React, {useMemo} from 'react'
 
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import ActionsPlatformTemplateConditions from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConditions'
 import ActionsPlatformTemplateConfirmation from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConfirmation'
 import ActionsPlatformTemplateInstructions from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateInstructions'
@@ -13,6 +15,7 @@ import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBu
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import css from './ActionFormView.less'
+import {SimplifiedStepBuilder} from './SimplifiedStepBuilder'
 
 type Props = {
     onEditSteps: () => void
@@ -29,6 +32,13 @@ const ActionFormView = ({onEditSteps, steps}: Props) => {
         () => getVariableListForNode(triggerNode.id),
         [getVariableListForNode, triggerNode.id]
     )
+
+    const isSimplifiedStepBuilderEnabled = useFlag(
+        FeatureFlagKey.SimplifiedStepBuilder,
+        false
+    )
+    const isAdvanced =
+        visualBuilderGraph.advanced_datetime || !isSimplifiedStepBuilderEnabled
 
     return (
         <>
@@ -129,10 +139,18 @@ const ActionFormView = ({onEditSteps, steps}: Props) => {
             </div>
 
             <div className={classnames(css.section, css.big)}>
-                <ActionsPlatformTemplateSteps
-                    error={visualBuilderGraph.errors?.nodes}
-                    onEditSteps={onEditSteps}
-                />
+                {isAdvanced ? (
+                    <ActionsPlatformTemplateSteps
+                        error={visualBuilderGraph.errors?.nodes}
+                        onEditSteps={onEditSteps}
+                    />
+                ) : (
+                    <SimplifiedStepBuilder
+                        graph={visualBuilderGraph}
+                        dispatch={dispatch}
+                        steps={steps}
+                    />
+                )}
                 <ToggleInput
                     isToggled={!triggerNode.data.deactivated_datetime}
                     onClick={(nextValue) => {
