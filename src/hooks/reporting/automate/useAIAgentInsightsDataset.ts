@@ -72,6 +72,10 @@ export const useAIAgentMetrics = (
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: [Number(aiAgentUserId)],
             },
+            [FilterKey.Channels]: {
+                values: ['email'],
+                operator: LogicalOperatorEnum.ONE_OF,
+            },
         }),
         [aiAgentUserId, filters]
     )
