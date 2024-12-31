@@ -42,10 +42,7 @@ export default function useAutoQA(ticketId: number) {
     const supportedDimensionsOrder = useMemo(
         () =>
             isAutoQaManualDimensions
-                ? [
-                      ...supportedDimensionsOrderWithLanguage,
-                      ...dimensionOrderOfManualDimensions,
-                  ]
+                ? dimensionOrderOfManualDimensions
                 : supportedDimensionsOrderWithLanguage,
         [isAutoQaManualDimensions, supportedDimensionsOrderWithLanguage]
     )

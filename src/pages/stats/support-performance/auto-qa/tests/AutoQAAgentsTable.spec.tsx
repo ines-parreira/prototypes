@@ -20,8 +20,7 @@ import {AgentsTableSummaryCell} from 'pages/stats/support-performance/agents/Age
 import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
 import {
     AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER,
-    AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
-    AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS,
+    AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS_ORDER,
     AutoQAAgentsTableColumn,
     getColumnWidth,
     TableLabels,
@@ -125,10 +124,8 @@ describe('<AutoQAAgentsTable />', () => {
             </Provider>
         )
 
-        const tableColumns = [
-            ...AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
-            ...AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS,
-        ]
+        const tableColumns =
+            AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS_ORDER
 
         expect(screen.getByRole('table')).toBeInTheDocument()
         tableColumns.forEach((column) => {

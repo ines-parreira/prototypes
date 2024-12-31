@@ -240,6 +240,40 @@ export const TicketDrillDownTableContent = ({
                             }
                         />
                         <HeaderCellProperty
+                            title={ACCURACY_LABEL}
+                            width={columnWidths.metric}
+                            className={css.headerCell}
+                            tooltip={
+                                <HintTooltipContent
+                                    {...TrendCardConfig[AutoQAMetric.Accuracy]
+                                        .hint}
+                                />
+                            }
+                        />
+                        <HeaderCellProperty
+                            title={INTERNAL_COMPLIANCE_LABEL}
+                            width={columnWidths.metric}
+                            className={css.headerCell}
+                            tooltip={
+                                <HintTooltipContent
+                                    {...TrendCardConfig[
+                                        AutoQAMetric.InternalCompliance
+                                    ].hint}
+                                />
+                            }
+                        />
+                        <HeaderCellProperty
+                            title={EFFICIENCY_LABEL}
+                            width={columnWidths.metric}
+                            className={css.headerCell}
+                            tooltip={
+                                <HintTooltipContent
+                                    {...TrendCardConfig[AutoQAMetric.Efficiency]
+                                        .hint}
+                                />
+                            }
+                        />
+                        <HeaderCellProperty
                             title={COMMUNICATION_SKILLS_LABEL}
                             width={columnWidths.metric}
                             className={css.headerCell}
@@ -259,40 +293,6 @@ export const TicketDrillDownTableContent = ({
                                 <HintTooltipContent
                                     {...TrendCardConfig[
                                         AutoQAMetric.LanguageProficiency
-                                    ].hint}
-                                />
-                            }
-                        />
-                        <HeaderCellProperty
-                            title={ACCURACY_LABEL}
-                            width={columnWidths.metric}
-                            className={css.headerCell}
-                            tooltip={
-                                <HintTooltipContent
-                                    {...TrendCardConfig[AutoQAMetric.Accuracy]
-                                        .hint}
-                                />
-                            }
-                        />
-                        <HeaderCellProperty
-                            title={EFFICIENCY_LABEL}
-                            width={columnWidths.metric}
-                            className={css.headerCell}
-                            tooltip={
-                                <HintTooltipContent
-                                    {...TrendCardConfig[AutoQAMetric.Efficiency]
-                                        .hint}
-                                />
-                            }
-                        />
-                        <HeaderCellProperty
-                            title={INTERNAL_COMPLIANCE_LABEL}
-                            width={columnWidths.metric}
-                            className={css.headerCell}
-                            tooltip={
-                                <HintTooltipContent
-                                    {...TrendCardConfig[
-                                        AutoQAMetric.InternalCompliance
                                     ].hint}
                                 />
                             }
@@ -430,21 +430,14 @@ export const TicketDrillDownTableContent = ({
                                         {item?.qaScore &&
                                             item.qaScore[
                                                 TicketQAScoreDimensionName
-                                                    .CommunicationSkills
-                                            ]}
-                                    </BodyCell>
-                                    <BodyCell width={columnWidths.metric}>
-                                        {item?.qaScore &&
-                                            item.qaScore[
-                                                TicketQAScoreDimensionName
-                                                    .LanguageProficiency
-                                            ]}
-                                    </BodyCell>
-                                    <BodyCell width={columnWidths.metric}>
-                                        {item?.qaScore &&
-                                            item.qaScore[
-                                                TicketQAScoreDimensionName
                                                     .Accuracy
+                                            ]}
+                                    </BodyCell>
+                                    <BodyCell width={columnWidths.metric}>
+                                        {item?.qaScore &&
+                                            item.qaScore[
+                                                TicketQAScoreDimensionName
+                                                    .InternalCompliance
                                             ]}
                                     </BodyCell>
                                     <BodyCell width={columnWidths.metric}>
@@ -458,7 +451,14 @@ export const TicketDrillDownTableContent = ({
                                         {item?.qaScore &&
                                             item.qaScore[
                                                 TicketQAScoreDimensionName
-                                                    .InternalCompliance
+                                                    .CommunicationSkills
+                                            ]}
+                                    </BodyCell>
+                                    <BodyCell width={columnWidths.metric}>
+                                        {item?.qaScore &&
+                                            item.qaScore[
+                                                TicketQAScoreDimensionName
+                                                    .LanguageProficiency
                                             ]}
                                     </BodyCell>
                                     <BodyCell width={columnWidths.metric}>

@@ -57,6 +57,39 @@ export const TrendCardConfig: Record<
         useTrend: useResolutionCompletenessTrend,
         drillDownMetric: AutoQAMetric.ResolutionCompleteness,
     },
+    [AutoQAMetric.Accuracy]: {
+        title: ACCURACY_LABEL,
+        hint: {
+            title: 'Average score assessing whether the agent provided accurate information and resolution.\n\nNote: This category needs to be manually scored.',
+            link: 'https://link.gorgias.com/oau',
+        },
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+        useTrend: useAccuracyTrend,
+        drillDownMetric: AutoQAMetric.Accuracy,
+    },
+    [AutoQAMetric.InternalCompliance]: {
+        title: INTERNAL_COMPLIANCE_LABEL,
+        hint: {
+            title: 'Average score assessing whether the agent followed internal processes: used the correct macros, tags, escalation and merging procedures.\n\nNote: This category needs to be manually scored.',
+            link: 'https://link.gorgias.com/oau',
+        },
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+        useTrend: useInternalComplianceTrend,
+        drillDownMetric: AutoQAMetric.InternalCompliance,
+    },
+    [AutoQAMetric.Efficiency]: {
+        title: EFFICIENCY_LABEL,
+        hint: {
+            title: 'Average score assessing whether the agent handled the ticket quickly and minimized the number of touches.\n\nNote: This category needs to be manually scored.',
+            link: 'https://link.gorgias.com/oau',
+        },
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+        useTrend: useEfficiencyTrend,
+        drillDownMetric: AutoQAMetric.Efficiency,
+    },
     [AutoQAMetric.CommunicationSkills]: {
         title: COMMUNICATION_SKILLS_LABEL,
         hint: {
@@ -80,39 +113,6 @@ export const TrendCardConfig: Record<
         metricFormat: 'decimal',
         useTrend: useLanguageProficiencyTrend,
         drillDownMetric: AutoQAMetric.LanguageProficiency,
-    },
-    [AutoQAMetric.Accuracy]: {
-        title: ACCURACY_LABEL,
-        hint: {
-            title: 'Average score assessing whether the agent provided accurate information and resolution.\n\nNote: This category needs to be manually scored.',
-            link: 'https://link.gorgias.com/oau',
-        },
-        interpretAs: 'more-is-better',
-        metricFormat: 'decimal',
-        useTrend: useAccuracyTrend,
-        drillDownMetric: AutoQAMetric.Accuracy,
-    },
-    [AutoQAMetric.Efficiency]: {
-        title: EFFICIENCY_LABEL,
-        hint: {
-            title: 'Average score assessing whether the agent handled the ticket quickly and minimized the number of touches.\n\nNote: This category needs to be manually scored.',
-            link: 'https://link.gorgias.com/oau',
-        },
-        interpretAs: 'more-is-better',
-        metricFormat: 'decimal',
-        useTrend: useEfficiencyTrend,
-        drillDownMetric: AutoQAMetric.Efficiency,
-    },
-    [AutoQAMetric.InternalCompliance]: {
-        title: INTERNAL_COMPLIANCE_LABEL,
-        hint: {
-            title: 'Average score assessing whether the agent followed internal processes: used the correct macros, tags, escalation and merging procedures.\n\nNote: This category needs to be manually scored.',
-            link: 'https://link.gorgias.com/oau',
-        },
-        interpretAs: 'more-is-better',
-        metricFormat: 'decimal',
-        useTrend: useInternalComplianceTrend,
-        drillDownMetric: AutoQAMetric.InternalCompliance,
     },
     [AutoQAMetric.BrandVoice]: {
         title: BRAND_VOICE_LABEL,

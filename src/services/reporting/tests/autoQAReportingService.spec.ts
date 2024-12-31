@@ -9,8 +9,7 @@ import {
 } from 'pages/stats/common/utils'
 import {
     AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER,
-    AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
-    AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS,
+    AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS_ORDER,
     AutoQAAgentsColumnConfig,
     AutoQAAgentsTableColumn,
     TableLabels,
@@ -179,12 +178,11 @@ describe('autoQAReportingService', () => {
             reviewedClosedTicketsTrend: exampleTrendData,
         }
 
-        const tableColumns = [
-            ...AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
-            ...AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS,
-        ]
-
-        await saveReport(data, tableColumns, period)
+        await saveReport(
+            data,
+            AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS_ORDER,
+            period
+        )
 
         const headers = [
             'Metric',
@@ -220,6 +218,41 @@ describe('autoQAReportingService', () => {
                 ),
             ],
             [
+                TrendCardConfig[AutoQAMetric.Accuracy].title,
+                formatMetricValue(
+                    exampleTrendData.data.value,
+                    TrendCardConfig[AutoQAMetric.Accuracy].metricFormat
+                ),
+                formatMetricValue(
+                    exampleTrendData.data.prevValue,
+                    TrendCardConfig[AutoQAMetric.Accuracy].metricFormat
+                ),
+            ],
+            [
+                TrendCardConfig[AutoQAMetric.InternalCompliance].title,
+                formatMetricValue(
+                    exampleTrendData.data.value,
+                    TrendCardConfig[AutoQAMetric.InternalCompliance]
+                        .metricFormat
+                ),
+                formatMetricValue(
+                    exampleTrendData.data.prevValue,
+                    TrendCardConfig[AutoQAMetric.InternalCompliance]
+                        .metricFormat
+                ),
+            ],
+            [
+                TrendCardConfig[AutoQAMetric.Efficiency].title,
+                formatMetricValue(
+                    exampleTrendData.data.value,
+                    TrendCardConfig[AutoQAMetric.Efficiency].metricFormat
+                ),
+                formatMetricValue(
+                    exampleTrendData.data.prevValue,
+                    TrendCardConfig[AutoQAMetric.Efficiency].metricFormat
+                ),
+            ],
+            [
                 TrendCardConfig[AutoQAMetric.CommunicationSkills].title,
                 formatMetricValue(
                     exampleTrendData.data.value,
@@ -246,41 +279,6 @@ describe('autoQAReportingService', () => {
                 ),
             ],
             [
-                TrendCardConfig[AutoQAMetric.Accuracy].title,
-                formatMetricValue(
-                    exampleTrendData.data.value,
-                    TrendCardConfig[AutoQAMetric.Accuracy].metricFormat
-                ),
-                formatMetricValue(
-                    exampleTrendData.data.prevValue,
-                    TrendCardConfig[AutoQAMetric.Accuracy].metricFormat
-                ),
-            ],
-            [
-                TrendCardConfig[AutoQAMetric.Efficiency].title,
-                formatMetricValue(
-                    exampleTrendData.data.value,
-                    TrendCardConfig[AutoQAMetric.Efficiency].metricFormat
-                ),
-                formatMetricValue(
-                    exampleTrendData.data.prevValue,
-                    TrendCardConfig[AutoQAMetric.Efficiency].metricFormat
-                ),
-            ],
-            [
-                TrendCardConfig[AutoQAMetric.InternalCompliance].title,
-                formatMetricValue(
-                    exampleTrendData.data.value,
-                    TrendCardConfig[AutoQAMetric.InternalCompliance]
-                        .metricFormat
-                ),
-                formatMetricValue(
-                    exampleTrendData.data.prevValue,
-                    TrendCardConfig[AutoQAMetric.InternalCompliance]
-                        .metricFormat
-                ),
-            ],
-            [
                 TrendCardConfig[AutoQAMetric.BrandVoice].title,
                 formatMetricValue(
                     exampleTrendData.data.value,
@@ -298,11 +296,11 @@ describe('autoQAReportingService', () => {
                 TableLabels[AutoQAAgentsTableColumn.AgentName],
                 TableLabels[AutoQAAgentsTableColumn.ReviewedClosedTickets],
                 TableLabels[AutoQAAgentsTableColumn.ResolutionCompleteness],
+                TableLabels[AutoQAAgentsTableColumn.Accuracy],
+                TableLabels[AutoQAAgentsTableColumn.InternalCompliance],
+                TableLabels[AutoQAAgentsTableColumn.Efficiency],
                 TableLabels[AutoQAAgentsTableColumn.CommunicationSkills],
                 TableLabels[AutoQAAgentsTableColumn.LanguageProficiency],
-                TableLabels[AutoQAAgentsTableColumn.Accuracy],
-                TableLabels[AutoQAAgentsTableColumn.Efficiency],
-                TableLabels[AutoQAAgentsTableColumn.InternalCompliance],
                 TableLabels[AutoQAAgentsTableColumn.BrandVoice],
             ],
             [
@@ -320,6 +318,22 @@ describe('autoQAReportingService', () => {
                     ].format
                 ),
                 formatMetricValue(
+                    agentAAccuracy,
+                    AutoQAAgentsColumnConfig[AutoQAAgentsTableColumn.Accuracy]
+                        .format
+                ),
+                formatMetricValue(
+                    agentAInternalCompliance,
+                    AutoQAAgentsColumnConfig[
+                        AutoQAAgentsTableColumn.InternalCompliance
+                    ].format
+                ),
+                formatMetricValue(
+                    agentAEfficiency,
+                    AutoQAAgentsColumnConfig[AutoQAAgentsTableColumn.Efficiency]
+                        .format
+                ),
+                formatMetricValue(
                     agentACommunicationSkills,
                     AutoQAAgentsColumnConfig[
                         AutoQAAgentsTableColumn.CommunicationSkills
@@ -329,22 +343,6 @@ describe('autoQAReportingService', () => {
                     agentALanguageProficiency,
                     AutoQAAgentsColumnConfig[
                         AutoQAAgentsTableColumn.LanguageProficiency
-                    ].format
-                ),
-                formatMetricValue(
-                    agentAAccuracy,
-                    AutoQAAgentsColumnConfig[AutoQAAgentsTableColumn.Accuracy]
-                        .format
-                ),
-                formatMetricValue(
-                    agentAEfficiency,
-                    AutoQAAgentsColumnConfig[AutoQAAgentsTableColumn.Efficiency]
-                        .format
-                ),
-                formatMetricValue(
-                    agentAInternalCompliance,
-                    AutoQAAgentsColumnConfig[
-                        AutoQAAgentsTableColumn.InternalCompliance
                     ].format
                 ),
                 formatMetricValue(

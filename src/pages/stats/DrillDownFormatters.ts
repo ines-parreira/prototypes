@@ -40,11 +40,11 @@ export interface TicketDrillDownRowData extends BaseDrillDownRowData {
         | null
     qaScore?: Record<
         | TicketQAScoreDimensionName.ResolutionCompleteness
+        | TicketQAScoreDimensionName.Accuracy
+        | TicketQAScoreDimensionName.InternalCompliance
+        | TicketQAScoreDimensionName.Efficiency
         | TicketQAScoreDimensionName.CommunicationSkills
         | TicketQAScoreDimensionName.LanguageProficiency
-        | TicketQAScoreDimensionName.Accuracy
-        | TicketQAScoreDimensionName.Efficiency
-        | TicketQAScoreDimensionName.InternalCompliance
         | TicketQAScoreDimensionName.BrandVoice,
         string | undefined
     >
@@ -183,6 +183,19 @@ export const formatTicketDrillDownRowData = ({
                               TicketQAScoreDimensionName.ResolutionCompleteness,
                               row[TicketQAScoreMeasure.QAScoreData]
                           ),
+                      [TicketQAScoreDimensionName.Accuracy]: getQAMetric(
+                          TicketQAScoreDimensionName.Accuracy,
+                          row[TicketQAScoreMeasure.QAScoreData]
+                      ),
+                      [TicketQAScoreDimensionName.InternalCompliance]:
+                          getQAMetric(
+                              TicketQAScoreDimensionName.InternalCompliance,
+                              row[TicketQAScoreMeasure.QAScoreData]
+                          ),
+                      [TicketQAScoreDimensionName.Efficiency]: getQAMetric(
+                          TicketQAScoreDimensionName.Efficiency,
+                          row[TicketQAScoreMeasure.QAScoreData]
+                      ),
                       [TicketQAScoreDimensionName.CommunicationSkills]:
                           getQAMetric(
                               TicketQAScoreDimensionName.CommunicationSkills,
@@ -191,19 +204,6 @@ export const formatTicketDrillDownRowData = ({
                       [TicketQAScoreDimensionName.LanguageProficiency]:
                           getQAMetric(
                               TicketQAScoreDimensionName.LanguageProficiency,
-                              row[TicketQAScoreMeasure.QAScoreData]
-                          ),
-                      [TicketQAScoreDimensionName.Accuracy]: getQAMetric(
-                          TicketQAScoreDimensionName.Accuracy,
-                          row[TicketQAScoreMeasure.QAScoreData]
-                      ),
-                      [TicketQAScoreDimensionName.Efficiency]: getQAMetric(
-                          TicketQAScoreDimensionName.Efficiency,
-                          row[TicketQAScoreMeasure.QAScoreData]
-                      ),
-                      [TicketQAScoreDimensionName.InternalCompliance]:
-                          getQAMetric(
-                              TicketQAScoreDimensionName.InternalCompliance,
                               row[TicketQAScoreMeasure.QAScoreData]
                           ),
                       [TicketQAScoreDimensionName.BrandVoice]: getQAMetric(

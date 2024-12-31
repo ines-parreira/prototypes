@@ -136,15 +136,11 @@ describe('useAutoQA', () => {
                 value: null,
             },
             {
-                name: 'communication_skills',
-                value: null,
-            },
-            {
-                name: 'language_proficiency',
-                value: null,
-            },
-            {
                 name: 'accuracy',
+                value: null,
+            },
+            {
+                name: 'internal_compliance',
                 value: null,
             },
             {
@@ -152,7 +148,11 @@ describe('useAutoQA', () => {
                 value: null,
             },
             {
-                name: 'internal_compliance',
+                name: 'communication_skills',
+                value: null,
+            },
+            {
+                name: 'language_proficiency',
                 value: null,
             },
             {
@@ -202,41 +202,6 @@ describe('useAutoQA', () => {
         ])
     })
 
-    it('should return the dimensions containing manually scored dimensions', () => {
-        const mockFlagSet = {
-            [FeatureFlagKey.AutoQaLanguageProficiency]: false,
-            [FeatureFlagKey.AutoQaManualDimensions]: true,
-        }
-        mockUseFlag.mockImplementation(
-            (featureFlag: keyof typeof mockFlagSet) => {
-                return mockFlagSet[featureFlag]
-            }
-        )
-
-        const {result} = renderHook(() => useAutoQA(1))
-
-        expect(result.current.dimensions).toEqual([
-            expect.objectContaining({
-                name: TicketQAScoreDimensionName.ResolutionCompleteness,
-            }),
-            expect.objectContaining({
-                name: TicketQAScoreDimensionName.CommunicationSkills,
-            }),
-            expect.objectContaining({
-                name: TicketQAScoreDimensionName.Accuracy,
-            }),
-            expect.objectContaining({
-                name: TicketQAScoreDimensionName.Efficiency,
-            }),
-            expect.objectContaining({
-                name: TicketQAScoreDimensionName.InternalCompliance,
-            }),
-            expect.objectContaining({
-                name: TicketQAScoreDimensionName.BrandVoice,
-            }),
-        ])
-    })
-
     it('should return the dimensions containing Language Proficiency and manually scored dimensions', () => {
         mockUseFlag.mockReturnValue(true)
 
@@ -247,19 +212,19 @@ describe('useAutoQA', () => {
                 name: TicketQAScoreDimensionName.ResolutionCompleteness,
             }),
             expect.objectContaining({
-                name: TicketQAScoreDimensionName.CommunicationSkills,
-            }),
-            expect.objectContaining({
-                name: TicketQAScoreDimensionName.LanguageProficiency,
-            }),
-            expect.objectContaining({
                 name: TicketQAScoreDimensionName.Accuracy,
+            }),
+            expect.objectContaining({
+                name: TicketQAScoreDimensionName.InternalCompliance,
             }),
             expect.objectContaining({
                 name: TicketQAScoreDimensionName.Efficiency,
             }),
             expect.objectContaining({
-                name: TicketQAScoreDimensionName.InternalCompliance,
+                name: TicketQAScoreDimensionName.CommunicationSkills,
+            }),
+            expect.objectContaining({
+                name: TicketQAScoreDimensionName.LanguageProficiency,
             }),
             expect.objectContaining({
                 name: TicketQAScoreDimensionName.BrandVoice,

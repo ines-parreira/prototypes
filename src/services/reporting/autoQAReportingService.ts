@@ -130,21 +130,15 @@ export const saveReport = async (
             idField: AGENT_ID_DIMENSION,
             metricField: TicketQAScoreMeasure.AverageScore,
         },
-        [AutoQAAgentsTableColumn.CommunicationSkills]: {
-            column: AutoQAAgentsTableColumn.CommunicationSkills,
-            metricData: data.communicationSkillsPerAgent,
-            idField: AGENT_ID_DIMENSION,
-            metricField: TicketQAScoreMeasure.AverageScore,
-        },
-        [AutoQAAgentsTableColumn.LanguageProficiency]: {
-            column: AutoQAAgentsTableColumn.LanguageProficiency,
-            metricData: data.languageProficiencyPerAgent,
-            idField: AGENT_ID_DIMENSION,
-            metricField: TicketQAScoreMeasure.AverageScore,
-        },
         [AutoQAAgentsTableColumn.Accuracy]: {
             column: AutoQAAgentsTableColumn.Accuracy,
             metricData: data.accuracyPerAgent,
+            idField: AGENT_ID_DIMENSION,
+            metricField: TicketQAScoreMeasure.AverageScore,
+        },
+        [AutoQAAgentsTableColumn.InternalCompliance]: {
+            column: AutoQAAgentsTableColumn.InternalCompliance,
+            metricData: data.internalCompliancePerAgent,
             idField: AGENT_ID_DIMENSION,
             metricField: TicketQAScoreMeasure.AverageScore,
         },
@@ -154,9 +148,15 @@ export const saveReport = async (
             idField: AGENT_ID_DIMENSION,
             metricField: TicketQAScoreMeasure.AverageScore,
         },
-        [AutoQAAgentsTableColumn.InternalCompliance]: {
-            column: AutoQAAgentsTableColumn.InternalCompliance,
-            metricData: data.internalCompliancePerAgent,
+        [AutoQAAgentsTableColumn.CommunicationSkills]: {
+            column: AutoQAAgentsTableColumn.CommunicationSkills,
+            metricData: data.communicationSkillsPerAgent,
+            idField: AGENT_ID_DIMENSION,
+            metricField: TicketQAScoreMeasure.AverageScore,
+        },
+        [AutoQAAgentsTableColumn.LanguageProficiency]: {
+            column: AutoQAAgentsTableColumn.LanguageProficiency,
+            metricData: data.languageProficiencyPerAgent,
             idField: AGENT_ID_DIMENSION,
             metricField: TicketQAScoreMeasure.AverageScore,
         },
@@ -208,35 +208,7 @@ export const saveReport = async (
                 data.resolutionCompletenessTrend.data?.prevValue
             ),
         ],
-        [
-            TrendCardConfig[AutoQAMetric.CommunicationSkills].title,
-            formatTrendMetric(
-                AutoQAMetric.CommunicationSkills,
-                data.communicationSkillsTrend.data?.value
-            ),
-            formatTrendMetric(
-                AutoQAMetric.CommunicationSkills,
-                data.communicationSkillsTrend.data?.prevValue
-            ),
-        ],
     ]
-    if (
-        columnsOrder
-            .map(String)
-            .includes(AutoQAAgentsTableColumn.LanguageProficiency)
-    ) {
-        trendData.push([
-            TrendCardConfig[AutoQAMetric.LanguageProficiency].title,
-            formatTrendMetric(
-                AutoQAMetric.LanguageProficiency,
-                data.languageProficiencyTrend.data?.value
-            ),
-            formatTrendMetric(
-                AutoQAMetric.LanguageProficiency,
-                data.languageProficiencyTrend.data?.prevValue
-            ),
-        ])
-    }
 
     if (columnsOrder.map(String).includes(AutoQAAgentsTableColumn.Accuracy)) {
         trendData.push([
@@ -248,20 +220,6 @@ export const saveReport = async (
             formatTrendMetric(
                 AutoQAMetric.Accuracy,
                 data.accuracyTrend.data?.prevValue
-            ),
-        ])
-    }
-
-    if (columnsOrder.map(String).includes(AutoQAAgentsTableColumn.Efficiency)) {
-        trendData.push([
-            TrendCardConfig[AutoQAMetric.Efficiency].title,
-            formatTrendMetric(
-                AutoQAMetric.Efficiency,
-                data.efficiencyTrend.data?.value
-            ),
-            formatTrendMetric(
-                AutoQAMetric.Efficiency,
-                data.efficiencyTrend.data?.prevValue
             ),
         ])
     }
@@ -280,6 +238,50 @@ export const saveReport = async (
             formatTrendMetric(
                 AutoQAMetric.InternalCompliance,
                 data.internalComplianceTrend.data?.prevValue
+            ),
+        ])
+    }
+
+    if (columnsOrder.map(String).includes(AutoQAAgentsTableColumn.Efficiency)) {
+        trendData.push([
+            TrendCardConfig[AutoQAMetric.Efficiency].title,
+            formatTrendMetric(
+                AutoQAMetric.Efficiency,
+                data.efficiencyTrend.data?.value
+            ),
+            formatTrendMetric(
+                AutoQAMetric.Efficiency,
+                data.efficiencyTrend.data?.prevValue
+            ),
+        ])
+    }
+
+    trendData.push([
+        TrendCardConfig[AutoQAMetric.CommunicationSkills].title,
+        formatTrendMetric(
+            AutoQAMetric.CommunicationSkills,
+            data.communicationSkillsTrend.data?.value
+        ),
+        formatTrendMetric(
+            AutoQAMetric.CommunicationSkills,
+            data.communicationSkillsTrend.data?.prevValue
+        ),
+    ])
+
+    if (
+        columnsOrder
+            .map(String)
+            .includes(AutoQAAgentsTableColumn.LanguageProficiency)
+    ) {
+        trendData.push([
+            TrendCardConfig[AutoQAMetric.LanguageProficiency].title,
+            formatTrendMetric(
+                AutoQAMetric.LanguageProficiency,
+                data.languageProficiencyTrend.data?.value
+            ),
+            formatTrendMetric(
+                AutoQAMetric.LanguageProficiency,
+                data.languageProficiencyTrend.data?.prevValue
             ),
         ])
     }

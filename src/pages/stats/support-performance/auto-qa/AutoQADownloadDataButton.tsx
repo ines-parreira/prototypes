@@ -10,7 +10,7 @@ import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 import {
     AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER,
     AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
-    AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS,
+    AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS_ORDER,
 } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {saveReport} from 'services/reporting/autoQAReportingService'
 
@@ -28,10 +28,7 @@ export const AutoQADownloadDataButton = () => {
         : AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER
 
     const tableColumns = isAutoQaManualDimensions
-        ? [
-              ...tableColumnsLanguage,
-              ...AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS,
-          ]
+        ? AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS_ORDER
         : tableColumnsLanguage
 
     return (

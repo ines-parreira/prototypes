@@ -97,18 +97,6 @@ export default function AutoQA() {
                     >
                         <ResolutionCompletenessTrendCard />
                     </DashboardGridCell>
-                    <DashboardGridCell
-                        size={getGridCellSize(trendCardColumnWidth)}
-                    >
-                        <CommunicationSkillsTrendCard />
-                    </DashboardGridCell>
-                    {isAutoQaLanguageProficiency && (
-                        <DashboardGridCell
-                            size={getGridCellSize(trendCardColumnWidth)}
-                        >
-                            <LanguageProficiencyTrendCard />
-                        </DashboardGridCell>
-                    )}
                     {isManualAutoQaDimensions && (
                         <DashboardGridCell
                             size={getGridCellSize(
@@ -124,7 +112,7 @@ export default function AutoQA() {
                                 manualDimensionTrendCardColumnWidth
                             )}
                         >
-                            <EfficiencyTrendCard />
+                            <InternalComplianceTrendCard />
                         </DashboardGridCell>
                     )}
                     {isManualAutoQaDimensions && (
@@ -133,7 +121,19 @@ export default function AutoQA() {
                                 manualDimensionTrendCardColumnWidth
                             )}
                         >
-                            <InternalComplianceTrendCard />
+                            <EfficiencyTrendCard />
+                        </DashboardGridCell>
+                    )}
+                    <DashboardGridCell
+                        size={getGridCellSize(trendCardColumnWidth)}
+                    >
+                        <CommunicationSkillsTrendCard />
+                    </DashboardGridCell>
+                    {isAutoQaLanguageProficiency && (
+                        <DashboardGridCell
+                            size={getGridCellSize(trendCardColumnWidth)}
+                        >
+                            <LanguageProficiencyTrendCard />
                         </DashboardGridCell>
                     )}
                     {isManualAutoQaDimensions && (

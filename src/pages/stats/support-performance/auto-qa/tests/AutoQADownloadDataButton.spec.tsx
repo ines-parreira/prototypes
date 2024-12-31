@@ -9,8 +9,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {useAutoQAMetrics} from 'hooks/reporting/support-performance/auto-qa/useAutoQAMetrics'
 import {
     AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER,
-    AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
-    AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS,
+    AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS_ORDER,
 } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {AutoQADownloadDataButton} from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
 import * as autoQAReportingService from 'services/reporting/autoQAReportingService'
@@ -50,13 +49,9 @@ describe('ChannelsDownloadDataButton', () => {
         render(<AutoQADownloadDataButton />)
         userEvent.click(screen.getByRole('button'))
 
-        const tableColumns = [
-            ...AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
-            ...AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS,
-        ]
         expect(reportServiceSpy).toHaveBeenCalledWith(
             reportData,
-            tableColumns,
+            AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS_ORDER,
             period
         )
         expect(logEventMock).toHaveBeenCalledWith(
