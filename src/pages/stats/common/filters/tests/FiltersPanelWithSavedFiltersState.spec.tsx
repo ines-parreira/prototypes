@@ -58,7 +58,6 @@ describe('SavedFiltersPanel', () => {
     beforeEach(() => {
         mockFlags({
             [FeatureFlagKey.AutoQAFilters]: false,
-            [FeatureFlagKey.AutoQaLanguageProficiency]: false,
             [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
         })
         FiltersPanelComponentMock.mockImplementation(() => <div />)
@@ -80,20 +79,6 @@ describe('SavedFiltersPanel', () => {
         {
             flags: {
                 [FeatureFlagKey.AutoQAFilters]: true,
-                [FeatureFlagKey.AutoQaLanguageProficiency]: false,
-                [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
-            },
-            flagValue: true,
-            expectedFilters: [
-                ...SAVABLE_FILTERS,
-                FilterKey.CommunicationSkills,
-                FilterKey.ResolutionCompleteness,
-            ],
-        },
-        {
-            flags: {
-                [FeatureFlagKey.AutoQAFilters]: true,
-                [FeatureFlagKey.AutoQaLanguageProficiency]: true,
                 [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
             },
             flagValue: true,
@@ -107,7 +92,6 @@ describe('SavedFiltersPanel', () => {
         {
             flags: {
                 [FeatureFlagKey.AutoQAFilters]: true,
-                [FeatureFlagKey.AutoQaLanguageProficiency]: true,
                 [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
             },
             flagValue: true,

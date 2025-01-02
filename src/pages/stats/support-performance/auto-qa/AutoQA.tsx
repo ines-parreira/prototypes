@@ -41,8 +41,6 @@ export default function AutoQA() {
 
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-    const isAutoQaLanguageProficiency =
-        !!useFlags()[FeatureFlagKey.AutoQaLanguageProficiency]
     const isManualAutoQaDimensions =
         !!useFlags()[FeatureFlagKey.AutoQaManualDimensions]
     const autoQAOptionalFilters =
@@ -50,7 +48,7 @@ export default function AutoQA() {
             AUTO_QA_OPTIONAL_FILTERS
         )
 
-    const trendCardColumnWidth = isAutoQaLanguageProficiency ? 3 : 4
+    const trendCardColumnWidth = 3
     const manualDimensionTrendCardColumnWidth = 3
 
     return (
@@ -129,13 +127,11 @@ export default function AutoQA() {
                     >
                         <CommunicationSkillsTrendCard />
                     </DashboardGridCell>
-                    {isAutoQaLanguageProficiency && (
-                        <DashboardGridCell
-                            size={getGridCellSize(trendCardColumnWidth)}
-                        >
-                            <LanguageProficiencyTrendCard />
-                        </DashboardGridCell>
-                    )}
+                    <DashboardGridCell
+                        size={getGridCellSize(trendCardColumnWidth)}
+                    >
+                        <LanguageProficiencyTrendCard />
+                    </DashboardGridCell>
                     {isManualAutoQaDimensions && (
                         <DashboardGridCell
                             size={getGridCellSize(

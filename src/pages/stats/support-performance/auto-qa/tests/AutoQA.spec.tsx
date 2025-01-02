@@ -147,7 +147,6 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         CommunicationSkillsTrendCardMock.mockImplementation(() => <div />)
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
-            [FeatureFlagKey.AutoQaLanguageProficiency]: true,
             [FeatureFlagKey.AutoQaManualDimensions]: true,
         })
     })
@@ -169,16 +168,6 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         AUTO_QA_OPTIONAL_FILTERS.forEach((optionalFilter) => {
             expect(screen.getByText(optionalFilter)).toBeTruthy()
         })
-    })
-
-    it('should render without Language Proficiency', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: true,
-            [FeatureFlagKey.AutoQaLanguageProficiency]: false,
-        })
-        renderWithStore(<AutoQA />, state)
-
-        expect(LanguageProficiencyTrendCardMock).not.toHaveBeenCalled()
     })
 
     it('should render without Manual Dimensions', () => {
@@ -212,7 +201,7 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         })
     })
 
-    it('should render AutoQA page with optional filters and Resolution Completeness and Communication Skills filters added', () => {
+    it('should render AutoQA page with optional filters and Auto QA dimensions filters added', () => {
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
             [FeatureFlagKey.AutoQAFilters]: true,
@@ -221,6 +210,7 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
             ...AUTO_QA_OPTIONAL_FILTERS,
             FilterKey.ResolutionCompleteness,
             FilterKey.CommunicationSkills,
+            FilterKey.LanguageProficiency,
         ]
 
         renderWithStore(<AutoQA />, state)

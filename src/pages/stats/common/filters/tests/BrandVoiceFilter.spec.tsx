@@ -184,7 +184,7 @@ describe('BrandVoice', () => {
         expect(dispatchUpdate).toHaveBeenCalledWith(withLogicalOperator([]))
     })
 
-    it('should remove the Language Proficiency filter', () => {
+    it('should remove the Brand Voice filter', () => {
         renderComponent()
 
         fireEvent.click(screen.getByText(FILTER_CLEAR_ICON))

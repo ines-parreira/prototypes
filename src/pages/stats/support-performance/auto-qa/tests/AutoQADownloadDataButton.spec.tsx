@@ -36,7 +36,6 @@ describe('ChannelsDownloadDataButton', () => {
             period,
         })
         mockFlags({
-            [FeatureFlagKey.AutoQaLanguageProficiency]: true,
             [FeatureFlagKey.AutoQaManualDimensions]: true,
         })
     })
@@ -62,9 +61,9 @@ describe('ChannelsDownloadDataButton', () => {
         )
     })
 
-    it('should call report without Language Proficiency', () => {
+    it('should call report without manual dimensions', () => {
         mockFlags({
-            [FeatureFlagKey.AutoQaLanguageProficiency]: false,
+            [FeatureFlagKey.AutoQaManualDimensions]: false,
         })
         const reportServiceSpy = jest
             .spyOn(autoQAReportingService, 'saveReport')

@@ -88,36 +88,10 @@ describe('useGetOptionalFilters', () => {
         expect(result.current).toEqual([FilterKey.Channels, FilterKey.Score])
     })
 
-    it('should return the optional filters with resolution completeness and communication skills filters if AutoQAFilters is enabled', () => {
+    it('should return the optional filters with only auto QA dimensions if AutoQaManualDimensions is disabled', () => {
         mockFlags({
             [FeatureFlagKey.AutoQAFilters]: true,
-        })
-
-        const {result} = renderHook(
-            () =>
-                useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters([
-                    FilterKey.Channels,
-                ] as OptionalFilter[]),
-            {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(stateWithSubscription)}>
-                        {children}
-                    </Provider>
-                ),
-            }
-        )
-
-        expect(result.current).toEqual([
-            FilterKey.Channels,
-            FilterKey.CommunicationSkills,
-            FilterKey.ResolutionCompleteness,
-        ])
-    })
-
-    it('should return the optional filters with LanguageProficiency', () => {
-        mockFlags({
-            [FeatureFlagKey.AutoQAFilters]: true,
-            [FeatureFlagKey.AutoQaLanguageProficiency]: true,
+            [FeatureFlagKey.AutoQaManualDimensions]: false,
         })
 
         const {result} = renderHook(
@@ -145,38 +119,6 @@ describe('useGetOptionalFilters', () => {
     it('should return the optional filters with manually scored dimensions', () => {
         mockFlags({
             [FeatureFlagKey.AutoQAFilters]: true,
-            [FeatureFlagKey.AutoQaManualDimensions]: true,
-        })
-
-        const {result} = renderHook(
-            () =>
-                useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters([
-                    FilterKey.Channels,
-                ] as OptionalFilter[]),
-            {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(stateWithSubscription)}>
-                        {children}
-                    </Provider>
-                ),
-            }
-        )
-
-        expect(result.current).toEqual([
-            FilterKey.Channels,
-            FilterKey.CommunicationSkills,
-            FilterKey.ResolutionCompleteness,
-            FilterKey.Accuracy,
-            FilterKey.BrandVoice,
-            FilterKey.Efficiency,
-            FilterKey.InternalCompliance,
-        ])
-    })
-
-    it('should return the optional filters with LanguageProficiency and manually scored dimensions', () => {
-        mockFlags({
-            [FeatureFlagKey.AutoQAFilters]: true,
-            [FeatureFlagKey.AutoQaLanguageProficiency]: true,
             [FeatureFlagKey.AutoQaManualDimensions]: true,
         })
 

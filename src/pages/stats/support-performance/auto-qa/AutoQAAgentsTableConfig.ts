@@ -48,13 +48,6 @@ export const AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER = [
     AutoQAAgentsTableColumn.ReviewedClosedTickets,
     AutoQAAgentsTableColumn.ResolutionCompleteness,
     AutoQAAgentsTableColumn.CommunicationSkills,
-]
-
-export const AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE = [
-    AutoQAAgentsTableColumn.AgentName,
-    AutoQAAgentsTableColumn.ReviewedClosedTickets,
-    AutoQAAgentsTableColumn.ResolutionCompleteness,
-    AutoQAAgentsTableColumn.CommunicationSkills,
     AutoQAAgentsTableColumn.LanguageProficiency,
 ]
 

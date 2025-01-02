@@ -19,7 +19,6 @@ import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/Ag
 import {AgentsTableSummaryCell} from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
 import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
 import {
-    AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER,
     AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS_ORDER,
     AutoQAAgentsTableColumn,
     getColumnWidth,
@@ -112,7 +111,6 @@ describe('<AutoQAAgentsTable />', () => {
         AgentsHeaderCellContentMock.mockImplementation(cellMock)
         AgentsTableSummaryCellMock.mockImplementation(cellMock)
         mockFlags({
-            [FeatureFlagKey.AutoQaLanguageProficiency]: true,
             [FeatureFlagKey.AutoQaManualDimensions]: true,
         })
     })
@@ -129,34 +127,6 @@ describe('<AutoQAAgentsTable />', () => {
 
         expect(screen.getByRole('table')).toBeInTheDocument()
         tableColumns.forEach((column) => {
-            expect(AgentsHeaderCellContentMock).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    title: TableLabels[column],
-                }),
-                {}
-            )
-        })
-
-        expect(AgentsCellContentMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                agent: paginatedAgents[0],
-            }),
-            {}
-        )
-    })
-
-    it('should render the table without Language Proficiency', () => {
-        mockFlags({
-            [FeatureFlagKey.AutoQaLanguageProficiency]: false,
-        })
-        render(
-            <Provider store={mockStore({})}>
-                <AutoQAAgentsTable />
-            </Provider>
-        )
-
-        expect(screen.getByRole('table')).toBeInTheDocument()
-        AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER.forEach((column) => {
             expect(AgentsHeaderCellContentMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     title: TableLabels[column],

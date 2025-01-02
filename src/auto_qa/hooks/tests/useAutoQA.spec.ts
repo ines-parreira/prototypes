@@ -15,7 +15,6 @@ jest.mock('common/flags', () => ({
 }))
 const mockUseFlag = useFlag as jest.Mock
 const mockFlagSet = {
-    [FeatureFlagKey.AutoQaLanguageProficiency]: false,
     [FeatureFlagKey.AutoQaManualDimensions]: false,
 }
 
@@ -96,7 +95,7 @@ describe('useAutoQA', () => {
         })
     })
 
-    it('should return empty data without Language Proficiency and Manual Dimensions', () => {
+    it('should return empty data without Manual Dimensions', () => {
         useListTicketQaScoreDimensionsMock.mockReturnValue({
             data: {
                 data: {},
@@ -114,12 +113,16 @@ describe('useAutoQA', () => {
                 name: 'communication_skills',
                 value: null,
             },
+            {
+                name: 'language_proficiency',
+                value: null,
+            },
         ]
 
         expect(result.current.dimensions).toEqual(expectedResult)
     })
 
-    it('should return empty data with Language Proficiency and Manual Dimensions', () => {
+    it('should return empty data with Manual Dimensions', () => {
         mockUseFlag.mockReturnValue(true)
 
         useListTicketQaScoreDimensionsMock.mockReturnValue({
@@ -173,12 +176,14 @@ describe('useAutoQA', () => {
             expect.objectContaining({
                 name: TicketQAScoreDimensionName.CommunicationSkills,
             }),
+            expect.objectContaining({
+                name: TicketQAScoreDimensionName.LanguageProficiency,
+            }),
         ])
     })
 
-    it('should return the dimensions containing Language Proficiency', () => {
+    it('should return the auto QA dimensions', () => {
         const mockFlagSet = {
-            [FeatureFlagKey.AutoQaLanguageProficiency]: true,
             [FeatureFlagKey.AutoQaManualDimensions]: false,
         }
         mockUseFlag.mockImplementation(
@@ -202,7 +207,7 @@ describe('useAutoQA', () => {
         ])
     })
 
-    it('should return the dimensions containing Language Proficiency and manually scored dimensions', () => {
+    it('should return the dimensions containing manually scored dimensions', () => {
         mockUseFlag.mockReturnValue(true)
 
         const {result} = renderHook(() => useAutoQA(1))
@@ -240,6 +245,10 @@ describe('useAutoQA', () => {
                 prediction: 4,
                 explanation: 'Beepity-boopity',
             }),
+            expect.objectContaining({
+                prediction: 4,
+                explanation: 'Boopity-boop',
+            }),
         ])
 
         act(() => {
@@ -253,6 +262,10 @@ describe('useAutoQA', () => {
                 prediction: 4,
                 explanation: 'Beepity-boopity',
             }),
+            expect.objectContaining({
+                prediction: 4,
+                explanation: 'Boopity-boop',
+            }),
         ])
 
         act(() => {
@@ -265,6 +278,10 @@ describe('useAutoQA', () => {
             expect.objectContaining({
                 prediction: 5,
                 explanation: 'Excellent',
+            }),
+            expect.objectContaining({
+                prediction: 4,
+                explanation: 'Boopity-boop',
             }),
         ])
     })

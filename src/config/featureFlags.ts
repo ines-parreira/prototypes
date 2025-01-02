@@ -41,7 +41,6 @@ export enum FeatureFlagKey {
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',
     AutoQA = 'auto-qa',
     AutoQAFilters = 'auto-qa-filters',
-    AutoQaLanguageProficiency = 'auto-qa-language-proficiency',
     AutoQaManualDimensions = 'auto-qa-manual-dimensions',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',

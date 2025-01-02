@@ -11,14 +11,8 @@ import type {DimensionConfig} from './types'
 export const dimensionOrder: SupportedTicketQADimensionName[] = [
     TicketQAScoreDimensionName.ResolutionCompleteness,
     TicketQAScoreDimensionName.CommunicationSkills,
+    TicketQAScoreDimensionName.LanguageProficiency,
 ]
-
-export const dimensionOrderWithLanguageProficiency: SupportedTicketQADimensionName[] =
-    [
-        TicketQAScoreDimensionName.ResolutionCompleteness,
-        TicketQAScoreDimensionName.CommunicationSkills,
-        TicketQAScoreDimensionName.LanguageProficiency,
-    ]
 
 export const dimensionOrderOfManualDimensions: SupportedTicketQADimensionName[] =
     [

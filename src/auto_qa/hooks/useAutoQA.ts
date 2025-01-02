@@ -15,7 +15,6 @@ import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import {
     dimensionOrder,
     SupportedTicketQAScoreDimension,
-    dimensionOrderWithLanguageProficiency,
     dimensionOrderOfManualDimensions,
 } from '../config'
 import type {DimensionSummary} from '../types'
@@ -23,28 +22,16 @@ import type {DimensionSummary} from '../types'
 import useSaveState from './useSaveState'
 
 export default function useAutoQA(ticketId: number) {
-    const isAutoQaLanguageProficiency = useFlag(
-        FeatureFlagKey.AutoQaLanguageProficiency,
-        false
-    )
     const isAutoQaManualDimensions = useFlag(
         FeatureFlagKey.AutoQaManualDimensions,
         false
-    )
-
-    const supportedDimensionsOrderWithLanguage = useMemo(
-        () =>
-            isAutoQaLanguageProficiency
-                ? dimensionOrderWithLanguageProficiency
-                : dimensionOrder,
-        [isAutoQaLanguageProficiency]
     )
     const supportedDimensionsOrder = useMemo(
         () =>
             isAutoQaManualDimensions
                 ? dimensionOrderOfManualDimensions
-                : supportedDimensionsOrderWithLanguage,
-        [isAutoQaManualDimensions, supportedDimensionsOrderWithLanguage]
+                : dimensionOrder,
+        [isAutoQaManualDimensions]
     )
     const {data, isError, isLoading, refetch} =
         useListTicketQaScoreDimensions(ticketId)
