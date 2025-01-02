@@ -8,7 +8,6 @@ import {
     OldCursorMeta,
 } from 'models/api/types'
 import {Ticket, TicketPartial} from 'models/ticket/types'
-import {getLDClient} from 'utils/launchDarkly'
 
 import {ListParams, View, ViewDraft} from './types'
 
@@ -27,9 +26,6 @@ export const fetchViewsPaginated = async (params: ApiPaginationParams = {}) => {
 }
 
 export const getViewItems = async ({url, viewId, ...params}: ListParams) => {
-    const launchDarklyClient = getLDClient()
-    await launchDarklyClient.waitForInitialization(3)
-
     return await client.get<
         ApiListResponseCursorPagination<Ticket[], OldCursorMeta>
     >(url ?? `/api/views/${viewId}/items`, {
