@@ -1,5 +1,5 @@
 declare module 'draft-js-plugins-editor' {
-    import {Component, ReactNode, MouseEvent} from 'react'
+    import {Component, ReactNode, MouseEvent, KeyboardEvent} from 'react'
     import {EditorState, DraftEditorCommand} from 'draft-js'
 
     import {Plugin, PluginMethods} from 'pages/common/draftjs/plugins/types'
@@ -21,6 +21,7 @@ declare module 'draft-js-plugins-editor' {
         editorKey?: string
         tabIndex?: number
         spellCheck?: boolean
+        keyBindingFn?: (event: KeyboardEvent) => DraftEditorCommand | null | undefined
         [key: string]: any
     }
 

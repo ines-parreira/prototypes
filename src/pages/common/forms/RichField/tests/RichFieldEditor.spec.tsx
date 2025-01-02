@@ -297,4 +297,29 @@ describe('RichFieldEditor', () => {
             '<p>htmlhttps://www.youtube.com/watch?v=4sLFpe-xbhk</p>'
         )
     })
+
+    it('should handle modifier + enter key binding', () => {
+        const onChangeSpy = jest.fn()
+        const WrappedRichFieldEditor = provideToolbarPlugin(RichFieldEditor)
+        editorState = EditorState.createWithContent(contentState)
+        // without the keyBindingFn, the enter key would insert a newline
+        editorState = EditorState.moveFocusToEnd(editorState)
+
+        const {container} = render(
+            <WrappedRichFieldEditor
+                {...defaultProps}
+                editorKey="editor"
+                editorState={editorState}
+                onChange={onChangeSpy}
+            />
+        )
+        const editor = container.querySelector('.public-DraftEditor-content')!
+        fireEvent.focus(editor)
+        fireEvent.keyDown(editor, {ctrlKey: true, key: 'Enter', keyCode: 13})
+
+        const [newContentState]: EditorState[] =
+            onChangeSpy.mock.calls[onChangeSpy.mock.calls.length - 1]
+        const convertedHTML = convertToHTML(newContentState.getCurrentContent())
+        expect(convertedHTML).toBe('<p>foo</p>')
+    })
 })

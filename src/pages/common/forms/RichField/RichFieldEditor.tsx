@@ -1,5 +1,11 @@
 import classnames from 'classnames'
-import {EditorState, Modifier, RichUtils, ContentState} from 'draft-js'
+import {
+    EditorState,
+    Modifier,
+    RichUtils,
+    ContentState,
+    KeyBindingUtil,
+} from 'draft-js'
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
 import Editor, {composeDecorators} from 'draft-js-plugins-editor'
 import createResizeablePlugin from 'draft-js-resizeable-plugin'
@@ -15,6 +21,7 @@ import React, {
     DragEvent,
     ComponentProps,
     Component,
+    KeyboardEvent,
 } from 'react'
 import ReactPlayer from 'react-player'
 
@@ -420,6 +427,14 @@ export class RichFieldEditor extends Component<Props, State> {
         shortcutManager.clear(['SpotlightModal', 'Dialpad', 'PhoneCall'])
     }
 
+    _customKeyBindingFn = (e: KeyboardEvent) => {
+        if (e.key === 'Enter' && KeyBindingUtil.hasCommandModifier(e)) {
+            return null
+        }
+
+        return
+    }
+
     render() {
         const {
             className,
@@ -471,6 +486,7 @@ export class RichFieldEditor extends Component<Props, State> {
                         <Editor
                             editorState={this.props.editorState}
                             onChange={this.handleChildChange}
+                            keyBindingFn={this._customKeyBindingFn}
                             onFocus={this._onEditorFocus}
                             onBlur={this._onEditorBlur}
                             plugins={this.plugins}
