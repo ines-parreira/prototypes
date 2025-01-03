@@ -16,6 +16,13 @@ jest.mock('models/workflows/queries')
 jest.mock('../EditActionFormView', () => () => <div>EditActionFormView</div>)
 jest.mock('../EditActionView', () => () => <div>EditActionView</div>)
 
+jest.mock('pages/aiAgent/components/AiAgentLayout/AiAgentLayout', () => {
+    return {
+        __esModule: true,
+        AiAgentLayout: () => <div>AiAgentLayout</div>,
+    }
+})
+
 const mockUseGetWorkflowConfiguration = jest.mocked(useGetWorkflowConfiguration)
 
 const queryClient = mockQueryClient()
@@ -172,5 +179,20 @@ describe('<EditActionViewContainer />', () => {
         )
 
         expect(screen.getByText('EditActionFormView')).toBeInTheDocument()
+    })
+
+    it('should render loading', () => {
+        mockUseGetWorkflowConfiguration.mockReturnValue({
+            data: undefined,
+            isInitialLoading: true,
+        } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
+
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <EditActionViewContainer />
+            </QueryClientProvider>
+        )
+
+        expect(screen.getByText('AiAgentLayout')).toBeInTheDocument()
     })
 })

@@ -1,8 +1,11 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo} from 'react'
 import {Redirect, useParams} from 'react-router-dom'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import {ACTIONS, AI_AGENT} from 'pages/aiAgent/constants'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 
@@ -17,6 +20,9 @@ type Props = {
 const EditActionFormView = ({configuration}: Props) => {
     const {shopName} = useParams<{shopName: string}>()
     const {routes} = useAiAgentNavigation({shopName})
+
+    const isStandaloneMenuEnabled =
+        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const {data: templates = [], isInitialLoading: isTemplatesLoading} =
         useGetWorkflowConfigurationTemplates(
@@ -46,6 +52,7 @@ const EditActionFormView = ({configuration}: Props) => {
             isLoading={isTemplatesLoading}
             shopName={shopName}
             className={css.actionsFormContainer}
+            title={isStandaloneMenuEnabled ? ACTIONS : AI_AGENT}
         >
             {template ? (
                 <TemplateActionForm

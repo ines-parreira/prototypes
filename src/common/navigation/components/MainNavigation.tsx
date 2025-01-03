@@ -1,6 +1,7 @@
 import cn from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import _kebabCase from 'lodash/kebabCase'
-import React, {useCallback, useMemo} from 'react'
+import React, {ReactNode, useCallback, useMemo} from 'react'
 import {
     DropdownItem,
     DropdownMenu,
@@ -9,9 +10,11 @@ import {
 } from 'reactstrap'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import Badge, {ColorType} from 'pages/common/components/Badge'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {closePanels} from 'state/layout/actions'
 import {hasRole} from 'utils'
@@ -21,6 +24,7 @@ import NavbarLink from './NavbarLink'
 
 export enum ActiveContent {
     Automate = 'automate',
+    AiAgent = 'ai-agent',
     Convert = 'convert',
     Customers = 'customers',
     Settings = 'settings',
@@ -34,8 +38,10 @@ type MenuItem = {
     label: string
     className?: string
     icon: string
+    addon?: ReactNode
     segmentProp: {link: string}
     requiredRole?: UserRole
+    featureFlag?: string
 }
 
 const mainMenu: MenuItem[] = [
@@ -53,6 +59,20 @@ const mainMenu: MenuItem[] = [
         name: ActiveContent.Automate,
         segmentProp: {link: 'automation'},
         requiredRole: UserRole.Agent,
+    },
+    {
+        url: '/app/ai-agent',
+        label: 'AI Agent',
+        icon: 'auto_awesome',
+        name: ActiveContent.AiAgent,
+        addon: (
+            <Badge className={css.badge} type={ColorType.Magenta}>
+                NEW
+            </Badge>
+        ),
+        segmentProp: {link: 'ai-agent'},
+        requiredRole: UserRole.Agent,
+        featureFlag: FeatureFlagKey.ConvAiStandaloneMenu,
     },
     {
         url: '/app/convert',
@@ -94,6 +114,8 @@ export default function MainNavigation({activeContent}: Props) {
     const dispatch = useAppDispatch()
     const currentUser = useAppSelector(getCurrentUser)
 
+    const flags = useFlags()
+
     const handleClick = useCallback(
         (item: MenuItem) => {
             logEvent(SegmentEvent.MenuMainLinkClicked, item.segmentProp)
@@ -125,11 +147,15 @@ export default function MainNavigation({activeContent}: Props) {
             </DropdownToggle>
             <DropdownMenu className={css.dropdownMenu}>
                 {mainMenu
-                    .filter(
-                        (item) =>
-                            !item.requiredRole ||
-                            hasRole(currentUser, item.requiredRole)
-                    )
+                    .filter((item) => {
+                        const hiddenByFeatureFlag =
+                            item.featureFlag && !flags[item.featureFlag]
+                        const hiddenByRole =
+                            item.requiredRole &&
+                            !hasRole(currentUser, item.requiredRole)
+
+                        return !hiddenByFeatureFlag && !hiddenByRole
+                    })
                     .map((item) => (
                         <DropdownItem
                             key={item.label}
@@ -144,6 +170,7 @@ export default function MainNavigation({activeContent}: Props) {
                                 {item.icon}
                             </i>
                             {item.label}
+                            {item.addon}
                         </DropdownItem>
                     ))}
             </DropdownMenu>

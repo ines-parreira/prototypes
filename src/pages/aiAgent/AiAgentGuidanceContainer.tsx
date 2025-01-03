@@ -1,8 +1,10 @@
 import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useEffect, useMemo} from 'react'
 import {Link, useParams} from 'react-router-dom'
 
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
@@ -14,12 +16,16 @@ import css from './AiAgentGuidanceContainer.less'
 import {AiAgentGuidanceView} from './AiAgentGuidanceView'
 import PostCompletionWizardModal from './AiAgentOnboardingWizard/PostCompletionWizardModal'
 import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
+import {AI_AGENT, GUIDANCE} from './constants'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 
 export const AiAgentGuidanceContainer = () => {
     const {shopName} = useParams<{
         shopName: string
     }>()
+
+    const isStandaloneMenuEnabled =
+        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const {storeConfiguration, isLoading: isStoreConfigLoading} =
         useAiAgentStoreConfigurationContext()
@@ -80,7 +86,11 @@ export const AiAgentGuidanceContainer = () => {
 
     if (!storeConfiguration || !guidanceHelpCenter) {
         return (
-            <AiAgentLayout shopName={shopName} className={css.container}>
+            <AiAgentLayout
+                shopName={shopName}
+                className={css.container}
+                title={isStandaloneMenuEnabled ? GUIDANCE : AI_AGENT}
+            >
                 <AutomateViewContent>
                     <Alert icon type={AlertType.Warning}>
                         Please configure your{' '}
@@ -95,7 +105,11 @@ export const AiAgentGuidanceContainer = () => {
     }
 
     return (
-        <AiAgentLayout shopName={shopName} className={css.container}>
+        <AiAgentLayout
+            shopName={shopName}
+            className={css.container}
+            title={isStandaloneMenuEnabled ? GUIDANCE : AI_AGENT}
+        >
             <AiAgentGuidanceView
                 helpCenterId={guidanceHelpCenter.id}
                 shopName={shopName}

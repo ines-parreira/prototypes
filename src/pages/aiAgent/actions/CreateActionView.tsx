@@ -1,9 +1,11 @@
 import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import _noop from 'lodash/noop'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Prompt, useHistory, useParams} from 'react-router-dom'
 import {ulid} from 'ulidx'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreWorkflowsConfigurations,
@@ -11,6 +13,7 @@ import {
     useListActionsApps,
 } from 'models/workflows/queries'
 import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import {ACTIONS, AI_AGENT} from 'pages/aiAgent/constants'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import ActionsPlatformTemplateVisualBuilderView from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateVisualBuilderView'
 import useValidateOnVisualBuilderGraphChange from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
@@ -97,6 +100,9 @@ const CreateActionView = () => {
         mutateAsync: createAction,
         isSuccess: isCreateActionSuccess,
     } = useUpsertAction('create', shopName, shopType)
+
+    const isStandaloneMenuEnabled =
+        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const appDispatch = useAppDispatch()
     const history = useHistory()
@@ -242,7 +248,11 @@ const CreateActionView = () => {
     }
 
     return (
-        <AiAgentLayout shopName={shopName} className={css.container}>
+        <AiAgentLayout
+            shopName={shopName}
+            className={css.container}
+            title={isStandaloneMenuEnabled ? ACTIONS : AI_AGENT}
+        >
             <div>
                 <div className={css.links}>
                     <Button

@@ -1,19 +1,28 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {AI_AGENT} from 'pages/automate/common/components/constants'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {AI_AGENT, GUIDANCE} from 'pages/aiAgent/constants'
 
-import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
+import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 type Props = {shopName: string; title?: string}
 
 export const GuidanceBreadcrumbs = ({shopName, title}: Props) => {
     const {routes} = useAiAgentNavigation({shopName})
+    const isStandaloneMenuEnabled =
+        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
+
     return (
         <Breadcrumb>
             <BreadcrumbItem>
-                <Link to={routes.main}>{AI_AGENT}</Link>
+                <Link
+                    to={isStandaloneMenuEnabled ? routes.guidance : routes.main}
+                >
+                    {isStandaloneMenuEnabled ? GUIDANCE : AI_AGENT}
+                </Link>
             </BreadcrumbItem>
             {title !== undefined && (
                 <BreadcrumbItem active>{title}</BreadcrumbItem>

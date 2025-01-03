@@ -687,5 +687,27 @@ describe('<Routes/>', () => {
                 screen.getByText('AiAgentKnowledgeContainer')
             ).toBeInTheDocument()
         })
+
+        it('should render knowledge page on new namespace', () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentKnowledgeTab]: true,
+            })
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <MemoryRouter
+                        initialEntries={[
+                            '/app/ai-agent/shopify/test-shop/knowledge',
+                        ]}
+                    >
+                        <Routes />
+                    </MemoryRouter>
+                </Provider>
+            )
+
+            expect(
+                screen.getByText('AiAgentKnowledgeContainer')
+            ).toBeInTheDocument()
+        })
     })
 })

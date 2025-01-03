@@ -1,3 +1,4 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import React, {
     useReducer,
@@ -8,6 +9,7 @@ import React, {
 } from 'react'
 import {useParams, useLocation, useHistory} from 'react-router-dom'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useKey from 'hooks/useKey'
 import {
     useGetConfigurationExecutions,
@@ -17,6 +19,8 @@ import {
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
+
+import {ACTIONS, AI_AGENT} from 'pages/aiAgent/constants'
 
 import css from './ActionEventsView.less'
 import ActionEventsHeader from './components/ActionEventsHeader'
@@ -34,6 +38,8 @@ export type Filter = Omit<
 export default function ActionExecutionsView() {
     const location = useLocation()
     const history = useHistory()
+    const isStandaloneMenuEnabled =
+        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const queryParams = useMemo(
         () => new URLSearchParams(location.search),
@@ -175,6 +181,7 @@ export default function ActionExecutionsView() {
             isLoading={isFetching}
             shopName={shopName}
             className={css.container}
+            title={isStandaloneMenuEnabled ? ACTIONS : AI_AGENT}
         >
             <ActionEventsHeader
                 initialEndDate={filterState.to}

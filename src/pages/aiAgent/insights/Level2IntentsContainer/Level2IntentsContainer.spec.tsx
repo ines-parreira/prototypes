@@ -1,10 +1,13 @@
 import {QueryClientProvider} from '@tanstack/react-query'
 import {fireEvent, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {Provider} from 'react-redux'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
+import {AI_AGENT, OPTIMIZE} from 'pages/aiAgent/constants'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {mockStore, renderWithRouter} from 'utils/testing'
 
@@ -45,11 +48,21 @@ const renderComponent = () =>
     )
 
 describe('Level2IntentsContainer', () => {
-    it('renders the component', () => {
-        renderComponent()
+    describe.each([
+        {flag: true, title: OPTIMIZE},
+        {flag: false, title: AI_AGENT},
+    ])('with feature flag conv-ai-standalone-menu = $flag', ({flag, title}) => {
+        it('renders the component', () => {
+            mockFlags({[FeatureFlagKey.ConvAiStandaloneMenu]: flag})
 
-        expect(screen.getByText('Level2IntentsContainer')).toBeInTheDocument()
-        expect(screen.getByText('Back to Optimize')).toBeInTheDocument()
+            renderComponent()
+
+            expect(
+                screen.getByText('Level2IntentsContainer')
+            ).toBeInTheDocument()
+            expect(screen.getByText('Back to Optimize')).toBeInTheDocument()
+            expect(screen.getByText(title)).toBeInTheDocument()
+        })
     })
 
     it('calls history.push with the correct route on BackLink click', () => {

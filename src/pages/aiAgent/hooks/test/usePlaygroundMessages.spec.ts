@@ -6,13 +6,13 @@ import {
     MessageType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
-import {AI_AGENT} from 'pages/automate/common/components/constants'
-
-import {PlaygroundChannels} from '../../components/PlaygroundChat/PlaygroundChat.types'
 import {
+    AI_AGENT,
     DEFAULT_PLAYGROUND_CUSTOMER,
     PLAYGROUND_CUSTOMER_MOCK,
-} from '../../constants'
+} from 'pages/aiAgent/constants'
+
+import {PlaygroundChannels} from '../../components/PlaygroundChat/PlaygroundChat.types'
 import {playgroundMessageFixture} from '../../fixtures/playgroundMessages.fixture'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
 import {getSubmitPlaygroundTicketResponseFixture} from '../../fixtures/submitPlaygroundTicketResponse.fixture'

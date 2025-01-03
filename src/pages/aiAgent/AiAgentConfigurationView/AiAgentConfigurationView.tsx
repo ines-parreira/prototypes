@@ -1,9 +1,12 @@
 import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo} from 'react'
 import {Redirect} from 'react-router-dom'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
+import {AI_AGENT, SETTINGS} from 'pages/aiAgent/constants'
 import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
@@ -28,6 +31,8 @@ export const AiAgentConfigurationView = ({
     accountDomain,
 }: AiAgentConfigurationViewProps) => {
     const dispatch = useAppDispatch()
+    const isStandaloneMenuEnabled =
+        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const {isLoading: isStoreConfigLoading} =
         useAiAgentStoreConfigurationContext()
@@ -74,7 +79,11 @@ export const AiAgentConfigurationView = ({
         !integration.meta.oauth.scope.includes(READ_FULFILLMENTS_PERMISSION)
 
     return (
-        <AiAgentLayout shopName={shopName} className={css.container}>
+        <AiAgentLayout
+            shopName={shopName}
+            className={css.container}
+            title={isStandaloneMenuEnabled ? SETTINGS : AI_AGENT}
+        >
             <div>
                 {integrationNeedMorePermissions && (
                     <div className={css.warningContainer}>

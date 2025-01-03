@@ -4,6 +4,16 @@ import {PlaygroundPromptType} from 'models/aiAgentPlayground/types'
 import {FormValues, PlaygroundCustomer, WizardFormValues} from './types'
 import {TicketCustomer} from './utils/playground-ticket.util'
 
+// NAVBAR CONSTANTS
+export const AI_AGENT = 'AI Agent'
+export const OPTIMIZE = 'Optimize'
+export const SETTINGS = 'Settings'
+export const KNOWLEDGE = 'Knowledge'
+export const GUIDANCE = 'Guidance'
+export const ACTIONS = 'Actions'
+export const TEST = 'Test'
+export const PREVIEW = 'Preview'
+
 export const SIGNATURE_MAX_LENGTH = 250
 export const CUSTOM_TONE_OF_VOICE_MAX_LENGTH = 1500
 export const EXCLUDED_TOPIC_MAX_LENGTH = 100
@@ -189,3 +199,7 @@ export const AI_AGENT_TAGS = {
 }
 
 export const AI_AGENT_TAGS_SET = new Set(Object.values(AI_AGENT_TAGS))
+
+export const AI_AGENT_NAVBAR_COLLAPSED_SECTIONS_KEY =
+    'ai-agent:navbar:collapsed-sections'
+export const AI_AGENT_MAX_EXPANDED_SECTIONS_BY_DEFAULT = 3

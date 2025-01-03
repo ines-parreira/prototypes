@@ -9,6 +9,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/constants'
 import {ShopType} from 'models/selfServiceConfiguration/types'
 import {isPreviewModeActivated} from 'pages/aiAgent/components/StoreConfigForm/StoreConfigForm.utils'
+import {AI_AGENT} from 'pages/aiAgent/constants'
+import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
@@ -21,7 +23,6 @@ import {assetsUrl} from 'utils'
 import AutomateNavbarPaywallNavbarLink from './AutomateNavbarPaywallNavbarLink'
 import css from './AutomateNavbarSectionBlock.less'
 import {
-    AI_AGENT,
     ARTICLE_RECOMMENDATION,
     CHANNELS,
     FLOWS,
@@ -52,6 +53,8 @@ const AutomateNavbarSectionBlock = ({
         shopName,
         accountDomain,
     })
+
+    const {routes: aiAgentRoutes} = useAiAgentNavigation({shopName})
 
     const isTrialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
     const hasAiAgentPreview =
@@ -127,7 +130,7 @@ const AutomateNavbarSectionBlock = ({
                     >
                         <NavbarLink
                             to={{
-                                pathname: `/app/automation/shopify/${shopName}/ai-agent`,
+                                pathname: aiAgentRoutes.main,
                                 state: {from: FROM_LOCATION},
                             }}
                         >
@@ -167,7 +170,7 @@ const AutomateNavbarSectionBlock = ({
                         >
                             <NavbarLink
                                 to={{
-                                    pathname: `/app/automation/shopify/${shopName}/ai-agent`,
+                                    pathname: aiAgentRoutes.main,
                                     state: {from: FROM_LOCATION},
                                 }}
                             >

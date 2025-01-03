@@ -1,9 +1,11 @@
 import {screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
 import {user} from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -17,6 +19,7 @@ import {RootState} from 'state/types'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 
 import {AiAgentPlaygroundContainer} from '../AiAgentPlaygroundContainer'
+import {AI_AGENT, TEST} from '../constants'
 import {getAccountConfigurationWithHttpIntegrationFixture} from '../fixtures/accountConfiguration.fixture'
 import {getStoreConfigurationFixture} from '../fixtures/storeConfiguration.fixtures'
 import {useGetOrCreateSnippetHelpCenter} from '../hooks/useGetOrCreateSnippetHelpCenter'
@@ -265,5 +268,18 @@ describe('AiAgentPlayground', () => {
         })
         renderComponent()
         expect(screen.getByText('PlaygroundChat')).toBeInTheDocument
+    })
+
+    describe.each([
+        {flag: true, title: TEST},
+        {flag: false, title: AI_AGENT},
+    ])('with feature flag conv-ai-standalone-menu = $flag', ({flag, title}) => {
+        it('renders component with title = "$title"', () => {
+            mockFlags({[FeatureFlagKey.ConvAiStandaloneMenu]: flag})
+
+            renderComponent()
+
+            expect(screen.getByText(title)).toBeInTheDocument()
+        })
     })
 })

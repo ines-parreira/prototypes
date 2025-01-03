@@ -1,3 +1,4 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {useParams} from 'react-router-dom'
 
@@ -7,6 +8,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import {ACTIONS, AI_AGENT} from 'pages/aiAgent/constants'
 import LinkButton from 'pages/common/components/button/LinkButton'
 
 import css from './ActionTemplatesView.less'
@@ -20,6 +22,8 @@ const ActionTemplatesView = () => {
         useGetWorkflowConfigurationTemplates({
             triggers: ['llm-prompt'],
         })
+    const isStandaloneMenuEnabled =
+        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     useEffectOnce(() => {
         logEvent(SegmentEvent.AutomateActionsTemplatesVisited)
@@ -35,6 +39,7 @@ const ActionTemplatesView = () => {
             shopName={shopName}
             isLoading={isInitialLoading}
             className={css.container}
+            title={isStandaloneMenuEnabled ? ACTIONS : AI_AGENT}
         >
             <div className={css.backButtonContainer}>
                 <BackToActionButton />

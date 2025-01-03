@@ -1,9 +1,16 @@
 import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useState} from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {StoreConfiguration} from 'models/aiAgent/types'
 import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import {
+    AI_AGENT,
+    DEFAULT_PREVIEW_MODE_DURATION_IN_DAYS,
+    PREVIEW,
+} from 'pages/aiAgent/constants'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
@@ -13,7 +20,6 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
-import {DEFAULT_PREVIEW_MODE_DURATION_IN_DAYS} from '../constants'
 import css from './AiAgentPreviewModeSettingsView.less'
 
 interface AiAgentPreviewModeSettingsViewProps {
@@ -39,6 +45,9 @@ const AiAgentPreviewModeSettingsView: React.FC<
     hasNoKnowledgeBase,
     isPreviewModeEnabled,
 }) => {
+    const isStandaloneMenuEnabled =
+        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
+
     const getStoredDuration = useCallback(() => {
         if (
             storeConfiguration?.previewModeActivatedDatetime &&
@@ -194,7 +203,10 @@ const AiAgentPreviewModeSettingsView: React.FC<
                 onDiscard={onCancel}
                 shouldRedirectAfterSave={true}
             />
-            <AiAgentLayout shopName={shopName}>
+            <AiAgentLayout
+                shopName={shopName}
+                title={isStandaloneMenuEnabled ? PREVIEW : AI_AGENT}
+            >
                 <form className={css.form}>
                     <section>
                         <div className={css.title}>Preview</div>

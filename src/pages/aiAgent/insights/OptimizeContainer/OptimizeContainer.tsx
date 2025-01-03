@@ -1,11 +1,14 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment, {Moment} from 'moment'
 import React, {useState} from 'react'
 import {useDispatch} from 'react-redux'
 import {useParams} from 'react-router-dom'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import {AI_AGENT, OPTIMIZE} from 'pages/aiAgent/constants'
 import {IntentTableWidget} from 'pages/aiAgent/insights/IntentTableWidget/IntentTableWidget'
 import {PeriodFilter} from 'pages/stats/common/filters/PeriodFilter'
 import {
@@ -49,6 +52,9 @@ export const OptimizeContainer = () => {
     const {shopName} = useParams<{
         shopName: string
     }>()
+
+    const isStandaloneMenuEnabled =
+        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const dispatch = useDispatch()
 
@@ -121,7 +127,11 @@ export const OptimizeContainer = () => {
     }
 
     return (
-        <AiAgentLayout shopName={shopName} className={css.container}>
+        <AiAgentLayout
+            shopName={shopName}
+            className={css.container}
+            title={isStandaloneMenuEnabled ? OPTIMIZE : AI_AGENT}
+        >
             <div className={css.section}>
                 {isPeriodFilterSet && (
                     <PeriodFilter

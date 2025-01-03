@@ -3,6 +3,7 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {AI_AGENT} from 'pages/aiAgent/constants'
 import history from 'pages/history'
 import {renderWithRouter} from 'utils/testing'
 
@@ -33,7 +34,7 @@ const renderComponent = (
     props: Partial<ComponentProps<typeof AiAgentLayout>>
 ) => {
     renderWithRouter(
-        <AiAgentLayout shopName="test-shop" {...props}>
+        <AiAgentLayout shopName="test-shop" title={AI_AGENT} {...props}>
             Test Content
         </AiAgentLayout>
     )

@@ -29,12 +29,14 @@ import {reportError} from 'utils/errors'
 import css from './AiAgentKnowledgeContainer.less'
 import {ConfigurationSection} from './components/ConfigurationSection/ConfigurationSection'
 import {CreatePublicSourcesSection} from './components/StoreConfigForm/StoreConfigForm'
-import {INITIAL_FORM_VALUES} from './constants'
+import {AI_AGENT, INITIAL_FORM_VALUES, KNOWLEDGE} from './constants'
 import {useGetOrCreateSnippetHelpCenter} from './hooks/useGetOrCreateSnippetHelpCenter'
 
 export const AiAgentKnowledgeContainer = () => {
     const isAiAgentSnippetsFromExternalFilesEnabled =
         useFlags()[FeatureFlagKey.AiAgentSnippetsFromExternalFiles]
+    const isStandaloneMenuEnabled =
+        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
@@ -187,7 +189,10 @@ export const AiAgentKnowledgeContainer = () => {
     }
 
     return (
-        <AiAgentLayout shopName={shopName}>
+        <AiAgentLayout
+            shopName={shopName}
+            title={isStandaloneMenuEnabled ? KNOWLEDGE : AI_AGENT}
+        >
             <UnsavedChangesPrompt
                 onSave={onSubmit}
                 when={isFormDirty}

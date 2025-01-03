@@ -1,3 +1,4 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useEffect} from 'react'
 import {useParams, Link} from 'react-router-dom'
 
@@ -11,6 +12,7 @@ import {
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import {ACTIONS, AI_AGENT} from 'pages/aiAgent/constants'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
 
@@ -31,6 +33,8 @@ const ActionsView = () => {
         FeatureFlagKey.ActionsUseCaseTemplates,
         false
     )
+    const isStandaloneMenuEnabled =
+        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const {shopName, shopType} = useParams<{
         shopType: string
@@ -71,6 +75,7 @@ const ActionsView = () => {
                 isTemplateConfigurationsInitialLoading
             }
             className={css.container}
+            title={isStandaloneMenuEnabled ? ACTIONS : AI_AGENT}
         >
             {storeConfigurations.length > 0 ? (
                 <div className={css.actionsListContainer}>

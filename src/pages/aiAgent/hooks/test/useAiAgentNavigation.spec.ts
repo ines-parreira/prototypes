@@ -226,4 +226,30 @@ describe('useAiAgentNavigation', () => {
             },
         ])
     })
+
+    it('should generate dynamic paths based on params', () => {
+        window.USER_IMPERSONATED = true
+        window.DEVELOPMENT = true
+
+        const {result} = renderHook(() =>
+            useAiAgentNavigation({shopName: 'test'})
+        )
+        expect(result.current.routes.configuration('email')).toEqual(
+            '/app/automation/shopify/test/ai-agent/settings?section=email'
+        )
+        expect(
+            result.current.routes.newGuidanceTemplateArticle('templateId')
+        ).toEqual(
+            '/app/automation/shopify/test/ai-agent/guidance/templates/templateId'
+        )
+        expect(result.current.routes.editAction('configurationId')).toEqual(
+            '/app/automation/shopify/test/ai-agent/actions/edit/configurationId'
+        )
+        expect(result.current.routes.optimizeIntent('intentId')).toEqual(
+            '/app/automation/shopify/test/ai-agent/optimize/intentId'
+        )
+        expect(result.current.routes.actionEvents('configurationId')).toEqual(
+            '/app/automation/shopify/test/ai-agent/actions/events/configurationId'
+        )
+    })
 })

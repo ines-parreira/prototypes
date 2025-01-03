@@ -42,6 +42,7 @@ import AiAgentOnboardingWizard from 'pages/aiAgent/AiAgentOnboardingWizard/AiAge
 import {AiAgentPlaygroundContainer} from 'pages/aiAgent/AiAgentPlaygroundContainer'
 import {AiAgentPreviewModeSettingsContainer} from 'pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer'
 import AiAgentViewContainer from 'pages/aiAgent/AiAgentViewContainer'
+import {AiAgentNavbar} from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
 import {Level2IntentsContainer} from 'pages/aiAgent/insights/Level2IntentsContainer/Level2IntentsContainer'
 import {OptimizeContainer} from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
 import {AiAgentAccountConfigurationProvider} from 'pages/aiAgent/providers/AiAgentAccountConfigurationProvider'
@@ -225,6 +226,7 @@ export function AppRoutes() {
                 <StatsRoutes />
             </Route>
             <Route path={`${path}/automation`} render={AutomationRoutes} />
+            <Route path={`${path}/ai-agent`} render={AiAgentBaseRoutes} />
             <Route path={`${path}/convert`}>
                 <ConvertRoutes />
             </Route>
@@ -1322,6 +1324,36 @@ function AutomationContent() {
             <Route path={`${path}`} exact>
                 <AutomateLandingPageContainer />
             </Route>
+            <Route>
+                <Redirect to={`${path}`} />
+            </Route>
+        </Switch>
+    )
+}
+
+export function AiAgentBaseRoutes() {
+    return (
+        <HelpCenterApiClientProvider>
+            <Switch>
+                <Route
+                    render={() => (
+                        <App content={AiAgentContent} navbar={AiAgentNavbar} />
+                    )}
+                />
+            </Switch>
+        </HelpCenterApiClientProvider>
+    )
+}
+
+function AiAgentContent() {
+    const {path} = useRouteMatch()
+
+    return (
+        <Switch>
+            <Route
+                path={`${path}/:shopType/:shopName`}
+                component={withUserRoleRequired(AiAgentRoutes, AGENT_ROLE)}
+            />
             <Route>
                 <Redirect to={`${path}`} />
             </Route>

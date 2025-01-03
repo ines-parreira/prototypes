@@ -5,24 +5,23 @@ import React, {ReactNode, useMemo} from 'react'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useId from 'hooks/useId'
+import {useAccountStoreConfiguration} from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
+import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import AutomateView from 'pages/automate/common/components/AutomateView'
-import {AI_AGENT} from 'pages/automate/common/components/constants'
 import Button from 'pages/common/components/button/Button'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import history from 'pages/history'
 
-import {useAccountStoreConfiguration} from '../../hooks/useAccountStoreConfiguration'
-import {useAiAgentEnabled} from '../../hooks/useAiAgentEnabled'
-import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
-import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
 import css from './AiAgentLayout.less'
 
 type Props = {
     children?: ReactNode
     shopName: string
     className?: string
-    title?: ReactNode
+    title: ReactNode
     isLoading?: boolean
 }
 
@@ -38,6 +37,8 @@ export const AiAgentLayout = ({
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
     const isAiAgentMultichannelEnablementEnabled =
         useFlags()[FeatureFlagKey.AiAgentMultiChannelEnablement]
+    const isStandaloneMenuEnabled =
+        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const {headerNavbarItems} = useAiAgentNavigation({shopName})
 
@@ -70,9 +71,7 @@ export const AiAgentLayout = ({
     const AiAgentTitle = useMemo(() => {
         return (
             <div className={css.customAiAgentTitle}>
-                <h1 className="d-flex align-items-center">
-                    {title ?? AI_AGENT}
-                </h1>
+                <h1 className="d-flex align-items-center">{title}</h1>
                 {aiAgentTicketViewId && (
                     <Button
                         size="small"
@@ -159,7 +158,9 @@ export const AiAgentLayout = ({
         <AutomateView
             isLoading={isLoading}
             title={AiAgentTitle}
-            headerNavbarItems={headerNavbarItems}
+            headerNavbarItems={
+                isStandaloneMenuEnabled ? undefined : headerNavbarItems
+            }
             action={globalToggleAction}
             className={classnames(css.container, className)}
         >
