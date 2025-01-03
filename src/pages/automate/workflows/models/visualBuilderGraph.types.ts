@@ -663,9 +663,11 @@ export type VisualBuilderGraphAppApp = {
     type: 'app'
     errors?: {
         api_key?: string
+        refresh_token?: string
     } | null
     touched?: {
         api_key?: boolean
+        refresh_token?: boolean
     } | null
 }
 

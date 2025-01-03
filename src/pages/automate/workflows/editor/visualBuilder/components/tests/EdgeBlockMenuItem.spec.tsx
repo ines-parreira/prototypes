@@ -3,7 +3,7 @@ import React from 'react'
 
 import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
 
-import EdgeBlockMenuItem from '../EdgeBlockMenuItem'
+import MenuItem from '../MenuItem'
 
 describe('<EdgeBlockMenuItem />', () => {
     it('should render edge block menu item', () => {
@@ -20,7 +20,7 @@ describe('<EdgeBlockMenuItem />', () => {
                     value: '',
                 }}
             >
-                <EdgeBlockMenuItem
+                <MenuItem
                     label="label"
                     description="description"
                     icon="icon"
@@ -54,7 +54,7 @@ describe('<EdgeBlockMenuItem />', () => {
                     value: '',
                 }}
             >
-                <EdgeBlockMenuItem
+                <MenuItem
                     label="label"
                     description="description"
                     icon="icon"

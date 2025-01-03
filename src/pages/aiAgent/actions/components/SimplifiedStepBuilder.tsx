@@ -1,46 +1,46 @@
 import {Label} from '@gorgias/merchant-ui-kit'
-import _ from 'lodash'
-import isEqual from 'lodash/isEqual'
-import React, {useState, useRef, useMemo, Dispatch, useCallback} from 'react'
+import _isEqual from 'lodash/isEqual'
+import React, {Dispatch, useCallback, useMemo, useRef, useState} from 'react'
 
 import {Node} from 'reactflow'
 
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
-import {useMenuItems} from 'pages/automate/workflows/editor/visualBuilder/components/EdgeBlock'
+import {
+    getActionsAppFromTemplateApp,
+    getGraphAppFromTemplateApp,
+} from 'pages/automate/actionsPlatform/utils'
+import NodeMenu from 'pages/automate/workflows/editor/visualBuilder/components/NodeMenu'
 import NodeEditorDrawer from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawer'
 import {VisualBuilderGraphAction} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
-import {walkVisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import {
+    walkVisualBuilderGraph,
+    getReusableLLMPromptCallNodeStatuses,
+} from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import {
+    isReusableLLMPromptCallNodeType,
     ReusableLLMPromptCallNodeType,
     VisualBuilderGraph,
-    isReusableLLMPromptCallNodeType,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-
+import {Separator} from 'pages/common/components/Separator/Separator'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import Caption from 'pages/common/forms/Caption/Caption'
 
-import {getCredentialsStatus} from '../utils'
 import {ConvertActionToAdvancedViewDialog} from './ConvertActionToAdvancedViewDialog'
 import css from './SimplifiedStepBuilder.less'
-import {StepListItem} from './StepListItem'
+import {StepListItem, StepListItemProps} from './StepListItem'
 
-export const SimplifiedStepBuilder = ({
-    graph,
-    dispatch,
-    steps,
-}: {
+type Props = {
     graph: VisualBuilderGraph
     dispatch: Dispatch<VisualBuilderGraphAction>
     steps: ActionTemplate[]
-}) => {
-    const nodes = graph.nodes.filter(isReusableLLMPromptCallNodeType)
-    const [isAppSelectorDropdownOpen, setIsAppSelectorDropdownOpen] =
-        useState(false)
+}
+
+export const SimplifiedStepBuilder = ({graph, dispatch, steps}: Props) => {
+    const [isStepDropdownOpen, setIsStepDropdownOpen] = useState(false)
     const [dirtyNodes, setDirtyNodes] = useState<
         ReusableLLMPromptCallNodeType[]
     >([])
@@ -48,82 +48,19 @@ export const SimplifiedStepBuilder = ({
     const [isAdvancedModalOpen, setIsAdvancedModalOpen] = useState(false)
 
     const {apps, actionsApps} = useApps()
-
-    const filteredApps = useMemo(() => {
-        const stepsByApp = _.groupBy(steps, (step) => {
-            switch (step.apps[0].type) {
-                case 'shopify':
-                case 'recharge':
-                    return step.apps[0].type
-                case 'app':
-                    return step.apps[0].app_id
-            }
-        })
-
-        return apps.filter(
-            (app) =>
-                (app.type !== 'app' ||
-                    actionsApps.some((actionApp) => actionApp.id === app.id)) &&
-                // Only show apps that have steps
-                stepsByApp[app.id]?.length > 0
-        )
-    }, [apps, actionsApps, steps])
+    const getAppFromTemplateApp = useGetAppFromTemplateApp({apps})
 
     const orderedNodes = useMemo(() => {
-        if (nodes.length === 0) return []
-        const result: ReusableLLMPromptCallNodeType[] = []
-        walkVisualBuilderGraph(graph, nodes[0].id, (node) => {
+        const nodes: ReusableLLMPromptCallNodeType[] = []
+
+        walkVisualBuilderGraph(graph, graph.nodes[0].id, (node) => {
             if (isReusableLLMPromptCallNodeType(node)) {
-                result.push(node)
+                nodes.push(node)
             }
         })
-        return result
-    }, [graph, nodes])
-    const {hasMissingValues, hasMissingCredentials} = useMemo(() => {
-        let hasMissingValues = false
-        let hasMissingCredentials = false
 
-        for (const node of orderedNodes) {
-            const step = steps.find((s) => s.id === node.data.configuration_id)
-            if (!step) continue
-
-            const templateApp = step?.apps?.[0]
-            const hasInputs = !!step?.inputs?.length
-            if (
-                hasInputs &&
-                (step.inputs?.length ?? 0) !==
-                    Object.keys(node.data.values).length
-            ) {
-                hasMissingValues = true
-            }
-
-            const graphApp = graph.apps?.find((app) => {
-                switch (templateApp?.type) {
-                    case 'shopify':
-                    case 'recharge':
-                        return app.type === templateApp.type
-                    case 'app':
-                        return (
-                            app.type === 'app' &&
-                            app.app_id === templateApp.app_id
-                        )
-                }
-            })
-
-            const {hasMissingCredentials: missingCredentials} =
-                getCredentialsStatus(graphApp, templateApp, graph.isTemplate)
-
-            if (missingCredentials) {
-                hasMissingCredentials = true
-            }
-
-            if (hasMissingValues && hasMissingCredentials) {
-                break
-            }
-        }
-
-        return {hasMissingValues, hasMissingCredentials}
-    }, [orderedNodes, steps, graph.apps, graph.isTemplate])
+        return nodes
+    }, [graph])
 
     const handleMove = (dragIndex: number, hoverIndex: number) => {
         const nextDirtyNodes =
@@ -134,7 +71,6 @@ export const SimplifiedStepBuilder = ({
             return
         }
 
-        // Move the node
         nextDirtyNodes.splice(dragIndex, 1)
         nextDirtyNodes.splice(hoverIndex, 0, dirtyNode)
 
@@ -142,23 +78,19 @@ export const SimplifiedStepBuilder = ({
     }
 
     const handleDrop = useCallback(() => {
-        if (dirtyNodes.length === 0) return
-        if (!isEqual(dirtyNodes, orderedNodes)) {
+        if (dirtyNodes.length === 0) {
+            return
+        }
+
+        if (!_isEqual(dirtyNodes, orderedNodes)) {
             dispatch({
                 type: 'REUSABLE_LLM_PROMPT_CALL_NODE',
                 nodeIds: dirtyNodes.map((node) => node.id),
             })
         }
+
         setDirtyNodes([])
     }, [dirtyNodes, orderedNodes, dispatch])
-
-    const visualBuilderNodeEditing = graph.nodeEditingId
-        ? graph.nodes.find((n) => n.id === graph.nodeEditingId)
-        : null
-
-    const onDrawerEditorClose = useCallback(() => {
-        dispatch({type: 'CLOSE_EDITOR'})
-    }, [dispatch])
 
     const handleNodeClick = useCallback(
         (node: Node) => {
@@ -170,33 +102,116 @@ export const SimplifiedStepBuilder = ({
         [dispatch]
     )
 
-    const menuItems = useMenuItems(
-        graph.nodes
-            .filter(
-                (node) =>
-                    node.type === 'end' && node.data.action === 'end-success'
-            )
-            .slice(-1)?.[0]?.id
+    const nodeId = useMemo(() => {
+        let nodeId = graph.nodes[0].id
+
+        walkVisualBuilderGraph(graph, graph.nodes[0].id, (node) => {
+            if (node.type === 'end' && node.data.action === 'end-success') {
+                nodeId = node.id
+            }
+        })
+
+        return nodeId
+    }, [graph])
+
+    const displayNodesProps: ((StepListItemProps & {id: string}) | null)[] = (
+        dirtyNodes.length ? dirtyNodes : orderedNodes
+    ).map((node, index) => {
+        const step = steps.find(
+            (step) => step.id === node.data.configuration_id
+        )
+
+        if (!step) {
+            return null
+        }
+
+        const templateApp = step.apps[0]
+        const app = getAppFromTemplateApp(templateApp)
+
+        if (!app) {
+            return null
+        }
+
+        const graphApp = getGraphAppFromTemplateApp(
+            graph.apps ?? [],
+            templateApp
+        )
+        const actionsApp = getActionsAppFromTemplateApp(
+            actionsApps,
+            templateApp
+        )
+
+        const {
+            isClickable,
+            hasMissingCredentials,
+            hasCredentials,
+            hasAllValues,
+            hasMissingValues,
+        } = getReusableLLMPromptCallNodeStatuses({
+            graphApp,
+            actionsApp,
+            step,
+            values: node.data.values,
+            templateApp,
+            isTemplate: graph.isTemplate,
+        })
+
+        return {
+            id: node.id,
+            index,
+            step,
+            onDelete: () => {
+                dispatch({
+                    type: 'DELETE_NODE',
+                    nodeId: node.id,
+                    steps,
+                    apps,
+                })
+            },
+            onClick: () => handleNodeClick(node),
+            app,
+            onMove: handleMove,
+            onDrop: handleDrop,
+            onCancel: () => setDirtyNodes([]),
+            isClickable,
+            hasMissingCredentials,
+            hasCredentials,
+            hasAllValues,
+            hasMissingValues,
+        }
+    })
+
+    const hasMissingValues = displayNodesProps.some(
+        (props) => props && props.hasMissingValues
     )
+    const hasMissingCredentials = displayNodesProps.some(
+        (props) => props && props.hasMissingCredentials
+    )
+
+    const visualBuilderNodeEditing = graph.nodeEditingId
+        ? graph.nodes.find((n) => n.id === graph.nodeEditingId)
+        : null
+
+    const onDrawerEditorClose = useCallback(() => {
+        dispatch({type: 'CLOSE_EDITOR'})
+    }, [dispatch])
 
     return (
         <>
+            <NodeEditorDrawer
+                nodeInEdition={visualBuilderNodeEditing}
+                onClose={onDrawerEditorClose}
+            />
             <div>
-                <NodeEditorDrawer
-                    nodeInEdition={visualBuilderNodeEditing}
-                    onClose={onDrawerEditorClose}
-                />
-                <Label isRequired>Action steps</Label>
+                <Label isRequired className={css.label}>
+                    Action steps
+                </Label>
                 <span className={css.description}>
                     Add one or more steps with your 3rd party apps. Steps will
-                    be performed in the order below.{' '}
+                    be performed in the order below.
                 </span>
                 {(hasMissingValues || hasMissingCredentials) && (
-                    <Alert
-                        type={AlertType.Warning}
-                        icon
-                        className={css.missingValuesAlert}
-                    >
+                    <Alert type={AlertType.Warning} icon className={css.alert}>
                         {hasMissingCredentials && hasMissingValues
                             ? 'Provide values and authentication for steps below to save this Action.'
                             : hasMissingCredentials
@@ -205,78 +220,63 @@ export const SimplifiedStepBuilder = ({
                     </Alert>
                 )}
                 <ul className={css.stepList}>
-                    {(dirtyNodes.length ? dirtyNodes : orderedNodes).map(
-                        (node, index) => {
-                            const step = steps.find(
-                                (s) => s.id === node.data.configuration_id
-                            )
-                            if (!step) return null
-
-                            return (
-                                <StepListItem
-                                    key={node.id}
-                                    step={step}
-                                    onDelete={() => {
-                                        dispatch({
-                                            type: 'DELETE_NODE',
-                                            nodeId: node.id,
-                                            steps,
-                                            apps,
-                                        })
-                                    }}
-                                    onClick={() => handleNodeClick(node)}
-                                    onMove={handleMove}
-                                    onDrop={handleDrop}
-                                    onCancel={() => setDirtyNodes([])}
-                                    index={index}
-                                    nodeValues={node.data.values}
-                                    apps={filteredApps}
-                                    graphApps={graph.apps ?? []}
-                                    isTemplate={graph.isTemplate}
-                                />
-                            )
-                        }
-                    )}
+                    {displayNodesProps.map((props, index) => {
+                        return (
+                            <React.Fragment key={props ? props.id : index}>
+                                {props ? (
+                                    <StepListItem {...props} />
+                                ) : (
+                                    <Skeleton height={32} />
+                                )}
+                                {index !== displayNodesProps.length - 1 && (
+                                    <Separator />
+                                )}
+                            </React.Fragment>
+                        )
+                    })}
                 </ul>
                 <Button
                     intent="secondary"
                     ref={dropdownTargetRef}
                     trailingIcon="arrow_drop_down"
-                    onClick={() =>
-                        setIsAppSelectorDropdownOpen((prev) => !prev)
-                    }
-                >
-                    Add Step{' '}
-                </Button>
-                <Dropdown
-                    target={dropdownTargetRef}
-                    isOpen={isAppSelectorDropdownOpen}
-                    onToggle={(isOpen) => {
-                        setIsAppSelectorDropdownOpen(isOpen)
+                    onClick={() => {
+                        setIsStepDropdownOpen((prev) => !prev)
                     }}
-                    className={css.dropdown}
-                    placement="bottom-start"
                 >
-                    {menuItems}
-                </Dropdown>
+                    Add Step
+                </Button>
+                <NodeMenu
+                    nodeId={nodeId}
+                    target={dropdownTargetRef}
+                    isOpen={isStepDropdownOpen}
+                    onToggle={setIsStepDropdownOpen}
+                    placement="bottom-start"
+                />
                 {!!graph.errors?.nodes && (
                     <Caption error={graph.errors.nodes} />
                 )}
-                <div className={css.dontSeeApp}>
-                    <span>Don't see the app you need?</span>
-                    <div className={css.dontSeeAppButtons}>
-                        <div data-candu-id="step-builder-request-app-button" />
-                        <Button
-                            fillStyle="ghost"
-                            intent="primary"
-                            size="small"
-                            className={css.button}
-                            onClick={() => setIsAdvancedModalOpen(true)}
-                        >
-                            <ButtonIconLabel icon="settings" position="left" />
-                            Advanced options
-                        </Button>
-                    </div>
+                <div className={css.caption}>Don't see the app you need?</div>
+                <div className={css.buttons}>
+                    <Button
+                        fillStyle="ghost"
+                        intent="primary"
+                        size="small"
+                        className={css.button}
+                        leadingIcon="add_box"
+                        data-candu-id="step-builder-request-app-button"
+                    >
+                        Request an app
+                    </Button>
+                    <Button
+                        fillStyle="ghost"
+                        intent="primary"
+                        size="small"
+                        className={css.button}
+                        onClick={() => setIsAdvancedModalOpen(true)}
+                        leadingIcon="settings"
+                    >
+                        Advanced options
+                    </Button>
                 </div>
             </div>
             <ConvertActionToAdvancedViewDialog

@@ -264,6 +264,11 @@ export type VisualBuilderBaseAction =
           apiKey: string
       }
     | {
+          type: 'SET_APP_REFRESH_TOKEN'
+          appId: string
+          refreshToken: string
+      }
+    | {
           type: 'SET_INPUTS'
           inputs: VisualBuilderGraph['inputs']
       }
@@ -774,6 +779,17 @@ export function baseReducer(
 
                 if (app) {
                     app.api_key = action.apiKey
+                }
+            })
+        case 'SET_APP_REFRESH_TOKEN':
+            return produce(graph, (draft) => {
+                const app = draft.apps?.find(
+                    (app): app is VisualBuilderGraphAppApp =>
+                        app.type === 'app' && app.app_id === action.appId
+                )
+
+                if (app) {
+                    app.refresh_token = action.refreshToken
                 }
             })
         case 'SET_ERRORS':

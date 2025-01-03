@@ -744,7 +744,10 @@ export class WorkflowConfigurationBuilder {
         'name' | 'entrypoint' | 'id' | 'triggers' | 'entrypoints' | 'apps'
     > &
         Partial<
-            Pick<WorkflowConfiguration, 'is_draft' | 'available_languages'>
+            Pick<
+                WorkflowConfiguration,
+                'is_draft' | 'available_languages' | 'advanced_datetime'
+            >
         >) {
         this.data = {
             internal_id: ulid(),

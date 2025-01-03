@@ -14,6 +14,7 @@ import {
     useGetStoreApps,
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
+    useListActionsApps,
 } from 'models/workflows/queries'
 import use3plIntegrations from 'pages/aiAgent/actions/hooks/use3plIntegrations'
 import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
@@ -55,6 +56,7 @@ const mockUseFlag = jest.mocked(useFlag)
 const mockUseGetStoreWorkflowsConfigurations = jest.mocked(
     useGetStoreWorkflowsConfigurations
 )
+const mockUseListActionsApps = jest.mocked(useListActionsApps)
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -95,6 +97,9 @@ describe('<CreateActionView />', () => {
             data: [],
         } as unknown as ReturnType<typeof useGetStoreWorkflowsConfigurations>)
         mockuse3plIntegrations.mockReturnValue([])
+        mockUseListActionsApps.mockReturnValue({
+            data: [],
+        } as unknown as ReturnType<typeof useListActionsApps>)
     })
 
     it('should render create action page', () => {

@@ -29,6 +29,13 @@ import {
     getRemoveItemNodeTouched,
     getReplaceItemNodeErrors,
     getReplaceItemNodeTouched,
+    getReusableLLMPromptCallNodeHasAllValues,
+    getReusableLLMPromptCallNodeHasCredentials,
+    getReusableLLMPromptCallNodeHasInputs,
+    getReusableLLMPromptCallNodeHasMissingCredentials,
+    getReusableLLMPromptCallNodeHasMissingValues,
+    getReusableLLMPromptCallNodeIsClickable,
+    getReusableLLMPromptCallNodeStatuses,
     getReusableLLMPromptTriggerNodeErrors,
     getReusableLLMPromptTriggerNodeTouched,
     getSkipChargeNodeErrors,
@@ -1765,9 +1772,15 @@ describe('touched', () => {
         })
     })
 
-    it('should touch graph app app', () => {
-        expect(getGraphAppAppTouched()).toEqual({
+    it('should touch API Key graph app app', () => {
+        expect(getGraphAppAppTouched('api-key')).toEqual({
             api_key: true,
+        })
+    })
+
+    it('should touch OAuth2 graph app app', () => {
+        expect(getGraphAppAppTouched('oauth2-token')).toEqual({
+            refresh_token: true,
         })
     })
 
@@ -2066,18 +2079,35 @@ describe('touched', () => {
 })
 
 describe('errors', () => {
-    it('should validate graph app app', () => {
-        expect(
-            getGraphAppAppErrors({
-                app_id: 'someid',
-                type: 'app',
-                api_key: '',
-                touched: {
-                    api_key: true,
-                },
+    describe('getGraphAppAppErrors()', () => {
+        it('should validate API key graph app app', () => {
+            expect(
+                getGraphAppAppErrors({
+                    app_id: 'someid',
+                    type: 'app',
+                    api_key: '',
+                    touched: {
+                        api_key: true,
+                    },
+                })
+            ).toEqual({
+                api_key: 'API key is required',
             })
-        ).toEqual({
-            api_key: 'API key is required',
+        })
+
+        it('should validate refresh token graph app app', () => {
+            expect(
+                getGraphAppAppErrors({
+                    app_id: 'someid',
+                    type: 'app',
+                    refresh_token: '',
+                    touched: {
+                        refresh_token: true,
+                    },
+                })
+            ).toEqual({
+                refresh_token: 'Refresh token is required',
+            })
         })
     })
 
@@ -5479,6 +5509,252 @@ describe('errors', () => {
             expect(errors).toEqual({
                 firstName: 'Invalid variables syntax',
             })
+        })
+    })
+})
+
+describe('getReusableLLMPromptCallNodeHasInputs()', () => {
+    it('should return true if step has inputs', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasInputs({
+                inputs: [
+                    {
+                        id: '',
+                        name: '',
+                        description: '',
+                        data_type: 'string',
+                    },
+                ],
+            })
+        ).toEqual(true)
+    })
+
+    it('should return false if step has no inputs', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasInputs({
+                inputs: [],
+            })
+        ).toEqual(false)
+    })
+
+    it('should return false if inputs are undefined', () => {
+        expect(getReusableLLMPromptCallNodeHasInputs({})).toEqual(false)
+    })
+})
+
+describe('getReusableLLMPromptCallNodeHasMissingValues()', () => {
+    it('should return false if step has all inputs set', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasMissingValues(
+                true,
+                {
+                    inputs: [
+                        {
+                            id: '',
+                            name: '',
+                            description: '',
+                            data_type: 'string',
+                        },
+                    ],
+                },
+                {input1: 'value1'}
+            )
+        ).toEqual(false)
+    })
+
+    it('should return true if step has inputs but some values are not set', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasMissingValues(
+                true,
+                {
+                    inputs: [
+                        {
+                            id: '',
+                            name: '',
+                            description: '',
+                            data_type: 'string',
+                        },
+                    ],
+                },
+                {}
+            )
+        ).toEqual(true)
+    })
+
+    it('should return false if step has no inputs', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasMissingValues(
+                false,
+                {
+                    inputs: [],
+                },
+                {}
+            )
+        ).toEqual(false)
+    })
+})
+
+describe('getReusableLLMPromptCallNodeHasAllValues()', () => {
+    it('should return false if some values are missing', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasAllValues(
+                true,
+                {
+                    inputs: [
+                        {
+                            id: '',
+                            name: '',
+                            description: '',
+                            data_type: 'string',
+                        },
+                    ],
+                },
+                {}
+            )
+        ).toEqual(false)
+    })
+
+    it('should return true if all values are set', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasAllValues(
+                true,
+                {
+                    inputs: [
+                        {
+                            id: '',
+                            name: '',
+                            description: '',
+                            data_type: 'string',
+                        },
+                    ],
+                },
+                {input1: 'value1'}
+            )
+        ).toEqual(true)
+    })
+
+    it('should return false if step has no inputs', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasAllValues(
+                false,
+                {
+                    inputs: [],
+                },
+                {}
+            )
+        ).toEqual(false)
+    })
+})
+
+describe('getReusableLLMPromptCallNodeHasMissingCredentials()', () => {
+    it('should return true if API key app has missing credentials', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasMissingCredentials(
+                {type: 'app', app_id: '', api_key: ''},
+                {auth_type: 'api-key'},
+                false
+            )
+        ).toEqual(true)
+    })
+
+    it('should return true if OAuth2 token app has missing credentials', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasMissingCredentials(
+                {type: 'app', app_id: '', refresh_token: ''},
+                {auth_type: 'oauth2-token'},
+                false
+            )
+        ).toEqual(true)
+    })
+
+    it('should return false if API key app has credentials', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasMissingCredentials(
+                {type: 'app', app_id: '', api_key: 'test'},
+                {auth_type: 'api-key'},
+                false
+            )
+        ).toEqual(false)
+    })
+
+    it('should return false if template', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasMissingCredentials(
+                {type: 'app', app_id: '', api_key: ''},
+                {auth_type: 'api-key'},
+                true
+            )
+        ).toEqual(false)
+    })
+})
+
+describe('getReusableLLMPromptCallNodeHasCredentials()', () => {
+    it('should return true if action template type is app and it is not a template', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasCredentials({type: 'app'}, false)
+        ).toEqual(true)
+    })
+
+    it('should return false if action template type is app and it is a template', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasCredentials({type: 'app'}, true)
+        ).toEqual(false)
+    })
+
+    it('should return false if action template type is not an app', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasCredentials({type: 'shopify'}, false)
+        ).toEqual(false)
+    })
+})
+
+describe('getReusableLLMPromptCallNodeIsClickable()', () => {
+    it('should return true if node has credentials', () => {
+        expect(getReusableLLMPromptCallNodeIsClickable(true, false)).toEqual(
+            true
+        )
+    })
+
+    it('should return true if node has inputs', () => {
+        expect(getReusableLLMPromptCallNodeIsClickable(false, true)).toEqual(
+            true
+        )
+    })
+
+    it('should return false if node has no credentials & no inputs', () => {
+        expect(getReusableLLMPromptCallNodeIsClickable(false, false)).toEqual(
+            false
+        )
+    })
+})
+
+describe('getReusableLLMPromptCallNodeStatuses()', () => {
+    it('should return statuses', () => {
+        const statuses = getReusableLLMPromptCallNodeStatuses({
+            graphApp: {type: 'app', app_id: '', api_key: ''},
+            actionsApp: {auth_type: 'api-key'},
+            step: {
+                inputs: [
+                    {
+                        id: '',
+                        name: '',
+                        description: '',
+                        data_type: 'string',
+                    },
+                ],
+            },
+            values: {input1: 'value1'},
+            templateApp: {type: 'app'},
+            isTemplate: false,
+        })
+
+        expect(statuses).toEqual({
+            hasInputs: true,
+            hasMissingValues: false,
+            hasAllValues: true,
+            hasMissingCredentials: true,
+            hasCredentials: true,
+            isClickable: true,
         })
     })
 })

@@ -8,12 +8,8 @@ import {ulid} from 'ulidx'
 import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {
-    useGetStoreApps,
-    useUpsertAccountOauth2Token,
-} from 'models/workflows/queries'
+import {useGetStoreApps} from 'models/workflows/queries'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
@@ -32,8 +28,6 @@ import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import InputField from 'pages/common/forms/input/InputField'
 import TextArea from 'pages/common/forms/TextArea'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-
-import {notify} from 'state/notifications/actions'
 
 import useAddStoreApp from '../hooks/useAddStoreApp'
 import useDeleteAction from '../hooks/useDeleteAction'
@@ -70,7 +64,6 @@ const AuthType: Record<
 type AuthValuePath = (typeof AuthType)[keyof typeof AuthType]
 
 const TemplateActionForm = ({configuration, template}: Props) => {
-    const dispatch = useAppDispatch()
     const [appAuthFieldName, setAppAuthFieldName] = useState<AuthValuePath>(
         configuration.apps?.[0].type === 'app' &&
             configuration.apps[0].refresh_token
@@ -199,9 +192,6 @@ const TemplateActionForm = ({configuration, template}: Props) => {
         isSuccess: isActionUpserted,
     } = useUpsertAction(isNewAction ? 'create' : 'update', shopName, shopType)
 
-    const {mutateAsync: upsertAccountOAuth2Token} =
-        useUpsertAccountOauth2Token()
-
     useEffect(() => {
         if (isAxiosError(upsertError)) {
             if (upsertError.response?.status === 409) {
@@ -255,32 +245,6 @@ const TemplateActionForm = ({configuration, template}: Props) => {
         nextGraph.apps = values.apps
         nextGraph.inputs = values.inputs
         nextGraph.values = values.values
-        const app = nextGraph.apps?.[0]
-        if (
-            actionAppConnected?.auth_type === 'oauth2-token' &&
-            app.type === 'app' &&
-            app.refresh_token
-        ) {
-            try {
-                const refreshToken = app.refresh_token
-                const accountOauth2TokenCreated =
-                    await upsertAccountOAuth2Token([
-                        undefined,
-                        {
-                            refresh_token: refreshToken,
-                            id: app.account_oauth2_token_id,
-                        },
-                    ])
-                app.account_oauth2_token_id = accountOauth2TokenCreated.data.id
-            } catch (err) {
-                void dispatch(
-                    notify({
-                        message: 'Failed to create Refresh Token',
-                    })
-                )
-                return
-            }
-        }
 
         const configuration = transformVisualBuilderGraphIntoWfConfiguration(
             nextGraph,
@@ -303,13 +267,10 @@ const TemplateActionForm = ({configuration, template}: Props) => {
     }, [
         getValues,
         graph,
-        actionAppConnected?.auth_type,
         upsertAction,
         shopName,
         shopType,
         connectedStoreApp,
-        upsertAccountOAuth2Token,
-        dispatch,
         addStoreApp,
     ])
 

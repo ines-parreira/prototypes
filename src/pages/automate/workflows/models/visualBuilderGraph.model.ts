@@ -11,6 +11,11 @@ import {ulid} from 'ulidx'
 
 import {validateHttpHeaderName, validateWebhookURL} from 'utils'
 
+import {
+    ActionsApp,
+    ActionTemplate,
+    ActionTemplateApp,
+} from '../../actionsPlatform/types'
 import {ConditionSchema, ConditionsSchema, VarSchema} from './conditions.types'
 import {
     extractVariablesFromNode,
@@ -50,6 +55,8 @@ import {
     RemoveItemNodeType,
     UpdateShippingAddressNodeType,
     VisualBuilderGraphAppApp,
+    VisualBuilderGraphApp,
+    ReusableLLMPromptCallNodeType,
 } from './visualBuilderGraph.types'
 import {
     WorkflowConfiguration,
@@ -1557,11 +1564,18 @@ export function getGraphTouched(): NonNullable<VisualBuilderGraph['touched']> {
     }
 }
 
-export function getGraphAppAppTouched(): NonNullable<
-    VisualBuilderGraphAppApp['touched']
-> {
-    return {
-        api_key: true,
+export function getGraphAppAppTouched(
+    authType: ActionsApp['auth_type']
+): NonNullable<VisualBuilderGraphAppApp['touched']> {
+    switch (authType) {
+        case 'api-key':
+            return {
+                api_key: true,
+            }
+        case 'oauth2-token':
+            return {
+                refresh_token: true,
+            }
     }
 }
 
@@ -1572,6 +1586,14 @@ export function getGraphAppAppErrors(
 
     if (app.touched?.api_key && !app.api_key?.trim()) {
         errors = mergeErrors(errors, 'api_key', 'API key is required')
+    }
+
+    if (app.touched?.refresh_token && !app.refresh_token?.trim()) {
+        errors = mergeErrors(
+            errors,
+            'refresh_token',
+            'Refresh token is required'
+        )
     }
 
     return errors
@@ -2819,4 +2841,116 @@ export function getUpdateShippingAddressNodeErrors(
     }
 
     return errors
+}
+
+export const getReusableLLMPromptCallNodeHasInputs = (
+    step: Pick<ActionTemplate, 'inputs'>
+): boolean => {
+    return !!step.inputs?.length
+}
+
+export const getReusableLLMPromptCallNodeHasMissingValues = (
+    hasInputs: boolean,
+    step: Pick<ActionTemplate, 'inputs'>,
+    values: ReusableLLMPromptCallNodeType['data']['values']
+): boolean => {
+    return (
+        hasInputs && (step.inputs?.length ?? 0) !== Object.keys(values).length
+    )
+}
+
+export const getReusableLLMPromptCallNodeHasAllValues = (
+    hasInputs: boolean,
+    step: Pick<ActionTemplate, 'inputs'>,
+    values: ReusableLLMPromptCallNodeType['data']['values']
+): boolean => {
+    return (
+        hasInputs && (step.inputs?.length ?? 0) === Object.keys(values).length
+    )
+}
+
+export const getReusableLLMPromptCallNodeHasMissingCredentials = (
+    graphApp: VisualBuilderGraphApp | undefined,
+    actionsApp: Pick<ActionsApp, 'auth_type'> | undefined,
+    isTemplate: boolean
+): boolean => {
+    if (!graphApp || graphApp.type !== 'app' || !actionsApp || isTemplate) {
+        return false
+    }
+
+    switch (actionsApp.auth_type) {
+        case 'api-key':
+            return !graphApp.api_key?.trim()
+        case 'oauth2-token':
+            return !graphApp.refresh_token?.trim()
+        default:
+            return false
+    }
+}
+
+export const getReusableLLMPromptCallNodeHasCredentials = (
+    templateApp: Pick<ActionTemplateApp, 'type'>,
+    isTemplate: boolean
+): boolean => {
+    return templateApp.type === 'app' && !isTemplate
+}
+
+export const getReusableLLMPromptCallNodeIsClickable = (
+    hasCredentials: boolean,
+    hasInputs: boolean
+): boolean => {
+    return hasCredentials || hasInputs
+}
+
+export const getReusableLLMPromptCallNodeStatuses = ({
+    graphApp,
+    actionsApp,
+    step,
+    values,
+    templateApp,
+    isTemplate,
+}: {
+    graphApp: VisualBuilderGraphApp | undefined
+    actionsApp: Pick<ActionsApp, 'auth_type'> | undefined
+    step: Pick<ActionTemplate, 'inputs'>
+    values: ReusableLLMPromptCallNodeType['data']['values']
+    templateApp: Pick<ActionTemplateApp, 'type'>
+    isTemplate: boolean
+}) => {
+    const hasInputs = getReusableLLMPromptCallNodeHasInputs(step)
+    const hasMissingValues = getReusableLLMPromptCallNodeHasMissingValues(
+        hasInputs,
+        step,
+        values
+    )
+    const hasAllValues = getReusableLLMPromptCallNodeHasAllValues(
+        hasInputs,
+        step,
+        values
+    )
+
+    const hasMissingCredentials =
+        getReusableLLMPromptCallNodeHasMissingCredentials(
+            graphApp,
+            actionsApp,
+            isTemplate
+        )
+    const hasCredentials = getReusableLLMPromptCallNodeHasCredentials(
+        templateApp,
+        isTemplate
+    )
+
+    const isClickable = getReusableLLMPromptCallNodeIsClickable(
+        hasCredentials,
+        hasInputs
+    )
+
+    return {
+        hasInputs,
+        hasMissingValues,
+        hasAllValues,
+        hasMissingCredentials,
+        hasCredentials,
+        isClickable,
+    }
 }

@@ -7,7 +7,11 @@ import configureMockStore from 'redux-mock-store'
 import {IntegrationType} from 'models/integration/constants'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
-import {ActionTemplate, App} from 'pages/automate/actionsPlatform/types'
+import {
+    ActionsApp,
+    ActionTemplate,
+    App,
+} from 'pages/automate/actionsPlatform/types'
 import {StoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {VisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {WorkflowChannelSupportContext} from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
@@ -186,18 +190,21 @@ describe('SimplifiedStepBuilder', () => {
     ]
 
     beforeEach(() => {
-        const testApp = {
+        const testApp: App = {
+            id: 'test-app',
+            name: 'Test App',
+            icon: 'test-icon',
+            type: IntegrationType.App,
+        }
+        const testActionsApp: ActionsApp = {
             id: 'test-app',
             auth_type: 'api-key',
             auth_settings: {},
-            name: 'Test App',
-            icon: 'test-icon',
-            type: IntegrationType.Shopify,
-        } as const
+        }
 
         mockUseApps.mockReturnValue({
             apps: [testApp],
-            actionsApps: [testApp],
+            actionsApps: [testActionsApp],
             isLoading: false,
         })
 
@@ -395,10 +402,8 @@ describe('SimplifiedStepBuilder', () => {
             steps: defaultSteps,
             apps: [
                 {
-                    type: IntegrationType.Shopify,
+                    type: IntegrationType.App,
                     id: 'test-app',
-                    auth_type: 'api-key',
-                    auth_settings: {},
                     name: 'Test App',
                     icon: 'test-icon',
                 },
@@ -709,7 +714,13 @@ describe('SimplifiedStepBuilder', () => {
                     },
                 },
             ],
-            edges: [],
+            edges: [
+                {
+                    id: 'edge1',
+                    source: 'start',
+                    target: 'node1',
+                },
+            ],
         } as unknown as VisualBuilderGraph
 
         const {container} = renderWithProviders(
@@ -902,13 +913,7 @@ describe('SimplifiedStepBuilder', () => {
             mockContextDispatch
         )
 
-        const stepContent = screen.getByText(/Step 1 in Test App/)
-        const stepWrapper = stepContent.closest('.stepListItemContent')
-        if (stepWrapper) {
-            fireEvent.click(stepWrapper)
-        } else {
-            throw new Error('Step wrapper not found')
-        }
+        fireEvent.click(screen.getByText(/Step 1 in Test App/))
 
         expect(mockDispatch).toHaveBeenCalledWith({
             type: 'SET_NODE_EDITING_ID',

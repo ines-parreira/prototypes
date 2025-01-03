@@ -9,7 +9,15 @@ import useTouchActionGraph from '../useTouchActionGraph'
 
 describe('useTouchActionGraph()', () => {
     it('should touch action graph', () => {
-        const {result} = renderHook(() => useTouchActionGraph())
+        const {result} = renderHook(() =>
+            useTouchActionGraph([
+                {
+                    id: 'app_id',
+                    auth_type: 'api-key',
+                    auth_settings: {},
+                },
+            ])
+        )
 
         expect(
             result.current({

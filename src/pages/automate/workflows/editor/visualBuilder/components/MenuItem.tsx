@@ -13,7 +13,7 @@ type Props = {
     floatingRef?: HTMLElement | null
 }
 
-const EdgeBlockMenuItem = ({
+const MenuItem = ({
     label,
     onClick,
     disabledText,
@@ -56,4 +56,4 @@ const EdgeBlockMenuItem = ({
     )
 }
 
-export default EdgeBlockMenuItem
+export default MenuItem

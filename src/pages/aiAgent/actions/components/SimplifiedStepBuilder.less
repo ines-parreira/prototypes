@@ -2,26 +2,16 @@
 @import (reference) '~css/typography.less';
 
 :local {
-    .buttonIcon {
-        font-size: 20px !important;
-    }
-
-    .dropdown {
-        width: 272px;
-    }
-
-    .backButton {
-        max-width: 100%;
-        height: auto;
-        padding: 0 !important;
-        font-weight: 600;
+    .label {
+        margin-bottom: @layout-spacing-xxs;
     }
 
     .description {
         color: var(--neutral-grey-5);
+        margin-bottom: @layout-spacing-xs;
     }
 
-    .missingValuesAlert {
+    .alert {
         margin-top: @layout-spacing-xxs;
     }
 
@@ -30,44 +20,25 @@
         text-transform: none !important;
     }
 
-    .dontSeeApp {
+    .caption {
+        .caption-regular();
+
         margin-top: @layout-spacing-xs;
-        display: flex;
-        flex-direction: column;
-        gap: @layout-spacing-xxs;
     }
 
-    .dontSeeAppButtons {
+    .buttons {
         display: flex;
         gap: @layout-spacing-s;
-    }
-
-    .backButtonIconLabel {
-        overflow: hidden;
+        margin-top: @layout-spacing-xxs;
     }
 
     .stepList {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
         list-style: none;
         padding: 0;
         margin-bottom: @layout-spacing-xs;
         margin-top: @layout-spacing-xs;
-    }
-
-    .itemContent {
-        display: flex;
-        align-items: center;
-        gap: @layout-spacing-s;
-    }
-
-    .item {
-        padding: 0;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .appIcon {
-        width: 20px;
-        height: 20px;
     }
 }

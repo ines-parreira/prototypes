@@ -5,7 +5,7 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
-const EdgeBlockMenuSkeletonItem = () => {
+const MenuSkeletonItem = () => {
     return (
         <DropdownItem
             option={{
@@ -21,4 +21,4 @@ const EdgeBlockMenuSkeletonItem = () => {
     )
 }
 
-export default EdgeBlockMenuSkeletonItem
+export default MenuSkeletonItem

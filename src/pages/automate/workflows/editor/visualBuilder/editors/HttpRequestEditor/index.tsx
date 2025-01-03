@@ -4,6 +4,7 @@ import _uniq from 'lodash/uniq'
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import useId from 'hooks/useId'
 import {useDownloadWorkflowConfigurationStepLogs} from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
@@ -186,6 +187,8 @@ export default function HttpRequestEditor({
         [nodeInEdition, workflowVariables]
     )
 
+    const oauth2ToggleId = `oauth2-toggle-${useId()}`
+
     return (
         <>
             <NodeEditorDrawerHeader nodeInEdition={nodeInEdition}>
@@ -283,44 +286,36 @@ export default function HttpRequestEditor({
                     <div className={css.formField}>
                         <div className={css.headersHeading}>
                             <Label>Headers</Label>
-                            {isAppTypeOAuth2Token && (
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '10px',
-                                    }}
-                                >
-                                    <ToggleInput
-                                        name="toggleOauth2Settings"
-                                        onClick={() => {
-                                            dispatch({
-                                                type: 'TOGGLE_OAUTH2_SETTINGS',
-                                                httpRequestNodeId:
-                                                    nodeInEdition.id,
-                                            })
-                                        }}
-                                        isToggled={
-                                            !!nodeInEdition.data
-                                                .oauth2TokenSettings
-                                        }
-                                    >
-                                        <div>Enable OAuth2 Authentication</div>
-                                    </ToggleInput>
-                                    <>
+                            {isAppTypeOAuth2Token &&
+                                visualBuilderGraph.isTemplate && (
+                                    <div id={oauth2ToggleId}>
+                                        <ToggleInput
+                                            onClick={() => {
+                                                dispatch({
+                                                    type: 'TOGGLE_OAUTH2_SETTINGS',
+                                                    httpRequestNodeId:
+                                                        nodeInEdition.id,
+                                                })
+                                            }}
+                                            isToggled={
+                                                !!nodeInEdition.data
+                                                    .oauth2TokenSettings
+                                            }
+                                        >
+                                            Enable OAuth2 Authentication
+                                        </ToggleInput>
                                         <Tooltip
                                             placement="top-start"
-                                            target={`toggleOauth2Settings + div`}
-                                            trigger={['hover']}
+                                            target={oauth2ToggleId}
                                             autohide={false}
                                         >
-                                            {
-                                                "Enabling this will override any existing 'Authorization' key and apply a 'Bearer' prefix to the authorization token."
-                                            }
+                                            Enabling this will override any
+                                            existing 'Authorization' key and
+                                            apply a 'Bearer' prefix to the
+                                            authorization token.
                                         </Tooltip>
-                                    </>
-                                </div>
-                            )}
+                                    </div>
+                                )}
                         </div>
                         <Headers
                             variables={workflowVariables}

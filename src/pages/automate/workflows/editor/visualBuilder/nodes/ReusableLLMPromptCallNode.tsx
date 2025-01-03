@@ -3,20 +3,24 @@ import React, {memo} from 'react'
 import {NodeProps} from 'reactflow'
 
 import {useGetWorkflowConfigurationTemplate} from 'models/workflows/queries'
-import {getCredentialsStatus} from 'pages/aiAgent/actions/utils'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
+import {
+    getActionsAppFromTemplateApp,
+    getGraphAppFromTemplateApp,
+} from 'pages/automate/actionsPlatform/utils'
+import ReusableLLMPromptCallNodeStatusLabel from 'pages/automate/workflows/components/ReusableLLMPromptCallNodeStatusLabel'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import {getReusableLLMPromptCallNodeStatuses} from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import {
     ReusableLLMPromptCallNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import ReusableLLMPromptCallNodeStatusLabel from '../../../components/ReusableLLMPromptCallNodeStatusLabel'
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
 import ReusableLLMPromptCallNodeLabel from './ReusableLLMPromptCallNodeLabel'
@@ -40,7 +44,7 @@ const ReusableLLMPromptCallNode = memo(function ReusableLLMPromptCallNode({
     isTemplate,
 }: Props) {
     const {data: step} = useGetWorkflowConfigurationTemplate(configurationId)
-    const {apps} = useApps()
+    const {apps, actionsApps} = useApps()
 
     const getAppFromTemplateApp = useGetAppFromTemplateApp({apps})
 
@@ -62,30 +66,6 @@ const ReusableLLMPromptCallNode = memo(function ReusableLLMPromptCallNode({
     const templateApp = step.apps[0]
     const app = getAppFromTemplateApp(templateApp)
 
-    const hasInputs = !!step.inputs?.length
-    const hasMissingValues =
-        hasInputs && (step.inputs?.length ?? 0) !== Object.keys(values).length
-    const hasAllValues =
-        hasInputs && (step.inputs?.length ?? 0) === Object.keys(values).length
-
-    const graphApp = graphApps.find((app) => {
-        switch (templateApp.type) {
-            case 'shopify':
-            case 'recharge':
-                return app.type === templateApp.type
-            case 'app':
-                return app.type === 'app' && app.app_id === templateApp.app_id
-        }
-    })
-
-    const {hasMissingCredentials, hasCredentials} = getCredentialsStatus(
-        graphApp,
-        templateApp,
-        isTemplate
-    )
-
-    const isClickable = (templateApp.type === 'app' && !isTemplate) || hasInputs
-
     if (!app) {
         return (
             <div>
@@ -100,6 +80,24 @@ const ReusableLLMPromptCallNode = memo(function ReusableLLMPromptCallNode({
             </div>
         )
     }
+
+    const graphApp = getGraphAppFromTemplateApp(graphApps, templateApp)
+    const actionsApp = getActionsAppFromTemplateApp(actionsApps, templateApp)
+
+    const {
+        isClickable,
+        hasMissingCredentials,
+        hasCredentials,
+        hasAllValues,
+        hasMissingValues,
+    } = getReusableLLMPromptCallNodeStatuses({
+        graphApp,
+        actionsApp,
+        step,
+        values,
+        templateApp,
+        isTemplate,
+    })
 
     return (
         <div>

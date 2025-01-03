@@ -71,12 +71,10 @@ const getInitialTemplate = () => {
         is_draft: true,
         apps: [],
         available_languages: [],
+        advanced_datetime: new Date().toISOString(),
     })
 
-    return {
-        ...b.build(),
-        advanced_datetime: new Date().toISOString(),
-    }
+    return b.build()
 }
 
 const ActionsPlatformCreateTemplateView = () => {

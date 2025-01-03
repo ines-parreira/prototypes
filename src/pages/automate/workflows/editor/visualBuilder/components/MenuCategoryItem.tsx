@@ -9,7 +9,7 @@ type Props = {
     onClick: () => void
 }
 
-const EdgeBlockMenuCategoryItem = ({label, onClick, icon}: Props) => {
+const MenuCategoryItem = ({label, onClick, icon}: Props) => {
     return (
         <DropdownItem
             option={{
@@ -28,4 +28,4 @@ const EdgeBlockMenuCategoryItem = ({label, onClick, icon}: Props) => {
     )
 }
 
-export default EdgeBlockMenuCategoryItem
+export default MenuCategoryItem

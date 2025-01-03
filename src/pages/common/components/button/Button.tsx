@@ -237,6 +237,7 @@ const Icon = ({
 export type Icon =
     | 'account_balance'
     | 'add'
+    | 'add_box'
     | 'arrow_back'
     | 'arrow_drop_down'
     | 'arrow_drop_up'
@@ -279,6 +280,7 @@ export type Icon =
     | 'play_circle_filled'
     | 'print'
     | 'refresh'
+    | 'settings'
     | 'stop'
     | 'sync'
     | 'tune'

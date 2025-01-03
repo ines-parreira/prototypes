@@ -1,19 +1,30 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {Controller, useForm} from 'react-hook-form'
 import {useHistory} from 'react-router-dom'
 
 import {IntegrationType} from 'models/integration/constants'
 import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-
-import InputField from 'pages/common/forms/DEPRECATED_InputField'
+import InputField from 'pages/common/forms/input/InputField'
+import {validateWebhookURL} from 'utils'
 
 import {ActionsApp, App} from '../types'
 import css from './ActionsPlatformAppForm.less'
 import ActionsPlatformAppSelectBox from './ActionsPlatformAppSelectBox'
 import ActionsPlatformAuthTypeSelectBox from './ActionsPlatformAuthTypeSelectBox'
 
-import UrlInput from './UrlInput'
+const INSTRUCTIONS_URL_CAPTION_BY_AUTH_TYPE: Record<
+    ActionsApp['auth_type'],
+    string
+> = {
+    'api-key': 'URL with instructions on how to find an API key',
+    'oauth2-token': 'URL with instructions on how to find a refresh token url',
+}
+
+const LABEL_BY_AUTH_TYPE: Record<ActionsApp['auth_type'], string> = {
+    'api-key': 'API key',
+    'oauth2-token': 'refresh token url',
+}
 
 type Props = {
     value?: ActionsApp
@@ -30,22 +41,11 @@ const ActionsPlatformAppForm = ({
 }: Props) => {
     const history = useHistory()
 
-    const {control, reset, getValues, formState, watch, register, unregister} =
-        useForm<ActionsApp>({
-            defaultValues: {auth_type: 'api-key'},
-            values: value,
-        })
+    const {control, reset, getValues, formState, watch} = useForm<ActionsApp>({
+        defaultValues: {auth_type: 'api-key'},
+        values: value,
+    })
     const authType = watch('auth_type')
-    useEffect(() => {
-        if (
-            value?.auth_type === 'oauth2-token' ||
-            authType === 'oauth2-token'
-        ) {
-            register('auth_settings.refresh_token_url')
-        } else {
-            unregister('auth_settings.refresh_token_url')
-        }
-    }, [register, unregister, authType, value?.auth_type])
 
     const isNewActionsApp = !value
 
@@ -92,47 +92,71 @@ const ActionsPlatformAppForm = ({
                         />
                     )}
                 />
-                <UrlInput
-                    control={control}
-                    name={'auth_settings.url'}
-                    label={'Instructions URL'}
-                    caption={`URL with instructions on how to find ${authType === 'oauth2-token' ? 'a refresh token url' : 'an API key'}.`}
-                    placeholder={'https://link.gorgias.com/xyz'}
-                />
-                {authType === 'oauth2-token' && (
-                    <UrlInput
-                        control={control}
-                        name={'auth_settings.refresh_token_url'}
-                        label={'Token refresh endpoint'}
-                    />
-                )}
-                {authType === 'api-key' && (
-                    <>
-                        <Controller
-                            control={control}
-                            name={'auth_settings.input_label'}
-                            render={({field: {value, onChange}}) => (
-                                <InputField
-                                    isRequired
-                                    label={'Input label'}
-                                    value={value ?? ''}
-                                    onChange={onChange}
-                                    placeholder={'API Key'}
-                                />
-                            )}
-                        />
-                    </>
-                )}
                 <Controller
                     control={control}
-                    name={'auth_settings.instruction_url_text'}
+                    name="auth_settings.url"
+                    rules={{
+                        required: true,
+                        validate: (value) =>
+                            validateWebhookURL(value ?? '') || undefined,
+                    }}
                     render={({field: {value, onChange}}) => (
                         <InputField
                             isRequired
-                            label={'Instructions URL text'}
+                            label="Instructions URL"
                             value={value ?? ''}
                             onChange={onChange}
-                            placeholder={`How to find your API key in ${apps.find((app) => app.id === getValues().id)?.name || 'App'} `}
+                            caption={
+                                INSTRUCTIONS_URL_CAPTION_BY_AUTH_TYPE[authType]
+                            }
+                            placeholder="https://link.gorgias.com/xyz"
+                        />
+                    )}
+                />
+                {authType === 'oauth2-token' && (
+                    <Controller
+                        control={control}
+                        name="auth_settings.refresh_token_url"
+                        shouldUnregister
+                        rules={{
+                            required: true,
+                            validate: (value) =>
+                                validateWebhookURL(value ?? '') || undefined,
+                        }}
+                        render={({field: {value, onChange}}) => (
+                            <InputField
+                                isRequired
+                                label="Refresh token endpoint URL"
+                                value={value ?? ''}
+                                onChange={onChange}
+                            />
+                        )}
+                    />
+                )}
+                {authType === 'api-key' && (
+                    <Controller
+                        control={control}
+                        name="auth_settings.input_label"
+                        shouldUnregister
+                        render={({field: {value, onChange}}) => (
+                            <InputField
+                                label="Input label"
+                                value={value ?? ''}
+                                onChange={onChange}
+                                placeholder="API Key"
+                            />
+                        )}
+                    />
+                )}
+                <Controller
+                    control={control}
+                    name="auth_settings.instruction_url_text"
+                    render={({field: {value, onChange}}) => (
+                        <InputField
+                            label="Instructions URL text"
+                            value={value ?? ''}
+                            onChange={onChange}
+                            placeholder={`Find your ${LABEL_BY_AUTH_TYPE[authType]} in ${apps.find((app) => app.id === getValues().id)?.name || 'App'} `}
                         />
                     )}
                 />

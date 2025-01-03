@@ -8,6 +8,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
+    useListActionsApps,
 } from 'models/workflows/queries'
 import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -109,6 +110,7 @@ const CreateActionView = () => {
     const {data: steps = []} = useGetWorkflowConfigurationTemplates({
         triggers: ['reusable-llm-prompt'],
     })
+    const {data: actionsApps = []} = useListActionsApps()
 
     const availableIntegrations = use3plIntegrations()
 
@@ -143,7 +145,7 @@ const CreateActionView = () => {
         getVariableListForNode,
         actions
     )
-    const handleTouch = useTouchActionGraph()
+    const handleTouch = useTouchActionGraph(actionsApps)
 
     useValidateOnVisualBuilderGraphChange({
         graph: visualBuilderGraphDirty,

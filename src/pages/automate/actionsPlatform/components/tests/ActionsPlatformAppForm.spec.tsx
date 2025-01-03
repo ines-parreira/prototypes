@@ -224,6 +224,7 @@ describe('<ActionsPlatformAppForm />', () => {
 
         expect(mockOnSubmit).not.toHaveBeenCalled()
     })
+
     it('should render refresh token URL input when auth_type is oauth2-token', () => {
         renderWithRouter(
             <ActionsPlatformAppForm
@@ -239,8 +240,11 @@ describe('<ActionsPlatformAppForm />', () => {
             />
         )
 
-        expect(screen.getByText('Token refresh endpoint')).toBeInTheDocument()
+        expect(
+            screen.getByText('Refresh token endpoint URL')
+        ).toBeInTheDocument()
     })
+
     it('should not render refresh token URL input when auth_type is not oauth2-token', () => {
         renderWithRouter(
             <ActionsPlatformAppForm
@@ -334,6 +338,7 @@ describe('<ActionsPlatformAppForm />', () => {
 
         expect(mockOnSubmit).not.toHaveBeenCalled()
     })
+
     it('should not allow form submission when auth_type is oauth2-token and refresh token URL is empty', async () => {
         const mockOnSubmit = jest.fn()
 
@@ -364,6 +369,7 @@ describe('<ActionsPlatformAppForm />', () => {
 
         expect(mockOnSubmit).not.toHaveBeenCalled()
     })
+
     it('should allow form submission with API key input label and instruction URL link text', async () => {
         const mockOnSubmit = jest.fn()
 
@@ -409,7 +415,8 @@ describe('<ActionsPlatformAppForm />', () => {
             },
         })
     })
-    it('should allow form submission for Oauth2 token with just instruction URL link text', async () => {
+
+    it('should allow form submission for OAuth2 token with just instruction URL link text', async () => {
         const mockOnSubmit = jest.fn()
 
         renderWithRouter(
@@ -419,6 +426,7 @@ describe('<ActionsPlatformAppForm />', () => {
                     auth_type: 'oauth2-token',
                     auth_settings: {
                         url: 'https://example.com',
+                        refresh_token_url: 'https://example.com',
                     },
                 }}
                 apps={[]}
@@ -444,6 +452,7 @@ describe('<ActionsPlatformAppForm />', () => {
             auth_settings: {
                 url: 'https://example.com',
                 instruction_url_text: 'Test Instructions URL text',
+                refresh_token_url: 'https://example.com',
             },
         })
     })

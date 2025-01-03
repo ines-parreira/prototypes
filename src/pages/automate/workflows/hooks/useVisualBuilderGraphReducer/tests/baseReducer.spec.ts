@@ -962,6 +962,25 @@ describe('baseReducer', () => {
         ])
     })
 
+    test('SET_APP_REFRESH_TOKEN', () => {
+        const nextG = baseReducer(
+            visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+            {
+                type: 'SET_APP_REFRESH_TOKEN',
+                appId: '123',
+                refreshToken: 'some refresh token',
+            }
+        )
+
+        expect(nextG.apps).toEqual([
+            {
+                type: 'app',
+                app_id: '123',
+                refresh_token: 'some refresh token',
+            },
+        ])
+    })
+
     test('SET_ERRORS', () => {
         let nextG = baseReducer(
             visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,

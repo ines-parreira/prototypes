@@ -10,15 +10,17 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
 import css from './ConvertActionToAdvancedViewDialog.less'
 
+type Props = {
+    open: boolean
+    onClose: () => void
+    onConvert: () => void
+}
+
 export const ConvertActionToAdvancedViewDialog = ({
     open,
     onClose,
     onConvert,
-}: {
-    open: boolean
-    onClose: () => void
-    onConvert: () => void
-}) => {
+}: Props) => {
     return (
         <Modal isOpen={open} onClose={onClose} size="medium">
             <ModalHeader title="Advanced options for Actions" />
@@ -83,20 +85,14 @@ export const ConvertActionToAdvancedViewDialog = ({
                     </div>
                 </div>
             </ModalBody>
-            <ModalActionsFooter className={css.modalActionsFooter}>
-                <Button
-                    intent="secondary"
-                    className={css.modalFooterBackButton}
-                    onClick={onClose}
-                >
-                    Back To Editing
-                </Button>
-                <Button
-                    intent="destructive"
-                    onClick={() => {
-                        onConvert()
-                    }}
-                >
+            <ModalActionsFooter
+                extra={
+                    <Button intent="secondary" onClick={onClose}>
+                        Back To Editing
+                    </Button>
+                }
+            >
+                <Button intent="destructive" onClick={onConvert}>
                     Convert To Advanced View
                 </Button>
             </ModalActionsFooter>

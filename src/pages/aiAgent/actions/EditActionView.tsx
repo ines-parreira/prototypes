@@ -8,6 +8,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
+    useListActionsApps,
 } from 'models/workflows/queries'
 import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -115,12 +116,13 @@ const EditActionView = ({configuration}: Props) => {
         storeType: shopType,
         triggers: ['llm-prompt'],
     })
+    const {data: actionsApps = []} = useListActionsApps()
 
     const handleValidate = useValidateActionGraph(
         getVariableListForNode,
         actions
     )
-    const handleTouch = useTouchActionGraph()
+    const handleTouch = useTouchActionGraph(actionsApps)
 
     useValidateOnVisualBuilderGraphChange({
         graph: visualBuilderGraphDirty,

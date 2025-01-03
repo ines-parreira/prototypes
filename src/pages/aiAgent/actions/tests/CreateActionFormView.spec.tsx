@@ -12,7 +12,6 @@ import {
     useGetActionsApp,
     useGetStoreApps,
     useGetWorkflowConfigurationTemplates,
-    useUpsertAccountOauth2Token,
 } from 'models/workflows/queries'
 import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
@@ -56,7 +55,6 @@ const mockUseDeleteAction = jest.mocked(useDeleteAction)
 const mockUseGetAppImageUrl = jest.mocked(useGetAppImageUrl)
 const mockUseApps = jest.mocked(useApps)
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
-const mockUseUpsertAccountOauth2Token = jest.mocked(useUpsertAccountOauth2Token)
 mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
     data: [
         {
@@ -161,11 +159,7 @@ mockUseApps.mockReturnValue({
 mockUseEnableAiAgent.mockReturnValue({
     updateSettingsAfterAiAgentEnabled: jest.fn(),
 })
-mockUseUpsertAccountOauth2Token.mockReturnValue({
-    mutateAsync: jest.fn(),
-    isLoading: false,
-    isSuccess: false,
-} as unknown as ReturnType<typeof useUpsertAccountOauth2Token>)
+
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])()
 describe('<CreateActionFormView />', () => {
     it('should render template action form with prefilled API key', () => {
