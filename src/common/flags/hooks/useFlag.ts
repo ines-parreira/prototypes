@@ -11,8 +11,12 @@ export default function useFlag<T>(flag: FeatureFlagKey, defaultValue: T): T {
 
     useEffect(() => {
         void (async () => {
-            await client.waitForInitialization(3)
-            setValue(client.variation(flag, defaultValue))
+            try {
+                await client.waitForInitialization(3)
+                setValue(client.variation(flag, defaultValue))
+            } catch (error) {
+                console.error('Error fetching feature flag', error)
+            }
         })()
     }, [client, defaultValue, flag])
 
