@@ -333,7 +333,7 @@ describe('AiAgentViewContainer', () => {
     it('redirects to guidance page if onboarding wizard is done', () => {
         const history = createMemoryHistory()
         const historyPushSpy = jest
-            .spyOn(history, 'push')
+            .spyOn(history, 'replace')
             .mockImplementationOnce(jest.fn)
 
         setupMocks({

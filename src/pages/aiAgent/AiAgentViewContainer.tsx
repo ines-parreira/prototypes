@@ -95,7 +95,7 @@ const AiAgentViewContainer = () => {
         (!storeConfiguration || isOnUpdateOnboardingWizard)
 
     if (!displayOnboardingWizardWelcomePage) {
-        history.push(
+        history.replace(
             isAiAgentOptimizeTabEnabled
                 ? routes.optimize
                 : routes.configuration()
