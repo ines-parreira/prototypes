@@ -361,4 +361,41 @@ describe(`App`, () => {
         const disconnectButton = getByRole('button', {name: 'Disconnect App'})
         expect(disconnectButton).toBeAriaDisabled()
     })
+
+    it('Shows error banner if supports multilple connections and no connections found', async () => {
+        mockServer.onGet(`/api/apps/${appId}`).reply(200, {
+            ...dummyAppData,
+            is_installed: true,
+            supports_multiple_connections: true,
+            id: appId,
+        })
+
+        jest.mock('services/applications', () => ({
+            getApplicationById: jest.fn(),
+        }))
+        const mockedGetApplicationById =
+            getApplicationById as jest.Mock<Application>
+        mockedGetApplicationById.mockReturnValue({
+            ...mockApplications[0],
+            supports_multiple_connections: true,
+            id: appId,
+        })
+        const integrationsStore = mockStore({
+            integrations: fromJS({
+                integrations: [],
+            }),
+        } as unknown as RootState)
+        renderWithRouter(
+            <Provider store={integrationsStore}>
+                <App />
+            </Provider>,
+            {
+                path: '/integrations/app/:appId',
+                route: `/integrations/app/${appId}`,
+            }
+        )
+        await screen.findAllByText(
+            'This app doesn’t have any connected accounts yet, reconnect the app to start using it. If you still see this message contact our support to help you.'
+        )
+    })
 })

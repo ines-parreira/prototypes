@@ -100,6 +100,17 @@ export default function AppDetail() {
 
     const detailProps = mapAppToDetail(mapDefaults(appItem))
 
+    if (
+        appItem.isConnected &&
+        supportsMultipleConnections() &&
+        !hasConnections
+    ) {
+        detailProps.alertBanner = {
+            type: AlertBannerTypes.Critical,
+            message:
+                'This app doesn’t have any connected accounts yet, reconnect the app to start using it. If you still see this message contact our support to help you.',
+        }
+    }
     if (appItem.hasFreeTrial) {
         let trialLabel = 'Free trial'
         if (
