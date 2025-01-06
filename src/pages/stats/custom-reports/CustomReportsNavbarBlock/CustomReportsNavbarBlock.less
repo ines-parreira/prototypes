@@ -1,14 +1,20 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
 :local {
+    .navbar h4 {
+        padding-right: 14px;
+    }
+
     .wrapper {
         display: flex;
         justify-content: left;
-        align-items: baseline;
-        gap: 5px;
+        align-items: center;
+        gap: @layout-spacing-xs;
     }
 
-    i {
-        &.icon {
-            font-size: 20px;
-        }
+    .name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }

@@ -43,34 +43,24 @@ export const CustomReportsNavbarBlock = ({navBarLinkProps}: Props) => {
             icon="insert_chart"
             title={CUSTOM_REPORTS_NAV_TITLE}
             actions={actions}
-            actionsClassName={css.icon}
+            className={css.navbar}
         >
             {customReports.map(({name, id, emoji}) => (
-                <div key={id}>
-                    <div
-                        className={classnames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
-                        )}
+                <div
+                    key={id}
+                    className={classnames(
+                        cssNavbar['link-wrapper'],
+                        cssNavbar.isNested
+                    )}
+                >
+                    <NavbarLink
+                        {...navBarLinkProps}
+                        to={`/app/stats/custom-reports/${id}`}
+                        className={css.wrapper}
                     >
-                        <NavbarLink
-                            {...navBarLinkProps}
-                            to={`/app/stats/custom-reports/${id}`}
-                            className={css.wrapper}
-                        >
-                            {emoji && (
-                                <i
-                                    className={classnames(
-                                        'material-icons',
-                                        css.icon
-                                    )}
-                                >
-                                    {emoji}
-                                </i>
-                            )}
-                            <div>{name}</div>
-                        </NavbarLink>
-                    </div>
+                        {emoji && <span>{emoji}</span>}
+                        <div className={css.name}>{name}</div>
+                    </NavbarLink>
                 </div>
             ))}
         </NavbarBlock>
