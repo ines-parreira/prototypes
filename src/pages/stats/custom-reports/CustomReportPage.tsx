@@ -90,10 +90,8 @@ export const CustomReportPage = () => {
                 right={
                     isCurrentUserAnAdmin && (
                         <CustomReportActionButton
-                            isModalOpen={isModalOpen}
                             setOpenModal={setOpenModal}
                             customReport={customReport}
-                            isEditMode={isEditMode}
                         />
                     )
                 }

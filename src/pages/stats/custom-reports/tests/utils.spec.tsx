@@ -680,7 +680,7 @@ describe('createDashboardPayload', () => {
         expect(actual).toEqual(expected)
     })
 
-    it('should provide defaults if not provided in the Dashboard object', () => {
+    it('should create an empty report with the correct payload', () => {
         const input = {name: 'Test Dashboard'}
 
         const expected = {
@@ -688,19 +688,7 @@ describe('createDashboardPayload', () => {
             emoji: null,
             analytics_filter_id: null,
             type: 'custom',
-            children: [
-                {
-                    type: CustomReportChildType.Row,
-                    metadata: {},
-                    children: [
-                        {
-                            type: CustomReportChildType.Chart,
-                            config_id: 'median_first_response_time_trend_card',
-                            metadata: {},
-                        },
-                    ],
-                },
-            ],
+            children: [],
         }
 
         const actual = createDashboardPayload(input)

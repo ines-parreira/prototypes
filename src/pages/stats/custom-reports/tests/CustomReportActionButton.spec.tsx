@@ -3,7 +3,6 @@ import userEvent from '@testing-library/user-event'
 import React from 'react'
 
 import {
-    CUSTOM_REPORT_ADD_CHARTS_CTA,
     CUSTOM_REPORT_ID_CTA,
     CustomReportActionButton,
 } from 'pages/stats/custom-reports/CustomReportActionButton'
@@ -63,8 +62,6 @@ describe('CustomReportActionButton', () => {
             <CustomReportActionButton
                 customReport={customReport}
                 setOpenModal={mockSetOpenModal}
-                isModalOpen={false}
-                isEditMode
             />
         )
 
@@ -89,8 +86,6 @@ describe('CustomReportActionButton', () => {
             <CustomReportActionButton
                 customReport={customReport}
                 setOpenModal={mockSetOpenModal}
-                isModalOpen={false}
-                isEditMode
             />
         )
 
@@ -122,53 +117,11 @@ describe('CustomReportActionButton', () => {
         })
     })
 
-    it('should show Add charts CTA if theres not customReport', async () => {
-        render(
-            <CustomReportActionButton
-                customReport={undefined}
-                setOpenModal={mockSetOpenModal}
-                isModalOpen={false}
-                isEditMode={false}
-            />
-        )
-
-        expect(
-            screen.getByRole('button', {name: CUSTOM_REPORT_ADD_CHARTS_CTA})
-                .className
-        ).toEqual('wrapper fill primary medium')
-
-        await waitFor(() => {
-            userEvent.click(
-                screen.getByRole('button', {name: CUSTOM_REPORT_ADD_CHARTS_CTA})
-            )
-        })
-
-        expect(mockSetOpenModal).toHaveBeenCalledWith(true)
-    })
-
-    it('should have the right className', () => {
-        render(
-            <CustomReportActionButton
-                customReport={undefined}
-                setOpenModal={mockSetOpenModal}
-                isModalOpen
-                isEditMode={false}
-            />
-        )
-
-        expect(
-            screen.getByRole('button', {name: CUSTOM_REPORT_ADD_CHARTS_CTA})
-                .className
-        ).toEqual('wrapper fill secondary medium')
-    })
-
     it('should not call delete mutation on confirmation modal cancel', async () => {
         render(
             <CustomReportActionButton
                 customReport={customReport}
                 setOpenModal={mockSetOpenModal}
-                isEditMode
-                isModalOpen={false}
             />
         )
 

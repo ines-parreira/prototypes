@@ -306,18 +306,6 @@ const createChildrenWithMetadata = (
     })
 }
 
-const dummyChildren: CustomReportChild[] = [
-    {
-        type: CustomReportChildType.Row,
-        children: [
-            {
-                type: CustomReportChildType.Chart,
-                config_id: 'median_first_response_time_trend_card',
-            },
-        ],
-    },
-]
-
 export const createDashboardPayload = ({
     name,
     emoji,
@@ -331,6 +319,6 @@ export const createDashboardPayload = ({
         // Remove type casting when the API is fixed, related tickets: #3195 & #3196
         analytics_filter_id: (analytics_filter_id ?? null) as unknown as number,
         type: 'custom',
-        children: createChildrenWithMetadata(children ?? dummyChildren),
+        children: createChildrenWithMetadata(children || []),
     }
 }
