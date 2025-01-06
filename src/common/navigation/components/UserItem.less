@@ -20,6 +20,16 @@
         }
     }
 
+    // this repetition is needed to increase the specificity
+    // since the Avatar component used nested selectors
+    .badge.badge.badge {
+        right: -2px;
+        bottom: -2px;
+        width: 11px;
+        height: 11px;
+        border-color: var(--navigation-background);
+    }
+
     .dropdown {
         width: 220px;
     }

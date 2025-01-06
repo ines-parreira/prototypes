@@ -31,7 +31,7 @@ export default function UserItem() {
                 onClick={handleToggle}
             >
                 <Avatar
-                    badgeBorderColor="var(--navigation-background)"
+                    badgeClassName={css.badge}
                     badgeColor={
                         isAvailable
                             ? 'var(--feedback-success)'
@@ -39,7 +39,6 @@ export default function UserItem() {
                     }
                     name={currentUser.get('name') || currentUser.get('email')}
                     url={currentUser.getIn(['meta', 'profile_picture_url'])}
-                    badgeSize={11}
                     shape="round"
                     size={24}
                 />
