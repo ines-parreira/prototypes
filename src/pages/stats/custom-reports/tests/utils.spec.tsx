@@ -832,19 +832,7 @@ describe('createDashboardPayload', () => {
             emoji: null,
             analytics_filter_id: null,
             type: 'custom',
-            children: [
-                {
-                    type: CustomReportChildType.Row,
-                    metadata: {},
-                    children: [
-                        {
-                            type: CustomReportChildType.Chart,
-                            config_id: 'median_first_response_time_trend_card',
-                            metadata: {},
-                        },
-                    ],
-                },
-            ],
+            children: [],
         }
 
         const actual = createDashboardPayload(input)
