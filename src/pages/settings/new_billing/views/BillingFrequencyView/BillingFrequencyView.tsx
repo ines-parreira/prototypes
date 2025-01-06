@@ -1,19 +1,13 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useState} from 'react'
 
 import {useHistory} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
 import {PlanInterval, ProductType} from 'models/billing/types'
 import Alert from 'pages/common/components/Alert/Alert'
 
 import {NewSummaryPaymentSection} from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import {useIsPaymentEnabled} from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import {getCorrespondingPlanAtInterval} from 'pages/settings/new_billing/utils/getCorrespondingPlanAtInterval'
-import {fetchCreditCard} from 'state/billing/actions'
-import {creditCard} from 'state/billing/selectors'
 import {TicketPurpose} from 'state/billing/types'
 
 import BackLink from '../../components/BackLink/BackLink'
@@ -21,7 +15,6 @@ import BillingFrequency from '../../components/BillingFrequency/BillingFrequency
 import Card from '../../components/Card/Card'
 import SummaryFooter from '../../components/SummaryFooter/SummaryFooter'
 import SummaryItem from '../../components/SummaryItem/SummaryItem'
-import SummaryPaymentSection from '../../components/SummaryPaymentSection/SummaryPaymentSection'
 import SummaryTotal from '../../components/SummaryTotal/SummaryTotal'
 import {BILLING_PAYMENT_PATH, PRICING_DETAILS_URL} from '../../constants'
 import {useBillingPlans} from '../../hooks/useBillingPlan'
@@ -41,7 +34,6 @@ const BillingFrequencyView = ({
     isTrialing,
     isCurrentSubscriptionCanceled,
 }: BillingFrequencyViewProps) => {
-    const dispatch = useAppDispatch()
     const history = useHistory()
 
     const {
@@ -66,18 +58,12 @@ const BillingFrequencyView = ({
         dispatchBillingError,
     })
 
-    const [oldIsPaymentEnabled, setIsPaymentEnabled] = useState(false)
-    const newIsPaymentEnabled = !!useIsPaymentEnabled()
-    const isPaymentEnabled = oldIsPaymentEnabled || newIsPaymentEnabled
+    const isPaymentEnabled = !!useIsPaymentEnabled()
 
     const [showAlert, setShowAlert] = useState(true)
 
-    const card = useAppSelector(creditCard)
-
     const [selectedInterval, setSelectedInterval] =
         useState<PlanInterval>(interval)
-
-    const [isCreditCardFetched, setIsCreditCardFetched] = useState(false)
 
     const onFrequencySelect = useCallback(
         (interval: PlanInterval) => {
@@ -149,21 +135,6 @@ const BillingFrequencyView = ({
             history.push(BILLING_PAYMENT_PATH)
         }
     }, [interval, isCurrentSubscriptionCanceled, history])
-
-    // fetch card
-    useEffect(() => {
-        const fetchCard = async () => {
-            if (!card.get('brand')) {
-                await dispatch(fetchCreditCard())
-            }
-            setIsCreditCardFetched(true)
-        }
-
-        void fetchCard()
-    }, [card, dispatch])
-
-    const isNewSummaryPaymentSectionON =
-        !!useFlags()[FeatureFlagKey.BillingNewSummaryPaymentSection]
 
     return (
         <div className={css.container}>
@@ -241,14 +212,7 @@ const BillingFrequencyView = ({
                             isFrequencyChanged={true}
                         />
                     </div>
-                    {!isTrialing && isNewSummaryPaymentSectionON ? (
-                        <NewSummaryPaymentSection />
-                    ) : (
-                        <SummaryPaymentSection
-                            setIsPaymentEnabled={setIsPaymentEnabled}
-                            isCreditCardFetched={isCreditCardFetched}
-                        />
-                    )}
+                    {!isTrialing && <NewSummaryPaymentSection />}
                     <SummaryFooter
                         isPaymentEnabled={isPaymentEnabled}
                         isTrialing={isTrialing}

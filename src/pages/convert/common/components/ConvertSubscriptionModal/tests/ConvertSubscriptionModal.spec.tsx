@@ -1,4 +1,5 @@
 import {waitFor, screen} from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 import moment from 'moment'
 import React from 'react'
@@ -7,14 +8,16 @@ import * as ReactRouterDom from 'react-router-dom'
 import {UserRole} from 'config/types/user'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
+import client from 'models/api/resources'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal/ConvertSubscriptionModal'
+import {payingWithCreditCard} from 'pages/settings/new_billing/fixtures'
 import {RootState} from 'state/types'
 import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 const useLocationSpy = jest.spyOn(ReactRouterDom, 'useLocation')
 
 const mockedDispatch = jest.fn()
-
+const mockedServer = new MockAdapter(client)
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/billing/actions', () => ({
     fetchCreditCard: jest.fn(),
@@ -70,6 +73,8 @@ describe('ConvertSubscriptionModal', () => {
     })
 
     it('should render', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+
         renderWithStoreAndQueryClientAndRouter(
             <ConvertSubscriptionModal {...minProps} />,
             defaultState

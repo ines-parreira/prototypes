@@ -1,10 +1,8 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import _capitalize from 'lodash/capitalize'
 import React, {useEffect, useMemo, useState} from 'react'
 import {useParams} from 'react-router-dom'
 import {dismissNotification} from 'reapop'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -20,7 +18,6 @@ import PendingChangesModal from 'pages/settings/helpCenter/components/PendingCha
 import {NewSummaryPaymentSection} from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import {useIsPaymentEnabled} from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import {useHasCreditCard} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useHasCreditCard'
-import {fetchCreditCard} from 'state/billing/actions'
 import {getCurrentPlansByProduct} from 'state/billing/selectors'
 import {CurrentProductsUsages, TicketPurpose} from 'state/billing/types'
 import {
@@ -34,7 +31,6 @@ import ProductPlanSelection from '../../components/ProductPlanSelection'
 import ScheduledCancellationSummary from '../../components/ScheduledCancellationSummary'
 import SummaryFooter from '../../components/SummaryFooter'
 import SummaryItem from '../../components/SummaryItem'
-import SummaryPaymentSection from '../../components/SummaryPaymentSection'
 import SummaryTotal from '../../components/SummaryTotal'
 import VoiceOrSmsChangeReviewAlert from '../../components/VoiceOrSmsChangeReviewAlert'
 import {
@@ -102,10 +98,7 @@ const BillingProcessView = ({
 }: BillingProcessViewProps) => {
     const dispatch = useAppDispatch()
     const hasCreditCard = useHasCreditCard()
-    const [oldIsPaymentEnabled, setIsPaymentEnabled] = useState(false)
-    const newIsPaymentEnabled = !!useIsPaymentEnabled()
-    const isPaymentEnabled = oldIsPaymentEnabled || newIsPaymentEnabled
-    const [isCreditCardFetched, setIsCreditCardFetched] = useState(false)
+    const isPaymentEnabled = !!useIsPaymentEnabled()
     const [showPendingChangesModal, setShowPendingChangesModal] =
         useState(false)
     const [updateProcessStarted, setUpdateProcessStarted] = useState(false)
@@ -120,9 +113,6 @@ const BillingProcessView = ({
 
     // Selected product to Subscribe or Update
     const {selectedProduct} = useParams<Params>()
-
-    const isNewSummaryPaymentSectionON =
-        !!useFlags()[FeatureFlagKey.BillingNewSummaryPaymentSection]
 
     const {
         selectedPlans,
@@ -158,16 +148,6 @@ const BillingProcessView = ({
     })
 
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
-
-    // fetch card
-    useEffect(() => {
-        const fetchCard = async () => {
-            await dispatch(fetchCreditCard())
-            setIsCreditCardFetched(true)
-        }
-
-        void fetchCard()
-    }, [dispatch])
 
     // on page unload, remove error notification
     useEffect(() => {
@@ -304,15 +284,8 @@ const BillingProcessView = ({
                         currency={helpdeskAvailablePlans?.[0].currency}
                     />
                 </div>
-                {!isTrialing &&
-                !isCurrentSubscriptionCanceled &&
-                isNewSummaryPaymentSectionON ? (
+                {!isTrialing && !isCurrentSubscriptionCanceled && (
                     <NewSummaryPaymentSection />
-                ) : (
-                    <SummaryPaymentSection
-                        setIsPaymentEnabled={setIsPaymentEnabled}
-                        isCreditCardFetched={isCreditCardFetched}
-                    />
                 )}
                 <SummaryFooter
                     isPaymentEnabled={isPaymentEnabled}

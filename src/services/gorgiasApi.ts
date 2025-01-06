@@ -162,17 +162,6 @@ export default class GorgiasApi {
         return fromJS(resp.data) as Map<any, any>
     }
 
-    /**
-     * Update the credit card of the current account.
-     */
-    async updateCreditCard(data: Map<any, any>) {
-        const resp = await this._api.put(
-            '/api/billing/credit-card/',
-            data.toJS()
-        )
-        return fromJS(resp.data) as Map<any, any>
-    }
-
     async *getTicketEvents(
         ticketId: number
     ): AsyncGenerator<List<any>, void, Array<Event>> {

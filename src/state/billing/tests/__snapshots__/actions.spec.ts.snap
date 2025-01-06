@@ -1,19 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`billing actions fetch credit card 1`] = `
-[
-  {
-    "resp": {
-      "brand": "visa",
-      "exp_month": 12,
-      "exp_year": 35,
-      "last4": "4242",
-    },
-    "type": "FETCH_CREDIT_CARD_SUCCESS",
-  },
-]
-`;
-
 exports[`billing actions fetch current usage 1`] = `
 [
   {
@@ -50,19 +36,6 @@ exports[`billing actions fetch payment method 1`] = `
     "type": "FETCH_PAYMENT_METHOD_SUCCESS",
   },
 ]
-`;
-
-exports[`billing actions setCreditCard() should return a Redux action to set the credit card of the current account. 1`] = `
-{
-  "creditCard": Immutable.Map {
-    "last4": "6412",
-    "brand": "mastercard",
-    "name": "Steve Frizeli",
-    "exp_month": "12",
-    "exp_year": "24",
-  },
-  "type": "SET_CREDIT_CARD",
-}
 `;
 
 exports[`billing actions updateInvoiceInList() should return a Redux action to update an invoice in a list of invoices. 1`] = `

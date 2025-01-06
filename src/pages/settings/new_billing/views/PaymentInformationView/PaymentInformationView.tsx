@@ -1,10 +1,9 @@
 import {Tooltip} from '@gorgias/merchant-ui-kit'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     AutomatePlan,
@@ -17,12 +16,10 @@ import {NewSummaryPaymentSection} from 'pages/settings/new_billing/components/Su
 import {BillingInformationSection} from 'pages/settings/new_billing/views/PaymentInformationView/components/BillingInformationSection'
 import {Description} from 'pages/settings/new_billing/views/PaymentInformationView/components/Description'
 import {Section} from 'pages/settings/new_billing/views/PaymentInformationView/components/Section'
-import {fetchCreditCard} from 'state/billing/actions'
-import {creditCard, getCurrentHelpdeskInterval} from 'state/billing/selectors'
+import {getCurrentHelpdeskInterval} from 'state/billing/selectors'
 import {TicketPurpose} from 'state/billing/types'
 import {shouldPayWithShopify as getShouldPayWithShopify} from 'state/currentAccount/selectors'
 
-import SummaryPaymentSection from '../../components/SummaryPaymentSection/SummaryPaymentSection'
 import {BILLING_PAYMENT_FREQUENCY_PATH} from '../../constants'
 import css from './PaymentInformationView.less'
 
@@ -43,8 +40,6 @@ const PaymentInformationView = ({
     currentSmsPlan,
     isCurrentSubscriptionCanceled,
 }: PaymentInformationViewProps) => {
-    const dispatch = useAppDispatch()
-
     const interval =
         useAppSelector(getCurrentHelpdeskInterval) ?? PlanInterval.Month
     const isSubscribedToHelpdeskStarter =
@@ -55,25 +50,7 @@ const PaymentInformationView = ({
     const phoneSelfServeEnabled =
         useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe]
 
-    const card = useAppSelector(creditCard)
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
-
-    const [isCreditCardFetched, setIsCreditCardFetched] = useState(false)
-
-    const isNewSummaryPaymentSectionON =
-        !!useFlags()[FeatureFlagKey.BillingNewSummaryPaymentSection]
-
-    // fetch card
-    useEffect(() => {
-        const fetchCard = async () => {
-            if (!card.get('brand')) {
-                await dispatch(fetchCreditCard())
-            }
-            setIsCreditCardFetched(true)
-        }
-
-        void fetchCard()
-    }, [card, dispatch])
 
     const changeFrequency = useMemo(() => {
         let toolTipContent
@@ -165,16 +142,9 @@ const PaymentInformationView = ({
     return (
         <div className={css.container}>
             <Section icon="credit_card" title="Payment method">
-                {isNewSummaryPaymentSectionON ? (
-                    <NewSummaryPaymentSection
-                        className={css.summaryPaymentSection}
-                    />
-                ) : (
-                    <SummaryPaymentSection
-                        isCreditCardFetched={isCreditCardFetched}
-                        isPaymentInformationView
-                    />
-                )}
+                <NewSummaryPaymentSection
+                    className={css.summaryPaymentSection}
+                />
             </Section>
             <Section icon="history" title="Billing frequency">
                 <Description>

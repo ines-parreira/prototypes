@@ -1,10 +1,7 @@
 import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {PlanInterval, Plan, ProductType} from 'models/billing/types'
 import {getPlanPriceFormatted, getProductLabel} from 'models/billing/utils'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -13,7 +10,6 @@ import CounterText from 'pages/settings/new_billing/components/CounterText'
 import css from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription.less'
 import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter/SummaryFooter'
 import {NewSummaryPaymentSection} from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
-import SummaryPaymentSection from 'pages/settings/new_billing/components/SummaryPaymentSection/SummaryPaymentSection'
 
 import {
     ENTERPRISE_PRICE_ID,
@@ -23,7 +19,6 @@ import {
 import {useIsPaymentEnabled} from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import {ProductSubscriptionDescription} from 'pages/settings/new_billing/types'
 import {formatNumTickets} from 'pages/settings/new_billing/utils/formatAmount'
-import {fetchCreditCard} from 'state/billing/actions'
 
 export type PlanSubscriptionDescriptionProps = {
     productType: ProductType
@@ -48,12 +43,8 @@ const PlanSubscriptionDescription = ({
     setSelectedPlan,
     setIsSubscriptionEnabled,
 }: PlanSubscriptionDescriptionProps) => {
-    const dispatch = useAppDispatch()
     const ref = useRef(null)
-    const [isCreditCardFetched, setIsCreditCardFetched] = useState(false)
-    const newIsPaymentEnabled = !!useIsPaymentEnabled()
-    const [oldIsPaymentEnabled, setIsPaymentEnabled] = useState(false)
-    const isPaymentEnabled = newIsPaymentEnabled || oldIsPaymentEnabled
+    const isPaymentEnabled = !!useIsPaymentEnabled()
     const [isTermsChecked, setIsTermsChecked] = useState(false)
     const filteredPlans = useMemo(
         () => availablePlans.filter((plan) => plan.interval === interval),
@@ -104,35 +95,15 @@ const PlanSubscriptionDescription = ({
         setSelectedPlan(selectedPlan ?? enterprisePlan)
     }
 
-    // fetch card
-    useEffect(() => {
-        const fetchCard = async () => {
-            await dispatch(fetchCreditCard())
-            setIsCreditCardFetched(true)
-        }
-
-        void fetchCard()
-    }, [dispatch])
-
     useEffect(() => {
         setIsSubscriptionEnabled(
-            isTrialing ||
-                (isTermsChecked && isPaymentEnabled && isCreditCardFetched)
+            isTrialing || (isTermsChecked && isPaymentEnabled)
         )
-    }, [
-        isTrialing,
-        isTermsChecked,
-        isPaymentEnabled,
-        isCreditCardFetched,
-        setIsSubscriptionEnabled,
-    ])
+    }, [isTrialing, isTermsChecked, isPaymentEnabled, setIsSubscriptionEnabled])
 
     const isSummaryFooterVisible = useMemo(() => {
         return !isEnterprisePlan && !isTrialing && isPaymentEnabled
     }, [isEnterprisePlan, isTrialing, isPaymentEnabled])
-
-    const isNewSummaryPaymentSectionON =
-        !!useFlags()[FeatureFlagKey.BillingNewSummaryPaymentSection]
 
     return (
         <div className={css.container}>
@@ -225,21 +196,12 @@ const PlanSubscriptionDescription = ({
                 )}
                 <div
                     className={classNames(css.payment, {
-                        [css.show]: !isPaymentEnabled && isCreditCardFetched,
+                        [css.show]: !isPaymentEnabled,
                     })}
                 >
-                    {isNewSummaryPaymentSectionON ? (
-                        <NewSummaryPaymentSection
-                            className={css.summaryPaymentSection}
-                        />
-                    ) : (
-                        <SummaryPaymentSection
-                            isCreditCardFetched={isCreditCardFetched}
-                            setIsPaymentEnabled={setIsPaymentEnabled}
-                            isPaymentInformationView
-                            hasSmallFont
-                        />
-                    )}
+                    <NewSummaryPaymentSection
+                        className={css.summaryPaymentSection}
+                    />
                 </div>
                 {isSummaryFooterVisible && (
                     <SummaryFooter

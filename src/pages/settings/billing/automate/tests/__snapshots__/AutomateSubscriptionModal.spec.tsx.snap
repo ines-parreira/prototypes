@@ -273,7 +273,7 @@ exports[`<AutomateSubscriptionModal /> should render for customers already with 
                     </div>
                   </div>
                   <div
-                    class="payment"
+                    class="payment show"
                   >
                     <div
                       class="container loader"
@@ -580,7 +580,7 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
                     </div>
                   </div>
                   <div
-                    class="payment"
+                    class="payment show"
                   >
                     <div
                       class="container loader"

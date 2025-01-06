@@ -84,34 +84,6 @@ describe('billing actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('fetch credit card', () => {
-        const card = {
-            brand: 'visa',
-            last4: '4242',
-            exp_month: 12,
-            exp_year: 35,
-        }
-
-        mockServer.onGet('/api/billing/credit-card/').reply(200, card)
-
-        return store
-            .dispatch(actions.fetchCreditCard())
-            .then(() => expect(store.getActions()).toMatchSnapshot())
-    })
-
-    describe('setCreditCard()', () => {
-        it('should return a Redux action to set the credit card of the current account.', () => {
-            const card = {
-                last4: '6412',
-                brand: 'mastercard',
-                name: 'Steve Frizeli',
-                exp_month: '12',
-                exp_year: '24',
-            }
-            expect(actions.setCreditCard(fromJS(card))).toMatchSnapshot()
-        })
-    })
-
     describe('updateInvoiceInList()', () => {
         it('should return a Redux action to update an invoice in a list of invoices.', () => {
             const invoice = {

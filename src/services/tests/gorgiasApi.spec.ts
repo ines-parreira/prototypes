@@ -209,25 +209,6 @@ describe('services', () => {
             })
         })
 
-        describe('updateCreditCard()', () => {
-            it('should update the credit card of the current account.', async () => {
-                const expectedCard = {
-                    last4: '2131',
-                    name: 'Steve Frizeli',
-                    brand: 'visa',
-                    exp_month: '12',
-                    exp_year: '23',
-                }
-                apiMock.onAny().reply(202, expectedCard)
-                const stripeCardToken = 'tok_2xe129dnm21d2miwmdfsa'
-                const card = await new GorgiasApi().updateCreditCard(
-                    fromJS({token: stripeCardToken})
-                )
-                expect(card.toJS()).toEqual(expectedCard)
-                expect(apiMock.history).toMatchSnapshot()
-            })
-        })
-
         describe('payInvoice()', () => {
             it('should make an HTTP request to pay an invoice.', async () => {
                 const expectedInvoice = {

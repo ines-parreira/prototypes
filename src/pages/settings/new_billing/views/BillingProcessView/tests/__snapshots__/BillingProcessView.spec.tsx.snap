@@ -488,22 +488,29 @@ exports[`UsageAndPlansView should render 1`] = `
           </div>
           <div
             class="container"
-            data-testid="noPaymentMethod"
           >
             <div
               class="method"
             >
               <i
-                class="material-icons warningIcon"
+                class="material-icons cardIcon"
               >
-                warning
+                credit_card
               </i>
-              No payment method registered on your account
+              <strong
+                class="cardBrand"
+              >
+                Visa
+              </strong>
+               ending with 
+              <strong>
+                4321
+              </strong>
             </div>
             <a
               href="/app/settings/billing/payment/card"
             >
-              Add Payment Method
+              Change Payment Method
             </a>
           </div>
           <div
