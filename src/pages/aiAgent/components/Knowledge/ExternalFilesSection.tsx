@@ -13,7 +13,7 @@ import {NotificationStatus} from 'state/notifications/types'
 
 import css from './ExternalFilesSection.less'
 
-const MAX_FILE_SIZE_MB = 500
+const MAX_FILE_SIZE_MB = 50
 
 const MAX_EXTERNAL_FILES = 10
 

@@ -162,7 +162,7 @@ describe('ExternalFilesSection', () => {
             type: 'application/pdf',
         })
 
-        Object.defineProperty(file, 'size', {value: 500 * 1024 * 1024 + 1})
+        Object.defineProperty(file, 'size', {value: 50 * 1024 * 1024 + 1})
         Object.defineProperty(fileInput, 'files', {
             value: [file],
         })
@@ -172,7 +172,7 @@ describe('ExternalFilesSection', () => {
 
         expect(notifyMock).toHaveBeenCalledWith({
             status: NotificationStatus.Error,
-            message: 'File too large. Upload a file smaller than 500 MB.',
+            message: 'File too large. Upload a file smaller than 50 MB.',
         })
     })
 
