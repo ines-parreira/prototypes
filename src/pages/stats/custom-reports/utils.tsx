@@ -322,3 +322,26 @@ export const createDashboardPayload = ({
         children: createChildrenWithMetadata(children || []),
     }
 }
+
+export const getChildrenOfTypeChart = (report: CustomReportSchema) => {
+    const result: CustomReportChartSchema[] = []
+    for (const child of report.children) {
+        if (!child) continue
+
+        if (child.type === CustomReportChildType.Chart) {
+            result.push(child)
+        } else {
+            for (const subChild of child.children) {
+                if (subChild.type === CustomReportChildType.Chart) {
+                    result.push(subChild)
+                } else {
+                    for (const subSubChild of subChild.children) {
+                        result.push(subSubChild)
+                    }
+                }
+            }
+        }
+    }
+
+    return result
+}

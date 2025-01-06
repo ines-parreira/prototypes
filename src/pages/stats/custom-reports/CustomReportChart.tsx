@@ -12,7 +12,7 @@ type Props = {
     schema: CustomReportChartSchema
 }
 
-const getComponentConfig = (
+export const getComponentConfig = (
     configId: string
 ): {config: ReportConfig<string> | null; chart: string | null} => {
     const availableCharts = _flatten(
@@ -33,7 +33,7 @@ const getComponentConfig = (
 export const CustomReportChart = ({schema}: Props) => {
     const {chart, config} = getComponentConfig(schema.config_id)
 
-    if (chart === null || config === null) {
+    if (chart === null || config === null || config === undefined) {
         return null
     }
 

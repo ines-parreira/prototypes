@@ -1,3 +1,4 @@
+import {FilterKey} from 'models/stat/types'
 import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
 import {ReportConfig} from 'pages/stats/custom-reports/types'
 import {AGENTS_SHOUT_OUTS_TITLE} from 'pages/stats/support-performance/agents/AgentsShoutout'
@@ -6,6 +7,14 @@ import {
     AGENT_PERFORMANCE_SECTION_TITLE,
     AgentsTableChart,
 } from 'pages/stats/support-performance/agents/AgentsTableChart'
+
+export const AGENTS_OPTIONAL_FILTERS = [
+    FilterKey.Channels,
+    FilterKey.Integrations,
+    FilterKey.Tags,
+    FilterKey.Agents,
+    FilterKey.CustomFields,
+]
 
 export enum AgentsChart {
     Table = 'agents_table',
@@ -31,5 +40,9 @@ export const SupportPerformanceAgentsReportConfig: ReportConfig<AgentsChart> = {
             description: '',
             icon: CHARTS_MODAL_ICONS.card,
         },
+    },
+    reportFilters: {
+        persistent: [FilterKey.Period],
+        optional: AGENTS_OPTIONAL_FILTERS,
     },
 }

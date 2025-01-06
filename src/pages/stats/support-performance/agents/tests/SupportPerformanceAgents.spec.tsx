@@ -26,9 +26,9 @@ import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/a
 import {TableColumnsOrder} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {DownloadAgentsPerformanceDataButton} from 'pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton'
 import SupportPerformanceAgentsReport, {
-    AGENTS_OPTIONAL_FILTERS,
     AGENTS_PAGE_TITLE,
 } from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReport'
+import {AGENTS_OPTIONAL_FILTERS} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 import {RootState} from 'state/types'
 import {assumeMock, renderWithStore} from 'utils/testing'

@@ -2,6 +2,7 @@ import {
     fetchWorkloadPerChannelDistribution,
     fetchWorkloadPerChannelDistributionForPreviousPeriod,
 } from 'hooks/reporting/distributions'
+import {FilterKey} from 'models/stat/types'
 import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
 import {ReportConfig} from 'pages/stats/custom-reports/types'
 import {CustomerSatisfactionTrendCard} from 'pages/stats/support-performance/overview/charts/CustomerSatisfactionTrendCard'
@@ -23,6 +24,7 @@ import {
     OverviewChartConfig,
     OverviewMetric,
     OverviewMetricConfig,
+    PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS,
     TICKETS_CREATED_VS_CLOSED_HINT,
     WORKLOAD_BY_CHANNEL_HINT,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
@@ -219,5 +221,9 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                     OverviewChartConfig[OverviewMetric.MessagesSent].hint.title,
                 icon: CHARTS_MODAL_ICONS.card,
             },
+        },
+        reportFilters: {
+            persistent: [FilterKey.AggregationWindow, FilterKey.Period],
+            optional: PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS,
         },
     }

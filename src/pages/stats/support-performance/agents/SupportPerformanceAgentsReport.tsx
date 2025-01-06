@@ -15,19 +15,13 @@ import StatsPage from 'pages/stats/StatsPage'
 import {AGENTS_SHOUT_OUTS_TITLE} from 'pages/stats/support-performance/agents/AgentsShoutout'
 import {DownloadAgentsPerformanceDataButton} from 'pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton'
 import {
+    AGENTS_OPTIONAL_FILTERS,
     AgentsChart,
     SupportPerformanceAgentsReportConfig,
 } from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 
 export const AGENTS_PAGE_TITLE = 'Agents'
-export const AGENTS_OPTIONAL_FILTERS = [
-    FilterKey.Channels,
-    FilterKey.Integrations,
-    FilterKey.Tags,
-    FilterKey.Agents,
-    FilterKey.CustomFields,
-]
 
 export default function SupportPerformanceAgentsReport() {
     const isAnalyticsNewFilters =

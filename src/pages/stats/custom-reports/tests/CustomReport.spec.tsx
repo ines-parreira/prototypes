@@ -5,12 +5,13 @@ import {CustomReport} from 'pages/stats/custom-reports/CustomReport'
 import {CustomReportChart} from 'pages/stats/custom-reports/CustomReportChart'
 import {CustomReportSection} from 'pages/stats/custom-reports/CustomReportSection'
 import {
-    CustomReportSchema,
     CustomReportChartSchema,
     CustomReportChildType,
     CustomReportRowSchema,
+    CustomReportSchema,
     CustomReportSectionSchema,
 } from 'pages/stats/custom-reports/types'
+import {useFiltersFromDashboard} from 'pages/stats/custom-reports/useFiltersFromDashboard'
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
 import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {assumeMock, renderWithStore} from 'utils/testing'
@@ -23,6 +24,8 @@ jest.mock('pages/stats/custom-reports/CustomReportSection')
 const CustomReportSectionMock = assumeMock(CustomReportSection)
 jest.mock('pages/stats/DrillDownModal')
 const DrillDownModalMock = assumeMock(DrillDownModal)
+jest.mock('pages/stats/custom-reports/useFiltersFromDashboard')
+const useFiltersFromDashboardMock = assumeMock(useFiltersFromDashboard)
 
 describe('CustomReport', () => {
     const section: CustomReportSectionSchema = {
@@ -51,11 +54,18 @@ describe('CustomReport', () => {
         CustomReportSectionMock.mockReturnValue(<div />)
         CustomReportChartMock.mockReturnValue(<div />)
         DrillDownModalMock.mockReturnValue(<div />)
+
+        useFiltersFromDashboardMock.mockReturnValue({
+            persistentFilters: [],
+            optionalFilters: [],
+        })
     })
 
     it('renders correctly', () => {
         renderWithStore(<CustomReport customReport={customReport} />, {})
 
         expect(CustomReportChartMock).toHaveBeenCalled()
+
+        expect(useFiltersFromDashboardMock).toHaveBeenCalledWith(customReport)
     })
 })

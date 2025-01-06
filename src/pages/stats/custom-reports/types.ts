@@ -3,10 +3,17 @@ import {FunctionComponent, ReactNode} from 'react'
 import {MetricPerDimensionFetch} from 'hooks/reporting/distributions'
 import {MetricTrendFetch} from 'hooks/reporting/useMetricTrend'
 import {TimeSeriesFetch} from 'hooks/reporting/useTimeSeries'
+import {StaticFilter} from 'models/stat/types'
+import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
 import {AgentsChart} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import {BusiestTimesChart} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
 import {ChannelsChart} from 'pages/stats/support-performance/channels/ChannelsReportConfig'
 import {OverviewChart} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+
+type FilterSettings = {
+    optional?: OptionalFilter[]
+    persistent?: StaticFilter[]
+}
 
 export enum CustomReportChildType {
     Row = 'row',
@@ -72,6 +79,7 @@ export type ReportConfig<T extends string> = {
     reportName: string
     reportPath: string
     charts: Record<T, ChartConfig>
+    reportFilters: FilterSettings
 }
 
 export type AvailableChartIds =

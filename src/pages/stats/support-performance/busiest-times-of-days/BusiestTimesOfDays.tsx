@@ -1,5 +1,4 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -16,20 +15,13 @@ import StatsPage from 'pages/stats/StatsPage'
 import {BusiestTimesOfDaysDownloadDataButton} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
 import {BusiestTimesOfDaysMetricSelect} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysMetricSelect'
 import {
+    BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS,
     BusiestTimesChart,
     BusiestTimesReportConfig,
 } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
 import {getMetricQuery} from 'pages/stats/support-performance/busiest-times-of-days/utils'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 import {getSelectedMetric} from 'state/ui/stats/busiestTimesSlice'
-
-export const BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS = [
-    FilterKey.Channels,
-    FilterKey.Integrations,
-    FilterKey.Tags,
-    FilterKey.Agents,
-    FilterKey.CustomFields,
-]
 
 export const BusiestTimesOfDays = () => {
     const isAnalyticsNewFilters =

@@ -267,5 +267,6 @@ export const PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS = [
     FilterKey.Agents,
     FilterKey.CustomFields,
 ]
+
 export const PERFORMANCE_OVERVIEW_CHART_TYPE = 'bar'
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'

@@ -14,18 +14,11 @@ import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
 import {ChannelsDownloadDataButton} from 'pages/stats/support-performance/channels/ChannelsDownloadDataButton'
 import {
+    CHANNEL_REPORT_OPTIONAL_FILTERS,
     ChannelsChart,
     ChannelsReportConfig,
 } from 'pages/stats/support-performance/channels/ChannelsReportConfig'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
-
-export const CHANNEL_REPORT_OPTIONAL_FILTERS = [
-    FilterKey.Channels,
-    FilterKey.Integrations,
-    FilterKey.Tags,
-    FilterKey.Agents,
-    FilterKey.CustomFields,
-]
 
 export function ChannelsReport() {
     const getGridCellSize = useGridSize()

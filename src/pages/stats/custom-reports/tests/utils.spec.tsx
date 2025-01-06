@@ -27,6 +27,7 @@ import {
     getSavedChartsIds,
     getSearchConfig,
     getErrorMessage,
+    getChildrenOfTypeChart,
 } from 'pages/stats/custom-reports/utils'
 import {
     OverviewMetric,
@@ -569,6 +570,286 @@ describe('getSavedChartsIds', () => {
 
         const result = getSavedChartsIds(report)
         expect(result).toEqual([])
+    })
+
+    describe('getChildrenOfTypeChart', () => {
+        it('should return empty array for empty report', () => {
+            const report: CustomReportSchema = {
+                id: 1,
+                name: 'Empty Report',
+                analytics_filter_id: 101,
+                emoji: null,
+                children: [],
+            }
+            const result = getChildrenOfTypeChart(report)
+            expect(result).toEqual([])
+        })
+
+        it('should return direct chart children', () => {
+            const report: CustomReportSchema = {
+                id: 2,
+                name: 'Direct Charts',
+                analytics_filter_id: 102,
+                emoji: '📊',
+                children: [
+                    {
+                        type: CustomReportChildType.Chart,
+                        config_id: 'chart-1',
+                    },
+                    {
+                        type: CustomReportChildType.Chart,
+                        config_id: 'chart-2',
+                    },
+                ],
+            }
+            const result = getChildrenOfTypeChart(report)
+            expect(result).toEqual([
+                {
+                    type: CustomReportChildType.Chart,
+                    config_id: 'chart-1',
+                },
+                {
+                    type: CustomReportChildType.Chart,
+                    config_id: 'chart-2',
+                },
+            ])
+        })
+
+        it('should return nested chart children', () => {
+            const report: CustomReportSchema = {
+                id: 3,
+                name: 'Nested Charts',
+                analytics_filter_id: 103,
+                emoji: '🌐',
+                children: [
+                    {
+                        type: CustomReportChildType.Row,
+                        children: [
+                            {
+                                type: CustomReportChildType.Chart,
+                                config_id: 'chart-1',
+                            },
+                        ],
+                    },
+                    {
+                        type: CustomReportChildType.Section,
+                        children: [
+                            {
+                                type: CustomReportChildType.Row,
+                                children: [
+                                    {
+                                        type: CustomReportChildType.Chart,
+                                        config_id: 'chart-2',
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            }
+            const result = getChildrenOfTypeChart(report)
+            expect(result).toEqual([
+                {
+                    type: CustomReportChildType.Chart,
+                    config_id: 'chart-1',
+                },
+                {
+                    type: CustomReportChildType.Chart,
+                    config_id: 'chart-2',
+                },
+            ])
+        })
+
+        it('should handle mixed chart and non-chart children', () => {
+            const report: CustomReportSchema = {
+                id: 4,
+                name: 'Mixed Children',
+                analytics_filter_id: 104,
+                emoji: '🔥',
+                children: [
+                    {
+                        type: CustomReportChildType.Row,
+                        children: [
+                            {
+                                type: CustomReportChildType.Chart,
+                                config_id: 'chart-1',
+                            },
+                        ],
+                    },
+                    {
+                        type: CustomReportChildType.Chart,
+                        config_id: 'chart-2',
+                    },
+                ],
+            }
+            const result = getChildrenOfTypeChart(report)
+            expect(result).toEqual([
+                {
+                    type: CustomReportChildType.Chart,
+                    config_id: 'chart-1',
+                },
+                {
+                    type: CustomReportChildType.Chart,
+                    config_id: 'chart-2',
+                },
+            ])
+        })
+
+        it('should handle null/undefined children', () => {
+            const report: CustomReportSchema = {
+                id: 5,
+                name: 'Null Children',
+                analytics_filter_id: 105,
+                emoji: null,
+                children: [
+                    null,
+                    undefined,
+                    {
+                        type: CustomReportChildType.Chart,
+                        config_id: 'chart-1',
+                    },
+                ] as any,
+            }
+            const result = getChildrenOfTypeChart(report)
+            expect(result).toEqual([
+                {
+                    type: CustomReportChildType.Chart,
+                    config_id: 'chart-1',
+                },
+            ])
+        })
+    })
+})
+
+describe('getErrorMessage(error, defaultMessage)', () => {
+    it('should return string', () => {
+        const actual = getErrorMessage(null)
+
+        expect(typeof actual).toBe('string')
+    })
+
+    it('should return `defaultMessage` if given error is not formatted correctly', () => {
+        const defaultMessage = 'Oops! Something went wrong.'
+
+        const actual = getErrorMessage(null, defaultMessage)
+
+        expect(actual).toBe(defaultMessage)
+    })
+
+    it('should return error message if `error` is an instance of `Error`', () => {
+        const error = new Error('Not Found.')
+
+        const actual = getErrorMessage(error)
+
+        expect(actual).toBe(error.message)
+    })
+
+    it('should construct simple error message', () => {
+        const msg = 'Bad Request.'
+        const error = createError({msg})
+
+        const actual = getErrorMessage(error)
+
+        expect(actual).toBe(msg)
+    })
+
+    it('should construct error message from error data', () => {
+        const msg = 'Bad Request.'
+        const nameError = 'Name is missing.'
+        const emojiErrors = ['Inappropriate emoji.']
+
+        const error = createError({
+            msg,
+            data: {name: nameError, emoji: emojiErrors},
+        })
+
+        const actual = getErrorMessage(error)
+
+        expect(actual).toBe(msg + ' ' + nameError + ' ' + emojiErrors.join(' '))
+    })
+})
+
+describe('createDashboardPayload', () => {
+    it('should create a custom report with the correct payload', () => {
+        const input: DashboardInput = {
+            name: 'Test Dashboard',
+            emoji: '🖖',
+            analytics_filter_id: 123,
+            children: [
+                {
+                    type: CustomReportChildType.Section,
+                    children: [
+                        {
+                            type: CustomReportChildType.Row,
+                            children: [
+                                {
+                                    type: CustomReportChildType.Chart,
+                                    config_id: 'config_id',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        }
+
+        const expected = {
+            name: 'Test Dashboard',
+            emoji: '🖖',
+            analytics_filter_id: 123,
+            type: 'custom',
+            children: [
+                {
+                    type: CustomReportChildType.Section,
+                    metadata: {},
+                    children: [
+                        {
+                            type: CustomReportChildType.Row,
+                            metadata: {},
+                            children: [
+                                {
+                                    type: CustomReportChildType.Chart,
+                                    config_id: 'config_id',
+                                    metadata: {},
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        }
+
+        const actual = createDashboardPayload(input)
+
+        expect(actual).toEqual(expected)
+    })
+
+    it('should provide defaults if not provided in the Dashboard object', () => {
+        const input = {name: 'Test Dashboard'}
+
+        const expected = {
+            name: 'Test Dashboard',
+            emoji: null,
+            analytics_filter_id: null,
+            type: 'custom',
+            children: [
+                {
+                    type: CustomReportChildType.Row,
+                    metadata: {},
+                    children: [
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: 'median_first_response_time_trend_card',
+                            metadata: {},
+                        },
+                    ],
+                },
+            ],
+        }
+
+        const actual = createDashboardPayload(input)
+
+        expect(actual).toEqual(expected)
     })
 })
 
