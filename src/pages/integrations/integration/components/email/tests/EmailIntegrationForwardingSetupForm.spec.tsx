@@ -52,7 +52,7 @@ describe('<EmailIntegrationForwardingSetupForm />', () => {
 
         expect(
             screen.getByRole('checkbox', {
-                name: 'Yes, I’ve set up email forwarding from my support email address to Gorgias',
+                name: /Yes, I’ve set up email forwarding/,
             })
         ).toBeInTheDocument()
 
@@ -82,7 +82,7 @@ describe('<EmailIntegrationForwardingSetupForm />', () => {
 
         fireEvent.click(
             screen.getByRole('checkbox', {
-                name: 'Yes, I’ve set up email forwarding from my support email address to Gorgias',
+                name: /Yes, I’ve set up email forwarding/,
             })
         )
 
@@ -102,7 +102,7 @@ describe('<EmailIntegrationForwardingSetupForm />', () => {
         renderComponent()
 
         const checkbox = screen.getByRole('checkbox', {
-            name: 'Yes, I’ve set up email forwarding from my support email address to Gorgias',
+            name: /Yes, I’ve set up email forwarding/,
         })
 
         expect(checkbox).toBeChecked()

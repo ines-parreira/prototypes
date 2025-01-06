@@ -1,6 +1,8 @@
 import React from 'react'
 
 import {Form} from 'components/Form/Form'
+import FormField from 'components/Form/FormField'
+import FormSubmitButton from 'components/Form/FormSubmitButton'
 import {FormValidator} from 'components/Form/validation'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -8,13 +10,11 @@ import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 import PageHeader from 'pages/settings/SLAs/features/PageHeader/PageHeader'
 import {DeleteModal} from 'pages/settings/SLAs/features/SLAForm/views/DeleteModal'
-import FormSubmitButton from 'pages/settings/SLAs/features/SLAForm/views/FormSubmitButton'
 
 import {MappedFormSLAPolicy} from '../controllers/makeMappedFormSLAPolicy'
 import {SLAFormValues} from '../controllers/useFormValues'
 
 import ChannelSelectBox from './ChannelSelectBox'
-import FormField from './FormField'
 import FormSection from './FormSection'
 import MetricsFieldArray from './MetricsFieldArray'
 import css from './SLAFormView.less'
@@ -69,7 +69,6 @@ export default function SLAFormView({
                             <FormField
                                 name="target_channels"
                                 field={ChannelSelectBox}
-                                className={settingsCss.mb8}
                             />
                         </FormSection>
                         <FormSection

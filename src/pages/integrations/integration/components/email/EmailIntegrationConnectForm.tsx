@@ -3,9 +3,9 @@ import pick from 'lodash/pick'
 import React from 'react'
 
 import {Form} from 'components/Form/Form'
+import FormField from 'components/Form/FormField'
 import FormRow from 'pages/common/forms/FormRow'
 
-import FormField from 'pages/settings/SLAs/features/SLAForm/views/FormField'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
 import {isEmail} from 'utils'
 

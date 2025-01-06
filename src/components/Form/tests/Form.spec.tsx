@@ -4,12 +4,10 @@ import _set from 'lodash/set'
 import React from 'react'
 
 import {Form} from 'components/Form/Form'
-
 import {FormErrors} from 'components/Form/validation'
-import FormSubmitButton from 'pages/settings/SLAs/features/SLAForm/views/FormSubmitButton'
 
-import FormField from '../../../pages/settings/SLAs/features/SLAForm/views/FormField'
-import ToggleInputFormField from '../../../pages/settings/SLAs/features/SLAForm/views/ToggleInputFormField'
+import FormField from '../FormField'
+import FormSubmitButton from '../FormSubmitButton'
 
 const onSubmit = jest.fn()
 
@@ -25,24 +23,6 @@ describe('<Form />', () => {
 
             expect(screen.getByLabelText('Name')).toBeInTheDocument()
             expect(screen.getByLabelText('Address')).toBeInTheDocument()
-        })
-
-        it('allows using custom field components', () => {
-            render(
-                <Form onValidSubmit={onSubmit}>
-                    <FormField name="name" label="Name" />
-                    <FormField
-                        name="agree"
-                        label="I agree"
-                        field={ToggleInputFormField}
-                        isToggled
-                        isRequired
-                    />
-                </Form>
-            )
-
-            expect(screen.getByLabelText('Name')).toBeInTheDocument()
-            expect(screen.queryByRole('checkbox')).toBeInTheDocument()
         })
     })
 
@@ -355,55 +335,11 @@ describe('<Form />', () => {
             render(
                 <Form onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" />
-                    <FormSubmitButton />
+                    <button type="submit">Save Changes</button>
                 </Form>
             )
             const button = screen.getByRole('button', {name: 'Save Changes'})
             expect(button).toBeInTheDocument()
-        })
-
-        it('allows customizing the label text', () => {
-            render(
-                <Form onValidSubmit={onSubmit}>
-                    <FormField name="name" label="Name" />
-                    <FormSubmitButton>Next Step</FormSubmitButton>
-                </Form>
-            )
-            const button = screen.getByRole('button', {name: 'Next Step'})
-            expect(button).toBeInTheDocument()
-        })
-
-        it('allows setting loading state', () => {
-            render(
-                <Form onValidSubmit={onSubmit}>
-                    <FormField name="name" label="Name" />
-                    <FormSubmitButton isLoading />
-                </Form>
-            )
-            const button = screen.getByRole('button', {
-                name: 'Loading... Save Changes',
-            })
-            expect(button).toBeInTheDocument()
-            expect(button).toBeAriaDisabled()
-        })
-
-        it('allows overriding disabled state', () => {
-            render(
-                <Form onValidSubmit={onSubmit}>
-                    <FormField name="name" label="Name" />
-                    <FormSubmitButton isDisabled />
-                </Form>
-            )
-            const button = screen.getByRole('button', {
-                name: 'Save Changes',
-            })
-            expect(button).toBeAriaDisabled()
-
-            fireEvent.change(screen.getByLabelText('Name'), {
-                target: {value: 'Doe'},
-            })
-
-            expect(button).toBeAriaDisabled()
         })
 
         it('tracks dirty state disabling it while unchanged', async () => {

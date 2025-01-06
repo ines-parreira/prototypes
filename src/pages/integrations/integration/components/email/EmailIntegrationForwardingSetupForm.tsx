@@ -3,9 +3,9 @@ import {Label} from '@gorgias/merchant-ui-kit'
 import React, {useCallback} from 'react'
 
 import {Form} from 'components/Form/Form'
+import FormField from 'components/Form/FormField'
 import CheckBoxField from 'pages/common/forms/CheckBoxField'
 import FormRow from 'pages/common/forms/FormRow'
-import FormField from 'pages/settings/SLAs/features/SLAForm/views/FormField'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
 
 import BaseEmailIntegrationInputField from './BaseEmailIntegrationInputField'
