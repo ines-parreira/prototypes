@@ -17,8 +17,8 @@ type Props = {
     navBarLinkProps: Partial<NavbarLinkProps>
 }
 
-export const CUSTOM_REPORTS_NAV_TITLE = 'CUSTOM REPORTS'
-export const CREATE_CUSTOM_REPORT = 'Create Custom Report'
+export const CUSTOM_REPORTS_NAV_TITLE = 'DASHBOARDS'
+export const CREATE_CUSTOM_REPORT = 'Create new dashboard'
 
 export const CustomReportsNavbarBlock = ({navBarLinkProps}: Props) => {
     const history = useHistory()

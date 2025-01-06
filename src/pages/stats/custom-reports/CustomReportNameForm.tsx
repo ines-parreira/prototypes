@@ -69,9 +69,9 @@ export const CustomReportNameForm = ({
         >
             <InputField
                 type="text"
-                aria-label="Report name"
+                aria-label="Dashboard name"
                 name={nameController.field.name}
-                placeholder="Add report name"
+                placeholder="Add dashboard name"
                 className={css.inputField}
                 ref={nameController.field.ref}
                 value={nameController.field.value as string}

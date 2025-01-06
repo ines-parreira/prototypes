@@ -12,8 +12,8 @@ import css from 'pages/stats/custom-reports/CustomReportsPageActions.less'
 import {CustomReportSchema} from 'pages/stats/custom-reports/types'
 
 export const DOWNLOAD_REPORT_LABEL = 'Download Data'
-export const DELETE_REPORT_LABEL = 'Delete Report'
-export const ADD_OR_REMOVE_REPORT_LABEL = 'Add or Remove Report'
+export const DELETE_REPORT_LABEL = 'Delete Dashboard'
+export const ADD_OR_REMOVE_REPORT_LABEL = 'Add or Remove Charts'
 
 export const DELETE_CONFIRMATION_BUTTON_LABEL = 'Delete'
 export const CANCEL_CONFIRMATION_BUTTON_LABEL = 'Cancel'
@@ -22,7 +22,7 @@ export const getDeleteConfirmationTitle = (customReportName: string) =>
 
 const getDeleteConfirmationContent = (customReportName: string) => (
     <>
-        {`Deleting ${customReportName} will remove it from Custom Reports for all users. This action cannot be undone.`}
+        {`Deleting ${customReportName} will remove it from Dashboards for all users. This action cannot be undone.`}
         <br />
         <br />
         <br />
