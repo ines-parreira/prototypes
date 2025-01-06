@@ -9,6 +9,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {isPreviewModeActivated} from 'pages/aiAgent/components/StoreConfigForm/StoreConfigForm.utils'
 import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
 import {useStoreConfigurationMutation} from 'pages/aiAgent/hooks/useStoreConfigurationMutation'
 import {isAiAgentEnabled} from 'pages/aiAgent/util'
@@ -26,10 +27,11 @@ export const ConnectedChannelsEmailView = () => {
         useFlags()[FeatureFlagKey.AiAgentMultiChannelEnablement]
     const isTrialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
 
-    const {shopType, shopName} = useParams<{
+    const {shopName} = useParams<{
         shopType: string
         shopName: string
     }>()
+    const aiAgentNavigation = useAiAgentNavigation({shopName})
 
     const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
@@ -149,7 +151,7 @@ export const ConnectedChannelsEmailView = () => {
                         labelSubtitle="AI Agent uses Help Center articles, Macros, Guidance and Shopify data to automate responses, enabling your team to reduce wait time and increase customer satisfaction."
                         subtitle="When enabled, you can find tickets handled by AI Agent in a ticket view."
                         enabled={isAIAgentToggled}
-                        externalLinkUrl={`/app/automation/${shopType}/${shopName}/ai-agent`}
+                        externalLinkUrl={aiAgentNavigation.routes.main}
                         disabled={isDisabled}
                         showConfigurationRequiredAlert={isDisabled}
                         isLoading={isUpserting}

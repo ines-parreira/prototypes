@@ -1,4 +1,5 @@
 import {render, fireEvent} from '@testing-library/react'
+import {ldClientMock} from 'jest-launchdarkly-mock'
 import React from 'react'
 
 import {
@@ -6,6 +7,8 @@ import {
     AiAgentNotificationSeries,
 } from 'automate/notifications/types'
 import type {Notification} from 'common/notifications'
+
+import {getLDClient} from 'utils/launchDarkly'
 
 import AiAgentNotification from '../AiAgentNotification'
 
@@ -18,6 +21,13 @@ jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
 }))
 
 describe('AiAgentNotification', () => {
+    beforeEach(() => {
+        ldClientMock.allFlags.mockReturnValue({})
+        let client = getLDClient()
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        client = ldClientMock
+    })
+
     const basePayload = {
         shop_name: 'store_1',
         shop_type: 'shopify',

@@ -6,6 +6,7 @@ import {useAIAgentMetrics} from 'hooks/reporting/automate/useAIAgentInsightsData
 import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
 import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
 import useAppSelector from 'hooks/useAppSelector'
+import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {useGetCustomTicketsFieldsDefinitionData} from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import PerformanceTip from 'pages/stats/PerformanceTip'
 import {getPageStatsFilters} from 'state/stats/selectors'
@@ -42,6 +43,8 @@ export const Level1IntentsPerformance = () => {
     const {intentCustomFieldId, outcomeCustomFieldId} =
         useGetCustomTicketsFieldsDefinitionData()
 
+    const aiAgentNavigation = useAiAgentNavigation({shopName})
+
     return (
         <IntentsPerformance
             sectionTitle="Optimize AI Agent performance"
@@ -61,7 +64,7 @@ export const Level1IntentsPerformance = () => {
                             Set up all{' '}
                             <a
                                 target="blank"
-                                href={`/app/automation/shopify/${shopName}/ai-agent/settings`}
+                                href={aiAgentNavigation.routes.configuration()}
                             >
                                 channels & email addresses
                             </a>{' '}

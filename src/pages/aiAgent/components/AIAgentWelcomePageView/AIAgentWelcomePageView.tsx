@@ -7,6 +7,7 @@ import {useHistory} from 'react-router-dom'
 import {SegmentEvent, logEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {StoreConfiguration} from 'models/aiAgent/types'
+import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import {notify} from 'state/notifications/actions'
@@ -65,6 +66,8 @@ export const AIAgentWelcomePageView = (props: Props) => {
             : 'Prepare AI Agent to automate 60% of your email, Chat and Contact Form tickets by completing these steps:',
     }
 
+    const aiAgentNavigation = useAiAgentNavigation({shopName: props.shopName})
+
     const onOnboardingWizardClick = useCallback(() => {
         logEvent(SegmentEvent.AiAgentWelcomePageCtaClicked, {
             version: 'Dynamic',
@@ -72,12 +75,17 @@ export const AIAgentWelcomePageView = (props: Props) => {
         })
 
         history.push({
-            pathname: `/app/automation/${props.shopType}/${props.shopName}/ai-agent/new`,
+            pathname: aiAgentNavigation.routes.onboardingWizard,
             search: isOnUpdateOnboardingWizard
                 ? `?${WIZARD_UPDATE_QUERY_KEY}=true`
                 : '',
         })
-    }, [history, isOnUpdateOnboardingWizard, props.shopName, props.shopType])
+    }, [
+        history,
+        isOnUpdateOnboardingWizard,
+        props.shopName,
+        aiAgentNavigation.routes.onboardingWizard,
+    ])
 
     const onAcknowledgedClick = async () => {
         try {

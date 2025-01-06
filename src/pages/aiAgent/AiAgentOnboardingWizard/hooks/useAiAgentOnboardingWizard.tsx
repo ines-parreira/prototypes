@@ -177,6 +177,7 @@ export const useAiAgentOnboardingWizard = ({
         return searchParams.toString()
     }
 
+    const aiAgentNavigation = useAiAgentNavigation({shopName})
     const handleAction = (redirectTo: WIZARD_BUTTON_ACTIONS) => {
         if (!shopType || !shopName) return
 
@@ -190,18 +191,14 @@ export const useAiAgentOnboardingWizard = ({
                     step,
                     version,
                 })
-                history.replace(
-                    `/app/automation/${shopType}/${shopName}/ai-agent`
-                )
+                history.replace(aiAgentNavigation.routes.main)
                 break
             case WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER:
                 logEvent(SegmentEvent.AiAgentOnboardingWizardSaveClicked, {
                     step,
                     version,
                 })
-                history.replace(
-                    `/app/automation/${shopType}/${shopName}/ai-agent`
-                )
+                history.replace(aiAgentNavigation.routes.main)
                 break
             case WIZARD_BUTTON_ACTIONS.PREVIOUS_STEP:
                 logEvent(SegmentEvent.AiAgentOnboardingWizardBackClicked, {

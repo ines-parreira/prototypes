@@ -1,9 +1,13 @@
+import {ldClientMock} from 'jest-launchdarkly-mock'
+
 import {Knowledge} from 'models/aiAgentFeedback/types'
+
+import {getLDClient} from 'utils/launchDarkly'
 
 import {getKnowledgeUrl} from '../utils'
 
 describe('getKnowledgeUrl', () => {
-    const shopType = 'shopType'
+    const shopType = 'shopify'
     const shopName = 'shopName'
 
     it('should return the knowledge URL for type article', () => {
@@ -29,6 +33,11 @@ describe('getKnowledgeUrl', () => {
     })
 
     it('should return the internal URL for type file_external_snippet', () => {
+        ldClientMock.allFlags.mockReturnValue({})
+        let client = getLDClient()
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        client = ldClientMock
+
         const knowledge = {
             type: 'file_external_snippet',
             id: 3,

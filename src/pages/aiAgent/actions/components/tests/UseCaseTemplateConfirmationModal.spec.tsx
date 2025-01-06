@@ -1,6 +1,7 @@
 import {QueryClientProvider} from '@tanstack/react-query'
 import {act, fireEvent, screen} from '@testing-library/react'
 import {createMemoryHistory} from 'history'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
 import {Provider} from 'react-redux'
@@ -37,6 +38,7 @@ const useGetWorkflowConfigurationTemplateByIdsMock = jest.mocked(
 describe('<UseCaseTemplateConfirmationModal />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+        mockFlags({})
         mockUseApps.mockReturnValue({
             isLoading: false,
             apps: [

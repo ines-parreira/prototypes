@@ -812,7 +812,7 @@ export function HelpCenterStatsRoutes({match: {path}}: RouteComponentProps) {
     )
 }
 
-function AiAgentRoutes({match: {path}}: RouteComponentProps) {
+function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
     const showAutomateActions = useShowAutomateActions()
     const {shopType} = useParams<{
         shopType: string
@@ -830,8 +830,26 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
     const isAiAgentOptimizeTabEnabled =
         useFlags()[FeatureFlagKey.AiAgentOptimizeTab]
 
+    const isAiAgentStandaloneMenuEnabled =
+        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
+
     if (shopType !== 'shopify') {
         return <Redirect to="/app/automation" />
+    }
+
+    if (
+        isAiAgentStandaloneMenuEnabled &&
+        location.pathname.startsWith('/app/automation')
+    ) {
+        // TMP: Remove it when AI Agent will be fully migrated to its new route
+        // Redirect from old /app/automation/../../ai-agent/.. to new `/app/ai-agent/../../..` route
+        const newLocation = {
+            ...location,
+            pathname: location.pathname
+                .replace('/ai-agent', '')
+                .replace('/automation', '/ai-agent'),
+        }
+        return <Redirect to={newLocation} />
     }
 
     const isGorgiasUser = window.USER_IMPERSONATED || window.DEVELOPMENT

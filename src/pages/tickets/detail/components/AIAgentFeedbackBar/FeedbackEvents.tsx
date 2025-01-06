@@ -4,6 +4,7 @@ import React from 'react'
 import {SegmentEvent} from 'common/segment'
 import {logEventWithSampling} from 'common/segment/segment'
 import {TicketMessage} from 'models/ticket/types'
+import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import TicketTag from 'pages/common/components/TicketTag'
 
 import {useAIAgentMessageEvents} from '../../hooks/useAIAgentMessageEvents'
@@ -18,8 +19,10 @@ type Props = {
     shopName: string
 }
 
-const FeedbackEvents: React.FC<Props> = ({messages, shopType, shopName}) => {
+const FeedbackEvents: React.FC<Props> = ({messages, shopName}) => {
     const events = useAIAgentMessageEvents(messages)
+
+    const aiAgentNavigation = useAiAgentNavigation({shopName})
 
     if (!messages.length) {
         return null
@@ -35,7 +38,7 @@ const FeedbackEvents: React.FC<Props> = ({messages, shopType, shopName}) => {
         return null
     }
 
-    const aiAgentLink = `/app/automation/${shopType}/${shopName}/ai-agent`
+    const aiAgentLink = aiAgentNavigation.routes.main
 
     return (
         <div className={css.ticketEventsContainer}>

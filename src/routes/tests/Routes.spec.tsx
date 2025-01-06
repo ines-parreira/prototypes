@@ -1,3 +1,4 @@
+import {QueryClientProvider} from '@tanstack/react-query'
 import {act, render, screen} from '@testing-library/react'
 import {createBrowserHistory} from 'history'
 import {fromJS, Map} from 'immutable'
@@ -5,7 +6,7 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 
 import React, {ComponentType, PropsWithChildren, ReactNode} from 'react'
 import {Provider} from 'react-redux'
-import {MemoryRouter} from 'react-router-dom'
+import {MemoryRouter, Router} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import {useFlag} from 'common/flags'
@@ -33,6 +34,7 @@ import {Tags} from 'pages/stats/ticket-insights/tags/Tags'
 import Routes from 'routes/Routes'
 import {initialState} from 'state/billing/reducers'
 import {RootState} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock, renderWithRouter, renderWithStore} from 'utils/testing'
 
 jest.mock('routes/settings', () => () => <div>SettingsRoutes</div>)
@@ -708,6 +710,34 @@ describe('<Routes/>', () => {
             expect(
                 screen.getByText('AiAgentKnowledgeContainer')
             ).toBeInTheDocument()
+        })
+
+        describe('when conv-ai-standalone-menu flag is enabled', () => {
+            it('should redirect to the new namespace when accessing /app/automation/*/*/ai-agent', () => {
+                mockFlags({
+                    [FeatureFlagKey.ConvAiStandaloneMenu]: true,
+                })
+
+                render(
+                    <QueryClientProvider client={mockQueryClient()}>
+                        <Provider store={mockStore(defaultState)}>
+                            <Router history={mockHistory}>
+                                <Routes />
+                            </Router>
+                        </Provider>
+                    </QueryClientProvider>
+                )
+
+                act(() =>
+                    mockHistory.push(
+                        '/app/automation/shopify/test-shop/ai-agent'
+                    )
+                )
+
+                expect(mockHistory.location.pathname).toBe(
+                    '/app/ai-agent/shopify/test-shop'
+                )
+            })
         })
     })
 })

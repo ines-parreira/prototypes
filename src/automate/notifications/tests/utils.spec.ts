@@ -1,3 +1,7 @@
+import {ldClientMock} from 'jest-launchdarkly-mock'
+
+import {getLDClient} from 'utils/launchDarkly'
+
 import {AiAgentNotificationSeries} from '../types'
 import {getNotificationParams} from '../utils'
 
@@ -7,6 +11,13 @@ describe('getNotificationParams', () => {
         shop_type: 'shopify',
         ticket_id: '12345',
     }
+
+    beforeEach(() => {
+        ldClientMock.allFlags.mockReturnValue({})
+        let client = getLDClient()
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        client = ldClientMock
+    })
 
     it('should return correct params for StartAiAgentSetup', () => {
         const payload = {

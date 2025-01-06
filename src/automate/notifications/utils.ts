@@ -1,3 +1,7 @@
+import {getAiAgentNavigationRoutes} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+
+import {getLDClient} from 'utils/launchDarkly'
+
 import {AiAgentNotificationPayload, AiAgentNotificationSeries} from './types'
 
 type NotificationParams = {
@@ -13,9 +17,11 @@ export const getNotificationParams = (
     const {
         notification_series: notificationSeries,
         shop_name: shopName,
-        shop_type: shopType,
         ticket_id: ticketId,
     } = payload
+
+    const flags = getLDClient().allFlags()
+    const routes = getAiAgentNavigationRoutes(shopName, flags)
 
     switch (notificationSeries) {
         case AiAgentNotificationSeries.StartAiAgentSetup:
@@ -23,28 +29,28 @@ export const getNotificationParams = (
                 title: 'Set up AI Agent',
                 subtitle:
                     'We noticed you checking out AI Agent. It only takes a few steps to start automating 60% of your tickets!',
-                redirectTo: `/app/automation/${shopType}/${shopName}/ai-agent`,
+                redirectTo: routes.main,
             }
         case AiAgentNotificationSeries.FinishAiAgentSetup:
             return {
                 title: 'Finish AI Agent setup',
                 subtitle:
                     'You’re only a few steps away from getting AI Agent ready to start automating 60% of your tickets!',
-                redirectTo: `/app/automation/${shopType}/${shopName}/ai-agent/new`,
+                redirectTo: routes.onboardingWizard,
             }
         case AiAgentNotificationSeries.ActivateAiAgent:
             return {
                 title: 'Activate AI Agent',
                 subtitle:
                     'You’re just one click away from automating 60% of your tickets!',
-                redirectTo: `/app/automation/${shopType}/${shopName}/ai-agent`,
+                redirectTo: routes.main,
             }
         case AiAgentNotificationSeries.MeetAiAgent:
             return {
                 title: 'Meet your newest team member: AI Agent',
                 subtitle:
                     'Delight customers with instant and personalized answers, automating up to 60% of your tickets!',
-                redirectTo: `/app/automation/${shopType}/${shopName}/ai-agent`,
+                redirectTo: routes.main,
             }
         case AiAgentNotificationSeries.FirstAiAgentTicket:
             return {

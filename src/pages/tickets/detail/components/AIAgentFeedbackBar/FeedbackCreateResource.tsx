@@ -1,5 +1,7 @@
 import React from 'react'
 
+import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+
 import css from './FeedbackCreateResource.less'
 
 type Props = {
@@ -21,13 +23,10 @@ const LinkInText: React.FC<LinkProps> = ({href, text}) => {
     )
 }
 
-const FeedbackCreateResource: React.FC<Props> = ({
-    shopType,
-    shopName,
-    helpCenterId,
-}) => {
-    const actionLink = `/app/automation/${shopType}/${shopName}/ai-agent/actions/new`
-    const guidanceLink = `/app/automation/${shopType}/${shopName}/ai-agent/guidance/templates`
+const FeedbackCreateResource: React.FC<Props> = ({shopName, helpCenterId}) => {
+    const aiAgentNavigation = useAiAgentNavigation({shopName})
+    const actionLink = aiAgentNavigation.routes.newAction()
+    const guidanceLink = aiAgentNavigation.routes.guidanceTemplates
     const helpCenterArticlesLink = `/app/settings/help-center/${helpCenterId}/articles`
 
     return (

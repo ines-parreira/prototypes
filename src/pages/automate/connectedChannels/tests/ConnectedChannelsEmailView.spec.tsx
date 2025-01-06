@@ -30,7 +30,7 @@ jest.mock('pages/aiAgent/hooks/useStoreConfigurationMutation')
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(() => ({
-        shopType: 'shopType',
+        shopType: 'shopify',
         shopName: 'shopName',
     })),
 }))
@@ -98,7 +98,7 @@ describe('ConnectedChannelsEmailView', () => {
             screen.getByRole('link', {
                 name: /configuration required/i,
             })
-        ).toHaveAttribute('href', `/app/automation/shopType/shopName/ai-agent`)
+        ).toHaveAttribute('href', `/app/automation/shopify/shopName/ai-agent`)
     })
 
     it('should call upsertStoreConfiguration with correct parameters when enabling AI agent', () => {

@@ -1,6 +1,7 @@
 import {QueryClientProvider} from '@tanstack/react-query'
 import {fireEvent, render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import {ldClientMock} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {useCookies} from 'react-cookie'
 import {Provider} from 'react-redux'
@@ -16,6 +17,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {getLDClient} from 'utils/launchDarkly'
 import {assumeMock} from 'utils/testing'
 
 import AIAgentMessageFeedback, {
@@ -82,6 +84,10 @@ describe('AIAgentMessageFeedback', () => {
             mockSetCookie,
         ])
         ;(useHasAgentPrivileges as jest.Mock).mockReturnValue(true)
+        ldClientMock.allFlags.mockReturnValue({})
+        let client = getLDClient()
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        client = ldClientMock
     })
 
     it.each([

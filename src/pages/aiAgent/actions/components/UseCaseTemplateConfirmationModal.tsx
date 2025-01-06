@@ -6,6 +6,7 @@ import {ulid} from 'ulidx'
 
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm-neutral.svg'
 import {useGetWorkflowConfigurationTemplateByIds} from 'models/workflows/queries'
+import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 
 import {getOperatorListByVariable} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/constants'
@@ -181,6 +182,7 @@ export default function UseCaseTemplateConfirmationModal({
         setStep('selection')
     }
 
+    const aiAgentNavigation = useAiAgentNavigation({shopName})
     const handleCreateAndEnable = () => {
         const newTemplateConfiguration: WorkflowConfiguration = {
             id: ulid(),
@@ -207,7 +209,7 @@ export default function UseCaseTemplateConfirmationModal({
         ])
 
         handleCloseModal()
-        history.push(`/app/automation/${shopType}/${shopName}/ai-agent/actions`)
+        history.push(aiAgentNavigation.routes.actions)
     }
 
     const handleCustomize = () => {
