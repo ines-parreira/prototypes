@@ -1,5 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks'
+import {Dispatch} from 'react'
 
+import {BannerActions} from 'AlertBanners/Context/types'
 import {assumeMock} from 'utils/testing'
 
 import {BannerActionTypes, useBannersDispatchContext} from '../../Context'
@@ -27,11 +29,13 @@ const data: ContextBanner = {
 }
 
 describe('useBanners', () => {
-    const bannerDispatchMock = jest.fn()
+    const bannerDispatchMock = jest.fn<unknown, [{payload: ContextBanner}]>()
     const setDismissedMock = jest.fn()
     const isBannerDismissedMock = jest.fn()
     beforeEach(() => {
-        useBannersDispatchContextMock.mockReturnValue(bannerDispatchMock)
+        useBannersDispatchContextMock.mockReturnValue(
+            bannerDispatchMock as Dispatch<BannerActions>
+        )
         isBannerDismissedMock.mockReturnValue(false)
         useDismissedStorageMock.mockReturnValue({
             setDismissed: setDismissedMock,
@@ -55,7 +59,7 @@ describe('useBanners', () => {
     })
 
     describe('returned API', () => {
-        it('should should dispatch the correct add action with proper params', () => {
+        it('should should dispatch the correct add action with proper params,', () => {
             const {result} = renderHook(useBanners)
             const {addBanner, forceAddBanner} = result.current
 
@@ -63,16 +67,57 @@ describe('useBanners', () => {
             expect(bannerDispatchMock).toHaveBeenCalledTimes(1)
             expect(bannerDispatchMock).toHaveBeenCalledWith({
                 type: BannerActionTypes.ADD,
-                payload: data,
+                payload: {...data, onClose: expect.any(Function)},
             })
 
             forceAddBanner(data)
             expect(bannerDispatchMock).toHaveBeenCalledTimes(2)
             expect(bannerDispatchMock).toHaveBeenCalledWith({
                 type: BannerActionTypes.ADD,
-                payload: data,
+                payload: {...data, onClose: expect.any(Function)},
+            })
+
+            const newData = {...data, preventDismiss: true}
+
+            addBanner(newData)
+            expect(bannerDispatchMock).toHaveBeenCalledTimes(3)
+            expect(bannerDispatchMock).toHaveBeenCalledWith({
+                type: BannerActionTypes.ADD,
+                payload: newData,
+            })
+
+            forceAddBanner(newData)
+            expect(bannerDispatchMock).toHaveBeenCalledTimes(4)
+            expect(bannerDispatchMock).toHaveBeenCalledWith({
+                type: BannerActionTypes.ADD,
+                payload: newData,
             })
         })
+
+        it('should call the passed `onClose`, `setDismissed`, and dispatch the correct remove banner action when onClose prop is called', () => {
+            const {result} = renderHook(useBanners)
+            const {addBanner} = result.current
+
+            const onCloseSpy = jest.fn()
+            addBanner({...data, onClose: onCloseSpy})
+            const onClose = bannerDispatchMock.mock.calls[0][0].payload.onClose
+            onClose?.()
+
+            expect(setDismissedMock).toHaveBeenCalledTimes(1)
+            expect(setDismissedMock).toHaveBeenCalledWith(
+                data.category,
+                data.instanceId
+            )
+            expect(bannerDispatchMock).toHaveBeenCalledTimes(2)
+            expect(bannerDispatchMock).toHaveBeenCalledWith({
+                type: BannerActionTypes.REMOVE_BANNER,
+                category: data.category,
+                instanceId: data.instanceId,
+            })
+
+            expect(onCloseSpy).toHaveBeenCalledTimes(1)
+        })
+
         it('should not dispatch any action if banner is dismissed when using addBanner', () => {
             isBannerDismissedMock.mockReturnValue(true)
             const {result} = renderHook(useBanners)

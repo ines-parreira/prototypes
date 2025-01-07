@@ -23,15 +23,43 @@ export function useBanners() {
         updateCurrentTabState
     )
 
+    const dismissBanner = useCallback(
+        (category: BannerCategory, instanceId: string) => {
+            setDismissed(category, instanceId)
+            bannerDispatch({
+                type: BannerActionTypes.REMOVE_BANNER,
+                category,
+                instanceId,
+            })
+        },
+        [setDismissed, bannerDispatch]
+    )
+
+    const dispatchAddAndHandleDismiss = useCallback(
+        (payload: ContextBanner) => {
+            const onClose = payload.preventDismiss
+                ? payload.onClose
+                : () => {
+                      dismissBanner(payload.category, payload.instanceId)
+                      payload.onClose?.()
+                  }
+            bannerDispatch({
+                type: BannerActionTypes.ADD,
+                payload: {...payload, onClose},
+            })
+        },
+        [bannerDispatch, dismissBanner]
+    )
+
     return useMemo(
         () => ({
             addBanner: (payload: ContextBanner) => {
                 if (!isBannerDismissed(payload.category, payload.instanceId)) {
-                    bannerDispatch({type: BannerActionTypes.ADD, payload})
+                    dispatchAddAndHandleDismiss(payload)
                 }
             },
             forceAddBanner: (payload: ContextBanner) => {
-                bannerDispatch({type: BannerActionTypes.ADD, payload})
+                dispatchAddAndHandleDismiss(payload)
             },
             removeCategory: (category: BannerCategory) => {
                 bannerDispatch({
@@ -46,15 +74,13 @@ export function useBanners() {
                     instanceId,
                 })
             },
-            dismissBanner: (category: BannerCategory, instanceId: string) => {
-                setDismissed(category, instanceId)
-                bannerDispatch({
-                    type: BannerActionTypes.REMOVE_BANNER,
-                    category,
-                    instanceId,
-                })
-            },
+            dismissBanner,
         }),
-        [bannerDispatch, setDismissed, isBannerDismissed]
+        [
+            isBannerDismissed,
+            dispatchAddAndHandleDismiss,
+            bannerDispatch,
+            dismissBanner,
+        ]
     )
 }
