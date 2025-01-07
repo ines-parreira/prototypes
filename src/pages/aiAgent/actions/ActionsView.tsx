@@ -19,6 +19,7 @@ import AutomateViewEmptyStateBanner from 'pages/automate/common/components/Autom
 import css from './ActionsView.less'
 import ActionsList from './components/ActionsList'
 import ActionsTemplatesCards from './components/ActionsTemplatesCards'
+import ActionsUseCaseTemplatesCards from './components/ActionsUseCaseTemplatesCards'
 import BrowseAllActionsButton from './components/BrowseAllActionsButton'
 import CreateCustomActionButton from './components/CreateCustomActionButton'
 import {ACTIONS_DESCRIPTION} from './constants'
@@ -120,10 +121,17 @@ const ActionsView = () => {
                                 <BrowseAllActionsButton />
                             </div>
                         </div>
-                        <ActionsTemplatesCards
-                            templateConfigurations={templateConfigurations}
-                            max={MAX_TEMPLATES}
-                        />
+                        {isMultiStepActionEnabled ? (
+                            <ActionsUseCaseTemplatesCards
+                                templates={templateConfigurations}
+                                max={MAX_TEMPLATES}
+                            />
+                        ) : (
+                            <ActionsTemplatesCards
+                                templateConfigurations={templateConfigurations}
+                                max={MAX_TEMPLATES}
+                            />
+                        )}
                     </div>
                 </>
             )}

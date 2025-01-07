@@ -297,6 +297,10 @@ export type VisualBuilderBaseAction =
           chargeId: string
       }
     | {
+          type: 'SET_CATEGORY'
+          category: string
+      }
+    | {
           type: 'SET_ERRORS'
           nodeId?: string
           appId?: string
@@ -791,6 +795,10 @@ export function baseReducer(
                 if (app) {
                     app.refresh_token = action.refreshToken
                 }
+            })
+        case 'SET_CATEGORY':
+            return produce(graph, (draft) => {
+                draft.category = action.category
             })
         case 'SET_ERRORS':
             return produce(graph, (draft) => {

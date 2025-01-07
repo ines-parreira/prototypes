@@ -503,6 +503,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -516,6 +517,12 @@ declare namespace Components {
             name: string;
             instructions: string;
             id: string;
+          } | {
+            kind: "order-shipmonk";
+            integration_id: number;
+          } | {
+            kind: "order-3pl";
+            integration_id: number;
           })[];
           conditions?: {
             or: ({
@@ -596,6 +603,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -700,7 +708,6 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
-        account_oauth2_token_id?: string | null;
         type: "app";
         refresh_token?: string | null;
       })[] | null;
@@ -758,9 +765,11 @@ declare namespace Components {
             author: {
               kind: "shopper" | "bot";
             };
+            step_id?: string | null;
           }[];
         } | {
           kind: "choices";
+          step_id?: string | null;
           choices: {
             label: string;
             event_id: string;
@@ -1612,6 +1621,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -1625,6 +1635,12 @@ declare namespace Components {
             name: string;
             instructions: string;
             id: string;
+          } | {
+            kind: "order-shipmonk";
+            integration_id: number;
+          } | {
+            kind: "order-3pl";
+            integration_id: number;
           })[];
           conditions?: {
             or: ({
@@ -1705,6 +1721,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -1809,7 +1826,6 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
-        account_oauth2_token_id?: string | null;
         type: "app";
         refresh_token?: string | null;
       })[] | null;
@@ -1956,6 +1972,26 @@ declare namespace Components {
         };
       } | {
         id: string;
+        kind: "reusable-llm-prompt-call";
+        settings: {
+          configuration_id: string;
+          configuration_internal_id: string;
+          objects?: {
+            customer?: string | null;
+            order?: string | null;
+            products?: {
+              [name: string]: string;
+            } | null;
+          } | null;
+          custom_inputs?: {
+            [name: string]: string;
+          } | null;
+          values: {
+            [name: string]: string | number | boolean;
+          };
+        };
+      } | {
+        id: string;
         kind: "end";
         settings?: {
           success: boolean;
@@ -2065,6 +2101,7 @@ declare namespace Components {
         };
       }[];
       available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      category?: string | null;
       created_datetime: string; // date-time
       updated_datetime: string; // date-time
       deleted_datetime?: string | null; // date-time
@@ -2076,6 +2113,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -2089,6 +2127,12 @@ declare namespace Components {
             name: string;
             instructions: string;
             id: string;
+          } | {
+            kind: "order-shipmonk";
+            integration_id: number;
+          } | {
+            kind: "order-3pl";
+            integration_id: number;
           })[];
           conditions?: {
             or: ({
@@ -2169,6 +2213,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -2273,7 +2318,6 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
-        account_oauth2_token_id?: string | null;
         type: "app";
         refresh_token?: string | null;
       })[];
@@ -2301,9 +2345,11 @@ declare namespace Components {
           author: {
             kind: "shopper" | "bot";
           };
+          step_id?: string | null;
         }[];
       } | {
         kind: "choices";
+        step_id?: string | null;
         choices: {
           label: string;
           event_id: string;
@@ -2728,6 +2774,214 @@ declare namespace Components {
         path: string[];
       }[] | null;
       state?: {
+        store?: {
+          type: "shopify";
+          name: string;
+          helpdesk_integration_id: number;
+        } | null;
+        preview_mode?: boolean | null;
+        trigger: "llm-prompt";
+        entrypoint?: "llm-conversation";
+        objects?: {
+          customer?: {
+            id: number;
+            email?: string | null;
+            firstname?: string | null;
+            lastname?: string | null;
+            name?: string | null;
+            phone_number?: string | null;
+            orders: {
+              name: string;
+              external_id?: string | null;
+              shopper_external_id?: string | null;
+              number?: string | null;
+              currency: {
+                code: string;
+                decimals: number;
+              };
+              discount_amount?: number | null;
+              subtotal_amount?: number | null;
+              shipping_amount?: number | null;
+              tax_amount?: number | null;
+              cancelled_datetime?: string | null; // date-time
+              created_datetime: string; // date-time
+              external_status?: string | null;
+              external_fulfillment_status?: string | null;
+              billing_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              shipping_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              external_payment_status?: string | null;
+              total_amount: number;
+              tracking_url?: string | null;
+              shipping_datetime?: string | null; // date-time
+              tracking_number?: string | null;
+              status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+              line_items: {
+                name: string;
+                total_amount: number;
+                quantity: number;
+                external_id?: string | null;
+                external_product_id?: string | null;
+                product?: {
+                  external_id: string;
+                  images: string[];
+                  name?: string | null;
+                  external_type?: string | null;
+                  variants?: {
+                    external_id: string;
+                    external_gid?: string | null;
+                    quantity?: number | null;
+                    name?: string | null;
+                  }[] | null;
+                } | null;
+              }[];
+              fulfillments?: {
+                status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                external_shipment_status?: string | null;
+                updated_datetime?: string | null; // date-time
+              }[] | null;
+              shipping_lines?: {
+                external_method_id?: string | null;
+                method_name?: string | null;
+              }[] | null;
+              tags_stringified?: string | null;
+              note?: string | null;
+            }[];
+            tags_stringified?: string | null;
+            integrations?: {
+              [name: string]: {
+                [name: string]: any;
+              };
+            } | null;
+          } | null;
+          order?: {
+            name: string;
+            external_id?: string | null;
+            shopper_external_id?: string | null;
+            number?: string | null;
+            currency: {
+              code: string;
+              decimals: number;
+            };
+            discount_amount?: number | null;
+            subtotal_amount?: number | null;
+            shipping_amount?: number | null;
+            tax_amount?: number | null;
+            cancelled_datetime?: string | null; // date-time
+            created_datetime: string; // date-time
+            external_status?: string | null;
+            external_fulfillment_status?: string | null;
+            billing_address?: {
+              line_1: string | null;
+              line_2: string | null;
+              city: string | null;
+              country: string | null;
+              state: string | null;
+              zip_code: string | null;
+              first_name: string | null;
+              last_name: string | null;
+              phone_number: string | null;
+            } | null;
+            shipping_address?: {
+              line_1: string | null;
+              line_2: string | null;
+              city: string | null;
+              country: string | null;
+              state: string | null;
+              zip_code: string | null;
+              first_name: string | null;
+              last_name: string | null;
+              phone_number: string | null;
+            } | null;
+            external_payment_status?: string | null;
+            total_amount: number;
+            tracking_url?: string | null;
+            shipping_datetime?: string | null; // date-time
+            tracking_number?: string | null;
+            status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+            line_items: {
+              name: string;
+              total_amount: number;
+              quantity: number;
+              external_id?: string | null;
+              external_product_id?: string | null;
+              product?: {
+                external_id: string;
+                images: string[];
+                name?: string | null;
+                external_type?: string | null;
+                variants?: {
+                  external_id: string;
+                  external_gid?: string | null;
+                  quantity?: number | null;
+                  name?: string | null;
+                }[] | null;
+              } | null;
+            }[];
+            fulfillments?: {
+              status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+              external_shipment_status?: string | null;
+              updated_datetime?: string | null; // date-time
+            }[] | null;
+            shipping_lines?: {
+              external_method_id?: string | null;
+              method_name?: string | null;
+            }[] | null;
+            tags_stringified?: string | null;
+            note?: string | null;
+          } | null;
+          products?: {
+            [name: string]: {
+              external_id: string;
+              images: string[];
+              name?: string | null;
+              external_type?: string | null;
+              variants?: {
+                external_id: string;
+                external_gid?: string | null;
+                quantity?: number | null;
+                name?: string | null;
+              }[] | null;
+              selected_variant?: {
+                external_id: string;
+                external_gid?: string | null;
+                quantity?: number | null;
+                name?: string | null;
+              } | null;
+            };
+          } | null;
+          order_shipmonk?: {
+            [name: string]: any;
+          } | null;
+        } | null;
+        custom_inputs?: {
+          [name: string]: number | boolean | string /* date-time */  | string;
+        } | null;
+        values?: {
+          [name: string]: number | boolean | string /* date-time */  | string;
+        } | null;
+        user_journey_id?: string | null;
+        channel?: "email";
+        callback_url?: string | null;
         steps_state?: {
           [name: string]: {
             kind: "choices";
@@ -2835,6 +3089,11 @@ declare namespace Components {
                 note?: string | null;
               }[];
               tags_stringified?: string | null;
+              integrations?: {
+                [name: string]: {
+                  [name: string]: any;
+                };
+              } | null;
             };
             at: string; // date-time
           } | {
@@ -3025,6 +3284,11 @@ declare namespace Components {
                     note?: string | null;
                   }[];
                   tags_stringified?: string | null;
+                  integrations?: {
+                    [name: string]: {
+                      [name: string]: any;
+                    };
+                  } | null;
                 };
                 at: string; // date-time
               } | {
@@ -3294,6 +3558,504 @@ declare namespace Components {
             }[];
             at: string; // date-time
           } | {
+            kind: "reusable-llm-prompt-call";
+            custom_inputs?: {
+              [name: string]: number | boolean | string /* date-time */  | string;
+            } | null;
+            store?: {
+              type: "shopify";
+              name: string;
+              helpdesk_integration_id: number;
+            } | null;
+            objects: {
+              customer?: {
+                id: number;
+                email?: string | null;
+                firstname?: string | null;
+                lastname?: string | null;
+                name?: string | null;
+                phone_number?: string | null;
+                orders: {
+                  name: string;
+                  external_id?: string | null;
+                  shopper_external_id?: string | null;
+                  number?: string | null;
+                  currency: {
+                    code: string;
+                    decimals: number;
+                  };
+                  discount_amount?: number | null;
+                  subtotal_amount?: number | null;
+                  shipping_amount?: number | null;
+                  tax_amount?: number | null;
+                  cancelled_datetime?: string | null; // date-time
+                  created_datetime: string; // date-time
+                  external_status?: string | null;
+                  external_fulfillment_status?: string | null;
+                  billing_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  shipping_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  external_payment_status?: string | null;
+                  total_amount: number;
+                  tracking_url?: string | null;
+                  shipping_datetime?: string | null; // date-time
+                  tracking_number?: string | null;
+                  status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+                  line_items: {
+                    name: string;
+                    total_amount: number;
+                    quantity: number;
+                    external_id?: string | null;
+                    external_product_id?: string | null;
+                    product?: {
+                      external_id: string;
+                      images: string[];
+                      name?: string | null;
+                      external_type?: string | null;
+                      variants?: {
+                        external_id: string;
+                        external_gid?: string | null;
+                        quantity?: number | null;
+                        name?: string | null;
+                      }[] | null;
+                    } | null;
+                  }[];
+                  fulfillments?: {
+                    status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                    external_shipment_status?: string | null;
+                    updated_datetime?: string | null; // date-time
+                  }[] | null;
+                  shipping_lines?: {
+                    external_method_id?: string | null;
+                    method_name?: string | null;
+                  }[] | null;
+                  tags_stringified?: string | null;
+                  note?: string | null;
+                }[];
+                tags_stringified?: string | null;
+                integrations?: {
+                  [name: string]: {
+                    [name: string]: any;
+                  };
+                } | null;
+              } | null;
+              order?: {
+                name: string;
+                external_id?: string | null;
+                shopper_external_id?: string | null;
+                number?: string | null;
+                currency: {
+                  code: string;
+                  decimals: number;
+                };
+                discount_amount?: number | null;
+                subtotal_amount?: number | null;
+                shipping_amount?: number | null;
+                tax_amount?: number | null;
+                cancelled_datetime?: string | null; // date-time
+                created_datetime: string; // date-time
+                external_status?: string | null;
+                external_fulfillment_status?: string | null;
+                billing_address?: {
+                  line_1: string | null;
+                  line_2: string | null;
+                  city: string | null;
+                  country: string | null;
+                  state: string | null;
+                  zip_code: string | null;
+                  first_name: string | null;
+                  last_name: string | null;
+                  phone_number: string | null;
+                } | null;
+                shipping_address?: {
+                  line_1: string | null;
+                  line_2: string | null;
+                  city: string | null;
+                  country: string | null;
+                  state: string | null;
+                  zip_code: string | null;
+                  first_name: string | null;
+                  last_name: string | null;
+                  phone_number: string | null;
+                } | null;
+                external_payment_status?: string | null;
+                total_amount: number;
+                tracking_url?: string | null;
+                shipping_datetime?: string | null; // date-time
+                tracking_number?: string | null;
+                status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+                line_items: {
+                  name: string;
+                  total_amount: number;
+                  quantity: number;
+                  external_id?: string | null;
+                  external_product_id?: string | null;
+                  product?: {
+                    external_id: string;
+                    images: string[];
+                    name?: string | null;
+                    external_type?: string | null;
+                    variants?: {
+                      external_id: string;
+                      external_gid?: string | null;
+                      quantity?: number | null;
+                      name?: string | null;
+                    }[] | null;
+                  } | null;
+                }[];
+                fulfillments?: {
+                  status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                  external_shipment_status?: string | null;
+                  updated_datetime?: string | null; // date-time
+                }[] | null;
+                shipping_lines?: {
+                  external_method_id?: string | null;
+                  method_name?: string | null;
+                }[] | null;
+                tags_stringified?: string | null;
+                note?: string | null;
+              } | null;
+              products?: {
+                [name: string]: {
+                  external_id: string;
+                  images: string[];
+                  name?: string | null;
+                  external_type?: string | null;
+                  variants?: {
+                    external_id: string;
+                    external_gid?: string | null;
+                    quantity?: number | null;
+                    name?: string | null;
+                  }[] | null;
+                };
+              } | null;
+            };
+            values?: {
+              [name: string]: number | boolean | string /* date-time */  | string;
+            } | null;
+            success: boolean;
+            outputs?: {
+              [name: string]: null;
+            } | null;
+            steps_state?: {
+              [name: string]: {
+                kind: "choices";
+                selected_choice: {
+                  event_id: string;
+                  label: string;
+                };
+                at: string; // date-time
+              } | {
+                kind: "text-input";
+                content: {
+                  text: string;
+                };
+                at: string; // date-time
+              } | {
+                kind: "attachments-input";
+                attachments?: {
+                  content_type: string;
+                  url: string;
+                }[] | null;
+                at: string; // date-time
+              } | {
+                kind: "shopper-authentication";
+                customer: {
+                  id: number;
+                  email?: string | null;
+                  firstname?: string | null;
+                  lastname?: string | null;
+                  name?: string | null;
+                  phone_number?: string | null;
+                  orders: {
+                    name: string;
+                    external_id?: string | null;
+                    shopper_external_id?: string | null;
+                    number?: string | null;
+                    currency: {
+                      code: string;
+                      decimals: number;
+                    };
+                    discount_amount?: number | null;
+                    subtotal_amount?: number | null;
+                    shipping_amount?: number | null;
+                    tax_amount?: number | null;
+                    cancelled_datetime?: string | null; // date-time
+                    created_datetime: string; // date-time
+                    external_status?: string | null;
+                    external_fulfillment_status?: string | null;
+                    billing_address?: {
+                      line_1: string | null;
+                      line_2: string | null;
+                      city: string | null;
+                      country: string | null;
+                      state: string | null;
+                      zip_code: string | null;
+                      first_name: string | null;
+                      last_name: string | null;
+                      phone_number: string | null;
+                    } | null;
+                    shipping_address?: {
+                      line_1: string | null;
+                      line_2: string | null;
+                      city: string | null;
+                      country: string | null;
+                      state: string | null;
+                      zip_code: string | null;
+                      first_name: string | null;
+                      last_name: string | null;
+                      phone_number: string | null;
+                    } | null;
+                    external_payment_status?: string | null;
+                    total_amount: number;
+                    tracking_url?: string | null;
+                    shipping_datetime?: string | null; // date-time
+                    tracking_number?: string | null;
+                    status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+                    line_items: {
+                      name: string;
+                      total_amount: number;
+                      quantity: number;
+                      external_id?: string | null;
+                      external_product_id?: string | null;
+                      product?: {
+                        external_id: string;
+                        images: string[];
+                        name?: string | null;
+                        external_type?: string | null;
+                        variants?: {
+                          external_id: string;
+                          external_gid?: string | null;
+                          quantity?: number | null;
+                          name?: string | null;
+                        }[] | null;
+                      } | null;
+                    }[];
+                    fulfillments?: {
+                      status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                      external_shipment_status?: string | null;
+                      updated_datetime?: string | null; // date-time
+                    }[] | null;
+                    shipping_lines?: {
+                      external_method_id?: string | null;
+                      method_name?: string | null;
+                    }[] | null;
+                    tags_stringified?: string | null;
+                    note?: string | null;
+                  }[];
+                  tags_stringified?: string | null;
+                  integrations?: {
+                    [name: string]: {
+                      [name: string]: any;
+                    };
+                  } | null;
+                };
+                at: string; // date-time
+              } | {
+                kind: "order-selection";
+                order: {
+                  name: string;
+                  external_id?: string | null;
+                  shopper_external_id?: string | null;
+                  number?: string | null;
+                  currency: {
+                    code: string;
+                    decimals: number;
+                  };
+                  discount_amount?: number | null;
+                  subtotal_amount?: number | null;
+                  shipping_amount?: number | null;
+                  tax_amount?: number | null;
+                  cancelled_datetime?: string | null; // date-time
+                  created_datetime: string; // date-time
+                  external_status?: string | null;
+                  external_fulfillment_status?: string | null;
+                  billing_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  shipping_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  external_payment_status?: string | null;
+                  total_amount: number;
+                  tracking_url?: string | null;
+                  shipping_datetime?: string | null; // date-time
+                  tracking_number?: string | null;
+                  status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+                  line_items: {
+                    name: string;
+                    total_amount: number;
+                    quantity: number;
+                    external_id?: string | null;
+                    external_product_id?: string | null;
+                    product?: {
+                      external_id: string;
+                      images: string[];
+                      name?: string | null;
+                      external_type?: string | null;
+                      variants?: {
+                        external_id: string;
+                        external_gid?: string | null;
+                        quantity?: number | null;
+                        name?: string | null;
+                      }[] | null;
+                    } | null;
+                  }[];
+                  fulfillments?: {
+                    status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                    external_shipment_status?: string | null;
+                    updated_datetime?: string | null; // date-time
+                  }[] | null;
+                  shipping_lines?: {
+                    external_method_id?: string | null;
+                    method_name?: string | null;
+                  }[] | null;
+                  tags_stringified?: string | null;
+                  note?: string | null;
+                };
+                at: string; // date-time
+              } | {
+                kind: "http-request";
+                status_code: number;
+                success: boolean;
+                content?: ({
+                  [name: string]: number | boolean | string /* date-time */  | string | any;
+                } | null) | any;
+                at: string; // date-time
+              } | {
+                kind: "cancel-order";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "refund-order";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "update-shipping-address";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "cancel-subscription";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "skip-charge";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "remove-item";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "replace-item";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "create-discount-code";
+                discount_code?: string | null;
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "reship-for-free";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "refund-shipping-costs";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "end";
+                success: boolean;
+                at: string; // date-time
+              };
+            } | null;
+            at: string; // date-time
+          } | {
             kind: "reship-for-free";
             success: boolean;
             error?: {
@@ -3317,206 +4079,6 @@ declare namespace Components {
             at: string; // date-time
           };
         } | null;
-        store?: {
-          type: "shopify";
-          name: string;
-          helpdesk_integration_id: number;
-        } | null;
-        preview_mode?: boolean | null;
-        trigger: "llm-prompt";
-        entrypoint?: "llm-conversation";
-        objects?: {
-          customer?: {
-            id: number;
-            email?: string | null;
-            firstname?: string | null;
-            lastname?: string | null;
-            name?: string | null;
-            phone_number?: string | null;
-            orders: {
-              name: string;
-              external_id?: string | null;
-              shopper_external_id?: string | null;
-              number?: string | null;
-              currency: {
-                code: string;
-                decimals: number;
-              };
-              discount_amount?: number | null;
-              subtotal_amount?: number | null;
-              shipping_amount?: number | null;
-              tax_amount?: number | null;
-              cancelled_datetime?: string | null; // date-time
-              created_datetime: string; // date-time
-              external_status?: string | null;
-              external_fulfillment_status?: string | null;
-              billing_address?: {
-                line_1: string | null;
-                line_2: string | null;
-                city: string | null;
-                country: string | null;
-                state: string | null;
-                zip_code: string | null;
-                first_name: string | null;
-                last_name: string | null;
-                phone_number: string | null;
-              } | null;
-              shipping_address?: {
-                line_1: string | null;
-                line_2: string | null;
-                city: string | null;
-                country: string | null;
-                state: string | null;
-                zip_code: string | null;
-                first_name: string | null;
-                last_name: string | null;
-                phone_number: string | null;
-              } | null;
-              external_payment_status?: string | null;
-              total_amount: number;
-              tracking_url?: string | null;
-              shipping_datetime?: string | null; // date-time
-              tracking_number?: string | null;
-              status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
-              line_items: {
-                name: string;
-                total_amount: number;
-                quantity: number;
-                external_id?: string | null;
-                external_product_id?: string | null;
-                product?: {
-                  external_id: string;
-                  images: string[];
-                  name?: string | null;
-                  external_type?: string | null;
-                  variants?: {
-                    external_id: string;
-                    external_gid?: string | null;
-                    quantity?: number | null;
-                    name?: string | null;
-                  }[] | null;
-                } | null;
-              }[];
-              fulfillments?: {
-                status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
-                external_shipment_status?: string | null;
-                updated_datetime?: string | null; // date-time
-              }[] | null;
-              shipping_lines?: {
-                external_method_id?: string | null;
-                method_name?: string | null;
-              }[] | null;
-              tags_stringified?: string | null;
-              note?: string | null;
-            }[];
-            tags_stringified?: string | null;
-          } | null;
-          order?: {
-            name: string;
-            external_id?: string | null;
-            shopper_external_id?: string | null;
-            number?: string | null;
-            currency: {
-              code: string;
-              decimals: number;
-            };
-            discount_amount?: number | null;
-            subtotal_amount?: number | null;
-            shipping_amount?: number | null;
-            tax_amount?: number | null;
-            cancelled_datetime?: string | null; // date-time
-            created_datetime: string; // date-time
-            external_status?: string | null;
-            external_fulfillment_status?: string | null;
-            billing_address?: {
-              line_1: string | null;
-              line_2: string | null;
-              city: string | null;
-              country: string | null;
-              state: string | null;
-              zip_code: string | null;
-              first_name: string | null;
-              last_name: string | null;
-              phone_number: string | null;
-            } | null;
-            shipping_address?: {
-              line_1: string | null;
-              line_2: string | null;
-              city: string | null;
-              country: string | null;
-              state: string | null;
-              zip_code: string | null;
-              first_name: string | null;
-              last_name: string | null;
-              phone_number: string | null;
-            } | null;
-            external_payment_status?: string | null;
-            total_amount: number;
-            tracking_url?: string | null;
-            shipping_datetime?: string | null; // date-time
-            tracking_number?: string | null;
-            status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
-            line_items: {
-              name: string;
-              total_amount: number;
-              quantity: number;
-              external_id?: string | null;
-              external_product_id?: string | null;
-              product?: {
-                external_id: string;
-                images: string[];
-                name?: string | null;
-                external_type?: string | null;
-                variants?: {
-                  external_id: string;
-                  external_gid?: string | null;
-                  quantity?: number | null;
-                  name?: string | null;
-                }[] | null;
-              } | null;
-            }[];
-            fulfillments?: {
-              status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
-              external_shipment_status?: string | null;
-              updated_datetime?: string | null; // date-time
-            }[] | null;
-            shipping_lines?: {
-              external_method_id?: string | null;
-              method_name?: string | null;
-            }[] | null;
-            tags_stringified?: string | null;
-            note?: string | null;
-          } | null;
-          products?: {
-            [name: string]: {
-              external_id: string;
-              images: string[];
-              name?: string | null;
-              external_type?: string | null;
-              variants?: {
-                external_id: string;
-                external_gid?: string | null;
-                quantity?: number | null;
-                name?: string | null;
-              }[] | null;
-              selected_variant?: {
-                external_id: string;
-                external_gid?: string | null;
-                quantity?: number | null;
-                name?: string | null;
-              } | null;
-            };
-          } | null;
-        } | null;
-        custom_inputs?: {
-          [name: string]: number | boolean | string /* date-time */  | string;
-        } | null;
-        values?: {
-          [name: string]: number | boolean | string /* date-time */  | string;
-        } | null;
-        user_journey_id?: string | null;
-        channel?: "email";
-        callback_url?: string | null;
       } | null;
       outputs?: {
         [name: string]: {
@@ -4045,6 +4607,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -4058,6 +4621,12 @@ declare namespace Components {
             name: string;
             instructions: string;
             id: string;
+          } | {
+            kind: "order-shipmonk";
+            integration_id: number;
+          } | {
+            kind: "order-3pl";
+            integration_id: number;
           })[];
           conditions?: {
             or: ({
@@ -4138,6 +4707,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -4242,7 +4812,6 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
-        account_oauth2_token_id?: string | null;
         type: "app";
         refresh_token?: string | null;
       })[] | null;
@@ -4447,12 +5016,6 @@ declare namespace Components {
         };
       } | {
         id: string;
-        kind: "end";
-        settings?: {
-          success: boolean;
-        } | null;
-      } | {
-        id: string;
         kind: "reusable-llm-prompt-call";
         settings: {
           configuration_id: string;
@@ -4471,6 +5034,12 @@ declare namespace Components {
             [name: string]: string | number | boolean;
           };
         };
+      } | {
+        id: string;
+        kind: "end";
+        settings?: {
+          success: boolean;
+        } | null;
       })[];
       inputs?: ({
         id: string;
@@ -4588,6 +5157,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -4601,6 +5171,12 @@ declare namespace Components {
             name: string;
             instructions: string;
             id: string;
+          } | {
+            kind: "order-shipmonk";
+            integration_id: number;
+          } | {
+            kind: "order-3pl";
+            integration_id: number;
           })[];
           conditions?: {
             or: ({
@@ -4681,6 +5257,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -4785,7 +5362,6 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
-        account_oauth2_token_id?: string | null;
         type: "app";
         refresh_token?: string | null;
       })[];
@@ -5386,9 +5962,11 @@ declare namespace Components {
           author: {
             kind: "shopper" | "bot";
           };
+          step_id?: string | null;
         }[];
       } | {
         kind: "choices";
+        step_id?: string | null;
         choices: {
           label: string;
           event_id: string;
@@ -5668,9 +6246,11 @@ declare namespace Components {
           author: {
             kind: "shopper" | "bot";
           };
+          step_id?: string | null;
         }[];
       } | {
         kind: "choices";
+        step_id?: string | null;
         choices: {
           label: string;
           event_id: string;
@@ -5879,6 +6459,214 @@ declare namespace Components {
       done?: boolean | null;
       success?: boolean | null;
       state: {
+        store?: {
+          type: "shopify";
+          name: string;
+          helpdesk_integration_id: number;
+        } | null;
+        preview_mode?: boolean | null;
+        trigger: "llm-prompt";
+        entrypoint?: "llm-conversation";
+        objects?: {
+          customer?: {
+            id: number;
+            email?: string | null;
+            firstname?: string | null;
+            lastname?: string | null;
+            name?: string | null;
+            phone_number?: string | null;
+            orders: {
+              name: string;
+              external_id?: string | null;
+              shopper_external_id?: string | null;
+              number?: string | null;
+              currency: {
+                code: string;
+                decimals: number;
+              };
+              discount_amount?: number | null;
+              subtotal_amount?: number | null;
+              shipping_amount?: number | null;
+              tax_amount?: number | null;
+              cancelled_datetime?: string | null; // date-time
+              created_datetime: string; // date-time
+              external_status?: string | null;
+              external_fulfillment_status?: string | null;
+              billing_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              shipping_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              external_payment_status?: string | null;
+              total_amount: number;
+              tracking_url?: string | null;
+              shipping_datetime?: string | null; // date-time
+              tracking_number?: string | null;
+              status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+              line_items: {
+                name: string;
+                total_amount: number;
+                quantity: number;
+                external_id?: string | null;
+                external_product_id?: string | null;
+                product?: {
+                  external_id: string;
+                  images: string[];
+                  name?: string | null;
+                  external_type?: string | null;
+                  variants?: {
+                    external_id: string;
+                    external_gid?: string | null;
+                    quantity?: number | null;
+                    name?: string | null;
+                  }[] | null;
+                } | null;
+              }[];
+              fulfillments?: {
+                status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                external_shipment_status?: string | null;
+                updated_datetime?: string | null; // date-time
+              }[] | null;
+              shipping_lines?: {
+                external_method_id?: string | null;
+                method_name?: string | null;
+              }[] | null;
+              tags_stringified?: string | null;
+              note?: string | null;
+            }[];
+            tags_stringified?: string | null;
+            integrations?: {
+              [name: string]: {
+                [name: string]: any;
+              };
+            } | null;
+          } | null;
+          order?: {
+            name: string;
+            external_id?: string | null;
+            shopper_external_id?: string | null;
+            number?: string | null;
+            currency: {
+              code: string;
+              decimals: number;
+            };
+            discount_amount?: number | null;
+            subtotal_amount?: number | null;
+            shipping_amount?: number | null;
+            tax_amount?: number | null;
+            cancelled_datetime?: string | null; // date-time
+            created_datetime: string; // date-time
+            external_status?: string | null;
+            external_fulfillment_status?: string | null;
+            billing_address?: {
+              line_1: string | null;
+              line_2: string | null;
+              city: string | null;
+              country: string | null;
+              state: string | null;
+              zip_code: string | null;
+              first_name: string | null;
+              last_name: string | null;
+              phone_number: string | null;
+            } | null;
+            shipping_address?: {
+              line_1: string | null;
+              line_2: string | null;
+              city: string | null;
+              country: string | null;
+              state: string | null;
+              zip_code: string | null;
+              first_name: string | null;
+              last_name: string | null;
+              phone_number: string | null;
+            } | null;
+            external_payment_status?: string | null;
+            total_amount: number;
+            tracking_url?: string | null;
+            shipping_datetime?: string | null; // date-time
+            tracking_number?: string | null;
+            status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+            line_items: {
+              name: string;
+              total_amount: number;
+              quantity: number;
+              external_id?: string | null;
+              external_product_id?: string | null;
+              product?: {
+                external_id: string;
+                images: string[];
+                name?: string | null;
+                external_type?: string | null;
+                variants?: {
+                  external_id: string;
+                  external_gid?: string | null;
+                  quantity?: number | null;
+                  name?: string | null;
+                }[] | null;
+              } | null;
+            }[];
+            fulfillments?: {
+              status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+              external_shipment_status?: string | null;
+              updated_datetime?: string | null; // date-time
+            }[] | null;
+            shipping_lines?: {
+              external_method_id?: string | null;
+              method_name?: string | null;
+            }[] | null;
+            tags_stringified?: string | null;
+            note?: string | null;
+          } | null;
+          products?: {
+            [name: string]: {
+              external_id: string;
+              images: string[];
+              name?: string | null;
+              external_type?: string | null;
+              variants?: {
+                external_id: string;
+                external_gid?: string | null;
+                quantity?: number | null;
+                name?: string | null;
+              }[] | null;
+              selected_variant?: {
+                external_id: string;
+                external_gid?: string | null;
+                quantity?: number | null;
+                name?: string | null;
+              } | null;
+            };
+          } | null;
+          order_shipmonk?: {
+            [name: string]: any;
+          } | null;
+        } | null;
+        custom_inputs?: {
+          [name: string]: number | boolean | string /* date-time */  | string;
+        } | null;
+        values?: {
+          [name: string]: number | boolean | string /* date-time */  | string;
+        } | null;
+        user_journey_id?: string | null;
+        channel?: "email";
+        callback_url?: string | null;
         steps_state?: {
           [name: string]: {
             kind: "choices";
@@ -5986,6 +6774,11 @@ declare namespace Components {
                 note?: string | null;
               }[];
               tags_stringified?: string | null;
+              integrations?: {
+                [name: string]: {
+                  [name: string]: any;
+                };
+              } | null;
             };
             at: string; // date-time
           } | {
@@ -6176,6 +6969,11 @@ declare namespace Components {
                     note?: string | null;
                   }[];
                   tags_stringified?: string | null;
+                  integrations?: {
+                    [name: string]: {
+                      [name: string]: any;
+                    };
+                  } | null;
                 };
                 at: string; // date-time
               } | {
@@ -6445,6 +7243,504 @@ declare namespace Components {
             }[];
             at: string; // date-time
           } | {
+            kind: "reusable-llm-prompt-call";
+            custom_inputs?: {
+              [name: string]: number | boolean | string /* date-time */  | string;
+            } | null;
+            store?: {
+              type: "shopify";
+              name: string;
+              helpdesk_integration_id: number;
+            } | null;
+            objects: {
+              customer?: {
+                id: number;
+                email?: string | null;
+                firstname?: string | null;
+                lastname?: string | null;
+                name?: string | null;
+                phone_number?: string | null;
+                orders: {
+                  name: string;
+                  external_id?: string | null;
+                  shopper_external_id?: string | null;
+                  number?: string | null;
+                  currency: {
+                    code: string;
+                    decimals: number;
+                  };
+                  discount_amount?: number | null;
+                  subtotal_amount?: number | null;
+                  shipping_amount?: number | null;
+                  tax_amount?: number | null;
+                  cancelled_datetime?: string | null; // date-time
+                  created_datetime: string; // date-time
+                  external_status?: string | null;
+                  external_fulfillment_status?: string | null;
+                  billing_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  shipping_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  external_payment_status?: string | null;
+                  total_amount: number;
+                  tracking_url?: string | null;
+                  shipping_datetime?: string | null; // date-time
+                  tracking_number?: string | null;
+                  status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+                  line_items: {
+                    name: string;
+                    total_amount: number;
+                    quantity: number;
+                    external_id?: string | null;
+                    external_product_id?: string | null;
+                    product?: {
+                      external_id: string;
+                      images: string[];
+                      name?: string | null;
+                      external_type?: string | null;
+                      variants?: {
+                        external_id: string;
+                        external_gid?: string | null;
+                        quantity?: number | null;
+                        name?: string | null;
+                      }[] | null;
+                    } | null;
+                  }[];
+                  fulfillments?: {
+                    status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                    external_shipment_status?: string | null;
+                    updated_datetime?: string | null; // date-time
+                  }[] | null;
+                  shipping_lines?: {
+                    external_method_id?: string | null;
+                    method_name?: string | null;
+                  }[] | null;
+                  tags_stringified?: string | null;
+                  note?: string | null;
+                }[];
+                tags_stringified?: string | null;
+                integrations?: {
+                  [name: string]: {
+                    [name: string]: any;
+                  };
+                } | null;
+              } | null;
+              order?: {
+                name: string;
+                external_id?: string | null;
+                shopper_external_id?: string | null;
+                number?: string | null;
+                currency: {
+                  code: string;
+                  decimals: number;
+                };
+                discount_amount?: number | null;
+                subtotal_amount?: number | null;
+                shipping_amount?: number | null;
+                tax_amount?: number | null;
+                cancelled_datetime?: string | null; // date-time
+                created_datetime: string; // date-time
+                external_status?: string | null;
+                external_fulfillment_status?: string | null;
+                billing_address?: {
+                  line_1: string | null;
+                  line_2: string | null;
+                  city: string | null;
+                  country: string | null;
+                  state: string | null;
+                  zip_code: string | null;
+                  first_name: string | null;
+                  last_name: string | null;
+                  phone_number: string | null;
+                } | null;
+                shipping_address?: {
+                  line_1: string | null;
+                  line_2: string | null;
+                  city: string | null;
+                  country: string | null;
+                  state: string | null;
+                  zip_code: string | null;
+                  first_name: string | null;
+                  last_name: string | null;
+                  phone_number: string | null;
+                } | null;
+                external_payment_status?: string | null;
+                total_amount: number;
+                tracking_url?: string | null;
+                shipping_datetime?: string | null; // date-time
+                tracking_number?: string | null;
+                status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+                line_items: {
+                  name: string;
+                  total_amount: number;
+                  quantity: number;
+                  external_id?: string | null;
+                  external_product_id?: string | null;
+                  product?: {
+                    external_id: string;
+                    images: string[];
+                    name?: string | null;
+                    external_type?: string | null;
+                    variants?: {
+                      external_id: string;
+                      external_gid?: string | null;
+                      quantity?: number | null;
+                      name?: string | null;
+                    }[] | null;
+                  } | null;
+                }[];
+                fulfillments?: {
+                  status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                  external_shipment_status?: string | null;
+                  updated_datetime?: string | null; // date-time
+                }[] | null;
+                shipping_lines?: {
+                  external_method_id?: string | null;
+                  method_name?: string | null;
+                }[] | null;
+                tags_stringified?: string | null;
+                note?: string | null;
+              } | null;
+              products?: {
+                [name: string]: {
+                  external_id: string;
+                  images: string[];
+                  name?: string | null;
+                  external_type?: string | null;
+                  variants?: {
+                    external_id: string;
+                    external_gid?: string | null;
+                    quantity?: number | null;
+                    name?: string | null;
+                  }[] | null;
+                };
+              } | null;
+            };
+            values?: {
+              [name: string]: number | boolean | string /* date-time */  | string;
+            } | null;
+            success: boolean;
+            outputs?: {
+              [name: string]: null;
+            } | null;
+            steps_state?: {
+              [name: string]: {
+                kind: "choices";
+                selected_choice: {
+                  event_id: string;
+                  label: string;
+                };
+                at: string; // date-time
+              } | {
+                kind: "text-input";
+                content: {
+                  text: string;
+                };
+                at: string; // date-time
+              } | {
+                kind: "attachments-input";
+                attachments?: {
+                  content_type: string;
+                  url: string;
+                }[] | null;
+                at: string; // date-time
+              } | {
+                kind: "shopper-authentication";
+                customer: {
+                  id: number;
+                  email?: string | null;
+                  firstname?: string | null;
+                  lastname?: string | null;
+                  name?: string | null;
+                  phone_number?: string | null;
+                  orders: {
+                    name: string;
+                    external_id?: string | null;
+                    shopper_external_id?: string | null;
+                    number?: string | null;
+                    currency: {
+                      code: string;
+                      decimals: number;
+                    };
+                    discount_amount?: number | null;
+                    subtotal_amount?: number | null;
+                    shipping_amount?: number | null;
+                    tax_amount?: number | null;
+                    cancelled_datetime?: string | null; // date-time
+                    created_datetime: string; // date-time
+                    external_status?: string | null;
+                    external_fulfillment_status?: string | null;
+                    billing_address?: {
+                      line_1: string | null;
+                      line_2: string | null;
+                      city: string | null;
+                      country: string | null;
+                      state: string | null;
+                      zip_code: string | null;
+                      first_name: string | null;
+                      last_name: string | null;
+                      phone_number: string | null;
+                    } | null;
+                    shipping_address?: {
+                      line_1: string | null;
+                      line_2: string | null;
+                      city: string | null;
+                      country: string | null;
+                      state: string | null;
+                      zip_code: string | null;
+                      first_name: string | null;
+                      last_name: string | null;
+                      phone_number: string | null;
+                    } | null;
+                    external_payment_status?: string | null;
+                    total_amount: number;
+                    tracking_url?: string | null;
+                    shipping_datetime?: string | null; // date-time
+                    tracking_number?: string | null;
+                    status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+                    line_items: {
+                      name: string;
+                      total_amount: number;
+                      quantity: number;
+                      external_id?: string | null;
+                      external_product_id?: string | null;
+                      product?: {
+                        external_id: string;
+                        images: string[];
+                        name?: string | null;
+                        external_type?: string | null;
+                        variants?: {
+                          external_id: string;
+                          external_gid?: string | null;
+                          quantity?: number | null;
+                          name?: string | null;
+                        }[] | null;
+                      } | null;
+                    }[];
+                    fulfillments?: {
+                      status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                      external_shipment_status?: string | null;
+                      updated_datetime?: string | null; // date-time
+                    }[] | null;
+                    shipping_lines?: {
+                      external_method_id?: string | null;
+                      method_name?: string | null;
+                    }[] | null;
+                    tags_stringified?: string | null;
+                    note?: string | null;
+                  }[];
+                  tags_stringified?: string | null;
+                  integrations?: {
+                    [name: string]: {
+                      [name: string]: any;
+                    };
+                  } | null;
+                };
+                at: string; // date-time
+              } | {
+                kind: "order-selection";
+                order: {
+                  name: string;
+                  external_id?: string | null;
+                  shopper_external_id?: string | null;
+                  number?: string | null;
+                  currency: {
+                    code: string;
+                    decimals: number;
+                  };
+                  discount_amount?: number | null;
+                  subtotal_amount?: number | null;
+                  shipping_amount?: number | null;
+                  tax_amount?: number | null;
+                  cancelled_datetime?: string | null; // date-time
+                  created_datetime: string; // date-time
+                  external_status?: string | null;
+                  external_fulfillment_status?: string | null;
+                  billing_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  shipping_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  external_payment_status?: string | null;
+                  total_amount: number;
+                  tracking_url?: string | null;
+                  shipping_datetime?: string | null; // date-time
+                  tracking_number?: string | null;
+                  status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+                  line_items: {
+                    name: string;
+                    total_amount: number;
+                    quantity: number;
+                    external_id?: string | null;
+                    external_product_id?: string | null;
+                    product?: {
+                      external_id: string;
+                      images: string[];
+                      name?: string | null;
+                      external_type?: string | null;
+                      variants?: {
+                        external_id: string;
+                        external_gid?: string | null;
+                        quantity?: number | null;
+                        name?: string | null;
+                      }[] | null;
+                    } | null;
+                  }[];
+                  fulfillments?: {
+                    status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                    external_shipment_status?: string | null;
+                    updated_datetime?: string | null; // date-time
+                  }[] | null;
+                  shipping_lines?: {
+                    external_method_id?: string | null;
+                    method_name?: string | null;
+                  }[] | null;
+                  tags_stringified?: string | null;
+                  note?: string | null;
+                };
+                at: string; // date-time
+              } | {
+                kind: "http-request";
+                status_code: number;
+                success: boolean;
+                content?: ({
+                  [name: string]: number | boolean | string /* date-time */  | string | any;
+                } | null) | any;
+                at: string; // date-time
+              } | {
+                kind: "cancel-order";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "refund-order";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "update-shipping-address";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "cancel-subscription";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "skip-charge";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "remove-item";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "replace-item";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "create-discount-code";
+                discount_code?: string | null;
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "reship-for-free";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "refund-shipping-costs";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "end";
+                success: boolean;
+                at: string; // date-time
+              };
+            } | null;
+            at: string; // date-time
+          } | {
             kind: "reship-for-free";
             success: boolean;
             error?: {
@@ -6468,206 +7764,6 @@ declare namespace Components {
             at: string; // date-time
           };
         } | null;
-        store?: {
-          type: "shopify";
-          name: string;
-          helpdesk_integration_id: number;
-        } | null;
-        preview_mode?: boolean | null;
-        trigger: "llm-prompt";
-        entrypoint?: "llm-conversation";
-        objects?: {
-          customer?: {
-            id: number;
-            email?: string | null;
-            firstname?: string | null;
-            lastname?: string | null;
-            name?: string | null;
-            phone_number?: string | null;
-            orders: {
-              name: string;
-              external_id?: string | null;
-              shopper_external_id?: string | null;
-              number?: string | null;
-              currency: {
-                code: string;
-                decimals: number;
-              };
-              discount_amount?: number | null;
-              subtotal_amount?: number | null;
-              shipping_amount?: number | null;
-              tax_amount?: number | null;
-              cancelled_datetime?: string | null; // date-time
-              created_datetime: string; // date-time
-              external_status?: string | null;
-              external_fulfillment_status?: string | null;
-              billing_address?: {
-                line_1: string | null;
-                line_2: string | null;
-                city: string | null;
-                country: string | null;
-                state: string | null;
-                zip_code: string | null;
-                first_name: string | null;
-                last_name: string | null;
-                phone_number: string | null;
-              } | null;
-              shipping_address?: {
-                line_1: string | null;
-                line_2: string | null;
-                city: string | null;
-                country: string | null;
-                state: string | null;
-                zip_code: string | null;
-                first_name: string | null;
-                last_name: string | null;
-                phone_number: string | null;
-              } | null;
-              external_payment_status?: string | null;
-              total_amount: number;
-              tracking_url?: string | null;
-              shipping_datetime?: string | null; // date-time
-              tracking_number?: string | null;
-              status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
-              line_items: {
-                name: string;
-                total_amount: number;
-                quantity: number;
-                external_id?: string | null;
-                external_product_id?: string | null;
-                product?: {
-                  external_id: string;
-                  images: string[];
-                  name?: string | null;
-                  external_type?: string | null;
-                  variants?: {
-                    external_id: string;
-                    external_gid?: string | null;
-                    quantity?: number | null;
-                    name?: string | null;
-                  }[] | null;
-                } | null;
-              }[];
-              fulfillments?: {
-                status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
-                external_shipment_status?: string | null;
-                updated_datetime?: string | null; // date-time
-              }[] | null;
-              shipping_lines?: {
-                external_method_id?: string | null;
-                method_name?: string | null;
-              }[] | null;
-              tags_stringified?: string | null;
-              note?: string | null;
-            }[];
-            tags_stringified?: string | null;
-          } | null;
-          order?: {
-            name: string;
-            external_id?: string | null;
-            shopper_external_id?: string | null;
-            number?: string | null;
-            currency: {
-              code: string;
-              decimals: number;
-            };
-            discount_amount?: number | null;
-            subtotal_amount?: number | null;
-            shipping_amount?: number | null;
-            tax_amount?: number | null;
-            cancelled_datetime?: string | null; // date-time
-            created_datetime: string; // date-time
-            external_status?: string | null;
-            external_fulfillment_status?: string | null;
-            billing_address?: {
-              line_1: string | null;
-              line_2: string | null;
-              city: string | null;
-              country: string | null;
-              state: string | null;
-              zip_code: string | null;
-              first_name: string | null;
-              last_name: string | null;
-              phone_number: string | null;
-            } | null;
-            shipping_address?: {
-              line_1: string | null;
-              line_2: string | null;
-              city: string | null;
-              country: string | null;
-              state: string | null;
-              zip_code: string | null;
-              first_name: string | null;
-              last_name: string | null;
-              phone_number: string | null;
-            } | null;
-            external_payment_status?: string | null;
-            total_amount: number;
-            tracking_url?: string | null;
-            shipping_datetime?: string | null; // date-time
-            tracking_number?: string | null;
-            status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
-            line_items: {
-              name: string;
-              total_amount: number;
-              quantity: number;
-              external_id?: string | null;
-              external_product_id?: string | null;
-              product?: {
-                external_id: string;
-                images: string[];
-                name?: string | null;
-                external_type?: string | null;
-                variants?: {
-                  external_id: string;
-                  external_gid?: string | null;
-                  quantity?: number | null;
-                  name?: string | null;
-                }[] | null;
-              } | null;
-            }[];
-            fulfillments?: {
-              status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
-              external_shipment_status?: string | null;
-              updated_datetime?: string | null; // date-time
-            }[] | null;
-            shipping_lines?: {
-              external_method_id?: string | null;
-              method_name?: string | null;
-            }[] | null;
-            tags_stringified?: string | null;
-            note?: string | null;
-          } | null;
-          products?: {
-            [name: string]: {
-              external_id: string;
-              images: string[];
-              name?: string | null;
-              external_type?: string | null;
-              variants?: {
-                external_id: string;
-                external_gid?: string | null;
-                quantity?: number | null;
-                name?: string | null;
-              }[] | null;
-              selected_variant?: {
-                external_id: string;
-                external_gid?: string | null;
-                quantity?: number | null;
-                name?: string | null;
-              } | null;
-            };
-          } | null;
-        } | null;
-        custom_inputs?: {
-          [name: string]: number | boolean | string /* date-time */  | string;
-        } | null;
-        values?: {
-          [name: string]: number | boolean | string /* date-time */  | string;
-        } | null;
-        user_journey_id?: string | null;
-        channel?: "email";
-        callback_url?: string | null;
       };
       outputs: {
         [name: string]: {
@@ -6726,9 +7822,11 @@ declare namespace Components {
           author: {
             kind: "shopper" | "bot";
           };
+          step_id?: string | null;
         }[];
       } | {
         kind: "choices";
+        step_id?: string | null;
         choices: {
           label: string;
           event_id: string;
@@ -7008,9 +8106,11 @@ declare namespace Components {
           author: {
             kind: "shopper" | "bot";
           };
+          step_id?: string | null;
         }[];
       } | {
         kind: "choices";
+        step_id?: string | null;
         choices: {
           label: string;
           event_id: string;
@@ -7219,6 +8319,214 @@ declare namespace Components {
       done?: boolean | null;
       success?: boolean | null;
       state: {
+        store?: {
+          type: "shopify";
+          name: string;
+          helpdesk_integration_id: number;
+        } | null;
+        preview_mode?: boolean | null;
+        trigger: "llm-prompt";
+        entrypoint?: "llm-conversation";
+        objects?: {
+          customer?: {
+            id: number;
+            email?: string | null;
+            firstname?: string | null;
+            lastname?: string | null;
+            name?: string | null;
+            phone_number?: string | null;
+            orders: {
+              name: string;
+              external_id?: string | null;
+              shopper_external_id?: string | null;
+              number?: string | null;
+              currency: {
+                code: string;
+                decimals: number;
+              };
+              discount_amount?: number | null;
+              subtotal_amount?: number | null;
+              shipping_amount?: number | null;
+              tax_amount?: number | null;
+              cancelled_datetime?: string | null; // date-time
+              created_datetime: string; // date-time
+              external_status?: string | null;
+              external_fulfillment_status?: string | null;
+              billing_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              shipping_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              external_payment_status?: string | null;
+              total_amount: number;
+              tracking_url?: string | null;
+              shipping_datetime?: string | null; // date-time
+              tracking_number?: string | null;
+              status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+              line_items: {
+                name: string;
+                total_amount: number;
+                quantity: number;
+                external_id?: string | null;
+                external_product_id?: string | null;
+                product?: {
+                  external_id: string;
+                  images: string[];
+                  name?: string | null;
+                  external_type?: string | null;
+                  variants?: {
+                    external_id: string;
+                    external_gid?: string | null;
+                    quantity?: number | null;
+                    name?: string | null;
+                  }[] | null;
+                } | null;
+              }[];
+              fulfillments?: {
+                status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                external_shipment_status?: string | null;
+                updated_datetime?: string | null; // date-time
+              }[] | null;
+              shipping_lines?: {
+                external_method_id?: string | null;
+                method_name?: string | null;
+              }[] | null;
+              tags_stringified?: string | null;
+              note?: string | null;
+            }[];
+            tags_stringified?: string | null;
+            integrations?: {
+              [name: string]: {
+                [name: string]: any;
+              };
+            } | null;
+          } | null;
+          order?: {
+            name: string;
+            external_id?: string | null;
+            shopper_external_id?: string | null;
+            number?: string | null;
+            currency: {
+              code: string;
+              decimals: number;
+            };
+            discount_amount?: number | null;
+            subtotal_amount?: number | null;
+            shipping_amount?: number | null;
+            tax_amount?: number | null;
+            cancelled_datetime?: string | null; // date-time
+            created_datetime: string; // date-time
+            external_status?: string | null;
+            external_fulfillment_status?: string | null;
+            billing_address?: {
+              line_1: string | null;
+              line_2: string | null;
+              city: string | null;
+              country: string | null;
+              state: string | null;
+              zip_code: string | null;
+              first_name: string | null;
+              last_name: string | null;
+              phone_number: string | null;
+            } | null;
+            shipping_address?: {
+              line_1: string | null;
+              line_2: string | null;
+              city: string | null;
+              country: string | null;
+              state: string | null;
+              zip_code: string | null;
+              first_name: string | null;
+              last_name: string | null;
+              phone_number: string | null;
+            } | null;
+            external_payment_status?: string | null;
+            total_amount: number;
+            tracking_url?: string | null;
+            shipping_datetime?: string | null; // date-time
+            tracking_number?: string | null;
+            status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+            line_items: {
+              name: string;
+              total_amount: number;
+              quantity: number;
+              external_id?: string | null;
+              external_product_id?: string | null;
+              product?: {
+                external_id: string;
+                images: string[];
+                name?: string | null;
+                external_type?: string | null;
+                variants?: {
+                  external_id: string;
+                  external_gid?: string | null;
+                  quantity?: number | null;
+                  name?: string | null;
+                }[] | null;
+              } | null;
+            }[];
+            fulfillments?: {
+              status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+              external_shipment_status?: string | null;
+              updated_datetime?: string | null; // date-time
+            }[] | null;
+            shipping_lines?: {
+              external_method_id?: string | null;
+              method_name?: string | null;
+            }[] | null;
+            tags_stringified?: string | null;
+            note?: string | null;
+          } | null;
+          products?: {
+            [name: string]: {
+              external_id: string;
+              images: string[];
+              name?: string | null;
+              external_type?: string | null;
+              variants?: {
+                external_id: string;
+                external_gid?: string | null;
+                quantity?: number | null;
+                name?: string | null;
+              }[] | null;
+              selected_variant?: {
+                external_id: string;
+                external_gid?: string | null;
+                quantity?: number | null;
+                name?: string | null;
+              } | null;
+            };
+          } | null;
+          order_shipmonk?: {
+            [name: string]: any;
+          } | null;
+        } | null;
+        custom_inputs?: {
+          [name: string]: number | boolean | string /* date-time */  | string;
+        } | null;
+        values?: {
+          [name: string]: number | boolean | string /* date-time */  | string;
+        } | null;
+        user_journey_id?: string | null;
+        channel?: "email";
+        callback_url?: string | null;
         steps_state?: {
           [name: string]: {
             kind: "choices";
@@ -7326,6 +8634,11 @@ declare namespace Components {
                 note?: string | null;
               }[];
               tags_stringified?: string | null;
+              integrations?: {
+                [name: string]: {
+                  [name: string]: any;
+                };
+              } | null;
             };
             at: string; // date-time
           } | {
@@ -7516,6 +8829,11 @@ declare namespace Components {
                     note?: string | null;
                   }[];
                   tags_stringified?: string | null;
+                  integrations?: {
+                    [name: string]: {
+                      [name: string]: any;
+                    };
+                  } | null;
                 };
                 at: string; // date-time
               } | {
@@ -7785,6 +9103,504 @@ declare namespace Components {
             }[];
             at: string; // date-time
           } | {
+            kind: "reusable-llm-prompt-call";
+            custom_inputs?: {
+              [name: string]: number | boolean | string /* date-time */  | string;
+            } | null;
+            store?: {
+              type: "shopify";
+              name: string;
+              helpdesk_integration_id: number;
+            } | null;
+            objects: {
+              customer?: {
+                id: number;
+                email?: string | null;
+                firstname?: string | null;
+                lastname?: string | null;
+                name?: string | null;
+                phone_number?: string | null;
+                orders: {
+                  name: string;
+                  external_id?: string | null;
+                  shopper_external_id?: string | null;
+                  number?: string | null;
+                  currency: {
+                    code: string;
+                    decimals: number;
+                  };
+                  discount_amount?: number | null;
+                  subtotal_amount?: number | null;
+                  shipping_amount?: number | null;
+                  tax_amount?: number | null;
+                  cancelled_datetime?: string | null; // date-time
+                  created_datetime: string; // date-time
+                  external_status?: string | null;
+                  external_fulfillment_status?: string | null;
+                  billing_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  shipping_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  external_payment_status?: string | null;
+                  total_amount: number;
+                  tracking_url?: string | null;
+                  shipping_datetime?: string | null; // date-time
+                  tracking_number?: string | null;
+                  status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+                  line_items: {
+                    name: string;
+                    total_amount: number;
+                    quantity: number;
+                    external_id?: string | null;
+                    external_product_id?: string | null;
+                    product?: {
+                      external_id: string;
+                      images: string[];
+                      name?: string | null;
+                      external_type?: string | null;
+                      variants?: {
+                        external_id: string;
+                        external_gid?: string | null;
+                        quantity?: number | null;
+                        name?: string | null;
+                      }[] | null;
+                    } | null;
+                  }[];
+                  fulfillments?: {
+                    status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                    external_shipment_status?: string | null;
+                    updated_datetime?: string | null; // date-time
+                  }[] | null;
+                  shipping_lines?: {
+                    external_method_id?: string | null;
+                    method_name?: string | null;
+                  }[] | null;
+                  tags_stringified?: string | null;
+                  note?: string | null;
+                }[];
+                tags_stringified?: string | null;
+                integrations?: {
+                  [name: string]: {
+                    [name: string]: any;
+                  };
+                } | null;
+              } | null;
+              order?: {
+                name: string;
+                external_id?: string | null;
+                shopper_external_id?: string | null;
+                number?: string | null;
+                currency: {
+                  code: string;
+                  decimals: number;
+                };
+                discount_amount?: number | null;
+                subtotal_amount?: number | null;
+                shipping_amount?: number | null;
+                tax_amount?: number | null;
+                cancelled_datetime?: string | null; // date-time
+                created_datetime: string; // date-time
+                external_status?: string | null;
+                external_fulfillment_status?: string | null;
+                billing_address?: {
+                  line_1: string | null;
+                  line_2: string | null;
+                  city: string | null;
+                  country: string | null;
+                  state: string | null;
+                  zip_code: string | null;
+                  first_name: string | null;
+                  last_name: string | null;
+                  phone_number: string | null;
+                } | null;
+                shipping_address?: {
+                  line_1: string | null;
+                  line_2: string | null;
+                  city: string | null;
+                  country: string | null;
+                  state: string | null;
+                  zip_code: string | null;
+                  first_name: string | null;
+                  last_name: string | null;
+                  phone_number: string | null;
+                } | null;
+                external_payment_status?: string | null;
+                total_amount: number;
+                tracking_url?: string | null;
+                shipping_datetime?: string | null; // date-time
+                tracking_number?: string | null;
+                status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+                line_items: {
+                  name: string;
+                  total_amount: number;
+                  quantity: number;
+                  external_id?: string | null;
+                  external_product_id?: string | null;
+                  product?: {
+                    external_id: string;
+                    images: string[];
+                    name?: string | null;
+                    external_type?: string | null;
+                    variants?: {
+                      external_id: string;
+                      external_gid?: string | null;
+                      quantity?: number | null;
+                      name?: string | null;
+                    }[] | null;
+                  } | null;
+                }[];
+                fulfillments?: {
+                  status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                  external_shipment_status?: string | null;
+                  updated_datetime?: string | null; // date-time
+                }[] | null;
+                shipping_lines?: {
+                  external_method_id?: string | null;
+                  method_name?: string | null;
+                }[] | null;
+                tags_stringified?: string | null;
+                note?: string | null;
+              } | null;
+              products?: {
+                [name: string]: {
+                  external_id: string;
+                  images: string[];
+                  name?: string | null;
+                  external_type?: string | null;
+                  variants?: {
+                    external_id: string;
+                    external_gid?: string | null;
+                    quantity?: number | null;
+                    name?: string | null;
+                  }[] | null;
+                };
+              } | null;
+            };
+            values?: {
+              [name: string]: number | boolean | string /* date-time */  | string;
+            } | null;
+            success: boolean;
+            outputs?: {
+              [name: string]: null;
+            } | null;
+            steps_state?: {
+              [name: string]: {
+                kind: "choices";
+                selected_choice: {
+                  event_id: string;
+                  label: string;
+                };
+                at: string; // date-time
+              } | {
+                kind: "text-input";
+                content: {
+                  text: string;
+                };
+                at: string; // date-time
+              } | {
+                kind: "attachments-input";
+                attachments?: {
+                  content_type: string;
+                  url: string;
+                }[] | null;
+                at: string; // date-time
+              } | {
+                kind: "shopper-authentication";
+                customer: {
+                  id: number;
+                  email?: string | null;
+                  firstname?: string | null;
+                  lastname?: string | null;
+                  name?: string | null;
+                  phone_number?: string | null;
+                  orders: {
+                    name: string;
+                    external_id?: string | null;
+                    shopper_external_id?: string | null;
+                    number?: string | null;
+                    currency: {
+                      code: string;
+                      decimals: number;
+                    };
+                    discount_amount?: number | null;
+                    subtotal_amount?: number | null;
+                    shipping_amount?: number | null;
+                    tax_amount?: number | null;
+                    cancelled_datetime?: string | null; // date-time
+                    created_datetime: string; // date-time
+                    external_status?: string | null;
+                    external_fulfillment_status?: string | null;
+                    billing_address?: {
+                      line_1: string | null;
+                      line_2: string | null;
+                      city: string | null;
+                      country: string | null;
+                      state: string | null;
+                      zip_code: string | null;
+                      first_name: string | null;
+                      last_name: string | null;
+                      phone_number: string | null;
+                    } | null;
+                    shipping_address?: {
+                      line_1: string | null;
+                      line_2: string | null;
+                      city: string | null;
+                      country: string | null;
+                      state: string | null;
+                      zip_code: string | null;
+                      first_name: string | null;
+                      last_name: string | null;
+                      phone_number: string | null;
+                    } | null;
+                    external_payment_status?: string | null;
+                    total_amount: number;
+                    tracking_url?: string | null;
+                    shipping_datetime?: string | null; // date-time
+                    tracking_number?: string | null;
+                    status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+                    line_items: {
+                      name: string;
+                      total_amount: number;
+                      quantity: number;
+                      external_id?: string | null;
+                      external_product_id?: string | null;
+                      product?: {
+                        external_id: string;
+                        images: string[];
+                        name?: string | null;
+                        external_type?: string | null;
+                        variants?: {
+                          external_id: string;
+                          external_gid?: string | null;
+                          quantity?: number | null;
+                          name?: string | null;
+                        }[] | null;
+                      } | null;
+                    }[];
+                    fulfillments?: {
+                      status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                      external_shipment_status?: string | null;
+                      updated_datetime?: string | null; // date-time
+                    }[] | null;
+                    shipping_lines?: {
+                      external_method_id?: string | null;
+                      method_name?: string | null;
+                    }[] | null;
+                    tags_stringified?: string | null;
+                    note?: string | null;
+                  }[];
+                  tags_stringified?: string | null;
+                  integrations?: {
+                    [name: string]: {
+                      [name: string]: any;
+                    };
+                  } | null;
+                };
+                at: string; // date-time
+              } | {
+                kind: "order-selection";
+                order: {
+                  name: string;
+                  external_id?: string | null;
+                  shopper_external_id?: string | null;
+                  number?: string | null;
+                  currency: {
+                    code: string;
+                    decimals: number;
+                  };
+                  discount_amount?: number | null;
+                  subtotal_amount?: number | null;
+                  shipping_amount?: number | null;
+                  tax_amount?: number | null;
+                  cancelled_datetime?: string | null; // date-time
+                  created_datetime: string; // date-time
+                  external_status?: string | null;
+                  external_fulfillment_status?: string | null;
+                  billing_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  shipping_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  external_payment_status?: string | null;
+                  total_amount: number;
+                  tracking_url?: string | null;
+                  shipping_datetime?: string | null; // date-time
+                  tracking_number?: string | null;
+                  status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+                  line_items: {
+                    name: string;
+                    total_amount: number;
+                    quantity: number;
+                    external_id?: string | null;
+                    external_product_id?: string | null;
+                    product?: {
+                      external_id: string;
+                      images: string[];
+                      name?: string | null;
+                      external_type?: string | null;
+                      variants?: {
+                        external_id: string;
+                        external_gid?: string | null;
+                        quantity?: number | null;
+                        name?: string | null;
+                      }[] | null;
+                    } | null;
+                  }[];
+                  fulfillments?: {
+                    status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                    external_shipment_status?: string | null;
+                    updated_datetime?: string | null; // date-time
+                  }[] | null;
+                  shipping_lines?: {
+                    external_method_id?: string | null;
+                    method_name?: string | null;
+                  }[] | null;
+                  tags_stringified?: string | null;
+                  note?: string | null;
+                };
+                at: string; // date-time
+              } | {
+                kind: "http-request";
+                status_code: number;
+                success: boolean;
+                content?: ({
+                  [name: string]: number | boolean | string /* date-time */  | string | any;
+                } | null) | any;
+                at: string; // date-time
+              } | {
+                kind: "cancel-order";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "refund-order";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "update-shipping-address";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "cancel-subscription";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "skip-charge";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "remove-item";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "replace-item";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "create-discount-code";
+                discount_code?: string | null;
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "reship-for-free";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "refund-shipping-costs";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "end";
+                success: boolean;
+                at: string; // date-time
+              };
+            } | null;
+            at: string; // date-time
+          } | {
             kind: "reship-for-free";
             success: boolean;
             error?: {
@@ -7808,206 +9624,6 @@ declare namespace Components {
             at: string; // date-time
           };
         } | null;
-        store?: {
-          type: "shopify";
-          name: string;
-          helpdesk_integration_id: number;
-        } | null;
-        preview_mode?: boolean | null;
-        trigger: "llm-prompt";
-        entrypoint?: "llm-conversation";
-        objects?: {
-          customer?: {
-            id: number;
-            email?: string | null;
-            firstname?: string | null;
-            lastname?: string | null;
-            name?: string | null;
-            phone_number?: string | null;
-            orders: {
-              name: string;
-              external_id?: string | null;
-              shopper_external_id?: string | null;
-              number?: string | null;
-              currency: {
-                code: string;
-                decimals: number;
-              };
-              discount_amount?: number | null;
-              subtotal_amount?: number | null;
-              shipping_amount?: number | null;
-              tax_amount?: number | null;
-              cancelled_datetime?: string | null; // date-time
-              created_datetime: string; // date-time
-              external_status?: string | null;
-              external_fulfillment_status?: string | null;
-              billing_address?: {
-                line_1: string | null;
-                line_2: string | null;
-                city: string | null;
-                country: string | null;
-                state: string | null;
-                zip_code: string | null;
-                first_name: string | null;
-                last_name: string | null;
-                phone_number: string | null;
-              } | null;
-              shipping_address?: {
-                line_1: string | null;
-                line_2: string | null;
-                city: string | null;
-                country: string | null;
-                state: string | null;
-                zip_code: string | null;
-                first_name: string | null;
-                last_name: string | null;
-                phone_number: string | null;
-              } | null;
-              external_payment_status?: string | null;
-              total_amount: number;
-              tracking_url?: string | null;
-              shipping_datetime?: string | null; // date-time
-              tracking_number?: string | null;
-              status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
-              line_items: {
-                name: string;
-                total_amount: number;
-                quantity: number;
-                external_id?: string | null;
-                external_product_id?: string | null;
-                product?: {
-                  external_id: string;
-                  images: string[];
-                  name?: string | null;
-                  external_type?: string | null;
-                  variants?: {
-                    external_id: string;
-                    external_gid?: string | null;
-                    quantity?: number | null;
-                    name?: string | null;
-                  }[] | null;
-                } | null;
-              }[];
-              fulfillments?: {
-                status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
-                external_shipment_status?: string | null;
-                updated_datetime?: string | null; // date-time
-              }[] | null;
-              shipping_lines?: {
-                external_method_id?: string | null;
-                method_name?: string | null;
-              }[] | null;
-              tags_stringified?: string | null;
-              note?: string | null;
-            }[];
-            tags_stringified?: string | null;
-          } | null;
-          order?: {
-            name: string;
-            external_id?: string | null;
-            shopper_external_id?: string | null;
-            number?: string | null;
-            currency: {
-              code: string;
-              decimals: number;
-            };
-            discount_amount?: number | null;
-            subtotal_amount?: number | null;
-            shipping_amount?: number | null;
-            tax_amount?: number | null;
-            cancelled_datetime?: string | null; // date-time
-            created_datetime: string; // date-time
-            external_status?: string | null;
-            external_fulfillment_status?: string | null;
-            billing_address?: {
-              line_1: string | null;
-              line_2: string | null;
-              city: string | null;
-              country: string | null;
-              state: string | null;
-              zip_code: string | null;
-              first_name: string | null;
-              last_name: string | null;
-              phone_number: string | null;
-            } | null;
-            shipping_address?: {
-              line_1: string | null;
-              line_2: string | null;
-              city: string | null;
-              country: string | null;
-              state: string | null;
-              zip_code: string | null;
-              first_name: string | null;
-              last_name: string | null;
-              phone_number: string | null;
-            } | null;
-            external_payment_status?: string | null;
-            total_amount: number;
-            tracking_url?: string | null;
-            shipping_datetime?: string | null; // date-time
-            tracking_number?: string | null;
-            status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
-            line_items: {
-              name: string;
-              total_amount: number;
-              quantity: number;
-              external_id?: string | null;
-              external_product_id?: string | null;
-              product?: {
-                external_id: string;
-                images: string[];
-                name?: string | null;
-                external_type?: string | null;
-                variants?: {
-                  external_id: string;
-                  external_gid?: string | null;
-                  quantity?: number | null;
-                  name?: string | null;
-                }[] | null;
-              } | null;
-            }[];
-            fulfillments?: {
-              status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
-              external_shipment_status?: string | null;
-              updated_datetime?: string | null; // date-time
-            }[] | null;
-            shipping_lines?: {
-              external_method_id?: string | null;
-              method_name?: string | null;
-            }[] | null;
-            tags_stringified?: string | null;
-            note?: string | null;
-          } | null;
-          products?: {
-            [name: string]: {
-              external_id: string;
-              images: string[];
-              name?: string | null;
-              external_type?: string | null;
-              variants?: {
-                external_id: string;
-                external_gid?: string | null;
-                quantity?: number | null;
-                name?: string | null;
-              }[] | null;
-              selected_variant?: {
-                external_id: string;
-                external_gid?: string | null;
-                quantity?: number | null;
-                name?: string | null;
-              } | null;
-            };
-          } | null;
-        } | null;
-        custom_inputs?: {
-          [name: string]: number | boolean | string /* date-time */  | string;
-        } | null;
-        values?: {
-          [name: string]: number | boolean | string /* date-time */  | string;
-        } | null;
-        user_journey_id?: string | null;
-        channel?: "email";
-        callback_url?: string | null;
       };
       outputs: {
         [name: string]: {
@@ -8108,6 +9724,214 @@ declare namespace Components {
         path: string[];
       }[] | null;
       state?: {
+        store?: {
+          type: "shopify";
+          name: string;
+          helpdesk_integration_id: number;
+        } | null;
+        preview_mode?: boolean | null;
+        trigger: "llm-prompt";
+        entrypoint?: "llm-conversation";
+        objects?: {
+          customer?: {
+            id: number;
+            email?: string | null;
+            firstname?: string | null;
+            lastname?: string | null;
+            name?: string | null;
+            phone_number?: string | null;
+            orders: {
+              name: string;
+              external_id?: string | null;
+              shopper_external_id?: string | null;
+              number?: string | null;
+              currency: {
+                code: string;
+                decimals: number;
+              };
+              discount_amount?: number | null;
+              subtotal_amount?: number | null;
+              shipping_amount?: number | null;
+              tax_amount?: number | null;
+              cancelled_datetime?: string | null; // date-time
+              created_datetime: string; // date-time
+              external_status?: string | null;
+              external_fulfillment_status?: string | null;
+              billing_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              shipping_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              external_payment_status?: string | null;
+              total_amount: number;
+              tracking_url?: string | null;
+              shipping_datetime?: string | null; // date-time
+              tracking_number?: string | null;
+              status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+              line_items: {
+                name: string;
+                total_amount: number;
+                quantity: number;
+                external_id?: string | null;
+                external_product_id?: string | null;
+                product?: {
+                  external_id: string;
+                  images: string[];
+                  name?: string | null;
+                  external_type?: string | null;
+                  variants?: {
+                    external_id: string;
+                    external_gid?: string | null;
+                    quantity?: number | null;
+                    name?: string | null;
+                  }[] | null;
+                } | null;
+              }[];
+              fulfillments?: {
+                status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                external_shipment_status?: string | null;
+                updated_datetime?: string | null; // date-time
+              }[] | null;
+              shipping_lines?: {
+                external_method_id?: string | null;
+                method_name?: string | null;
+              }[] | null;
+              tags_stringified?: string | null;
+              note?: string | null;
+            }[];
+            tags_stringified?: string | null;
+            integrations?: {
+              [name: string]: {
+                [name: string]: any;
+              };
+            } | null;
+          } | null;
+          order?: {
+            name: string;
+            external_id?: string | null;
+            shopper_external_id?: string | null;
+            number?: string | null;
+            currency: {
+              code: string;
+              decimals: number;
+            };
+            discount_amount?: number | null;
+            subtotal_amount?: number | null;
+            shipping_amount?: number | null;
+            tax_amount?: number | null;
+            cancelled_datetime?: string | null; // date-time
+            created_datetime: string; // date-time
+            external_status?: string | null;
+            external_fulfillment_status?: string | null;
+            billing_address?: {
+              line_1: string | null;
+              line_2: string | null;
+              city: string | null;
+              country: string | null;
+              state: string | null;
+              zip_code: string | null;
+              first_name: string | null;
+              last_name: string | null;
+              phone_number: string | null;
+            } | null;
+            shipping_address?: {
+              line_1: string | null;
+              line_2: string | null;
+              city: string | null;
+              country: string | null;
+              state: string | null;
+              zip_code: string | null;
+              first_name: string | null;
+              last_name: string | null;
+              phone_number: string | null;
+            } | null;
+            external_payment_status?: string | null;
+            total_amount: number;
+            tracking_url?: string | null;
+            shipping_datetime?: string | null; // date-time
+            tracking_number?: string | null;
+            status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+            line_items: {
+              name: string;
+              total_amount: number;
+              quantity: number;
+              external_id?: string | null;
+              external_product_id?: string | null;
+              product?: {
+                external_id: string;
+                images: string[];
+                name?: string | null;
+                external_type?: string | null;
+                variants?: {
+                  external_id: string;
+                  external_gid?: string | null;
+                  quantity?: number | null;
+                  name?: string | null;
+                }[] | null;
+              } | null;
+            }[];
+            fulfillments?: {
+              status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+              external_shipment_status?: string | null;
+              updated_datetime?: string | null; // date-time
+            }[] | null;
+            shipping_lines?: {
+              external_method_id?: string | null;
+              method_name?: string | null;
+            }[] | null;
+            tags_stringified?: string | null;
+            note?: string | null;
+          } | null;
+          products?: {
+            [name: string]: {
+              external_id: string;
+              images: string[];
+              name?: string | null;
+              external_type?: string | null;
+              variants?: {
+                external_id: string;
+                external_gid?: string | null;
+                quantity?: number | null;
+                name?: string | null;
+              }[] | null;
+              selected_variant?: {
+                external_id: string;
+                external_gid?: string | null;
+                quantity?: number | null;
+                name?: string | null;
+              } | null;
+            };
+          } | null;
+          order_shipmonk?: {
+            [name: string]: any;
+          } | null;
+        } | null;
+        custom_inputs?: {
+          [name: string]: number | boolean | string /* date-time */  | string;
+        } | null;
+        values?: {
+          [name: string]: number | boolean | string /* date-time */  | string;
+        } | null;
+        user_journey_id?: string | null;
+        channel?: "email";
+        callback_url?: string | null;
         steps_state?: {
           [name: string]: {
             kind: "choices";
@@ -8215,6 +10039,11 @@ declare namespace Components {
                 note?: string | null;
               }[];
               tags_stringified?: string | null;
+              integrations?: {
+                [name: string]: {
+                  [name: string]: any;
+                };
+              } | null;
             };
             at: string; // date-time
           } | {
@@ -8405,6 +10234,11 @@ declare namespace Components {
                     note?: string | null;
                   }[];
                   tags_stringified?: string | null;
+                  integrations?: {
+                    [name: string]: {
+                      [name: string]: any;
+                    };
+                  } | null;
                 };
                 at: string; // date-time
               } | {
@@ -8674,6 +10508,504 @@ declare namespace Components {
             }[];
             at: string; // date-time
           } | {
+            kind: "reusable-llm-prompt-call";
+            custom_inputs?: {
+              [name: string]: number | boolean | string /* date-time */  | string;
+            } | null;
+            store?: {
+              type: "shopify";
+              name: string;
+              helpdesk_integration_id: number;
+            } | null;
+            objects: {
+              customer?: {
+                id: number;
+                email?: string | null;
+                firstname?: string | null;
+                lastname?: string | null;
+                name?: string | null;
+                phone_number?: string | null;
+                orders: {
+                  name: string;
+                  external_id?: string | null;
+                  shopper_external_id?: string | null;
+                  number?: string | null;
+                  currency: {
+                    code: string;
+                    decimals: number;
+                  };
+                  discount_amount?: number | null;
+                  subtotal_amount?: number | null;
+                  shipping_amount?: number | null;
+                  tax_amount?: number | null;
+                  cancelled_datetime?: string | null; // date-time
+                  created_datetime: string; // date-time
+                  external_status?: string | null;
+                  external_fulfillment_status?: string | null;
+                  billing_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  shipping_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  external_payment_status?: string | null;
+                  total_amount: number;
+                  tracking_url?: string | null;
+                  shipping_datetime?: string | null; // date-time
+                  tracking_number?: string | null;
+                  status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+                  line_items: {
+                    name: string;
+                    total_amount: number;
+                    quantity: number;
+                    external_id?: string | null;
+                    external_product_id?: string | null;
+                    product?: {
+                      external_id: string;
+                      images: string[];
+                      name?: string | null;
+                      external_type?: string | null;
+                      variants?: {
+                        external_id: string;
+                        external_gid?: string | null;
+                        quantity?: number | null;
+                        name?: string | null;
+                      }[] | null;
+                    } | null;
+                  }[];
+                  fulfillments?: {
+                    status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                    external_shipment_status?: string | null;
+                    updated_datetime?: string | null; // date-time
+                  }[] | null;
+                  shipping_lines?: {
+                    external_method_id?: string | null;
+                    method_name?: string | null;
+                  }[] | null;
+                  tags_stringified?: string | null;
+                  note?: string | null;
+                }[];
+                tags_stringified?: string | null;
+                integrations?: {
+                  [name: string]: {
+                    [name: string]: any;
+                  };
+                } | null;
+              } | null;
+              order?: {
+                name: string;
+                external_id?: string | null;
+                shopper_external_id?: string | null;
+                number?: string | null;
+                currency: {
+                  code: string;
+                  decimals: number;
+                };
+                discount_amount?: number | null;
+                subtotal_amount?: number | null;
+                shipping_amount?: number | null;
+                tax_amount?: number | null;
+                cancelled_datetime?: string | null; // date-time
+                created_datetime: string; // date-time
+                external_status?: string | null;
+                external_fulfillment_status?: string | null;
+                billing_address?: {
+                  line_1: string | null;
+                  line_2: string | null;
+                  city: string | null;
+                  country: string | null;
+                  state: string | null;
+                  zip_code: string | null;
+                  first_name: string | null;
+                  last_name: string | null;
+                  phone_number: string | null;
+                } | null;
+                shipping_address?: {
+                  line_1: string | null;
+                  line_2: string | null;
+                  city: string | null;
+                  country: string | null;
+                  state: string | null;
+                  zip_code: string | null;
+                  first_name: string | null;
+                  last_name: string | null;
+                  phone_number: string | null;
+                } | null;
+                external_payment_status?: string | null;
+                total_amount: number;
+                tracking_url?: string | null;
+                shipping_datetime?: string | null; // date-time
+                tracking_number?: string | null;
+                status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+                line_items: {
+                  name: string;
+                  total_amount: number;
+                  quantity: number;
+                  external_id?: string | null;
+                  external_product_id?: string | null;
+                  product?: {
+                    external_id: string;
+                    images: string[];
+                    name?: string | null;
+                    external_type?: string | null;
+                    variants?: {
+                      external_id: string;
+                      external_gid?: string | null;
+                      quantity?: number | null;
+                      name?: string | null;
+                    }[] | null;
+                  } | null;
+                }[];
+                fulfillments?: {
+                  status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                  external_shipment_status?: string | null;
+                  updated_datetime?: string | null; // date-time
+                }[] | null;
+                shipping_lines?: {
+                  external_method_id?: string | null;
+                  method_name?: string | null;
+                }[] | null;
+                tags_stringified?: string | null;
+                note?: string | null;
+              } | null;
+              products?: {
+                [name: string]: {
+                  external_id: string;
+                  images: string[];
+                  name?: string | null;
+                  external_type?: string | null;
+                  variants?: {
+                    external_id: string;
+                    external_gid?: string | null;
+                    quantity?: number | null;
+                    name?: string | null;
+                  }[] | null;
+                };
+              } | null;
+            };
+            values?: {
+              [name: string]: number | boolean | string /* date-time */  | string;
+            } | null;
+            success: boolean;
+            outputs?: {
+              [name: string]: null;
+            } | null;
+            steps_state?: {
+              [name: string]: {
+                kind: "choices";
+                selected_choice: {
+                  event_id: string;
+                  label: string;
+                };
+                at: string; // date-time
+              } | {
+                kind: "text-input";
+                content: {
+                  text: string;
+                };
+                at: string; // date-time
+              } | {
+                kind: "attachments-input";
+                attachments?: {
+                  content_type: string;
+                  url: string;
+                }[] | null;
+                at: string; // date-time
+              } | {
+                kind: "shopper-authentication";
+                customer: {
+                  id: number;
+                  email?: string | null;
+                  firstname?: string | null;
+                  lastname?: string | null;
+                  name?: string | null;
+                  phone_number?: string | null;
+                  orders: {
+                    name: string;
+                    external_id?: string | null;
+                    shopper_external_id?: string | null;
+                    number?: string | null;
+                    currency: {
+                      code: string;
+                      decimals: number;
+                    };
+                    discount_amount?: number | null;
+                    subtotal_amount?: number | null;
+                    shipping_amount?: number | null;
+                    tax_amount?: number | null;
+                    cancelled_datetime?: string | null; // date-time
+                    created_datetime: string; // date-time
+                    external_status?: string | null;
+                    external_fulfillment_status?: string | null;
+                    billing_address?: {
+                      line_1: string | null;
+                      line_2: string | null;
+                      city: string | null;
+                      country: string | null;
+                      state: string | null;
+                      zip_code: string | null;
+                      first_name: string | null;
+                      last_name: string | null;
+                      phone_number: string | null;
+                    } | null;
+                    shipping_address?: {
+                      line_1: string | null;
+                      line_2: string | null;
+                      city: string | null;
+                      country: string | null;
+                      state: string | null;
+                      zip_code: string | null;
+                      first_name: string | null;
+                      last_name: string | null;
+                      phone_number: string | null;
+                    } | null;
+                    external_payment_status?: string | null;
+                    total_amount: number;
+                    tracking_url?: string | null;
+                    shipping_datetime?: string | null; // date-time
+                    tracking_number?: string | null;
+                    status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+                    line_items: {
+                      name: string;
+                      total_amount: number;
+                      quantity: number;
+                      external_id?: string | null;
+                      external_product_id?: string | null;
+                      product?: {
+                        external_id: string;
+                        images: string[];
+                        name?: string | null;
+                        external_type?: string | null;
+                        variants?: {
+                          external_id: string;
+                          external_gid?: string | null;
+                          quantity?: number | null;
+                          name?: string | null;
+                        }[] | null;
+                      } | null;
+                    }[];
+                    fulfillments?: {
+                      status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                      external_shipment_status?: string | null;
+                      updated_datetime?: string | null; // date-time
+                    }[] | null;
+                    shipping_lines?: {
+                      external_method_id?: string | null;
+                      method_name?: string | null;
+                    }[] | null;
+                    tags_stringified?: string | null;
+                    note?: string | null;
+                  }[];
+                  tags_stringified?: string | null;
+                  integrations?: {
+                    [name: string]: {
+                      [name: string]: any;
+                    };
+                  } | null;
+                };
+                at: string; // date-time
+              } | {
+                kind: "order-selection";
+                order: {
+                  name: string;
+                  external_id?: string | null;
+                  shopper_external_id?: string | null;
+                  number?: string | null;
+                  currency: {
+                    code: string;
+                    decimals: number;
+                  };
+                  discount_amount?: number | null;
+                  subtotal_amount?: number | null;
+                  shipping_amount?: number | null;
+                  tax_amount?: number | null;
+                  cancelled_datetime?: string | null; // date-time
+                  created_datetime: string; // date-time
+                  external_status?: string | null;
+                  external_fulfillment_status?: string | null;
+                  billing_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  shipping_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  external_payment_status?: string | null;
+                  total_amount: number;
+                  tracking_url?: string | null;
+                  shipping_datetime?: string | null; // date-time
+                  tracking_number?: string | null;
+                  status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
+                  line_items: {
+                    name: string;
+                    total_amount: number;
+                    quantity: number;
+                    external_id?: string | null;
+                    external_product_id?: string | null;
+                    product?: {
+                      external_id: string;
+                      images: string[];
+                      name?: string | null;
+                      external_type?: string | null;
+                      variants?: {
+                        external_id: string;
+                        external_gid?: string | null;
+                        quantity?: number | null;
+                        name?: string | null;
+                      }[] | null;
+                    } | null;
+                  }[];
+                  fulfillments?: {
+                    status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
+                    external_shipment_status?: string | null;
+                    updated_datetime?: string | null; // date-time
+                  }[] | null;
+                  shipping_lines?: {
+                    external_method_id?: string | null;
+                    method_name?: string | null;
+                  }[] | null;
+                  tags_stringified?: string | null;
+                  note?: string | null;
+                };
+                at: string; // date-time
+              } | {
+                kind: "http-request";
+                status_code: number;
+                success: boolean;
+                content?: ({
+                  [name: string]: number | boolean | string /* date-time */  | string | any;
+                } | null) | any;
+                at: string; // date-time
+              } | {
+                kind: "cancel-order";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "refund-order";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "update-shipping-address";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "cancel-subscription";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "skip-charge";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "remove-item";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "replace-item";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "create-discount-code";
+                discount_code?: string | null;
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "reship-for-free";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "refund-shipping-costs";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "end";
+                success: boolean;
+                at: string; // date-time
+              };
+            } | null;
+            at: string; // date-time
+          } | {
             kind: "reship-for-free";
             success: boolean;
             error?: {
@@ -8697,206 +11029,6 @@ declare namespace Components {
             at: string; // date-time
           };
         } | null;
-        store?: {
-          type: "shopify";
-          name: string;
-          helpdesk_integration_id: number;
-        } | null;
-        preview_mode?: boolean | null;
-        trigger: "llm-prompt";
-        entrypoint?: "llm-conversation";
-        objects?: {
-          customer?: {
-            id: number;
-            email?: string | null;
-            firstname?: string | null;
-            lastname?: string | null;
-            name?: string | null;
-            phone_number?: string | null;
-            orders: {
-              name: string;
-              external_id?: string | null;
-              shopper_external_id?: string | null;
-              number?: string | null;
-              currency: {
-                code: string;
-                decimals: number;
-              };
-              discount_amount?: number | null;
-              subtotal_amount?: number | null;
-              shipping_amount?: number | null;
-              tax_amount?: number | null;
-              cancelled_datetime?: string | null; // date-time
-              created_datetime: string; // date-time
-              external_status?: string | null;
-              external_fulfillment_status?: string | null;
-              billing_address?: {
-                line_1: string | null;
-                line_2: string | null;
-                city: string | null;
-                country: string | null;
-                state: string | null;
-                zip_code: string | null;
-                first_name: string | null;
-                last_name: string | null;
-                phone_number: string | null;
-              } | null;
-              shipping_address?: {
-                line_1: string | null;
-                line_2: string | null;
-                city: string | null;
-                country: string | null;
-                state: string | null;
-                zip_code: string | null;
-                first_name: string | null;
-                last_name: string | null;
-                phone_number: string | null;
-              } | null;
-              external_payment_status?: string | null;
-              total_amount: number;
-              tracking_url?: string | null;
-              shipping_datetime?: string | null; // date-time
-              tracking_number?: string | null;
-              status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
-              line_items: {
-                name: string;
-                total_amount: number;
-                quantity: number;
-                external_id?: string | null;
-                external_product_id?: string | null;
-                product?: {
-                  external_id: string;
-                  images: string[];
-                  name?: string | null;
-                  external_type?: string | null;
-                  variants?: {
-                    external_id: string;
-                    external_gid?: string | null;
-                    quantity?: number | null;
-                    name?: string | null;
-                  }[] | null;
-                } | null;
-              }[];
-              fulfillments?: {
-                status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
-                external_shipment_status?: string | null;
-                updated_datetime?: string | null; // date-time
-              }[] | null;
-              shipping_lines?: {
-                external_method_id?: string | null;
-                method_name?: string | null;
-              }[] | null;
-              tags_stringified?: string | null;
-              note?: string | null;
-            }[];
-            tags_stringified?: string | null;
-          } | null;
-          order?: {
-            name: string;
-            external_id?: string | null;
-            shopper_external_id?: string | null;
-            number?: string | null;
-            currency: {
-              code: string;
-              decimals: number;
-            };
-            discount_amount?: number | null;
-            subtotal_amount?: number | null;
-            shipping_amount?: number | null;
-            tax_amount?: number | null;
-            cancelled_datetime?: string | null; // date-time
-            created_datetime: string; // date-time
-            external_status?: string | null;
-            external_fulfillment_status?: string | null;
-            billing_address?: {
-              line_1: string | null;
-              line_2: string | null;
-              city: string | null;
-              country: string | null;
-              state: string | null;
-              zip_code: string | null;
-              first_name: string | null;
-              last_name: string | null;
-              phone_number: string | null;
-            } | null;
-            shipping_address?: {
-              line_1: string | null;
-              line_2: string | null;
-              city: string | null;
-              country: string | null;
-              state: string | null;
-              zip_code: string | null;
-              first_name: string | null;
-              last_name: string | null;
-              phone_number: string | null;
-            } | null;
-            external_payment_status?: string | null;
-            total_amount: number;
-            tracking_url?: string | null;
-            shipping_datetime?: string | null; // date-time
-            tracking_number?: string | null;
-            status?: "partially_fulfilled" | "completed" | "canceled" | "on_hold" | "awaiting_fulfillment" | "awaiting_payment" | "scheduled" | "order_pending";
-            line_items: {
-              name: string;
-              total_amount: number;
-              quantity: number;
-              external_id?: string | null;
-              external_product_id?: string | null;
-              product?: {
-                external_id: string;
-                images: string[];
-                name?: string | null;
-                external_type?: string | null;
-                variants?: {
-                  external_id: string;
-                  external_gid?: string | null;
-                  quantity?: number | null;
-                  name?: string | null;
-                }[] | null;
-              } | null;
-            }[];
-            fulfillments?: {
-              status?: "unfulfilled" | "processing_fulfillment" | "pending_delivery" | "attempted_delivery" | "ready_for_pickup" | "in_transit" | "out_for_delivery" | "delivered" | "failed_delivery" | "failed_fulfillment" | "partially_refunded" | "refunded" | "cancelled" | "shipment_status_unavailable" | "status_unavailable";
-              external_shipment_status?: string | null;
-              updated_datetime?: string | null; // date-time
-            }[] | null;
-            shipping_lines?: {
-              external_method_id?: string | null;
-              method_name?: string | null;
-            }[] | null;
-            tags_stringified?: string | null;
-            note?: string | null;
-          } | null;
-          products?: {
-            [name: string]: {
-              external_id: string;
-              images: string[];
-              name?: string | null;
-              external_type?: string | null;
-              variants?: {
-                external_id: string;
-                external_gid?: string | null;
-                quantity?: number | null;
-                name?: string | null;
-              }[] | null;
-              selected_variant?: {
-                external_id: string;
-                external_gid?: string | null;
-                quantity?: number | null;
-                name?: string | null;
-              } | null;
-            };
-          } | null;
-        } | null;
-        custom_inputs?: {
-          [name: string]: number | boolean | string /* date-time */  | string;
-        } | null;
-        values?: {
-          [name: string]: number | boolean | string /* date-time */  | string;
-        } | null;
-        user_journey_id?: string | null;
-        channel?: "email";
-        callback_url?: string | null;
       } | null;
       outputs?: {
         [name: string]: {
@@ -8905,15 +11037,6 @@ declare namespace Components {
         };
       } | null;
     };
-    export interface UpsertAccountOauth2TokenRequestBodyDto {
-      id?: string | null;
-      refresh_token: string;
-    }
-    export interface UpsertAccountOauth2TokenRequestResponseBodyDto {
-      id: string;
-      refresh_token: string;
-      account_id: number;
-    }
     export interface UpsertAppRequestBodyDto {
       auth_type: "api-key" | "oauth2-token";
       auth_settings: {
@@ -9421,6 +11544,7 @@ declare namespace Components {
         };
       }[];
       available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      category?: string | null;
       triggers: ({
         kind: "llm-prompt";
         settings: {
@@ -9429,6 +11553,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -9442,6 +11567,12 @@ declare namespace Components {
             name: string;
             instructions: string;
             id: string;
+          } | {
+            kind: "order-shipmonk";
+            integration_id: number;
+          } | {
+            kind: "order-3pl";
+            integration_id: number;
           })[];
           conditions?: {
             or: ({
@@ -9522,6 +11653,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -9626,7 +11758,6 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
-        account_oauth2_token_id?: string | null;
         type: "app";
         refresh_token?: string | null;
       })[] | null;
@@ -10111,6 +12242,7 @@ declare namespace Components {
         };
       }[];
       available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      category?: string | null;
       created_datetime?: string | null; // date-time
       updated_datetime?: string | null; // date-time
       deleted_datetime?: string | null; // date-time
@@ -10122,6 +12254,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -10135,6 +12268,12 @@ declare namespace Components {
             name: string;
             instructions: string;
             id: string;
+          } | {
+            kind: "order-shipmonk";
+            integration_id: number;
+          } | {
+            kind: "order-3pl";
+            integration_id: number;
           })[];
           conditions?: {
             or: ({
@@ -10215,6 +12354,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -10319,7 +12459,6 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
-        account_oauth2_token_id?: string | null;
         type: "app";
         refresh_token?: string | null;
       })[] | null;
@@ -10811,6 +12950,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -10824,6 +12964,12 @@ declare namespace Components {
             name: string;
             instructions: string;
             id: string;
+          } | {
+            kind: "order-shipmonk";
+            integration_id: number;
+          } | {
+            kind: "order-3pl";
+            integration_id: number;
           })[];
           conditions?: {
             or: ({
@@ -10904,6 +13050,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -11008,7 +13155,6 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
-        account_oauth2_token_id?: string | null;
         type: "app";
         refresh_token?: string | null;
       })[] | null;
@@ -11505,6 +13651,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -11518,6 +13665,12 @@ declare namespace Components {
             name: string;
             instructions: string;
             id: string;
+          } | {
+            kind: "order-shipmonk";
+            integration_id: number;
+          } | {
+            kind: "order-3pl";
+            integration_id: number;
           })[];
           conditions?: {
             or: ({
@@ -11598,6 +13751,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -11702,7 +13856,6 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
-        account_oauth2_token_id?: string | null;
         type: "app";
         refresh_token?: string | null;
       })[] | null;
@@ -11848,12 +14001,6 @@ declare namespace Components {
         };
       } | {
         id: string;
-        kind: "end";
-        settings?: {
-          success: boolean;
-        } | null;
-      } | {
-        id: string;
         kind: "reusable-llm-prompt-call";
         settings: {
           configuration_id: string;
@@ -11872,6 +14019,12 @@ declare namespace Components {
             [name: string]: string | number | boolean;
           };
         };
+      } | {
+        id: string;
+        kind: "end";
+        settings?: {
+          success: boolean;
+        } | null;
       })[];
       inputs?: ({
         id: string;
@@ -11977,6 +14130,7 @@ declare namespace Components {
         };
       }[];
       available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      category?: string | null;
       triggers: ({
         kind: "llm-prompt";
         settings: {
@@ -11985,6 +14139,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -11998,6 +14153,12 @@ declare namespace Components {
             name: string;
             instructions: string;
             id: string;
+          } | {
+            kind: "order-shipmonk";
+            integration_id: number;
+          } | {
+            kind: "order-3pl";
+            integration_id: number;
           })[];
           conditions?: {
             or: ({
@@ -12078,6 +14239,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -12182,7 +14344,6 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
-        account_oauth2_token_id?: string | null;
         type: "app";
         refresh_token?: string | null;
       })[];
@@ -12329,6 +14490,26 @@ declare namespace Components {
         };
       } | {
         id: string;
+        kind: "reusable-llm-prompt-call";
+        settings: {
+          configuration_id: string;
+          configuration_internal_id: string;
+          objects?: {
+            customer?: string | null;
+            order?: string | null;
+            products?: {
+              [name: string]: string;
+            } | null;
+          } | null;
+          custom_inputs?: {
+            [name: string]: string;
+          } | null;
+          values: {
+            [name: string]: string | number | boolean;
+          };
+        };
+      } | {
+        id: string;
         kind: "end";
         settings?: {
           success: boolean;
@@ -12438,6 +14619,7 @@ declare namespace Components {
         };
       }[];
       available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      category?: string | null;
       created_datetime: string; // date-time
       updated_datetime: string; // date-time
       deleted_datetime?: string | null; // date-time
@@ -12449,6 +14631,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -12462,6 +14645,12 @@ declare namespace Components {
             name: string;
             instructions: string;
             id: string;
+          } | {
+            kind: "order-shipmonk";
+            integration_id: number;
+          } | {
+            kind: "order-3pl";
+            integration_id: number;
           })[];
           conditions?: {
             or: ({
@@ -12542,6 +14731,7 @@ declare namespace Components {
             name: string;
             instructions: string;
             data_type: "string" | "number" | "date" | "boolean";
+            optional?: boolean;
           }[];
           object_inputs: ({
             kind: "customer";
@@ -12646,7 +14836,6 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
-        account_oauth2_token_id?: string | null;
         type: "app";
         refresh_token?: string | null;
       })[];
@@ -12663,12 +14852,6 @@ declare namespace Components {
   }
 }
 declare namespace Paths {
-  namespace AccountOauth2TokenControllerUpsert {
-    export type RequestBody = Components.Schemas.UpsertAccountOauth2TokenRequestBodyDto;
-    namespace Responses {
-      export type $201 = Components.Schemas.UpsertAccountOauth2TokenRequestResponseBodyDto;
-    }
-  }
   namespace AppControllerDelete {
     namespace Parameters {
       export type Id = string;
@@ -13425,14 +15608,6 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
-   * AccountOauth2TokenController_upsert
-   */
-  'AccountOauth2TokenController_upsert'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.AccountOauth2TokenControllerUpsert.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AccountOauth2TokenControllerUpsert.Responses.$201>
-  /**
    * HealthController_check
    */
   'HealthController_check'(
@@ -13758,16 +15933,6 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<any>
-  }
-  ['/account-oauth2-token']: {
-    /**
-     * AccountOauth2TokenController_upsert
-     */
-    'put'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.AccountOauth2TokenControllerUpsert.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AccountOauth2TokenControllerUpsert.Responses.$201>
   }
   ['/health']: {
     /**

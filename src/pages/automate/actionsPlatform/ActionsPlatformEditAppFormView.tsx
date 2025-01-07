@@ -39,6 +39,11 @@ const ActionsPlatformEditAppFormView = () => {
                     exact: true,
                 },
                 {
+                    route: '/app/automation/actions-platform/use-cases',
+                    title: 'Use case templates',
+                    exact: true,
+                },
+                {
                     route: '/app/automation/actions-platform/steps',
                     title: 'Steps',
                     exact: true,

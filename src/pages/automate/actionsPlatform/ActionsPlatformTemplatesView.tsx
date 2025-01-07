@@ -3,7 +3,6 @@ import React, {useMemo, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import useOrderBy from 'hooks/useOrderBy'
-import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import AutomateListView from 'pages/automate/common/components/AutomateListView'
 import Button from 'pages/common/components/button/Button'
 
@@ -14,15 +13,11 @@ import ActionsPlatformTemplatesTableRow from './components/ActionsPlatformTempla
 import useApps from './hooks/useApps'
 import useDeleteActionTemplate from './hooks/useDeleteActionTemplate'
 import useGetAppFromTemplateApp from './hooks/useGetAppFromTemplateApp'
+import useTemplates from './hooks/useTemplates'
 import {App} from './types'
 
 const ActionsPlatformTemplatesView = () => {
-    const {
-        data: templates = [],
-        isInitialLoading: isGetTemplatesInitialLoading,
-    } = useGetWorkflowConfigurationTemplates({
-        triggers: ['llm-prompt'],
-    })
+    const {templates, isLoading: isTemplatesLoading} = useTemplates()
     const {deleteActionTemplate, isLoading: isDeleteActionTemplateLoading} =
         useDeleteActionTemplate()
     const {apps, isLoading: areAppsLoading, actionsApps} = useApps()
@@ -78,7 +73,7 @@ const ActionsPlatformTemplatesView = () => {
         )
     }, [apps, actionsApps])
 
-    const isLoading = isGetTemplatesInitialLoading || areAppsLoading
+    const isLoading = isTemplatesLoading || areAppsLoading
 
     return (
         <AutomateListView
@@ -87,6 +82,11 @@ const ActionsPlatformTemplatesView = () => {
                 {
                     route: '/app/automation/actions-platform',
                     title: 'Templates',
+                    exact: true,
+                },
+                {
+                    route: '/app/automation/actions-platform/use-cases',
+                    title: 'Use case templates',
                     exact: true,
                 },
                 {

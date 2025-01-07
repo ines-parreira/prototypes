@@ -9,6 +9,7 @@ type Props = {
     onChange: (nextValue: string) => void
     onBlur: () => void
     error?: string
+    autoFocus?: boolean
 }
 
 const ActionsPlatformTemplateName = ({
@@ -16,6 +17,7 @@ const ActionsPlatformTemplateName = ({
     onChange,
     onBlur,
     error,
+    autoFocus = true,
 }: Props) => {
     return (
         <InputField
@@ -28,7 +30,7 @@ const ActionsPlatformTemplateName = ({
                 </FormLabel>
             }
             error={error}
-            autoFocus
+            autoFocus={autoFocus}
             type="text"
             caption="Provide a name for this Action. e.g. Cancel order"
             value={value}

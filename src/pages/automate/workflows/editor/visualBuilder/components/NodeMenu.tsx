@@ -962,6 +962,7 @@ const AppMenuCategoryItems = ({
 
                 if (
                     visualBuilderGraph.isTemplate &&
+                    typeof visualBuilderGraph.category === 'undefined' &&
                     !visualBuilderGraph.apps?.some((templateApp) => {
                         switch (templateApp.type) {
                             case 'shopify':
@@ -1160,18 +1161,20 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
                                 />
                             </>
                         )}
-                        {visualBuilderGraph.isTemplate && (
-                            <>
-                                <LLMPromptTemplateShopifyMenuItems
-                                    nodeId={nodeId}
-                                    floatingRef={floatingRef}
-                                />
-                                <LLMPromptTemplateRechargeMenuItems
-                                    nodeId={nodeId}
-                                    floatingRef={floatingRef}
-                                />
-                            </>
-                        )}
+                        {visualBuilderGraph.isTemplate &&
+                            typeof visualBuilderGraph.category ===
+                                'undefined' && (
+                                <>
+                                    <LLMPromptTemplateShopifyMenuItems
+                                        nodeId={nodeId}
+                                        floatingRef={floatingRef}
+                                    />
+                                    <LLMPromptTemplateRechargeMenuItems
+                                        nodeId={nodeId}
+                                        floatingRef={floatingRef}
+                                    />
+                                </>
+                            )}
                         <AppMenuCategoryItems
                             nodeId={nodeId}
                             setMenuItems={setMenuItems}
@@ -1185,6 +1188,7 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
         floatingRef,
         triggerNode.type,
         visualBuilderGraph.advanced_datetime,
+        visualBuilderGraph.category,
         isSimplifiedStepBuilderEnabled,
     ])
 

@@ -27,7 +27,6 @@ describe('<StepListItem />', () => {
                     type: 'app',
                     app_id: 'test-app',
                     api_key: null,
-                    account_oauth2_token_id: null,
                     refresh_token: null,
                 },
             ],

@@ -389,6 +389,10 @@ export type WorkflowConfiguration = {
                             instructions: string
                             id: string
                         }
+                      | {
+                            kind: 'order-3pl'
+                            integration_id: number | string
+                        }
                   )[]
                   conditions?: ConditionsSchema | null
                   outputs: {
@@ -422,6 +426,10 @@ export type WorkflowConfiguration = {
                         }
                       | {
                             kind: 'order_shipmonk'
+                            integration_id: number
+                        }
+                      | {
+                            kind: 'order-3pl'
                             integration_id: number
                         }
                   )[]
@@ -508,6 +516,7 @@ export type WorkflowConfiguration = {
     transitions: WorkflowTransition[]
     available_languages: LanguageCode[]
     template_internal_id?: string | null
+    category?: string | null
 }
 
 export type WorkflowConfigurationShallow = Omit<

@@ -13,6 +13,7 @@ import LinkButton from 'pages/common/components/button/LinkButton'
 
 import css from './ActionTemplatesView.less'
 import ActionsTemplatesCards from './components/ActionsTemplatesCards'
+import ActionsUseCaseTemplatesCards from './components/ActionsUseCaseTemplatesCards'
 import BackToActionButton from './components/BackToActionButton'
 import CreateCustomActionButton from './components/CreateCustomActionButton'
 
@@ -50,10 +51,17 @@ const ActionTemplatesView = () => {
                     : 'Choose an Action and customize it to fit your needs'}
                 <CreateCustomActionButton />
             </div>
-            <ActionsTemplatesCards
-                templateConfigurations={templateConfigurations}
-                showCustomAction
-            />
+            {isMultiStepActionEnabled ? (
+                <ActionsUseCaseTemplatesCards
+                    templates={templateConfigurations}
+                    showCustomAction
+                />
+            ) : (
+                <ActionsTemplatesCards
+                    templateConfigurations={templateConfigurations}
+                    showCustomAction
+                />
+            )}
             {!isMultiStepActionEnabled && (
                 <div className={css.requestBannerContainer}>
                     <div className={css.requestBannerContent}>

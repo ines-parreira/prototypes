@@ -1,13 +1,13 @@
 import React, {useState} from 'react'
 
+import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
 import {TemplateCard} from 'pages/common/components/TemplateCard'
 
-import {TemplateConfiguration} from '../types'
 import css from './UseCaseTemplateCard.less'
 import UseCaseTemplateConfirmationModal from './UseCaseTemplateConfirmationModal'
 
 type Props = {
-    template: TemplateConfiguration
+    template: ActionTemplate
 }
 
 const categoryTagStyleMap: {

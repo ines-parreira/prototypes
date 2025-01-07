@@ -16,7 +16,7 @@ import css from './ActionsPlatformTemplatesTableRow.less'
 type Props = {
     template: Pick<
         ActionTemplate,
-        'apps' | 'is_draft' | 'name' | 'updated_datetime'
+        'apps' | 'is_draft' | 'name' | 'updated_datetime' | 'category'
     >
     app?: App
     onClick: () => void

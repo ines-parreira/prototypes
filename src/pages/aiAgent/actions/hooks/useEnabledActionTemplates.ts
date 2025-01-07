@@ -14,8 +14,9 @@ const useEnabledActionTemplates = (allTemplates: TemplateConfiguration[]) => {
     return useMemo(() => {
         return allTemplates.filter(
             (template) =>
-                !Array.isArray(enabledTemplates) ||
-                !!enabledTemplates.includes(template.internal_id)
+                !template.category &&
+                (!Array.isArray(enabledTemplates) ||
+                    !!enabledTemplates.includes(template.internal_id))
         )
     }, [allTemplates, enabledTemplates])
 }

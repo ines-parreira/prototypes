@@ -691,6 +691,7 @@ export type VisualBuilderGraph<
     name: string
     template_internal_id?: string | null
     advanced_datetime?: Date | null
+    category?: string | null
     available_languages: LanguageCode[]
     nodes: [T, ...VisualBuilderNode[]]
     edges: VisualBuilderEdge[]
@@ -735,9 +736,11 @@ export type VisualBuilderGraph<
     errors?: {
         name?: string
         nodes?: string
+        category?: string
     } | null
     touched?: {
         name?: boolean
         nodes?: boolean
+        category?: boolean
     } | null
 }

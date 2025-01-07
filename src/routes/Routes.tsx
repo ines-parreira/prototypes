@@ -54,11 +54,14 @@ import ActionsPlatformAppsView from 'pages/automate/actionsPlatform/ActionsPlatf
 import ActionsPlatformCreateAppFormView from 'pages/automate/actionsPlatform/ActionsPlatformCreateAppFormView'
 import ActionsPlatformCreateStepView from 'pages/automate/actionsPlatform/ActionsPlatformCreateStepView'
 import ActionsPlatformCreateTemplateView from 'pages/automate/actionsPlatform/ActionsPlatformCreateTemplateView'
+import ActionsPlatformCreateUseCaseTemplateView from 'pages/automate/actionsPlatform/ActionsPlatformCreateUseCaseTemplateView'
 import ActionsPlatformEditAppFormView from 'pages/automate/actionsPlatform/ActionsPlatformEditAppFormView'
 import ActionsPlatformEditStepViewContainer from 'pages/automate/actionsPlatform/ActionsPlatformEditStepViewContainer'
 import ActionsPlatformEditTemplateViewContainer from 'pages/automate/actionsPlatform/ActionsPlatformEditTemplateViewContainer'
+import ActionsPlatformEditUseCaseTemplateViewContainer from 'pages/automate/actionsPlatform/ActionsPlatformEditUseCaseTemplateViewContainer'
 import ActionsPlatformStepsView from 'pages/automate/actionsPlatform/ActionsPlatformStepsView'
 import ActionsPlatformTemplatesView from 'pages/automate/actionsPlatform/ActionsPlatformTemplatesView'
+import ActionsPlatformUseCaseTemplatesView from 'pages/automate/actionsPlatform/ActionsPlatformUseCaseTemplatesView'
 import ArticleRecommendationViewContainer from 'pages/automate/articleRecommendation/ArticleRecommendationViewContainer'
 import AutomateAllRecommendationsContainer from 'pages/automate/common/components/AutomateAllRecommendationsContainer'
 import AutomateLandingPageContainer from 'pages/automate/common/components/AutomateLandingPageContainer'
@@ -1050,6 +1053,11 @@ function AutomationContent() {
                     <ActionsPlatformTemplatesView />
                 )}
             </Route>
+            <Route path={`${path}/actions-platform/use-cases`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformUseCaseTemplatesView />
+                )}
+            </Route>
             <Route path={`${path}/actions-platform/steps`} exact>
                 {isActionsInternalPlatformEnabled && (
                     <ActionsPlatformStepsView />
@@ -1078,6 +1086,16 @@ function AutomationContent() {
             <Route path={`${path}/actions-platform/edit/:id`} exact>
                 {isActionsInternalPlatformEnabled && (
                     <ActionsPlatformEditTemplateViewContainer />
+                )}
+            </Route>
+            <Route path={`${path}/actions-platform/use-cases/new`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformCreateUseCaseTemplateView />
+                )}
+            </Route>
+            <Route path={`${path}/actions-platform/use-cases/edit/:id`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformEditUseCaseTemplateViewContainer />
                 )}
             </Route>
             <Route path={`${path}/actions-platform/steps/new`} exact>

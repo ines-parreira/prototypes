@@ -504,6 +504,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
         inputs: _cloneDeep(g.inputs),
         values: _cloneDeep(g.values),
         template_internal_id: g.template_internal_id,
+        category: g.category,
     }
 
     const stepIdByNodeId: Record<string, string> = {}

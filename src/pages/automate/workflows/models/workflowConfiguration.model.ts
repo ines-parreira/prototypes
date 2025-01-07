@@ -247,6 +247,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
             name: c.name,
             available_languages: c.available_languages,
             template_internal_id: c.template_internal_id,
+            category: c.category,
             nodes,
             edges,
             apps: c.apps,
@@ -716,6 +717,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
         name: c.name,
         available_languages: c.available_languages,
         template_internal_id: c.template_internal_id,
+        category: c.category,
         nodes,
         edges,
         apps: c.apps,
@@ -746,7 +748,10 @@ export class WorkflowConfigurationBuilder {
         Partial<
             Pick<
                 WorkflowConfiguration,
-                'is_draft' | 'available_languages' | 'advanced_datetime'
+                | 'is_draft'
+                | 'available_languages'
+                | 'advanced_datetime'
+                | 'category'
             >
         >) {
         this.data = {
@@ -856,10 +861,11 @@ export class WorkflowConfigurationBuilder {
     ) {
         if (
             this._selection?.kind !== 'conditions' &&
-            this._selection?.kind !== 'http-request'
+            this._selection?.kind !== 'http-request' &&
+            this._selection?.kind !== 'reusable-llm-prompt-call'
         )
             throw new Error(
-                `${step.kind} step can only be inserted after conditions or http-request step`
+                `${step.kind} step can only be inserted after conditions, http-request or reusable-llm-prompt-call step`
             )
         this.data.steps.push(step)
         const transition: WorkflowTransition = {
@@ -955,6 +961,25 @@ export class WorkflowConfigurationBuilder {
     }
 
     insertHttpRequestConditionAndEndStepAndSelect(
+        type: 'error' | 'success',
+        settings?: WorkflowStepEnd['settings']
+    ) {
+        const step: WorkflowStepEnd = {
+            id: ulid(),
+            kind: 'end',
+            settings,
+        }
+        const label = type === 'error' ? 'Error' : 'Success'
+        this.insertConditionsAndStepTargetAndSelect(
+            step,
+            label,
+            type === 'success'
+                ? getFallibleNodeSuccessConditions(this._selection.id)
+                : undefined
+        )
+    }
+
+    insertReusableLLMPromptCallConditionAndEndStepAndSelect(
         type: 'error' | 'success',
         settings?: WorkflowStepEnd['settings']
     ) {
