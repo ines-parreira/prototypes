@@ -88,8 +88,8 @@ import {CampaignsView} from 'pages/convert/campaigns/CampaignsView'
 import CampaginLibaryView from 'pages/convert/campaigns/components/CampaginLibaryView'
 import CampaignDetailsFactory from 'pages/convert/campaigns/containers/CampaignDetailsFactory'
 import {
-    CampaignTemplateCustomizeRecommendationsView,
     CampaignTemplateCustomizeLibraryView,
+    CampaignTemplateCustomizeRecommendationsView,
 } from 'pages/convert/campaigns/containers/CampaignTemplateCustomizeView'
 import ClickTrackingPaywallView from 'pages/convert/clickTracking/components/ClickTrackingPaywallView/ClickTrackingPaywallView'
 import ClickTrackingSettingsView from 'pages/convert/clickTracking/components/ClickTrackingSettingsView/ClickTrackingSettingsView'
@@ -132,10 +132,10 @@ import LiveAgents from 'pages/stats/LiveAgents'
 import LiveOverview from 'pages/stats/LiveOverview'
 import Satisfaction from 'pages/stats/quality-management/satisfaction/Satisfaction'
 import {
-    ROUTE_OLD_PERFORMANCE_BY_FEATURES,
+    ROUTE_AUTOMATE_AI_AGENT,
     ROUTE_AUTOMATE_OVERVIEW,
     ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
-    ROUTE_AUTOMATE_AI_AGENT,
+    ROUTE_OLD_PERFORMANCE_BY_FEATURES,
 } from 'pages/stats/self-service/constants'
 import SelfServiceStatsPage from 'pages/stats/self-service/SelfServiceStatsPage'
 import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
