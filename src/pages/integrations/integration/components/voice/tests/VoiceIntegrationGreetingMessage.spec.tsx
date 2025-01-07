@@ -1,13 +1,11 @@
 import {WaitMusicType} from '@gorgias/api-client'
 import {fireEvent} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {PhoneCountry, PhoneFunction} from 'business/twilio'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {phoneNumbers} from 'fixtures/newPhoneNumber'
 import {
     IntegrationType,
@@ -105,10 +103,6 @@ const renderVoiceIntegrationGreetingMessage = (integration: PhoneIntegration) =>
 
 describe('<VoiceIntegrationGreetingMessage /> render', () => {
     it('should render standard integration', () => {
-        mockFlags({
-            [FeatureFlagKey.CustomWaitMusic]: true,
-        })
-
         const {getByLabelText, queryByText, getByRole, getAllByText} =
             renderVoiceIntegrationGreetingMessage(standardIntegration)
         expect(queryByText('Greeting message')).toBeInTheDocument()
@@ -123,20 +117,6 @@ describe('<VoiceIntegrationGreetingMessage /> render', () => {
         expect(queryByText('Choose from library')).toBeInTheDocument()
         expect(customRecordingFields[1]).toBeInTheDocument()
         expect(getByLabelText('Choose from library')).toBeChecked()
-
-        expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
-    })
-
-    it('should not render wait music section when FF disabled', () => {
-        mockFlags({
-            [FeatureFlagKey.CustomWaitMusic]: false,
-        })
-
-        const {getByRole, queryByText} =
-            renderVoiceIntegrationGreetingMessage(standardIntegration)
-
-        expect(queryByText('Greeting message')).toBeInTheDocument()
-        expect(queryByText('Wait music')).not.toBeInTheDocument()
 
         expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
     })
@@ -235,9 +215,6 @@ describe('<VoiceIntegrationGreetingMessage /> wait music', () => {
             domain: 'acme',
         } as Account
         window.URL.createObjectURL = jest.fn().mockReturnValue('fake-url')
-        mockFlags({
-            [FeatureFlagKey.CustomWaitMusic]: true,
-        })
     })
 
     it('should allow changing between different wait music types', () => {

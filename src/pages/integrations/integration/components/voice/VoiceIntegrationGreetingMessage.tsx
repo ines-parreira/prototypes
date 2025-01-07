@@ -1,9 +1,7 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback} from 'react'
 import {Form} from 'reactstrap'
 
 import {PhoneCountry} from 'business/twilio'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {PhoneIntegration, isPhoneIntegration} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
@@ -28,9 +26,6 @@ const MAX_RECORDING_DURATION = 30
 export default function VoiceIntegrationGreetingMessage({
     integration,
 }: Props): JSX.Element | null {
-    const shouldDisplayWaitMusicSection =
-        useFlags()[FeatureFlagKey.CustomWaitMusic]
-
     const phoneNumbers = useAppSelector(getNewPhoneNumbers)
 
     const integrationCountry = integration
@@ -80,22 +75,20 @@ export default function VoiceIntegrationGreetingMessage({
                             horizontal={true}
                         />
                     </div>
-                    {shouldDisplayWaitMusicSection && (
-                        <div className={css.section}>
-                            <h4 className={css.sectionTitle}>Wait music</h4>
-                            <p className={css.sectionSubtitle}>
-                                Music callers will hear while they are waiting.
-                            </p>
-                            <WaitMusicField
-                                preferences={
-                                    waitMusicPayload ??
-                                    DEFAULT_WAIT_MUSIC_PREFERENCES
-                                }
-                                onChange={setWaitMusicPayload}
-                                integrationCountry={integrationCountry}
-                            />
-                        </div>
-                    )}
+                    <div className={css.section}>
+                        <h4 className={css.sectionTitle}>Wait music</h4>
+                        <p className={css.sectionSubtitle}>
+                            Music callers will hear while they are waiting.
+                        </p>
+                        <WaitMusicField
+                            preferences={
+                                waitMusicPayload ??
+                                DEFAULT_WAIT_MUSIC_PREFERENCES
+                            }
+                            onChange={setWaitMusicPayload}
+                            integrationCountry={integrationCountry}
+                        />
+                    </div>
                     <Button
                         type="submit"
                         isLoading={

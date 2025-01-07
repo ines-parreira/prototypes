@@ -1,9 +1,7 @@
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Label} from 'reactstrap'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     PhoneIntegrationPreferences,
     PhoneRingingBehaviour,
@@ -46,11 +44,6 @@ export default function VoiceIntegrationPreferencesInboundCalls({
     onPhoneTeamIdChange,
     errors,
 }: Props): JSX.Element {
-    const showCustomizableAgentRingTime: boolean | undefined =
-        useFlags()[FeatureFlagKey.CustomizableAgentRingTime]
-    const showCustomizableWaitTime: boolean | undefined =
-        useFlags()[FeatureFlagKey.CustomizableWaitTime]
-
     const preferencesRingTime = preferences.ring_time ?? RING_TIME_DEFAULT_VALUE
     const preferencesWaitTimeValue =
         preferences.wait_time?.value ?? WAIT_TIME_DEFAULT_VALUE
@@ -106,80 +99,74 @@ export default function VoiceIntegrationPreferencesInboundCalls({
                             selectedValue={preferences.ringing_behaviour}
                         />
                     </div>
-                    {showCustomizableAgentRingTime && (
-                        <div>
-                            <InputField
-                                label={
-                                    <>
-                                        <span>Ring time per agent</span>
-                                        <HintTooltip title="The time in seconds we ring each individual agent before moving to the next one." />
-                                    </>
-                                }
-                                type="number"
-                                value={preferencesRingTime}
-                                onChange={(value) =>
-                                    onPreferencesChange({
-                                        ring_time:
-                                            value === ''
-                                                ? Number.NaN
-                                                : Number(value),
-                                    })
-                                }
-                                caption="Set a time between 10 and 600 seconds (10 minutes)."
-                                error={errors?.ring_time}
-                                min={RING_TIME_MIN_VALUE}
-                                max={RING_TIME_MAX_VALUE}
-                            />
-                        </div>
-                    )}
-                    {showCustomizableWaitTime && (
+                    <div>
                         <InputField
                             label={
                                 <>
-                                    <span>Max wait time</span>
-                                    <HintTooltip title="The maximum time in seconds we wait before sending the call to voicemail." />
+                                    <span>Ring time per agent</span>
+                                    <HintTooltip title="The time in seconds we ring each individual agent before moving to the next one." />
                                 </>
                             }
                             type="number"
-                            value={preferencesWaitTimeValue}
+                            value={preferencesRingTime}
                             onChange={(value) =>
                                 onPreferencesChange({
-                                    wait_time: {
-                                        enabled: preferencesWaitTimeEnabled,
-                                        value:
-                                            value === ''
-                                                ? Number.NaN
-                                                : Number(value),
-                                    },
+                                    ring_time:
+                                        value === ''
+                                            ? Number.NaN
+                                            : Number(value),
                                 })
                             }
-                            caption="Set a time between 10 and 3600 seconds (1 hour)."
-                            error={errors?.wait_time}
-                            min={WAIT_TIME_MIN_VALUE}
-                            max={WAIT_TIME_MAX_VALUE}
+                            caption="Set a time between 10 and 600 seconds (10 minutes)."
+                            error={errors?.ring_time}
+                            min={RING_TIME_MIN_VALUE}
+                            max={RING_TIME_MAX_VALUE}
                         />
-                    )}
+                    </div>
+                    <InputField
+                        label={
+                            <>
+                                <span>Max wait time</span>
+                                <HintTooltip title="The maximum time in seconds we wait before sending the call to voicemail." />
+                            </>
+                        }
+                        type="number"
+                        value={preferencesWaitTimeValue}
+                        onChange={(value) =>
+                            onPreferencesChange({
+                                wait_time: {
+                                    enabled: preferencesWaitTimeEnabled,
+                                    value:
+                                        value === ''
+                                            ? Number.NaN
+                                            : Number(value),
+                                },
+                            })
+                        }
+                        caption="Set a time between 10 and 3600 seconds (1 hour)."
+                        error={errors?.wait_time}
+                        min={WAIT_TIME_MIN_VALUE}
+                        max={WAIT_TIME_MAX_VALUE}
+                    />
                 </>
             )}
             <div>
                 <Label className="control-label">Other settings</Label>
                 <div className={css.otherSettings}>
-                    {showCustomizableWaitTime && (
-                        <CheckBox
-                            isChecked={preferencesWaitTimeEnabled}
-                            onChange={(value) =>
-                                onPreferencesChange({
-                                    wait_time: {
-                                        enabled: value,
-                                        value: preferencesWaitTimeValue,
-                                    },
-                                })
-                            }
-                            caption="If toggled off, calls will go directly to voicemail when agents are not available."
-                        >
-                            Hold calls in queue until an agent becomes available
-                        </CheckBox>
-                    )}
+                    <CheckBox
+                        isChecked={preferencesWaitTimeEnabled}
+                        onChange={(value) =>
+                            onPreferencesChange({
+                                wait_time: {
+                                    enabled: value,
+                                    value: preferencesWaitTimeValue,
+                                },
+                            })
+                        }
+                        caption="If toggled off, calls will go directly to voicemail when agents are not available."
+                    >
+                        Hold calls in queue until an agent becomes available
+                    </CheckBox>
                     <CheckBox
                         isChecked={preferences.voicemail_outside_business_hours}
                         onChange={(value) =>

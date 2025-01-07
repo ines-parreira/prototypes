@@ -57,20 +57,12 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
         )
     }
 
-    beforeEach(() => {
-        mockFlags({
-            CustomizableAgentRingTime: false,
-        })
-    })
-
     afterEach(() => {
         resetLDMocks()
         cleanup()
     })
 
     it('should display team select, ringing behaviour, recording section and ring/wait time when it is not IVR', () => {
-        mockFlags({CustomizableAgentRingTime: true, CustomizableWaitTime: true})
-
         renderComponent(props)
 
         expect(screen.getByTestId('team-select')).toBeInTheDocument()
@@ -80,8 +72,6 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
     })
 
     it('should not display team select, ringing behaviour, recording section and ring/wait time when it is not IVR', () => {
-        mockFlags({CustomizableAgentRingTime: true, CustomizableWaitTime: true})
-
         renderComponent({...props, isIvr: true})
 
         expect(screen.queryByTestId('team-select')).toBeNull()
@@ -121,28 +111,12 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
         expect(screen.queryByText('Start recording automatically')).toBeNull()
     })
 
-    it('should not display ring time when the FF is off', () => {
-        mockFlags({CustomizableAgentRingTime: false})
-
-        renderComponent(props)
-
-        expect(screen.queryByText('Ring Time')).toBeNull()
-    })
-
-    it('should not display ring time input when customizable agent ring time FF is off', () => {
-        renderComponent(props)
-
-        expect(screen.queryByLabelText(/Ring time per agent/i)).toBeNull()
-    })
-
     it.each([
         {ringTimeInput: '40', ringTimeValue: 40},
         {ringTimeInput: '', ringTimeValue: Number.NaN},
     ])(
         'should call onPreferencesChange when ring time is changed',
         ({ringTimeInput, ringTimeValue}) => {
-            mockFlags({CustomizableAgentRingTime: true})
-
             renderComponent(props)
 
             fireEvent.input(screen.getByLabelText(/Ring time per agent/i), {
@@ -156,8 +130,6 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
     )
 
     it('should show ring time-related errors', () => {
-        mockFlags({CustomizableAgentRingTime: true})
-
         renderComponent({
             ...props,
             errors: {
@@ -173,22 +145,12 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
         ).toBeInTheDocument()
     })
 
-    it('should not display wait time when the FF is off', () => {
-        mockFlags({CustomizableWaitTime: false})
-
-        renderComponent(props)
-
-        expect(screen.queryByLabelText(/Max wait time/i)).toBeNull()
-    })
-
     it.each([
         {waitTimeInput: '45', waitTimeValue: 45},
         {waitTimeInput: '', waitTimeValue: Number.NaN},
     ])(
         'should call onPreferencesChange when wait time is changed',
         ({waitTimeInput, waitTimeValue}) => {
-            mockFlags({CustomizableWaitTime: true})
-
             renderComponent(props)
 
             fireEvent.input(screen.getByLabelText(/Max wait time/i), {
@@ -202,8 +164,6 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
     )
 
     it('should call onPreferencesChange when wait time is disabled', () => {
-        mockFlags({CustomizableWaitTime: true})
-
         renderComponent(props)
 
         fireEvent.click(
@@ -218,8 +178,6 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
     })
 
     it('should show wait time-related errors', () => {
-        mockFlags({CustomizableWaitTime: true})
-
         renderComponent({
             ...props,
             errors: {
@@ -236,8 +194,6 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
     })
 
     it('should correctly set the default values for wait time', () => {
-        mockFlags({CustomizableWaitTime: true})
-
         renderComponent(props)
 
         expect(screen.getByLabelText(/Max wait time/i)).toBeEnabled()
