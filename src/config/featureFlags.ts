@@ -86,6 +86,7 @@ export enum FeatureFlagKey {
     CustomRecordingNotification = 'custom-recording-notification',
     CustomWaitMusic = 'custom-wait-music',
     DefaultEmailAddress = 'default-email-address',
+    DontTriggerLoginsOnInactiveTabs = 'dont-trigger-logins-on-inactive-tabs',
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',
     EnableNewLanguages = 'enable-new-languages',
     EnableWhatsAppMigrations = 'enable-whatsapp-migrations',

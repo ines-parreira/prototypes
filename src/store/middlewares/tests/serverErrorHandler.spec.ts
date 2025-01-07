@@ -1,8 +1,18 @@
+import {waitFor} from '@testing-library/react'
+import {ldClientMock} from 'jest-launchdarkly-mock'
 import _get from 'lodash/get'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {getLDClient} from 'utils/launchDarkly'
+
 import serverErrorHandler from '../serverErrorHandler'
+
+jest.mock('utils/launchDarkly', () => ({
+    getLDClient: jest.fn(),
+}))
+
+const getLDClientMock = getLDClient as jest.Mock
 
 const middlewares = [thunk, serverErrorHandler]
 const mockStore = configureMockStore(middlewares)
@@ -184,6 +194,67 @@ describe('middlewares', () => {
                     message: notificationTitle,
                 },
                 type: types.upsertNotification,
+            })
+        })
+
+        describe('Login redirect', () => {
+            const originalHref = window.location.href
+            const errorAction = {
+                error: {
+                    response: {
+                        data: {},
+                        status: 401,
+                    },
+                },
+                type: 'error',
+            }
+
+            function setDocumentHidden(hidden: boolean): void {
+                Object.defineProperty(document, 'hidden', {
+                    value: hidden,
+                    configurable: true,
+                })
+            }
+
+            beforeEach(() => {
+                Object.defineProperty(window, 'location', {
+                    configurable: true,
+                    enumerable: true,
+                    value: new URL(originalHref),
+                })
+
+                jest.useFakeTimers()
+                getLDClientMock.mockReset()
+            })
+
+            it('should redirect to the login page on 401 after 3 seconds', () => {
+                ldClientMock.variation.mockReturnValue(false)
+                getLDClientMock.mockReturnValue(ldClientMock)
+
+                store.dispatch(errorAction)
+                expect(window.location.href).not.toContain('/login')
+
+                jest.advanceTimersByTime(3000)
+                expect(window.location.href).toContain('/login')
+            })
+
+            it('should wait for the tab to be active to redirect when the feature flag is enabled', async () => {
+                ldClientMock.variation.mockReturnValue(true)
+                getLDClientMock.mockReturnValue(ldClientMock)
+                setDocumentHidden(true)
+
+                store.dispatch(errorAction)
+                expect(window.location.href).not.toContain('/login')
+
+                jest.advanceTimersByTime(3000)
+                expect(window.location.href).not.toContain('/login')
+
+                setDocumentHidden(false)
+                document.dispatchEvent(new Event('visibilitychange'))
+
+                await waitFor(() => {
+                    expect(window.location.href).toContain('/login')
+                })
             })
         })
     })

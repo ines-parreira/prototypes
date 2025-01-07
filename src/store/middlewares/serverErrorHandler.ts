@@ -2,6 +2,7 @@ import _get from 'lodash/get'
 import _some from 'lodash/some'
 import {Middleware} from 'redux'
 
+import {FeatureFlagKey} from '../../config/featureFlags'
 import {
     GorgiasApiError,
     GorgiasApiResponseDataError,
@@ -10,6 +11,8 @@ import {notify} from '../../state/notifications/actions'
 import {Notification, NotificationStatus} from '../../state/notifications/types'
 import {RootState, StoreDispatch} from '../../state/types'
 import {errorToChildren, stripErrorMessage} from '../../utils'
+import {getLDClient} from '../../utils/launchDarkly'
+import {waitForDocumentVisible} from '../../utils/waitForDocumentVisible'
 
 const IGNORED_PREFIXES = ['SUBMIT_ACTIVITY_ERROR']
 
@@ -48,7 +51,18 @@ const serverErrorHandler: Middleware<
         }
 
         setTimeout(() => {
-            window.location.href = `${window.location.origin}/login`
+            if (
+                getLDClient().variation(
+                    FeatureFlagKey.DontTriggerLoginsOnInactiveTabs,
+                    false
+                )
+            ) {
+                void waitForDocumentVisible().then(() => {
+                    window.location.href = `${window.location.origin}/login`
+                })
+            } else {
+                window.location.href = `${window.location.origin}/login`
+            }
         }, 3000)
 
         return next(action)
