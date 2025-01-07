@@ -11,8 +11,8 @@ import {connect, ConnectedProps} from 'react-redux'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
+import type {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {renderTemplate} from 'pages/common/utils/template'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
@@ -107,7 +107,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
             ? parseFloat(associatedCharge.get('total_refunds') || '0')
             : 0
 
-        const actions = [
+        const actions: InfobarAction[] = [
             {
                 key: 'refund',
                 options: [
@@ -143,11 +143,8 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                         Refund order
                     </div>
                 ),
-                child: (
-                    <>
-                        <ButtonIconLabel icon="attach_money" /> Refund
-                    </>
-                ),
+                child: <>Refund</>,
+                leadingIcon: 'attach_money',
             },
         ]
 

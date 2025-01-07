@@ -1,5 +1,7 @@
 import {ComponentType, ReactNode} from 'react'
 
+import type {ButtonProps} from 'pages/common/components/button/Button'
+
 export type Parameter = {
     name: string
     type: string
@@ -10,6 +12,8 @@ export type Parameter = {
     step?: number
     min?: number
     max?: number
+    options?: Record<string, string>[]
+    allowCustomValue?: boolean
 }
 
 export type Option = {
@@ -27,6 +31,7 @@ export type InfobarAction = {
     tooltip?: string
     modal?: ComponentType<InfobarModalProps>
     modalData?: Record<string, unknown>
+    leadingIcon?: ButtonProps['leadingIcon']
 }
 
 export type InfobarModalProps = {

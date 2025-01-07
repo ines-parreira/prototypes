@@ -15,8 +15,8 @@ import {
 } from 'config/integrations/constants/recharge'
 import useAppSelector from 'hooks/useAppSelector'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
+import type {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {renderTemplate} from 'pages/common/utils/template'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
@@ -67,7 +67,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
             return null
         }
 
-        let actions = [
+        let actions: InfobarAction[] = [
             {
                 key: 'cancel',
                 options: [
@@ -96,11 +96,8 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                         Cancel subscription
                     </div>
                 ),
-                child: (
-                    <>
-                        <ButtonIconLabel icon="block" /> Cancel
-                    </>
-                ),
+                child: <>Cancel</>,
+                leadingIcon: 'block',
             },
             {
                 key: 'activate',
@@ -112,11 +109,8 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                         Activate subscription
                     </div>
                 ),
-                child: (
-                    <>
-                        <ButtonIconLabel icon="attach_money" /> Activate
-                    </>
-                ),
+                child: <>Activate</>,
+                leadingIcon: 'attach_money',
             },
         ]
 

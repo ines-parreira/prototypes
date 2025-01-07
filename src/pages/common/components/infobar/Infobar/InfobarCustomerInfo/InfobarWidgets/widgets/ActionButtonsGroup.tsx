@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import React, {useContext, useState} from 'react'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 
@@ -48,6 +49,7 @@ function ActionButtonsGroup({actions, payload}: Props) {
                         modal={action.modal}
                         modalData={action.modalData}
                         setModalOpen={setModalOpen}
+                        leadingIcon={action.leadingIcon}
                     >
                         {action.child}
                     </ActionButton>
@@ -78,6 +80,16 @@ function ActionButtonsGroup({actions, payload}: Props) {
                                     modalData={action.modalData}
                                     setModalOpen={setModalOpen}
                                 >
+                                    {action.leadingIcon ? (
+                                        <i
+                                            className={classNames(
+                                                'material-icons',
+                                                css.dropdownItemLeadingIcon
+                                            )}
+                                        >
+                                            {action.leadingIcon}
+                                        </i>
+                                    ) : null}
                                     {action.child}
                                 </ActionButton>
                             )

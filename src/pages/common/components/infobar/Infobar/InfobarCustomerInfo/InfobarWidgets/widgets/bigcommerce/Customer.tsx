@@ -11,7 +11,6 @@ import {
     BigCommerceActionType,
     BigCommerceCustomer,
 } from 'models/integration/types'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
@@ -60,11 +59,8 @@ function AfterTitle({source}: AfterTitleProps) {
                     },
                 ],
                 title: 'Create order',
-                child: (
-                    <>
-                        <ButtonIconLabel icon="add" /> Create order
-                    </>
-                ),
+                child: <>Create order</>,
+                leadingIcon: 'add',
                 modal: OrderModal,
                 modalData: {
                     actionName: BigCommerceActionType.CreateOrder,

@@ -11,22 +11,19 @@ exports[`Subscription AfterTitle should display only the cancel action because t
       id="action-button-1"
       type="button"
     >
+      <i
+        aria-hidden="true"
+        class="material-icons icon small"
+      >
+        block
+      </i>
       <span
         class="content"
       >
         <span
           id="action-button-1-tooltip-target"
         />
-        <span
-          class="wrapper"
-        >
-          <i
-            class="material-icons icon isLeft small"
-          >
-            block
-          </i>
-        </span>
-         Cancel
+        Cancel
       </span>
     </button>
   </span>

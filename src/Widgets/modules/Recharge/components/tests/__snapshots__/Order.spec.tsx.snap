@@ -11,22 +11,19 @@ exports[`Order <AfterTitle/> should display the refund action (because total_pri
       id="action-button-6"
       type="button"
     >
+      <i
+        aria-hidden="true"
+        class="material-icons icon small"
+      >
+        attach_money
+      </i>
       <span
         class="content"
       >
         <span
           id="action-button-6-tooltip-target"
         />
-        <span
-          class="wrapper"
-        >
-          <i
-            class="material-icons icon isLeft small"
-          >
-            attach_money
-          </i>
-        </span>
-         Refund
+        Refund
       </span>
     </button>
   </span>
@@ -57,22 +54,19 @@ exports[`Order <AfterTitle/> should display the refund action 1`] = `
       id="action-button-4"
       type="button"
     >
+      <i
+        aria-hidden="true"
+        class="material-icons icon small"
+      >
+        attach_money
+      </i>
       <span
         class="content"
       >
         <span
           id="action-button-4-tooltip-target"
         />
-        <span
-          class="wrapper"
-        >
-          <i
-            class="material-icons icon isLeft small"
-          >
-            attach_money
-          </i>
-        </span>
-         Refund
+        Refund
       </span>
     </button>
   </span>

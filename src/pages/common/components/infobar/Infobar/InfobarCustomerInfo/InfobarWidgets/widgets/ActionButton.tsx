@@ -3,18 +3,12 @@ import _isUndefined from 'lodash/isUndefined'
 import _noop from 'lodash/noop'
 import _omit from 'lodash/omit'
 import _uniqueId from 'lodash/uniqueId'
-import React, {
-    Component,
-    ComponentType,
-    ReactNode,
-    ComponentProps,
-    FormEvent,
-} from 'react'
+import React, {Component, ComponentType, ReactNode, FormEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Form, Label, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 
 import {WithAppNodeProps, withAppNode} from 'appNode'
-import Button from 'pages/common/components/button/Button'
+import Button, {type ButtonProps} from 'pages/common/components/button/Button'
 import DEPRECATED_BooleanField from 'pages/common/forms/DEPRECATED_BooleanField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -51,7 +45,7 @@ type Props = {
         customer_id?: string
     }
     children: ReactNode
-    tag: ComponentType<ComponentProps<typeof Button>>
+    tag: ComponentType<ButtonProps>
     modal?: ComponentType<InfobarModalProps>
     modalData?: Record<string, unknown>
     tagOptions?: Record<string, unknown>
@@ -62,6 +56,7 @@ type Props = {
     integrationId: IntegrationContextType['integrationId']
     setModalOpen?: (param: boolean) => void
     className?: string
+    leadingIcon?: ButtonProps['leadingIcon']
 } & ConnectedProps<typeof connector> &
     WithAppNodeProps
 
@@ -339,7 +334,14 @@ export class ActionButtonContainer extends Component<Props, State> {
     }
 
     render() {
-        const {children, tag: Tag, tagOptions, modal, actionError} = this.props
+        const {
+            children,
+            tag: Tag,
+            tagOptions,
+            modal,
+            actionError,
+            leadingIcon,
+        } = this.props
         const {isLoading} = this.state
         const hasError = !!actionError
         const tooltipTargetID = `${this.id}-tooltip-target`
@@ -353,6 +355,7 @@ export class ActionButtonContainer extends Component<Props, State> {
                     isDisabled={isLoading || hasError}
                     onClick={this.toggleUi}
                     className={css.actionButton}
+                    leadingIcon={leadingIcon}
                     {...tagOptions}
                 >
                     <span id={tooltipTargetID} />

@@ -12,8 +12,8 @@ import {connect, ConnectedProps} from 'react-redux'
 
 import {LineItem} from 'constants/integrations/types/shopify'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
+import type {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import {renderTemplate} from 'pages/common/utils/template'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
@@ -53,7 +53,7 @@ export class AfterTitle extends React.Component<{
         const total_price = parseFloat(source.get('total_price')) || 0
         const total_refunds = source.get('total_refunds') || 0
 
-        let actions = [
+        let actions: InfobarAction[] = [
             {
                 key: 'refund',
                 popover:
@@ -82,11 +82,8 @@ export class AfterTitle extends React.Component<{
                         Refund charge
                     </div>
                 ),
-                child: (
-                    <>
-                        <ButtonIconLabel icon="attach_money" /> Refund
-                    </>
-                ),
+                child: <>Refund</>,
+                leadingIcon: 'attach_money',
             },
         ]
 
@@ -120,7 +117,7 @@ export class SubscriptionAfterTitle extends React.Component<{
             return null
         }
 
-        let actions = [
+        let actions: InfobarAction[] = [
             {
                 key: 'skip',
                 options: [{value: 'rechargeSkipCharge'}],
@@ -133,11 +130,8 @@ export class SubscriptionAfterTitle extends React.Component<{
                         Skip charge on subscription
                     </div>
                 ),
-                child: (
-                    <>
-                        <ButtonIconLabel icon="block" /> Skip
-                    </>
-                ),
+                child: <>Skip</>,
+                leadingIcon: 'block',
             },
             {
                 key: 'unskip',
@@ -149,11 +143,8 @@ export class SubscriptionAfterTitle extends React.Component<{
                         Unskip charge on subscription
                     </div>
                 ),
-                child: (
-                    <>
-                        <ButtonIconLabel icon="autorenew" /> Unskip
-                    </>
-                ),
+                child: <>Unskip</>,
+                leadingIcon: 'autorenew',
             },
         ]
 

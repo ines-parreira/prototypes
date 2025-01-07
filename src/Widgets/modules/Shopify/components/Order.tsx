@@ -16,7 +16,6 @@ import {
     FinancialStatus,
 } from 'constants/integrations/types/shopify'
 import useAppSelector from 'hooks/useAppSelector'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
@@ -96,11 +95,8 @@ class AfterTitle extends Component<AfterTitleProps> {
                     },
                 ],
                 title: 'Duplicate order',
-                child: (
-                    <>
-                        <ButtonIconLabel icon="content_copy" /> Duplicate
-                    </>
-                ),
+                child: <>Duplicate</>,
+                leadingIcon: 'content_copy',
                 modal: DraftOrderModal,
                 modalData: {
                     actionName: ShopifyActionType.DuplicateOrder,
@@ -130,11 +126,8 @@ class AfterTitle extends Component<AfterTitleProps> {
                     },
                 ],
                 title: 'Refund order',
-                child: (
-                    <>
-                        <ButtonIconLabel icon="attach_money" /> Refund
-                    </>
-                ),
+                child: <>Refund</>,
+                leadingIcon: 'attach_money',
                 modal: RefundOrderModal,
                 modalData: {
                     actionName: ShopifyActionType.RefundOrder,
@@ -154,11 +147,8 @@ class AfterTitle extends Component<AfterTitleProps> {
                     },
                 ],
                 title: 'Cancel order',
-                child: (
-                    <>
-                        <ButtonIconLabel icon="block" /> Cancel
-                    </>
-                ),
+                child: <>Cancel</>,
+                leadingIcon: 'block',
                 modal: CancelOrderModal,
                 modalData: {
                     actionName: ShopifyActionType.CancelOrder,
@@ -179,11 +169,8 @@ class AfterTitle extends Component<AfterTitleProps> {
                     },
                 ],
                 title: 'Edit order',
-                child: (
-                    <>
-                        <ButtonIconLabel icon="mode_edit" /> Edit
-                    </>
-                ),
+                child: <>Edit</>,
+                leadingIcon: 'mode_edit',
                 modal: EditOrderModal,
                 modalData: {
                     actionName: ShopifyActionType.EditOrder,

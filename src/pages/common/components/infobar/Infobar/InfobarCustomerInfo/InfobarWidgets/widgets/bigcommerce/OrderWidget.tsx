@@ -12,7 +12,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getBigCommerceDraftOrderUrl} from 'models/integration/resources/bigcommerce'
 import {BigCommerceActionType} from 'models/integration/types/index'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
@@ -160,11 +159,8 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
                     },
                 ],
                 title: 'Duplicate order',
-                child: (
-                    <>
-                        <ButtonIconLabel icon="content_copy" /> Duplicate
-                    </>
-                ),
+                child: <>Duplicate</>,
+                leadingIcon: 'content_copy',
                 modal: OrderModalRenderWrapper,
                 modalData: {
                     actionName: BigCommerceActionType.DuplicateOrder,
@@ -189,11 +185,8 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
                     },
                 ],
                 title: 'Refund order',
-                child: (
-                    <>
-                        <ButtonIconLabel icon="attach_money" /> Refund
-                    </>
-                ),
+                child: <>Refund</>,
+                leadingIcon: 'attach_money',
                 modal: RefundOrderModalRenderWrapper,
                 modalData: {
                     actionName: BigCommerceActionType.RefundOrder,

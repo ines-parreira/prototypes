@@ -13,7 +13,6 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
@@ -87,11 +86,8 @@ class AfterTitleContainer extends Component<
                     },
                 ],
                 title: 'Create order',
-                child: (
-                    <>
-                        <ButtonIconLabel icon="add" /> Create order
-                    </>
-                ),
+                child: <>Create order</>,
+                leadingIcon: 'add',
                 modal: DraftOrderModal,
                 modalData: {
                     actionName: ShopifyActionType.CreateOrder,
