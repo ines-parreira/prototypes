@@ -10,6 +10,7 @@ import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
 import {Router} from 'react-router-dom'
+import {CompatRouter} from 'react-router-dom-v5-compat'
 import {Store} from 'redux'
 
 import {appQueryClient} from 'api/queryClient'
@@ -76,9 +77,11 @@ const Root = ({store}: Props) => {
                             presenceTimeout={20}
                         >
                             <Router history={history}>
-                                <Main>
-                                    <Routes />
-                                </Main>
+                                <CompatRouter>
+                                    <Main>
+                                        <Routes />
+                                    </Main>
+                                </CompatRouter>
                             </Router>
                         </RealtimeProvider>
                     </LDProvider>

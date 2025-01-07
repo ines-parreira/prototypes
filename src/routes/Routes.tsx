@@ -10,6 +10,8 @@ import {
     useRouteMatch,
 } from 'react-router-dom'
 
+import {CompatRoute} from 'react-router-dom-v5-compat'
+
 import {OBS_ADOPT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {useFlag} from 'common/flags'
 import {logPageChange} from 'common/segment'
@@ -1653,7 +1655,7 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
 export function HomepageRoutes({match: {path}}: RouteComponentProps) {
     return (
         <Switch>
-            <Route
+            <CompatRoute
                 path={`${path}/`}
                 exact
                 render={() => (

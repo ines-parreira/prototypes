@@ -177,6 +177,7 @@
         "react-rating-stars-component": "2.2.0",
         "react-redux": "7.2.3",
         "react-router-dom": "5.2.0",
+        "react-router-dom-v5-compat": "^6.28.0",
         "react-select": "1.0.0-beta14",
         "react-slick": "0.28.0",
         "react-transition-group": "4.4.2",
