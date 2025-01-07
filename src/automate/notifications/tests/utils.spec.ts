@@ -2,7 +2,7 @@ import {ldClientMock} from 'jest-launchdarkly-mock'
 
 import {getLDClient} from 'utils/launchDarkly'
 
-import {AiAgentNotificationSeries} from '../types'
+import {AiAgentNotificationType} from '../types'
 import {getNotificationParams} from '../utils'
 
 describe('getNotificationParams', () => {
@@ -22,7 +22,8 @@ describe('getNotificationParams', () => {
     it('should return correct params for StartAiAgentSetup', () => {
         const payload = {
             ...basePayload,
-            notification_series: AiAgentNotificationSeries.StartAiAgentSetup,
+            ai_agent_notification_type:
+                AiAgentNotificationType.StartAiAgentSetup,
         }
 
         const result = getNotificationParams(payload, null)
@@ -38,7 +39,8 @@ describe('getNotificationParams', () => {
     it('should return correct params for FinishAiAgentSetup', () => {
         const payload = {
             ...basePayload,
-            notification_series: AiAgentNotificationSeries.FinishAiAgentSetup,
+            ai_agent_notification_type:
+                AiAgentNotificationType.FinishAiAgentSetup,
         }
 
         const result = getNotificationParams(payload, null)
@@ -54,7 +56,7 @@ describe('getNotificationParams', () => {
     it('should return correct params for ActivateAiAgent', () => {
         const payload = {
             ...basePayload,
-            notification_series: AiAgentNotificationSeries.ActivateAiAgent,
+            ai_agent_notification_type: AiAgentNotificationType.ActivateAiAgent,
         }
 
         const result = getNotificationParams(payload, null)
@@ -70,7 +72,7 @@ describe('getNotificationParams', () => {
     it('should return correct params for MeetAiAgent', () => {
         const payload = {
             ...basePayload,
-            notification_series: AiAgentNotificationSeries.MeetAiAgent,
+            ai_agent_notification_type: AiAgentNotificationType.MeetAiAgent,
         }
 
         const result = getNotificationParams(payload, null)
@@ -86,7 +88,8 @@ describe('getNotificationParams', () => {
     it('should return correct params for FirstAiAgentTicket with valid ticket view ID', () => {
         const payload = {
             ...basePayload,
-            notification_series: AiAgentNotificationSeries.FirstAiAgentTicket,
+            ai_agent_notification_type:
+                AiAgentNotificationType.FirstAiAgentTicket,
         }
 
         const result = getNotificationParams(payload, 123)
@@ -102,8 +105,8 @@ describe('getNotificationParams', () => {
     it('should return null for unsupported notification series', () => {
         const payload = {
             ...basePayload,
-            notification_series:
-                'unsupported-series' as AiAgentNotificationSeries,
+            ai_agent_notification_type:
+                'unsupported-series' as AiAgentNotificationType,
         }
 
         const result = getNotificationParams(payload, null)

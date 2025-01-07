@@ -3050,7 +3050,7 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/design-tokens/0.4.0/07df81961cf78ee2e549aba4234546df0c60d4e7#07df81961cf78ee2e549aba4234546df0c60d4e7"
   integrity sha512-XGuTxKvgvr9/IfQxvhh1F9cjsWlZlpOjLEWBT/8f8hT2zPAQwUVKJ97Q5r0d8DUb8alBhC3rF0PYCIxPewo2MA==
 
-"@gorgias/event-tracker-api@*":
+"@gorgias/event-tracker-api@*", "@gorgias/event-tracker-api@1.0.4":
   version "1.0.4"
   resolved "https://npm.pkg.github.com/download/@gorgias/event-tracker-api/1.0.4/d405fe97a9084b0b1a5ada748a9f5b613f5be7bd#d405fe97a9084b0b1a5ada748a9f5b613f5be7bd"
   integrity sha512-G/Rvt0SSckZ8i+TsuxAW77fXEmMLkbDqfQBZ9G9ah1RAnZoVKP+l5mU2gxkwSaCzR7Bc/fRNouGmhwCoJQFuDw==

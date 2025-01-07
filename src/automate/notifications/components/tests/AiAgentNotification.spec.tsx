@@ -4,7 +4,7 @@ import React from 'react'
 
 import {
     AiAgentNotificationPayload,
-    AiAgentNotificationSeries,
+    AiAgentNotificationType,
 } from 'automate/notifications/types'
 import type {Notification} from 'common/notifications'
 
@@ -34,41 +34,41 @@ describe('AiAgentNotification', () => {
     }
 
     const notifications: {
-        series: AiAgentNotificationSeries
+        type: AiAgentNotificationType
         title: string
         subtitle: string
         redirectTo: string
     }[] = [
         {
-            series: AiAgentNotificationSeries.StartAiAgentSetup,
+            type: AiAgentNotificationType.StartAiAgentSetup,
             title: 'Set up AI Agent',
             subtitle:
                 'We noticed you checking out AI Agent. It only takes a few steps to start automating 60% of your tickets!',
             redirectTo: '/app/automation/shopify/store_1/ai-agent',
         },
         {
-            series: AiAgentNotificationSeries.FinishAiAgentSetup,
+            type: AiAgentNotificationType.FinishAiAgentSetup,
             title: 'Finish AI Agent setup',
             subtitle:
                 'You’re only a few steps away from getting AI Agent ready to start automating 60% of your tickets!',
             redirectTo: '/app/automation/shopify/store_1/ai-agent/new',
         },
         {
-            series: AiAgentNotificationSeries.ActivateAiAgent,
+            type: AiAgentNotificationType.ActivateAiAgent,
             title: 'Activate AI Agent',
             subtitle:
                 'You’re just one click away from automating 60% of your tickets!',
             redirectTo: '/app/automation/shopify/store_1/ai-agent',
         },
         {
-            series: AiAgentNotificationSeries.MeetAiAgent,
+            type: AiAgentNotificationType.MeetAiAgent,
             title: 'Meet your newest team member: AI Agent',
             subtitle:
                 'Delight customers with instant and personalized answers, automating up to 60% of your tickets!',
             redirectTo: '/app/automation/shopify/store_1/ai-agent',
         },
         {
-            series: AiAgentNotificationSeries.FirstAiAgentTicket,
+            type: AiAgentNotificationType.FirstAiAgentTicket,
             title: 'AI Agent answered it’s first ticket',
             subtitle:
                 'Review AI Agent’s response and leave feedback in the ticket to improve it’s performance.',
@@ -77,8 +77,8 @@ describe('AiAgentNotification', () => {
     ]
 
     it.each(notifications)(
-        'should render correctly $series notification and redirect to the correct page when clicked',
-        ({series, title, subtitle, redirectTo}) => {
+        'should render correctly $type notification and redirect to the correct page when clicked',
+        ({type, title, subtitle, redirectTo}) => {
             const notification: Notification<AiAgentNotificationPayload> = {
                 id: '1',
                 inserted_datetime: '2024-11-04T13:07:00',
@@ -87,9 +87,9 @@ describe('AiAgentNotification', () => {
                 type: 'automate-setup-and-optimization',
                 payload: {
                     ...basePayload,
-                    notification_series: series,
+                    ai_agent_notification_type: type,
                     ticket_id:
-                        series === AiAgentNotificationSeries.FirstAiAgentTicket
+                        type === AiAgentNotificationType.FirstAiAgentTicket
                             ? '12345'
                             : undefined,
                 },
@@ -112,7 +112,7 @@ describe('AiAgentNotification', () => {
         }
     )
 
-    it('should not render if the notification series is not supported', () => {
+    it('should not render if the notification type is not supported', () => {
         const unsupportedNotification: Notification<AiAgentNotificationPayload> =
             {
                 id: '2',
@@ -122,8 +122,8 @@ describe('AiAgentNotification', () => {
                 type: 'automate-setup-and-optimization',
                 payload: {
                     ...basePayload,
-                    notification_series:
-                        'unsupported-series' as AiAgentNotificationSeries,
+                    ai_agent_notification_type:
+                        'unsupported-type' as AiAgentNotificationType,
                 },
             }
 

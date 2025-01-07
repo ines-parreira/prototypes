@@ -6,6 +6,10 @@ import {AUTOMATE_ICON} from 'pages/common/components/SourceIcon'
 import {getLDClient} from 'utils/launchDarkly'
 
 import AiAgentNotification from './components/AiAgentNotification'
+import {
+    AI_AGENT_SET_AND_OPTIMIZED_TYPE,
+    AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
+} from './constants'
 
 const getIsAiAgentOnboardingNotificationEnabled = () => {
     const launchDarklyClient = getLDClient()
@@ -24,13 +28,13 @@ registerCategory({
 })
 
 registerNotification({
-    type: 'automate-setup-and-optimization',
+    type: AI_AGENT_SET_AND_OPTIMIZED_TYPE,
     component: AiAgentNotification,
-    workflow: 'automate-setup-and-optimization',
+    workflow: AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
     settings: {
         type: 'account-and-system-updates',
         icon: AUTOMATE_ICON,
-        label: 'Automate set up and optimization tips',
+        label: 'AI Agent set up and optimization tips',
     },
     isEnabled: getIsAiAgentOnboardingNotificationEnabled,
 })

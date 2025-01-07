@@ -1,5 +1,7 @@
 import {registerCategory, registerNotification} from 'common/notifications'
 
+import {AI_AGENT_SET_AND_OPTIMIZED_TYPE} from '../constants'
+
 jest.mock('common/notifications', () => ({
     registerCategory: jest.fn(),
     registerNotification: jest.fn(),
@@ -14,7 +16,7 @@ describe('init', () => {
             expect.objectContaining({type: categoryType})
         )
 
-        const notificationType = 'automate-setup-and-optimization'
+        const notificationType = AI_AGENT_SET_AND_OPTIMIZED_TYPE
         expect(registerNotification).toHaveBeenCalledWith(
             expect.objectContaining({type: notificationType})
         )

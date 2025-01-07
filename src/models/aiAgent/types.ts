@@ -131,3 +131,42 @@ export type CreateWizardPayload = Pick<Wizard, 'stepName' | 'stepData'>
 type WizardProps = {
     wizard?: CreateWizardPayload
 }
+
+export enum AiAgentOnboardingState {
+    VisitedAiAgent = 'visited-ai-agent',
+    StartedSetup = 'started-setup',
+    FinishedSetup = 'finished-setup',
+    Activated = 'activated',
+    FullyOnboarded = 'fully-onboarded',
+}
+
+export type OnboardingNotificationState = {
+    shopName: string
+    welcomePageVisitedDatetimes: string[]
+    testBeforeActivationDatetimes: string[]
+    firstActivationDatetime: string | null
+    startAiAgentSetupNotificationReceivedDatetime: string | null
+    finishAiAgentSetupNotificationReceivedDatetime: string | null
+    activateAiAgentNotificationReceivedDatetime: string | null
+    meetAiAgentNotificationReceivedDatetime: string | null
+    firstAiAgentTicketNotificationReceivedDatetime: string | null
+    onboardingState: AiAgentOnboardingState | null
+}
+
+export type OnboardingNotificationStateResponse = {
+    onboardingNotificationState: OnboardingNotificationState
+}
+
+export type CreateOnboardingNotificationStatePayload = Pick<
+    OnboardingNotificationState,
+    'shopName'
+> &
+    Partial<Omit<OnboardingNotificationState, 'shopName'>>
+
+export type UpsertOnboardingNotificationStatePayload =
+    OnboardingNotificationState
+
+export type GetOnboardingNotificationStateParams = {
+    accountDomain: string
+    storeName: string
+}

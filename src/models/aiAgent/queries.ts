@@ -26,7 +26,15 @@ import {
     createContextAndGenerateCustomToneOfVoicePreview,
     createContextAndSubmitPlaygroundTicket,
 } from './resources/message-processing'
-import {GetStoreConfigurationParams} from './types'
+import {
+    createOnboardingNotificationState,
+    getOnboardingNotificationState,
+    upsertOnboardingNotificationState,
+} from './resources/onboarding-notification-state'
+import {
+    GetOnboardingNotificationStateParams,
+    GetStoreConfigurationParams,
+} from './types'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
 export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
@@ -294,3 +302,49 @@ export const useGenerateCustomToneOfVoicePreview = (
             createContextAndGenerateCustomToneOfVoicePreview(...body),
         ...overrides,
     })
+
+// Onboarding notification state
+export const onboardingNotificationStateKeys = {
+    all: () => ['aiAgentOnboardingNotificationState'] as const,
+    details: () =>
+        [...onboardingNotificationStateKeys.all(), 'detail'] as const,
+    detail: (params: GetOnboardingNotificationStateParams) =>
+        [...onboardingNotificationStateKeys.details(), params] as const,
+}
+
+export const useGetOnboardingNotificationState = (
+    params: GetOnboardingNotificationStateParams,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getOnboardingNotificationState>>
+    >
+) => {
+    return useQuery({
+        queryKey: onboardingNotificationStateKeys.detail(params),
+        queryFn: () =>
+            getOnboardingNotificationState(
+                params.accountDomain,
+                params.storeName
+            ),
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        ...overrides,
+    })
+}
+
+export const useCreateOnboardingNotificationState = (
+    overrides?: MutationOverrides<typeof createOnboardingNotificationState>
+) => {
+    return useMutation({
+        mutationFn: (params) => createOnboardingNotificationState(...params),
+        ...overrides,
+    })
+}
+
+export const useUpsertOnboardingNotificationState = (
+    overrides?: MutationOverrides<typeof upsertOnboardingNotificationState>
+) => {
+    return useMutation({
+        mutationFn: (params) => upsertOnboardingNotificationState(...params),
+        ...overrides,
+    })
+}

@@ -8,7 +8,7 @@ import {GorgiasAppAuthService} from 'utils/gorgiasAppsAuth'
 import {ActivityEvents, AGENT_ACTIVITY_HEALTHCHECK_INTERVAL} from './constants'
 import {checkIfTrackerIsEnabled} from './utils'
 
-const ingestionEndpoint = isDevelopment()
+export const ingestionEndpoint = isDevelopment()
     ? 'http://localhost:8076/private/track'
     : `https://${
           window.GORGIAS_CLUSTER
@@ -16,7 +16,7 @@ const ingestionEndpoint = isDevelopment()
           .split('.')
           .pop()!}/private/track`
 
-const reportSentryError = (error: unknown, event: unknown) => {
+export const reportSentryError = (error: unknown, event: unknown) => {
     // remove cast when types are corrected in the library
     const axiosError = error as AxiosError<{message: string; code: number}>
     const sentryError = axiosError.response?.data?.message

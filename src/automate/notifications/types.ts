@@ -1,4 +1,4 @@
-export enum AiAgentNotificationSeries {
+export enum AiAgentNotificationType {
     StartAiAgentSetup = 'start-ai-agent-setup',
     FinishAiAgentSetup = 'finish-ai-agent-setup',
     ActivateAiAgent = 'activate-ai-agent',
@@ -7,7 +7,7 @@ export enum AiAgentNotificationSeries {
 }
 
 export type AiAgentNotificationPayload = {
-    notification_series: AiAgentNotificationSeries
+    ai_agent_notification_type: AiAgentNotificationType
     shop_name: string
     shop_type: string
     ticket_id?: string

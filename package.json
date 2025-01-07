@@ -70,6 +70,7 @@
         "@gorgias/analytics-ui-kit": "^0.1.0",
         "@gorgias/api-validators": "^0.4.9",
         "@gorgias/design-tokens": "^0.4.0",
+        "@gorgias/event-tracker-api": "1.0.4",
         "@gorgias/event-tracker-browser": "2.0.0",
         "@gorgias/merchant-ui-kit": "^0.2.0",
         "@gorgias/realtime": "^0.4.6",

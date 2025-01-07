@@ -8,6 +8,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {CreatePlaygroundBody} from 'models/aiAgentPlayground/types'
 import {getAIGuidanceFixture} from 'pages/aiAgent/fixtures/aiGuidance.fixture'
 import {customToneOfVoicePreviewFixture} from 'pages/aiAgent/fixtures/customToneOfVoicePreview.fixture'
+import {getOnboardingNotificationStateFixture} from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {HelpCenterClient} from 'rest_api/help_center_api/client'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
@@ -18,6 +19,10 @@ import {
     useGetWelcomePageAcknowledged,
     useCreateWelcomePageAcknowledged,
     useGenerateCustomToneOfVoicePreview,
+    useGetOnboardingNotificationState,
+    useCreateOnboardingNotificationState,
+    CACHE_TIME_MS,
+    useUpsertOnboardingNotificationState,
 } from '../queries'
 import {
     createWelcomePageAcknowledged,
@@ -25,6 +30,11 @@ import {
 } from '../resources/cloud-function-configuration'
 import * as guidanceResources from '../resources/guidances'
 import {createContextAndGenerateCustomToneOfVoicePreview} from '../resources/message-processing'
+import {
+    createOnboardingNotificationState,
+    getOnboardingNotificationState,
+    upsertOnboardingNotificationState,
+} from '../resources/onboarding-notification-state'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useHelpCenterApi: jest.fn(),
@@ -33,6 +43,12 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
 jest.mock('models/aiAgent/resources/cloud-function-configuration', () => ({
     createWelcomePageAcknowledged: jest.fn(),
     getWelcomePageAcknowledged: jest.fn(),
+}))
+
+jest.mock('models/aiAgent/resources/onboarding-notification-state', () => ({
+    getOnboardingNotificationState: jest.fn(),
+    createOnboardingNotificationState: jest.fn(),
+    upsertOnboardingNotificationState: jest.fn(),
 }))
 
 jest.mock('models/aiAgent/resources/message-processing', () => ({
@@ -246,6 +262,113 @@ describe('queries', () => {
             await expect(
                 mutationFn(customToneOfVoicePreviewFixture)
             ).resolves.toEqual(mockData)
+        })
+    })
+
+    describe('useGetOnboardingNotificationState', () => {
+        it('should call useQuery with the correct parameters', async () => {
+            const accountDomain = 'test-account'
+            const storeName = 'test-store'
+            const mockData = getOnboardingNotificationStateFixture({
+                shopName: storeName,
+            })
+            const overrides = {staleTime: 2000}
+
+            ;(getOnboardingNotificationState as jest.Mock).mockResolvedValue(
+                mockData
+            )
+
+            renderHook(
+                () =>
+                    useGetOnboardingNotificationState(
+                        {accountDomain, storeName},
+                        overrides
+                    ),
+                {wrapper}
+            )
+
+            expect(useQuerySpy).toHaveBeenCalledWith({
+                queryKey: [
+                    'aiAgentOnboardingNotificationState',
+                    'detail',
+                    {accountDomain, storeName},
+                ],
+                queryFn: expect.any(Function),
+                staleTime: 2000,
+                cacheTime: CACHE_TIME_MS,
+            })
+
+            const queryFn = (
+                useQuerySpy.mock.calls[0][0] as unknown as {
+                    queryFn: () => any
+                }
+            ).queryFn
+
+            await expect(queryFn()).resolves.toEqual(mockData)
+        })
+    })
+
+    describe('useCreateOnboardingNotificationState', () => {
+        it('should call useMutation with the correct parameters', async () => {
+            const storeName = 'test-store'
+            const overrides = {cacheTime: 2000, retry: true}
+            const mockData = getOnboardingNotificationStateFixture({
+                shopName: storeName,
+            })
+
+            ;(createOnboardingNotificationState as jest.Mock).mockResolvedValue(
+                mockData
+            )
+
+            renderHook(() => useCreateOnboardingNotificationState(overrides), {
+                wrapper,
+            })
+
+            expect(useMutationSpy).toHaveBeenCalledWith({
+                mutationFn: expect.any(Function),
+                cacheTime: 2000,
+                retry: true,
+            })
+
+            const mutationFn = (
+                useMutationSpy.mock.calls[0][0] as unknown as {
+                    mutationFn: (args: [string]) => any
+                }
+            ).mutationFn
+
+            await expect(mutationFn([storeName])).resolves.toEqual(mockData)
+        })
+    })
+
+    describe('useUpsertOnboardingNotificationState', () => {
+        it('should call useMutation with the correct parameters', async () => {
+            const storeName = 'test-store'
+            const overrides = {cacheTime: 2000, retry: true}
+            const mockData = getOnboardingNotificationStateFixture({
+                shopName: storeName,
+            })
+
+            ;(upsertOnboardingNotificationState as jest.Mock).mockResolvedValue(
+                mockData
+            )
+
+            renderHook(() => useUpsertOnboardingNotificationState(overrides), {
+                wrapper,
+            })
+
+            expect(useMutationSpy).toHaveBeenCalledWith({
+                mutationFn: expect.any(Function),
+                cacheTime: 2000,
+                retry: true,
+            })
+
+            const mutationFn = (
+                useMutationSpy.mock.calls[0][0] as unknown as {
+                    mutationFn: (args: [string]) => any
+                }
+            ).mutationFn
+
+            await expect(mutationFn([storeName])).resolves.toEqual(mockData)
         })
     })
 })
