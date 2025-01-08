@@ -1,8 +1,6 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {useParams, Switch, Route} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType, isWhatsAppIntegration} from 'models/integration/types'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -22,7 +20,6 @@ import WhatsAppMessageTemplatesList from './WhatsAppMessageTemplatesList'
 
 export default function WhatsAppIntegration() {
     const {integrationId} = useParams<{integrationId: string}>()
-    const enableMigration = useFlags()[FeatureFlagKey.EnableWhatsAppMigrations]
 
     const currentIntegration = useAppSelector((state) => {
         if (integrationId) {
@@ -88,11 +85,9 @@ export default function WhatsAppIntegration() {
                 <Route path={`${baseURL}/onboard`} exact>
                     <WhatsAppIntegrationOnboarding />
                 </Route>
-                {enableMigration && (
-                    <Route path={`${baseURL}/migration`} exact>
-                        <WhatsAppIntegrationMigration />
-                    </Route>
-                )}
+                <Route path={`${baseURL}/migration`} exact>
+                    <WhatsAppIntegrationMigration />
+                </Route>
                 <Route path={baseURL} exact>
                     <WhatsAppIntegrationDetails />
                 </Route>

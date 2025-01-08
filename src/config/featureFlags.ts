@@ -86,7 +86,6 @@ export enum FeatureFlagKey {
     DontTriggerLoginsOnInactiveTabs = 'dont-trigger-logins-on-inactive-tabs',
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',
     EnableNewLanguages = 'enable-new-languages',
-    EnableWhatsAppMigrations = 'enable-whatsapp-migrations',
     FeedbackToAIAgentInTicketViews = 'feedback-to-ai-agent-in-ticket-views',
     FeedbackToAIAgentInTicketViewsV3 = 'feedback-to-ai-agent-in-ticket-views-v3',
     FeedbackToAIAgentInTicketViewsV4 = 'feedback-to-ai-agent-in-ticket-views-v-4',

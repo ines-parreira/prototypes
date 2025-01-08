@@ -1,7 +1,5 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 
@@ -12,17 +10,15 @@ type Props = {
 export default function WhatsAppIntegrationConnectButton({
     isHorizontal,
 }: Props) {
-    const enableMigration = useFlags()[FeatureFlagKey.EnableWhatsAppMigrations]
-
     return isHorizontal ? (
         <>
-            {enableMigration && <MigrateButton isHorizontal />}
+            <MigrateButton isHorizontal />
             <ConnectButton />
         </>
     ) : (
         <>
             <ConnectButton />
-            {enableMigration && <MigrateButton />}
+            <MigrateButton />
         </>
     )
 }
