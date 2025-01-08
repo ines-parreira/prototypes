@@ -5,7 +5,6 @@ import {useUpdateOrDeleteTicketFieldValue} from 'custom-fields/hooks/queries/use
 import useAppDispatch from 'hooks/useAppDispatch'
 import {Ticket} from 'models/ticket/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {createInputId} from 'pages/tickets/detail/components/TicketFields/components/fields/DropdownField'
 import {updateCustomFieldState} from 'state/ticket/actions'
 
@@ -133,13 +132,9 @@ export default function ContactReasonSuggestion({ticket}: Props) {
                                             intent="primary"
                                             size="small"
                                             onClick={() => setConfirmed(true)}
+                                            leadingIcon="check_circle"
                                         >
-                                            <ButtonIconLabel
-                                                icon="check_circle"
-                                                position="left"
-                                            >
-                                                Confirm
-                                            </ButtonIconLabel>
+                                            Confirm
                                         </Button>
                                     </>
                                 )}

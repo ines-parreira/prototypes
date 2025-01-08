@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -50,10 +49,9 @@ export default function DeleteSectionModal({
                             intent="destructive"
                             isLoading={isSubmitting}
                             onClick={onSubmit}
+                            leadingIcon="delete"
                         >
-                            <ButtonIconLabel icon="delete">
-                                Delete
-                            </ButtonIconLabel>
+                            Delete
                         </Button>
 
                         <Button intent="secondary" onClick={onClose}>

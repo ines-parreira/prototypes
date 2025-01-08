@@ -13,7 +13,6 @@ import {JobParams, JobType} from 'models/job/types'
 import {FetchMacrosOptions} from 'models/macro/types'
 import {MacroActionName} from 'models/macroAction/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import Modal from 'pages/common/components/modal/Modal'
@@ -410,10 +409,9 @@ export class MacroModalContainer extends Component<Props, State> {
                                     <Button
                                         intent="secondary"
                                         onClick={this._addNewMacro}
+                                        leadingIcon="add"
                                     >
-                                        <ButtonIconLabel icon="add">
-                                            Create macro
-                                        </ButtonIconLabel>
+                                        Create macro
                                     </Button>
                                 )}
                             </Col>
@@ -454,10 +452,9 @@ export class MacroModalContainer extends Component<Props, State> {
                                                                 ''
                                                             ) as string
                                                         }?`}
+                                                        leadingIcon="delete"
                                                     >
-                                                        <ButtonIconLabel icon="delete">
-                                                            Delete macro
-                                                        </ButtonIconLabel>
+                                                        Delete macro
                                                     </ConfirmButton>
                                                 )}
                                             </div>

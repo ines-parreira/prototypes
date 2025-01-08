@@ -170,19 +170,16 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  1`]
                 class="wrapper fill primary small"
                 type="button"
               >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon small"
+                >
+                  check_circle
+                </i>
                 <span
                   class="content"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft small"
-                    >
-                      check_circle
-                    </i>
-                    Confirm
-                  </span>
+                  Confirm
                 </span>
               </button>
             </div>
@@ -281,19 +278,16 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  2`]
                 class="wrapper fill primary small"
                 type="button"
               >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon small"
+                >
+                  check_circle
+                </i>
                 <span
                   class="content"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft small"
-                    >
-                      check_circle
-                    </i>
-                    Confirm
-                  </span>
+                  Confirm
                 </span>
               </button>
             </div>
@@ -388,19 +382,16 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  3`]
                 class="wrapper fill primary small"
                 type="button"
               >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon small"
+                >
+                  check_circle
+                </i>
                 <span
                   class="content"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft small"
-                    >
-                      check_circle
-                    </i>
-                    Confirm
-                  </span>
+                  Confirm
                 </span>
               </button>
             </div>
@@ -499,19 +490,16 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  4`]
                 class="wrapper fill primary small"
                 type="button"
               >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon small"
+                >
+                  check_circle
+                </i>
                 <span
                   class="content"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft small"
-                    >
-                      check_circle
-                    </i>
-                    Confirm
-                  </span>
+                  Confirm
                 </span>
               </button>
             </div>
@@ -610,19 +598,16 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  5`]
                 class="wrapper fill primary small"
                 type="button"
               >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon small"
+                >
+                  check_circle
+                </i>
                 <span
                   class="content"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft small"
-                    >
-                      check_circle
-                    </i>
-                    Confirm
-                  </span>
+                  Confirm
                 </span>
               </button>
             </div>

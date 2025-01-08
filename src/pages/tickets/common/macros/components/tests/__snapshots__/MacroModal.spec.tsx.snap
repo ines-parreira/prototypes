@@ -48,19 +48,16 @@ exports[`<MacroModal /> should render MacroModal 1`] = `
             class="wrapper fill secondary medium"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              add
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  add
-                </i>
-                Create macro
-              </span>
+              Create macro
             </span>
           </button>
         </div>
@@ -77,19 +74,16 @@ exports[`<MacroModal /> should render MacroModal 1`] = `
                 id="confirm-42"
                 type="button"
               >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  delete
+                </i>
                 <span
                   class="content"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft medium"
-                    >
-                      delete
-                    </i>
-                    Delete macro
-                  </span>
+                  Delete macro
                 </span>
               </button>
             </div>

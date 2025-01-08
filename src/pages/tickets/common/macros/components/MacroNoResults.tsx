@@ -4,7 +4,6 @@ import {UserRole} from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import {FetchMacrosOptions} from 'models/macro/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {RootState} from 'state/types'
 import {hasRole} from 'utils'
 
@@ -29,10 +28,8 @@ const MacroNoResults = ({searchParams, newAction}: Props) => {
                 )}
             </p>
             {hasRole(currentUser, UserRole.Agent) && (
-                <Button onClick={newAction}>
-                    <ButtonIconLabel icon="add">
-                        Create a new macro
-                    </ButtonIconLabel>
+                <Button onClick={newAction} leadingIcon="add">
+                    Create a new macro
                 </Button>
             )}
         </div>

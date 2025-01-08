@@ -6,7 +6,6 @@ import React, {useCallback, useMemo, useRef, useState} from 'react'
 import {Item} from 'components/Dropdown'
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import {TagDropdownMenu} from 'tags'
 
@@ -61,8 +60,9 @@ const TagDropdown = ({
                 fillStyle={transparent ? 'ghost' : 'fill'}
                 size="small"
                 className={cn({[css.isOpen]: isDropdownOpen})}
+                leadingIcon="add"
             >
-                <ButtonIconLabel icon="add">Add tags</ButtonIconLabel>
+                Add tags
             </Button>
             <Dropdown
                 isOpen={isDropdownOpen}

@@ -22,7 +22,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import useShortcuts from 'hooks/useShortcuts'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import Group from 'pages/common/components/layout/Group'
@@ -479,13 +478,9 @@ export const TicketListActions = ({
                         size="small"
                         isDisabled={isDisabled}
                         className="skip-default"
+                        trailingIcon="arrow_drop_down"
                     >
-                        <ButtonIconLabel
-                            icon="arrow_drop_down"
-                            position="right"
-                        >
-                            Assign to team
-                        </ButtonIconLabel>
+                        Assign to team
                     </Button>
                 </DropdownToggle>
                 <DropdownMenu right className={css['assignee-dropdown-list']}>
@@ -557,10 +552,9 @@ export const TicketListActions = ({
                 size="small"
                 isDisabled={isDisabled}
                 onClick={() => toggleDropdown(ActionDropdown.Tags)}
+                trailingIcon="arrow_drop_down"
             >
-                <ButtonIconLabel icon="arrow_drop_down" position="right">
-                    Add tag
-                </ButtonIconLabel>
+                Add tag
             </Button>
             <Dropdown
                 isOpen={openDropdown === ActionDropdown.Tags}
@@ -576,13 +570,9 @@ export const TicketListActions = ({
                         intent="secondary"
                         size="small"
                         isDisabled={isDisabled}
+                        trailingIcon="arrow_drop_down"
                     >
-                        <ButtonIconLabel
-                            icon="arrow_drop_down"
-                            position="right"
-                        >
-                            More
-                        </ButtonIconLabel>
+                        More
                     </Button>
                 </DropdownToggle>
                 <DropdownMenu right>

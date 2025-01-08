@@ -3,7 +3,6 @@ import React from 'react'
 
 import {TicketStatus as TicketStatusEnum} from 'business/types/ticket'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 
 type Props = {
@@ -29,8 +28,9 @@ const TicketStatus = ({setQuickStatus, currentStatus}: Props) => {
                         size="small"
                         intent="secondary"
                         onClick={() => setQuickStatus(currentStatus)}
+                        leadingIcon="check"
                     >
-                        <ButtonIconLabel icon="check">Close</ButtonIconLabel>
+                        Close
                     </Button>
                 )}
             </span>

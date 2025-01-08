@@ -8,7 +8,6 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {getCustomersState, makeIsLoading} from 'state/customers/selectors'
 import {toggleHistory} from 'state/ticket/actions'
 import {getDisplayHistory} from 'state/ticket/selectors'
@@ -78,21 +77,18 @@ export function CustomerTimelineButton({isEditing = false}: Props) {
                         intent={openTicketsCounter ? 'primary' : 'secondary'}
                         onClick={handleCustomerTimelineButtonClick}
                         isDisabled={isHistoryDisabled}
+                        leadingIcon={
+                            isHistoryDisplayed
+                                ? 'close'
+                                : 'format_list_bulleted'
+                        }
                     >
-                        <ButtonIconLabel
-                            icon={
-                                isHistoryDisplayed
-                                    ? 'close'
-                                    : 'format_list_bulleted'
-                            }
-                        >
-                            {isHistoryDisplayed
-                                ? 'Close timeline'
-                                : 'Customer timeline'}
-                            {openTicketsCounter > 0 &&
-                                !isHistoryLoading &&
-                                ` (${openTicketsCounter})`}
-                        </ButtonIconLabel>
+                        {isHistoryDisplayed
+                            ? 'Close timeline'
+                            : 'Customer timeline'}
+                        {openTicketsCounter > 0 &&
+                            !isHistoryLoading &&
+                            ` (${openTicketsCounter})`}
                     </Button>
                     {!isHistoryLoading && isHistoryDisabled && (
                         <Tooltip

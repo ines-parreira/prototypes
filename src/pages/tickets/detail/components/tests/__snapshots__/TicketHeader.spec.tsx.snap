@@ -90,19 +90,16 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
           class="wrapper fill secondary small"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon small"
+          >
+            check
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft small"
-              >
-                check
-              </i>
-              Close
-            </span>
+            Close
           </span>
         </button>
       </span>
@@ -226,19 +223,16 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
           class="wrapper fill secondary small"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon small"
+          >
+            check
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft small"
-              >
-                check
-              </i>
-              Close
-            </span>
+            Close
           </span>
         </button>
       </span>
@@ -321,19 +315,16 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
           class="wrapper fill secondary small"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon small"
+          >
+            check
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft small"
-              >
-                check
-              </i>
-              Close
-            </span>
+            Close
           </span>
         </button>
       </span>
