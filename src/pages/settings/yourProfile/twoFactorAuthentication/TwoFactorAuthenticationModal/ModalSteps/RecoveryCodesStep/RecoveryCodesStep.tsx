@@ -10,7 +10,6 @@ import React, {
 
 import {RecoveryCode} from 'models/twoFactorAuthentication/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import settingsCss from 'pages/settings/settings.less'
 
 import modalStepsCss from '../ModalSteps.less'
@@ -139,10 +138,9 @@ export default function RecoveryCodesStep({
                         onClick={() => {
                             handleDownload()
                         }}
+                        leadingIcon="download"
                     >
-                        <ButtonIconLabel icon="download">
-                            Download
-                        </ButtonIconLabel>
+                        Download
                     </Button>
 
                     <Button
@@ -156,10 +154,9 @@ export default function RecoveryCodesStep({
                                     recoveryCode.code
                             )
                             .join('\n')}
+                        leadingIcon="content_copy"
                     >
-                        <ButtonIconLabel icon="content_copy">
-                            {isRecoveryCodesCopied ? 'Copied!' : 'Copy'}
-                        </ButtonIconLabel>
+                        {isRecoveryCodesCopied ? 'Copied!' : 'Copy'}
                     </Button>
 
                     <a
@@ -175,10 +172,9 @@ export default function RecoveryCodesStep({
                             type="button"
                             intent="secondary"
                             className={classnames(css.actionButton)}
+                            leadingIcon="print"
                         >
-                            <ButtonIconLabel icon="print">
-                                Print
-                            </ButtonIconLabel>
+                            Print
                         </Button>
                     </a>
                 </div>

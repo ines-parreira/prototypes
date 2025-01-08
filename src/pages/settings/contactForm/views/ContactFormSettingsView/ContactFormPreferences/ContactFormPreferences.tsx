@@ -12,7 +12,6 @@ import {
 } from 'models/contactForm/types'
 import {LocaleCode} from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
@@ -300,10 +299,9 @@ const ContactFormPreferences = (): JSX.Element => {
                         intent="destructive"
                         fillStyle="ghost"
                         onClick={() => setIsDeletionModalShown(true)}
+                        leadingIcon="delete"
                     >
-                        <ButtonIconLabel icon="delete">
-                            Delete Form
-                        </ButtonIconLabel>
+                        Delete Form
                     </Button>
                 </div>
             </div>

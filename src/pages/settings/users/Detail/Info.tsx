@@ -4,7 +4,6 @@ import React from 'react'
 import {useInviteAgent} from 'hooks/agents/useInviteAgent'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import InputField from 'pages/common/forms/input/InputField'
 
 import css from './Detail.less'
@@ -88,8 +87,9 @@ export const Info = ({
                         inviteAgent([agentId])
                     }}
                     isLoading={isDebouncedInviting}
+                    leadingIcon="mail"
                 >
-                    <ButtonIconLabel icon="mail">Resend invite</ButtonIconLabel>
+                    Resend invite
                 </Button>
             )}
         </>

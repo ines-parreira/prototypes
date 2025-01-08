@@ -7,7 +7,6 @@ import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 
-import ButtonIconLabel from '../../../../../../common/components/button/ButtonIconLabel'
 import css from './CantScanQRCode.less'
 
 type OwnProps = {
@@ -96,15 +95,14 @@ export default function CantScanQRCode({authenticatorData}: OwnProps) {
                                         intent="secondary"
                                         className="copy-authenticator-field"
                                         data-clipboard-target={`#authenticatorField${index}`}
+                                        leadingIcon="file_copy"
                                     >
-                                        <ButtonIconLabel icon="file_copy">
-                                            {copiedAuthenticatorField ===
-                                            authenticatorData[
-                                                key as keyof AuthenticatorData
-                                            ]
-                                                ? 'Copied!'
-                                                : 'Copy'}
-                                        </ButtonIconLabel>
+                                        {copiedAuthenticatorField ===
+                                        authenticatorData[
+                                            key as keyof AuthenticatorData
+                                        ]
+                                            ? 'Copied!'
+                                            : 'Copy'}
                                     </Button>
                                 </InputGroup>
                             </div>

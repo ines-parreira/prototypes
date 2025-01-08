@@ -21,7 +21,6 @@ import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {IntegrationType} from 'models/integration/constants'
 import {ZendeskIntegration} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
@@ -135,10 +134,9 @@ export const ImportZendeskDetail = ({
                                 onClick={() => {
                                     setIsPopoverOpened(!isPopoverOpened)
                                 }}
+                                leadingIcon="info_outline"
                             >
-                                <ButtonIconLabel icon="info_outline">
-                                    Learn
-                                </ButtonIconLabel>
+                                Learn
                             </Button>
                             <Popover
                                 placement="bottom-start"
@@ -167,13 +165,12 @@ export const ImportZendeskDetail = ({
                                         className="mb-1"
                                         href="https://docs.gorgias.com/migrating-helpdesks/switching-from-zendesk"
                                     >
-                                        <Button size="small" intent="secondary">
-                                            <ButtonIconLabel
-                                                icon="arrow_forward"
-                                                position="right"
-                                            >
-                                                Learn more
-                                            </ButtonIconLabel>
+                                        <Button
+                                            size="small"
+                                            intent="secondary"
+                                            trailingIcon="arrow_forward"
+                                        >
+                                            Learn more
                                         </Button>
                                     </a>
                                 </PopoverBody>
@@ -277,16 +274,15 @@ export const ImportZendeskDetail = ({
                     </div>
                 ) : null}
                 {importStatus === ImportStatus.Success && (
-                    <Button onClick={handleSyncClick}>
-                        <ButtonIconLabel
-                            icon={
-                                synchronizationEnabled
-                                    ? 'pause_circle_filled'
-                                    : 'play_circle_filled'
-                            }
-                        >
-                            {synchronizationEnabled ? 'Pause' : 'Resume'}
-                        </ButtonIconLabel>
+                    <Button
+                        onClick={handleSyncClick}
+                        leadingIcon={
+                            synchronizationEnabled
+                                ? 'pause_circle_filled'
+                                : 'play_circle_filled'
+                        }
+                    >
+                        {synchronizationEnabled ? 'Pause' : 'Resume'}
                     </Button>
                 )}
             </div>

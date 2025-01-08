@@ -846,19 +846,16 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
           id="rule-item-delete"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            delete
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                delete
-              </i>
-              Delete rule
-            </span>
+            Delete rule
           </span>
         </button>
       </div>
@@ -2202,19 +2199,16 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
           id="rule-item-delete"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            delete
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                delete
-              </i>
-              Delete rule
-            </span>
+            Delete rule
           </span>
         </button>
       </div>
@@ -3474,19 +3468,16 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
           id="rule-item-delete"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            delete
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                delete
-              </i>
-              Delete rule
-            </span>
+            Delete rule
           </span>
         </button>
       </div>
@@ -4194,19 +4185,16 @@ exports[`<ManagedRuleEditor/> non-support-related-emails editor should render co
           id="rule-item-delete"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            delete
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                delete
-              </i>
-              Delete rule
-            </span>
+            Delete rule
           </span>
         </button>
       </div>

@@ -3,7 +3,6 @@ import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
 export const getPluralOrSingular = (
@@ -83,8 +82,9 @@ const BulkDeleteButton = ({
                     intent="secondary"
                     className="mr-2 skip-default"
                     onClick={onDisplayConfirmation}
+                    leadingIcon="delete"
                 >
-                    <ButtonIconLabel icon="delete">Delete</ButtonIconLabel>
+                    Delete
                 </Button>
             )}
         </ConfirmationPopover>

@@ -69,19 +69,16 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
             class="wrapper copyBtn fill secondary medium right isAuxiliaryButton"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              file_copy
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  file_copy
-                </i>
-                Copy
-              </span>
+              Copy
             </span>
           </button>
         </span>
@@ -115,19 +112,16 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
             class="wrapper copyBtn fill secondary medium right isAuxiliaryButton"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              file_copy
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  file_copy
-                </i>
-                Copy
-              </span>
+              Copy
             </span>
           </button>
         </span>
@@ -291,19 +285,16 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
             class="wrapper copyBtn fill secondary medium right isAuxiliaryButton"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              file_copy
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  file_copy
-                </i>
-                Copy
-              </span>
+              Copy
             </span>
           </button>
         </span>
@@ -337,19 +328,16 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
             class="wrapper copyBtn fill secondary medium right isAuxiliaryButton"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              file_copy
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  file_copy
-                </i>
-                Copy
-              </span>
+              Copy
             </span>
           </button>
         </span>
@@ -398,19 +386,16 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
             class="wrapper fill destructive medium center isAuxiliaryButton"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              refresh
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  refresh
-                </i>
-                Reset
-              </span>
+              Reset
             </span>
           </button>
           <button
@@ -418,19 +403,16 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
             class="wrapper copyBtn fill secondary medium right isAuxiliaryButton"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              file_copy
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  file_copy
-                </i>
-                Copy
-              </span>
+              Copy
             </span>
           </button>
         </span>

@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
 import css from './RuleItemButtons.less'
@@ -60,10 +59,9 @@ export const RuleItemButtons = ({
                         onConfirm={onDelete}
                         confirmationContent="Are you sure you want to delete this rule?"
                         isDisabled={!canDelete}
+                        leadingIcon="delete"
                     >
-                        <ButtonIconLabel icon="delete">
-                            Delete rule
-                        </ButtonIconLabel>
+                        Delete rule
                     </ConfirmButton>
                 </div>
             )}

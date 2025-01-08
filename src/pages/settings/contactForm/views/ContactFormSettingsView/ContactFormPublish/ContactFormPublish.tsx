@@ -6,7 +6,6 @@ import {Button, FormGroup, Input, InputGroup, InputGroupAddon} from 'reactstrap'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import BackLink from 'pages/common/components/BackLink'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import useClipboard from 'pages/common/hooks/useClipboard'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import {ContactFormAutoEmbedReadinessStatus} from 'pages/settings/contactForm/components/ContactFormAutoEmbedPublishSection/types'
@@ -137,10 +136,9 @@ const ContactFormPublish = (): JSX.Element => {
                                             id="copy-shareable-link"
                                             data-clipboard-target="#shareable-link"
                                             onClick={onCopyClick}
+                                            leadingIcon="content_copy"
                                         >
-                                            <ButtonIconLabel icon="content_copy">
-                                                {copyButtonText}
-                                            </ButtonIconLabel>
+                                            {copyButtonText}
                                         </Button>
                                     </InputGroupAddon>
                                 </InputGroup>

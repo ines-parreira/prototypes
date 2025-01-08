@@ -5,7 +5,6 @@ import {TicketChannel} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import styles from './PreviewChannelButton.less'
 
@@ -111,10 +110,9 @@ export const PreviewChannelButton = ({
                 onClick={onPreview}
                 id={TOOLTIP_TARGET_ID}
                 isDisabled={!!disableMessage}
+                trailingIcon="open_in_new"
             >
-                <ButtonIconLabel icon="open_in_new" position="right">
-                    Test
-                </ButtonIconLabel>
+                Test
             </Button>
         </>
     )

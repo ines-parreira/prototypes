@@ -3,7 +3,6 @@ import React, {useState} from 'react'
 import {User} from 'config/types/user'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import TwoFactorAuthenticationDisableModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationDisableModal'
 
 import css from './Detail.less'
@@ -48,10 +47,9 @@ export const Statuses = ({
                             fillStyle="ghost"
                             intent="primary"
                             onClick={() => set2FAModalOpen(true)}
+                            leadingIcon="update"
                         >
-                            <ButtonIconLabel icon="update">
-                                Reset 2FA Token
-                            </ButtonIconLabel>
+                            Reset 2FA Token
                         </Button>
                     )}
                     {isViewingAccountOwner && (
@@ -68,10 +66,9 @@ export const Statuses = ({
                             intent="primary"
                             className="ml-2"
                             onClick={() => setOwnershipModalOpen(true)}
+                            leadingIcon="account_balance"
                         >
-                            <ButtonIconLabel icon="account_balance">
-                                Set as Account Owner
-                            </ButtonIconLabel>
+                            Set as Account Owner
                         </Button>
                         <OwnershipModal
                             isModalOpen={isOwnershipModalOpen}

@@ -20,7 +20,6 @@ import {
     TeamSortableProperties,
 } from 'models/team/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Loader from 'pages/common/components/Loader/Loader'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -310,10 +309,9 @@ export class MembersListContainer extends Component<Props, State> {
                                         onClick={this.deleteTeamMemberSelection}
                                         isLoading={isDeleting}
                                         isDisabled={!this.state.selection.size}
+                                        leadingIcon="delete"
                                     >
-                                        <ButtonIconLabel icon="delete">
-                                            Delete
-                                        </ButtonIconLabel>
+                                        Delete
                                     </Button>
                                 </div>
                             </Col>

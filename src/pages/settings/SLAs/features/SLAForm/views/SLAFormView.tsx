@@ -5,7 +5,6 @@ import FormField from 'components/Form/FormField'
 import FormSubmitButton from 'components/Form/FormSubmitButton'
 import {FormValidator} from 'components/Form/validation'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 import PageHeader from 'pages/settings/SLAs/features/PageHeader/PageHeader'
@@ -113,10 +112,9 @@ export default function SLAFormView({
                                     onClick={() => {
                                         setArchiveModalOpen(true)
                                     }}
+                                    leadingIcon="delete"
                                 >
-                                    <ButtonIconLabel icon="delete">
-                                        Delete SLA
-                                    </ButtonIconLabel>
+                                    Delete SLA
                                 </Button>
                             )}
                         </div>

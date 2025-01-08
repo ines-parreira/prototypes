@@ -15,7 +15,6 @@ import {
 } from 'custom-fields/types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import Caption from 'pages/common/forms/Caption/Caption'
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -280,10 +279,12 @@ export default function FieldForm(props: FieldFormProps) {
             <div className={css.buttons}>
                 <div className={css.leftGroup}>
                     {isAIManaged ? (
-                        <Button intent="secondary" onClick={props.onClose}>
-                            <ButtonIconLabel icon="arrow_back">
-                                Return to {customFieldTitleLabel} Fields
-                            </ButtonIconLabel>
+                        <Button
+                            intent="secondary"
+                            onClick={props.onClose}
+                            leadingIcon="arrow_back"
+                        >
+                            Return to {customFieldTitleLabel} Fields
                         </Button>
                     ) : (
                         <>

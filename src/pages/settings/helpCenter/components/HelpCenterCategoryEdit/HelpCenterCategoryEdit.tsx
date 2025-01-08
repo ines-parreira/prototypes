@@ -24,7 +24,6 @@ import {
     VisibilityStatus,
 } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import {Drawer} from 'pages/common/components/Drawer'
 import AutoPopulateInput from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
@@ -678,10 +677,9 @@ export const HelpCenterCategoryEdit = ({
                             fillStyle="ghost"
                             onClick={copyURL}
                             size="small"
+                            leadingIcon="content_copy"
                         >
-                            <ButtonIconLabel icon="content_copy">
-                                Copy URL
-                            </ButtonIconLabel>
+                            Copy URL
                         </Button>
                     </div>
 

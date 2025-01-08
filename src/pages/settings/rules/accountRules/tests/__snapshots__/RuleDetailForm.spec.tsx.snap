@@ -345,19 +345,16 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
               id="rule-item-delete"
               type="button"
             >
+              <i
+                aria-hidden="true"
+                class="material-icons icon medium"
+              >
+                delete
+              </i>
               <span
                 class="content"
               >
-                <span
-                  class="wrapper"
-                >
-                  <i
-                    class="material-icons icon isLeft medium"
-                  >
-                    delete
-                  </i>
-                  Delete rule
-                </span>
+                Delete rule
               </span>
             </button>
           </div>
@@ -711,19 +708,16 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
               id="rule-item-delete"
               type="button"
             >
+              <i
+                aria-hidden="true"
+                class="material-icons icon medium"
+              >
+                delete
+              </i>
               <span
                 class="content"
               >
-                <span
-                  class="wrapper"
-                >
-                  <i
-                    class="material-icons icon isLeft medium"
-                  >
-                    delete
-                  </i>
-                  Delete rule
-                </span>
+                Delete rule
               </span>
             </button>
           </div>

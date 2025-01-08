@@ -171,19 +171,16 @@ exports[`<RecoveryCodesStep /> render() should render the component with the rec
         class="wrapper actionButton mr8 fill secondary medium"
         type="button"
       >
+        <i
+          aria-hidden="true"
+          class="material-icons icon medium"
+        >
+          download
+        </i>
         <span
           class="content"
         >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft medium"
-            >
-              download
-            </i>
-            Download
-          </span>
+          Download
         </span>
       </button>
       <button
@@ -208,19 +205,16 @@ abcdefgh16"
         id="copyRecoveryCodes"
         type="button"
       >
+        <i
+          aria-hidden="true"
+          class="material-icons icon medium"
+        >
+          content_copy
+        </i>
         <span
           class="content"
         >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft medium"
-            >
-              content_copy
-            </i>
-            Copy
-          </span>
+          Copy
         </span>
       </button>
       <a
@@ -234,19 +228,16 @@ abcdefgh16"
           class="wrapper actionButton fill secondary medium"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            print
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                print
-              </i>
-              Print
-            </span>
+            Print
           </span>
         </button>
       </a>

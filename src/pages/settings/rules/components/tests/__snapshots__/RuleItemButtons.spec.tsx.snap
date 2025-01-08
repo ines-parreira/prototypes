@@ -2,13 +2,8 @@
 
 exports[`<RuleItemButtons /> rendering should handle deleting state 1`] = `
 <span
-  class="wrapper"
+  class="content"
 >
-  <i
-    class="material-icons icon isLeft medium"
-  >
-    delete
-  </i>
   Delete rule
 </span>
 `;
@@ -105,19 +100,16 @@ exports[`<RuleItemButtons /> rendering should render the default buttons for upd
       id="rule-item-delete"
       type="button"
     >
+      <i
+        aria-hidden="true"
+        class="material-icons icon medium"
+      >
+        delete
+      </i>
       <span
         class="content"
       >
-        <span
-          class="wrapper"
-        >
-          <i
-            class="material-icons icon isLeft medium"
-          >
-            delete
-          </i>
-          Delete rule
-        </span>
+        Delete rule
       </span>
     </button>
   </div>

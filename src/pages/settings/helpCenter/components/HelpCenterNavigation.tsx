@@ -120,10 +120,9 @@ export const HelpCenterNavigation: React.FC<Props> = ({
                                         {from: 'help-center-settings'}
                                     )
                                 }}
+                                leadingIcon="bolt"
                             >
-                                <ButtonIconLabel icon="bolt">
-                                    Automate Settings
-                                </ButtonIconLabel>
+                                Automate Settings
                             </Button>
                         ) : (
                             !newChannelsView && (

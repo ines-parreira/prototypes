@@ -9,7 +9,6 @@ import {InputType} from 'reactstrap/es/Input'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import InputGroup from 'pages/common/forms/input/InputGroup'
@@ -181,8 +180,12 @@ export class APIViewContainer extends Component<Props, State> {
                         ? 'visibility'
                         : 'visibility_off'}
                 </IconButton>
-                <Button intent="destructive" onClick={this._resetApiKey}>
-                    <ButtonIconLabel icon="refresh">Reset</ButtonIconLabel>
+                <Button
+                    intent="destructive"
+                    onClick={this._resetApiKey}
+                    leadingIcon="refresh"
+                >
+                    Reset
                 </Button>
                 <Button
                     intent="secondary"
@@ -194,10 +197,9 @@ export class APIViewContainer extends Component<Props, State> {
                         }
                         this._copyToClipboard()
                     }}
+                    leadingIcon="file_copy"
                 >
-                    <ButtonIconLabel icon="file_copy">
-                        {this.state.isCopiedApiKey ? 'Copied!' : 'Copy'}
-                    </ButtonIconLabel>
+                    {this.state.isCopiedApiKey ? 'Copied!' : 'Copy'}
                 </Button>
             </InputGroup>
         )
@@ -275,12 +277,11 @@ export class APIViewContainer extends Component<Props, State> {
                                         }
                                         this._copyToClipboard()
                                     }}
+                                    leadingIcon="file_copy"
                                 >
-                                    <ButtonIconLabel icon="file_copy">
-                                        {this.state.isCopiedUrl
-                                            ? 'Copied!'
-                                            : 'Copy'}
-                                    </ButtonIconLabel>
+                                    {this.state.isCopiedUrl
+                                        ? 'Copied!'
+                                        : 'Copy'}
                                 </Button>
                             </InputGroup>
                         </FormGroup>
@@ -300,12 +301,11 @@ export class APIViewContainer extends Component<Props, State> {
                                         }
                                         this._copyToClipboard()
                                     }}
+                                    leadingIcon="file_copy"
                                 >
-                                    <ButtonIconLabel icon="file_copy">
-                                        {this.state.isCopiedEmail
-                                            ? 'Copied!'
-                                            : 'Copy'}
-                                    </ButtonIconLabel>
+                                    {this.state.isCopiedEmail
+                                        ? 'Copied!'
+                                        : 'Copy'}
                                 </Button>
                             </InputGroup>
                         </FormGroup>

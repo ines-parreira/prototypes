@@ -20,7 +20,6 @@ import {GorgiasApiError} from 'models/api/types'
 import {deleteTeam, fetchTeam, updateTeam} from 'models/team/resources'
 import {Team} from 'models/team/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import IconButton from 'pages/common/components/button/IconButton'
 import EmojiPicker from 'pages/common/components/EmojiPicker/EmojiPicker'
@@ -330,10 +329,9 @@ export class FormContainer extends Component<Props, State> {
                                         intent="destructive"
                                         onConfirm={this._delete}
                                         className="float-right"
+                                        leadingIcon="delete"
                                     >
-                                        <ButtonIconLabel icon="delete">
-                                            Delete team
-                                        </ButtonIconLabel>
+                                        Delete team
                                     </ConfirmButton>
                                 </FormGroup>
                             </Col>

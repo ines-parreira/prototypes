@@ -6,7 +6,6 @@ import React, {useMemo} from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 import {ORDER_BY, OrderBy} from 'models/tag/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {makeGetSelectedTagMeta, getSelectAll} from 'state/tags/selectors'
 
@@ -125,19 +124,15 @@ const Table = ({
                                     onClick={() => handleOnSort(column.field)}
                                     size="small"
                                     fillStyle="ghost"
+                                    trailingIcon={
+                                        sortValue !== column.field
+                                            ? undefined
+                                            : reverse
+                                              ? 'arrow_drop_down'
+                                              : 'arrow_drop_up'
+                                    }
                                 >
-                                    <ButtonIconLabel
-                                        position="right"
-                                        icon={
-                                            sortValue !== column.field
-                                                ? ''
-                                                : reverse
-                                                  ? 'arrow_drop_down'
-                                                  : 'arrow_drop_up'
-                                        }
-                                    >
-                                        {column.title}
-                                    </ButtonIconLabel>
+                                    {column.title}
                                 </Button>
                             </div>
                         </td>

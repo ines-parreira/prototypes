@@ -20,7 +20,6 @@ import {
 import {MacroDraft} from 'models/macro/types'
 import {MacroActionName} from 'models/macroAction/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -256,8 +255,8 @@ export function MacrosSettingsFormContainer({
                             actions={fromJS(macroForm.actions)}
                             agents={agents}
                             currentMacro={fromJS(macroForm)}
-                            name={macroForm.name!}
-                            language={macroForm.language!}
+                            name={macroForm.name ?? ''}
+                            language={macroForm.language ?? ''}
                             setActions={(actions) =>
                                 !isActionDisabled &&
                                 handleActionsChange(actions)
@@ -308,10 +307,9 @@ export function MacrosSettingsFormContainer({
                                     onConfirm={handleDelete}
                                     isLoading={isDeletePending}
                                     isDisabled={!hasAgentPrivileges}
+                                    leadingIcon="delete"
                                 >
-                                    <ButtonIconLabel icon="delete">
-                                        Delete macro
-                                    </ButtonIconLabel>
+                                    Delete macro
                                 </ConfirmButton>
                             )}
                         </FormGroup>

@@ -3,7 +3,6 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
     CustomCardLink,
     TemplateCardLink,
@@ -46,13 +45,12 @@ export default function Templates({
             {showSeeAllTemplates && (
                 <div className={css.link}>
                     <Link to="/app/settings/sla/templates">
-                        <Button intent="secondary" fillStyle="ghost">
-                            <ButtonIconLabel
-                                position="right"
-                                icon="arrow_forward"
-                            >
-                                See All Templates
-                            </ButtonIconLabel>
+                        <Button
+                            intent="secondary"
+                            fillStyle="ghost"
+                            trailingIcon="arrow_forward"
+                        >
+                            See All Templates
                         </Button>
                     </Link>
                 </div>

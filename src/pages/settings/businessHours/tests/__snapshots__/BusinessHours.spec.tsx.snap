@@ -234,19 +234,16 @@ exports[`BusinessHours component should render default values 1`] = `
                 class="wrapper fill secondary medium"
                 type="button"
               >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  add
+                </i>
                 <span
                   class="content"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft medium"
-                    >
-                      add
-                    </i>
-                    Add business hours
-                  </span>
+                  Add business hours
                 </span>
               </button>
             </div>
@@ -711,19 +708,16 @@ exports[`BusinessHours component should render values from state 1`] = `
                 class="wrapper fill secondary medium"
                 type="button"
               >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  add
+                </i>
                 <span
                   class="content"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft medium"
-                    >
-                      add
-                    </i>
-                    Add business hours
-                  </span>
+                  Add business hours
                 </span>
               </button>
             </div>

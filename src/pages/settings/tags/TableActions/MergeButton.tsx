@@ -3,7 +3,6 @@ import {List} from 'immutable'
 import React, {useCallback, useMemo} from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
 export type Props = {
@@ -50,8 +49,9 @@ const MergeButton = ({
                     onClick={(event) => {
                         onDisplayConfirmation(event)
                     }}
+                    leadingIcon="call_merge"
                 >
-                    <ButtonIconLabel icon="call_merge">Merge</ButtonIconLabel>
+                    Merge
                 </Button>
             )}
         </ConfirmationPopover>

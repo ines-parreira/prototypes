@@ -3,7 +3,6 @@ import React from 'react'
 
 import {User} from 'config/types/user'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import {navigateBackToUserList} from './constants'
 import {DeleteModal} from './DeleteModal'
@@ -78,10 +77,9 @@ export const Footer = ({
                         intent="destructive"
                         onClick={() => setDeleteModalOpen(true)}
                         isDisabled={isDeleteDisabled}
+                        leadingIcon="delete"
                     >
-                        <ButtonIconLabel icon="delete">
-                            Delete user
-                        </ButtonIconLabel>
+                        Delete user
                     </Button>
                     <DeleteModal
                         agentId={agentId}

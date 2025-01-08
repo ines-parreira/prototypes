@@ -292,19 +292,16 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
         id="rule-item-delete"
         type="button"
       >
+        <i
+          aria-hidden="true"
+          class="material-icons icon medium"
+        >
+          delete
+        </i>
         <span
           class="content"
         >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft medium"
-            >
-              delete
-            </i>
-            Delete rule
-          </span>
+          Delete rule
         </span>
       </button>
     </div>

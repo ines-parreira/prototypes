@@ -6,7 +6,6 @@ import {Link} from 'react-router-dom'
 import {Col, Form, Label, Row} from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {submitSetting} from 'state/currentAccount/actions'
@@ -169,10 +168,9 @@ export class BusinessHoursContainer extends Component<Props, State> {
                                         <Button
                                             intent="secondary"
                                             onClick={this._addBusinessHours}
+                                            leadingIcon="add"
                                         >
-                                            <ButtonIconLabel icon="add">
-                                                Add business hours
-                                            </ButtonIconLabel>
+                                            Add business hours
                                         </Button>
                                     </div>
 

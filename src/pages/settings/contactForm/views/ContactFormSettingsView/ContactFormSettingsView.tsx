@@ -171,10 +171,9 @@ const ContactFormSettingsView = (): JSX.Element => {
                                                 {from: 'contact-form-settings'}
                                             )
                                         }}
+                                        leadingIcon="bolt"
                                     >
-                                        <ButtonIconLabel icon="bolt">
-                                            Go to Automate settings
-                                        </ButtonIconLabel>
+                                        Go to Automate settings
                                     </Button>
                                 )
                             ) : (
@@ -217,10 +216,9 @@ const ContactFormSettingsView = (): JSX.Element => {
                         aria-label="contact form preview"
                         intent="secondary"
                         onClick={onPreview}
+                        leadingIcon="open_in_new"
                     >
-                        <ButtonIconLabel icon="open_in_new">
-                            View Contact Form
-                        </ButtonIconLabel>
+                        View Contact Form
                     </Button>
                 </div>
             </PageHeader>
@@ -264,10 +262,9 @@ const ContactFormSettingsView = (): JSX.Element => {
                                                 {from: 'contact-form-settings'}
                                             )
                                         }}
+                                        leadingIcon="bolt"
                                     >
-                                        <ButtonIconLabel icon="bolt">
-                                            Automate Settings
-                                        </ButtonIconLabel>
+                                        Automate Settings
                                     </Button>
                                 )
                             ) : (
