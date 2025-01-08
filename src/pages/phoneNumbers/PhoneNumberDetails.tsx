@@ -23,7 +23,6 @@ import {
 } from 'models/phoneNumber/resources'
 import {PhoneCountry, NewPhoneNumber} from 'models/phoneNumber/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
@@ -406,10 +405,9 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                         }
                         onConfirm={handleDelete}
                         isLoading={isDeletePending}
+                        leadingIcon="delete"
                     >
-                        <ButtonIconLabel icon="delete">
-                            Delete number
-                        </ButtonIconLabel>
+                        Delete number
                     </ConfirmButton>
                 </Col>
             </Row>

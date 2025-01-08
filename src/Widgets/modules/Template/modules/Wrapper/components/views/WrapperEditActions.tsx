@@ -4,7 +4,6 @@ import {Popover, PopoverBody} from 'reactstrap'
 import {useAppNode} from 'appNode'
 import useId from 'hooks/useId'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import WrapperEditForm, {FormData} from './WrapperEditForm'
 
@@ -45,10 +44,9 @@ export default function WrapperEditActions({
                         onEditStart()
                         setPopoverOpen(true)
                     }}
+                    leadingIcon="edit"
                 >
-                    <ButtonIconLabel icon="edit">
-                        {editButtonText}
-                    </ButtonIconLabel>
+                    {editButtonText}
                     <Popover
                         placement="left"
                         isOpen={isPopoverOpen}
@@ -83,10 +81,9 @@ export default function WrapperEditActions({
                 onClick={() => {
                     onDelete()
                 }}
+                leadingIcon="delete"
             >
-                <ButtonIconLabel icon="delete">
-                    {deleteButtonText}
-                </ButtonIconLabel>
+                {deleteButtonText}
             </Button>
         </>
     )

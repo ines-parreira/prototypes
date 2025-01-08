@@ -9,7 +9,7 @@ import {IntegrationType} from 'models/integration/types'
 import {PhoneNumber} from 'models/phoneNumber/types'
 import {RootState, StoreDispatch} from 'state/types'
 
-import PhoneNumberDetails from '../PhoneNumberDetails'
+import {PhoneNumberDetails} from '../PhoneNumberDetails'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({

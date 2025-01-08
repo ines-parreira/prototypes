@@ -4,7 +4,6 @@ import React, {Component} from 'react'
 import {FormGroup, Row, Col} from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import InputField from 'pages/common/forms/input/InputField'
 
@@ -94,8 +93,13 @@ class CustomerChannelFieldArray extends Component<Props> {
                         </Col>
                     </Row>
                 ))}
-                <Button type="button" intent="secondary" onClick={this._add}>
-                    <ButtonIconLabel icon="add">{addLabel}</ButtonIconLabel>
+                <Button
+                    type="button"
+                    intent="secondary"
+                    onClick={this._add}
+                    leadingIcon="add"
+                >
+                    {addLabel}
                 </Button>
             </FormGroup>
         )

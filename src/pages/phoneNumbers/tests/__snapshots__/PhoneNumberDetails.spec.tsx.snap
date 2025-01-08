@@ -234,19 +234,16 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
           id="delete-number"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            delete
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                delete
-              </i>
-              Delete number
-            </span>
+            Delete number
           </span>
         </button>
       </div>
@@ -519,19 +516,16 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
           id="delete-number"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            delete
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                delete
-              </i>
-              Delete number
-            </span>
+            Delete number
           </span>
         </button>
       </div>
@@ -799,19 +793,16 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
           id="delete-number"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            delete
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                delete
-              </i>
-              Delete number
-            </span>
+            Delete number
           </span>
         </button>
       </div>
@@ -1084,19 +1075,16 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
           id="delete-number"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            delete
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                delete
-              </i>
-              Delete number
-            </span>
+            Delete number
           </span>
         </button>
       </div>
@@ -1387,19 +1375,16 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
           id="delete-number"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            delete
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                delete
-              </i>
-              Delete number
-            </span>
+            Delete number
           </span>
         </button>
       </div>
@@ -1642,19 +1627,16 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
           id="delete-number"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            delete
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                delete
-              </i>
-              Delete number
-            </span>
+            Delete number
           </span>
         </button>
       </div>
@@ -1927,19 +1909,16 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
           id="delete-number"
           type="button"
         >
+          <i
+            aria-hidden="true"
+            class="material-icons icon medium"
+          >
+            delete
+          </i>
           <span
             class="content"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                delete
-              </i>
-              Delete number
-            </span>
+            Delete number
           </span>
         </button>
       </div>
