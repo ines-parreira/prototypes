@@ -31,29 +31,23 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                 class="wrapper ghost secondary medium"
                 type="button"
               >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  calendar_today
+                </i>
                 <span
                   class="content"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft medium"
-                    >
-                      calendar_today
-                    </i>
-                    <span
-                      class="wrapper"
-                    >
-                      Feb 3, 2021
-                      <i
-                        class="material-icons icon isRight medium"
-                      >
-                        arrow_drop_down
-                      </i>
-                    </span>
-                  </span>
+                  Feb 3, 2021
                 </span>
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  arrow_drop_down
+                </i>
               </button>
             </div>
             <button
@@ -62,19 +56,16 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
               title="Download Performance Overview Data"
               type="button"
             >
+              <i
+                aria-hidden="true"
+                class="material-icons icon medium"
+              >
+                file_download
+              </i>
               <span
                 class="content"
               >
-                <span
-                  class="wrapper"
-                >
-                  <i
-                    class="material-icons icon isLeft medium"
-                  >
-                    file_download
-                  </i>
-                  Download data
-                </span>
+                Download data
               </span>
             </button>
           </div>
@@ -135,19 +126,16 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
             class="wrapper ghost primary medium"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              visibility_off
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  visibility_off
-                </i>
-                Hide tips
-              </span>
+              Hide tips
             </span>
           </button>
         </div>
@@ -638,29 +626,23 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                       class="wrapper ghost secondary medium"
                       type="button"
                     >
+                      <i
+                        aria-hidden="true"
+                        class="material-icons icon medium"
+                      >
+                        calendar_today
+                      </i>
                       <span
                         class="content"
                       >
-                        <span
-                          class="wrapper"
-                        >
-                          <i
-                            class="material-icons icon isLeft medium"
-                          >
-                            calendar_today
-                          </i>
-                          <span
-                            class="wrapper"
-                          >
-                            Feb 3, 2021
-                            <i
-                              class="material-icons icon isRight medium"
-                            >
-                              arrow_drop_down
-                            </i>
-                          </span>
-                        </span>
+                        Feb 3, 2021
                       </span>
+                      <i
+                        aria-hidden="true"
+                        class="material-icons icon medium"
+                      >
+                        arrow_drop_down
+                      </i>
                     </button>
                   </div>
                   <button
@@ -669,19 +651,16 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                     title="Download Performance Overview Data"
                     type="button"
                   >
+                    <i
+                      aria-hidden="true"
+                      class="material-icons icon medium"
+                    >
+                      file_download
+                    </i>
                     <span
                       class="content"
                     >
-                      <span
-                        class="wrapper"
-                      >
-                        <i
-                          class="material-icons icon isLeft medium"
-                        >
-                          file_download
-                        </i>
-                        Download data
-                      </span>
+                      Download data
                     </span>
                   </button>
                 </div>
@@ -742,19 +721,16 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="wrapper ghost primary medium"
                   type="button"
                 >
+                  <i
+                    aria-hidden="true"
+                    class="material-icons icon medium"
+                  >
+                    visibility_off
+                  </i>
                   <span
                     class="content"
                   >
-                    <span
-                      class="wrapper"
-                    >
-                      <i
-                        class="material-icons icon isLeft medium"
-                      >
-                        visibility_off
-                      </i>
-                      Hide tips
-                    </span>
+                    Hide tips
                   </span>
                 </button>
               </div>
@@ -1349,29 +1325,23 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                     class="wrapper ghost secondary medium"
                     type="button"
                   >
+                    <i
+                      aria-hidden="true"
+                      class="material-icons icon medium"
+                    >
+                      calendar_today
+                    </i>
                     <span
                       class="content"
                     >
-                      <span
-                        class="wrapper"
-                      >
-                        <i
-                          class="material-icons icon isLeft medium"
-                        >
-                          calendar_today
-                        </i>
-                        <span
-                          class="wrapper"
-                        >
-                          Feb 3, 2021
-                          <i
-                            class="material-icons icon isRight medium"
-                          >
-                            arrow_drop_down
-                          </i>
-                        </span>
-                      </span>
+                      Feb 3, 2021
                     </span>
+                    <i
+                      aria-hidden="true"
+                      class="material-icons icon medium"
+                    >
+                      arrow_drop_down
+                    </i>
                   </button>
                 </div>
                 <button
@@ -1380,19 +1350,16 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   title="Download Performance Overview Data"
                   type="button"
                 >
+                  <i
+                    aria-hidden="true"
+                    class="material-icons icon medium"
+                  >
+                    file_download
+                  </i>
                   <span
                     class="content"
                   >
-                    <span
-                      class="wrapper"
-                    >
-                      <i
-                        class="material-icons icon isLeft medium"
-                      >
-                        file_download
-                      </i>
-                      Download data
-                    </span>
+                    Download data
                   </span>
                 </button>
               </div>
@@ -1453,19 +1420,16 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 class="wrapper ghost primary medium"
                 type="button"
               >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  visibility_off
+                </i>
                 <span
                   class="content"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft medium"
-                    >
-                      visibility_off
-                    </i>
-                    Hide tips
-                  </span>
+                  Hide tips
                 </span>
               </button>
             </div>
@@ -2009,29 +1973,23 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                       class="wrapper ghost secondary medium"
                       type="button"
                     >
+                      <i
+                        aria-hidden="true"
+                        class="material-icons icon medium"
+                      >
+                        calendar_today
+                      </i>
                       <span
                         class="content"
                       >
-                        <span
-                          class="wrapper"
-                        >
-                          <i
-                            class="material-icons icon isLeft medium"
-                          >
-                            calendar_today
-                          </i>
-                          <span
-                            class="wrapper"
-                          >
-                            Feb 3, 2021
-                            <i
-                              class="material-icons icon isRight medium"
-                            >
-                              arrow_drop_down
-                            </i>
-                          </span>
-                        </span>
+                        Feb 3, 2021
                       </span>
+                      <i
+                        aria-hidden="true"
+                        class="material-icons icon medium"
+                      >
+                        arrow_drop_down
+                      </i>
                     </button>
                   </div>
                   <button
@@ -2040,19 +1998,16 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                     title="Download Performance Overview Data"
                     type="button"
                   >
+                    <i
+                      aria-hidden="true"
+                      class="material-icons icon medium"
+                    >
+                      file_download
+                    </i>
                     <span
                       class="content"
                     >
-                      <span
-                        class="wrapper"
-                      >
-                        <i
-                          class="material-icons icon isLeft medium"
-                        >
-                          file_download
-                        </i>
-                        Download data
-                      </span>
+                      Download data
                     </span>
                   </button>
                 </div>
@@ -2113,19 +2068,16 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   class="wrapper ghost primary medium"
                   type="button"
                 >
+                  <i
+                    aria-hidden="true"
+                    class="material-icons icon medium"
+                  >
+                    visibility_off
+                  </i>
                   <span
                     class="content"
                   >
-                    <span
-                      class="wrapper"
-                    >
-                      <i
-                        class="material-icons icon isLeft medium"
-                      >
-                        visibility_off
-                      </i>
-                      Hide tips
-                    </span>
+                    Hide tips
                   </span>
                 </button>
               </div>
@@ -2720,29 +2672,23 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                     class="wrapper ghost secondary medium"
                     type="button"
                   >
+                    <i
+                      aria-hidden="true"
+                      class="material-icons icon medium"
+                    >
+                      calendar_today
+                    </i>
                     <span
                       class="content"
                     >
-                      <span
-                        class="wrapper"
-                      >
-                        <i
-                          class="material-icons icon isLeft medium"
-                        >
-                          calendar_today
-                        </i>
-                        <span
-                          class="wrapper"
-                        >
-                          Feb 3, 2021
-                          <i
-                            class="material-icons icon isRight medium"
-                          >
-                            arrow_drop_down
-                          </i>
-                        </span>
-                      </span>
+                      Feb 3, 2021
                     </span>
+                    <i
+                      aria-hidden="true"
+                      class="material-icons icon medium"
+                    >
+                      arrow_drop_down
+                    </i>
                   </button>
                 </div>
                 <button
@@ -2751,19 +2697,16 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   title="Download Performance Overview Data"
                   type="button"
                 >
+                  <i
+                    aria-hidden="true"
+                    class="material-icons icon medium"
+                  >
+                    file_download
+                  </i>
                   <span
                     class="content"
                   >
-                    <span
-                      class="wrapper"
-                    >
-                      <i
-                        class="material-icons icon isLeft medium"
-                      >
-                        file_download
-                      </i>
-                      Download data
-                    </span>
+                    Download data
                   </span>
                 </button>
               </div>
@@ -2824,19 +2767,16 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 class="wrapper ghost primary medium"
                 type="button"
               >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  visibility_off
+                </i>
                 <span
                   class="content"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft medium"
-                    >
-                      visibility_off
-                    </i>
-                    Hide tips
-                  </span>
+                  Hide tips
                 </span>
               </button>
             </div>
@@ -3380,29 +3320,23 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                       class="wrapper ghost secondary medium"
                       type="button"
                     >
+                      <i
+                        aria-hidden="true"
+                        class="material-icons icon medium"
+                      >
+                        calendar_today
+                      </i>
                       <span
                         class="content"
                       >
-                        <span
-                          class="wrapper"
-                        >
-                          <i
-                            class="material-icons icon isLeft medium"
-                          >
-                            calendar_today
-                          </i>
-                          <span
-                            class="wrapper"
-                          >
-                            Feb 3, 2021
-                            <i
-                              class="material-icons icon isRight medium"
-                            >
-                              arrow_drop_down
-                            </i>
-                          </span>
-                        </span>
+                        Feb 3, 2021
                       </span>
+                      <i
+                        aria-hidden="true"
+                        class="material-icons icon medium"
+                      >
+                        arrow_drop_down
+                      </i>
                     </button>
                   </div>
                   <button
@@ -3411,19 +3345,16 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                     title="Download Performance Overview Data"
                     type="button"
                   >
+                    <i
+                      aria-hidden="true"
+                      class="material-icons icon medium"
+                    >
+                      file_download
+                    </i>
                     <span
                       class="content"
                     >
-                      <span
-                        class="wrapper"
-                      >
-                        <i
-                          class="material-icons icon isLeft medium"
-                        >
-                          file_download
-                        </i>
-                        Download data
-                      </span>
+                      Download data
                     </span>
                   </button>
                 </div>
@@ -3484,19 +3415,16 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   class="wrapper ghost primary medium"
                   type="button"
                 >
+                  <i
+                    aria-hidden="true"
+                    class="material-icons icon medium"
+                  >
+                    visibility_off
+                  </i>
                   <span
                     class="content"
                   >
-                    <span
-                      class="wrapper"
-                    >
-                      <i
-                        class="material-icons icon isLeft medium"
-                      >
-                        visibility_off
-                      </i>
-                      Hide tips
-                    </span>
+                    Hide tips
                   </span>
                 </button>
               </div>
@@ -4091,29 +4019,23 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                     class="wrapper ghost secondary medium"
                     type="button"
                   >
+                    <i
+                      aria-hidden="true"
+                      class="material-icons icon medium"
+                    >
+                      calendar_today
+                    </i>
                     <span
                       class="content"
                     >
-                      <span
-                        class="wrapper"
-                      >
-                        <i
-                          class="material-icons icon isLeft medium"
-                        >
-                          calendar_today
-                        </i>
-                        <span
-                          class="wrapper"
-                        >
-                          Feb 3, 2021
-                          <i
-                            class="material-icons icon isRight medium"
-                          >
-                            arrow_drop_down
-                          </i>
-                        </span>
-                      </span>
+                      Feb 3, 2021
                     </span>
+                    <i
+                      aria-hidden="true"
+                      class="material-icons icon medium"
+                    >
+                      arrow_drop_down
+                    </i>
                   </button>
                 </div>
                 <button
@@ -4122,19 +4044,16 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   title="Download Performance Overview Data"
                   type="button"
                 >
+                  <i
+                    aria-hidden="true"
+                    class="material-icons icon medium"
+                  >
+                    file_download
+                  </i>
                   <span
                     class="content"
                   >
-                    <span
-                      class="wrapper"
-                    >
-                      <i
-                        class="material-icons icon isLeft medium"
-                      >
-                        file_download
-                      </i>
-                      Download data
-                    </span>
+                    Download data
                   </span>
                 </button>
               </div>
@@ -4195,19 +4114,16 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 class="wrapper ghost primary medium"
                 type="button"
               >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  visibility_off
+                </i>
                 <span
                   class="content"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft medium"
-                    >
-                      visibility_off
-                    </i>
-                    Hide tips
-                  </span>
+                  Hide tips
                 </span>
               </button>
             </div>
@@ -4747,29 +4663,23 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                 class="wrapper ghost secondary medium"
                 type="button"
               >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  calendar_today
+                </i>
                 <span
                   class="content"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft medium"
-                    >
-                      calendar_today
-                    </i>
-                    <span
-                      class="wrapper"
-                    >
-                      Feb 3, 2021
-                      <i
-                        class="material-icons icon isRight medium"
-                      >
-                        arrow_drop_down
-                      </i>
-                    </span>
-                  </span>
+                  Feb 3, 2021
                 </span>
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  arrow_drop_down
+                </i>
               </button>
             </div>
             <button
@@ -4778,19 +4688,16 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
               title="Download Performance Overview Data"
               type="button"
             >
+              <i
+                aria-hidden="true"
+                class="material-icons icon medium"
+              >
+                file_download
+              </i>
               <span
                 class="content"
               >
-                <span
-                  class="wrapper"
-                >
-                  <i
-                    class="material-icons icon isLeft medium"
-                  >
-                    file_download
-                  </i>
-                  Download data
-                </span>
+                Download data
               </span>
             </button>
           </div>
@@ -4851,19 +4758,16 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="wrapper ghost primary medium"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              visibility_off
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  visibility_off
-                </i>
-                Hide tips
-              </span>
+              Hide tips
             </span>
           </button>
         </div>
@@ -5333,29 +5237,23 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                 class="wrapper ghost secondary medium"
                 type="button"
               >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  calendar_today
+                </i>
                 <span
                   class="content"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft medium"
-                    >
-                      calendar_today
-                    </i>
-                    <span
-                      class="wrapper"
-                    >
-                      Feb 3, 2021
-                      <i
-                        class="material-icons icon isRight medium"
-                      >
-                        arrow_drop_down
-                      </i>
-                    </span>
-                  </span>
+                  Feb 3, 2021
                 </span>
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  arrow_drop_down
+                </i>
               </button>
             </div>
             <button
@@ -5364,19 +5262,16 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
               title="Download Performance Overview Data"
               type="button"
             >
+              <i
+                aria-hidden="true"
+                class="material-icons icon medium"
+              >
+                file_download
+              </i>
               <span
                 class="content"
               >
-                <span
-                  class="wrapper"
-                >
-                  <i
-                    class="material-icons icon isLeft medium"
-                  >
-                    file_download
-                  </i>
-                  Download data
-                </span>
+                Download data
               </span>
             </button>
           </div>
@@ -5437,19 +5332,16 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="wrapper ghost primary medium"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              visibility_off
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  visibility_off
-                </i>
-                Hide tips
-              </span>
+              Hide tips
             </span>
           </button>
         </div>
@@ -5936,29 +5828,23 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                 class="wrapper ghost secondary medium"
                 type="button"
               >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  calendar_today
+                </i>
                 <span
                   class="content"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft medium"
-                    >
-                      calendar_today
-                    </i>
-                    <span
-                      class="wrapper"
-                    >
-                      Feb 3, 2021
-                      <i
-                        class="material-icons icon isRight medium"
-                      >
-                        arrow_drop_down
-                      </i>
-                    </span>
-                  </span>
+                  Feb 3, 2021
                 </span>
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  arrow_drop_down
+                </i>
               </button>
             </div>
             <button
@@ -5967,19 +5853,16 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
               title="Download Performance Overview Data"
               type="button"
             >
+              <i
+                aria-hidden="true"
+                class="material-icons icon medium"
+              >
+                file_download
+              </i>
               <span
                 class="content"
               >
-                <span
-                  class="wrapper"
-                >
-                  <i
-                    class="material-icons icon isLeft medium"
-                  >
-                    file_download
-                  </i>
-                  Download data
-                </span>
+                Download data
               </span>
             </button>
           </div>
@@ -6040,19 +5923,16 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             class="wrapper ghost primary medium"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              visibility_off
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  visibility_off
-                </i>
-                Hide tips
-              </span>
+              Hide tips
             </span>
           </button>
         </div>
@@ -6539,29 +6419,23 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                 class="wrapper ghost secondary medium"
                 type="button"
               >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  calendar_today
+                </i>
                 <span
                   class="content"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft medium"
-                    >
-                      calendar_today
-                    </i>
-                    <span
-                      class="wrapper"
-                    >
-                      Feb 3, 2021
-                      <i
-                        class="material-icons icon isRight medium"
-                      >
-                        arrow_drop_down
-                      </i>
-                    </span>
-                  </span>
+                  Feb 3, 2021
                 </span>
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  arrow_drop_down
+                </i>
               </button>
             </div>
             <button
@@ -6570,19 +6444,16 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
               title="Download Performance Overview Data"
               type="button"
             >
+              <i
+                aria-hidden="true"
+                class="material-icons icon medium"
+              >
+                file_download
+              </i>
               <span
                 class="content"
               >
-                <span
-                  class="wrapper"
-                >
-                  <i
-                    class="material-icons icon isLeft medium"
-                  >
-                    file_download
-                  </i>
-                  Download data
-                </span>
+                Download data
               </span>
             </button>
           </div>
@@ -6643,19 +6514,16 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
             class="wrapper ghost primary medium"
             type="button"
           >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              visibility_off
+            </i>
             <span
               class="content"
             >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  visibility_off
-                </i>
-                Hide tips
-              </span>
+              Hide tips
             </span>
           </button>
         </div>

@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 type Props = {
     className?: string
@@ -15,10 +14,9 @@ export default function TipsToggle({className, isVisible, onClick}: Props) {
             className={className}
             fillStyle="ghost"
             onClick={() => onClick(!isVisible)}
+            leadingIcon={isVisible ? 'visibility_off' : 'visibility'}
         >
-            <ButtonIconLabel icon={isVisible ? 'visibility_off' : 'visibility'}>
-                {isVisible ? 'Hide tips' : 'Show tips'}
-            </ButtonIconLabel>
+            {isVisible ? 'Hide tips' : 'Show tips'}
         </Button>
     )
 }

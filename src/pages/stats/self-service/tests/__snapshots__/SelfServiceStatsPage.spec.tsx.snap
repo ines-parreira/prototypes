@@ -139,29 +139,23 @@ exports[`<SelfServiceStatsPage /> should display the loader on loading 1`] = `
                 class="wrapper fill secondary medium"
                 type="button"
               >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  calendar_today
+                </i>
                 <span
                   class="content"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft medium"
-                    >
-                      calendar_today
-                    </i>
-                    <span
-                      class="wrapper"
-                    >
-                      Feb 3, 2021
-                      <i
-                        class="material-icons icon isRight medium"
-                      >
-                        arrow_drop_down
-                      </i>
-                    </span>
-                  </span>
+                  Feb 3, 2021
                 </span>
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  arrow_drop_down
+                </i>
               </button>
             </div>
           </div>
@@ -413,29 +407,23 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
               class="wrapper fill secondary medium"
               type="button"
             >
+              <i
+                aria-hidden="true"
+                class="material-icons icon medium"
+              >
+                calendar_today
+              </i>
               <span
                 class="content"
               >
-                <span
-                  class="wrapper"
-                >
-                  <i
-                    class="material-icons icon isLeft medium"
-                  >
-                    calendar_today
-                  </i>
-                  <span
-                    class="wrapper"
-                  >
-                    Feb 3, 2021
-                    <i
-                      class="material-icons icon isRight medium"
-                    >
-                      arrow_drop_down
-                    </i>
-                  </span>
-                </span>
+                Feb 3, 2021
               </span>
+              <i
+                aria-hidden="true"
+                class="material-icons icon medium"
+              >
+                arrow_drop_down
+              </i>
             </button>
           </div>
         </div>
@@ -1346,29 +1334,23 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               class="wrapper fill secondary medium"
               type="button"
             >
+              <i
+                aria-hidden="true"
+                class="material-icons icon medium"
+              >
+                calendar_today
+              </i>
               <span
                 class="content"
               >
-                <span
-                  class="wrapper"
-                >
-                  <i
-                    class="material-icons icon isLeft medium"
-                  >
-                    calendar_today
-                  </i>
-                  <span
-                    class="wrapper"
-                  >
-                    Feb 3, 2021
-                    <i
-                      class="material-icons icon isRight medium"
-                    >
-                      arrow_drop_down
-                    </i>
-                  </span>
-                </span>
+                Feb 3, 2021
               </span>
+              <i
+                aria-hidden="true"
+                class="material-icons icon medium"
+              >
+                arrow_drop_down
+              </i>
             </button>
           </div>
         </div>

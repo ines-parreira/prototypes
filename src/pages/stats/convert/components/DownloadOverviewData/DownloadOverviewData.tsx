@@ -4,7 +4,6 @@ import React, {useMemo, useState} from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {SharedDimension} from 'pages/stats/convert/clients/constants'
 import {
     saveReport,
@@ -87,10 +86,9 @@ const DownloadOverviewData = () => {
             isLoading={waitForTheReportData}
             isDisabled={isFetching || isError}
             title={'Download Performance Overview Data'}
+            leadingIcon="file_download"
         >
-            <ButtonIconLabel icon="file_download">
-                Download Data
-            </ButtonIconLabel>
+            Download Data
         </Button>
     )
 }

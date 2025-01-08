@@ -3,7 +3,6 @@ import React from 'react'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 import {useAggregatedBusiestTimesOfDayData} from 'pages/stats/support-performance/busiest-times-of-days/useAggregatedBusiestTimesOfDayData'
 import {saveReport} from 'services/reporting/busiestTimesOfDaysReportingService'
@@ -30,10 +29,9 @@ export const BusiestTimesOfDaysDownloadDataButton = ({
             }}
             isDisabled={isLoading}
             title={DOWNLOAD_BUTTON_TITLE}
+            leadingIcon="file_download"
         >
-            <ButtonIconLabel icon="file_download">
-                {DOWNLOAD_DATA_BUTTON_LABEL}
-            </ButtonIconLabel>
+            {DOWNLOAD_DATA_BUTTON_LABEL}
         </Button>
     )
 }

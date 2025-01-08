@@ -5,7 +5,6 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useAutoQAMetrics} from 'hooks/reporting/support-performance/auto-qa/useAutoQAMetrics'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 import {
     AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER,
@@ -36,10 +35,9 @@ export const AutoQADownloadDataButton = () => {
             }}
             isDisabled={isLoading}
             title={DOWNLOAD_BUTTON_TITLE}
+            leadingIcon="file_download"
         >
-            <ButtonIconLabel icon="file_download">
-                {DOWNLOAD_DATA_BUTTON_LABEL}
-            </ButtonIconLabel>
+            {DOWNLOAD_DATA_BUTTON_LABEL}
         </Button>
     )
 }

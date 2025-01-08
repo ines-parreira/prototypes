@@ -6,7 +6,6 @@ import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 
 import {formatDates} from 'pages/stats/utils'
@@ -53,10 +52,9 @@ export const DownloadTicketFieldsDataButton = ({
             }}
             title={DOWNLOAD_BUTTON_TITLE}
             isDisabled={isLoading}
+            leadingIcon="file_download"
         >
-            <ButtonIconLabel icon="file_download">
-                {DOWNLOAD_DATA_BUTTON_LABEL}
-            </ButtonIconLabel>
+            {DOWNLOAD_DATA_BUTTON_LABEL}
         </Button>
     )
 }

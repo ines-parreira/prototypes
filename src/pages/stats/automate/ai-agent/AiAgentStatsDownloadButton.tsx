@@ -16,7 +16,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import {isAiAgentCustomField} from 'pages/aiAgent/util'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {useTimeSeriesFormattedData} from 'pages/stats/AutomateOverviewContent'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 import {activeParams} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
@@ -140,10 +139,9 @@ export const AiAgentStatsDownloadButton = () => {
                 ticketInsightsDataIsLoading
             }
             title={DOWNLOAD_BUTTON_TITLE}
+            leadingIcon="file_download"
         >
-            <ButtonIconLabel icon="file_download">
-                {DOWNLOAD_DATA_BUTTON_LABEL}
-            </ButtonIconLabel>
+            {DOWNLOAD_DATA_BUTTON_LABEL}
         </Button>
     )
 }

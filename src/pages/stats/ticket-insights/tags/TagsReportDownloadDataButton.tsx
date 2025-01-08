@@ -3,7 +3,6 @@ import React from 'react'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {useTicketCountPerTag} from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 import {formatDates} from 'pages/stats/utils'
 import {saveReport} from 'services/reporting/tagsReportingService'
@@ -39,10 +38,9 @@ export const TagsReportDownloadDataButton = () => {
             }}
             title={DOWNLOAD_BUTTON_TITLE}
             isDisabled={isLoading}
+            leadingIcon="file_download"
         >
-            <ButtonIconLabel icon="file_download">
-                {DOWNLOAD_DATA_BUTTON_LABEL}
-            </ButtonIconLabel>
+            {DOWNLOAD_DATA_BUTTON_LABEL}
         </Button>
     )
 }

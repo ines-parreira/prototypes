@@ -4,7 +4,6 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {useDownloadAgentsPerformanceData} from 'hooks/reporting/support-performance/agents/useDownloadAgentsPerformanceData'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 import {saveZippedFiles} from 'utils/file'
 
@@ -25,10 +24,9 @@ export const DownloadAgentsPerformanceDataButton = () => {
             }}
             isDisabled={isLoading}
             title={DOWNLOAD_BUTTON_TITLE}
+            leadingIcon="file_download"
         >
-            <ButtonIconLabel icon="file_download">
-                {DOWNLOAD_DATA_BUTTON_LABEL}
-            </ButtonIconLabel>
+            {DOWNLOAD_DATA_BUTTON_LABEL}
         </Button>
     )
 }

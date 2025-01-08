@@ -3,7 +3,6 @@ import React from 'react'
 import {logEvent, SegmentEvent} from 'common/segment'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
     DOWNLOAD_BUTTON_TITLE,
     DOWNLOAD_DATA_BUTTON_LABEL,
@@ -29,10 +28,9 @@ export const VoiceAgentsDownloadDataButton = () => {
             }}
             isDisabled={isLoading || summaryIsLoading}
             title={DOWNLOAD_BUTTON_TITLE}
+            leadingIcon="file_download"
         >
-            <ButtonIconLabel icon="file_download">
-                {DOWNLOAD_DATA_BUTTON_LABEL}
-            </ButtonIconLabel>
+            {DOWNLOAD_DATA_BUTTON_LABEL}
         </Button>
     )
 }

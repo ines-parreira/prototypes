@@ -13,7 +13,6 @@ import {
     DateTimeResultFormatType,
 } from 'constants/datetime'
 import Button, {type ButtonProps} from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import css from 'pages/stats/common/PeriodPicker.less'
 import {
     periodPickerMaxSpanDays,
@@ -202,12 +201,14 @@ export const PeriodPickerContainer = ({
             return children
         }
         return (
-            <Button intent="secondary" isDisabled={isDisabled} {...toggleProps}>
-                <ButtonIconLabel icon={CALENDAR_ICON}>
-                    <ButtonIconLabel icon="arrow_drop_down" position="right">
-                        {label}
-                    </ButtonIconLabel>
-                </ButtonIconLabel>
+            <Button
+                intent="secondary"
+                isDisabled={isDisabled}
+                {...toggleProps}
+                leadingIcon={CALENDAR_ICON}
+                trailingIcon="arrow_drop_down"
+            >
+                {label}
             </Button>
         )
     }

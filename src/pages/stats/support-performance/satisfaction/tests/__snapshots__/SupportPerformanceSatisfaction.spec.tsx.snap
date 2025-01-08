@@ -494,29 +494,23 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
               class="wrapper fill secondary medium"
               type="button"
             >
+              <i
+                aria-hidden="true"
+                class="material-icons icon medium"
+              >
+                calendar_today
+              </i>
               <span
                 class="content"
               >
-                <span
-                  class="wrapper"
-                >
-                  <i
-                    class="material-icons icon isLeft medium"
-                  >
-                    calendar_today
-                  </i>
-                  <span
-                    class="wrapper"
-                  >
-                    Feb 3, 2021
-                    <i
-                      class="material-icons icon isRight medium"
-                    >
-                      arrow_drop_down
-                    </i>
-                  </span>
-                </span>
+                Feb 3, 2021
               </span>
+              <i
+                aria-hidden="true"
+                class="material-icons icon medium"
+              >
+                arrow_drop_down
+              </i>
             </button>
           </div>
         </div>

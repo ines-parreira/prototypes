@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 
 export const DOWNLOAD_BUTTON_TITLE = 'Download SLAs Data'
@@ -19,10 +18,9 @@ export const DownloadSLAsDataButton = ({disabled, onClick}: Props) => {
             onClick={onClick}
             isDisabled={disabled}
             title={DOWNLOAD_BUTTON_TITLE}
+            leadingIcon="file_download"
         >
-            <ButtonIconLabel icon="file_download">
-                {DOWNLOAD_DATA_BUTTON_LABEL}
-            </ButtonIconLabel>
+            {DOWNLOAD_DATA_BUTTON_LABEL}
         </Button>
     )
 }
