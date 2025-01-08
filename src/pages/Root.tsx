@@ -16,7 +16,7 @@ import {Store} from 'redux'
 import {appQueryClient} from 'api/queryClient'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {Main} from 'main/app'
-import Routes from 'routes/'
+import RoutesWrapper from 'routes'
 import activityTracker from 'services/activityTracker'
 import {RootState} from 'state/types'
 import {envVars, NodeEnv} from 'utils/environment'
@@ -79,7 +79,7 @@ const Root = ({store}: Props) => {
                             <Router history={history}>
                                 <CompatRouter>
                                     <Main>
-                                        <Routes />
+                                        <RoutesWrapper />
                                     </Main>
                                 </CompatRouter>
                             </Router>
