@@ -2,25 +2,26 @@
 @import (reference) '~css/typography';
 
 :local {
-    .formGroup {
-        margin-bottom: @layout-spacing-l;
-
+    .chatSettingsFormComponent {
         .formGroupDescription {
             margin-bottom: @layout-spacing-s;
         }
-    }
 
-    .label {
-        margin-bottom: @layout-spacing-xs;
-    }
+        .label {
+            margin-bottom: @layout-spacing-xs;
+        }
 
-    .formInputFooterInfo {
-        .caption-regular();
-        color: var(--neutral-grey-5);
-        margin-top: @layout-spacing-xxs;
+        .formInputFooterInfo {
+            .caption-regular();
+            color: var(--neutral-grey-5);
+            margin-top: @layout-spacing-xxs;
+            &.error {
+                color: var(--feedback-error);
+            }
+        }
 
-        &.error {
-            color: var(--feedback-error);
+        section {
+            margin-bottom: @layout-spacing-s !important;
         }
     }
 }

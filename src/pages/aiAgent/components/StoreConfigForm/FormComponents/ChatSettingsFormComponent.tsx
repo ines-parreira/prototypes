@@ -63,37 +63,52 @@ export const ChatSettingsFormComponent = ({
     }, [monitoredChatIntegrations?.length, isRequired])
 
     return (
-        <div className={css.formGroup}>
-            <Label
-                className={css.label}
-                id="monitored-chat-channels"
-                isRequired={isRequired}
-            >
-                AI Agent responds to tickets sent to the following Chats
-            </Label>
-            <ChatIntegrationListSelection
-                labelId="monitored-chat-channels"
-                selectedIds={
-                    monitoredChatIntegrations !== null
-                        ? monitoredChatIntegrations.map(
-                              (integration) => integration
-                          )
-                        : INITIAL_FORM_VALUES.monitoredChatIntegrations
-                }
-                onSelectionChange={handleSelectChatIntegration}
-                chatItems={chatChannels}
-                hasError={!isChatIntegrationsValid}
-                isDisabled={isDisabled}
-            />
-            <div
-                className={classnames(css.formInputFooterInfo, {
-                    [css.error]: !isChatIntegrationsValid,
-                })}
-            >
-                {!isChatIntegrationsValid
-                    ? 'One or more Chats required.'
-                    : 'Select one or more Chats for AI Agent to use.'}
-            </div>
+        <div className={css.chatSettingsFormComponent}>
+            <section>
+                <Label
+                    className={css.label}
+                    id="monitored-chat-channels"
+                    isRequired={isRequired}
+                >
+                    AI Agent responds to tickets sent to the following Chats
+                </Label>
+                <ChatIntegrationListSelection
+                    labelId="monitored-chat-channels"
+                    selectedIds={
+                        monitoredChatIntegrations !== null
+                            ? monitoredChatIntegrations.map(
+                                  (integration) => integration
+                              )
+                            : INITIAL_FORM_VALUES.monitoredChatIntegrations
+                    }
+                    onSelectionChange={handleSelectChatIntegration}
+                    chatItems={chatChannels}
+                    hasError={!isChatIntegrationsValid}
+                    isDisabled={isDisabled}
+                />
+                <div
+                    className={classnames(css.formInputFooterInfo, {
+                        [css.error]: !isChatIntegrationsValid,
+                    })}
+                >
+                    {!isChatIntegrationsValid
+                        ? 'One or more Chats required.'
+                        : 'Select one or more Chats for AI Agent to use.'}
+                </div>
+            </section>
+            <section>
+                <div>
+                    See how{' '}
+                    <a
+                        href="https://docs.gorgias.com/en-US/set-up-and-use-ai-agent-on-chat-(beta)-828220#the-handover-experience-on-chat"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        AI Agent hands over
+                    </a>{' '}
+                    tickets when your team is online or offline.
+                </div>
+            </section>
         </div>
     )
 }
