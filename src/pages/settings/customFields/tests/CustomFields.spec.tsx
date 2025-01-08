@@ -4,11 +4,18 @@ import React from 'react'
 import {Link, useParams} from 'react-router-dom'
 
 import {SegmentEvent, logEvent} from 'common/segment'
-import {OBJECT_TYPES, OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
+import {
+    OBJECT_TYPES,
+    OBJECT_TYPE_SETTINGS,
+    AI_MANAGED_TYPES,
+} from 'custom-fields/constants'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {useUpdateCustomFieldDefinitions} from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinitions'
 import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
-import {ticketInputFieldDefinition} from 'fixtures/customField'
+import {
+    ticketInputFieldDefinition,
+    ticketNumberFieldDefinition,
+} from 'fixtures/customField'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import {assumeMock, getLastMockCall} from 'utils/testing'
 
@@ -214,4 +221,43 @@ describe('<CustomFields/>', () => {
             ).toBeAriaDisabled()
         }
     )
+
+    it('should count only active and not internally managed custom fields', () => {
+        useCustomFieldDefinitionsMock.mockReturnValue({
+            data: apiListCursorPaginationResponse([
+                ...Array.from({length: 23}, (_, idx) => ({
+                    ...ticketInputFieldDefinition,
+                    id: idx,
+                    label: `Field ${idx}`,
+                })),
+                {
+                    ...ticketInputFieldDefinition,
+                    id: 24,
+                    label: 'Field 24',
+                    managed_type: 'contact_reason',
+                },
+                {
+                    ...ticketNumberFieldDefinition,
+                    id: 25,
+                    label: 'Field 25',
+                    managed_type: AI_MANAGED_TYPES.AI_INTENT,
+                },
+                {
+                    ...ticketNumberFieldDefinition,
+                    id: 26,
+                    label: 'Field 26',
+                    managed_type: AI_MANAGED_TYPES.AI_OUTCOME,
+                },
+            ]),
+            isLoading: false,
+        } as unknown as ReturnType<typeof useCustomFieldDefinitions>)
+
+        render(<CustomFields objectType={OBJECT_TYPES.TICKET} />)
+        expect(
+            screen.queryByText(/Please archive some fields before creating/)
+        ).toBeNull()
+        expect(
+            screen.getByRole('button', {name: 'Create Field'})
+        ).toBeAriaEnabled()
+    })
 })

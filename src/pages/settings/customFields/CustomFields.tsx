@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {Link, NavLink, useParams} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
+import {AI_MANAGED_TYPES, OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {useUpdateCustomFieldDefinitions} from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinitions'
 import {CustomFieldObjectTypes, ListParams} from 'custom-fields/types'
@@ -86,9 +86,14 @@ export default function CustomFields({
     const hasCustomFields = hasActiveFields || hasArchivedFields
     const shouldDisplayListingPage = hasCustomFields || debouncedSearch
     const isLoading = isLoadingActive || isLoadingArchived
+    const customFieldsCountingTowardsTheLimit = activeFields.filter(
+        (field) =>
+            field.managed_type == null ||
+            !Object.values(AI_MANAGED_TYPES).includes(field.managed_type)
+    )
 
     const createFieldButton =
-        activeFields.length >= MAX_FIELDS ? (
+        customFieldsCountingTowardsTheLimit.length >= MAX_FIELDS ? (
             <Button isDisabled>Create Field</Button>
         ) : (
             <Link
@@ -185,7 +190,8 @@ export default function CustomFields({
                             ) : (
                                 <>
                                     {activeTab === 'active' &&
-                                        activeFields.length >= MAX_FIELDS && (
+                                        customFieldsCountingTowardsTheLimit.length >=
+                                            MAX_FIELDS && (
                                             <Alert
                                                 type={AlertType.Info}
                                                 icon
