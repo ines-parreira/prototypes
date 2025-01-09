@@ -92,7 +92,9 @@ export const AiAgentStatsDownloadButton = () => {
             cleanStatsFilters,
             userTimezone,
             granularity,
-            String(selectedCustomField.id)
+            String(selectedCustomField.id),
+            undefined,
+            selectedCustomField.id !== null
         )
 
     const {data: {data: activeFields = []} = {}} =

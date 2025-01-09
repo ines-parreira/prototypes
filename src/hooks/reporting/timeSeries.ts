@@ -99,7 +99,8 @@ export const useCustomFieldsTicketCountTimeSeries = (
     timezone: string,
     granularity: ReportingGranularity,
     customFieldId: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
+    enabled = true
 ) => {
     return useTimeSeriesPerDimension(
         customFieldsTicketCountTimeSeriesQueryFactory(
@@ -108,7 +109,8 @@ export const useCustomFieldsTicketCountTimeSeries = (
             granularity,
             customFieldId,
             sorting
-        )
+        ),
+        enabled
     )
 }
 

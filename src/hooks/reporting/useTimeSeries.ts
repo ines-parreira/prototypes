@@ -106,7 +106,8 @@ export function fetchTimeSeries<TCube extends Cubes>(
 }
 
 export function useTimeSeriesPerDimension<TCube extends Cubes>(
-    query: TimeSeriesQuery<TCube>
+    query: TimeSeriesQuery<TCube>,
+    enabled = true
 ) {
     return usePostReporting<
         Record<string, string>[],
@@ -114,6 +115,7 @@ export function useTimeSeriesPerDimension<TCube extends Cubes>(
         TCube
     >([query], {
         select: (res) => selectPerDimension<TCube>(query)(res.data.data),
+        enabled,
     })
 }
 

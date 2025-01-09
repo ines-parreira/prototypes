@@ -193,7 +193,8 @@ describe('time series', () => {
                     timezone,
                     granularity,
                     customFieldId
-                )
+                ),
+                true
             )
         })
     })
