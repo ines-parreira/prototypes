@@ -370,7 +370,8 @@ const isAgentsMetric = (
     column: AgentsTableColumn
 ): column is AgentMetricColumn =>
     column !== AgentsTableColumn.AgentName &&
-    column !== AgentsTableColumn.OnlineTime
+    column !== AgentsTableColumn.OnlineTime &&
+    column !== AgentsTableColumn.MessagesSentPerHour
 
 export const buildAgentMetric = (column: AgentMetricColumn, agent: User) => ({
     title: `${TableLabels[column]} | ${agent.name}`,
