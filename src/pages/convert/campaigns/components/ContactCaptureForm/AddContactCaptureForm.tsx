@@ -157,6 +157,7 @@ const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
             containerZIndices={[1051, -1]}
         >
             <EditorDrawerHeader
+                className={css.drawerHeader}
                 label="Email Capture Form"
                 onClose={() => onOpenChange(false)}
                 testId="drawer-header"

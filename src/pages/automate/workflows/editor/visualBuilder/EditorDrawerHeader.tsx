@@ -17,6 +17,7 @@ type Props = {
     isPreview?: boolean
     headerSaperator?: boolean
     testId: string
+    className?: string
 }
 
 const EditorDrawerHeader = ({
@@ -26,6 +27,7 @@ const EditorDrawerHeader = ({
     isPreview,
     headerSaperator,
     testId,
+    className,
 }: Props) => {
     const closeButtonId = `${
         isPreview ? 'preview-' : ''
@@ -33,7 +35,7 @@ const EditorDrawerHeader = ({
 
     return (
         <Drawer.Header
-            className={classNames(css.header, {
+            className={classNames(css.header, className, {
                 [css.headerSaperator]: headerSaperator,
             })}
         >
