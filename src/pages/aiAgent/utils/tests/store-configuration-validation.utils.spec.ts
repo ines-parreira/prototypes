@@ -43,7 +43,6 @@ const DEFAULT_OPTIONS = {
 const WIZARD_FORM_VALUES: WizardFormValues = {
     completedDatetime: null,
     stepName: null,
-    hasEducationStepEnabled: null,
     enabledChannels: null,
     isAutoresponderTurnedOff: null,
     onCompletePathway: null,

@@ -1,11 +1,9 @@
 import {waitFor} from '@testing-library/react'
 import {renderHook, act} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import {useParams} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import useAppSelector from 'hooks/useAppSelector'
@@ -137,9 +135,6 @@ describe('useAiAgentOnboardingWizard', () => {
             helpCenter: null,
             isLoading: false,
         })
-        mockFlags({
-            [FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]: true,
-        })
 
         mockUseStoreConfigurationMutation.mockReturnValue(
             defaultStoreConfigurationMutation
@@ -149,7 +144,7 @@ describe('useAiAgentOnboardingWizard', () => {
     it('should initialize store configuration with default value', () => {
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                step: AiAgentOnboardingWizardStep.Education,
+                step: AiAgentOnboardingWizardStep.Personalize,
             })
         )
 
@@ -164,7 +159,7 @@ describe('useAiAgentOnboardingWizard', () => {
     it('should handle form updates correctly', () => {
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                step: AiAgentOnboardingWizardStep.Education,
+                step: AiAgentOnboardingWizardStep.Personalize,
             })
         )
 
@@ -178,7 +173,7 @@ describe('useAiAgentOnboardingWizard', () => {
     it('should handle action and navigate to previous or next step', () => {
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                step: AiAgentOnboardingWizardStep.Education,
+                step: AiAgentOnboardingWizardStep.Personalize,
             })
         )
 
@@ -197,7 +192,7 @@ describe('useAiAgentOnboardingWizard', () => {
     it('should handle action and navigate to the welcome page', () => {
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                step: AiAgentOnboardingWizardStep.Education,
+                step: AiAgentOnboardingWizardStep.Personalize,
             })
         )
 
@@ -216,7 +211,7 @@ describe('useAiAgentOnboardingWizard', () => {
         })
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                step: AiAgentOnboardingWizardStep.Education,
+                step: AiAgentOnboardingWizardStep.Personalize,
             })
         )
 
@@ -248,7 +243,7 @@ describe('useAiAgentOnboardingWizard', () => {
     it('should perform nothing if handlAction is called with an unknown action', () => {
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                step: AiAgentOnboardingWizardStep.Education,
+                step: AiAgentOnboardingWizardStep.Personalize,
             })
         )
 
@@ -311,7 +306,7 @@ describe('useAiAgentOnboardingWizard', () => {
 
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                step: AiAgentOnboardingWizardStep.Education,
+                step: AiAgentOnboardingWizardStep.Personalize,
             })
         )
 
@@ -348,7 +343,7 @@ describe('useAiAgentOnboardingWizard', () => {
 
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                step: AiAgentOnboardingWizardStep.Education,
+                step: AiAgentOnboardingWizardStep.Personalize,
             })
         )
 
@@ -372,7 +367,7 @@ describe('useAiAgentOnboardingWizard', () => {
     it('should call update store configuration on save when updating', async () => {
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                step: AiAgentOnboardingWizardStep.Education,
+                step: AiAgentOnboardingWizardStep.Personalize,
             })
         )
 
@@ -399,7 +394,7 @@ describe('useAiAgentOnboardingWizard', () => {
 
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                step: AiAgentOnboardingWizardStep.Education,
+                step: AiAgentOnboardingWizardStep.Personalize,
             })
         )
 
@@ -428,7 +423,7 @@ describe('useAiAgentOnboardingWizard', () => {
 
         const {result} = renderHook(() =>
             useAiAgentOnboardingWizard({
-                step: AiAgentOnboardingWizardStep.Education,
+                step: AiAgentOnboardingWizardStep.Personalize,
             })
         )
 
@@ -508,7 +503,6 @@ describe('useAiAgentOnboardingWizard', () => {
                 stepName: AiAgentOnboardingWizardStep.Knowledge,
                 completedDatetime: null,
                 stepData: {
-                    hasEducationStepEnabled: true,
                     enabledChannels: [],
                     isAutoresponderTurnedOff: null,
                     onCompletePathway: null,

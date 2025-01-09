@@ -1,10 +1,8 @@
 import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo} from 'react'
 import {useParams} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     AiAgentOnboardingWizardStep,
     StoreConfiguration,
@@ -16,7 +14,6 @@ import WizardStep from 'pages/common/components/wizard/WizardStep'
 
 import {isAiAgentOnboardingWizardStep} from '../components/StoreConfigForm/StoreConfigForm.utils'
 import css from './AiAgentOnboardingWizard.less'
-import AiAgentOnboardingWizardEducation from './AiAgentOnboardingWizardEducation'
 import AiAgentOnboardingWizardKnowledge from './AiAgentOnboardingWizardKnowledge'
 import AiAgentOnboardingWizardPersonalize from './AiAgentOnboardingWizardPersonalize'
 
@@ -29,28 +26,14 @@ export type AiAgentOnboardingWizardProps = {
 const AiAgentOnboardingWizardComponent = (
     props: AiAgentOnboardingWizardProps
 ) => {
-    const isAiAgentOnboardingWizardEducationalStepEnabled =
-        useFlags()[FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]
-
-    const steps = useMemo(
-        () =>
-            Object.values(AiAgentOnboardingWizardStep).filter((step) => {
-                if (step === AiAgentOnboardingWizardStep.Education) {
-                    return isAiAgentOnboardingWizardEducationalStepEnabled
-                }
-                return true
-            }),
-        [isAiAgentOnboardingWizardEducationalStepEnabled]
-    )
+    const steps = useMemo(() => Object.values(AiAgentOnboardingWizardStep), [])
 
     const stepName = props.storeConfiguration?.wizard?.stepName
 
     const wizardStep =
         stepName && isAiAgentOnboardingWizardStep(stepName)
             ? stepName
-            : isAiAgentOnboardingWizardEducationalStepEnabled
-              ? AiAgentOnboardingWizardStep.Education
-              : AiAgentOnboardingWizardStep.Personalize
+            : AiAgentOnboardingWizardStep.Personalize
 
     return (
         <>
@@ -58,13 +41,6 @@ const AiAgentOnboardingWizardComponent = (
                 <PageHeader title="Set up AI Agent" />
                 <div className={css.wrapper}>
                     <Wizard steps={steps} startAt={wizardStep}>
-                        {isAiAgentOnboardingWizardEducationalStepEnabled && (
-                            <WizardStep
-                                name={AiAgentOnboardingWizardStep.Education}
-                            >
-                                <AiAgentOnboardingWizardEducation {...props} />
-                            </WizardStep>
-                        )}
                         <WizardStep
                             name={AiAgentOnboardingWizardStep.Personalize}
                         >

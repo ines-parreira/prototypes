@@ -14,7 +14,6 @@ export type NonNullFields<T, K extends keyof T> = T &
 export type WizardFormValues = {
     completedDatetime: string | null
     stepName: AiAgentOnboardingWizardStep | null
-    hasEducationStepEnabled: boolean | null
     enabledChannels: AiAgentChannel[] | null
     isAutoresponderTurnedOff: boolean | null
     onCompletePathway: string | null
