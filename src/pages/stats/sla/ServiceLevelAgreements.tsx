@@ -6,26 +6,20 @@ import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hoo
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import {CustomReportComponent} from 'pages/stats/common/CustomReport/CustomReportComponent'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
-import {AchievedAndBreachedTicketsChart} from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
-import {AchievementRateTrendCard} from 'pages/stats/sla/components/AchievementRateTrendCard'
-import {BreachedTicketsRateTrendCard} from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
 import {DownloadSLAsData} from 'pages/stats/sla/components/DownloadSLAsData'
 import {SLAPolicySelect} from 'pages/stats/sla/components/SLAPolicySelect'
 import {WithSlaEmptyState} from 'pages/stats/sla/components/WithSlaEmptyState'
+import {
+    ServiceLevelAgreementsConfig,
+    ServiceLevelAgreementsChart,
+} from 'pages/stats/sla/ServiceLevelAgreementsConfig'
 import StatsPage from 'pages/stats/StatsPage'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 
-export const SERVICE_LEVEL_AGREEMENT_PAGE_TITLE = 'SLAs'
-export const SERVICE_LEVEL_OPTIONAL_FILTERS = [
-    FilterKey.Integrations,
-    FilterKey.Channels,
-    FilterKey.Agents,
-    FilterKey.Tags,
-    FilterKey.CustomFields,
-]
 const OVERVIEW_SECTION_LABEL = 'Overview'
 
 export function ServiceLevelAgreements() {
@@ -34,13 +28,13 @@ export function ServiceLevelAgreements() {
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
     const SLAsOptionalFilters =
         useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            SERVICE_LEVEL_OPTIONAL_FILTERS
+            ServiceLevelAgreementsConfig.reportFilters.optional
         )
     return (
         <WithSlaEmptyState>
             <div className="full-width">
                 <StatsPage
-                    title={SERVICE_LEVEL_AGREEMENT_PAGE_TITLE}
+                    title={ServiceLevelAgreementsConfig.reportName}
                     titleExtra={
                         <>
                             <SupportPerformanceFilters
@@ -57,11 +51,10 @@ export function ServiceLevelAgreements() {
                                 className="pb-0"
                             >
                                 <FiltersPanelWrapper
-                                    persistentFilters={[
-                                        FilterKey.Period,
-                                        FilterKey.SlaPolicies,
-                                        FilterKey.AggregationWindow,
-                                    ]}
+                                    persistentFilters={
+                                        ServiceLevelAgreementsConfig
+                                            .reportFilters.persistent
+                                    }
                                     optionalFilters={SLAsOptionalFilters}
                                     filterSettingsOverrides={{
                                         [FilterKey.Period]: {
@@ -82,13 +75,28 @@ export function ServiceLevelAgreements() {
                     </DashboardSection>
                     <DashboardSection>
                         <DashboardGridCell size={getGridCellSize(6)}>
-                            <AchievementRateTrendCard />
+                            <CustomReportComponent
+                                chart={
+                                    ServiceLevelAgreementsChart.AchievementRateTrend
+                                }
+                                config={ServiceLevelAgreementsConfig}
+                            />
                         </DashboardGridCell>
                         <DashboardGridCell size={getGridCellSize(6)}>
-                            <BreachedTicketsRateTrendCard />
+                            <CustomReportComponent
+                                chart={
+                                    ServiceLevelAgreementsChart.BreachedTicketsRateTrend
+                                }
+                                config={ServiceLevelAgreementsConfig}
+                            />
                         </DashboardGridCell>
                         <DashboardGridCell size={12}>
-                            <AchievedAndBreachedTicketsChart />
+                            <CustomReportComponent
+                                chart={
+                                    ServiceLevelAgreementsChart.AchievedAndBreachedTicketsChart
+                                }
+                                config={ServiceLevelAgreementsConfig}
+                            />
                         </DashboardGridCell>
                     </DashboardSection>
                     <AnalyticsFooter />

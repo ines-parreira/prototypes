@@ -52,7 +52,7 @@ describe('useFiltersFromDashboard(dashboard)', () => {
         })
 
         useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFiltersMock.mockImplementation(
-            (val) => val
+            (val = []) => val
         )
     })
 

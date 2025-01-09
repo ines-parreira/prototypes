@@ -21,7 +21,7 @@ import {IntegrationType} from 'models/integration/constants'
 import StatsNavbarView, {
     BUSIEST_TIMES_OF_DAYS_NAV_LABEL,
 } from 'pages/stats/common/components/StatsNavbarView'
-import {SERVICE_LEVEL_AGREEMENT_PAGE_TITLE} from 'pages/stats/sla/ServiceLevelAgreements'
+import {SERVICE_LEVEL_AGREEMENT_PAGE_TITLE} from 'pages/stats/sla/ServiceLevelAgreementsConfig'
 import {AUTO_QA_PAGE_TITLE} from 'pages/stats/support-performance/auto-qa/AutoQA'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock, renderWithRouter} from 'utils/testing'

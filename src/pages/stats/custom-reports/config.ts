@@ -1,5 +1,9 @@
 import {ReportsModalConfig} from 'pages/stats/custom-reports/types'
 import {
+    ServiceLevelAgreementsChart,
+    ServiceLevelAgreementsConfig,
+} from 'pages/stats/sla/ServiceLevelAgreementsConfig'
+import {
     AgentsChart,
     SupportPerformanceAgentsReportConfig,
 } from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
@@ -29,6 +33,10 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
             {
                 type: AgentsChart,
                 config: SupportPerformanceAgentsReportConfig,
+            },
+            {
+                type: ServiceLevelAgreementsChart,
+                config: ServiceLevelAgreementsConfig,
             },
         ],
     },

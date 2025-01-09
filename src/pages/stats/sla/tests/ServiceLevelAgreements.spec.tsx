@@ -23,11 +23,11 @@ import {AchievementRateTrendCard} from 'pages/stats/sla/components/AchievementRa
 import {BreachedTicketsRateTrendCard} from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
 import {DownloadSLAsData} from 'pages/stats/sla/components/DownloadSLAsData'
 import {SLAPolicySelect} from 'pages/stats/sla/components/SLAPolicySelect'
+import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
 import {
-    ServiceLevelAgreements,
     SERVICE_LEVEL_AGREEMENT_PAGE_TITLE,
     SERVICE_LEVEL_OPTIONAL_FILTERS,
-} from 'pages/stats/sla/ServiceLevelAgreements'
+} from 'pages/stats/sla/ServiceLevelAgreementsConfig'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
 
