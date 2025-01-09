@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import React, {
@@ -19,7 +20,6 @@ import {
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-
 import {ACTIONS, AI_AGENT} from 'pages/aiAgent/constants'
 
 import css from './ActionEventsView.less'
@@ -180,7 +180,7 @@ export default function ActionExecutionsView() {
         <AiAgentLayout
             isLoading={isFetching}
             shopName={shopName}
-            className={css.container}
+            className={classnames(css.container, css.actionLogsView)}
             title={isStandaloneMenuEnabled ? ACTIONS : AI_AGENT}
         >
             <ActionEventsHeader
