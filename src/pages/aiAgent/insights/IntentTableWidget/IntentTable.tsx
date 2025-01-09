@@ -224,6 +224,10 @@ export const IntentTableWithDefaultState = ({
 }) => {
     const paginatedIntents = useAppSelector(getPaginatedIntents)
     const isSortingLoading = useAppSelector(isSortingMetricLoading)
+    useIntentSoringQuery(
+        IntentTableColumn.AutomationOpportunities,
+        useAIAgentInsightsDataset
+    )
 
     const shouldRemoveButtonBorder =
         paginatedIntents &&
