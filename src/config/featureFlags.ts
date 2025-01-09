@@ -18,6 +18,7 @@ export enum FeatureFlagKey {
     AiAgentMultiChannelEnablement = 'ai-agent-multi-channel-enablement',
     AiAgentOnboardingNotification = 'ai-agent-onboarding-notification',
     AiAgentOnboardingWizard = 'ai-agent-onboarding-wizard',
+    AiAgentOnboardingWizardEducationalStep = 'ai-agent-onboarding-wizard-educational-step',
     AiAgentOnboardingWizardKnowledgeRedirect = 'ai-agent-onboarding-wizard-knowledge-redirect',
     AiAgentOptimizeTab = 'ai-agent-optimize-tab',
     AIAgentPreviewModeAllowed = 'ai-agent-preview-mode-allowed',

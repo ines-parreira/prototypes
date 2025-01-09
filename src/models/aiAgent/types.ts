@@ -102,15 +102,18 @@ type EmailIntegration = {
 }
 
 export enum AiAgentOnboardingWizardStep {
+    Education = 'education',
     Personalize = 'personalize',
     Knowledge = 'knowledge',
 }
 
 export enum AiAgentOnboardingWizardType {
     TwoSteps = '2-steps',
+    ThreeSteps = '3-steps',
 }
 
 export type WizardStepData = {
+    hasEducationStepEnabled: boolean | null
     enabledChannels: AiAgentChannel[] | null
     isAutoresponderTurnedOff: boolean | null
     onCompletePathway: string | null

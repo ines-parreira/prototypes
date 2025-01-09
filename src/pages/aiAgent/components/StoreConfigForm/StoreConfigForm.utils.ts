@@ -30,6 +30,8 @@ export const getStoreConfigurationFromFormValues = (
     const signature = formValues.signature
 
     const wizardStepData = {
+        hasEducationStepEnabled:
+            formValues.wizard?.hasEducationStepEnabled ?? null,
         enabledChannels: formValues.wizard?.enabledChannels ?? null,
         isAutoresponderTurnedOff:
             formValues.wizard?.isAutoresponderTurnedOff ?? null,
@@ -134,6 +136,8 @@ export const getFormValuesFromStoreConfiguration = (
         stepName: isAiAgentOnboardingWizardStep(storeConfig.wizard.stepName)
             ? storeConfig.wizard.stepName
             : null,
+        hasEducationStepEnabled:
+            storeConfig.wizard.stepData.hasEducationStepEnabled,
         enabledChannels: storeConfig.wizard.stepData.enabledChannels,
         isAutoresponderTurnedOff:
             storeConfig.wizard.stepData.isAutoresponderTurnedOff,

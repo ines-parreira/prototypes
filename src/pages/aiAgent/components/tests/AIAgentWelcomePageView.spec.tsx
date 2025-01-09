@@ -18,9 +18,10 @@ import {AIAgentWelcomePageView} from '../AIAgentWelcomePageView/AIAgentWelcomePa
 const MOCK_WIZARD_VALUES = {
     wizard: {
         id: 1,
-        stepName: AiAgentOnboardingWizardStep.Personalize,
+        stepName: AiAgentOnboardingWizardStep.Education,
         completedDatetime: null,
         stepData: {
+            hasEducationStepEnabled: true,
             enabledChannels: [],
             isAutoresponderTurnedOff: null,
             onCompletePathway: null,

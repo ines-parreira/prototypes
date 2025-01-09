@@ -36,6 +36,8 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
     shopName,
 }) => {
     const [isPristine, setIsPristine] = useState(true)
+    const isAiAgentOnboardingWizardEducationalStep =
+        useFlags()[FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]
 
     const step = AiAgentOnboardingWizardStep.Personalize
 
@@ -153,7 +155,15 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
                 descriptions={AI_AGENT_STEPS_DESCRIPTIONS}
                 footer={
                     <WizardFooter
-                        displayCancelButton={true}
+                        displaySaveAndCustomizeLater={
+                            !!isAiAgentOnboardingWizardEducationalStep
+                        }
+                        displayBackButton={
+                            !!isAiAgentOnboardingWizardEducationalStep
+                        }
+                        displayCancelButton={
+                            !isAiAgentOnboardingWizardEducationalStep
+                        }
                         displayNextButton
                         onClick={handleButtonClicks}
                         isDisabled={isLoading}

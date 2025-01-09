@@ -356,7 +356,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             SegmentEvent.AiAgentOnboardingWizardPublicUrlIngested,
             {
                 step: AiAgentOnboardingWizardStep.Knowledge,
-                version: AiAgentOnboardingWizardType.TwoSteps,
+                version: AiAgentOnboardingWizardType.ThreeSteps,
                 url: 'https://example.com/faqs',
             }
         )
@@ -412,6 +412,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             storeFormValues: getStoreConfigurationFormValuesFixture({
                 wizard: {
                     ...defaultWizard,
+                    hasEducationStepEnabled: false,
                 },
             }),
         }

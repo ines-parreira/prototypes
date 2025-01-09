@@ -227,7 +227,9 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
     const logConnectedPublicUrl = (url: string) => {
         logEvent(SegmentEvent.AiAgentOnboardingWizardPublicUrlIngested, {
             step: AiAgentOnboardingWizardStep.Knowledge,
-            version: AiAgentOnboardingWizardType.TwoSteps,
+            version: storeFormValues.wizard?.hasEducationStepEnabled
+                ? AiAgentOnboardingWizardType.ThreeSteps
+                : AiAgentOnboardingWizardType.TwoSteps,
             url,
         })
     }
