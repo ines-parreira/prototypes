@@ -6,29 +6,22 @@ import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import {CustomReportComponent} from 'pages/stats/common/CustomReport/CustomReportComponent'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
-import {AllUsedTagsTableChart} from 'pages/stats/ticket-insights/tags/AllUsedTagsTableChart'
+import {
+    TicketInsightsTagsChart,
+    TicketInsightsTagsConfig,
+} from 'pages/stats/ticket-insights/tags/TagsConfig'
 import {TagsReportDownloadDataButton} from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
-import {TagsTrendChart} from 'pages/stats/ticket-insights/tags/TagsTrendChart'
-import {TopUsedTagsChart} from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-
-export const TAGS_TITLE = 'Tags'
-export const TAGS_OPTIONAL_FILTERS = [
-    FilterKey.Agents,
-    FilterKey.Channels,
-    FilterKey.Integrations,
-    FilterKey.Tags,
-    FilterKey.CustomFields,
-]
 
 export function Tags() {
     const tagsOptionalFilters =
         useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            TAGS_OPTIONAL_FILTERS
+            TicketInsightsTagsConfig.reportFilters.optional
         )
     const getGridCellSize = useGridSize()
     const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
@@ -37,7 +30,7 @@ export function Tags() {
     return (
         <div className="full-width">
             <StatsPage
-                title={TAGS_TITLE}
+                title={TicketInsightsTagsConfig.reportName}
                 titleExtra={<TagsReportDownloadDataButton />}
             >
                 <DashboardSection>
@@ -46,10 +39,10 @@ export function Tags() {
                         className="pb-0"
                     >
                         <FiltersPanelWrapper
-                            persistentFilters={[
-                                FilterKey.Period,
-                                FilterKey.AggregationWindow,
-                            ]}
+                            persistentFilters={
+                                TicketInsightsTagsConfig.reportFilters
+                                    .persistent
+                            }
                             optionalFilters={tagsOptionalFilters}
                             filterSettingsOverrides={{
                                 [FilterKey.Period]: {
@@ -67,16 +60,27 @@ export function Tags() {
                         size={getGridCellSize(1)}
                         className="pb-0"
                     >
-                        <TopUsedTagsChart />
+                        <CustomReportComponent
+                            chart={TicketInsightsTagsChart.TopUsedTagsChart}
+                            config={TicketInsightsTagsConfig}
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell
                         size={getGridCellSize(11)}
                         className="pb-0"
                     >
-                        <TagsTrendChart />
+                        <CustomReportComponent
+                            chart={TicketInsightsTagsChart.TagsTrendChart}
+                            config={TicketInsightsTagsConfig}
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell>
-                        <AllUsedTagsTableChart />
+                        <CustomReportComponent
+                            chart={
+                                TicketInsightsTagsChart.AllUsedTagsTableChart
+                            }
+                            config={TicketInsightsTagsConfig}
+                        />
                     </DashboardGridCell>
                 </DashboardSection>
             </StatsPage>

@@ -10,6 +10,7 @@ import {AgentsChart} from 'pages/stats/support-performance/agents/SupportPerform
 import {BusiestTimesChart} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
 import {ChannelsChart} from 'pages/stats/support-performance/channels/ChannelsReportConfig'
 import {OverviewChart} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import {TicketInsightsTagsChart} from 'pages/stats/ticket-insights/tags/TagsConfig'
 import {TicketFieldsChart} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsConfig'
 
 type FilterSettings = {
@@ -91,6 +92,7 @@ export type AvailableChartIds =
     | typeof ChannelsChart
     | typeof ServiceLevelAgreementsChart
     | typeof TicketFieldsChart
+    | typeof TicketInsightsTagsChart
 
 export type ReportChildrenConfig = {
     type: AvailableChartIds

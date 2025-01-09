@@ -14,11 +14,11 @@ import {
 import {FilterKey} from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {AllUsedTagsTableChart} from 'pages/stats/ticket-insights/tags/AllUsedTagsTableChart'
+import {Tags} from 'pages/stats/ticket-insights/tags/Tags'
 import {
-    Tags,
-    TAGS_OPTIONAL_FILTERS,
     TAGS_TITLE,
-} from 'pages/stats/ticket-insights/tags/Tags'
+    TAGS_OPTIONAL_FILTERS,
+} from 'pages/stats/ticket-insights/tags/TagsConfig'
 import {TagsReportDownloadDataButton} from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
 import {TagsTrendChart} from 'pages/stats/ticket-insights/tags/TagsTrendChart'
 import {TopUsedTagsChart} from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'

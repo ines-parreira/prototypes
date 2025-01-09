@@ -24,27 +24,26 @@ import {
 import {DistributionCategoryCell} from 'pages/stats/DistributionCategoryCell'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import {
+    TicketInsightsTagsMetric,
+    TicketInsightsTagsMetricConfig,
+} from 'pages/stats/ticket-insights/tags/TagsMetricConfig'
 
 import css from 'pages/stats/ticket-insights/tags/TopUsedTagsChart.less'
 import {TagsMetric} from 'state/ui/stats/types'
-
-export const TAGS_CARD_TITLE = 'Top used tags'
-const TAGS_CARD_HINT =
-    'Top 10 used tags: number of tickets labeled with one of the tags within the selected timeframe, and the delta compared to the previous period.'
 
 export const TopUsedTagsChart = () => {
     const {isFetching, data} = useTagsDistribution()
 
     const getWidth = useWidthBasedOnScreen()
 
+    const {hint, title} =
+        TicketInsightsTagsMetricConfig[
+            TicketInsightsTagsMetric.TopUsedTagsChart
+        ]
+
     return (
-        <ChartCard
-            title={TAGS_CARD_TITLE}
-            hint={{
-                title: TAGS_CARD_HINT,
-            }}
-            className={css.card}
-        >
+        <ChartCard title={title} hint={hint} className={css.card}>
             {isFetching ? (
                 <TableWrapper className={css.table}>
                     <TableBody>

@@ -20,6 +20,10 @@ import {
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import {
+    TicketInsightsTagsChart,
+    TicketInsightsTagsConfig,
+} from 'pages/stats/ticket-insights/tags/TagsConfig'
+import {
     TicketFieldsChart,
     TicketFieldsConfig,
 } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsConfig'
@@ -50,6 +54,10 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
             {
                 type: TicketFieldsChart,
                 config: TicketFieldsConfig,
+            },
+            {
+                type: TicketInsightsTagsChart,
+                config: TicketInsightsTagsConfig,
             },
         ],
     },

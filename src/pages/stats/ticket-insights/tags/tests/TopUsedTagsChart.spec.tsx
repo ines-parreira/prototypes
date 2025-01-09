@@ -3,9 +3,10 @@ import React from 'react'
 
 import {useTagsDistribution} from 'hooks/reporting/support-performance/useTagsDistribution'
 import {
-    TopUsedTagsChart,
-    TAGS_CARD_TITLE,
-} from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'
+    TicketInsightsTagsMetric,
+    TicketInsightsTagsMetricConfig,
+} from 'pages/stats/ticket-insights/tags/TagsMetricConfig'
+import {TopUsedTagsChart} from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'
 
 import {initialState} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
@@ -61,7 +62,13 @@ describe('<TopUsedTagsChart/>', () => {
         renderWithStore(<TopUsedTagsChart />, mockStore)
 
         expect(screen.getByRole('table')).toBeInTheDocument()
-        expect(screen.getByText(TAGS_CARD_TITLE)).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                TicketInsightsTagsMetricConfig[
+                    TicketInsightsTagsMetric.TopUsedTagsChart
+                ].title
+            )
+        ).toBeInTheDocument()
     })
 
     it('should render the sekelton when loading', () => {
