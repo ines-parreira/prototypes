@@ -76,21 +76,6 @@ describe('useAiAgentInsightsDataset', () => {
         it('should calculate ai agent insights correctly', () => {
             useMultipleMetricsTrendsMock
                 .mockReturnValueOnce({
-                    // allAutomatedInteractionsData
-                    data: {
-                        'AutomationDataset.automatedInteractions': {
-                            value: 10021,
-                            prevValue: 0,
-                        },
-                        'AutomationDataset.automatedInteractionsByAutoResponders':
-                            {
-                                value: 1108,
-                                prevValue: 0,
-                            },
-                    },
-                    isFetched: true,
-                } as any)
-                .mockReturnValueOnce({
                     // aiAgentAutomatedInteractionsData
                     data: {
                         'AutomationDataset.automatedInteractions': {
@@ -116,19 +101,11 @@ describe('useAiAgentInsightsDataset', () => {
                     isFetched: true,
                 } as any)
                 .mockReturnValueOnce({
-                    // ticketDatasetExcludingAIAgent
+                    // allCreatedTickets
                     data: {
-                        'BillableTicketDataset.billableTicketCount': {
-                            value: 4889,
-                            prevValue: 2,
-                        },
-                        'BillableTicketDataset.totalFirstResponseTime': {
-                            value: 5220830659,
-                            prevValue: 7200,
-                        },
-                        'BillableTicketDataset.totalResolutionTime': {
-                            value: 14048308139,
-                            prevValue: 142113600,
+                        'TicketEnriched.ticketCount': {
+                            value: 2200,
+                            prevValue: 100,
                         },
                     },
                     isFetched: true,
@@ -156,7 +133,7 @@ describe('useAiAgentInsightsDataset', () => {
                 }
             )
 
-            expect(result.current.coverageTrend.data?.value).toBeCloseTo(0.08)
+            expect(result.current.coverageTrend.data?.value).toBeCloseTo(0.5)
             expect(
                 result.current.aiAgentAutomatedInteractionTrend.data
             ).toEqual({

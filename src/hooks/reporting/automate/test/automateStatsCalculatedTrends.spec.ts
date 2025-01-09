@@ -1,8 +1,8 @@
 import {
+    getAiAgentCoverageRate,
     getAiAgentSuccessRate,
     getAutomationRateTrend,
     getAutomationRateUnfilteredDenominatorTrend,
-    getCoverageRateUnfilteredDenominatorTrend,
     getDecreaseInFirstResponseTimeTrend,
     getDecreaseInResolutionTimeTrend,
 } from '../automateStatsCalculatedTrends'
@@ -17,6 +17,7 @@ describe('Wrapper Functions for Trends Calculation', () => {
     const totalResolutionTimeResolvedByAIAgent = {value: 0, prevValue: 0}
     const aiAgentTicketsAutomatedTickets = {value: 5, prevValue: 1}
     const aiAgentTickets = {value: 10, prevValue: 5}
+    const allTickets = {value: 20, prevValue: 10}
 
     describe('getAutomationRateTrend Function', () => {
         it('should calculate automation rate trend correctly', () => {
@@ -113,22 +114,6 @@ describe('Wrapper Functions for Trends Calculation', () => {
         })
     })
 
-    describe('getCoverageRateUnfilteredDenominatorTrend', () => {
-        it('calculates coverage rate with unfiltered denominator values', () => {
-            const result = getCoverageRateUnfilteredDenominatorTrend({
-                isFetching: false,
-                isError: false,
-                aiAgentTickets: interactions,
-                billableTicketsCount: billableTickets,
-                allAutomatedInteractions: {value: 50, prevValue: 100},
-                allAutomatedInteractionsByAutoResponders:
-                    interactionsByAutoResponders,
-            })
-            expect(result.data.value).toBeCloseTo(2.5, 3)
-            expect(result.data.prevValue).toBeCloseTo(3.08, 2)
-        })
-    })
-
     describe('getAiAgentSuccessRate', () => {
         it('calculates success rate for ai agent tickets', () => {
             const result = getAiAgentSuccessRate({
@@ -139,6 +124,19 @@ describe('Wrapper Functions for Trends Calculation', () => {
             })
             expect(result.data.value).toBeCloseTo(0.5, 2)
             expect(result.data.prevValue).toBeCloseTo(0.2, 2.8)
+        })
+    })
+
+    describe('getAiAgentCoverageRate', () => {
+        it('calculates coverage rate for ai agent tickets', () => {
+            const result = getAiAgentCoverageRate({
+                isFetching: false,
+                isError: false,
+                aiAgentTickets,
+                allTickets,
+            })
+            expect(result.data.value).toBeCloseTo(0.5, 2)
+            expect(result.data.prevValue).toBeCloseTo(0.5, 2)
         })
     })
 })

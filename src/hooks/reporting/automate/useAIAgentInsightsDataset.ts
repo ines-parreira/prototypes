@@ -11,15 +11,12 @@ import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
 import {OrderDirection} from 'models/api/types'
 import {AutomationDatasetMeasure} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
-import {BillableTicketDatasetMeasure} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {
-    automationDatasetQueryFactory,
-    billableTicketDatasetExcludingAIAgentQueryFactory,
-} from 'models/reporting/queryFactories/automate_v2/metrics'
+import {automationDatasetQueryFactory} from 'models/reporting/queryFactories/automate_v2/metrics'
 import {customerSatisfactionMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {customFieldsTicketTotalCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {FilterKey, StatsFilters} from 'models/stat/types'
 import {IntentMetrics} from 'pages/aiAgent/insights/IntentTableWidget/types'
@@ -34,8 +31,8 @@ import {
     useCustomerSatisfactionMetricPerIntent,
 } from './aiAgentMetrics'
 import {
+    getAiAgentCoverageRate,
     getAiAgentSuccessRate,
-    getCoverageRateUnfilteredDenominatorTrend,
 } from './automateStatsCalculatedTrends'
 import {
     CUSTOM_FIELD_AI_AGENT_CLOSE,
@@ -43,7 +40,7 @@ import {
 } from './types'
 import {useAIAgentUserId} from './useAIAgentUserId'
 
-// COVERAGE_RATE: #AI_AGENT_TICKETS / Billable interactions (same as automation rate denomitor)
+// COVERAGE_RATE: #AI_AGENT_TICKETS / #TICKETS
 // AUTOMATED INTERACTIONS: fully automated interactions by AI Agent
 // SUCCESS RATE: #AI_AGENT_AUTOMATED_INTERACTIONS / #AI_AGENT_TICKETS
 // CSAT: Customer satisfaction score for AI Agent
@@ -51,11 +48,6 @@ export const useAIAgentMetrics = (
     filters: StatsFilters,
     timezone: string
 ): Record<any, MetricTrend> => {
-    const onlyPeriodFilter = useMemo(
-        () => ({[FilterKey.Period]: filters.period}),
-        [filters.period]
-    )
-
     const {data: {data: activeFields = []} = {}} =
         useCustomFieldDefinitions(activeParams)
 
@@ -78,14 +70,6 @@ export const useAIAgentMetrics = (
             },
         }),
         [aiAgentUserId, filters]
-    )
-
-    const allAutomatedInteractionsData = useMultipleMetricsTrends(
-        automationDatasetQueryFactory(onlyPeriodFilter, timezone),
-        automationDatasetQueryFactory(
-            {period: getPreviousPeriod(filters.period)},
-            timezone
-        )
     )
 
     const aiAgentAutomatedInteractionsData = useMultipleMetricsTrends(
@@ -112,16 +96,11 @@ export const useAIAgentMetrics = (
         )
     )
 
-    const ticketDatasetExcludingAIAgent = useMultipleMetricsTrends(
-        billableTicketDatasetExcludingAIAgentQueryFactory(
-            filters,
-            timezone,
-            aiAgentUserId
-        ),
-        billableTicketDatasetExcludingAIAgentQueryFactory(
+    const allCreatedTickets = useMultipleMetricsTrends(
+        ticketsCreatedQueryFactory(filters, timezone),
+        ticketsCreatedQueryFactory(
             {...filters, period: getPreviousPeriod(filters.period)},
-            timezone,
-            aiAgentUserId
+            timezone
         )
     )
 
@@ -139,21 +118,6 @@ export const useAIAgentMetrics = (
         )
     )
 
-    const allAutomatedInteractions =
-        allAutomatedInteractionsData.data?.[
-            AutomationDatasetMeasure.AutomatedInteractions
-        ]
-
-    const allAutomatedInteractionsByAutoResponders =
-        allAutomatedInteractionsData.data?.[
-            AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders
-        ]
-
-    const billableTicketsExcludingAIAgent =
-        ticketDatasetExcludingAIAgent.data?.[
-            BillableTicketDatasetMeasure.BillableTicketCount
-        ]
-
     const aiAgentTickets =
         aiAgentTicketsData.data?.[
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
@@ -169,28 +133,26 @@ export const useAIAgentMetrics = (
             TicketSatisfactionSurveyMeasure.AvgSurveyScore
         ]
 
+    const allTickets = allCreatedTickets.data?.[TicketMeasure.TicketCount]
+
     const isFetching =
-        allAutomatedInteractionsData.isFetching ||
         aiAgentAutomatedInteractionsData.isFetching ||
         aiAgentTicketsData.isFetching ||
-        ticketDatasetExcludingAIAgent.isFetching ||
-        customerSatisfactionAiAgentData.isFetching
+        customerSatisfactionAiAgentData.isFetching ||
+        allCreatedTickets.isFetching
 
     const isError =
-        allAutomatedInteractionsData.isError ||
         aiAgentAutomatedInteractionsData.isError ||
         aiAgentTicketsData.isError ||
-        ticketDatasetExcludingAIAgent.isError ||
-        customerSatisfactionAiAgentData.isError
+        customerSatisfactionAiAgentData.isError ||
+        allCreatedTickets.isError
 
     return {
-        coverageTrend: getCoverageRateUnfilteredDenominatorTrend({
+        coverageTrend: getAiAgentCoverageRate({
             isFetching,
             isError,
             aiAgentTickets,
-            allAutomatedInteractions,
-            allAutomatedInteractionsByAutoResponders,
-            billableTicketsCount: billableTicketsExcludingAIAgent,
+            allTickets,
         }),
         aiAgentAutomatedInteractionTrend: {
             isFetching,

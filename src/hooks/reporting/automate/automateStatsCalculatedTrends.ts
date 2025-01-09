@@ -126,43 +126,6 @@ export const getDecreaseInResolutionTimeTrend = (
     }
 }
 
-export const getCoverageRateUnfilteredDenominatorTrend = ({
-    isFetching,
-    isError,
-    aiAgentTickets,
-    allAutomatedInteractions,
-    allAutomatedInteractionsByAutoResponders,
-    billableTicketsCount,
-}: {
-    isFetching: boolean
-    isError: boolean
-    aiAgentTickets: TrendData
-    allAutomatedInteractions: TrendData
-    allAutomatedInteractionsByAutoResponders: TrendData
-    billableTicketsCount: TrendData
-}) => {
-    return {
-        isFetching,
-        isError,
-        data: {
-            value: automationRateUnfilteredDenominator({
-                filteredAutomatedInteractions: aiAgentTickets?.value,
-                allAutomatedInteractions: allAutomatedInteractions?.value,
-                allAutomatedInteractionsByAutoResponders:
-                    allAutomatedInteractionsByAutoResponders?.value,
-                billableTicketsCount: billableTicketsCount?.value,
-            }),
-            prevValue: automationRateUnfilteredDenominator({
-                filteredAutomatedInteractions: aiAgentTickets?.prevValue,
-                allAutomatedInteractions: allAutomatedInteractions?.prevValue,
-                allAutomatedInteractionsByAutoResponders:
-                    allAutomatedInteractionsByAutoResponders?.prevValue,
-                billableTicketsCount: billableTicketsCount?.prevValue,
-            }),
-        },
-    }
-}
-
 export const getAiAgentSuccessRate = ({
     isFetching,
     isError,
@@ -185,6 +148,30 @@ export const getAiAgentSuccessRate = ({
             prevValue: calculateRate(
                 aiAgentAutomatedInteractions?.prevValue,
                 aiAgentTickets?.prevValue
+            ),
+        },
+    }
+}
+
+export const getAiAgentCoverageRate = ({
+    isFetching,
+    isError,
+    aiAgentTickets,
+    allTickets,
+}: {
+    isFetching: boolean
+    isError: boolean
+    aiAgentTickets: TrendData
+    allTickets: TrendData
+}) => {
+    return {
+        isFetching,
+        isError,
+        data: {
+            value: calculateRate(aiAgentTickets?.value, allTickets?.value),
+            prevValue: calculateRate(
+                aiAgentTickets?.prevValue,
+                allTickets?.prevValue
             ),
         },
     }
