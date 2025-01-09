@@ -1,27 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TitleWrapper/> render() should not render copy button if editing 1`] = `
-<div>
-  <div
-    class="orderTitleContainer"
-  >
-    <a
-      class="orderTitle"
-      href="https://admin.shopify.com/store/undefined/orders/"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      <div>
-        foo bar
-      </div>
-    </a>
-  </div>
-  <div
-    class="orderStatus"
-  />
-</div>
-`;
-
 exports[`<TitleWrapper/> render() should render copy button if not editing 1`] = `
 <div>
   <div

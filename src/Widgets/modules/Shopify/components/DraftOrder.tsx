@@ -63,7 +63,7 @@ type TitleWrapperProps = {
     source: Map<any, any>
 }
 
-function TitleWrapper({children, source}: TitleWrapperProps) {
+const TitleWrapper = ({children, source}: TitleWrapperProps) => {
     const {isEditing} = useContext(EditionContext)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const {integration} = useContext(IntegrationContext)

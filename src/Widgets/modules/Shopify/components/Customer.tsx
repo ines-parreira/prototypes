@@ -1,11 +1,5 @@
 import {fromJS, Map} from 'immutable'
-import React, {
-    Component,
-    ContextType,
-    ReactNode,
-    useContext,
-    useMemo,
-} from 'react'
+import React, {ReactNode, useContext, useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
 import logo from 'assets/img/infobar/shopify.svg'
@@ -32,6 +26,7 @@ import {
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
 import {StaticField} from 'Widgets/modules/Template/modules/Field'
 
+import {CustomizationContext} from '../../Template'
 import {ShopifyContext} from '../contexts/ShopifyContext'
 import {getShopifyResourceIds} from '../helpers/getShopifyResourceIds'
 
@@ -64,75 +59,73 @@ type AfterTitleProps = {
     source: Map<any, any>
 }
 
-class AfterTitleContainer extends Component<
-    AfterTitleProps & ConnectedProps<typeof connector>
-> {
-    static contextType = IntegrationContext
-    context!: ContextType<typeof IntegrationContext>
-    render() {
-        const {source, integrations} = this.props
+const AfterTitleContainer = ({
+    source,
+    integrations,
+}: AfterTitleProps & ConnectedProps<typeof connector>) => {
+    const {integration} = useContext(IntegrationContext)
+    const {hideActionsForCustomer = false} =
+        useContext(CustomizationContext) || {}
 
-        const actions: Array<InfobarAction> = [
-            {
-                key: 'createOrder',
-                options: [
-                    {
-                        value: ShopifyActionType.CreateOrder,
-                        label: 'Create order',
-                        parameters: [
-                            {name: 'draft_order_id', type: 'hidden'},
-                            {name: 'payment_pending', type: 'hidden'},
-                        ],
-                    },
-                ],
-                title: 'Create order',
-                child: <>Create order</>,
-                leadingIcon: 'add',
-                modal: DraftOrderModal,
-                modalData: {
-                    actionName: ShopifyActionType.CreateOrder,
-                    customer: fromJS({
-                        id: source.get('id'),
-                        admin_graphql_api_id: source.get(
-                            'admin_graphql_api_id'
-                        ),
-                        email: source.get('email'),
-                        default_address: source.get('default_address'),
-                        currency: source.get('currency'),
-                    }),
+    const actions: Array<InfobarAction> = [
+        {
+            key: 'createOrder',
+            options: [
+                {
+                    value: ShopifyActionType.CreateOrder,
+                    label: 'Create order',
+                    parameters: [
+                        {name: 'draft_order_id', type: 'hidden'},
+                        {name: 'payment_pending', type: 'hidden'},
+                    ],
                 },
+            ],
+            title: 'Create order',
+            child: <>Create order</>,
+            leadingIcon: 'add',
+            modal: DraftOrderModal,
+            modalData: {
+                actionName: ShopifyActionType.CreateOrder,
+                customer: fromJS({
+                    id: source.get('id'),
+                    admin_graphql_api_id: source.get('admin_graphql_api_id'),
+                    email: source.get('email'),
+                    default_address: source.get('default_address'),
+                    currency: source.get('currency'),
+                }),
             },
-        ]
+        },
+    ]
 
-        const shopName: string = this.context.integration.getIn([
-            'meta',
-            'shop_name',
-        ])
-        const payload = {
-            customer_id: source.get('id'),
+    const getActions = () => {
+        if (hideActionsForCustomer) {
+            return []
         }
 
-        return (
-            <>
-                <ActionButtonsGroup actions={actions} payload={payload} />
-                <StaticField label="Total spent">
-                    <MoneyAmount
-                        amount={source.get('total_spent')}
-                        currencyCode={this.context.integration.getIn([
-                            'meta',
-                            'currency',
-                        ])}
-                    />
-                </StaticField>
-                <StaticField label="Orders">
-                    {source.get('orders_count')}
-                </StaticField>
-                {integrations.length > 1 && (
-                    <StaticField label="Store">{shopName}</StaticField>
-                )}
-            </>
-        )
+        return actions
     }
+    const shopName: string = integration.getIn(['meta', 'shop_name'])
+    const payload = {
+        customer_id: source.get('id'),
+    }
+
+    return (
+        <>
+            <ActionButtonsGroup actions={getActions()} payload={payload} />
+            <StaticField label="Total spent">
+                <MoneyAmount
+                    amount={source.get('total_spent')}
+                    currencyCode={integration.getIn(['meta', 'currency'])}
+                />
+            </StaticField>
+            <StaticField label="Orders">
+                {source.get('orders_count')}
+            </StaticField>
+            {integrations.length > 1 && (
+                <StaticField label="Store">{shopName}</StaticField>
+            )}
+        </>
+    )
 }
 
 const connector = connect((state: RootState) => ({

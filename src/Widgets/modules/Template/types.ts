@@ -27,4 +27,5 @@ export type TemplateCustomization = {
         customization: Partial<CardCustomization>
     }[]
     field?: FieldCustomization[]
+    hideActionsForCustomer?: boolean
 }

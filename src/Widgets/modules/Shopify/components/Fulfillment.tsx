@@ -7,10 +7,6 @@ import {humanizeString} from 'utils'
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
 import {StaticField} from 'Widgets/modules/Template/modules/Field'
 
-export const fulfillmentCustomization: CardCustomization = {
-    BeforeContent,
-}
-
 type BeforeContentProps = {
     source: Map<any, any>
 }
@@ -27,7 +23,7 @@ const shipmentStatusColors: Record<string, ColorType> = {
     failure: ColorType.Error,
 }
 
-function BeforeContent({source}: BeforeContentProps) {
+const BeforeContent = ({source}: BeforeContentProps) => {
     const shipmentStatus = source.get('shipment_status') as
         | undefined
         | keyof typeof shipmentStatusColors
@@ -46,4 +42,8 @@ function BeforeContent({source}: BeforeContentProps) {
             )}
         </>
     )
+}
+
+export const fulfillmentCustomization: CardCustomization = {
+    BeforeContent,
 }

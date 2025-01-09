@@ -1,14 +1,8 @@
 import {fromJS, List, Map} from 'immutable'
-import React, {
-    ContextType,
-    createContext,
-    FunctionComponent,
-    useContext,
-} from 'react'
+import React, {createContext, FunctionComponent, useContext} from 'react'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
 import {StaticField} from 'Widgets/modules/Template/modules/Field'
 
 import {OrderContext} from './Order'
@@ -19,24 +13,25 @@ const OrderItemContext = createContext<{
     refundedQuantity: null,
 })
 
-class BeforeContent extends React.Component {
-    static contextType = OrderItemContext
-    context!: ContextType<typeof OrderItemContext>
-    render() {
-        const {refundedQuantity} = this.context
+const BeforeContent = () => {
+    const {refundedQuantity} = useContext(OrderItemContext)
 
-        if (!refundedQuantity) {
-            return null
-        }
-
-        return (
-            <StaticField label="Refunded">
-                <Badge type={ColorType.Warning}>
-                    {refundedQuantity} item{refundedQuantity > 1 && 's'}
-                </Badge>
-            </StaticField>
-        )
+    if (!refundedQuantity) {
+        return null
     }
+
+    return (
+        <StaticField label="Refunded">
+            <Badge type={ColorType.Warning}>
+                {refundedQuantity} item{refundedQuantity > 1 && 's'}
+            </Badge>
+        </StaticField>
+    )
+}
+
+interface ItemCustomization {
+    BeforeContent: React.FC
+    Wrapper: React.FC<{source: any; children: React.ReactNode}>
 }
 
 const Wrapper: FunctionComponent<{source: Map<string, unknown>}> = ({
@@ -80,7 +75,7 @@ const Wrapper: FunctionComponent<{source: Map<string, unknown>}> = ({
     )
 }
 
-export const itemCustomization: CardCustomization = {
+export const itemCustomization: ItemCustomization = {
     BeforeContent,
     Wrapper,
 }

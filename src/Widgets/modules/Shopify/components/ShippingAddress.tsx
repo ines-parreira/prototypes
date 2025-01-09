@@ -8,6 +8,7 @@ import {EditOrderShippingAddressModal} from 'Widgets/modules/Shopify/modules/Ord
 import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
 
+import {CustomizationContext} from '../../Template'
 import {ShopifyContext} from '../contexts/ShopifyContext'
 
 type AfterTitleProps = {
@@ -15,13 +16,20 @@ type AfterTitleProps = {
     source: Map<string, string | number | boolean>
 }
 
-export function AfterTitle({source}: AfterTitleProps) {
+const AfterTitle = ({source}: AfterTitleProps) => {
     const {widget_resource_ids} = useContext(ShopifyContext)
+    const {hideActionsForCustomer = false} =
+        useContext(CustomizationContext) || {}
+
     const payload = useMemo(() => {
         return {order_id: widget_resource_ids.target_id}
     }, [widget_resource_ids])
 
-    const _getActions = () => {
+    const getActions = () => {
+        if (hideActionsForCustomer) {
+            return []
+        }
+
         const actions: Array<InfobarAction> = [
             {
                 key: 'edit',
@@ -50,7 +58,7 @@ export function AfterTitle({source}: AfterTitleProps) {
         return actions
     }
 
-    return <ActionButtonsGroup actions={_getActions()} payload={payload} />
+    return <ActionButtonsGroup actions={getActions()} payload={payload} />
 }
 
 export const shippingAddressCustomization: CardCustomization = {

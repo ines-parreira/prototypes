@@ -133,6 +133,7 @@ export enum FeatureFlagKey {
     SimplifiedStepBuilder = 'simplified-step-builder',
     ShopifyCustomerProfileCreation = 'shopify-customer-profile-creation',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
+    ShopifyHideActionButtons = 'shopify-widget-hide-action-buttons',
     ShopifyOrderNotes = 'shopify-order-notes',
     ShowSpeakerLabelsInTranscription = 'show-speaker-labels-in-transcription',
     SummarizeCalls = 'summarize-calls',

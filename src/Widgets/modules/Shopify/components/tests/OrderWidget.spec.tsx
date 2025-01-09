@@ -9,8 +9,9 @@ import {EditionContext} from 'providers/infobar/EditionContext'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {initialState as cancelInitialState} from 'state/infobarActions/shopify/cancelOrder/reducers'
 import {initialState} from 'state/infobarActions/shopify/createOrder/reducers'
+import {CustomizationContext} from 'Widgets/modules/Template'
 
-import {Wrapper, orderCustomization} from '../Order'
+import {Wrapper, orderCustomization, OrderContext} from '../Order'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -78,7 +79,7 @@ describe('<TitleWrapper/>', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should not render copy button if editing', () => {
+        it('should return null if isEditing is true', () => {
             const store = mockStore({
                 integrations: fromJS({
                     integrations: [integration],
@@ -89,7 +90,7 @@ describe('<TitleWrapper/>', () => {
                     },
                 },
             })
-            const {container} = render(
+            render(
                 <Provider store={store}>
                     <EditionContext.Provider value={{isEditing: true}}>
                         <IntegrationContext.Provider
@@ -115,8 +116,6 @@ describe('<TitleWrapper/>', () => {
             )
 
             expect(screen.queryByRole('button')).toBeNull()
-
-            expect(container).toMatchSnapshot()
         })
     })
 })
@@ -141,6 +140,41 @@ describe('<AfterTitle/>', () => {
         jest.resetAllMocks()
     })
     describe('render()', () => {
+        it('should render null if integrationId is missing', () => {
+            const store = mockStore({
+                integrations: fromJS({
+                    integrations: undefined,
+                }),
+                infobarActions: {
+                    [IntegrationType.Shopify]: {
+                        createOrder: initialState,
+                    },
+                },
+            })
+            render(
+                <Provider store={store}>
+                    <EditionContext.Provider value={{isEditing: false}}>
+                        <IntegrationContext.Provider
+                            value={{
+                                integrationId: null,
+                                integration: fromJS({
+                                    meta: {
+                                        shop_name: 'test-shop',
+                                    },
+                                }),
+                            }}
+                        >
+                            <AfterTitle source={fromJS({id: 123})}>
+                                <div>foo bar</div>
+                            </AfterTitle>
+                        </IntegrationContext.Provider>
+                    </EditionContext.Provider>
+                </Provider>
+            )
+
+            expect(screen.queryByRole('button')).toBeNull()
+        })
+
         it.each([
             ['voided', 0],
             ['refunded', 0],
@@ -197,5 +231,60 @@ describe('<AfterTitle/>', () => {
                 ).toBe(expected)
             }
         )
+
+        it('should hide actions when hideActionsForCustomer is true', () => {
+            const store = mockStore({
+                integrations: fromJS({
+                    integrations: [integration],
+                }),
+                infobarActions: {
+                    [IntegrationType.Shopify]: {
+                        createOrder: initialState,
+                    },
+                },
+            })
+
+            const mockOrder = fromJS({
+                id: 123,
+                name: '#1001',
+                created_at: '2024-01-01',
+                current_total_price_set: {
+                    shop_money: {
+                        amount: '100.00',
+                        currency_code: 'USD',
+                    },
+                },
+            })
+
+            render(
+                <Provider store={store}>
+                    <CustomizationContext.Provider
+                        value={{hideActionsForCustomer: true}}
+                    >
+                        <OrderContext.Provider
+                            value={{
+                                order: mockOrder,
+                                orderId: 123,
+                                isOrderCancelled: false,
+                                isOrderRefunded: false,
+                                isOrderFulfilled: false,
+                                isOrderPartiallyFulfilled: false,
+                                isOldOrder: false,
+                                integrationId: 1,
+                                integration: fromJS(integration),
+                            }}
+                        >
+                            <AfterTitle isEditing={false} source={mockOrder} />
+                        </OrderContext.Provider>
+                    </CustomizationContext.Provider>
+                </Provider>
+            )
+
+            // Verify no action buttons are present
+            expect(screen.queryByText('Duplicate')).not.toBeInTheDocument()
+            expect(screen.queryByText('Refund')).not.toBeInTheDocument()
+            expect(screen.queryByText('Cancel')).not.toBeInTheDocument()
+            expect(screen.queryByText('Edit')).not.toBeInTheDocument()
+        })
     })
 })

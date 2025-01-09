@@ -1,7 +1,5 @@
 import {fromJS, Map} from 'immutable'
 import React, {
-    Component,
-    ContextType,
     createContext,
     FunctionComponent,
     ReactNode,
@@ -36,6 +34,7 @@ import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
 import {CopyButton, StaticField} from 'Widgets/modules/Template/modules/Field'
 
+import {CustomizationContext} from '../../Template'
 import {ShopifyContext} from '../contexts/ShopifyContext'
 import {getShopifyResourceIds} from '../helpers/getShopifyResourceIds'
 import css from './Order.less'
@@ -67,19 +66,33 @@ type AfterTitleProps = {
     source: Map<string, string | number | boolean>
 }
 
-class AfterTitle extends Component<AfterTitleProps> {
-    static contextType = OrderContext
-    context!: ContextType<typeof OrderContext>
+export function AfterTitle({isEditing, source}: AfterTitleProps) {
+    const context = useContext(OrderContext)
+    const {integrationId} = context
+    const {hideActionsForCustomer = false} =
+        useContext(CustomizationContext) || {}
 
-    _getActions = () => {
-        const {source}: AfterTitleProps = this.props
+    if (isEditing) {
+        return null
+    }
+
+    if (!integrationId) {
+        return null
+    }
+
+    const getActions = () => {
         const {
             isOrderCancelled,
             isOldOrder,
             isOrderRefunded,
             isOrderFulfilled,
             isOrderPartiallyFulfilled,
-        } = this.context
+        } = context
+
+        if (hideActionsForCustomer) {
+            return []
+        }
+
         const actions: Array<InfobarAction> = [
             {
                 key: 'duplicate',
@@ -208,51 +221,35 @@ class AfterTitle extends Component<AfterTitleProps> {
         )
     }
 
-    render() {
-        const {source}: AfterTitleProps = this.props
-        const {integrationId} = this.context
-
-        if (this.props.isEditing) {
-            return null
-        }
-
-        if (!integrationId) {
-            return null
-        }
-
-        const payload = {
-            order_id: (source.get('id') as number) || '',
-        }
-
-        return (
-            <>
-                <ActionButtonsGroup
-                    actions={this._getActions()}
-                    payload={payload}
-                />
-                <StaticField label="Created">
-                    <DatetimeLabel
-                        key="created-at"
-                        dateTime={source.get('created_at') as string}
-                    />
-                </StaticField>
-                <StaticField label="Total">
-                    <MoneyAmount
-                        amount={source.getIn([
-                            'current_total_price_set',
-                            'shop_money',
-                            'amount',
-                        ])}
-                        currencyCode={source.getIn([
-                            'current_total_price_set',
-                            'shop_money',
-                            'currency_code',
-                        ])}
-                    />
-                </StaticField>
-            </>
-        )
+    const payload = {
+        order_id: (source.get('id') as number) || '',
     }
+
+    return (
+        <>
+            <ActionButtonsGroup actions={getActions()} payload={payload} />
+            <StaticField label="Created">
+                <DatetimeLabel
+                    key="created-at"
+                    dateTime={source.get('created_at') as string}
+                />
+            </StaticField>
+            <StaticField label="Total">
+                <MoneyAmount
+                    amount={source.getIn([
+                        'current_total_price_set',
+                        'shop_money',
+                        'amount',
+                    ])}
+                    currencyCode={source.getIn([
+                        'current_total_price_set',
+                        'shop_money',
+                        'currency_code',
+                    ])}
+                />
+            </StaticField>
+        </>
+    )
 }
 
 type TitleWrapperProps = {
