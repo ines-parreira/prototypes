@@ -20,13 +20,13 @@ import {IntegrationType} from 'models/integration/types'
 import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import {useGetOrCreateSnippetHelpCenter} from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
 import {useWelcomePageAcknowledged} from 'pages/aiAgent/hooks/useWelcomePageAcknowledged'
-import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
 import {getHasAutomate} from 'state/billing/selectors'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 
 import AiAgentViewContainer from '../AiAgentViewContainer'
+import {useStoreConfiguration} from '../hooks/useStoreConfiguration'
 
 jest.mock('launchdarkly-react-client-sdk')
 
@@ -52,10 +52,8 @@ const mockUseAppDispatch = useAppDispatch as jest.Mock
 jest.mock('models/helpCenter/queries')
 const mockUseGetHelpCenterList = assumeMock(useGetHelpCenterList)
 
-jest.mock('../providers/AiAgentStoreConfigurationContext')
-const mockUseAiAgentStoreConfigurationContext = jest.mocked(
-    useAiAgentStoreConfigurationContext
-)
+jest.mock('../hooks/useStoreConfiguration')
+const mockUseStoreConfiguration = jest.mocked(useStoreConfiguration)
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterList', () => ({
     useHelpCenterList: () => ({
@@ -199,7 +197,7 @@ const setupMocks = ({
         data: {acknowledged: welcomePageAcknowledged},
     })
 
-    mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+    mockUseStoreConfiguration.mockReturnValue({
         ...mockedAiAgentStoreConfigurationContext,
         storeConfiguration: hasStoreConfiguration
             ? getStoreConfigurationFixture()

@@ -30,6 +30,7 @@ export const AiAgentNavbarView = () => {
         path: ['/app/ai-agent/:shopType/:shopName'],
         exact: false,
     })
+    const {shopType = IntegrationType.Shopify, shopName} = match?.params ?? {}
     const getShopifyIntegrations = useMemo(
         () => getIntegrationsByType<StoreIntegration>(IntegrationType.Shopify),
         []
@@ -56,7 +57,6 @@ export const AiAgentNavbarView = () => {
             return
         }
 
-        const {shopType = IntegrationType.Shopify, shopName} = match.params
         const key = `${shopType}:${shopName}`
 
         const newCollapsedSections = [...collapsedSections]

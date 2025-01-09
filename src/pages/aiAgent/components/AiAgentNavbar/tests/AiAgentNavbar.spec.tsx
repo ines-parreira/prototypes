@@ -12,8 +12,10 @@ import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {integrationsState} from 'fixtures/integrations'
 import {user} from 'fixtures/users'
+import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
+import {useWelcomePageAcknowledged} from 'pages/aiAgent/hooks/useWelcomePageAcknowledged'
 import {RootState} from 'state/types'
 import {ThemeProvider} from 'theme'
 
@@ -22,9 +24,11 @@ import {assumeMock} from 'utils/testing'
 import {AiAgentNavbar} from '../AiAgentNavbar'
 
 jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
+jest.mock('pages/aiAgent/hooks/useWelcomePageAcknowledged')
 
 const mockStore = configureMockStore()
 const useStoreConfigurationMock = assumeMock(useStoreConfiguration)
+const useWelcomePageAcknowledgedMock = assumeMock(useWelcomePageAcknowledged)
 const defaultStoreConfiguration = getStoreConfigurationFixture()
 
 jest.mock('launchdarkly-react-client-sdk')
@@ -47,11 +51,19 @@ describe('<AiAgentNavbar />', () => {
             [FeatureFlagKey.AiAgentOptimizeTab]: true,
             [FeatureFlagKey.AiAgentKnowledgeTab]: true,
             [FeatureFlagKey.ConvAiStandaloneMenu]: true,
+            [FeatureFlagKey.AiAgentOnboardingWizard]: true,
         })
 
         useStoreConfigurationMock.mockReturnValue({
             storeConfiguration: defaultStoreConfiguration,
             isLoading: false,
+        })
+
+        useWelcomePageAcknowledgedMock.mockReturnValue({
+            isLoading: false,
+            data: {
+                acknowledged: true,
+            },
         })
     })
 
@@ -176,7 +188,16 @@ describe('<AiAgentNavbar />', () => {
             useStoreConfigurationMock.mockReturnValue({
                 storeConfiguration: {
                     ...defaultStoreConfiguration,
-                    deactivatedDatetime: '2021-09-01T00:00:00Z',
+                    wizard: {
+                        stepName: AiAgentOnboardingWizardStep.Knowledge,
+                        stepData: {
+                            hasEducationStepEnabled: null,
+                            enabledChannels: null,
+                            isAutoresponderTurnedOff: null,
+                            onCompletePathway: null,
+                        },
+                        completedDatetime: null,
+                    },
                 },
                 isLoading: false,
             })

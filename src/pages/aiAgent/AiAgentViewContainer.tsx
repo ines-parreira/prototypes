@@ -11,14 +11,11 @@ import css from './AiAgentViewContainer.less'
 import {AIAgentWelcomePageDynamic} from './AIAgentWelcomePageDynamic'
 import {AIAgentWelcomePageView} from './components/AIAgentWelcomePageView/AIAgentWelcomePageView'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
-import {useWelcomePageAcknowledged} from './hooks/useWelcomePageAcknowledged'
+import {
+    OnboardingState,
+    useAiAgentOnboardingState,
+} from './hooks/useAiAgentOnboardingState'
 import {useAiAgentStoreConfigurationContext} from './providers/AiAgentStoreConfigurationContext'
-
-type WelcomePageFeatureFlag =
-    | undefined
-    | 'off'
-    | 'dynamic_odd_static_even'
-    | 'static_odd_dynamic_even'
 
 const AiAgentViewContainer = () => {
     const {shopName, shopType} = useParams<{
@@ -26,91 +23,62 @@ const AiAgentViewContainer = () => {
         shopType: string
     }>()
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const accountId = currentAccount.get('id')
     const accountDomain = currentAccount.get('domain')
 
     const history = useHistory()
     const {routes} = useAiAgentNavigation({shopName})
 
-    const isAiAgentOnboardingWizardEnabled =
-        useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
-
-    const welcomePageFeatureFlag: WelcomePageFeatureFlag =
-        useFlags()[FeatureFlagKey.AIAgentWelcomePage]
-
     const isAiAgentOptimizeTabEnabled =
         useFlags()[FeatureFlagKey.AiAgentOptimizeTab]
 
-    const welcomePageAcknowledged = useWelcomePageAcknowledged({
-        accountDomain,
-        shopName,
-    })
+    const {storeConfiguration} = useAiAgentStoreConfigurationContext()
 
-    const {isLoading: isLoadingStoreConfiguration, storeConfiguration} =
-        useAiAgentStoreConfigurationContext()
+    const onboardingState = useAiAgentOnboardingState(shopName)
 
-    if (isLoadingStoreConfiguration || welcomePageAcknowledged.isLoading) {
-        return (
-            <div className={css.spinner}>
-                <LoadingSpinner size="big" />
-            </div>
-        )
+    switch (onboardingState) {
+        case OnboardingState.Loading:
+            return (
+                <div className={css.spinner}>
+                    <LoadingSpinner size="big" />
+                </div>
+            )
+        case OnboardingState.WelcomeDynamic:
+            return (
+                <AIAgentWelcomePageDynamic
+                    state="dynamic"
+                    accountDomain={accountDomain}
+                    shopType={shopType}
+                    shopName={shopName}
+                />
+            )
+        case OnboardingState.WelcomeStatic:
+            return (
+                <AIAgentWelcomePageView
+                    state="static"
+                    accountDomain={accountDomain}
+                    shopType={shopType}
+                    shopName={shopName}
+                />
+            )
+        case OnboardingState.OnboardingWizard:
+            return (
+                <AIAgentWelcomePageDynamic
+                    state="onboardingWizard"
+                    accountDomain={accountDomain}
+                    shopType={shopType}
+                    shopName={shopName}
+                    storeConfiguration={storeConfiguration}
+                />
+            )
+        case OnboardingState.Onboarded:
+            history.replace(
+                isAiAgentOptimizeTabEnabled
+                    ? routes.optimize
+                    : routes.configuration()
+            )
     }
 
-    const displayDynamicWelcomePage =
-        (welcomePageFeatureFlag === 'dynamic_odd_static_even' ||
-            welcomePageFeatureFlag === 'static_odd_dynamic_even') &&
-        storeConfiguration === undefined &&
-        welcomePageAcknowledged.data?.acknowledged !== true
-
-    if (!isAiAgentOnboardingWizardEnabled && displayDynamicWelcomePage) {
-        const showDynamic =
-            (welcomePageFeatureFlag === 'dynamic_odd_static_even' &&
-                accountId % 2 !== 0) ||
-            (welcomePageFeatureFlag === 'static_odd_dynamic_even' &&
-                accountId % 2 === 0)
-
-        return showDynamic ? (
-            <AIAgentWelcomePageDynamic
-                state="dynamic"
-                accountDomain={accountDomain}
-                shopType={shopType}
-                shopName={shopName}
-            />
-        ) : (
-            <AIAgentWelcomePageView
-                state="static"
-                accountDomain={accountDomain}
-                shopType={shopType}
-                shopName={shopName}
-            />
-        )
-    }
-
-    const isOnUpdateOnboardingWizard =
-        storeConfiguration?.wizard?.completedDatetime === null
-
-    const displayOnboardingWizardWelcomePage =
-        isAiAgentOnboardingWizardEnabled &&
-        (!storeConfiguration || isOnUpdateOnboardingWizard)
-
-    if (!displayOnboardingWizardWelcomePage) {
-        history.replace(
-            isAiAgentOptimizeTabEnabled
-                ? routes.optimize
-                : routes.configuration()
-        )
-    }
-
-    return (
-        <AIAgentWelcomePageDynamic
-            state="onboardingWizard"
-            accountDomain={accountDomain}
-            shopType={shopType}
-            shopName={shopName}
-            storeConfiguration={storeConfiguration}
-        />
-    )
+    return null
 }
 
 export default AiAgentViewContainer

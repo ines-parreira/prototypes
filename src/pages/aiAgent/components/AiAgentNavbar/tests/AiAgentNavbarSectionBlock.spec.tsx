@@ -1,34 +1,25 @@
 import {render, screen} from '@testing-library/react'
-import React, {type ReactNode} from 'react'
+import React from 'react'
 
 import '@testing-library/jest-dom/extend-expect'
-import {StaticRouter} from 'react-router-dom'
+import {BrowserRouter} from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/constants'
 import {ShopType} from 'models/selfServiceConfiguration/types'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
-import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {
+    OnboardingState,
+    useAiAgentOnboardingState,
+} from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
 
 import {AiAgentNavbarSectionBlock} from '../AiAgentNavbarSectionBlock'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
-jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
-jest.mock('state/currentAccount/selectors')
-jest.mock('hooks/useAppSelector')
+jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingState')
 
 const mockUseAiAgentNavigation = useAiAgentNavigation as jest.Mock
-const mockUseStoreConfiguration = useStoreConfiguration as jest.Mock
-const mockGetCurrentAccountState = getCurrentAccountState as jest.Mock
-const mockUseAppSelector = useAppSelector as jest.Mock
-
-const wrapper = ({children}: {children: ReactNode}) => (
-    <StaticRouter location="/app/ai-agent/shopify/teststore1/optimize">
-        {children}
-    </StaticRouter>
-)
+const mockUseAiAgentOnboardingState = useAiAgentOnboardingState as jest.Mock
 
 describe('AiAgentNavbarSectionBlock', () => {
     const defaultProps = {
@@ -47,20 +38,15 @@ describe('AiAgentNavbarSectionBlock', () => {
             ],
             routes: {main: '/main'},
         })
-        mockUseStoreConfiguration.mockReturnValue({
-            storeConfiguration: {deactivatedDatetime: null},
-            isLoading: false,
-        })
-        mockGetCurrentAccountState.mockReturnValue({
-            get: jest.fn().mockReturnValue('test.com'),
-        })
-        mockUseAppSelector.mockReturnValue({
-            get: jest.fn().mockReturnValue('test.com'),
-        })
+        mockUseAiAgentOnboardingState.mockReturnValue(OnboardingState.Onboarded)
     })
 
-    test('renders the component with enabled AI Agent', () => {
-        render(<AiAgentNavbarSectionBlock {...defaultProps} />, {wrapper})
+    test('renders the component with onboarded state', () => {
+        render(
+            <BrowserRouter>
+                <AiAgentNavbarSectionBlock {...defaultProps} />
+            </BrowserRouter>
+        )
 
         expect(screen.getByAltText('shopify logo')).toBeInTheDocument()
         expect(screen.getByText('Route 1')).toBeInTheDocument()
@@ -68,13 +54,16 @@ describe('AiAgentNavbarSectionBlock', () => {
         expect(screen.queryByText('Set Up')).not.toBeInTheDocument()
     })
 
-    test('renders the component with disabled AI Agent', () => {
-        mockUseStoreConfiguration.mockReturnValueOnce({
-            storeConfiguration: {deactivatedDatetime: '2021-01-01'},
-            isLoading: false,
-        })
+    test('renders the component with non-onboarded state', () => {
+        mockUseAiAgentOnboardingState.mockReturnValueOnce(
+            OnboardingState.WelcomeStatic
+        )
 
-        render(<AiAgentNavbarSectionBlock {...defaultProps} />, {wrapper})
+        render(
+            <BrowserRouter>
+                <AiAgentNavbarSectionBlock {...defaultProps} />
+            </BrowserRouter>
+        )
 
         expect(screen.getByAltText('shopify logo')).toBeInTheDocument()
         expect(screen.getByText('Set Up')).toBeInTheDocument()
@@ -83,14 +72,14 @@ describe('AiAgentNavbarSectionBlock', () => {
     })
 
     test('does not render the component when loading', () => {
-        mockUseStoreConfiguration.mockReturnValueOnce({
-            storeConfiguration: null,
-            isLoading: true,
-        })
+        mockUseAiAgentOnboardingState.mockReturnValueOnce(
+            OnboardingState.Loading
+        )
 
         const {container} = render(
-            <AiAgentNavbarSectionBlock {...defaultProps} />,
-            {wrapper}
+            <BrowserRouter>
+                <AiAgentNavbarSectionBlock {...defaultProps} />
+            </BrowserRouter>
         )
 
         expect(container.firstChild).toBeNull()

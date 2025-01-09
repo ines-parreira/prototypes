@@ -2,13 +2,14 @@ import classNames from 'classnames'
 import React from 'react'
 
 import cssNavbar from 'assets/css/navbar.less'
-import useAppSelector from 'hooks/useAppSelector'
 import {ShopType} from 'models/selfServiceConfiguration/types'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
+import {
+    OnboardingState,
+    useAiAgentOnboardingState,
+} from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import NavbarSectionBlock from 'pages/common/components/navbar/NavbarSectionBlock'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getIconFromType} from 'state/integrations/helpers'
 
 import css from './AiAgentNavbarSectionBlock.less'
@@ -27,20 +28,11 @@ export const AiAgentNavbarSectionBlock = ({
 }: Props) => {
     const {headerNavbarItems, routes} = useAiAgentNavigation({shopName})
 
-    const currentAccount = useAppSelector(getCurrentAccountState)
-    const accountDomain = currentAccount.get('domain')
-    const {storeConfiguration, isLoading} = useStoreConfiguration({
-        shopName,
-        accountDomain,
-    })
+    const onboardingState = useAiAgentOnboardingState(shopName)
 
-    if (isLoading) {
+    if (onboardingState === OnboardingState.Loading) {
         return null
     }
-
-    // TODO(Kayyow): Fix condition to check if AI Agent is enabled
-    const isAiAgentEnabled =
-        storeConfiguration && !storeConfiguration.deactivatedDatetime
 
     return (
         <NavbarSectionBlock
@@ -54,7 +46,7 @@ export const AiAgentNavbarSectionBlock = ({
             className={css.section}
             {...props}
         >
-            {isAiAgentEnabled ? (
+            {onboardingState === OnboardingState.Onboarded ? (
                 headerNavbarItems.map((item) => (
                     <div
                         key={item.route}
