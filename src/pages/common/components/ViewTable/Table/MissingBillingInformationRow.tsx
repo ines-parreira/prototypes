@@ -18,11 +18,9 @@ import {BillingInformationSetupForm} from 'pages/settings/new_billing/components
 import {FormSubmitButton} from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
 import {StripeElementsProvider} from 'pages/settings/new_billing/components/StripeElementsProvider/StripeElementsProvider'
 import {getIsMissingBillingtInformation} from 'pages/settings/new_billing/utils/getIsMissingBillingtInformation'
+import {useHasCreditCard} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useHasCreditCard'
 import {PaymentMethodType} from 'state/billing/types'
-import {
-    paymentMethod as getPaymentMethod,
-    hasCreditCard as getHasCreditCard,
-} from 'state/currentAccount/selectors'
+import {paymentMethod as getPaymentMethod} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {hasRole} from 'utils'
 
@@ -31,7 +29,7 @@ import css from './MissingBillingInformationRow.less'
 export default function MissingBillingInformationRow() {
     const [isModalOpened, setIsModalOpened] = useState(false)
     const currentUser = useAppSelector(getCurrentUser)
-    const hasCreditCard = useAppSelector(getHasCreditCard)
+    const hasCreditCard = useHasCreditCard()
     const paymentMethod = useAppSelector(getPaymentMethod)
     const isAdmin = useMemo(
         () => hasRole(currentUser, UserRole.Admin),

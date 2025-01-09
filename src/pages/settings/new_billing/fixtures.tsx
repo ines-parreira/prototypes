@@ -1,5 +1,4 @@
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
 
 import {account} from 'fixtures/account'
 import {
@@ -24,11 +23,8 @@ import {
     SubscriptionSummary,
     UpcomingInvoiceSummary,
 } from 'models/billing/types'
-import {RootState, StoreDispatch} from 'state/types'
 
-const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
-
-export const storeWithCanceledSubscription = mockedStore({
+export const storeWithCanceledSubscription = {
     currentAccount: fromJS({
         ...account,
         current_subscription: null,
@@ -38,9 +34,9 @@ export const storeWithCanceledSubscription = mockedStore({
         products,
         currentProductsUsage: {},
     }),
-})
+}
 
-export const storeWithActiveSubscriptionWithConvert = mockedStore({
+export const storeWithActiveSubscriptionWithConvert = {
     currentAccount: fromJS({
         ...account,
         current_subscription: {
@@ -52,9 +48,9 @@ export const storeWithActiveSubscriptionWithConvert = mockedStore({
         },
     }),
     billing: fromJS({invoices: [], products, currentProductsUsage: {}}),
-})
+}
 
-export const storeWithActiveSubscriptionWithPhone = mockedStore({
+export const storeWithActiveSubscriptionWithPhone = {
     currentAccount: fromJS({
         ...account,
         current_subscription: {
@@ -68,7 +64,7 @@ export const storeWithActiveSubscriptionWithPhone = mockedStore({
         },
     }),
     billing: fromJS({invoices: [], products, currentProductsUsage: {}}),
-})
+}
 
 export const usages: ProductUsages = {
     helpdesk: {

@@ -1,12 +1,9 @@
 import * as uiKit from '@gorgias/merchant-ui-kit'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
+import {screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
@@ -31,8 +28,7 @@ import {ProductCardProps} from 'pages/settings/new_billing/components/ProductCar
 import {PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP} from 'pages/settings/new_billing/constants'
 import {storeWithCanceledSubscription} from 'pages/settings/new_billing/fixtures'
 import UsageAndPlansView from 'pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
 import {assumeMock} from 'utils/testing'
 
 // Mock ui-kit as an ES module to enable spying
@@ -50,10 +46,6 @@ jest.mock('pages/settings/new_billing/components/ProductCard', () =>
     })
 )
 const ProductCardMock = assumeMock(ProductCard)
-
-const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
-
-const queryClient = mockQueryClient()
 
 const mockedUsage = {
     [ProductType.Helpdesk]: currentProductsUsage[ProductType.Helpdesk],
@@ -79,10 +71,10 @@ const mockedAccount = {
         status: 'active',
     },
 }
-const store = mockedStore({
+const store = {
     billing: fromJS(mockedBilling),
     currentAccount: fromJS(mockedAccount),
-})
+}
 
 describe('UsageAndPlansView', () => {
     const MockTooltip = jest.spyOn(uiKit, 'Tooltip')
@@ -103,19 +95,15 @@ describe('UsageAndPlansView', () => {
             description: 'Convert banner',
             type: AlertType.Info,
         }
-
-        const {getByText} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <UsageAndPlansView
-                        contactBilling={jest.fn()}
-                        periodEnd="2021-01-01"
-                        currentUsage={mockedUsage}
-                        helpdeskBanner={helpdeskBanner}
-                        convertBanner={convertBanner}
-                    />
-                </Provider>
-            </QueryClientProvider>
+        const {getByText} = renderWithStoreAndQueryClientAndRouter(
+            <UsageAndPlansView
+                contactBilling={jest.fn()}
+                periodEnd="2021-01-01"
+                currentUsage={mockedUsage}
+                helpdeskBanner={helpdeskBanner}
+                convertBanner={convertBanner}
+            />,
+            store
         )
         expect(ProductCardMock).toHaveBeenCalledTimes(5)
         expect(ProductCardMock).toHaveBeenNthCalledWith(
@@ -179,7 +167,7 @@ describe('UsageAndPlansView', () => {
     })
 
     it('should render with scheduled cancellation including Helpdesk and Convert products', () => {
-        const alteredStore = mockedStore({
+        const alteredStore = {
             billing: fromJS(mockedBilling),
             currentAccount: fromJS({
                 ...mockedAccount,
@@ -188,17 +176,14 @@ describe('UsageAndPlansView', () => {
                     scheduled_to_cancel_at: '2024-01-14T22:40:22+00:00',
                 },
             }),
-        })
-        const {container} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={alteredStore}>
-                    <UsageAndPlansView
-                        contactBilling={jest.fn()}
-                        periodEnd="2021-01-01"
-                        currentUsage={mockedUsage}
-                    />
-                </Provider>
-            </QueryClientProvider>
+        }
+        const {container} = renderWithStoreAndQueryClientAndRouter(
+            <UsageAndPlansView
+                contactBilling={jest.fn()}
+                periodEnd="2021-01-01"
+                currentUsage={mockedUsage}
+            />,
+            alteredStore
         )
         expect(ProductCardMock).toHaveBeenCalledTimes(5)
         expect(ProductCardMock).toHaveBeenNthCalledWith(
@@ -292,7 +277,7 @@ describe('UsageAndPlansView', () => {
                 [ProductType.Convert]: null,
             },
         }
-        const alteredStore = mockedStore({
+        const alteredStore = {
             billing: fromJS(alteredBilling),
             currentAccount: fromJS({
                 ...mockedAccount,
@@ -305,20 +290,17 @@ describe('UsageAndPlansView', () => {
                     },
                 },
             }),
-        })
+        }
 
-        const {container} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={alteredStore}>
-                    <UsageAndPlansView
-                        contactBilling={jest.fn()}
-                        periodEnd="2021-01-01"
-                        currentUsage={alteredBilling.currentProductsUsage}
-                        helpdeskBanner={helpdeskBanner}
-                        smsBanner={smsBanner}
-                    />
-                </Provider>
-            </QueryClientProvider>
+        const {container} = renderWithStoreAndQueryClientAndRouter(
+            <UsageAndPlansView
+                contactBilling={jest.fn()}
+                periodEnd="2021-01-01"
+                currentUsage={alteredBilling.currentProductsUsage}
+                helpdeskBanner={helpdeskBanner}
+                smsBanner={smsBanner}
+            />,
+            alteredStore
         )
         expect(ProductCardMock).toHaveBeenCalledTimes(5)
         expect(ProductCardMock).toHaveBeenNthCalledWith(
@@ -414,7 +396,7 @@ describe('UsageAndPlansView', () => {
                 [ProductType.Convert]: null,
             },
         }
-        const alteredStore = mockedStore({
+        const alteredStore = {
             billing: fromJS(alteredBilling),
             currentAccount: fromJS({
                 ...mockedAccount,
@@ -425,18 +407,15 @@ describe('UsageAndPlansView', () => {
                     },
                 },
             }),
-        })
+        }
 
-        const {container} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={alteredStore}>
-                    <UsageAndPlansView
-                        contactBilling={jest.fn()}
-                        periodEnd="2021-01-01"
-                        currentUsage={alteredBilling.currentProductsUsage}
-                    />
-                </Provider>
-            </QueryClientProvider>
+        const {container} = renderWithStoreAndQueryClientAndRouter(
+            <UsageAndPlansView
+                contactBilling={jest.fn()}
+                periodEnd="2021-01-01"
+                currentUsage={alteredBilling.currentProductsUsage}
+            />,
+            alteredStore
         )
         expect(ProductCardMock).toHaveBeenCalledTimes(5)
         expect(ProductCardMock).toHaveBeenNthCalledWith(
@@ -470,16 +449,13 @@ describe('UsageAndPlansView', () => {
     })
 
     it('should not be possible to update plan frequency when there is no active subscription', () => {
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={storeWithCanceledSubscription}>
-                    <UsageAndPlansView
-                        contactBilling={jest.fn()}
-                        periodEnd="2021-01-01"
-                        currentUsage={null}
-                    />
-                </Provider>
-            </QueryClientProvider>
+        renderWithStoreAndQueryClientAndRouter(
+            <UsageAndPlansView
+                contactBilling={jest.fn()}
+                periodEnd="2021-01-01"
+                currentUsage={null}
+            />,
+            storeWithCanceledSubscription
         )
 
         expect(
@@ -490,7 +466,7 @@ describe('UsageAndPlansView', () => {
     })
 
     it('should not be possible to update plan frequency when the user is on a yearly plan', () => {
-        const alteredStore = mockedStore({
+        const alteredStore = {
             billing: fromJS(mockedBilling),
             currentAccount: fromJS({
                 ...mockedAccount,
@@ -502,18 +478,15 @@ describe('UsageAndPlansView', () => {
                     },
                 },
             }),
-        })
+        }
 
-        const {container} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={alteredStore}>
-                    <UsageAndPlansView
-                        contactBilling={jest.fn()}
-                        periodEnd="2021-01-01"
-                        currentUsage={mockedBilling.currentProductsUsage}
-                    />
-                </Provider>
-            </QueryClientProvider>
+        const {container} = renderWithStoreAndQueryClientAndRouter(
+            <UsageAndPlansView
+                contactBilling={jest.fn()}
+                periodEnd="2021-01-01"
+                currentUsage={mockedBilling.currentProductsUsage}
+            />,
+            alteredStore
         )
 
         const updateBillingFrequencyButton = container.querySelector(
@@ -526,7 +499,7 @@ describe('UsageAndPlansView', () => {
         mockFlags({
             [FeatureFlagKey.BillingVoiceSmsSelfServe]: true,
         })
-        const alteredStore = mockedStore({
+        const alteredStore = {
             billing: fromJS(mockedBilling),
             currentAccount: fromJS({
                 ...mockedAccount,
@@ -541,18 +514,15 @@ describe('UsageAndPlansView', () => {
                     },
                 },
             }),
-        })
+        }
 
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={alteredStore}>
-                    <UsageAndPlansView
-                        contactBilling={jest.fn()}
-                        periodEnd="2021-01-01"
-                        currentUsage={mockedBilling.currentProductsUsage}
-                    />
-                </Provider>
-            </QueryClientProvider>
+        renderWithStoreAndQueryClientAndRouter(
+            <UsageAndPlansView
+                contactBilling={jest.fn()}
+                periodEnd="2021-01-01"
+                currentUsage={mockedBilling.currentProductsUsage}
+            />,
+            alteredStore
         )
         expect(screen.getByText('Update').closest('a')).toHaveAttribute(
             'to',
@@ -585,7 +555,7 @@ describe('UsageAndPlansView', () => {
                 [ProductType.Convert]: null,
             },
         }
-        const alteredStore = mockedStore({
+        const alteredStore = {
             billing: fromJS(alteredBilling),
             currentAccount: fromJS({
                 ...mockedAccount,
@@ -598,21 +568,19 @@ describe('UsageAndPlansView', () => {
                     },
                 },
             }),
-        })
+        }
 
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={alteredStore}>
-                    <UsageAndPlansView
-                        contactBilling={jest.fn()}
-                        periodEnd="2021-01-01"
-                        currentUsage={alteredBilling.currentProductsUsage}
-                        helpdeskBanner={helpdeskBanner}
-                        convertBanner={convertBanner}
-                    />
-                </Provider>
-            </QueryClientProvider>
+        renderWithStoreAndQueryClientAndRouter(
+            <UsageAndPlansView
+                contactBilling={jest.fn()}
+                periodEnd="2021-01-01"
+                currentUsage={alteredBilling.currentProductsUsage}
+                helpdeskBanner={helpdeskBanner}
+                convertBanner={convertBanner}
+            />,
+            alteredStore
         )
+
         expect(ProductCardMock).toHaveBeenCalledTimes(5)
         expect(ProductCardMock).toHaveBeenNthCalledWith(
             1,

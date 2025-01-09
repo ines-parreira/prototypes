@@ -74,20 +74,6 @@ describe('current account selectors', () => {
         ).toEqualImmutable(fromJS({}))
     })
 
-    it('hasCreditCard', () => {
-        expect(
-            selectors.hasCreditCard(
-                setStateWith(defaultState, ['meta', 'hasCreditCard'], true)
-            )
-        ).toBe(true)
-        expect(
-            selectors.hasCreditCard(
-                setStateWith(defaultState, ['meta', 'hasCreditCard'], false)
-            )
-        ).toBe(false)
-        expect(selectors.hasCreditCard({} as RootState)).toBe(false)
-    })
-
     it('shouldPayWithShopify', () => {
         expect(
             selectors.shouldPayWithShopify(
@@ -161,58 +147,6 @@ describe('current account selectors', () => {
             )
         ).toBe('stripe')
         expect(selectors.paymentMethod({} as RootState)).toBe('stripe')
-    })
-
-    it('paymentIsActive', () => {
-        expect(
-            selectors.paymentIsActive(
-                setStateWith(
-                    setStateWith(
-                        defaultState,
-                        ['meta', 'shopify_billing', 'active'],
-                        true
-                    ),
-                    ['meta', 'should_pay_with_shopify'],
-                    true
-                )
-            )
-        ).toBe(true)
-        expect(
-            selectors.paymentIsActive(
-                setStateWith(
-                    setStateWith(
-                        defaultState,
-                        ['meta', 'shopify_billing', 'active'],
-                        false
-                    ),
-                    ['meta', 'should_pay_with_shopify'],
-                    true
-                )
-            )
-        ).toBe(false)
-        expect(
-            selectors.paymentIsActive(
-                setStateWith(
-                    setStateWith(defaultState, ['meta', 'hasCreditCard'], true),
-                    ['meta', 'should_pay_with_shopify'],
-                    false
-                )
-            )
-        ).toBe(true)
-        expect(
-            selectors.paymentIsActive(
-                setStateWith(
-                    setStateWith(
-                        defaultState,
-                        ['meta', 'hasCreditCard'],
-                        false
-                    ),
-                    ['meta', 'should_pay_with_shopify'],
-                    false
-                )
-            )
-        ).toBe(false)
-        expect(selectors.paymentIsActive({} as RootState)).toBe(false)
     })
 
     describe.each<[string, (state: RootState) => unknown, Map<any, any>]>([

@@ -2,7 +2,6 @@ import {screen} from '@testing-library/react'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 
 import React from 'react'
-import {Provider} from 'react-redux'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
@@ -22,8 +21,8 @@ import {
     storeWithActiveSubscriptionWithPhone,
     storeWithCanceledSubscription,
 } from 'pages/settings/new_billing/fixtures'
-import {renderWithQueryClientAndRouter} from 'tests/renderWIthQueryClientAndRouter'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
+import {assumeMock} from 'utils/testing'
 
 import BillingStartView from '../BillingStartView'
 
@@ -60,27 +59,24 @@ jest.mock('../../PaymentMethodSetupView/PaymentMethodSetupView', () => ({
 
 const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 
-const WrappedBillingStartView = () => (
-    <Provider store={storeWithActiveSubscriptionWithConvert}>
-        <BillingStartView />
-    </Provider>
-)
-
 describe('BillingStartView', () => {
     it('should render a BillingStartView component and load the Usage & Plans view', () => {
-        const {container} = renderWithRouter(<WrappedBillingStartView />, {
-            route: BILLING_BASE_PATH,
-        })
+        const {container} = renderWithStoreAndQueryClientAndRouter(
+            <BillingStartView />,
+            storeWithActiveSubscriptionWithConvert,
+            {
+                route: BILLING_BASE_PATH,
+            }
+        )
 
         expect(container).toMatchSnapshot()
     })
 
     describe('When customer has no active subscription ', () => {
         it('should only show the "Usage & Plans" and "Payment History" tabs', () => {
-            renderWithRouter(
-                <Provider store={storeWithCanceledSubscription}>
-                    <BillingStartView />
-                </Provider>,
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithCanceledSubscription,
                 {
                     route: BILLING_BASE_PATH,
                 }
@@ -105,10 +101,9 @@ describe('BillingStartView', () => {
         it('should show the "Gorgias internal" tab if user is impersonated', () => {
             window.USER_IMPERSONATED = true
 
-            renderWithRouter(
-                <Provider store={storeWithCanceledSubscription}>
-                    <BillingStartView />
-                </Provider>,
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithCanceledSubscription,
                 {
                     route: BILLING_BASE_PATH,
                 }
@@ -119,10 +114,9 @@ describe('BillingStartView', () => {
         it('should NOT show the "Gorgias internal" tab if user is NOT impersonated', () => {
             window.USER_IMPERSONATED = null
 
-            renderWithRouter(
-                <Provider store={storeWithCanceledSubscription}>
-                    <BillingStartView />
-                </Provider>,
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithCanceledSubscription,
                 {
                     route: BILLING_BASE_PATH,
                 }
@@ -141,15 +135,16 @@ describe('BillingStartView', () => {
         it('should render a Convert limit-reached banner', () => {
             useGetConvertStatusMock.mockReturnValue(convertStatusLimitReached)
 
-            const {queryByText} = renderWithRouter(
-                <WrappedBillingStartView />,
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithActiveSubscriptionWithConvert,
                 {
                     route: BILLING_BASE_PATH,
                 }
             )
 
             expect(
-                queryByText(limitReachedText, {exact: false})
+                screen.queryByText(limitReachedText, {exact: false})
             ).toBeInTheDocument()
         })
 
@@ -158,27 +153,33 @@ describe('BillingStartView', () => {
                 convertStatusOkWarningUpgrade
             )
 
-            const {queryByText} = renderWithRouter(
-                <WrappedBillingStartView />,
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithActiveSubscriptionWithConvert,
                 {
                     route: BILLING_BASE_PATH,
                 }
             )
 
-            expect(queryByText(upgradeText, {exact: false})).toBeInTheDocument()
+            expect(
+                screen.queryByText(upgradeText, {exact: false})
+            ).toBeInTheDocument()
         })
 
         it('should render a Convert capping warning banner', () => {
             useGetConvertStatusMock.mockReturnValue(convertStatusOkWarning)
 
-            const {queryByText} = renderWithRouter(
-                <WrappedBillingStartView />,
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithActiveSubscriptionWithConvert,
                 {
                     route: BILLING_BASE_PATH,
                 }
             )
 
-            expect(queryByText(warningText, {exact: false})).toBeInTheDocument()
+            expect(
+                screen.queryByText(warningText, {exact: false})
+            ).toBeInTheDocument()
         })
 
         it('should not render warming because estimation is outside of cycle', () => {
@@ -187,15 +188,16 @@ describe('BillingStartView', () => {
                 estimated_reach_date: '2023-04-01T00:00:00.000Z',
             })
 
-            const {queryByText} = renderWithRouter(
-                <WrappedBillingStartView />,
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithActiveSubscriptionWithConvert,
                 {
                     route: BILLING_BASE_PATH,
                 }
             )
 
             expect(
-                queryByText(warningText, {exact: false})
+                screen.queryByText(warningText, {exact: false})
             ).not.toBeInTheDocument()
         })
     })
@@ -213,11 +215,10 @@ describe('BillingStartView', () => {
                 [FeatureFlagKey.BillingVoiceSmsSelfServe]: true,
             })
 
-            renderWithQueryClientAndRouter(
-                <Provider store={storeWithActiveSubscriptionWithPhone}>
-                    <BillingStartView />
-                </Provider>,
-                BILLING_PAYMENT_PATH
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithActiveSubscriptionWithPhone,
+                {route: BILLING_PAYMENT_PATH}
             )
 
             const button = screen.queryByText('Change Frequency', {
@@ -232,11 +233,10 @@ describe('BillingStartView', () => {
                 [FeatureFlagKey.BillingVoiceSmsSelfServe]: false,
             })
 
-            renderWithQueryClientAndRouter(
-                <Provider store={storeWithActiveSubscriptionWithPhone}>
-                    <BillingStartView />
-                </Provider>,
-                BILLING_PAYMENT_PATH
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithActiveSubscriptionWithPhone,
+                {route: BILLING_PAYMENT_PATH}
             )
 
             const button = screen.queryByText('Change Frequency', {
@@ -248,22 +248,13 @@ describe('BillingStartView', () => {
     })
 
     describe('Billing Stripe Elements Integration', () => {
-        const renderBillingStartViewWithRouterAndProviderOnRoute = (
-            route: string
-        ) => {
-            return renderWithRouter(
-                <Provider store={storeWithCanceledSubscription}>
-                    <BillingStartView />
-                </Provider>,
-                {
-                    route,
-                }
-            )
-        }
-
         it('should show the new Stripe elements address form', () => {
-            renderBillingStartViewWithRouterAndProviderOnRoute(
-                BILLING_INFORMATION_PATH
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithCanceledSubscription,
+                {
+                    route: BILLING_INFORMATION_PATH,
+                }
             )
 
             expect(
@@ -272,8 +263,12 @@ describe('BillingStartView', () => {
         })
 
         it('should show the new Stripe elements payment method form', () => {
-            renderBillingStartViewWithRouterAndProviderOnRoute(
-                BILLING_PAYMENT_CARD_PATH
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithCanceledSubscription,
+                {
+                    route: BILLING_PAYMENT_CARD_PATH,
+                }
             )
 
             expect(

@@ -4,7 +4,6 @@ import {
     CouponForSales,
     ChurnMitigationOfferDecisionEvent,
     SubscriptionCycle,
-    ICard,
 } from 'models/billing/types'
 import {
     BillingContactDetailResponse,
@@ -78,6 +77,3 @@ export const updateBillingContact = (
         '/api/billing/contact/',
         billingContact
     )
-
-export const getCreditCard = () =>
-    client.get<ICard | Record<string, never>>('/api/billing/credit-card/')

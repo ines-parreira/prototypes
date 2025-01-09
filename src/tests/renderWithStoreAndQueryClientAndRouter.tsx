@@ -6,26 +6,36 @@ import {Route, Router} from 'react-router-dom'
 
 import {RootState} from 'state/types'
 import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {mockStore} from 'utils/testing'
+import {mockStore, RenderWithRouterParams} from 'utils/testing'
 
 export const renderWithStoreAndQueryClientAndRouter = (
     element: ReactElement,
-    state: Partial<RootState> = {}
+    state: Partial<RootState> = {},
+    routing: RenderWithRouterParams = {
+        options: {},
+        path: '/',
+        route: '/',
+        history: undefined,
+    }
 ) => {
     const store = mockStore(state)
     const MockQueryClientProvider = mockQueryClientProvider()
-    const history = createMemoryHistory({initialEntries: ['/']})
+    const history =
+        routing.history ||
+        createMemoryHistory({initialEntries: [routing.route || '/']})
+
     return {
         ...render(element, {
             wrapper: ({children}: any) => (
                 <Provider store={store}>
                     <MockQueryClientProvider>
                         <Router history={history}>
-                            <Route path="/">{children}</Route>
+                            <Route path={routing.path}>{children}</Route>
                         </Router>
                     </MockQueryClientProvider>
                 </Provider>
             ),
+            ...routing.options,
         }),
         store,
         history,

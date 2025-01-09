@@ -79,6 +79,7 @@ export const getCurrentSubscription = createSelector(
         (state.get('current_subscription') as Map<any, any>) || fromJS({})
 )
 
+// TODO: not rely on redux anymore and have a hook using useBillingState instead
 export const getIsCurrentSubscriptionCanceled = createSelector(
     getCurrentSubscription,
     (state) => state.isEmpty()
@@ -89,15 +90,11 @@ export const isTrialing = createSelector(
     (state) => state.get('status') === 'trialing'
 )
 
+// TODO: not rely on redux anymore and have a hook using useBillingState instead
 export const getIsCurrentSubscriptionTrialingOrCanceled = createSelector(
     isTrialing,
     getIsCurrentSubscriptionCanceled,
     (trialing, canceled) => trialing || canceled
-)
-
-export const hasCreditCard = createSelector(
-    getCurrentAccountMeta,
-    (state) => !!state.get('hasCreditCard')
 )
 
 export const shouldPayWithShopify = createSelector(
@@ -122,16 +119,6 @@ export const getShopifyBillingStatus = createSelector(
 
 export const paymentMethod = (state: RootState) =>
     shouldPayWithShopify(state) ? 'shopify' : 'stripe'
-
-export const paymentIsActive = (state: RootState) => {
-    const currentPaymentMethod = paymentMethod(state)
-
-    if (currentPaymentMethod === 'shopify') {
-        return getShopifyBillingStatus(state) === 'active'
-    }
-
-    return hasCreditCard(state)
-}
 
 const createSettingByTypeSelector = (type: string) => {
     return createSelector(getCurrentAccountState, (account) => {
