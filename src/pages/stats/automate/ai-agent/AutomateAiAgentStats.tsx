@@ -43,8 +43,8 @@ import {
     activeParams,
     CustomFieldSelect,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
-import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport'
-import {TicketDistributionTable} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
+import {CustomFieldsTicketCountBreakdownTableChart} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
+import {TicketDistributionChart} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
 import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
@@ -190,18 +190,13 @@ export default function AutomateAiAgentStats() {
             {hasAiAgentCustomField && selectedCustomField.id && (
                 <DashboardSection>
                     <DashboardGridCell size={getGridCellSize(1)}>
-                        <TicketDistributionTable
-                            selectedCustomField={{
-                                id: selectedCustomField.id,
-                                label: selectedCustomField.label,
-                            }}
-                        />
+                        <TicketDistributionChart />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(11)}>
                         <TicketInsightsFieldTrend />
                     </DashboardGridCell>
                     <DashboardGridCell>
-                        <CustomFieldsTicketCountBreakdownReport />
+                        <CustomFieldsTicketCountBreakdownTableChart />
                     </DashboardGridCell>
                 </DashboardSection>
             )}

@@ -19,6 +19,10 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import {
+    TicketFieldsChart,
+    TicketFieldsConfig,
+} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsConfig'
 
 export const MAX_CHECKED_CHARTS = 20
 
@@ -37,6 +41,15 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
             {
                 type: ServiceLevelAgreementsChart,
                 config: ServiceLevelAgreementsConfig,
+            },
+        ],
+    },
+    {
+        category: 'Ticket Insights',
+        children: [
+            {
+                type: TicketFieldsChart,
+                config: TicketFieldsConfig,
             },
         ],
     },

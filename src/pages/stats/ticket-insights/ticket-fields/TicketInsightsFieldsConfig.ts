@@ -1,0 +1,79 @@
+import {FilterComponentKey, FilterKey, StaticFilter} from 'models/stat/types'
+import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
+import {ReportConfig} from 'pages/stats/custom-reports/types'
+import {CustomFieldsTicketCountBreakdownTableChart} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
+import {TicketDistributionChart} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
+import {
+    TicketInsightsFieldsMetric,
+    TicketInsightsFieldsMetricConfig,
+} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
+import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
+
+export const TICKET_INSIGHTS_PAGE_TITLE = 'Ticket Fields'
+
+export enum TicketFieldsChart {
+    TicketDistributionTable = 'ticket-distribution-table',
+    TicketInsightsFieldTrend = 'ticket-insights-field-trend',
+    CustomFieldsTicketCountBreakdownTableChart = 'custom-fields-ticket-count-breakdown-table-chart',
+}
+
+export const TICKET_INSIGHTS_OPTIONAL_FILTERS = [
+    FilterKey.Channels,
+    FilterKey.Integrations,
+    FilterKey.Tags,
+    FilterKey.Agents,
+    FilterKey.CustomFields,
+]
+
+export const TICKET_INSIGHTS_PERSISTENT_FILTERS = [
+    FilterKey.Period,
+    FilterComponentKey.CustomField,
+    FilterKey.AggregationWindow,
+] satisfies StaticFilter[]
+
+export const TicketFieldsConfig: ReportConfig<TicketFieldsChart> = {
+    reportName: TICKET_INSIGHTS_PAGE_TITLE,
+    reportPath: 'ticket-fields',
+    reportFilters: {
+        optional: TICKET_INSIGHTS_OPTIONAL_FILTERS,
+        persistent: TICKET_INSIGHTS_PERSISTENT_FILTERS,
+    },
+    charts: {
+        [TicketFieldsChart.TicketDistributionTable]: {
+            chartComponent: TicketDistributionChart,
+            label: TicketInsightsFieldsMetricConfig[
+                TicketInsightsFieldsMetric.TicketDistribution
+            ].title,
+            description:
+                TicketInsightsFieldsMetricConfig[
+                    TicketInsightsFieldsMetric.TicketDistribution
+                ].hint.title,
+            csvProducer: null,
+            icon: CHARTS_MODAL_ICONS.graph,
+        },
+        [TicketFieldsChart.TicketInsightsFieldTrend]: {
+            chartComponent: TicketInsightsFieldTrend,
+            label: TicketInsightsFieldsMetricConfig[
+                TicketInsightsFieldsMetric.TicketInsightsFieldTrend
+            ].title,
+            description:
+                TicketInsightsFieldsMetricConfig[
+                    TicketInsightsFieldsMetric.TicketInsightsFieldTrend
+                ].hint.title,
+            csvProducer: null,
+            icon: CHARTS_MODAL_ICONS.graph,
+        },
+        [TicketFieldsChart.CustomFieldsTicketCountBreakdownTableChart]: {
+            chartComponent: CustomFieldsTicketCountBreakdownTableChart,
+            label: TicketInsightsFieldsMetricConfig[
+                TicketInsightsFieldsMetric.CustomFieldsTicketCountBreakdown
+            ].title,
+            description:
+                TicketInsightsFieldsMetricConfig[
+                    TicketInsightsFieldsMetric.CustomFieldsTicketCountBreakdown
+                ].hint.title,
+            csvProducer: null,
+            icon: CHARTS_MODAL_ICONS.table,
+        },
+    },
+}

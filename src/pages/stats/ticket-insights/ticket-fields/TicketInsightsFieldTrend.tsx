@@ -5,19 +5,23 @@ import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import {formatLabeledTooltipTimeSeriesData} from 'pages/stats/common/utils'
 import {LINES_COLORS} from 'pages/stats/constants'
+import {
+    TicketInsightsFieldsMetric,
+    TicketInsightsFieldsMetricConfig,
+} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
 import css from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend.less'
 
 export function TicketInsightsFieldTrend() {
     const {data, legendInfo, legendDatasetVisibility, granularity, isFetching} =
         useTicketsFieldTrend()
 
+    const {hint, title} =
+        TicketInsightsFieldsMetricConfig[
+            TicketInsightsFieldsMetric.TicketInsightsFieldTrend
+        ]
+
     return (
-        <ChartCard
-            title="Trend"
-            hint={{
-                title: 'Evolution of the top 10 used values during the selected timeframe. Values are grouped by the date the value was added to a ticket.',
-            }}
-        >
+        <ChartCard title={title} hint={hint}>
             <LineChart
                 isLoading={isFetching}
                 customColors={LINES_COLORS}

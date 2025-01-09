@@ -16,21 +16,21 @@ import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 import {CustomFieldSelect} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
-import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport'
+import {CustomFieldsTicketCountBreakdownTableChart} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
 import {DownloadTicketFieldsDataButton} from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
+import {SupportPerformanceTicketInsights} from 'pages/stats/ticket-insights/ticket-fields/SupportPerformanceTicketInsights'
+import {TicketDistributionChart} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
+import {TicketFieldsBlankState} from 'pages/stats/ticket-insights/ticket-fields/TicketFieldsBlankState'
 import {
-    SupportPerformanceTicketInsights,
     TICKET_INSIGHTS_OPTIONAL_FILTERS,
     TICKET_INSIGHTS_PAGE_TITLE,
-} from 'pages/stats/ticket-insights/ticket-fields/SupportPerformanceTicketInsights'
-import {TicketDistributionTable} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
-import {TicketFieldsBlankState} from 'pages/stats/ticket-insights/ticket-fields/TicketFieldsBlankState'
+} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsConfig'
 import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
 import {initialState} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
 import {
-    initialState as ticketInsightsState,
     ticketInsightsSlice,
+    initialState as ticketInsightsState,
 } from 'state/ui/stats/ticketInsightsSlice'
 import {assumeMock} from 'utils/testing'
 
@@ -49,7 +49,7 @@ const CustomFieldSelectMock = assumeMock(CustomFieldSelect)
 jest.mock(
     'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable.tsx'
 )
-const TicketDistributionTableMock = assumeMock(TicketDistributionTable)
+const TicketDistributionTableMock = assumeMock(TicketDistributionChart)
 jest.mock(
     'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend.tsx'
 )
@@ -69,10 +69,10 @@ const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppSelectorMock = assumeMock(useAppSelector)
 jest.mock(
-    'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport.tsx'
+    'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart.tsx'
 )
-const CustomFieldsTicketCountBreakdownReportMock = assumeMock(
-    CustomFieldsTicketCountBreakdownReport
+const CustomFieldsTicketCountBreakdownTableChartMock = assumeMock(
+    CustomFieldsTicketCountBreakdownTableChart
 )
 jest.mock('pages/stats/DrillDownModal')
 const DrillDownModalMock = assumeMock(DrillDownModal)
@@ -105,7 +105,7 @@ describe('<SupportPerformanceTicketInsights />', () => {
         CustomFieldSelectMock.mockImplementation(componentMock)
         TicketDistributionTableMock.mockImplementation(componentMock)
         TicketInsightsFieldTrendMock.mockImplementation(componentMock)
-        CustomFieldsTicketCountBreakdownReportMock.mockImplementation(
+        CustomFieldsTicketCountBreakdownTableChartMock.mockImplementation(
             componentMock
         )
         TicketFieldsBlankStateMock.mockImplementation(componentMock)
@@ -265,9 +265,11 @@ describe('<SupportPerformanceTicketInsights />', () => {
         expect(TicketInsightsFieldTrendMock).not.toHaveBeenCalled()
     })
 
-    it('should render the CustomFieldsTicketCountBreakdownReport', () => {
-        render(<CustomFieldsTicketCountBreakdownReport />)
+    it('should render the CustomFieldsTicketCountBreakdownTableChart', () => {
+        render(<CustomFieldsTicketCountBreakdownTableChart />)
 
-        expect(CustomFieldsTicketCountBreakdownReportMock).toHaveBeenCalled()
+        expect(
+            CustomFieldsTicketCountBreakdownTableChartMock
+        ).toHaveBeenCalled()
     })
 })

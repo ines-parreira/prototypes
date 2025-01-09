@@ -18,7 +18,7 @@ import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {AutomatedInteractionsMetric} from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
 import {useTimeSeriesFormattedData} from 'pages/stats/AutomateOverviewContent'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
-import {TicketDistributionTable} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
+import {TicketDistributionChart} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
@@ -99,12 +99,12 @@ jest.mock(
 jest.mock(
     'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable',
     () => ({
-        TicketDistributionTable: jest.fn(() => (
+        TicketDistributionChart: jest.fn(() => (
             <div>ticket-distribution-table</div>
         )),
     })
 )
-const TicketDistributionTableMock = TicketDistributionTable as jest.Mock
+const TicketDistributionTableMock = TicketDistributionChart as jest.Mock
 
 jest.mock(
     'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend',
@@ -114,9 +114,9 @@ jest.mock(
 )
 
 jest.mock(
-    'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport',
+    'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart',
     () => ({
-        CustomFieldsTicketCountBreakdownReport: () => (
+        CustomFieldsTicketCountBreakdownTableChart: () => (
             <div>custom-fields-ticket-count-breakdown-report</div>
         ),
     })
@@ -231,15 +231,7 @@ describe('AutomateAiAgentStats', () => {
         expect(
             screen.queryByText('ticket-distribution-table')
         ).toBeInTheDocument()
-        expect(TicketDistributionTableMock).toBeCalledWith(
-            {
-                selectedCustomField: {
-                    id: '1',
-                    label: 'AI Agent Contact Reason',
-                },
-            },
-            {}
-        )
+        expect(TicketDistributionTableMock).toHaveBeenCalled()
         expect(
             screen.queryByText('ticket-insights-field-trend')
         ).toBeInTheDocument()

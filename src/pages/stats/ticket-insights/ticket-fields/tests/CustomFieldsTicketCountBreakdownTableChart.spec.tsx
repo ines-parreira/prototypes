@@ -5,8 +5,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
-import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport'
 import {CustomFieldsTicketCountBreakdownTable} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
+import {CustomFieldsTicketCountBreakdownTableChart} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
 import {initialState} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
@@ -51,7 +51,7 @@ describe('<CustomFieldsTicketCountBreakdownReport />', () => {
 
         render(
             <Provider store={mockStore(defaultState)}>
-                <CustomFieldsTicketCountBreakdownReport />
+                <CustomFieldsTicketCountBreakdownTableChart />
             </Provider>
         )
 
@@ -68,7 +68,7 @@ describe('<CustomFieldsTicketCountBreakdownReport />', () => {
 
         render(
             <Provider store={mockStore(defaultState)}>
-                <CustomFieldsTicketCountBreakdownReport />
+                <CustomFieldsTicketCountBreakdownTableChart />
             </Provider>
         )
 

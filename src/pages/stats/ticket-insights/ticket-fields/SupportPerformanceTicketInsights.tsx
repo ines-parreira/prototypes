@@ -5,29 +5,23 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
-import {FilterComponentKey, FilterKey} from 'models/stat/types'
+import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import {CustomReportComponent} from 'pages/stats/common/CustomReport/CustomReportComponent'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 import {CustomFieldSelect} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
-import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport'
 import {DownloadTicketFieldsDataButton} from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
-import {TicketDistributionTable} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
 import {TicketFieldsBlankState} from 'pages/stats/ticket-insights/ticket-fields/TicketFieldsBlankState'
-import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
+import {
+    TICKET_INSIGHTS_OPTIONAL_FILTERS,
+    TicketFieldsChart,
+    TicketFieldsConfig,
+} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsConfig'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
-
-export const TICKET_INSIGHTS_PAGE_TITLE = 'Ticket Fields'
-export const TICKET_INSIGHTS_OPTIONAL_FILTERS = [
-    FilterKey.Channels,
-    FilterKey.Integrations,
-    FilterKey.Tags,
-    FilterKey.Agents,
-    FilterKey.CustomFields,
-]
 
 export function SupportPerformanceTicketInsights() {
     const isAnalyticsNewFilters =
@@ -41,7 +35,7 @@ export function SupportPerformanceTicketInsights() {
 
     if (!selectedCustomField.isLoading && selectedCustomField.id === null) {
         return (
-            <StatsPage title={TICKET_INSIGHTS_PAGE_TITLE} titleExtra={null}>
+            <StatsPage title={TicketFieldsConfig.reportName} titleExtra={null}>
                 <TicketFieldsBlankState />
             </StatsPage>
         )
@@ -49,7 +43,7 @@ export function SupportPerformanceTicketInsights() {
 
     return (
         <StatsPage
-            title={TICKET_INSIGHTS_PAGE_TITLE}
+            title={TicketFieldsConfig.reportName}
             titleExtra={
                 selectedCustomField.id ? (
                     <>
@@ -70,11 +64,9 @@ export function SupportPerformanceTicketInsights() {
                         className="pb-0"
                     >
                         <FiltersPanelWrapper
-                            persistentFilters={[
-                                FilterKey.Period,
-                                FilterComponentKey.CustomField,
-                                FilterKey.AggregationWindow,
-                            ]}
+                            persistentFilters={
+                                TicketFieldsConfig.reportFilters.persistent
+                            }
                             optionalFilters={
                                 supportPerformanceTicketInsightsOptionalFilters
                             }
@@ -98,19 +90,24 @@ export function SupportPerformanceTicketInsights() {
             {selectedCustomField.id && (
                 <DashboardSection>
                     <DashboardGridCell size={getGridCellSize(1)}>
-                        <TicketDistributionTable
-                            selectedCustomField={{
-                                id: selectedCustomField.id,
-                                label: selectedCustomField.label,
-                            }}
-                            isAnalyticsNewFilters={isAnalyticsNewFilters}
+                        <CustomReportComponent
+                            chart={TicketFieldsChart.TicketDistributionTable}
+                            config={TicketFieldsConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(11)}>
-                        <TicketInsightsFieldTrend />
+                        <CustomReportComponent
+                            chart={TicketFieldsChart.TicketInsightsFieldTrend}
+                            config={TicketFieldsConfig}
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell>
-                        <CustomFieldsTicketCountBreakdownReport />
+                        <CustomReportComponent
+                            chart={
+                                TicketFieldsChart.CustomFieldsTicketCountBreakdownTableChart
+                            }
+                            config={TicketFieldsConfig}
+                        />
                     </DashboardGridCell>
                 </DashboardSection>
             )}

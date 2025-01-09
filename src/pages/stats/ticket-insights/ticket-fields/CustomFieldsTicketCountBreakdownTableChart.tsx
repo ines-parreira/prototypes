@@ -7,20 +7,25 @@ import ChartCard from 'pages/stats/ChartCard'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import {CustomFieldsTableHeatmapSwitch} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTableHeatmapSwitch'
 import {CustomFieldsTicketCountBreakdownTable} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
+import {
+    TicketInsightsFieldsMetric,
+    TicketInsightsFieldsMetricConfig,
+} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
 import {TicketInsightsValueModeSwitch} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsValueModeSwitch'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 
-const REPORT_TITLE = 'All used values'
-const REPORT_HINT =
-    'Number of tickets labeled with each value within the selected timeframe for the selected Ticket Field. Only values that have been used at least once are shown.'
-
-export const CustomFieldsTicketCountBreakdownReport = () => {
+export const CustomFieldsTicketCountBreakdownTableChart = () => {
     const {id, label} = useAppSelector(getSelectedCustomField)
+
+    const {hint, title} =
+        TicketInsightsFieldsMetricConfig[
+            TicketInsightsFieldsMetric.CustomFieldsTicketCountBreakdown
+        ]
 
     return (
         <ChartCard
-            title={REPORT_TITLE}
-            hint={{title: REPORT_HINT}}
+            title={title}
+            hint={hint}
             noPadding={true}
             className={css.limitedHeight}
             titleExtra={

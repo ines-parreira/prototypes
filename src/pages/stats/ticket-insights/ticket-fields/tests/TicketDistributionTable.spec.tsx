@@ -12,7 +12,7 @@ import {
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
     OUTSIDE_TOP_DATA,
-    TicketDistributionTable,
+    TicketDistributionChart,
 } from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
 import {RootState, StoreDispatch} from 'state/types'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
@@ -37,7 +37,7 @@ jest.mock(
 describe('<TicketDistributionTable>', () => {
     const maxTicketCount = 16
     const ticketsCountTotal = 20
-    const selectedCustomField = {id: 123, label: 'Some Label'}
+
     const data = [
         {
             [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
@@ -99,9 +99,7 @@ describe('<TicketDistributionTable>', () => {
     it('should render the table', () => {
         render(
             <Provider store={mockStore({})}>
-                <TicketDistributionTable
-                    selectedCustomField={selectedCustomField}
-                />
+                <TicketDistributionChart />
             </Provider>
         )
 
@@ -118,9 +116,7 @@ describe('<TicketDistributionTable>', () => {
     it('should render the total value', () => {
         render(
             <Provider store={mockStore({})}>
-                <TicketDistributionTable
-                    selectedCustomField={selectedCustomField}
-                />
+                <TicketDistributionChart />
             </Provider>
         )
 
@@ -140,9 +136,7 @@ describe('<TicketDistributionTable>', () => {
         })
         render(
             <Provider store={mockStore({})}>
-                <TicketDistributionTable
-                    selectedCustomField={selectedCustomField}
-                />
+                <TicketDistributionChart />
             </Provider>
         )
 
@@ -158,9 +152,7 @@ describe('<TicketDistributionTable>', () => {
 
         render(
             <Provider store={mockStore({})}>
-                <TicketDistributionTable
-                    selectedCustomField={selectedCustomField}
-                />
+                <TicketDistributionChart />
             </Provider>
         )
 
@@ -174,9 +166,7 @@ describe('<TicketDistributionTable>', () => {
         })
         const {container} = render(
             <Provider store={mockStore({})}>
-                <TicketDistributionTable
-                    selectedCustomField={selectedCustomField}
-                />
+                <TicketDistributionChart />
             </Provider>
         )
 
