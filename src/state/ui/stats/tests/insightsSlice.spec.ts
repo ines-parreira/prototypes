@@ -149,16 +149,19 @@ describe('Intent Slice', () => {
                 id: 1,
                 [IntentTableColumn.IntentName]: 'order/cancel',
                 [IntentTableColumn.AutomationOpportunities]: 26,
+                [IntentTableColumn.AvgCustomerSatisfaction]: 5,
             },
             {
                 id: 2,
                 [IntentTableColumn.IntentName]: 'order/track',
                 [IntentTableColumn.AutomationOpportunities]: 10,
+                [IntentTableColumn.AvgCustomerSatisfaction]: 4.3,
             },
             {
                 id: 3,
                 [IntentTableColumn.IntentName]: 'order/return',
                 [IntentTableColumn.AutomationOpportunities]: 15,
+                [IntentTableColumn.AvgCustomerSatisfaction]: '-',
             },
         ] as unknown as Intent[]
 
@@ -177,16 +180,19 @@ describe('Intent Slice', () => {
                     id: 1,
                     [IntentTableColumn.IntentName]: 'order/cancel',
                     [IntentTableColumn.AutomationOpportunities]: 26,
+                    [IntentTableColumn.AvgCustomerSatisfaction]: 5,
                 },
                 {
                     id: 3,
                     [IntentTableColumn.IntentName]: 'order/return',
                     [IntentTableColumn.AutomationOpportunities]: 15,
+                    [IntentTableColumn.AvgCustomerSatisfaction]: '-',
                 },
                 {
                     id: 2,
                     [IntentTableColumn.IntentName]: 'order/track',
                     [IntentTableColumn.AutomationOpportunities]: 10,
+                    [IntentTableColumn.AvgCustomerSatisfaction]: 4.3,
                 },
             ])
         })
@@ -207,16 +213,19 @@ describe('Intent Slice', () => {
                     id: 2,
                     [IntentTableColumn.IntentName]: 'order/track',
                     [IntentTableColumn.AutomationOpportunities]: 10,
+                    [IntentTableColumn.AvgCustomerSatisfaction]: 4.3,
                 },
                 {
                     id: 3,
                     [IntentTableColumn.IntentName]: 'order/return',
                     [IntentTableColumn.AutomationOpportunities]: 15,
+                    [IntentTableColumn.AvgCustomerSatisfaction]: '-',
                 },
                 {
                     id: 1,
                     [IntentTableColumn.IntentName]: 'order/cancel',
                     [IntentTableColumn.AutomationOpportunities]: 26,
+                    [IntentTableColumn.AvgCustomerSatisfaction]: 5,
                 },
             ])
         })
@@ -233,6 +242,72 @@ describe('Intent Slice', () => {
             )
 
             expect(result).toEqual(mockIntents)
+        })
+
+        it('sorts intents by a string field in ascending order', () => {
+            const ascendingSorting = {
+                ...mockSorting,
+                direction: OrderDirection.Asc,
+                field: IntentTableColumn.IntentName,
+            }
+            const result = getSortedIntents.resultFunc(
+                mockIntents,
+                ascendingSorting
+            )
+
+            expect(result).toEqual([
+                {
+                    id: 1,
+                    [IntentTableColumn.IntentName]: 'order/cancel',
+                    [IntentTableColumn.AutomationOpportunities]: 26,
+                    [IntentTableColumn.AvgCustomerSatisfaction]: 5,
+                },
+                {
+                    id: 3,
+                    [IntentTableColumn.IntentName]: 'order/return',
+                    [IntentTableColumn.AutomationOpportunities]: 15,
+                    [IntentTableColumn.AvgCustomerSatisfaction]: '-',
+                },
+                {
+                    id: 2,
+                    [IntentTableColumn.IntentName]: 'order/track',
+                    [IntentTableColumn.AutomationOpportunities]: 10,
+                    [IntentTableColumn.AvgCustomerSatisfaction]: 4.3,
+                },
+            ])
+        })
+
+        it('handles mixed types and prioritizes numbers over strings', () => {
+            const mixedSorting = {
+                ...mockSorting,
+                direction: OrderDirection.Desc,
+                field: IntentTableColumn.AvgCustomerSatisfaction,
+            }
+            const result = getSortedIntents.resultFunc(
+                mockIntents,
+                mixedSorting
+            )
+
+            expect(result).toEqual([
+                {
+                    id: 1,
+                    [IntentTableColumn.IntentName]: 'order/cancel',
+                    [IntentTableColumn.AutomationOpportunities]: 26,
+                    [IntentTableColumn.AvgCustomerSatisfaction]: 5,
+                },
+                {
+                    id: 2,
+                    [IntentTableColumn.IntentName]: 'order/track',
+                    [IntentTableColumn.AutomationOpportunities]: 10,
+                    [IntentTableColumn.AvgCustomerSatisfaction]: 4.3,
+                },
+                {
+                    id: 3,
+                    [IntentTableColumn.IntentName]: 'order/return',
+                    [IntentTableColumn.AutomationOpportunities]: 15,
+                    [IntentTableColumn.AvgCustomerSatisfaction]: '-',
+                },
+            ])
         })
     })
 })

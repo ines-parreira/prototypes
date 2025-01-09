@@ -14,7 +14,7 @@ import {
 } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import {DEFAULT_LOCALE, formatMetricValue} from 'pages/stats/common/utils'
 
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
@@ -31,6 +31,24 @@ export const IntentNameCellContent = ({intent, column}: TableCellProps) => {
     return (
         <BodyCellWrapper bodyCellProps={{width: getColumnWidth(column)}}>
             <div className="body-medium">{intent[column]}</div>
+        </BodyCellWrapper>
+    )
+}
+
+export const IntentAvgCsatCellContent = ({intent, column}: TableCellProps) => {
+    const formatedValue = intent[column]
+        ? Intl.NumberFormat(DEFAULT_LOCALE, {
+              maximumFractionDigits: 1,
+          }).format(intent[column] as number)
+        : '-'
+    return (
+        <BodyCellWrapper
+            bodyCellProps={{
+                justifyContent: 'right',
+                width: getColumnWidth(column),
+            }}
+        >
+            {formatedValue}
         </BodyCellWrapper>
     )
 }

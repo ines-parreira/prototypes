@@ -461,7 +461,8 @@ export const useAIAgentInsightsDataset = (
         },
         {
             data: customerSatisfactionPerIntent.data?.allData || [],
-            metricKey: 'customerSatisfaction',
+            metricKey: 'TicketSatisfactionSurveyEnriched.avgSurveyScore',
+            resultKey: 'avgCustomerSatisfaction',
         },
     ]
 

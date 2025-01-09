@@ -113,15 +113,29 @@ export const getSortedIntents = createSelector(
     (intentsList, {field, direction}) => {
         const intents = intentsList ? [...intentsList] : []
         const sortedIntents = intents.sort((a, b) => {
-            const aField = isNaN(Number(a[field])) ? a[field] : Number(a[field])
-            const bField = isNaN(Number(b[field])) ? b[field] : Number(b[field])
-
-            if (aField > bField) {
-                return direction === OrderDirection.Asc ? 1 : -1
-            } else if (aField < bField) {
-                return direction === OrderDirection.Asc ? -1 : 1
+            const parseValue = (value: string | number) => {
+                const num = Number(value)
+                return isNaN(num) ? value : num
             }
-            return 0
+
+            const aField = parseValue(a[field])
+            const bField = parseValue(b[field])
+
+            // Compare numbers and strings appropriately
+            if (typeof aField === 'number' && typeof bField === 'number') {
+                return direction === OrderDirection.Asc
+                    ? aField - bField
+                    : bField - aField
+            } else if (
+                typeof aField === 'string' &&
+                typeof bField === 'string'
+            ) {
+                return direction === OrderDirection.Asc
+                    ? aField.localeCompare(bField)
+                    : bField.localeCompare(aField)
+            }
+            // If types differ, prioritize numbers over strings
+            return typeof aField === 'number' ? -1 : 1
         })
 
         return sortedIntents

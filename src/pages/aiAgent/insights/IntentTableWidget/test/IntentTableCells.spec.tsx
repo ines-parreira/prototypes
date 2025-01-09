@@ -16,6 +16,7 @@ import {
     IntentAutomationOpportunitiesCellContent,
     LoadingIntentCellContent,
     BodyCellWrapper,
+    IntentAvgCsatCellContent,
 } from '../IntentTableCells'
 
 const renderTableCell = (cellContent: React.ReactNode) => {
@@ -132,6 +133,43 @@ describe('IntentTableCells', () => {
             )
             const skeleton = screen.getByRole('cell', {hidden: true})
             expect(skeleton).toBeInTheDocument()
+        })
+    })
+
+    describe('IntentAvgCsatCellContent', () => {
+        const mockIntent = {
+            id: '1',
+            [IntentTableColumn.IntentName]: 'Mock Intent Name',
+            [IntentTableColumn.AvgCustomerSatisfaction]: 4.567,
+        } as unknown as Intent
+
+        it('formats and displays the value correctly when intent[column] exists', () => {
+            const {getByText} = render(
+                <IntentAvgCsatCellContent
+                    intent={mockIntent}
+                    column={IntentTableColumn.AvgCustomerSatisfaction}
+                />
+            )
+
+            const formattedValue = 4.6
+
+            expect(getByText(formattedValue)).toBeInTheDocument()
+        })
+
+        it('displays a dash when intent[column] is undefined', () => {
+            const noDataIntent = {
+                id: '1',
+                [IntentTableColumn.IntentName]: 'Mock Intent Name',
+            } as unknown as Intent
+
+            const {getByText} = render(
+                <IntentAvgCsatCellContent
+                    intent={noDataIntent}
+                    column={IntentTableColumn.AvgCustomerSatisfaction}
+                />
+            )
+
+            expect(getByText('-')).toBeInTheDocument()
         })
     })
 })

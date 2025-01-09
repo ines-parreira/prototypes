@@ -34,6 +34,7 @@ import intentTableCss from './IntentTable.less'
 
 import {
     IntentAutomationOpportunitiesCellContent,
+    IntentAvgCsatCellContent,
     IntentDefaultCellContent,
     IntentNameCellContent,
     LoadingIntentCellContent,
@@ -76,6 +77,8 @@ export const IntentTable = ({
                 return IntentNameCellContent
             case IntentTableColumn.AutomationOpportunities:
                 return IntentAutomationOpportunitiesCellContent
+            case IntentTableColumn.AvgCustomerSatisfaction:
+                return IntentAvgCsatCellContent
             // case IntentTableColumn.Resources:
             //     return IntentResourcesCellContent
             default:
