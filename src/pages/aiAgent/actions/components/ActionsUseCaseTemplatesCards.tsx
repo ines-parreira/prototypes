@@ -31,8 +31,8 @@ const ActionsUseCaseTemplatesCards = ({
         () =>
             _orderBy(
                 templates.filter((template) => !!template.category),
-                ['category'],
-                ['desc']
+                ['category', 'name'],
+                ['asc', 'asc']
             ),
         [templates]
     )
