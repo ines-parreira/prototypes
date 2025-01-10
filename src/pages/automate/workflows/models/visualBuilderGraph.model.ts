@@ -500,7 +500,9 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
         available_languages: g.available_languages,
         steps: [],
         transitions: [],
-        apps: g.apps,
+        apps: g.apps?.map(
+            (app) => _omit(app, ['errors', 'touched']) as ActionTemplateApp
+        ),
         inputs: _cloneDeep(g.inputs),
         values: _cloneDeep(g.values),
         template_internal_id: g.template_internal_id,
