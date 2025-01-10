@@ -39,7 +39,7 @@ export type VisualBuilderReusableLLMPromptCallAction =
           value: ReusableLLMPromptCallNodeType['data']['values'][keyof ReusableLLMPromptCallNodeType['data']['values']]
       }
     | {
-          type: 'REUSABLE_LLM_PROMPT_CALL_NODE'
+          type: 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE'
           nodeIds: string[]
       }
 
@@ -51,7 +51,7 @@ type ActionTypes = {
 const visualBuilderReusableLLMPromptCallActionTypes: ActionTypes = {
     INSERT_REUSABLE_LLM_PROMPT_CALL_NODE: true,
     SET_REUSABLE_LLM_PROMPT_CALL_VALUE: true,
-    REUSABLE_LLM_PROMPT_CALL_NODE: true,
+    REORDER_REUSABLE_LLM_PROMPT_CALL_NODE: true,
 }
 
 export function isVisualBuilderReusableLLMPromptCallAction(action: {
@@ -92,7 +92,7 @@ export function reusableLLMPromptCallReducer(
                     node.data.values[action.inputId] = action.value
                 }
             })
-        case 'REUSABLE_LLM_PROMPT_CALL_NODE':
+        case 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE':
             return computeNodesPositions(reorderNodes(graph, action.nodeIds))
     }
 }

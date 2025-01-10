@@ -29,7 +29,7 @@ describe('reusableLLMPromptCallReducer', () => {
         ).toBe(true)
         expect(
             isVisualBuilderReusableLLMPromptCallAction({
-                type: 'REUSABLE_LLM_PROMPT_CALL_NODE',
+                type: 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE',
             })
         ).toBe(true)
         expect(

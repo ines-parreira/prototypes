@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import React from 'react'
 
 import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
@@ -8,13 +9,18 @@ import css from './ReusableLLMPromptCallNodeLabel.less'
 type Props = {
     app: App
     name: string
+    variant?: 'bold' | 'regular'
 }
 
-const ReusableLLMPromptCallNodeLabel = ({app, name}: Props) => {
+const ReusableLLMPromptCallNodeLabel = ({
+    app,
+    name,
+    variant = 'bold',
+}: Props) => {
     return (
         <div className={css.container}>
             <AppIcon icon={app.icon} name={app.name} />
-            <span className={css.title}>
+            <span className={classnames(css.title, css[variant])}>
                 {name} in {app.name}
             </span>
         </div>

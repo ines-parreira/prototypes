@@ -1,0 +1,43 @@
+@import (reference) '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .nodes {
+        display: flex;
+        gap: @layout-spacing-xs;
+        flex-wrap: wrap;
+    }
+
+    .label {
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .steps {
+        display: flex;
+        gap: @layout-spacing-xxs;
+        flex-direction: column;
+    }
+
+    .conditions {
+        display: flex;
+        gap: @layout-spacing-xxs;
+        flex-direction: column;
+    }
+
+    .condition {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+
+        & > i {
+            font-size: 20px;
+            color: var(--neutral-grey-5);
+        }
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+    }
+}

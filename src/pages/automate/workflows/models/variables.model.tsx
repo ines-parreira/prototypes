@@ -453,18 +453,21 @@ export const buildWorkflowVariableFromTrigger = (
                         name: 'Total discounts',
                         value: 'objects.order.discount_amount',
                         nodeType: 'order_selection',
+                        format: 'currency',
                         type: 'number',
                     },
                     {
                         name: 'Subtotal price',
                         value: 'objects.order.subtotal_amount',
                         nodeType: 'order_selection',
+                        format: 'currency',
                         type: 'number',
                     },
                     {
                         name: 'Shipping price',
                         value: 'objects.order.shipping_amount',
                         nodeType: 'order_selection',
+                        format: 'currency',
                         type: 'number',
                     },
                     {

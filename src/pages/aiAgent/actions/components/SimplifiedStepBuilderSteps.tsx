@@ -85,7 +85,7 @@ export const SimplifiedStepBuilderSteps = ({graph, dispatch, steps}: Props) => {
 
         if (!_isEqual(dirtyNodes, orderedNodes)) {
             dispatch({
-                type: 'REUSABLE_LLM_PROMPT_CALL_NODE',
+                type: 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE',
                 nodeIds: dirtyNodes.map((node) => node.id),
             })
         }

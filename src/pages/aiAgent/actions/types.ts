@@ -51,14 +51,6 @@ export type ActionAppsConfiguration = NonNullable<
 
 export type ActionAppConfiguration = ActionAppsConfiguration[number]
 
-export type ActionAppConfigurationSteps =
-    Components.Schemas.GetWfConfigurationResponseDto['steps'][number]
-
-export type ActionAppConfigurationReusableLlmPromptCallStep = Extract<
-    ActionAppConfigurationSteps,
-    {kind: 'reusable-llm-prompt-call'}
->
-
 export type LlmTriggeredExecution =
     Components.Schemas.GetWfExecutionResponseDto &
         Components.Schemas.GetExecutionsPaginationResponseDto['data'][number]

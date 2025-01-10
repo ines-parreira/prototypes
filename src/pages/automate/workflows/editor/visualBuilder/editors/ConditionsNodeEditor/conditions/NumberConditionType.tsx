@@ -21,7 +21,7 @@ interface Props {
     onBlur?: () => void
 }
 
-const getDisplayValue = (
+export const getDisplayValue = (
     value: number,
     format: WorkflowVariableFormat | undefined
 ) => {

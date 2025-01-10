@@ -962,7 +962,7 @@ const AppMenuCategoryItems = ({
 
                 if (
                     visualBuilderGraph.isTemplate &&
-                    typeof visualBuilderGraph.category === 'undefined' &&
+                    !visualBuilderGraph.category &&
                     !visualBuilderGraph.apps?.some((templateApp) => {
                         switch (templateApp.type) {
                             case 'shopify':
@@ -1162,8 +1162,7 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
                             </>
                         )}
                         {visualBuilderGraph.isTemplate &&
-                            typeof visualBuilderGraph.category ===
-                                'undefined' && (
+                            !visualBuilderGraph.category && (
                                 <>
                                     <LLMPromptTemplateShopifyMenuItems
                                         nodeId={nodeId}

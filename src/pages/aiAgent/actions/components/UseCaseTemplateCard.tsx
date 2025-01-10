@@ -4,7 +4,7 @@ import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
 import {TemplateCard} from 'pages/common/components/TemplateCard'
 
 import css from './UseCaseTemplateCard.less'
-import UseCaseTemplateConfirmationModal from './UseCaseTemplateConfirmationModal'
+import UseCaseTemplateModal from './UseCaseTemplateModal'
 
 type Props = {
     template: ActionTemplate
@@ -54,11 +54,14 @@ export default function UseCaseTemplateCard({template}: Props) {
                     setIsModalOpen(true)
                 }}
             />
-            <UseCaseTemplateConfirmationModal
-                setOpen={setIsModalOpen}
-                templateConfiguration={template}
-                isOpen={isModalOpen}
-            />
+            {isModalOpen && (
+                <UseCaseTemplateModal
+                    template={template}
+                    onClose={() => {
+                        setIsModalOpen(false)
+                    }}
+                />
+            )}
         </>
     )
 }

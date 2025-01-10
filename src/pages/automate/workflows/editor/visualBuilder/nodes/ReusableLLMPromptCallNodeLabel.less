@@ -8,8 +8,6 @@
     }
 
     .title {
-        .body-semibold();
-
         color: var(--neutral-grey-6);
         overflow: hidden;
         text-overflow: ellipsis;
@@ -17,5 +15,13 @@
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
+
+        &.bold {
+            .body-semibold();
+        }
+
+        &.regular {
+            .body-regular();
+        }
     }
 }

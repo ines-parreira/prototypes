@@ -1,12 +1,13 @@
 import {Tooltip} from '@gorgias/merchant-ui-kit'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import _noop from 'lodash/noop'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {Prompt, useHistory, useParams} from 'react-router-dom'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {Prompt, useHistory, useLocation, useParams} from 'react-router-dom'
 import {ulid} from 'ulidx'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
@@ -29,6 +30,7 @@ import {
     transformWorkflowConfigurationIntoVisualBuilderGraph,
     WorkflowConfigurationBuilder,
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
+import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Modal from 'pages/common/components/modal/Modal'
@@ -90,6 +92,14 @@ const getInitialConfiguration = () => {
 }
 
 const CreateActionView = () => {
+    const {state} = useLocation<WorkflowConfiguration | undefined>()
+
+    const configurationFromTemplate = useRef(state)
+
+    useEffectOnce(() => {
+        window.history.replaceState(null, '')
+    })
+
     const {shopName, shopType} = useParams<{
         shopName: string
         shopType: 'shopify'
@@ -106,7 +116,10 @@ const CreateActionView = () => {
 
     const appDispatch = useAppDispatch()
     const history = useHistory()
-    const configuration = useMemo(() => getInitialConfiguration(), [])
+    const configuration = useMemo(
+        () => configurationFromTemplate.current ?? getInitialConfiguration(),
+        []
+    )
 
     const [createAndTestButtonRef, setCreateAndTestButtonRef] =
         useState<HTMLButtonElement | null>(null)

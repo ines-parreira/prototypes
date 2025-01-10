@@ -693,7 +693,7 @@ describe('SimplifiedStepBuilder', () => {
 
         // Verify the dispatch was called with the correct reordering action
         expect(mockDispatch).toHaveBeenCalledWith({
-            type: 'REUSABLE_LLM_PROMPT_CALL_NODE',
+            type: 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE',
             nodeIds: ['node2', 'node1'],
         })
     })
@@ -771,7 +771,7 @@ describe('SimplifiedStepBuilder', () => {
 
         // Verify no reordering dispatch was called
         expect(mockDispatch).not.toHaveBeenCalledWith({
-            type: 'REUSABLE_LLM_PROMPT_CALL_NODE',
+            type: 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE',
             nodeIds: expect.any(Array),
         })
     })

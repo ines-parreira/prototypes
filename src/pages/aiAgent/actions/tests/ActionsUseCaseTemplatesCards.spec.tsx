@@ -5,7 +5,7 @@ import {renderWithRouter} from 'utils/testing'
 
 import ActionsUseCaseTemplatesCards from '../components/ActionsUseCaseTemplatesCards'
 
-jest.mock('../components/UseCaseTemplateConfirmationModal', () => {
+jest.mock('../components/UseCaseTemplateModal', () => {
     return () => null
 })
 

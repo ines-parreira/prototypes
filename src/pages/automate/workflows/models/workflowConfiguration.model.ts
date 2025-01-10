@@ -49,6 +49,7 @@ import {
     WorkflowStepHttpRequest,
     WorkflowStepMessage,
     WorkflowStepOrderSelection,
+    WorkflowStepReusableLLMPromptCall,
     WorkflowStepShopperAuthentication,
     WorkflowStepTextInput,
     WorkflowTransition,
@@ -777,6 +778,23 @@ export class WorkflowConfigurationBuilder {
                 choices: [],
                 message,
             },
+        }
+        this.data.steps.push(step)
+        this.data.transitions.push({
+            id: ulid(),
+            from_step_id: this._selection.id,
+            to_step_id: step.id,
+        })
+        this._selection = step
+    }
+
+    insertReusableLLMPromptCallAndSelect(
+        settings: WorkflowStepReusableLLMPromptCall['settings']
+    ) {
+        const step: WorkflowStepReusableLLMPromptCall = {
+            id: ulid(),
+            kind: 'reusable-llm-prompt-call',
+            settings,
         }
         this.data.steps.push(step)
         this.data.transitions.push({
