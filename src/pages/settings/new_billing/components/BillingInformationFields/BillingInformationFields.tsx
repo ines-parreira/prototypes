@@ -1,7 +1,5 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {TaxIdFields} from 'pages/settings/new_billing/components/BillingInformationFields/components/TaxIdFields'
 import {EmailField} from 'pages/settings/new_billing/components/EmailField/EmailField'
 import {StripeAddressFields} from 'pages/settings/new_billing/components/StripeAddressFields/StripeAddressFields'
@@ -9,8 +7,6 @@ import {StripeAddressFields} from 'pages/settings/new_billing/components/StripeA
 import css from './BillingInformationFields.less'
 
 export const BillingInformationFields = ({title}: {title?: string | null}) => {
-    const isTaxIdFieldEnabled = useFlags()[FeatureFlagKey.BillingTaxIdField]
-
     return (
         <>
             {title !== null ? (
@@ -18,7 +14,7 @@ export const BillingInformationFields = ({title}: {title?: string | null}) => {
             ) : null}
             <EmailField />
             <StripeAddressFields />
-            {isTaxIdFieldEnabled ? <TaxIdFields /> : null}
+            <TaxIdFields />
         </>
     )
 }

@@ -1,5 +1,4 @@
 import {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import mapValues from 'lodash/mapValues'
 import React, {useMemo} from 'react'
 
@@ -8,7 +7,6 @@ import {SubmitHandler} from 'react-hook-form'
 import {useHistory} from 'react-router-dom'
 
 import {Form, type FormProps} from 'components/Form/Form'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {BILLING_PAYMENT_PATH} from 'pages/settings/new_billing/constants'
 import {filterTaxIdsByAddress} from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
@@ -58,8 +56,6 @@ export const BillingInformationSetupForm = ({
 }
 
 const useDefaultValues = (billingInformation: BillingContactDetailResponse) => {
-    const isTaxIdFieldEnabled = useFlags()[FeatureFlagKey.BillingTaxIdField]
-
     return useMemo(() => {
         const defaultValues = {
             email: billingInformation.email,
@@ -70,18 +66,11 @@ const useDefaultValues = (billingInformation: BillingContactDetailResponse) => {
             },
         }
 
-        if (isTaxIdFieldEnabled) {
-            return {
-                ...defaultValues,
-                ...mapValues(
-                    billingInformation.tax_ids,
-                    (taxId) => taxId?.value
-                ),
-            }
+        return {
+            ...defaultValues,
+            ...mapValues(billingInformation.tax_ids, (taxId) => taxId?.value),
         }
-
-        return defaultValues
-    }, [billingInformation, isTaxIdFieldEnabled])
+    }, [billingInformation])
 }
 
 const useHandleValidSubmit = ({
@@ -90,7 +79,6 @@ const useHandleValidSubmit = ({
     onSuccess?: () => void
 }): SubmitHandler<FormFields> => {
     const history = useHistory()
-    const isTaxIdFieldEnabled = useFlags()[FeatureFlagKey.BillingTaxIdField]
 
     const submitBillingAddress = useSubmitBillingAddress({
         onSuccess:
@@ -106,9 +94,7 @@ const useHandleValidSubmit = ({
             shipping,
         }
 
-        if (isTaxIdFieldEnabled) {
-            payload.tax_ids = filterTaxIdsByAddress(taxIds, shipping.address)
-        }
+        payload.tax_ids = filterTaxIdsByAddress(taxIds, shipping.address)
 
         return submitBillingAddress.mutateAsync([payload])
     }

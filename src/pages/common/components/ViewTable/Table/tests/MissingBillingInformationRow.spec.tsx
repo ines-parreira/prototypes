@@ -9,13 +9,13 @@ import MockAdapter from 'axios-mock-adapter'
 import {fromJS, Map} from 'immutable'
 import React from 'react'
 
+import {UserRole} from 'config/types/user'
 import client from 'models/api/resources'
+import {PaymentMethodType} from 'state/billing/types'
 import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
 
 import {assumeMock} from 'utils/testing'
 
-import {UserRole} from '../../../../../../config/types/user'
-import {PaymentMethodType} from '../../../../../../state/billing/types'
 import MissingBillingInformationRow from '../MissingBillingInformationRow'
 
 jest.mock('@stripe/stripe-js')
@@ -202,6 +202,7 @@ describe('<MissingBillingInformationRow />', () => {
                         state: 'NY',
                     },
                 },
+                tax_ids: {},
             })
         })
     })

@@ -6,10 +6,8 @@ import {
 } from '@stripe/stripe-js'
 import {fireEvent, screen, waitFor, act} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import client from 'models/api/resources'
 
 import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
@@ -69,7 +67,9 @@ describe('BillingAddressSetupView', () => {
 
         expect(screen.getByText('Billing Information')).toBeVisible()
         expect(screen.getByText('Email')).toBeVisible()
-        expect(screen.getByRole('button', {name: 'Set Address'})).toBeVisible()
+        expect(
+            screen.getByRole('button', {name: 'Save Billing Information'})
+        ).toBeVisible()
         expect(screen.getByTestId('stripe-address-element')).toBeInTheDocument()
     })
 
@@ -96,7 +96,7 @@ describe('BillingAddressSetupView', () => {
         await waitFor(() => {
             // The address is complete and the email is valid, so the submit button should be enabled
             expect(
-                screen.getByRole('button', {name: 'Set Address'})
+                screen.getByRole('button', {name: 'Save Billing Information'})
             ).not.toBeAriaDisabled()
         })
     })
@@ -125,10 +125,6 @@ describe('BillingAddressSetupView', () => {
     })
 
     it('should not submit empty tax ID fields (they are required)', async () => {
-        mockFlags({
-            [FeatureFlagKey.BillingTaxIdField]: true,
-        })
-
         renderWithStoreAndQueryClientAndRouter(<BillingAddressSetupView />)
 
         await waitFor(() => {

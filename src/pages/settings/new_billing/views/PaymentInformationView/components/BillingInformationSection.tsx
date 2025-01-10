@@ -1,9 +1,7 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Link} from 'react-router-dom'
 
 import {countries} from 'config/countries'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {useBillingContact} from 'models/billing/queries'
 import Loader from 'pages/common/components/Loader/Loader'
 import {BILLING_INFORMATION_PATH} from 'pages/settings/new_billing/constants'
@@ -14,15 +12,8 @@ import {TaxIdRows} from 'pages/settings/new_billing/views/PaymentInformationView
 import {BillingContact, BillingContactDetailResponse} from 'state/billing/types'
 
 export const BillingInformationSection = () => {
-    const isTaxIdFieldEnabled = useFlags()[FeatureFlagKey.BillingTaxIdField]
-
     return (
-        <Section
-            icon="person_pin_circle"
-            title={
-                isTaxIdFieldEnabled ? 'Billing information' : 'Billing address'
-            }
-        >
+        <Section icon="person_pin_circle" title="Billing information">
             <ContentLoader />
         </Section>
     )
@@ -41,8 +32,6 @@ const ContentLoader: React.FC = () => {
 const Content: React.FC<{billingInformation: BillingContactDetailResponse}> = ({
     billingInformation,
 }) => {
-    const isTaxIdFieldEnabled = useFlags()[FeatureFlagKey.BillingTaxIdField]
-
     const {name, phone, address} = billingInformation.shipping
 
     // Email is not taken into account because it defaults to the user's email
@@ -57,22 +46,16 @@ const Content: React.FC<{billingInformation: BillingContactDetailResponse}> = ({
                     label="Billing email"
                     value={billingInformation.email}
                 />
-                <DataRow
-                    label={`${isTaxIdFieldEnabled ? 'Organization' : 'Company'} name`}
-                    value={name}
-                />
+                <DataRow label="Organization name" value={name} />
                 <DataRow label="Phone number" value={phone} />
                 <DataRow label="Address" value={getDisplayAddress(address)} />
-                {isTaxIdFieldEnabled ? (
-                    <TaxIdRows
-                        taxIDs={billingInformation.tax_ids}
-                        address={address}
-                    />
-                ) : null}
+                <TaxIdRows
+                    taxIDs={billingInformation.tax_ids}
+                    address={address}
+                />
             </Description>
             <Link to={BILLING_INFORMATION_PATH}>
-                {hasInformation ? 'Update' : 'Add'}{' '}
-                {isTaxIdFieldEnabled ? 'Information' : 'address'}
+                {hasInformation ? 'Update' : 'Add'} {'Information'}
             </Link>
         </>
     )

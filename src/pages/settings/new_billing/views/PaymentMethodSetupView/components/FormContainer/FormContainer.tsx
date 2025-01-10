@@ -1,5 +1,4 @@
 import {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import mapValues from 'lodash/mapValues'
 import React, {useMemo} from 'react'
 
@@ -10,7 +9,6 @@ import {useHistory} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {Form} from 'components/Form/Form'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {StripePaymentMethodType} from 'models/billing/types'
 import BackLink from 'pages/settings/new_billing/components/BackLink'
@@ -118,8 +116,6 @@ const useDefaultValues = (
     billingInformation: BillingContactDetailResponse,
     shouldDisplayBillingInformationFields: boolean
 ) => {
-    const isTaxIdFieldEnabled = useFlags()[FeatureFlagKey.BillingTaxIdField]
-
     return useMemo(() => {
         const baseValues: FormFields = {
             paymentMethod: {
@@ -145,26 +141,16 @@ const useDefaultValues = (
             },
         }
 
-        if (!isTaxIdFieldEnabled) {
-            return withBillingInfo
-        }
-
         const withTaxIds: FormFields = {
             ...withBillingInfo,
             ...mapValues(billingInformation.tax_ids, (taxId) => taxId?.value),
         }
 
         return withTaxIds
-    }, [
-        billingInformation,
-        shouldDisplayBillingInformationFields,
-        isTaxIdFieldEnabled,
-    ])
+    }, [billingInformation, shouldDisplayBillingInformationFields])
 }
 
 const useHandleValidSubmit = (): SubmitHandler<FormFields> => {
-    const isTaxIdFieldEnabled = useFlags()[FeatureFlagKey.BillingTaxIdField]
-
     const history = useHistory()
     const store = useStore()
 
@@ -198,12 +184,7 @@ const useHandleValidSubmit = (): SubmitHandler<FormFields> => {
                 shipping: data.address,
             }
 
-            if (isTaxIdFieldEnabled) {
-                payload.tax_ids = filterTaxIdsByAddress(
-                    data,
-                    data.address.address
-                )
-            }
+            payload.tax_ids = filterTaxIdsByAddress(data, data.address.address)
 
             return submitPaymentMethodWithBillingContact(payload)
         }

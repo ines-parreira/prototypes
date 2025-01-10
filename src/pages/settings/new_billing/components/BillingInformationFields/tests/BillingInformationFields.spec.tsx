@@ -2,11 +2,9 @@ import {AddressElement} from '@stripe/react-stripe-js'
 import {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
 import {act, render, screen, waitFor} from '@testing-library/react'
 
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
 import {Form} from 'components/Form/Form'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {BillingInformationFields} from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
 import {VATCountries} from 'state/billing/types'
 import {assumeMock} from 'utils/testing'
@@ -35,33 +33,7 @@ describe('BillingInformationFields', () => {
         expect(screen.getByTestId('stripe-address-element')).toBeVisible()
     })
 
-    it("shouldn't render the tax ID fields when the feature flag is disabled", async () => {
-        mockFlags({[FeatureFlagKey.BillingTaxIdField]: false})
-
-        render(
-            <Form onValidSubmit={jest.fn()}>
-                <BillingInformationFields />
-            </Form>
-        )
-
-        act(() => {
-            handleAddressChange?.({
-                value: {address: {country: 'AU'}},
-            } as any)
-        })
-
-        await waitFor(() => {
-            expect(
-                screen.queryByRole('textbox', {name: 'ABN Number info'})
-            ).not.toBeInTheDocument()
-        })
-    })
-
-    describe('when the tax ID feature flag is enabled', () => {
-        beforeEach(() => {
-            mockFlags({[FeatureFlagKey.BillingTaxIdField]: true})
-        })
-
+    describe('nominal case', () => {
         it('should display GST/HST and PST fields when Canada/BC is selected', async () => {
             render(
                 <Form onValidSubmit={jest.fn()}>

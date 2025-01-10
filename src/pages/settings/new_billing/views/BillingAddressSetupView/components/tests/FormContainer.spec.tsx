@@ -2,10 +2,8 @@ import {AddressElement, useElements} from '@stripe/react-stripe-js'
 import {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
 import {act, fireEvent, screen, waitFor} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import client from 'models/api/resources'
 import {BILLING_PAYMENT_PATH} from 'pages/settings/new_billing/constants'
 import {FormContainer} from 'pages/settings/new_billing/views/BillingAddressSetupView/components/FormContainer'
@@ -67,46 +65,12 @@ describe('FormContainer', () => {
 
         expect(history.location.pathname).toBe('/')
 
-        fireEvent.click(screen.getByRole('button', {name: 'Set Address'}))
+        fireEvent.click(
+            screen.getByRole('button', {name: 'Save Billing Information'})
+        )
 
         await waitFor(() => {
             expect(history.location.pathname).toBe(BILLING_PAYMENT_PATH)
         })
-    })
-
-    it('should display the "Save Billing Information" button when the tax ID field is enabled', () => {
-        mockFlags({
-            [FeatureFlagKey.BillingTaxIdField]: true,
-        })
-
-        renderWithStoreAndQueryClientAndRouter(
-            <FormContainer
-                billingInformation={{
-                    email: 'example@gorgias.com',
-                    shipping,
-                }}
-            />
-        )
-
-        expect(
-            screen.getByRole('button', {name: 'Save Billing Information'})
-        ).toBeVisible()
-    })
-
-    it('should display the "Set Address" button when the tax ID field is disabled', () => {
-        mockFlags({
-            [FeatureFlagKey.BillingTaxIdField]: false,
-        })
-
-        renderWithStoreAndQueryClientAndRouter(
-            <FormContainer
-                billingInformation={{
-                    email: 'example@gorgias.com',
-                    shipping,
-                }}
-            />
-        )
-
-        expect(screen.getByRole('button', {name: 'Set Address'})).toBeVisible()
     })
 })
