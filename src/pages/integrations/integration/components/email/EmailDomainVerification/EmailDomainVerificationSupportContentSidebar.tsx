@@ -47,7 +47,9 @@ export default function EmailDomainVerificationSupportContentSidebar() {
                                 {!selectedOption.value && (
                                     <>
                                         <SupportContentLearnMore
-                                            url={'https://mxtoolbox.com/'}
+                                            url={
+                                                'https://mxtoolbox.com/dmarc.aspx'
+                                            }
                                         >
                                             Identify Your Domain Registrar
                                         </SupportContentLearnMore>
