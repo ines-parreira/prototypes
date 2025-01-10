@@ -33,7 +33,7 @@ const useHumanReadableOrderConditions = ({variables, conditions}: Props) => {
                 return
             }
 
-            if (schema[1]) {
+            if (key !== 'exists' && key !== 'doesNotExist') {
                 let displayValue = schema[1]
 
                 if (
@@ -41,6 +41,13 @@ const useHumanReadableOrderConditions = ({variables, conditions}: Props) => {
                     variable.type === 'number'
                 ) {
                     displayValue = getDisplayValue(schema[1], variable.format)
+                }
+
+                if (variable.type === 'string' && variable.options) {
+                    displayValue =
+                        variable.options.find(
+                            (option) => option.value === schema[1]
+                        )?.label ?? schema[1]
                 }
 
                 messages.push(
