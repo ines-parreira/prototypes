@@ -1,98 +1,164 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS, Map} from 'immutable'
+import {act, render, waitFor} from '@testing-library/react'
+import {Map, List} from 'immutable'
 import _noop from 'lodash/noop'
-
 import React from 'react'
-import {InferThunkActionCreatorType} from 'react-redux'
 
-import {FilterMultiSelectField} from 'pages/common/components/ViewTable/FilterMultiSelectField'
-
-import {fieldEnumSearch} from 'state/views/actions'
-
+import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
 import {FieldSearchResult} from 'state/views/types'
+import {assumeMock, getLastMockCall} from 'utils/testing'
+
+import {FilterMultiSelectField} from '../FilterMultiSelectField'
+
+jest.mock(
+    'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField',
+    () => jest.fn(() => <div>MultiSelect</div>)
+)
+
+const mockedMultiSelectOptionsField = assumeMock(MultiSelectOptionsField)
 
 describe('FilterMultiSelectField', () => {
+    const mockedSearchFunction = jest.fn(
+        () => Promise.resolve() as Promise<Maybe<Immutable.List<any>>>
+    )
+
+    const mockedMapSearchResults = jest.fn(
+        (something: FieldSearchResult[]) => something as unknown as Option[]
+    )
+
     const defaultProps = {
         plural: 'foos',
         singular: 'foo',
         selectedOptions: [],
         onChange: _noop,
         field: Map(),
-        fieldEnumSearchCancellable: () => Promise.resolve(),
+        fieldEnumSearchCancellable: mockedSearchFunction,
         cancelFieldEnumSearchCancellable: _noop,
-        mapSearchResults: (searchResults: FieldSearchResult[]) =>
-            searchResults.map((res) => ({
-                value: res.id,
-                label: res.name,
-            })),
+        mapSearchResults: mockedMapSearchResults,
+        dropdownMenu: () => <div>DropdownMenu</div>,
     }
 
-    beforeEach(() => {
-        jest.useFakeTimers()
-    })
-    it('should search for the values on mount', async () => {
-        const fieldEnumSearchSpy = (
-            jest.fn() as jest.MockedFunction<
-                InferThunkActionCreatorType<typeof fieldEnumSearch>
-            >
-        ).mockResolvedValue(null)
-
-        render(
-            <FilterMultiSelectField
-                {...defaultProps}
-                fieldEnumSearchCancellable={fieldEnumSearchSpy}
-            />
+    it('should pass correct props to MultiSelectOptionsField', () => {
+        render(<FilterMultiSelectField {...defaultProps} />)
+        expect(mockedMultiSelectOptionsField).toHaveBeenCalledWith(
+            expect.objectContaining({
+                loading: false,
+                singular: defaultProps.singular,
+                plural: defaultProps.plural,
+                selectedOptions: defaultProps.selectedOptions,
+                options: [],
+                dropdownMenu: defaultProps.dropdownMenu,
+                onInputChange: expect.any(Function),
+                onChange: expect.any(Function),
+            }),
+            {}
         )
+    })
 
-        await waitFor(() => {
-            expect(fieldEnumSearchSpy).toBeCalled()
+    it('should search for empty value on mount', () => {
+        render(<FilterMultiSelectField {...defaultProps} />)
+        expect(mockedSearchFunction).toHaveBeenCalledTimes(1)
+        expect(mockedSearchFunction).toHaveBeenLastCalledWith(Map(), '')
+    })
+
+    it('should call onChange prop with options when children onChange is called', () => {
+        const onChange = jest.fn()
+        render(<FilterMultiSelectField {...defaultProps} onChange={onChange} />)
+        act(() => {
+            getLastMockCall(mockedMultiSelectOptionsField)[0].onChange([
+                'foo',
+                'bar',
+            ] as unknown as Option[])
         })
+        expect(onChange).toHaveBeenCalledWith(['foo', 'bar'])
+    })
+
+    it('should reset search when children onChange is called', () => {
+        render(<FilterMultiSelectField {...defaultProps} />)
+        act(() => {
+            getLastMockCall(mockedMultiSelectOptionsField)[0].onChange([
+                'foo',
+            ] as unknown as Option[])
+        })
+        expect(mockedSearchFunction).toHaveBeenLastCalledWith(Map(), '')
     })
 
     it('should debounce search on input change', () => {
-        const fieldEnumSearchSpy = (
-            jest.fn() as jest.MockedFunction<
-                InferThunkActionCreatorType<typeof fieldEnumSearch>
-            >
-        ).mockResolvedValue(null)
-
-        render(
-            <FilterMultiSelectField
-                {...defaultProps}
-                fieldEnumSearchCancellable={fieldEnumSearchSpy}
-            />
-        )
-        userEvent.paste(screen.getByRole('textbox'), 'foo')
-        userEvent.clear(screen.getByRole('textbox'))
-        userEvent.paste(screen.getByRole('textbox'), 'bar')
-        userEvent.clear(screen.getByRole('textbox'))
-        userEvent.paste(screen.getByRole('textbox'), 'baz')
+        jest.useFakeTimers()
+        render(<FilterMultiSelectField {...defaultProps} />)
+        act(() => {
+            getLastMockCall(mockedMultiSelectOptionsField)[0].onInputChange!(
+                'f'
+            )
+            getLastMockCall(mockedMultiSelectOptionsField)[0].onInputChange!(
+                'fo'
+            )
+            getLastMockCall(mockedMultiSelectOptionsField)[0].onInputChange!(
+                'foo'
+            )
+        })
         jest.runAllTimers()
-
-        expect(fieldEnumSearchSpy).toHaveBeenCalledTimes(2) // two times, because first time on mount
-        expect(fieldEnumSearchSpy).toHaveBeenLastCalledWith(Map(), 'baz')
+        expect(mockedSearchFunction).toHaveBeenCalledTimes(2) // two times, because first time on mount
+        expect(mockedSearchFunction).toHaveBeenLastCalledWith(Map(), 'foo')
     })
 
-    it('should reset search on change', async () => {
-        const fieldEnumSearchSpy = (
-            jest.fn() as jest.MockedFunction<
-                InferThunkActionCreatorType<typeof fieldEnumSearch>
-            >
-        ).mockResolvedValue(fromJS([{id: 123, name: '123'}]))
+    it('should do nothing on search if field already had a filter enum', () => {
+        const field = Map({filter: Map({enum: true})})
+        render(<FilterMultiSelectField {...defaultProps} field={field} />)
+        expect(mockedSearchFunction).toHaveBeenCalledTimes(0)
+    })
 
-        render(
-            <FilterMultiSelectField
-                {...defaultProps}
-                fieldEnumSearchCancellable={fieldEnumSearchSpy}
-            />
+    it('should not set options to MultiSelectOptionsField if there is no search data', async () => {
+        jest.useFakeTimers()
+        // Will resolve with data on first call, and return falsy value on second call
+        mockedSearchFunction.mockResolvedValueOnce(
+            Promise.resolve(List(['stuff']))
         )
-
-        await waitFor(() => {
-            userEvent.clear(screen.getByRole('textbox'))
-            userEvent.click(screen.getByRole('menuitem'))
+        render(<FilterMultiSelectField {...defaultProps} />)
+        act(() => {
+            getLastMockCall(mockedMultiSelectOptionsField)[0].onInputChange!(
+                'foo'
+            )
         })
+        jest.runAllTimers()
+        // Options should stick to first returned value
+        await waitFor(() => {
+            expect(mockedSearchFunction).toHaveBeenCalledTimes(2)
+            expect(mockedMapSearchResults).toHaveBeenCalledTimes(1)
+            expect(getLastMockCall(mockedMultiSelectOptionsField)[0]).toEqual(
+                expect.objectContaining({
+                    options: ['stuff'],
+                })
+            )
+        })
+    })
 
-        expect(fieldEnumSearchSpy).toHaveBeenCalledTimes(2) // first time on mount
+    it('should pass correct options to MultiSelectOptionsField after searching', async () => {
+        mockedMapSearchResults.mockImplementation(
+            (something: FieldSearchResult[]) =>
+                something.map(
+                    (string) => (string as unknown as string) + 'f'
+                ) as unknown as Option[]
+        )
+        jest.useFakeTimers()
+
+        mockedSearchFunction.mockResolvedValue(Promise.resolve(List(['stuff'])))
+        render(<FilterMultiSelectField {...defaultProps} />)
+        act(() => {
+            getLastMockCall(mockedMultiSelectOptionsField)[0].onInputChange!(
+                'foo'
+            )
+        })
+        jest.runAllTimers()
+        await waitFor(() => {
+            expect(mockedSearchFunction).toHaveBeenCalledTimes(2)
+            expect(mockedMapSearchResults).toHaveBeenCalledTimes(2)
+            expect(getLastMockCall(mockedMultiSelectOptionsField)[0]).toEqual(
+                expect.objectContaining({
+                    // Options actually go through provided mapper
+                    options: ['stufff'],
+                })
+            )
+        })
     })
 })

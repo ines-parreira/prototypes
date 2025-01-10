@@ -8,7 +8,6 @@ import thunk from 'redux-thunk'
 import {shopifyDraftOrderPayloadFixture} from 'fixtures/shopify'
 import {fetchShopTags} from 'models/integration/resources/shopify'
 import {ShopifyTags} from 'models/integration/types'
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
@@ -193,14 +192,12 @@ describe('<OrderFooterComponent/>', () => {
                 </Provider>
             )
 
-            MultiSelectOptionsField.prototype.setState = jest.fn()
+            const input = screen.getByPlaceholderText('Add tags...')
 
-            const input = screen.getAllByPlaceholderText('Add tags...')[0]
+            fireEvent.focus(input)
 
-            fireEvent.click(input)
-
-            expect(fetchShopTags).toBeCalledTimes(1)
-            expect(fetchShopTags).toBeCalledWith(
+            expect(fetchShopTags).toHaveBeenCalledTimes(1)
+            expect(fetchShopTags).toHaveBeenCalledWith(
                 integrationContextData.integrationId,
                 ShopifyTags.orders
             )

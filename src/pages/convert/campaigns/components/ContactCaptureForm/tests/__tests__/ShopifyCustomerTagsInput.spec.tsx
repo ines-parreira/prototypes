@@ -28,7 +28,7 @@ describe('<ShopifyCustomerTagsInput />', () => {
         )
         const input = getByPlaceholderText('Add tags...')
 
-        fireEvent.click(input)
+        fireEvent.focus(input)
 
         expect(mockFetchShopTags).toHaveBeenCalledWith(1, ShopifyTags.customers)
     })

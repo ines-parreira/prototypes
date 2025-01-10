@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import _isEqual from 'lodash/isEqual'
-import React, {Component, ComponentType, CSSProperties} from 'react'
+import React, {ComponentType, CSSProperties} from 'react'
 
 import {TAGS_LIMIT} from 'models/integration/constants'
 
@@ -10,14 +10,13 @@ import OptionTag from './Tag'
 import {Option} from './types'
 
 type Props = {
-    allowCustomOptions: boolean
-    matchInput: boolean
-    options: Option[]
-    plural: string
-    singular: string
+    allowCustomOptions?: boolean
+    matchInput?: boolean
+    options?: Option[]
+    plural?: string
+    singular?: string
     style?: CSSProperties
-    tagColor: string
-    selectedOptions: Option[]
+    selectedOptions?: Option[]
     showSymbolOnSpaces?: boolean
     className?: string
     caseInsensitive?: boolean
@@ -33,141 +32,118 @@ type Props = {
     isCompact?: boolean
 }
 
-type State = {
-    input: string
-    filteredOptions: Option[]
-    isFocused: boolean
-}
+export default function MultiSelectOptionsField(props: Props) {
+    const {
+        allowCustomOptions = false,
+        matchInput = false,
+        options = [],
+        plural = 'items',
+        singular = 'item',
+        selectedOptions = [],
+        dropdownMenu,
+        loading,
+        caseInsensitive,
+        showSymbolOnSpaces,
+        className,
+        isDisabled,
+        isCompact,
+        hasError,
+        style,
+        onFocus,
+        onBlur,
+        onChange,
+        onInputChange,
+        onSelectTag,
+    } = props
 
-export default class MultiSelectOptionsField extends Component<Props, State> {
-    static defaultProps: Partial<Props> = {
-        allowCustomOptions: false,
-        matchInput: false,
-        options: [],
-        plural: 'items',
-        singular: 'item',
-        selectedOptions: [],
+    const [previousOptions, setPreviousOptions] = React.useState(options)
+    const [previousSelectedOptions, setPreviousSelectedOptions] =
+        React.useState(selectedOptions)
+    const [input, setInput] = React.useState('')
+    const [isFocused, setIsFocused] = React.useState(false)
+    const [filteredOptions, setFilteredOptions] = React.useState(
+        filterOptions(options, selectedOptions)
+    )
+
+    if (!_isEqual(previousSelectedOptions, selectedOptions)) {
+        const filteredOptions = filterOptions(options, selectedOptions)
+        setInput('')
+        setPreviousSelectedOptions(selectedOptions)
+        setFilteredOptions(filteredOptions)
     }
 
-    constructor(props: Props) {
-        super(props)
-        this.state = {
-            input: '',
-            isFocused: false,
-            filteredOptions: this._filterOptions(
-                props.options,
-                props.selectedOptions,
-                ''
-            ),
-        }
+    if (!_isEqual(options, previousOptions)) {
+        const filteredOptions = filterOptions(options, selectedOptions, input)
+        setPreviousOptions(options)
+        setFilteredOptions(filteredOptions)
     }
 
-    componentDidUpdate(prevProps: Props) {
-        if (!_isEqual(this.props.selectedOptions, prevProps.selectedOptions)) {
-            const filteredOptions = this._filterOptions(
-                this.props.options,
-                this.props.selectedOptions,
-                ''
-            )
-            this.setState({
-                input: '',
-                filteredOptions,
-            })
-        }
-
-        if (!_isEqual(this.props.options, prevProps.options)) {
-            const {options, selectedOptions} = this.props
-            const filteredOptions = this._filterOptions(
-                options,
-                selectedOptions,
-                this.state.input
-            )
-            this.setState({filteredOptions})
-        }
+    const handleFocus = () => {
+        if (onFocus && !isFocused) onFocus()
+        setIsFocused(true)
     }
 
-    _focus = () => {
-        if (this.props.onFocus && !this.state.isFocused) this.props.onFocus()
-        this.setState({
-            isFocused: true,
-        })
+    const handleBlur = () => {
+        if (onBlur && isFocused) onBlur()
+        setIsFocused(false)
     }
 
-    _blur = () => {
-        if (this.props.onBlur && this.state.isFocused) this.props.onBlur()
-        this.setState({
-            isFocused: false,
-        })
-    }
-
-    _filterOptions = (
+    function filterOptions(
         options: Option[],
         selectedOptions: Option[],
-        input: string
-    ): Option[] => {
+        input: string = ''
+    ): Option[] {
         return options.filter((option: Option) => {
             const {value, label} = option
-            const alreadySelected = this._hasOptionValue(selectedOptions, value)
+            const alreadySelected = hasOptionValue(selectedOptions, value)
             const matchesInput =
-                this.props.matchInput &&
+                matchInput &&
                 input &&
                 !label.toLowerCase().includes(input.toLowerCase())
             return !alreadySelected && !matchesInput
         })
     }
 
-    _hasOptionValue = (options: Option[], value: any): boolean =>
-        !!this._findOptionByValue(options, value)
+    function hasOptionValue(options: Option[], value: any): boolean {
+        return !!findOptionByValue(options, value)
+    }
 
-    _findOptionByValue = (
+    function findOptionByValue(
         options: Option[],
         value: any
-    ): Option | undefined => {
+    ): Option | undefined {
         return options.find((option: Option) => option.value === value)
     }
 
-    _removeOption = (option: Option) => {
-        const newSelectedOptions = this.props.selectedOptions.filter(
+    const removeOption = (option: Option) => {
+        const newSelectedOptions = selectedOptions.filter(
             (selectedOption: Option) => {
                 return selectedOption.value !== option.value
             }
         )
-        this.props.onChange(newSelectedOptions)
+        onChange(newSelectedOptions)
     }
 
-    _onRemoveOptionTag = (option: Option) => {
-        this._removeOption(option)
-        this._focus()
+    const handleRemoveOptionTag = (option: Option) => {
+        removeOption(option)
+        handleFocus()
     }
 
-    _onDropdownChange = (input: string) => {
-        const {options, selectedOptions, onInputChange} = this.props
-
-        this.setState({
-            input,
-            filteredOptions: this._filterOptions(
-                options,
-                selectedOptions,
-                input
-            ),
-        })
-
+    const handleChange = (input: string) => {
+        setInput(input)
+        setFilteredOptions(filterOptions(options, selectedOptions, input))
         onInputChange?.(input)
     }
 
-    _onDropdownDelete = () => {
-        const {selectedOptions} = this.props
-
+    const handleDelete = () => {
         if (!selectedOptions.length) {
             return
         }
 
-        this._removeOption(selectedOptions[selectedOptions.length - 1])
+        removeOption(selectedOptions[selectedOptions.length - 1])
     }
 
-    _getCustomOption = (): Option => {
-        const {singular} = this.props
-        const {input} = this.state
+    const getCustomOption = (): Option => {
         const displayLabel = (
             <i>
                 {`Add ${singular} "`}
@@ -181,15 +157,7 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
         }
     }
 
-    _onDropdownSelect = (option: Option) => {
-        const {
-            allowCustomOptions,
-            options,
-            caseInsensitive,
-            selectedOptions,
-            onSelectTag,
-        } = this.props
-
+    const handleSelect = (option: Option) => {
         if (option.isDeprecated) {
             return
         }
@@ -210,11 +178,11 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
         }
 
         // Check for duplicates
-        if (this._hasOptionValue(selectedOptions, processedValue)) {
+        if (hasOptionValue(selectedOptions, processedValue)) {
             return
         }
 
-        this.props.onChange(
+        onChange(
             selectedOptions.concat([
                 {
                     label: option.label,
@@ -225,85 +193,67 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
 
         // Check if chosen option is a suggested tag and log the event
         if (
-            this.props.singular === 'tag' &&
+            singular === 'tag' &&
             onSelectTag &&
-            this.tagExistsInOptions(processedValue, options)
+            tagExistsInOptions(processedValue, options)
         ) {
             onSelectTag(processedValue)
         }
     }
 
-    tagExistsInOptions = (tag: string, options: Option[]): boolean => {
+    function tagExistsInOptions(tag: string, options: Option[]) {
         return options.some(
             (option) => option.label === tag && option.value === tag
         )
     }
 
-    render() {
-        const {
-            className,
-            style,
-            selectedOptions,
-            plural,
-            allowCustomOptions,
-            dropdownMenu,
-            isDisabled,
-            showSymbolOnSpaces,
-            isCompact,
-            hasError,
-        } = this.props
-        const {isFocused, filteredOptions, input} = this.state
-
-        let displayOptions = filteredOptions
-        if (allowCustomOptions && input) {
-            if (!this.tagExistsInOptions(input, displayOptions)) {
-                displayOptions = [this._getCustomOption()].concat(
-                    displayOptions
-                )
-            }
+    let displayOptions = filteredOptions
+    if (allowCustomOptions && input) {
+        if (!tagExistsInOptions(input, displayOptions)) {
+            displayOptions = [getCustomOption()].concat(displayOptions)
         }
-        displayOptions = displayOptions.slice(0, TAGS_LIMIT)
+    }
+    displayOptions = displayOptions.slice(0, TAGS_LIMIT)
 
-        return (
+    return (
+        <div
+            className={classNames('MultiSelectField', className, {
+                [css.disabled]: isDisabled,
+            })}
+            style={style}
+        >
             <div
-                className={classNames('MultiSelectField', className, {
-                    [css.disabled]: isDisabled,
+                className={classNames(css.container, {
+                    [css.compact]: isCompact,
+                    [css.focused]: isFocused,
+                    [css.hasError]: hasError,
                 })}
-                style={style}
+                onClick={focus}
             >
-                <div
-                    className={classNames(css.container, {
-                        [css.compact]: isCompact,
-                        [css.focused]: isFocused,
-                        [css.hasError]: hasError,
-                    })}
-                    onClick={this._focus}
-                >
-                    {selectedOptions.map((selectedOption: Option) => (
-                        <OptionTag
-                            symbolSpaces={showSymbolOnSpaces}
-                            key={selectedOption.value}
-                            option={selectedOption}
-                            onRemove={this._onRemoveOptionTag}
-                            isCompact={isCompact}
-                        />
-                    ))}
-                    <Dropdown
-                        placeholder={`Add ${plural}...`}
-                        value={input}
-                        options={displayOptions}
-                        isFocused={isFocused}
-                        isLoading={this.props.loading}
-                        onChange={this._onDropdownChange}
-                        onFocus={this._focus}
-                        onBlur={this._blur}
-                        onSelect={this._onDropdownSelect}
-                        onDelete={this._onDropdownDelete}
-                        menu={dropdownMenu}
+                {selectedOptions.map((selectedOption: Option) => (
+                    <OptionTag
+                        symbolSpaces={showSymbolOnSpaces}
+                        key={selectedOption.value}
+                        option={selectedOption}
+                        onRemove={handleRemoveOptionTag}
                         isCompact={isCompact}
                     />
-                </div>
+                ))}
+                <Dropdown
+                    placeholder={`Add ${plural}...`}
+                    value={input}
+                    options={displayOptions}
+                    isFocused={isFocused}
+                    isLoading={loading}
+                    onChange={handleChange}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    onSelect={handleSelect}
+                    onDelete={handleDelete}
+                    menu={dropdownMenu}
+                    isCompact={isCompact}
+                />
             </div>
-        )
-    }
+        </div>
+    )
 }

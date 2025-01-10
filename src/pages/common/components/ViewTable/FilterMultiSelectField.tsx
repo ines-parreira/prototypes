@@ -1,7 +1,8 @@
 import type {Map} from 'immutable'
 import _debounce from 'lodash/debounce'
-import React, {ComponentType} from 'react'
+import React, {ComponentType, useCallback, useMemo} from 'react'
 
+import useEffectOnce from 'hooks/useEffectOnce'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
 import withCancellableRequest, {
@@ -24,65 +25,67 @@ type Props = {
     typeof fieldEnumSearch
 >
 
-type State = {
-    options: Option[]
-    isLoading: boolean
-}
+export function FilterMultiSelectField(props: Props) {
+    const {
+        dropdownMenu,
+        field,
+        fieldEnumSearchCancellable,
+        mapSearchResults,
+        onChange,
+        selectedOptions,
+        singular,
+        plural,
+    } = props
+    const [options, setOptions] = React.useState<Option[]>([])
+    const [isLoading, setLoading] = React.useState(false)
 
-export class FilterMultiSelectField extends React.Component<Props, State> {
-    state: State = {
-        options: [],
-        isLoading: false,
+    const handleSearch = useCallback(
+        async (query: string) => {
+            // Fields that already have an enum don't need to have a search
+            if (field.getIn(['filter', 'enum'])) {
+                return
+            }
+
+            setLoading(true)
+            const data = await fieldEnumSearchCancellable(field, query)
+            setLoading(false)
+
+            if (!data) {
+                return
+            }
+
+            setOptions(mapSearchResults(data ? data.toJS() : []))
+        },
+        [field, fieldEnumSearchCancellable, mapSearchResults]
+    )
+
+    useEffectOnce(() => {
+        void handleSearch('')
+    })
+
+    // handleSearch must be a stable function for debounce to work
+    const handleInputChange = useMemo(
+        () => _debounce(handleSearch, 1000),
+        [handleSearch]
+    )
+
+    const handleChange = (options: Option[]) => {
+        onChange(options)
+        void handleSearch('')
     }
 
-    componentDidMount() {
-        void this._onSearch('')
-    }
-
-    _onSearch = async (query: string) => {
-        const {field, fieldEnumSearchCancellable} = this.props
-        // Fields that already have an enum don't need to have a search
-        if (this.props.field.getIn(['filter', 'enum'])) {
-            return
-        }
-
-        this.setState({
-            isLoading: true,
-        })
-
-        const data = await fieldEnumSearchCancellable(field, query)
-        if (!data) {
-            return
-        }
-        this.setState({
-            isLoading: false,
-            options: this.props.mapSearchResults(data ? data.toJS() : []),
-        })
-    }
-
-    _onInputChange = _debounce((input: string) => {
-        void this._onSearch(input)
-    }, 1000)
-
-    _onChange = (options: Option[]) => {
-        this.props.onChange(options)
-        void this._onSearch('')
-    }
-
-    render() {
-        return (
-            <MultiSelectOptionsField
-                singular={this.props.singular}
-                plural={this.props.plural}
-                loading={this.state.isLoading}
-                options={this.state.options}
-                selectedOptions={this.props.selectedOptions}
-                onInputChange={(input: string) => this._onInputChange(input)}
-                onChange={this._onChange}
-                dropdownMenu={this.props.dropdownMenu}
-            />
-        )
-    }
+    return (
+        <MultiSelectOptionsField
+            singular={singular}
+            plural={plural}
+            loading={isLoading}
+            options={options}
+            selectedOptions={selectedOptions}
+            onInputChange={handleInputChange}
+            onChange={handleChange}
+            dropdownMenu={dropdownMenu}
+        />
+    )
 }
 
 export default withCancellableRequest<

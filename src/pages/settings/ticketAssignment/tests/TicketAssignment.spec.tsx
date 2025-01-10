@@ -33,7 +33,7 @@ jest.mock(
         }: ComponentProps<typeof MultiSelectOptionsField>) => {
             return (
                 <ul aria-label="MultiSelectOptionField mock">
-                    {selectedOptions.map((option) => {
+                    {selectedOptions?.map((option) => {
                         return (
                             <li key={option.value}>
                                 {option.value}

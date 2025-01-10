@@ -1,8 +1,31 @@
-import {fireEvent, render} from '@testing-library/react'
-import _noop from 'lodash/noop'
-import React from 'react'
+import {act, render, screen} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
+import {UncontrolledDropdown} from 'reactstrap'
+
+import {assumeMock, getLastMockCall} from 'utils/testing'
 
 import Dropdown from '../Dropdown'
+import Input from '../Input'
+import Menu from '../Menu'
+
+jest.mock('reactstrap', () => {
+    const reactstrap: Record<string, unknown> = jest.requireActual('reactstrap')
+    return {
+        ...reactstrap,
+        UncontrolledDropdown: jest.fn(
+            (props: ComponentProps<typeof UncontrolledDropdown>) => {
+                return <div>{props.children}</div>
+            }
+        ),
+        DropdownToggle: (props: Record<string, unknown>) => <div {...props} />,
+        DropdownMenu: (props: Record<string, unknown>) => <div {...props} />,
+    }
+})
+jest.mock('../Input', () => jest.fn(() => <div>Input</div>))
+jest.mock('../Menu', () => jest.fn(() => <div>Menu</div>))
+
+const mockedInput = Input as unknown as jest.Mock
+const mockedMenu = assumeMock(Menu)
 
 describe('MultiSelectField Dropdown', () => {
     const options = [
@@ -24,118 +47,152 @@ describe('MultiSelectField Dropdown', () => {
         options,
         placeholder: 'some placeholder',
         value: '',
-        onChange: _noop,
-        onFocus: _noop,
-        onBlur: _noop,
-        onSelect: _noop,
-        onDelete: _noop,
+        onChange: jest.fn(),
+        onFocus: jest.fn(),
+        onBlur: jest.fn(),
+        onSelect: jest.fn(),
+        onDelete: jest.fn(),
         isFocused: false,
+        isCompact: true,
     }
 
-    describe('input arrow up', () => {
-        it('should create selection on hover', () => {
-            const {getByText} = render(<Dropdown {...defaultProps} />)
+    it('should call UncontrolledDropdown, Input and Menu with correct props', () => {
+        const {rerender} = render(<Dropdown {...defaultProps} />)
 
-            fireEvent.mouseEnter(getByText(options[2].label))
+        expect(UncontrolledDropdown).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                isOpen: false,
+            }),
+            {}
+        )
+        expect(mockedInput).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                value: defaultProps.value,
+                placeholder: defaultProps.placeholder,
+                isFocused: defaultProps.isFocused,
+                onFocus: defaultProps.onFocus,
+                onBlur: defaultProps.onBlur,
+                onDelete: defaultProps.onDelete,
+                onChange: defaultProps.onChange,
+                isCompact: defaultProps.isCompact,
+            }),
+            {}
+        )
+        expect(mockedMenu).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                isLoading: false,
+                options,
+                activeIndex: 0,
+                onSelect: defaultProps.onSelect,
+            }),
+            {}
+        )
 
-            expect(
-                (getByText(options[2].label) as Element).parentElement
-            ).toHaveClass('option--focused')
-        })
+        rerender(
+            <Dropdown {...defaultProps} isFocused value="Yo" isLoading={true} />
+        )
+        expect(UncontrolledDropdown).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                isOpen: true,
+            }),
+            {}
+        )
+        expect(mockedMenu).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                isLoading: true,
+            }),
+            {}
+        )
+    })
 
+    it('should accept custom DropdownMenu', () => {
+        const TagDropdownMenu = () => <div>TagDropdownMenu</div>
+        render(<Dropdown {...defaultProps} menu={TagDropdownMenu} />)
+        expect(screen.getByText('TagDropdownMenu')).toBeInTheDocument()
+    })
+
+    it("should call onSelect with the selected option's value", () => {
+        render(<Dropdown {...defaultProps} />)
+        // eslint-disable-next-line
+        getLastMockCall(mockedInput)[0].onSubmit()
+        expect(defaultProps.onSelect).toHaveBeenCalledWith(options[0])
+    })
+
+    describe('on input up', () => {
         it('should move the selection up', () => {
-            const {getByText, getByPlaceholderText} = render(
-                <Dropdown {...defaultProps} />
-            )
-
-            fireEvent.mouseEnter(getByText(options[2].label))
-            fireEvent.keyDown(getByPlaceholderText('some placeholder'), {
-                key: 'ArrowUp',
+            render(<Dropdown {...defaultProps} />)
+            act(() => {
+                getLastMockCall(mockedMenu)[0].onActivate(2)
+            })
+            act(() => {
+                // eslint-disable-next-line
+                getLastMockCall(mockedInput)[0].onUp()
             })
 
-            expect(
-                (getByText(options[1].label) as Element).parentElement
-            ).toHaveClass('option--focused')
+            expect(getLastMockCall(mockedMenu)[0].activeIndex).toBe(1)
         })
 
         it('should not go below selected index 0', () => {
-            const {getByText, getByPlaceholderText} = render(
-                <Dropdown {...defaultProps} />
-            )
-
-            fireEvent.mouseEnter(getByText(options[0].label))
-            fireEvent.keyDown(getByPlaceholderText('some placeholder'), {
-                key: 'ArrowUp',
+            render(<Dropdown {...defaultProps} />)
+            act(() => {
+                getLastMockCall(mockedMenu)[0].onActivate(0)
             })
-
-            expect(
-                (getByText(options[0].label) as Element).parentElement
-            ).toHaveClass('option--focused')
+            act(() => {
+                // eslint-disable-next-line
+                getLastMockCall(mockedInput)[0].onUp()
+            })
+            expect(getLastMockCall(mockedMenu)[0].activeIndex).toBe(0)
         })
     })
 
-    describe('input arrow down', () => {
+    describe('on input down', () => {
         it('should move the selection down', () => {
-            const {getByText, getByPlaceholderText} = render(
-                <Dropdown {...defaultProps} />
-            )
-
-            fireEvent.mouseEnter(getByText(options[1].label))
-            fireEvent.keyDown(getByPlaceholderText('some placeholder'), {
-                key: 'ArrowDown',
+            render(<Dropdown {...defaultProps} />)
+            act(() => {
+                getLastMockCall(mockedMenu)[0].onActivate(1)
+            })
+            act(() => {
+                // eslint-disable-next-line
+                getLastMockCall(mockedInput)[0].onDown()
             })
 
-            expect(
-                (getByText(options[2].label) as Element).parentElement
-            ).toHaveClass('option--focused')
+            expect(getLastMockCall(mockedMenu)[0].activeIndex).toBe(2)
         })
 
-        it('should not go down more than the number of options', () => {
-            const {getByText, getByPlaceholderText} = render(
-                <Dropdown {...defaultProps} />
-            )
-
-            fireEvent.mouseEnter(getByText(options[2].label))
-            fireEvent.keyDown(getByPlaceholderText('some placeholder'), {
-                key: 'ArrowDown',
+        it('should not go up more than the number of options', () => {
+            render(<Dropdown {...defaultProps} />)
+            act(() => {
+                getLastMockCall(mockedMenu)[0].onActivate(2)
             })
-
-            expect(
-                (getByText(options[2].label) as Element).parentElement
-            ).toHaveClass('option--focused')
+            act(() => {
+                // eslint-disable-next-line
+                getLastMockCall(mockedInput)[0].onDown()
+            })
+            expect(getLastMockCall(mockedMenu)[0].activeIndex).toBe(2)
         })
     })
 
     describe('selection reset', () => {
         it('should reset selection if options change', () => {
-            const {getByText, rerender} = render(<Dropdown {...defaultProps} />)
+            const {rerender} = render(<Dropdown {...defaultProps} />)
+            act(() => {
+                getLastMockCall(mockedMenu)[0].onActivate(2)
+            })
 
-            fireEvent.mouseEnter(getByText(options[2].label))
             rerender(<Dropdown {...defaultProps} options={[options[0]]} />)
 
-            expect(
-                (getByText(options[0].label) as Element).parentElement
-            ).toHaveClass('option--focused')
+            expect(getLastMockCall(mockedMenu)[0].activeIndex).toBe(0)
         })
 
         it('should not reset selection if options did not change', () => {
-            const {getByText, rerender} = render(<Dropdown {...defaultProps} />)
+            const {rerender} = render(<Dropdown {...defaultProps} />)
+            act(() => {
+                getLastMockCall(mockedMenu)[0].onActivate(2)
+            })
 
-            fireEvent.mouseEnter(getByText(options[2].label))
-            rerender(<Dropdown {...defaultProps} options={options} />)
+            rerender(<Dropdown {...defaultProps} />)
 
-            expect(
-                (getByText(options[2].label) as Element).parentElement
-            ).toHaveClass('option--focused')
+            expect(getLastMockCall(mockedMenu)[0].activeIndex).toBe(2)
         })
-    })
-
-    it('should accept custom DropdownMenu', () => {
-        const CustomMenu = () => <div>Custom Menu</div>
-        const {getByText} = render(
-            <Dropdown {...defaultProps} menu={CustomMenu} />
-        )
-
-        expect(getByText('Custom Menu')).toBeInTheDocument()
     })
 })

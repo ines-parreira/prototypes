@@ -9,7 +9,6 @@ import thunk from 'redux-thunk'
 import {fetchShopTags} from 'models/integration/resources/shopify'
 import {ShopifyTags} from 'models/integration/types'
 import {LeafTemplate} from 'models/widget/types'
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import {ShopifyContext} from 'Widgets/modules/Shopify/contexts/ShopifyContext'
@@ -123,14 +122,12 @@ describe('<EditableListField/>', () => {
                 </Provider>
             )
 
-            MultiSelectOptionsField.prototype.setState = jest.fn()
-
             const input = screen.getAllByPlaceholderText('Add tags...')[0]
 
-            fireEvent.click(input)
+            fireEvent.focus(input)
 
-            expect(fetchShopTags).toBeCalledTimes(1)
-            expect(fetchShopTags).toBeCalledWith(
+            expect(fetchShopTags).toHaveBeenCalledTimes(1)
+            expect(fetchShopTags).toHaveBeenCalledWith(
                 integrationContextData.integrationId,
                 tagsType
             )
