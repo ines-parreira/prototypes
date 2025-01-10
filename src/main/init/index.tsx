@@ -1,3 +1,10 @@
+// in order to prevent issues with overriding third-party (bootstrap)
+// styles, it is important that this import remain here as the very
+// first thing that is imported. This ensures they are loaded first
+// and any selectors imported later that have the same specificity
+// will take precedence.
+import 'assets/css/main.less'
+
 import './initNotifications'
 import './initQueryClient'
 import './initSocketManager'

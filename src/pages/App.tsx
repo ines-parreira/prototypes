@@ -3,8 +3,6 @@ import _isEqual from 'lodash/isEqual'
 import React, {ComponentType, ReactNode, memo} from 'react'
 import {Container} from 'reactstrap'
 
-import 'assets/css/main.less'
-
 import {useFlag} from 'common/flags'
 import {GlobalNavigation} from 'common/navigation'
 import {FeatureFlagKey} from 'config/featureFlags'
