@@ -9,12 +9,12 @@ import {useAccountStoreConfiguration} from 'pages/aiAgent/hooks/useAccountStoreC
 import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import AutomateView from 'pages/automate/common/components/AutomateView'
 import Button from 'pages/common/components/button/Button'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import history from 'pages/history'
 
+import {AiAgentView} from '../AiAgentView/AiAgentView'
 import css from './AiAgentLayout.less'
 
 type Props = {
@@ -155,7 +155,7 @@ export const AiAgentLayout = ({
     ])
 
     return (
-        <AutomateView
+        <AiAgentView
             isLoading={isLoading}
             title={AiAgentTitle}
             headerNavbarItems={
@@ -165,6 +165,6 @@ export const AiAgentLayout = ({
             className={classnames(css.container, className)}
         >
             {children}
-        </AutomateView>
+        </AiAgentView>
     )
 }

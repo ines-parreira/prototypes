@@ -1,0 +1,28 @@
+:local {
+    // The `:global(.container-fluid)` explicitly targets the navbar component from reactstrap
+    // This will force this style to overwrite the one from Bootstrap
+    :global(.container-fluid).container {
+        display: grid;
+        grid-template-columns: minmax(480px, 1000px) 1fr;
+        padding: 0;
+        min-height: ~'calc(100% - 60px)';
+    }
+
+    .pageHeaderContainer {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background-color: var(--neutral-grey-0);
+    }
+
+    .spinner {
+        height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .parentContainer {
+        height: auto;
+    }
+}

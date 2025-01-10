@@ -25,7 +25,7 @@ import {getHasAutomate} from 'state/billing/selectors'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 
-import AiAgentViewContainer from '../AiAgentViewContainer'
+import AiAgentMainViewContainer from '../AiAgentMainViewContainer'
 import {useStoreConfiguration} from '../hooks/useStoreConfiguration'
 
 jest.mock('launchdarkly-react-client-sdk')
@@ -160,7 +160,7 @@ const renderComponent = ({accountId = undefined}: {accountId?: number} = {}) =>
     renderWithRouter(
         <Provider store={mockStore(getState(accountId))}>
             <QueryClientProvider client={mockQueryClient()}>
-                <AiAgentViewContainer />
+                <AiAgentMainViewContainer />
             </QueryClientProvider>
         </Provider>,
         {
@@ -211,7 +211,7 @@ const setupMocks = ({
     } as unknown as ReturnType<typeof useGetHelpCenterList>)
 }
 
-describe('AiAgentViewContainer', () => {
+describe('AiAgentMainViewContainer', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockFlags({
@@ -341,7 +341,7 @@ describe('AiAgentViewContainer', () => {
         renderWithRouter(
             <Provider store={mockStore(getState())}>
                 <QueryClientProvider client={mockQueryClient()}>
-                    <AiAgentViewContainer />
+                    <AiAgentMainViewContainer />
                 </QueryClientProvider>
             </Provider>,
             {history}

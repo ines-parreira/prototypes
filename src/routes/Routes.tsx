@@ -40,10 +40,10 @@ import {AiAgentGuidanceNewContainer} from 'pages/aiAgent/AiAgentGuidanceNewConta
 import {AiAgentGuidanceTemplateNewContainer} from 'pages/aiAgent/AiAgentGuidanceTemplateNewContainer'
 import {AiAgentGuidanceTemplatesContainer} from 'pages/aiAgent/AiAgentGuidanceTemplatesContainer'
 import {AiAgentKnowledgeContainer} from 'pages/aiAgent/AiAgentKnowledgeContainer'
+import AiAgentMainViewContainer from 'pages/aiAgent/AiAgentMainViewContainer'
 import AiAgentOnboardingWizard from 'pages/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard'
 import {AiAgentPlaygroundContainer} from 'pages/aiAgent/AiAgentPlaygroundContainer'
 import {AiAgentPreviewModeSettingsContainer} from 'pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer'
-import AiAgentViewContainer from 'pages/aiAgent/AiAgentViewContainer'
 import {AiAgentNavbar} from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
 import {Level2IntentsContainer} from 'pages/aiAgent/insights/Level2IntentsContainer/Level2IntentsContainer'
 import {OptimizeContainer} from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
@@ -866,7 +866,7 @@ function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
                     <Route
                         path={`${path}`}
                         exact
-                        component={AiAgentViewContainer}
+                        component={AiAgentMainViewContainer}
                     />
                     {isAiAgentOptimizeTabEnabled && (
                         <AiAgentErrorBoundary section="ai-agent-optimize">

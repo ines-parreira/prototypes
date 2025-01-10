@@ -7,8 +7,8 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
-import css from './AiAgentViewContainer.less'
 import {AIAgentWelcomePageDynamic} from './AIAgentWelcomePageDynamic'
+import css from './components/AiAgentView/AiAgentView.less'
 import {AIAgentWelcomePageView} from './components/AIAgentWelcomePageView/AIAgentWelcomePageView'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 import {
@@ -17,7 +17,7 @@ import {
 } from './hooks/useAiAgentOnboardingState'
 import {useAiAgentStoreConfigurationContext} from './providers/AiAgentStoreConfigurationContext'
 
-const AiAgentViewContainer = () => {
+const AiAgentMainViewContainer = () => {
     const {shopName, shopType} = useParams<{
         shopName: string
         shopType: string
@@ -81,4 +81,4 @@ const AiAgentViewContainer = () => {
     return null
 }
 
-export default AiAgentViewContainer
+export default AiAgentMainViewContainer

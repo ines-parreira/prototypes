@@ -18,7 +18,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
 
-import css from './AiAgentViewContainer.less'
+import css from './AiAgentMainViewContainer.less'
 import {PlaygroundChat} from './components/PlaygroundChat/PlaygroundChat'
 import {CheckPlaygroundPrerequisites} from './components/PlaygroundPrerequisites/PlaygroundPrerequisites'
 import {MissingKnowledgeSourceAlert} from './components/PlaygroundPrerequisites/PlaygroundPrerequisitesAlerts'

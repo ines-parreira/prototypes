@@ -3,7 +3,7 @@ import React from 'react'
 import {useParams} from 'react-router-dom'
 
 import {AiAgentGuidanceNewView} from './AiAgentGuidanceNewView'
-import css from './AiAgentViewContainer.less'
+import css from './AiAgentMainViewContainer.less'
 import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
 import {GuidanceBreadcrumbs} from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
 import {useAiAgentHelpCenter} from './hooks/useAiAgentHelpCenter'
