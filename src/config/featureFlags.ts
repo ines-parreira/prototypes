@@ -124,6 +124,7 @@ export enum FeatureFlagKey {
     ProductCardDiscountedPrice = 'product-card-discounted-price',
     PublishFlowFromFlowBuilder = 'publish-flow-from-flow-builder',
     PubNubRealtime = 'pubnub-realtime',
+    RedirectDeprecatedTicketRoutes = 'redirect-deprecated-ticket-routes',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
