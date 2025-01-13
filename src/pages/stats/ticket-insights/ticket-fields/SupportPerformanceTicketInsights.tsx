@@ -93,12 +93,14 @@ export function SupportPerformanceTicketInsights() {
                         <CustomReportComponent
                             chart={TicketFieldsChart.TicketDistributionTable}
                             config={TicketFieldsConfig}
+                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(11)}>
                         <CustomReportComponent
                             chart={TicketFieldsChart.TicketInsightsFieldTrend}
                             config={TicketFieldsConfig}
+                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell>
@@ -107,6 +109,7 @@ export function SupportPerformanceTicketInsights() {
                                 TicketFieldsChart.CustomFieldsTicketCountBreakdownTableChart
                             }
                             config={TicketFieldsConfig}
+                            activateActionsMenu
                         />
                     </DashboardGridCell>
                 </DashboardSection>

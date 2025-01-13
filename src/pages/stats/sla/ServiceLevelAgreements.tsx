@@ -80,6 +80,7 @@ export function ServiceLevelAgreements() {
                                     ServiceLevelAgreementsChart.AchievementRateTrend
                                 }
                                 config={ServiceLevelAgreementsConfig}
+                                activateActionsMenu
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={getGridCellSize(6)}>
@@ -88,6 +89,7 @@ export function ServiceLevelAgreements() {
                                     ServiceLevelAgreementsChart.BreachedTicketsRateTrend
                                 }
                                 config={ServiceLevelAgreementsConfig}
+                                activateActionsMenu
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={12}>
@@ -96,6 +98,7 @@ export function ServiceLevelAgreements() {
                                     ServiceLevelAgreementsChart.AchievedAndBreachedTicketsChart
                                 }
                                 config={ServiceLevelAgreementsConfig}
+                                activateActionsMenu
                             />
                         </DashboardGridCell>
                     </DashboardSection>
