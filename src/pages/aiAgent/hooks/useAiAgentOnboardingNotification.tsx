@@ -56,7 +56,7 @@ export const useAiAgentOnboardingNotification = ({shopName}: Params) => {
         async (
             payload: Partial<OnboardingNotificationState>
         ): Promise<OnboardingNotificationState | undefined> => {
-            if (!isAiAgentOnboardingNotificationEnabled) {
+            if (!isAiAgentOnboardingNotificationEnabled || !shopName) {
                 return onboardingNotificationState
             }
 
@@ -106,7 +106,7 @@ export const useAiAgentOnboardingNotification = ({shopName}: Params) => {
         aiAgentNotificationType: AiAgentNotificationType
         isCancel?: boolean
     }) => {
-        if (!isAdmin || !isAiAgentOnboardingNotificationEnabled) {
+        if (!isAdmin || !isAiAgentOnboardingNotificationEnabled || !shopName) {
             return
         }
 

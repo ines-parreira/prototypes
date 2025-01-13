@@ -17,7 +17,7 @@ export const useOnboardingNotificationState = ({
             accountDomain,
             storeName: shopName,
         },
-        {retry: 1, refetchOnWindowFocus: false}
+        {retry: 1, refetchOnWindowFocus: false, enabled: !!shopName}
     )
 
     return {
