@@ -1,5 +1,4 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -75,6 +74,7 @@ export default function SupportPerformanceAgentsReport() {
                         <CustomReportComponent
                             chart={AgentsChart.TopPerformers}
                             config={SupportPerformanceAgentsReportConfig}
+                            activateActionsMenu
                         />
                     </DashboardGridCell>
                 </DashboardSection>
@@ -83,6 +83,7 @@ export default function SupportPerformanceAgentsReport() {
                         <CustomReportComponent
                             chart={AgentsChart.Table}
                             config={SupportPerformanceAgentsReportConfig}
+                            activateActionsMenu
                         />
                     </DashboardGridCell>
                 </DashboardSection>

@@ -1,9 +1,9 @@
-import {useUpdateAnalyticsCustomReport} from '@gorgias/api-queries'
 import {QueryClient, useQueryClient} from '@tanstack/react-query'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
+import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as constants from 'pages/stats/custom-reports/config'
 import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
@@ -66,10 +66,10 @@ jest.mock('@gorgias/api-queries')
 jest.mock('state/notifications/actions')
 jest.mock('@tanstack/react-query')
 
+jest.mock('hooks/reporting/custom-reports/useCustomReportActions')
+const useCustomReportActionsMock = assumeMock(useCustomReportActions)
 const useAppDispatchMock = assumeMock(useAppDispatch)
-const useUpdateAnalyticsCustomReportMock = assumeMock(
-    useUpdateAnalyticsCustomReport
-)
+
 const customerSatisfactionMetric = OverviewChart.CustomerSatisfactionTrendCard
 const firstChartDescription =
     SupportPerformanceOverviewReportConfig.charts[customerSatisfactionMetric]
@@ -86,12 +86,6 @@ const mockConfig: ReportsModalConfig = [
     },
 ]
 
-const updateReportResponse = () =>
-    ({
-        isLoading: false,
-        mutateAsync: mutateUpdateReportMock,
-    }) as unknown as ReturnType<typeof useUpdateAnalyticsCustomReport>
-
 describe('AddChartsModal', () => {
     beforeEach(() => {
         Object.defineProperty(constants, 'REPORTS_MODAL_CONFIG', {
@@ -99,15 +93,19 @@ describe('AddChartsModal', () => {
         })
 
         useAppDispatchMock.mockReturnValue(dispatchMock)
-        useUpdateAnalyticsCustomReportMock.mockReturnValue(
-            updateReportResponse()
-        )
         useQueryClientMock.mockImplementation(
             () =>
                 ({
                     invalidateQueries: updateMutateMock,
                 }) as unknown as QueryClient
         )
+        return useCustomReportActionsMock.mockReturnValue({
+            updateDashboardHandler: mutateUpdateReportMock,
+            getDashboardsHandler: jest.fn(),
+            duplicateReportHandler: jest.fn(),
+            deleteReportHandler: jest.fn(),
+            addChartToDashboardHandler: jest.fn(),
+        })
     })
 
     it('should render correctly', () => {
@@ -173,48 +171,32 @@ describe('AddChartsModal', () => {
 
         fireEvent.click(screen.getByText(`${ADD_CHARTS_CTA} (2)`))
 
-        expect(mutateUpdateReportMock).toHaveBeenCalledWith({
-            data: {
-                analytics_filter_id: 1,
-                children: [
-                    {
-                        children: [
-                            {
-                                config_id:
-                                    OverviewMetric.MedianFirstResponseTime,
-                                metadata: {},
-                                type: CustomReportChildType.Chart,
-                            },
-                            {
-                                config_id: customerSatisfactionMetric,
-                                metadata: {},
-                                type: CustomReportChildType.Chart,
-                            },
-                        ],
-                        metadata: {},
-                        type: CustomReportChildType.Row,
-                    },
+        expect(mutateUpdateReportMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                chartIds: [
+                    OverviewMetric.MedianFirstResponseTime,
+                    customerSatisfactionMetric,
                 ],
-                emoji: customReport.emoji,
-                name: customReport.name,
-                type: 'custom',
-            },
-            id: customReport.id,
-        })
-    })
-
-    it('should select a value and not be able to call the update method', () => {
-        render(<CustomReportsModal {...props} customReport={undefined} />, {})
-
-        fireEvent.click(
-            screen.getByText(SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE)
+                dashboard: {
+                    analytics_filter_id: 1,
+                    children: [
+                        {
+                            children: [
+                                {
+                                    config_id:
+                                        OverviewMetric.MedianFirstResponseTime,
+                                    type: CustomReportChildType.Chart,
+                                },
+                            ],
+                            type: CustomReportChildType.Row,
+                        },
+                    ],
+                    emoji: null,
+                    id: 2,
+                    name: 'some report',
+                },
+            })
         )
-
-        userEvent.click(screen.getByText(String(firstChartDescription)))
-
-        fireEvent.click(screen.getByText(`${ADD_CHARTS_CTA} (1)`))
-
-        expect(mutateUpdateReportMock).not.toHaveBeenCalled()
     })
 
     it('closing the modal should reset all states', () => {

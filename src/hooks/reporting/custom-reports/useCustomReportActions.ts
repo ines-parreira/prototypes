@@ -3,11 +3,18 @@ import {
     useCreateAnalyticsCustomReport,
     useDeleteAnalyticsCustomReport,
     useListAnalyticsCustomReports,
+    useUpdateAnalyticsCustomReport,
 } from '@gorgias/api-queries'
 import {useQueryClient} from '@tanstack/react-query'
 import {useCallback} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import {CustomReportSchema} from 'pages/stats/custom-reports/types'
+import {
+    createDashboardPayload,
+    customReportFromApi,
+    getChildrenIds,
+} from 'pages/stats/custom-reports/utils'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
@@ -15,32 +22,36 @@ export const CUSTOM_REPORT_DUPLICATE_SUCCESS_MESSAGE = 'successfully duplicated'
 export const CUSTOM_REPORT_DUPLICATE_ERROR_MESSAGE = 'could not be duplicated'
 export const CUSTOM_REPORT_DELETED_SUCCESS_MESSAGE = 'successfully deleted'
 export const CUSTOM_REPORT_DELETED_ERROR_MESSAGE = 'could not be deleted'
+export const CUSTOM_REPORT_EDITED_ERROR_MESSAGE = 'could not be modified'
 
 const handleMutationSuccess = (
     dispatch: ReturnType<typeof useAppDispatch>,
-    reportName: string,
     successMessage: string
 ) => {
     void dispatch(
         notify({
             status: NotificationStatus.Success,
-            message: `${reportName} ${successMessage}`,
+            message: successMessage,
         })
     )
 }
 
 const handleMutationError = (
     dispatch: ReturnType<typeof useAppDispatch>,
-    reportName: string,
     errorMessage: string
 ) => {
     void dispatch(
         notify({
             status: NotificationStatus.Error,
-            message: `${reportName} ${errorMessage}`,
+            message: errorMessage,
         })
     )
 }
+
+export const CUSTOM_REPORTS_QUERY_KEY = [
+    'analyticsCustomReports',
+    'getAnalyticsCustomReport',
+]
 
 export const useCustomReportActions = () => {
     const queryClient = useQueryClient()
@@ -48,7 +59,9 @@ export const useCustomReportActions = () => {
 
     const createMutation = useCreateAnalyticsCustomReport()
     const deleteMutation = useDeleteAnalyticsCustomReport()
-    const listReportsQueryKey = useListAnalyticsCustomReports().queryKey
+    const updateMutation = useUpdateAnalyticsCustomReport()
+    const listDashboardsQuery = useListAnalyticsCustomReports()
+    const listReportsQueryKey = listDashboardsQuery.queryKey
 
     const duplicateReportHandler = useCallback(
         (data: CreateAnalyticsCustomReportBody) => {
@@ -60,9 +73,9 @@ export const useCustomReportActions = () => {
                     onSuccess: () => {
                         handleMutationSuccess(
                             dispatch,
-                            data.name,
-                            CUSTOM_REPORT_DUPLICATE_SUCCESS_MESSAGE
+                            `${data.name} ${CUSTOM_REPORT_DUPLICATE_SUCCESS_MESSAGE}`
                         )
+
                         void queryClient.invalidateQueries({
                             queryKey: listReportsQueryKey,
                         })
@@ -70,8 +83,7 @@ export const useCustomReportActions = () => {
                     onError: () =>
                         handleMutationError(
                             dispatch,
-                            data.name,
-                            CUSTOM_REPORT_DUPLICATE_ERROR_MESSAGE
+                            `${data.name} ${CUSTOM_REPORT_DUPLICATE_ERROR_MESSAGE}`
                         ),
                 }
             )
@@ -89,8 +101,7 @@ export const useCustomReportActions = () => {
                     onSuccess: () => {
                         handleMutationSuccess(
                             dispatch,
-                            data.name,
-                            CUSTOM_REPORT_DELETED_SUCCESS_MESSAGE
+                            `${data.name} ${CUSTOM_REPORT_DELETED_SUCCESS_MESSAGE}`
                         )
 
                         void queryClient.invalidateQueries({
@@ -100,8 +111,7 @@ export const useCustomReportActions = () => {
                     onError: () =>
                         handleMutationError(
                             dispatch,
-                            data.name,
-                            CUSTOM_REPORT_DELETED_ERROR_MESSAGE
+                            `${data.name} ${CUSTOM_REPORT_DELETED_ERROR_MESSAGE}`
                         ),
                 }
             )
@@ -109,8 +119,101 @@ export const useCustomReportActions = () => {
         [deleteMutation, dispatch, listReportsQueryKey, queryClient]
     )
 
+    const updateDashboardHandler = useCallback(
+        ({
+            dashboard,
+            chartIds,
+            onClose,
+            successMessage,
+        }: {
+            dashboard: CustomReportSchema | undefined
+            chartIds: string[]
+            onClose: () => void
+            successMessage?: string
+        }) => {
+            if (dashboard) {
+                const apiDashboard = createDashboardPayload({
+                    dashboard,
+                    chartIds,
+                })
+
+                updateMutation.mutate(
+                    {
+                        id: dashboard.id,
+                        data: apiDashboard,
+                    },
+                    {
+                        onSuccess: () => {
+                            onClose()
+
+                            handleMutationSuccess(
+                                dispatch,
+                                successMessage ||
+                                    `Successfully saved ${chartIds.length} ${chartIds.length === 1 ? 'chart' : 'charts'} to ${dashboard.name}`
+                            )
+
+                            void queryClient.invalidateQueries({
+                                queryKey: CUSTOM_REPORTS_QUERY_KEY,
+                            })
+
+                            void queryClient.invalidateQueries({
+                                queryKey: listReportsQueryKey,
+                            })
+                        },
+                        onError: () =>
+                            handleMutationError(
+                                dispatch,
+                                `${dashboard.name} ${CUSTOM_REPORT_EDITED_ERROR_MESSAGE}`
+                            ),
+                    }
+                )
+            }
+        },
+
+        [updateMutation, dispatch, listReportsQueryKey, queryClient]
+    )
+
+    const addChartToDashboardHandler = useCallback(
+        ({
+            dashboard,
+            chartId,
+            onClose,
+        }: {
+            dashboard: CustomReportSchema
+            chartId: string
+            onClose: () => void
+        }) => {
+            const childrenIds = getChildrenIds(dashboard?.children)
+
+            updateDashboardHandler({
+                dashboard,
+                chartIds: [...childrenIds, chartId],
+                onClose,
+                successMessage: `Successfully added chart to ${dashboard.name}`,
+            })
+        },
+        [updateDashboardHandler]
+    )
+
+    const getDashboardsHandler = useCallback((): CustomReportSchema[] => {
+        const apiDashboards = listDashboardsQuery.data?.data?.data || []
+
+        const dashboards = apiDashboards.reduce((acc, dashboard) => {
+            const customReport = customReportFromApi(dashboard)
+            if (customReport) {
+                acc.push(customReport)
+            }
+            return acc
+        }, [] as CustomReportSchema[])
+
+        return dashboards
+    }, [listDashboardsQuery])
+
     return {
         duplicateReportHandler,
         deleteReportHandler,
+        updateDashboardHandler,
+        addChartToDashboardHandler,
+        getDashboardsHandler,
     }
 }

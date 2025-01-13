@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react'
 
+import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -16,7 +17,6 @@ import {
     ReportsModalConfig,
     CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
-import {useUpdateCustomReport} from 'pages/stats/custom-reports/useUpdateCustomReport'
 import {getSavedChartsIds} from 'pages/stats/custom-reports/utils'
 
 type Props = {
@@ -77,11 +77,7 @@ export const CustomReportsModal = ({
         setConfig(REPORTS_MODAL_CONFIG)
     }, [setIsOpen])
 
-    const {updateCustomReport, isLoading} = useUpdateCustomReport({
-        customReport,
-        checkedCharts,
-        onClose,
-    })
+    const {updateDashboardHandler} = useCustomReportActions()
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} size="huge">
@@ -118,7 +114,15 @@ export const CustomReportsModal = ({
                 <Button onClick={onClose} intent="secondary">
                     Cancel
                 </Button>
-                <Button onClick={updateCustomReport} isLoading={isLoading}>
+                <Button
+                    onClick={() => {
+                        updateDashboardHandler({
+                            dashboard: customReport,
+                            chartIds: checkedCharts,
+                            onClose,
+                        })
+                    }}
+                >
                     {ADD_CHARTS_CTA}
                     {checkedCharts.length ? ` (${checkedCharts.length})` : ''}
                 </Button>

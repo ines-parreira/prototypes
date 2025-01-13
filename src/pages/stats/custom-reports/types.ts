@@ -1,4 +1,4 @@
-import {FunctionComponent, ReactNode} from 'react'
+import {ReactNode} from 'react'
 
 import {MetricPerDimensionFetch} from 'hooks/reporting/distributions'
 import {MetricTrendFetch} from 'hooks/reporting/useMetricTrend'
@@ -71,7 +71,7 @@ type DataExportFetch =
     | MetricPerDimensionFetch[]
 
 export type ChartConfig = {
-    chartComponent: FunctionComponent
+    chartComponent: ({chartId}: {chartId: string}) => React.JSX.Element
     label: ReactNode
     csvProducer: DataExportFetch | null
     description: ReactNode

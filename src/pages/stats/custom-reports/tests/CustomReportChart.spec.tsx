@@ -1,9 +1,7 @@
 import {render} from '@testing-library/react'
-
 import React from 'react'
 
 import {CustomReportComponent} from 'pages/stats/common/CustomReport/CustomReportComponent'
-
 import {CustomReportChart} from 'pages/stats/custom-reports/CustomReportChart'
 import {
     CustomReportChartSchema,
@@ -47,6 +45,7 @@ describe('CustomReportChart', () => {
 
         expect(CustomReportComponentMock).toHaveBeenCalledWith(
             {
+                activateActionsMenu: false,
                 chart: schema.config_id,
                 config: SupportPerformanceOverviewReportConfig,
             },

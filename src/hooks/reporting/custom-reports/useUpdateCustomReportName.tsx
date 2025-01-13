@@ -34,8 +34,11 @@ export const useUpdateCustomReportName = (id: number) => {
     })
 
     const updateCustomReport = useCallback(
-        (data: DashboardInput) => {
-            return mutateAsync({id, data: createDashboardPayload(data)})
+        (dashboard: DashboardInput) => {
+            return mutateAsync({
+                id,
+                data: createDashboardPayload({dashboard}),
+            })
         },
         [mutateAsync, id]
     )

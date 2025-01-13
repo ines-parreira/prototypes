@@ -1,5 +1,4 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -68,6 +67,7 @@ export function ChannelsReport() {
                         <CustomReportComponent
                             chart={ChannelsChart.ChannelsPerformanceTable}
                             config={ChannelsReportConfig}
+                            activateActionsMenu
                         />
                     </DashboardGridCell>
                 </DashboardSection>

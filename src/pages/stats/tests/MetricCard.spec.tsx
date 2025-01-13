@@ -2,7 +2,14 @@ import {act, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import MetricCard from '../MetricCard'
+import {ChartsActionMenu} from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
+import MetricCard from 'pages/stats/MetricCard'
+import {assumeMock} from 'utils/testing'
+
+jest.mock('pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu')
+const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
+
+ChartsActionMenuMock.mockReturnValue(<div>ChartsActionMenu</div>)
 
 describe('<MetricCard />', () => {
     const title = 'Metric title'
@@ -41,5 +48,18 @@ describe('<MetricCard />', () => {
         )
 
         expect(screen.getByText(tooltipText)).toBeInTheDocument()
+        expect(screen.queryByText('ChartsActionMenu')).not.toBeInTheDocument()
+    })
+
+    it('should render the ChartsActionMenu if chartId exists', () => {
+        const tooltipText = 'some tooltip text'
+
+        render(
+            <MetricCard tip={tooltipText} title={title} chartId="123">
+                {childrenContent}
+            </MetricCard>
+        )
+
+        expect(screen.getByText('ChartsActionMenu')).toBeInTheDocument()
     })
 })

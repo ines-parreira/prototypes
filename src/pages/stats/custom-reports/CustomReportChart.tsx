@@ -37,5 +37,11 @@ export const CustomReportChart = ({schema}: Props) => {
         return null
     }
 
-    return <CustomReportComponent chart={chart} config={config} />
+    return (
+        <CustomReportComponent
+            chart={chart}
+            config={config}
+            activateActionsMenu={false}
+        />
+    )
 }

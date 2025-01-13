@@ -1,6 +1,5 @@
 import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
-
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -63,7 +62,10 @@ describe('CustomerSatisfactionTrendCard', () => {
     })
 
     it('should render the SupportPerformanceTip', () => {
-        renderWithStore(<CustomerSatisfactionTrendCard />, defaultState)
+        renderWithStore(
+            <CustomerSatisfactionTrendCard chartId="ID" />,
+            defaultState
+        )
 
         expect(SupportPerformanceTipMock).toHaveBeenCalled()
     })
@@ -73,7 +75,7 @@ describe('CustomerSatisfactionTrendCard', () => {
             currentAccount: fromJS(accountWithOutSatisfactionSurvey),
         } as RootState
 
-        renderWithStore(<CustomerSatisfactionTrendCard />, state)
+        renderWithStore(<CustomerSatisfactionTrendCard chartId="ID" />, state)
 
         expect(ActivateCustomerSatisfactionSurveyTipMock).toHaveBeenCalled()
     })

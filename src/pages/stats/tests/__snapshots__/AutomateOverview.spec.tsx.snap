@@ -150,18 +150,22 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Automation rate
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Automation rate
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -248,18 +252,22 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Automated interactions
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Automated interactions
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -341,18 +349,22 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Cost saved
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Cost saved
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -373,18 +385,22 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Decrease in resolution time
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Decrease in resolution time
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -405,18 +421,22 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Decrease in first response time
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Decrease in first response time
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -745,18 +765,22 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                     class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Automation rate
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Automation rate
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
                     <div
@@ -843,18 +867,22 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                     class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Automated interactions
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Automated interactions
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
                     <div
@@ -936,18 +964,22 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                     class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Cost saved
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Cost saved
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
                     <div
@@ -968,18 +1000,22 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                     class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Decrease in resolution time
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Decrease in resolution time
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
                     <div
@@ -1000,18 +1036,22 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                     class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Decrease in first response time
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Decrease in first response time
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
                     <div
@@ -1444,18 +1484,22 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="Card--wrapper--3AkmE card"
                 >
                   <div
-                    class="title"
+                    class="wrapper"
                   >
-                    Automation rate
                     <div
-                      class="wrapper tooltip"
+                      class="title"
                     >
-                      <i
-                        class="material-icons-outlined icon"
-                        id="tooltip-abc"
+                      Automation rate
+                      <div
+                        class="wrapper tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -1542,18 +1586,22 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="Card--wrapper--3AkmE card"
                 >
                   <div
-                    class="title"
+                    class="wrapper"
                   >
-                    Automated interactions
                     <div
-                      class="wrapper tooltip"
+                      class="title"
                     >
-                      <i
-                        class="material-icons-outlined icon"
-                        id="tooltip-abc"
+                      Automated interactions
+                      <div
+                        class="wrapper tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -1635,18 +1683,22 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="Card--wrapper--3AkmE card"
                 >
                   <div
-                    class="title"
+                    class="wrapper"
                   >
-                    Cost saved
                     <div
-                      class="wrapper tooltip"
+                      class="title"
                     >
-                      <i
-                        class="material-icons-outlined icon"
-                        id="tooltip-abc"
+                      Cost saved
+                      <div
+                        class="wrapper tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -1667,18 +1719,22 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="Card--wrapper--3AkmE card"
                 >
                   <div
-                    class="title"
+                    class="wrapper"
                   >
-                    Decrease in resolution time
                     <div
-                      class="wrapper tooltip"
+                      class="title"
                     >
-                      <i
-                        class="material-icons-outlined icon"
-                        id="tooltip-abc"
+                      Decrease in resolution time
+                      <div
+                        class="wrapper tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -1699,18 +1755,22 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="Card--wrapper--3AkmE card"
                 >
                   <div
-                    class="title"
+                    class="wrapper"
                   >
-                    Decrease in first response time
                     <div
-                      class="wrapper tooltip"
+                      class="title"
                     >
-                      <i
-                        class="material-icons-outlined icon"
-                        id="tooltip-abc"
+                      Decrease in first response time
+                      <div
+                        class="wrapper tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -2092,18 +2152,22 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                     class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Automation rate
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Automation rate
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
                     <div
@@ -2190,18 +2254,22 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                     class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Automated interactions
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Automated interactions
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
                     <div
@@ -2283,18 +2351,22 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                     class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Cost saved
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Cost saved
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
                     <div
@@ -2315,18 +2387,22 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                     class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Decrease in resolution time
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Decrease in resolution time
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
                     <div
@@ -2347,18 +2423,22 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                     class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Decrease in first response time
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Decrease in first response time
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
                     <div
@@ -2791,18 +2871,22 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   class="Card--wrapper--3AkmE card"
                 >
                   <div
-                    class="title"
+                    class="wrapper"
                   >
-                    Automation rate
                     <div
-                      class="wrapper tooltip"
+                      class="title"
                     >
-                      <i
-                        class="material-icons-outlined icon"
-                        id="tooltip-abc"
+                      Automation rate
+                      <div
+                        class="wrapper tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -2889,18 +2973,22 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   class="Card--wrapper--3AkmE card"
                 >
                   <div
-                    class="title"
+                    class="wrapper"
                   >
-                    Automated interactions
                     <div
-                      class="wrapper tooltip"
+                      class="title"
                     >
-                      <i
-                        class="material-icons-outlined icon"
-                        id="tooltip-abc"
+                      Automated interactions
+                      <div
+                        class="wrapper tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -2982,18 +3070,22 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   class="Card--wrapper--3AkmE card"
                 >
                   <div
-                    class="title"
+                    class="wrapper"
                   >
-                    Cost saved
                     <div
-                      class="wrapper tooltip"
+                      class="title"
                     >
-                      <i
-                        class="material-icons-outlined icon"
-                        id="tooltip-abc"
+                      Cost saved
+                      <div
+                        class="wrapper tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -3014,18 +3106,22 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   class="Card--wrapper--3AkmE card"
                 >
                   <div
-                    class="title"
+                    class="wrapper"
                   >
-                    Decrease in resolution time
                     <div
-                      class="wrapper tooltip"
+                      class="title"
                     >
-                      <i
-                        class="material-icons-outlined icon"
-                        id="tooltip-abc"
+                      Decrease in resolution time
+                      <div
+                        class="wrapper tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -3046,18 +3142,22 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   class="Card--wrapper--3AkmE card"
                 >
                   <div
-                    class="title"
+                    class="wrapper"
                   >
-                    Decrease in first response time
                     <div
-                      class="wrapper tooltip"
+                      class="title"
                     >
-                      <i
-                        class="material-icons-outlined icon"
-                        id="tooltip-abc"
+                      Decrease in first response time
+                      <div
+                        class="wrapper tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -3439,18 +3539,22 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                     class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Automation rate
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Automation rate
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
                     <div
@@ -3537,18 +3641,22 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                     class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Automated interactions
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Automated interactions
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
                     <div
@@ -3630,18 +3738,22 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                     class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Cost saved
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Cost saved
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
                     <div
@@ -3662,18 +3774,22 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                     class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Decrease in resolution time
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Decrease in resolution time
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
                     <div
@@ -3694,18 +3810,22 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                     class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Decrease in first response time
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Decrease in first response time
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
                     <div
@@ -4138,18 +4258,22 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   class="Card--wrapper--3AkmE card"
                 >
                   <div
-                    class="title"
+                    class="wrapper"
                   >
-                    Automation rate
                     <div
-                      class="wrapper tooltip"
+                      class="title"
                     >
-                      <i
-                        class="material-icons-outlined icon"
-                        id="tooltip-abc"
+                      Automation rate
+                      <div
+                        class="wrapper tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -4236,18 +4360,22 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   class="Card--wrapper--3AkmE card"
                 >
                   <div
-                    class="title"
+                    class="wrapper"
                   >
-                    Automated interactions
                     <div
-                      class="wrapper tooltip"
+                      class="title"
                     >
-                      <i
-                        class="material-icons-outlined icon"
-                        id="tooltip-abc"
+                      Automated interactions
+                      <div
+                        class="wrapper tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -4329,18 +4457,22 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   class="Card--wrapper--3AkmE card"
                 >
                   <div
-                    class="title"
+                    class="wrapper"
                   >
-                    Cost saved
                     <div
-                      class="wrapper tooltip"
+                      class="title"
                     >
-                      <i
-                        class="material-icons-outlined icon"
-                        id="tooltip-abc"
+                      Cost saved
+                      <div
+                        class="wrapper tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -4361,18 +4493,22 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   class="Card--wrapper--3AkmE card"
                 >
                   <div
-                    class="title"
+                    class="wrapper"
                   >
-                    Decrease in resolution time
                     <div
-                      class="wrapper tooltip"
+                      class="title"
                     >
-                      <i
-                        class="material-icons-outlined icon"
-                        id="tooltip-abc"
+                      Decrease in resolution time
+                      <div
+                        class="wrapper tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -4393,18 +4529,22 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   class="Card--wrapper--3AkmE card"
                 >
                   <div
-                    class="title"
+                    class="wrapper"
                   >
-                    Decrease in first response time
                     <div
-                      class="wrapper tooltip"
+                      class="title"
                     >
-                      <i
-                        class="material-icons-outlined icon"
-                        id="tooltip-abc"
+                      Decrease in first response time
+                      <div
+                        class="wrapper tooltip"
                       >
-                        info
-                      </i>
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -4782,18 +4922,22 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Automation rate
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Automation rate
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -4880,18 +5024,22 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Automated interactions
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Automated interactions
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -4973,18 +5121,22 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Cost saved
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Cost saved
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -5005,18 +5157,22 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Decrease in resolution time
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Decrease in resolution time
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -5037,18 +5193,22 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Decrease in first response time
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Decrease in first response time
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -5356,18 +5516,22 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Automation rate
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Automation rate
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -5454,18 +5618,22 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Automated interactions
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Automated interactions
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -5547,18 +5715,22 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Cost saved
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Cost saved
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -5579,18 +5751,22 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Decrease in resolution time
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Decrease in resolution time
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -5611,18 +5787,22 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Decrease in first response time
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Decrease in first response time
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -5947,18 +6127,22 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Automation rate
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Automation rate
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -6045,18 +6229,22 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Automated interactions
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Automated interactions
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -6138,18 +6326,22 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Cost saved
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Cost saved
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -6170,18 +6362,22 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Decrease in resolution time
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Decrease in resolution time
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -6202,18 +6398,22 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Decrease in first response time
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Decrease in first response time
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -6538,18 +6738,22 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Automation rate
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Automation rate
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -6636,18 +6840,22 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Automated interactions
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Automated interactions
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -6729,18 +6937,22 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Cost saved
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Cost saved
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -6761,18 +6973,22 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Decrease in resolution time
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Decrease in resolution time
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div
@@ -6793,18 +7009,22 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
               class="Card--wrapper--3AkmE card"
             >
               <div
-                class="title"
+                class="wrapper"
               >
-                Decrease in first response time
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-abc"
+                  Decrease in first response time
+                  <div
+                    class="wrapper tooltip"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
               </div>
               <div

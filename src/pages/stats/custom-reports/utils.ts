@@ -7,19 +7,11 @@ import {
 import {
     AnalyticsCustomReportChildrenItem,
     UpdateAnalyticsCustomReportBodyChildrenItem,
-    AnalyticsCustomReportChartSchemaType,
-    AnalyticsCustomReportRowSchemaType,
-    AnalyticsCustomReportSectionSchemaType,
-    CreateAnalyticsCustomReportBody,
-    CreateAnalyticsCustomReportBodyChildrenItem,
+    UpdateAnalyticsCustomReportBody,
 } from '@gorgias/api-types'
-import React from 'react'
+import _flatten from 'lodash/flatten'
 
 import {isGorgiasApiError} from 'models/api/types'
-import {REPORTS_MODAL_CONFIG} from 'pages/stats/custom-reports/config'
-import {CustomReportChart} from 'pages/stats/custom-reports/CustomReportChart'
-import {CustomReportRow} from 'pages/stats/custom-reports/CustomReportRow'
-import {CustomReportSection} from 'pages/stats/custom-reports/CustomReportSection'
 import {
     ChartConfig,
     CustomReportChartSchema,
@@ -29,37 +21,8 @@ import {
     CustomReportSchema,
     CustomReportSectionSchema,
     DashboardInput,
-    ReportsModalConfig,
-    ReportChildrenConfig,
 } from 'pages/stats/custom-reports/types'
 import {notNull} from 'utils/types'
-
-export const renderCustomReportChild = (
-    child: CustomReportChild,
-    key: string
-) => {
-    switch (child.type) {
-        case CustomReportChildType.Row:
-            return (
-                <CustomReportRow schema={child} key={key}>
-                    {child.children.map(renderCustomReportChildWithKeys)}
-                </CustomReportRow>
-            )
-        case CustomReportChildType.Section:
-            return (
-                <CustomReportSection schema={child} key={child.type}>
-                    {child.children.map(renderCustomReportChildWithKeys)}
-                </CustomReportSection>
-            )
-        case CustomReportChildType.Chart:
-            return <CustomReportChart schema={child} key={child.type} />
-    }
-}
-
-export const renderCustomReportChildWithKeys = (
-    child: CustomReportChild,
-    index: number
-) => renderCustomReportChild(child, `${child.type}-${index}`)
 
 const fromApiChart = (
     chart: AnalyticsCustomReportChartSchema
@@ -162,9 +125,10 @@ export const getGroupChartsIntoRows = (
     charts: string[],
     chartsByRow: number = 4
 ): UpdateAnalyticsCustomReportBodyChildrenItem[] => {
-    const rowsLength = charts.length
-        ? Math.ceil(charts.length / chartsByRow)
-        : 1
+    if (!charts.length) {
+        return []
+    }
+    const rowsLength = Math.ceil(charts.length / chartsByRow)
     return Array.from({
         length: rowsLength,
     }).map((_, index) => ({
@@ -178,47 +142,6 @@ export const getGroupChartsIntoRows = (
         type: CustomReportChildType.Row,
         metadata: {},
     }))
-}
-
-export const getSearchConfig = (value: string): ReportsModalConfig | null => {
-    const searchValue = value.toLowerCase()
-
-    const config: ReportsModalConfig = []
-
-    for (const reportConfig of REPORTS_MODAL_CONFIG) {
-        const filteredChildren: ReportChildrenConfig = []
-
-        for (const report of reportConfig.children) {
-            const filteredCharts: Record<string, ChartConfig> = {}
-
-            for (const [chartId, chart] of Object.entries(
-                report.config.charts
-            )) {
-                if (String(chart.label).toLowerCase().includes(searchValue)) {
-                    filteredCharts[chartId] = chart
-                }
-            }
-
-            if (Object.keys(filteredCharts).length > 0) {
-                filteredChildren.push({
-                    type: report.type,
-                    config: {
-                        ...report.config,
-                        charts: filteredCharts,
-                    },
-                })
-            }
-        }
-
-        if (filteredChildren.length > 0) {
-            config.push({
-                category: reportConfig.category,
-                children: filteredChildren,
-            })
-        }
-    }
-
-    return config.length ? config : null
 }
 
 export const getNumberOfSelections = (
@@ -277,41 +200,14 @@ export function getErrorMessage(
     return defaultMessage
 }
 
-const createChildrenWithMetadata = (
-    children: CustomReportChild[]
-): CreateAnalyticsCustomReportBodyChildrenItem[] => {
-    return children.map((child) => {
-        switch (child.type) {
-            case CustomReportChildType.Chart:
-                return {
-                    type: AnalyticsCustomReportChartSchemaType.Chart,
-                    config_id: child.config_id,
-                    metadata: {},
-                } as AnalyticsCustomReportChartSchema
-
-            case CustomReportChildType.Row:
-                return {
-                    type: AnalyticsCustomReportRowSchemaType.Row,
-                    metadata: {},
-                    children: createChildrenWithMetadata(child.children),
-                } as AnalyticsCustomReportRowSchema
-
-            case CustomReportChildType.Section:
-                return {
-                    type: AnalyticsCustomReportSectionSchemaType.Section,
-                    metadata: {},
-                    children: createChildrenWithMetadata(child.children),
-                } as AnalyticsCustomReportSectionSchema
-        }
-    })
-}
-
 export const createDashboardPayload = ({
-    name,
-    emoji,
-    analytics_filter_id,
-    children,
-}: DashboardInput): CreateAnalyticsCustomReportBody => {
+    dashboard,
+    chartIds,
+}: {
+    dashboard: DashboardInput
+    chartIds?: string[]
+}): UpdateAnalyticsCustomReportBody => {
+    const {name, emoji, analytics_filter_id, children} = dashboard
     return {
         name,
         emoji: emoji ?? null,
@@ -319,7 +215,7 @@ export const createDashboardPayload = ({
         // Remove type casting when the API is fixed, related tickets: #3195 & #3196
         analytics_filter_id: (analytics_filter_id ?? null) as unknown as number,
         type: 'custom',
-        children: createChildrenWithMetadata(children || []),
+        children: getGroupChartsIntoRows(chartIds || getChildrenIds(children)),
     }
 }
 
@@ -344,4 +240,22 @@ export const getChildrenOfTypeChart = (report: CustomReportSchema) => {
     }
 
     return result
+}
+
+export const getChildrenIds = (
+    children: CustomReportChild[] | undefined
+): string[] => {
+    return children
+        ? _flatten(
+              children?.map((secondChild) => {
+                  if (secondChild.type === CustomReportChildType.Row)
+                      return secondChild.children.map(
+                          (thirdChild) => thirdChild.config_id
+                      )
+                  if (secondChild.type === CustomReportChildType.Chart)
+                      return secondChild.config_id
+                  return []
+              })
+          )
+        : []
 }

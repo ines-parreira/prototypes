@@ -1,0 +1,25 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .wrapper {
+        cursor: pointer;
+        color: var(--neutral-grey-6);
+        .body-regular();
+        :hover {
+            background: var(--neutral-grey-2);
+        }
+    }
+
+    .dropdownItem {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+    }
+
+    .moreVertIcon {
+        padding: @layout-spacing-xxs;
+        border-radius: @layout-spacing-xxs;
+        color: var(--neutral-grey-5);
+    }
+}

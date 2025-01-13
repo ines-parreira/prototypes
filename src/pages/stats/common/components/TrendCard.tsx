@@ -1,7 +1,6 @@
 import React, {ReactNode} from 'react'
 
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-
 import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
@@ -25,6 +24,7 @@ export const TrendCard = ({
     tip,
     interpretAs,
     metricFormat,
+    chartId,
 }: {
     useTrend: MetricTrendHook
     hint: TooltipData
@@ -37,6 +37,7 @@ export const TrendCard = ({
     tip?: ReactNode
     interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
     metricFormat?: MetricTrendFormat
+    chartId?: string
 }) => {
     const {cleanStatsFilters, userTimezone, isAnalyticsNewFilters} =
         useNewStatsFilters()
@@ -53,6 +54,7 @@ export const TrendCard = ({
             hint={hint}
             title={title}
             isLoading={trend.isFetching}
+            chartId={chartId}
             tip={tip}
         >
             <BigNumberMetric

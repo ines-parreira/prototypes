@@ -13,11 +13,13 @@ import {AxiosError} from 'axios'
 import React from 'react'
 
 import {REPORTS_MODAL_CONFIG} from 'pages/stats/custom-reports/config'
+import {getSearchConfig} from 'pages/stats/custom-reports/CustomReportsModal/ModalSearchBar'
 import {
     ChartConfig,
     CustomReportSchema,
     CustomReportChildType,
     DashboardInput,
+    CustomReportChild,
 } from 'pages/stats/custom-reports/types'
 import {
     createDashboardPayload,
@@ -25,9 +27,9 @@ import {
     getGroupChartsIntoRows,
     getNumberOfSelections,
     getSavedChartsIds,
-    getSearchConfig,
     getErrorMessage,
     getChildrenOfTypeChart,
+    getChildrenIds,
 } from 'pages/stats/custom-reports/utils'
 import {
     OverviewMetric,
@@ -188,13 +190,7 @@ describe('getGroupChartsIntoRows', () => {
     it('should return an empty array if no charts are provided', () => {
         const result = getGroupChartsIntoRows([])
 
-        expect(result).toEqual([
-            {
-                children: [],
-                metadata: {},
-                type: 'row',
-            },
-        ])
+        expect(result).toEqual([])
     })
 
     it('should return a single row when the number of charts is less than or equal to chartsByRow', () => {
@@ -771,22 +767,17 @@ describe('getErrorMessage(error, defaultMessage)', () => {
 
 describe('createDashboardPayload', () => {
     it('should create a custom report with the correct payload', () => {
-        const input: DashboardInput = {
+        const dashboard: DashboardInput = {
             name: 'Test Dashboard',
             emoji: '🖖',
             analytics_filter_id: 123,
             children: [
                 {
-                    type: CustomReportChildType.Section,
+                    type: CustomReportChildType.Row,
                     children: [
                         {
-                            type: CustomReportChildType.Row,
-                            children: [
-                                {
-                                    type: CustomReportChildType.Chart,
-                                    config_id: 'config_id',
-                                },
-                            ],
+                            type: CustomReportChildType.Chart,
+                            config_id: 'config_id',
                         },
                     ],
                 },
@@ -800,32 +791,26 @@ describe('createDashboardPayload', () => {
             type: 'custom',
             children: [
                 {
-                    type: CustomReportChildType.Section,
+                    type: CustomReportChildType.Row,
                     metadata: {},
                     children: [
                         {
-                            type: CustomReportChildType.Row,
+                            type: CustomReportChildType.Chart,
+                            config_id: 'config_id',
                             metadata: {},
-                            children: [
-                                {
-                                    type: CustomReportChildType.Chart,
-                                    config_id: 'config_id',
-                                    metadata: {},
-                                },
-                            ],
                         },
                     ],
                 },
             ],
         }
 
-        const actual = createDashboardPayload(input)
+        const actual = createDashboardPayload({dashboard})
 
         expect(actual).toEqual(expected)
     })
 
     it('should provide defaults if not provided in the Dashboard object', () => {
-        const input = {name: 'Test Dashboard'}
+        const dashboard = {name: 'Test Dashboard'}
 
         const expected = {
             name: 'Test Dashboard',
@@ -835,7 +820,61 @@ describe('createDashboardPayload', () => {
             children: [],
         }
 
-        const actual = createDashboardPayload(input)
+        const actual = createDashboardPayload({dashboard})
+
+        expect(actual).toEqual(expected)
+    })
+
+    it('should return chartIds instead of children', () => {
+        const firstChartId = 'first-chart-id'
+        const secondChartId = 'second-chart-id'
+
+        const dashboard: DashboardInput = {
+            name: 'Test Dashboard',
+            emoji: '🖖',
+            analytics_filter_id: 123,
+            children: [
+                {
+                    type: CustomReportChildType.Row,
+                    children: [
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: 'config_id',
+                        },
+                    ],
+                },
+            ],
+        }
+
+        const expected = {
+            name: 'Test Dashboard',
+            emoji: '🖖',
+            analytics_filter_id: 123,
+            type: 'custom',
+            children: [
+                {
+                    type: CustomReportChildType.Row,
+                    metadata: {},
+                    children: [
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: firstChartId,
+                            metadata: {},
+                        },
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: secondChartId,
+                            metadata: {},
+                        },
+                    ],
+                },
+            ],
+        }
+
+        const actual = createDashboardPayload({
+            dashboard,
+            chartIds: [firstChartId, secondChartId],
+        })
 
         expect(actual).toEqual(expected)
     })
@@ -896,22 +935,17 @@ describe('getErrorMessage(error, defaultMessage)', () => {
 
 describe('createDashboardPayload', () => {
     it('should create a custom report with the correct payload', () => {
-        const input: DashboardInput = {
+        const dashboard: DashboardInput = {
             name: 'Test Dashboard',
             emoji: '🖖',
             analytics_filter_id: 123,
             children: [
                 {
-                    type: CustomReportChildType.Section,
+                    type: CustomReportChildType.Row,
                     children: [
                         {
-                            type: CustomReportChildType.Row,
-                            children: [
-                                {
-                                    type: CustomReportChildType.Chart,
-                                    config_id: 'config_id',
-                                },
-                            ],
+                            type: CustomReportChildType.Chart,
+                            config_id: 'config_id',
                         },
                     ],
                 },
@@ -925,32 +959,26 @@ describe('createDashboardPayload', () => {
             type: 'custom',
             children: [
                 {
-                    type: CustomReportChildType.Section,
+                    type: CustomReportChildType.Row,
                     metadata: {},
                     children: [
                         {
-                            type: CustomReportChildType.Row,
+                            type: CustomReportChildType.Chart,
+                            config_id: 'config_id',
                             metadata: {},
-                            children: [
-                                {
-                                    type: CustomReportChildType.Chart,
-                                    config_id: 'config_id',
-                                    metadata: {},
-                                },
-                            ],
                         },
                     ],
                 },
             ],
         }
 
-        const actual = createDashboardPayload(input)
+        const actual = createDashboardPayload({dashboard})
 
         expect(actual).toEqual(expected)
     })
 
     it('should create an empty report with the correct payload', () => {
-        const input = {name: 'Test Dashboard'}
+        const dashboard = {name: 'Test Dashboard'}
 
         const expected = {
             name: 'Test Dashboard',
@@ -960,8 +988,105 @@ describe('createDashboardPayload', () => {
             children: [],
         }
 
-        const actual = createDashboardPayload(input)
+        const actual = createDashboardPayload({dashboard})
 
         expect(actual).toEqual(expected)
+    })
+})
+
+describe('getChildrenIds', () => {
+    it('should return an empty array if children is undefined', () => {
+        const actual = getChildrenIds(undefined)
+
+        expect(actual).toEqual([])
+    })
+
+    it('should return an array of children ids from a row', () => {
+        const children: CustomReportChild[] = [
+            {
+                type: CustomReportChildType.Row,
+                children: [
+                    {
+                        type: CustomReportChildType.Chart,
+                        config_id: 'config_id_1',
+                    },
+                    {
+                        type: CustomReportChildType.Chart,
+                        config_id: 'config_id_2',
+                    },
+                ],
+            },
+        ]
+
+        const actual = getChildrenIds(children)
+
+        expect(actual).toEqual(['config_id_1', 'config_id_2'])
+    })
+
+    it('should return an array of children ids from charts', () => {
+        const children: CustomReportChild[] = [
+            {
+                type: CustomReportChildType.Chart,
+                config_id: 'config_id_1',
+            },
+            {
+                type: CustomReportChildType.Chart,
+                config_id: 'config_id_2',
+            },
+        ]
+
+        const actual = getChildrenIds(children)
+
+        expect(actual).toEqual(['config_id_1', 'config_id_2'])
+    })
+
+    it('should return an array of children ids from different rows', () => {
+        const children: CustomReportChild[] = [
+            {
+                type: CustomReportChildType.Row,
+                children: [
+                    {
+                        type: CustomReportChildType.Chart,
+                        config_id: 'config_id_1',
+                    },
+                ],
+            },
+            {
+                type: CustomReportChildType.Row,
+                children: [
+                    {
+                        type: CustomReportChildType.Chart,
+                        config_id: 'config_id_2',
+                    },
+                ],
+            },
+        ]
+
+        const actual = getChildrenIds(children)
+
+        expect(actual).toEqual(['config_id_1', 'config_id_2'])
+    })
+
+    it('should return an empty array for section', () => {
+        const children: CustomReportChild[] = [
+            {
+                type: CustomReportChildType.Section,
+                children: [
+                    {
+                        type: CustomReportChildType.Row,
+                        children: [
+                            {
+                                type: CustomReportChildType.Chart,
+                                config_id: 'config_id_2',
+                            },
+                        ],
+                    },
+                ],
+            },
+        ]
+
+        const actual = getChildrenIds(children)
+
+        expect(actual).toEqual([])
     })
 })

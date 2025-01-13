@@ -4,9 +4,9 @@ import React, {ReactNode} from 'react'
 
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
-
-import css from './MetricCard.less'
-import {TooltipData} from './types'
+import {ChartsActionMenu} from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
+import css from 'pages/stats/MetricCard.less'
+import {TooltipData} from 'pages/stats/types'
 
 type Props = {
     children: ReactNode
@@ -15,6 +15,7 @@ type Props = {
     isLoading?: boolean
     title: ReactNode
     tip?: ReactNode
+    chartId?: string
 }
 
 export default function MetricCard({
@@ -22,14 +23,18 @@ export default function MetricCard({
     className,
     hint,
     isLoading = false,
+    chartId,
     title,
     tip,
 }: Props) {
     return (
         <Card className={classnames(css.card, className)}>
-            <div className={css.title}>
-                {title}
-                {hint && <HintTooltip {...hint} />}
+            <div className={css.wrapper}>
+                <div className={css.title}>
+                    {title}
+                    {hint && <HintTooltip {...hint} />}
+                </div>
+                {chartId && <ChartsActionMenu chartId={chartId} />}
             </div>
 
             {children}

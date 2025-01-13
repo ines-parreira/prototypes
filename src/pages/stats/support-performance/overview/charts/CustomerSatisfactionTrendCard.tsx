@@ -2,7 +2,6 @@ import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
-
 import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
 import {TrendCard} from 'pages/stats/common/components/TrendCard'
 import {
@@ -18,7 +17,7 @@ import {
 } from 'state/currentAccount/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
 
-export const CustomerSatisfactionTrendCard = () => {
+export const CustomerSatisfactionTrendCard = ({chartId}: {chartId: string}) => {
     const [areTipsVisible] = useLocalStorage(STATS_TIPS_VISIBILITY_KEY, true)
 
     const surveySettings = useAppSelector(getSurveysSettingsJS)
@@ -34,6 +33,7 @@ export const CustomerSatisfactionTrendCard = () => {
         <TrendCard
             {...OverviewMetricConfig[OverviewMetric.CustomerSatisfaction]}
             drillDownMetric={OverviewMetric.CustomerSatisfaction}
+            chartId={chartId}
             tip={
                 areTipsVisible &&
                 (hasSatisfactionSurveyEnabledAndConfigured ? (
