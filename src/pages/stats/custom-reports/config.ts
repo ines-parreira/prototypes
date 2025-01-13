@@ -1,5 +1,9 @@
 import {ReportsModalConfig} from 'pages/stats/custom-reports/types'
 import {
+    SatisfactionChart,
+    SatisfactionReportConfig,
+} from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
+import {
     ServiceLevelAgreementsChart,
     ServiceLevelAgreementsConfig,
 } from 'pages/stats/sla/ServiceLevelAgreementsConfig'
@@ -58,6 +62,15 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
             {
                 type: TicketInsightsTagsChart,
                 config: TicketInsightsTagsConfig,
+            },
+        ],
+    },
+    {
+        category: 'Quality management',
+        children: [
+            {
+                type: SatisfactionChart,
+                config: SatisfactionReportConfig,
             },
         ],
     },

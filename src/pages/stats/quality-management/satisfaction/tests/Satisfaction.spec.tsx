@@ -1,5 +1,6 @@
 import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -7,10 +8,11 @@ import {billingState} from 'fixtures/billing'
 import {useSatisfactionMetrics} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
 import {FiltersPanelWrapper} from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {ResponseRateTrendCard} from 'pages/stats/quality-management/satisfaction/ResponseRateTrendCard'
-import Satisfaction, {
+import SatisfactionReport from 'pages/stats/quality-management/satisfaction/SatisfactionReport'
+import {
     SATISFACTION_OPTIONAL_FILTERS,
     SATISFACTION_TITLE,
-} from 'pages/stats/quality-management/satisfaction/Satisfaction'
+} from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
 import {SatisfactionScoreTrendCard} from 'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard'
 import {SurveysSentTrendCard} from 'pages/stats/quality-management/satisfaction/SurveysSentTrendCard'
 import {defaultStatsFilters} from 'state/stats/statsSlice'
@@ -86,7 +88,10 @@ describe('<Satisfaction>', () => {
     })
 
     it('should render new satisfaction report page', () => {
-        const {getByText} = renderWithStore(<Satisfaction />, defaultState)
+        const {getByText} = renderWithStore(
+            <SatisfactionReport />,
+            defaultState
+        )
 
         expect(getByText(SATISFACTION_TITLE)).toBeInTheDocument()
         expect(SatisfactionScoreTrendCardMock).toHaveBeenCalled()
@@ -95,7 +100,10 @@ describe('<Satisfaction>', () => {
     })
 
     it('should contain filters panel component', () => {
-        const {getByText} = renderWithStore(<Satisfaction />, defaultState)
+        const {getByText} = renderWithStore(
+            <SatisfactionReport />,
+            defaultState
+        )
 
         SATISFACTION_OPTIONAL_FILTERS.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()

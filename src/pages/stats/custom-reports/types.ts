@@ -5,6 +5,7 @@ import {MetricTrendFetch} from 'hooks/reporting/useMetricTrend'
 import {TimeSeriesFetch} from 'hooks/reporting/useTimeSeries'
 import {StaticFilter} from 'models/stat/types'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
+import {SatisfactionChart} from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
 import {ServiceLevelAgreementsChart} from 'pages/stats/sla/ServiceLevelAgreementsConfig'
 import {AgentsChart} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import {BusiestTimesChart} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
@@ -93,6 +94,7 @@ export type AvailableChartIds =
     | typeof ServiceLevelAgreementsChart
     | typeof TicketFieldsChart
     | typeof TicketInsightsTagsChart
+    | typeof SatisfactionChart
 
 export type ReportChildrenConfig = {
     type: AvailableChartIds

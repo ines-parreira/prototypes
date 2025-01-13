@@ -133,7 +133,7 @@ import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
 import LiveAgents from 'pages/stats/LiveAgents'
 import LiveOverview from 'pages/stats/LiveOverview'
-import Satisfaction from 'pages/stats/quality-management/satisfaction/Satisfaction'
+import SatisfactionReport from 'pages/stats/quality-management/satisfaction/SatisfactionReport'
 import {
     ROUTE_AUTOMATE_AI_AGENT,
     ROUTE_AUTOMATE_OVERVIEW,
@@ -603,7 +603,7 @@ export function StatsRoutes() {
                         path={`${path}/quality-management-satisfaction`}
                         render={() => (
                             <App
-                                content={Satisfaction}
+                                content={SatisfactionReport}
                                 navbar={StatsNavbarContainer}
                             />
                         )}

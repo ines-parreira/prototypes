@@ -7,28 +7,22 @@ import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hoo
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import {CustomReportComponent} from 'pages/stats/common/CustomReport/CustomReportComponent'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
-import {ResponseRateTrendCard} from 'pages/stats/quality-management/satisfaction/ResponseRateTrendCard'
 import {SatisfactionDownloadDataButton} from 'pages/stats/quality-management/satisfaction/SatisfactionDownloadDataButton'
-import {SatisfactionScoreTrendCard} from 'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard'
-import {SurveysSentTrendCard} from 'pages/stats/quality-management/satisfaction/SurveysSentTrendCard'
+import {
+    SatisfactionChart,
+    SatisfactionReportConfig,
+} from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
 import StatsPage from 'pages/stats/StatsPage'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 
-export const SATISFACTION_TITLE = 'Satisfaction'
-export const SATISFACTION_OPTIONAL_FILTERS = [
-    FilterKey.Agents,
-    FilterKey.Channels,
-    FilterKey.Integrations,
-    FilterKey.CustomFields,
-]
-
-export default function Satisfaction() {
+export default function SatisfactionReport() {
     const satisfactionOptionalFilters =
         useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            SATISFACTION_OPTIONAL_FILTERS
+            SatisfactionReportConfig.reportFilters.optional
         )
     const getGridCellSize = useGridSize()
     const isAnalyticsNewFilters =
@@ -37,7 +31,7 @@ export default function Satisfaction() {
     return (
         <div className="full-width">
             <StatsPage
-                title={SATISFACTION_TITLE}
+                title={SatisfactionReportConfig.reportName}
                 titleExtra={
                     <>
                         <SupportPerformanceFilters
@@ -62,20 +56,35 @@ export default function Satisfaction() {
                                         },
                                     },
                                 }}
-                                persistentFilters={[FilterKey.Period]}
+                                persistentFilters={
+                                    SatisfactionReportConfig.reportFilters
+                                        .persistent
+                                }
                             />
                         </DashboardGridCell>
                     </DashboardSection>
                 )}
                 <DashboardSection>
                     <DashboardGridCell size={getGridCellSize(4)}>
-                        <SatisfactionScoreTrendCard />
+                        <CustomReportComponent
+                            chart={SatisfactionChart.SatisfactionScoreTrendCard}
+                            config={SatisfactionReportConfig}
+                            activateActionsMenu
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(4)}>
-                        <ResponseRateTrendCard />
+                        <CustomReportComponent
+                            chart={SatisfactionChart.ResponseRateTrendCard}
+                            config={SatisfactionReportConfig}
+                            activateActionsMenu
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(4)}>
-                        <SurveysSentTrendCard />
+                        <CustomReportComponent
+                            chart={SatisfactionChart.SurveysSentTrendCard}
+                            config={SatisfactionReportConfig}
+                            activateActionsMenu
+                        />
                     </DashboardGridCell>
                 </DashboardSection>
                 <AnalyticsFooter />

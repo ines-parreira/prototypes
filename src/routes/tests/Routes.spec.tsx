@@ -26,7 +26,7 @@ import {user} from 'fixtures/users'
 import {CustomReportPage} from 'pages/stats/custom-reports/CustomReportPage'
 import {CustomReports} from 'pages/stats/custom-reports/CustomReports'
 import LiveOverview from 'pages/stats/LiveOverview'
-import Satisfaction from 'pages/stats/quality-management/satisfaction/Satisfaction'
+import SatisfactionReport from 'pages/stats/quality-management/satisfaction/SatisfactionReport'
 import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
 import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
 import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsReport'
@@ -154,8 +154,8 @@ jest.mock('pages/stats/LiveOverview')
 const LiveOverviewMock = assumeMock(LiveOverview)
 jest.mock('pages/stats/ticket-insights/tags/Tags')
 const TagsMock = assumeMock(Tags)
-jest.mock('pages/stats/quality-management/satisfaction/Satisfaction')
-const SatisfactionMock = assumeMock(Satisfaction)
+jest.mock('pages/stats/quality-management/satisfaction/SatisfactionReport')
+const SatisfactionMock = assumeMock(SatisfactionReport)
 jest.mock('pages/stats/custom-reports/CustomReports')
 const CustomReportsMock = assumeMock(CustomReports)
 
