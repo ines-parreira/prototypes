@@ -6,6 +6,7 @@ import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
 
 import AddConditionalField from '../AddConditionalField'
 
+jest.mock('../ThenField', () => () => <div>ThenField</div>)
 jest.mock(
     'react-router-dom',
     () =>
