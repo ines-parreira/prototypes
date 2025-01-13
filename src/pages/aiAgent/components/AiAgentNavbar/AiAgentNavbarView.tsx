@@ -9,11 +9,10 @@ import {IntegrationType, StoreIntegration} from 'models/integration/types'
 import {ShopType} from 'models/selfServiceConfiguration/types'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import {
-    AI_AGENT_NAVBAR_COLLAPSED_SECTIONS_KEY,
     AI_AGENT_MAX_EXPANDED_SECTIONS_BY_DEFAULT,
+    AI_AGENT_NAVBAR_COLLAPSED_SECTIONS_KEY,
 } from 'pages/aiAgent/constants'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {compare} from 'utils'
+import {getShopifyIntegrationsSortedByName} from 'state/integrations/selectors'
 
 import {AiAgentNavbarSectionBlock} from './AiAgentNavbarSectionBlock'
 
@@ -31,15 +30,7 @@ export const AiAgentNavbarView = () => {
         exact: false,
     })
     const {shopType = IntegrationType.Shopify, shopName} = match?.params ?? {}
-    const getShopifyIntegrations = useMemo(
-        () => getIntegrationsByType<StoreIntegration>(IntegrationType.Shopify),
-        []
-    )
-    const storeIntegrations = useAppSelector(getShopifyIntegrations)
-    const sortedStoreIntegrations = useMemo(
-        () => [...storeIntegrations].sort((a, b) => compare(a.name, b.name)),
-        [storeIntegrations]
-    )
+    const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
     const initialCollapsedSections = useMemo(
         () =>
             storeIntegrations.length > AI_AGENT_MAX_EXPANDED_SECTIONS_BY_DEFAULT
@@ -85,7 +76,7 @@ export const AiAgentNavbarView = () => {
 
     return (
         <div className={navbarCss.category}>
-            {sortedStoreIntegrations.map((storeIntegration) => {
+            {storeIntegrations.map((storeIntegration) => {
                 const shopType = storeIntegration.type
                 const shopName =
                     getShopNameFromStoreIntegration(storeIntegration)

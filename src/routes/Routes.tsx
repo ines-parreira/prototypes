@@ -45,6 +45,7 @@ import AiAgentOnboardingWizard from 'pages/aiAgent/AiAgentOnboardingWizard/AiAge
 import {AiAgentPlaygroundContainer} from 'pages/aiAgent/AiAgentPlaygroundContainer'
 import {AiAgentPreviewModeSettingsContainer} from 'pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer'
 import {AiAgentNavbar} from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
+import {RedirectToAiAgentStore} from 'pages/aiAgent/components/RedirectToAiAgentStore/RedirectToAiAgentStore'
 import {Level2IntentsContainer} from 'pages/aiAgent/insights/Level2IntentsContainer/Level2IntentsContainer'
 import {OptimizeContainer} from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
 import {AiAgentAccountConfigurationProvider} from 'pages/aiAgent/providers/AiAgentAccountConfigurationProvider'
@@ -1393,7 +1394,7 @@ function AiAgentContent() {
                 component={withUserRoleRequired(AiAgentRoutes, AGENT_ROLE)}
             />
             <Route>
-                <Redirect to={`${path}`} />
+                <RedirectToAiAgentStore />
             </Route>
         </Switch>
     )

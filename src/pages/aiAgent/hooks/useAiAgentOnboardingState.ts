@@ -14,6 +14,15 @@ type WelcomePageFeatureFlag =
     | 'dynamic_odd_static_even'
     | 'static_odd_dynamic_even'
 
+const isWelcomeDynamic = (
+    welcomePageFeatureFlag: WelcomePageFeatureFlag,
+    accountId: number
+) =>
+    (welcomePageFeatureFlag === 'dynamic_odd_static_even' &&
+        accountId % 2 !== 0) ||
+    (welcomePageFeatureFlag === 'static_odd_dynamic_even' &&
+        accountId % 2 === 0)
+
 export enum OnboardingState {
     Loading = 'loading',
     WelcomeStatic = 'welcomeStatic',
@@ -64,14 +73,8 @@ export const useAiAgentOnboardingState = (
         !storeConfiguration &&
         welcomePageAcknowledged?.acknowledged !== true
 
-    const isWelcomeDynamic =
-        (welcomePageFeatureFlag === 'dynamic_odd_static_even' &&
-            accountId % 2 !== 0) ||
-        (welcomePageFeatureFlag === 'static_odd_dynamic_even' &&
-            accountId % 2 === 0)
-
     if (!isAiAgentOnboardingWizardEnabled && displayWelcomePage)
-        return isWelcomeDynamic
+        return isWelcomeDynamic(welcomePageFeatureFlag, accountId)
             ? OnboardingState.WelcomeDynamic
             : OnboardingState.WelcomeStatic
 
