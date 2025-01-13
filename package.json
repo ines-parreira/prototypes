@@ -11,7 +11,6 @@
         "stylelint:less": "stylelint \"src/**/*.less\"",
         "lint": "run-s lint:*",
         "lint:dependencies": "node scripts/lint-dependencies.mjs",
-        "lint:deprecated": "tsx scripts/deprecated-monitoring/deprecated.monitoring.ts",
         "lint:format": "run-p stylelint:less eslint",
         "quality": "run-s lint types",
         "jest": "TZ=UTC LC_ALL=\"en_US.UTF-8\" jest",
