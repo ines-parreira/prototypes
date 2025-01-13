@@ -1,15 +1,15 @@
+import {act} from '@testing-library/react'
 import {renderHook} from '@testing-library/react-hooks'
 
 import {createBrowserHistory} from 'history'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ReactNode} from 'react'
-import {act} from 'react-dom/test-utils'
-import {Provider} from 'react-redux'
 import {Router} from 'react-router-dom'
 
-import AlertBanners, {BannersContextProvider} from 'AlertBanners'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {mockStore} from 'utils/testing'
+
+import useAppSelector from 'hooks/useAppSelector'
+import {assumeMock} from 'utils/testing'
 
 import {useDisplayAiAgentMovedBanner} from '../useDisplayAiAgentMovedBanner'
 
@@ -22,23 +22,22 @@ jest.mock('AlertBanners/hooks/useBanners', () => ({
     })),
 }))
 
+jest.mock('hooks/useAppSelector')
+const mockUseAppSelector = assumeMock(useAppSelector)
+
 const mockHistory = createBrowserHistory()
 
 describe('useDisplayAiAgentMovedBanner', () => {
-    it('should display ai-agent-moved info banner when accessing Automate pages', () => {
+    const wrapper = ({children}: {children: ReactNode}) => (
+        <Router history={mockHistory}>{children}</Router>
+    )
+
+    beforeEach(() => {
         mockFlags({[FeatureFlagKey.ConvAiStandaloneMenu]: true})
+        mockUseAppSelector.mockReturnValue(true)
+    })
 
-        const wrapper = ({children}: {children: ReactNode}) => (
-            <Router history={mockHistory}>
-                <Provider store={mockStore({notifications: []})}>
-                    <BannersContextProvider>
-                        <AlertBanners />
-                        {children}
-                    </BannersContextProvider>
-                </Provider>
-            </Router>
-        )
-
+    it('should display ai-agent-moved info banner when accessing Automate pages', () => {
         renderHook(() => useDisplayAiAgentMovedBanner(), {wrapper})
 
         act(() => mockHistory.push('/app/automation'))
@@ -46,5 +45,14 @@ describe('useDisplayAiAgentMovedBanner', () => {
 
         act(() => mockHistory.push('/app/ai-agent'))
         expect(mockRemoveBanner).toHaveBeenCalled()
+    })
+
+    it('should not display ai-agent-moved info banner when hasAutomate is false', () => {
+        mockUseAppSelector.mockReturnValue(false)
+
+        renderHook(() => useDisplayAiAgentMovedBanner(), {wrapper})
+
+        act(() => mockHistory.push('/app/automation'))
+        expect(mockAddBanner).not.toHaveBeenCalled()
     })
 })
