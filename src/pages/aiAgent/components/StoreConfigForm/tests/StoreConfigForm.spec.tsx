@@ -10,7 +10,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
-import {SegmentEvent, logEvent} from 'common/segment'
+import {logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {billingState} from 'fixtures/billing'
 import * as useLocalStorageImports from 'hooks/useLocalStorage'
@@ -476,7 +476,6 @@ describe('<StoreConfigForm />', () => {
         it('chat toggle should be disabled if user does not have automate', () => {
             mockFlags({
                 [FeatureFlagKey.AiAgentChat]: true,
-                [FeatureFlagKey.AiAgentMultiChannelEnablement]: true,
             })
             mockGetHasAutomate.mockReturnValue(false)
             renderComponent()
@@ -487,9 +486,6 @@ describe('<StoreConfigForm />', () => {
     })
 
     it('email toggle should be disabled if user does not have automate', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentMultiChannelEnablement]: true,
-        })
         mockGetHasAutomate.mockReturnValue(false)
         renderComponent()
 
@@ -527,7 +523,7 @@ describe('<StoreConfigForm />', () => {
         ).toBeGreaterThan(0)
     })
 
-    it('should not render error when email channel is disabled and multichannel enabled', () => {
+    it('should not render error when email channel is disabled', () => {
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             formValues: {
@@ -535,9 +531,6 @@ describe('<StoreConfigForm />', () => {
                 emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                 signature: '',
             },
-        })
-        mockFlags({
-            [FeatureFlagKey.AiAgentMultiChannelEnablement]: true,
         })
 
         renderComponent()
@@ -697,7 +690,6 @@ describe('<StoreConfigForm />', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentTrialMode]: true,
             [FeatureFlagKey.AiAgentChat]: false,
-            [FeatureFlagKey.AiAgentMultiChannelEnablement]: false,
         })
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
@@ -740,7 +732,6 @@ describe('<StoreConfigForm />', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentTrialMode]: true,
             [FeatureFlagKey.AiAgentChat]: false,
-            [FeatureFlagKey.AiAgentMultiChannelEnablement]: false,
         })
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
@@ -779,7 +770,6 @@ describe('<StoreConfigForm />', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentTrialMode]: true,
             [FeatureFlagKey.AiAgentChat]: false,
-            [FeatureFlagKey.AiAgentMultiChannelEnablement]: false,
         })
         renderComponent({})
 
@@ -804,39 +794,7 @@ describe('<StoreConfigForm />', () => {
         )
     })
 
-    it('should call segment event when disabling email channel', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentMultiChannelEnablement]: false,
-        })
-        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
-            storeConfiguration: {
-                ...storeConfiguration,
-                deactivatedDatetime: null,
-            },
-            isLoading: false,
-            updateStoreConfiguration: mockUpdateStoreConfiguration,
-            createStoreConfiguration: jest
-                .fn()
-                .mockRejectedValue(new Error('Test error')),
-            isPendingCreateOrUpdate: false,
-        })
-
-        renderComponent({})
-
-        const toggleCheckbox = screen.getByLabelText('Enable AI Agent')
-        // Toggle working only with fire event
-        fireEvent.click(toggleCheckbox)
-
-        expect(mockLogEvent).toHaveBeenCalledTimes(1)
-        expect(mockLogEvent).toHaveBeenCalledWith(
-            SegmentEvent.AiAgentConfigurationDisabled
-        )
-    })
-
     it('should deactivate email channel', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentMultiChannelEnablement]: true,
-        })
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             formValues: {
@@ -859,7 +817,6 @@ describe('<StoreConfigForm />', () => {
 
     it('should deactivate chat channel', () => {
         mockFlags({
-            [FeatureFlagKey.AiAgentMultiChannelEnablement]: true,
             [FeatureFlagKey.AiAgentChat]: true,
         })
 
@@ -883,7 +840,6 @@ describe('<StoreConfigForm />', () => {
 
     it('should activate chat channel', () => {
         mockFlags({
-            [FeatureFlagKey.AiAgentMultiChannelEnablement]: true,
             [FeatureFlagKey.AiAgentChat]: true,
         })
 
@@ -1147,7 +1103,6 @@ describe('<StoreConfigForm />', () => {
 
         it('should show error when chat or email enabled but no integrations selected', () => {
             mockFlags({
-                [FeatureFlagKey.AiAgentMultiChannelEnablement]: true,
                 [FeatureFlagKey.AiAgentChat]: true,
             })
 

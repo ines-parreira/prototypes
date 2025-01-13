@@ -63,7 +63,6 @@ describe('ConnectedChannelsEmailView', () => {
         })
         mockFlags({
             [FeatureFlagKey.AiAgentOnboardingWizard]: false,
-            [FeatureFlagKey.AiAgentMultiChannelEnablement]: false,
         })
     })
     it('should show loading spinner when fetching data', () => {
@@ -104,7 +103,7 @@ describe('ConnectedChannelsEmailView', () => {
     it('should call upsertStoreConfiguration with correct parameters when enabling AI agent', () => {
         const handleUpsertStoreConfiguration = jest.fn()
         const storeConfiguration = getStoreConfigurationFixture({
-            deactivatedDatetime: '2021-09-28T10:00:00Z',
+            emailChannelDeactivatedDatetime: '2021-09-28T10:00:00Z',
             monitoredEmailIntegrations: [{id: 1, email: 'test@mail.com'}],
         })
         ;(useStoreConfiguration as jest.Mock).mockReturnValue({
@@ -139,7 +138,7 @@ describe('ConnectedChannelsEmailView', () => {
     it('should call upsertStoreConfiguration with correct parameters when disabling AI agent', () => {
         const handleUpsertStoreConfiguration = jest.fn()
         const storeConfiguration = getStoreConfigurationFixture({
-            deactivatedDatetime: null,
+            emailChannelDeactivatedDatetime: null,
         })
         ;(useStoreConfiguration as jest.Mock).mockReturnValue({
             storeConfiguration,
@@ -167,7 +166,7 @@ describe('ConnectedChannelsEmailView', () => {
                 ...storeConfiguration,
                 trialModeActivatedDatetime: null,
                 previewModeActivatedDatetime: null,
-                deactivatedDatetime: expect.any(String),
+                emailChannelDeactivatedDatetime: expect.any(String),
             })
         )
     })
@@ -175,7 +174,7 @@ describe('ConnectedChannelsEmailView', () => {
     it('should show enabled state when AI agent is enabled', () => {
         ;(useStoreConfiguration as jest.Mock).mockReturnValue({
             storeConfiguration: getStoreConfigurationFixture({
-                deactivatedDatetime: undefined,
+                emailChannelDeactivatedDatetime: undefined,
             }),
             isLoading: false,
         })
@@ -193,7 +192,7 @@ describe('ConnectedChannelsEmailView', () => {
     it('should show disabled state when AI agent is disabled', () => {
         ;(useStoreConfiguration as jest.Mock).mockReturnValue({
             storeConfiguration: getStoreConfigurationFixture({
-                deactivatedDatetime: '2021-09-28T10:00:00Z',
+                emailChannelDeactivatedDatetime: '2021-09-28T10:00:00Z',
             }),
             isLoading: false,
         })
@@ -212,7 +211,7 @@ describe('ConnectedChannelsEmailView', () => {
         const handleUpsertStoreConfiguration = jest.fn()
         const storeConfiguration = getStoreConfigurationFixture({
             monitoredEmailIntegrations: [{id: 1, email: 'test@mail.com'}],
-            deactivatedDatetime: '2021-09-28T10:00:00Z',
+            emailChannelDeactivatedDatetime: '2021-09-28T10:00:00Z',
         })
         ;(useStoreConfiguration as jest.Mock).mockReturnValue({
             storeConfiguration,
@@ -246,7 +245,7 @@ describe('ConnectedChannelsEmailView', () => {
     it('should call upsertStoreConfiguration and disable when enabled state', () => {
         const handleUpsertStoreConfiguration = jest.fn()
         const storeConfiguration = getStoreConfigurationFixture({
-            deactivatedDatetime: null,
+            emailChannelDeactivatedDatetime: null,
         })
         ;(useStoreConfiguration as jest.Mock).mockReturnValue({
             storeConfiguration,
@@ -274,7 +273,7 @@ describe('ConnectedChannelsEmailView', () => {
                 ...storeConfiguration,
                 trialModeActivatedDatetime: null,
                 previewModeActivatedDatetime: null,
-                deactivatedDatetime: expect.any(String),
+                emailChannelDeactivatedDatetime: expect.any(String),
             })
         )
     })
@@ -299,7 +298,7 @@ describe('ConnectedChannelsEmailView', () => {
         ).toBeDisabled()
     })
 
-    it('should call updateSettingsAfterAiAgentEnabled when AI agent is disabled and AiAgentMultiChannelEnablement is enabled', () => {
+    it('should call updateSettingsAfterAiAgentEnabled when AI agent is disabled', () => {
         const handleUpsertStoreConfiguration = jest.fn()
         const storeConfiguration = getStoreConfigurationFixture({
             emailChannelDeactivatedDatetime: '2021-09-28T10:00:00Z',
@@ -316,7 +315,6 @@ describe('ConnectedChannelsEmailView', () => {
         })
         mockFlags({
             [FeatureFlagKey.AiAgentOnboardingWizard]: true,
-            [FeatureFlagKey.AiAgentMultiChannelEnablement]: true,
         })
 
         renderWithQueryClientProvider(
@@ -353,7 +351,6 @@ describe('ConnectedChannelsEmailView', () => {
 
         mockFlags({
             [FeatureFlagKey.AiAgentOnboardingWizard]: true,
-            [FeatureFlagKey.AiAgentMultiChannelEnablement]: true,
         })
 
         renderWithQueryClientProvider(

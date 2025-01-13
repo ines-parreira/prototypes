@@ -15,7 +15,6 @@ export enum FeatureFlagKey {
     AiAgentChatTestMode = 'ai-agent-chat-test-mode',
     AiAgentKnowledgeTab = 'ai-agent-knowledge-tab',
     AiAgentKubernetesConfigManager = 'ai-agent-kubernetes-config-manager',
-    AiAgentMultiChannelEnablement = 'ai-agent-multi-channel-enablement',
     AiAgentOnboardingNotification = 'ai-agent-onboarding-notification',
     AiAgentOnboardingWizard = 'ai-agent-onboarding-wizard',
     AiAgentOnboardingWizardEducationalStep = 'ai-agent-onboarding-wizard-educational-step',

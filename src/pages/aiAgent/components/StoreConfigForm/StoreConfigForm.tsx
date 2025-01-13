@@ -15,7 +15,6 @@ import {Link} from 'react-router-dom'
 
 // Absolute Imports
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
-import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -102,8 +101,6 @@ export const StoreConfigForm = ({
         useFlags()[FeatureFlagKey.AiAgentChat]
     const isAiAgentOnboardingWizardEnabled =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
-    const isAiAgentMultichannelEnablementEnabled =
-        useFlags()[FeatureFlagKey.AiAgentMultiChannelEnablement]
     const isFollowUpAiAgentPreviewModeEnabled =
         useFlags()[FeatureFlagKey.FollowUpAiAgentPreviewMode]
 
@@ -237,12 +234,9 @@ export const StoreConfigForm = ({
     const {updateSettingsAfterAiAgentEnabled} = useAiAgentEnabled({
         monitoredEmailIntegrations: formValues.monitoredEmailIntegrations ?? [],
         monitoredChatIntegrations: formValues.monitoredChatIntegrations ?? [],
-        isChatChanelEnabled: isAiAgentMultichannelEnablementEnabled
-            ? formValues.chatChannelDeactivatedDatetime === null
-            : formValues.deactivatedDatetime === null,
-        isEmailChannelEnabled: isAiAgentMultichannelEnablementEnabled
-            ? formValues.emailChannelDeactivatedDatetime === null
-            : formValues.deactivatedDatetime === null,
+        isChatChanelEnabled: formValues.chatChannelDeactivatedDatetime === null,
+        isEmailChannelEnabled:
+            formValues.emailChannelDeactivatedDatetime === null,
     })
 
     const {
@@ -255,14 +249,7 @@ export const StoreConfigForm = ({
         shopName,
     })
 
-    const toggleAiAgentId = `toggle-ai-agent-${useId()}`
     const toggleHandoffId = `toggle-handoff-${useId()}`
-
-    const isAIAgentToggled = isAiAgentEnabled(
-        formValues.deactivatedDatetime !== undefined
-            ? formValues.deactivatedDatetime
-            : INITIAL_FORM_VALUES.deactivatedDatetime
-    )
 
     const isEmailChannelEnabled = isAiAgentEnabled(
         formValues.emailChannelDeactivatedDatetime !== undefined
@@ -300,7 +287,7 @@ export const StoreConfigForm = ({
             return 'trial'
         }
 
-        if (isAIAgentToggled || isEmailChannelEnabled || isChatChannelEnabled) {
+        if (isEmailChannelEnabled || isChatChannelEnabled) {
             return 'enabled'
         }
 
@@ -309,7 +296,6 @@ export const StoreConfigForm = ({
         storeConfiguration,
         formValues,
         trialModeAvailable,
-        isAIAgentToggled,
         isEmailChannelEnabled,
         isChatChannelEnabled,
     ])
@@ -610,35 +596,6 @@ export const StoreConfigForm = ({
                                 }
                             />
                         )}
-                        {!isAiAgentMultichannelEnablementEnabled &&
-                            !trialModeAvailable && (
-                                <div className={css.formGroup}>
-                                    <ToggleInput
-                                        isToggled={isAIAgentToggled}
-                                        onClick={() => {
-                                            updateValue(
-                                                'deactivatedDatetime',
-                                                isAIAgentToggled
-                                                    ? new Date().toISOString()
-                                                    : null
-                                            )
-
-                                            if (isAIAgentToggled) {
-                                                logEvent(
-                                                    SegmentEvent.AiAgentConfigurationDisabled
-                                                )
-                                            }
-                                        }}
-                                        caption="When enabled, you can find tickets handled by AI Agent in your ticket views."
-                                        name={toggleAiAgentId}
-                                        dataCanduId="ai-agent-configuration-toggle"
-                                        isDisabled={!hasAutomate}
-                                    >
-                                        Enable AI Agent
-                                    </ToggleInput>
-                                </div>
-                            )}
-
                         <ToneOfVoiceFormComponent
                             toneOfVoice={formValues.toneOfVoice}
                             customToneOfVoiceGuidance={
@@ -657,28 +614,24 @@ export const StoreConfigForm = ({
                             <SettingsBanner
                                 type={SettingsBannerType.Chat}
                                 deactivatedDatetime={
-                                    isAiAgentMultichannelEnablementEnabled
-                                        ? formValues.chatChannelDeactivatedDatetime
-                                        : formValues.deactivatedDatetime
+                                    formValues.chatChannelDeactivatedDatetime
                                 }
                             />
-                            {isAiAgentMultichannelEnablementEnabled ? (
-                                <div className={css.sectionBlock}>
-                                    <ChannelToggleInput
-                                        isToggled={isChatChannelEnabled}
-                                        onUpdate={(isToggled) => {
-                                            updateValue(
-                                                'chatChannelDeactivatedDatetime',
-                                                isToggled
-                                                    ? null
-                                                    : new Date().toISOString()
-                                            )
-                                        }}
-                                        channel="chat"
-                                        isDisabled={!hasAutomate}
-                                    />
-                                </div>
-                            ) : null}
+                            <div className={css.sectionBlock}>
+                                <ChannelToggleInput
+                                    isToggled={isChatChannelEnabled}
+                                    onUpdate={(isToggled) => {
+                                        updateValue(
+                                            'chatChannelDeactivatedDatetime',
+                                            isToggled
+                                                ? null
+                                                : new Date().toISOString()
+                                        )
+                                    }}
+                                    channel="chat"
+                                    isDisabled={!hasAutomate}
+                                />
+                            </div>
 
                             <ChatSettingsFormComponent
                                 monitoredChatIntegrations={
@@ -704,28 +657,24 @@ export const StoreConfigForm = ({
                         <SettingsBanner
                             type={SettingsBannerType.Email}
                             deactivatedDatetime={
-                                isAiAgentMultichannelEnablementEnabled
-                                    ? formValues.emailChannelDeactivatedDatetime
-                                    : formValues.deactivatedDatetime
+                                formValues.emailChannelDeactivatedDatetime
                             }
                         />
-                        {isAiAgentMultichannelEnablementEnabled ? (
-                            <div className={css.sectionBlock}>
-                                <ChannelToggleInput
-                                    isToggled={isEmailChannelEnabled}
-                                    onUpdate={(isToggled) => {
-                                        updateValue(
-                                            'emailChannelDeactivatedDatetime',
-                                            isToggled
-                                                ? null
-                                                : new Date().toISOString()
-                                        )
-                                    }}
-                                    channel="email"
-                                    isDisabled={!hasAutomate}
-                                />
-                            </div>
-                        ) : null}
+                        <div className={css.sectionBlock}>
+                            <ChannelToggleInput
+                                isToggled={isEmailChannelEnabled}
+                                onUpdate={(isToggled) => {
+                                    updateValue(
+                                        'emailChannelDeactivatedDatetime',
+                                        isToggled
+                                            ? null
+                                            : new Date().toISOString()
+                                    )
+                                }}
+                                channel="email"
+                                isDisabled={!hasAutomate}
+                            />
+                        </div>
 
                         <EmailFormComponent
                             updateValue={updateValue}

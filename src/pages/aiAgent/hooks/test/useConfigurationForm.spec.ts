@@ -180,14 +180,13 @@ describe('useConfigurationForm', () => {
     it('should throw error when chat is enabled and no integrations are selected', async () => {
         mockFlags({
             [FeatureFlagKey.AiAgentChat]: true,
-            [FeatureFlagKey.AiAgentMultiChannelEnablement]: false,
         })
         const {result} = renderHook(() =>
             useConfigurationForm({
                 initValues: {
                     monitoredChatIntegrations: [],
                     monitoredEmailIntegrations: [],
-                    deactivatedDatetime: null,
+                    chatChannelDeactivatedDatetime: null,
                     signature: 'valid signature',
                 },
                 shopName,
@@ -202,7 +201,8 @@ describe('useConfigurationForm', () => {
         expect(mockDispatch).toHaveBeenCalled()
         expect(notify).toHaveBeenCalledWith(
             expect.objectContaining({
-                message: 'At least one channel must be selected.',
+                message:
+                    'Please select at least 1 chat integration for AI Agent to use or disable AI Agent for chat to proceed.',
                 status: 'error',
             })
         )

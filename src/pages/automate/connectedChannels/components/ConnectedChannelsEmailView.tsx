@@ -23,8 +23,6 @@ import {FeatureSettings} from './FeatureSettings'
 export const ConnectedChannelsEmailView = () => {
     const isAiAgentOnboardingWizardEnabled =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
-    const isAiAgentMultiChannelEnabled =
-        useFlags()[FeatureFlagKey.AiAgentMultiChannelEnablement]
     const isTrialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
 
     const {shopName} = useParams<{
@@ -48,14 +46,13 @@ export const ConnectedChannelsEmailView = () => {
             storeConfiguration?.monitoredEmailIntegrations ?? [],
         monitoredChatIntegrations:
             storeConfiguration?.monitoredChatIntegrations ?? [],
-        isChatChanelEnabled: isAiAgentMultiChannelEnabled
-            ? storeConfiguration?.chatChannelDeactivatedDatetime === null
-            : storeConfiguration?.deactivatedDatetime === null,
+        isChatChanelEnabled:
+            storeConfiguration?.chatChannelDeactivatedDatetime === null,
         // Reverse the condition because this component update email channel without "Save" button how it works on Settings Page.
         // Linear to refactor this hook to support params in updateSettingsAfterAiAgentEnabled https://linear.app/gorgias/issue/AUTAI-1993/useaiagentenabled-hook-incorrectly-working-with-one-click-updates
-        isEmailChannelEnabled: !(isAiAgentMultiChannelEnabled
-            ? storeConfiguration?.emailChannelDeactivatedDatetime === null
-            : storeConfiguration?.deactivatedDatetime === null),
+        isEmailChannelEnabled: !(
+            storeConfiguration?.emailChannelDeactivatedDatetime === null
+        ),
     })
 
     const {
@@ -75,9 +72,8 @@ export const ConnectedChannelsEmailView = () => {
         )
     }
 
-    const deactivatedDatetime = isAiAgentMultiChannelEnabled
-        ? storeConfiguration?.emailChannelDeactivatedDatetime
-        : storeConfiguration?.deactivatedDatetime
+    const deactivatedDatetime =
+        storeConfiguration?.emailChannelDeactivatedDatetime
 
     const isAIAgentToggled = isAiAgentEnabled(
         deactivatedDatetime !== undefined
@@ -114,21 +110,14 @@ export const ConnectedChannelsEmailView = () => {
     const onToggle = async (value: boolean) => {
         if (!storeConfiguration) return
 
-        if (isAiAgentMultiChannelEnabled) {
-            await upsertStoreConfiguration({
-                ...storeConfiguration,
-                ...previewModeDeactivationPayload,
-                emailChannelDeactivatedDatetime: value
-                    ? null
-                    : new Date().toISOString(),
-            })
-        } else {
-            await upsertStoreConfiguration({
-                ...storeConfiguration,
-                ...previewModeDeactivationPayload,
-                deactivatedDatetime: value ? null : new Date().toISOString(),
-            })
-        }
+        await upsertStoreConfiguration({
+            ...storeConfiguration,
+            ...previewModeDeactivationPayload,
+            emailChannelDeactivatedDatetime: value
+                ? null
+                : new Date().toISOString(),
+        })
+
         if (error) {
             void dispatch(
                 notify({

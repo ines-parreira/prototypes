@@ -1,5 +1,5 @@
 import {QueryClientProvider} from '@tanstack/react-query'
-import {act, fireEvent, screen} from '@testing-library/react'
+import {screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import {keyBy} from 'lodash'
@@ -211,51 +211,9 @@ describe('AiAgentConfigurationContainer', () => {
         setupMocks()
         renderComponent()
         expect(screen.getByText('Save Changes')).toBeInTheDocument()
-        expect(screen.getAllByText('Enable AI Agent')[0]).toBeInTheDocument()
-    })
-
-    it('enables and disables configuration from the main toggle', () => {
-        setupMocks()
-        const storeConfiguration = getStoreConfigurationFixture()
-        const {rerender} = renderComponent()
-
-        act(() => {
-            fireEvent.click(screen.getAllByText('Enable AI Agent')[0])
-        })
-
         expect(
-            mockedAiAgentStoreConfigurationContext.updateStoreConfiguration
-        ).toHaveBeenCalledWith({
-            ...storeConfiguration,
-            deactivatedDatetime: expect.any(String),
-        })
-
-        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-            ...mockedAiAgentStoreConfigurationContext,
-            storeConfiguration: {
-                ...storeConfiguration,
-                deactivatedDatetime: new Date().toISOString(),
-            },
-        })
-
-        rerender(
-            <Provider store={mockStore(getState())}>
-                <QueryClientProvider client={mockQueryClient()}>
-                    <AiAgentConfigurationContainer />
-                </QueryClientProvider>
-            </Provider>
-        )
-
-        act(() => {
-            fireEvent.click(screen.getAllByText('Enable AI Agent')[0])
-        })
-
-        expect(
-            mockedAiAgentStoreConfigurationContext.updateStoreConfiguration
-        ).toHaveBeenCalledWith({
-            ...storeConfiguration,
-            deactivatedDatetime: null,
-        })
+            screen.getAllByText('Enable AI Agent on Email')[0]
+        ).toBeInTheDocument()
     })
 
     it('renders the configuration page if the merchant already has interacted with the AI Agent', () => {
@@ -265,6 +223,8 @@ describe('AiAgentConfigurationContainer', () => {
 
         renderComponent()
         expect(screen.getByText('Save Changes')).toBeInTheDocument()
-        expect(screen.getAllByText('Enable AI Agent')[0]).toBeInTheDocument()
+        expect(
+            screen.getAllByText('Enable AI Agent on Email')[0]
+        ).toBeInTheDocument()
     })
 })

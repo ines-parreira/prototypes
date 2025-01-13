@@ -123,6 +123,7 @@ describe('store-configuration-validation', () => {
             const formValues: FormValues = {
                 ...VALID_FORM_VALUES,
                 signature: 'a'.repeat(SIGNATURE_MAX_LENGTH + 1),
+                emailChannelDeactivatedDatetime: null,
             }
             expect(() =>
                 getValidStoreConfigurationFormValues(
@@ -139,6 +140,7 @@ describe('store-configuration-validation', () => {
                 ...VALID_FORM_VALUES,
                 signature: '',
                 wizard: null,
+                emailChannelDeactivatedDatetime: null,
             }
             expect(() =>
                 getValidStoreConfigurationFormValues(
@@ -158,6 +160,7 @@ describe('store-configuration-validation', () => {
                     ...WIZARD_FORM_VALUES,
                     completedDatetime: '2021-01-01T00:00:00',
                 },
+                emailChannelDeactivatedDatetime: null,
             }
             expect(() =>
                 getValidStoreConfigurationFormValues(
@@ -307,13 +310,12 @@ describe('store-configuration-validation', () => {
             const formValues: FormValues = {
                 ...VALID_FORM_VALUES,
                 monitoredEmailIntegrations: [],
-                deactivatedDatetime: null,
+                emailChannelDeactivatedDatetime: null,
             }
 
             expect(() =>
                 getValidStoreConfigurationFormValues(formValues, [], false, {
                     ...DEFAULT_OPTIONS,
-                    isMultiChannelEnabled: false,
                 })
             ).toThrow(StoreConfigurationValidationMessage.EmailIntegrationError)
         })
@@ -403,7 +405,6 @@ describe('store-configuration-validation', () => {
                         false,
                         {
                             ...DEFAULT_OPTIONS,
-                            isMultiChannelEnabled: true,
                         }
                     )
                 ).toThrow(StoreConfigurationValidationMessage.SignatureEmpty)
@@ -422,7 +423,6 @@ describe('store-configuration-validation', () => {
                         false,
                         {
                             ...DEFAULT_OPTIONS,
-                            isMultiChannelEnabled: true,
                         }
                     )
                 ).toThrow(StoreConfigurationValidationMessage.SignatureLength)
@@ -441,7 +441,6 @@ describe('store-configuration-validation', () => {
                         false,
                         {
                             ...DEFAULT_OPTIONS,
-                            isMultiChannelEnabled: true,
                         }
                     )
                 ).toThrow(
@@ -463,7 +462,6 @@ describe('store-configuration-validation', () => {
                         false,
                         {
                             ...DEFAULT_OPTIONS,
-                            isMultiChannelEnabled: true,
                             isAiAgentChatEnabled: true,
                         }
                     )

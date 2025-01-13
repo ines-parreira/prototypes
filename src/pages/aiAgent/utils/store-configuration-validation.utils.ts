@@ -47,7 +47,6 @@ export const getValidStoreConfigurationFormValues = (
     opts: {
         isOnboardingWizardPage: boolean
         isAiAgentChatEnabled: boolean | undefined
-        isMultiChannelEnabled: boolean | undefined
     }
 ): ValidFormValues => {
     const isWizardStepKnowledgeOrCompleted =
@@ -57,11 +56,8 @@ export const getValidStoreConfigurationFormValues = (
     const isWizardNotFinished =
         !formValues.wizard || isWizardStepKnowledgeOrCompleted
 
-    // Validate signature only when email channel is not deactivated
-    if (
-        formValues.emailChannelDeactivatedDatetime === null ||
-        !opts.isMultiChannelEnabled
-    ) {
+    // Validate signature only when email channel is activated
+    if (formValues.emailChannelDeactivatedDatetime === null) {
         if (formValues.signature !== null) {
             if (formValues.signature.length > SIGNATURE_MAX_LENGTH) {
                 throw new Error(
@@ -133,46 +129,23 @@ export const getValidStoreConfigurationFormValues = (
         )
     }
 
-    if (opts.isMultiChannelEnabled) {
-        if (
-            isEmailIntegrationMissing(formValues) &&
-            formValues.emailChannelDeactivatedDatetime === null
-        ) {
-            throw new Error(
-                StoreConfigurationValidationMessage.EmailIntegrationError
-            )
-        }
+    if (
+        isEmailIntegrationMissing(formValues) &&
+        formValues.emailChannelDeactivatedDatetime === null
+    ) {
+        throw new Error(
+            StoreConfigurationValidationMessage.EmailIntegrationError
+        )
+    }
 
-        if (
-            opts.isAiAgentChatEnabled &&
-            isChatIntegrationMissing(formValues) &&
-            formValues.chatChannelDeactivatedDatetime === null
-        ) {
-            throw new Error(
-                StoreConfigurationValidationMessage.ChatIntegrationError
-            )
-        }
-    } else {
-        if (opts.isAiAgentChatEnabled) {
-            if (
-                isChatIntegrationMissing(formValues) &&
-                isEmailIntegrationMissing(formValues) &&
-                formValues.deactivatedDatetime === null
-            ) {
-                throw new Error(
-                    StoreConfigurationValidationMessage.NoChannelError
-                )
-            }
-        } else {
-            if (
-                isEmailIntegrationMissing(formValues) &&
-                formValues.deactivatedDatetime === null
-            ) {
-                throw new Error(
-                    StoreConfigurationValidationMessage.EmailIntegrationError
-                )
-            }
-        }
+    if (
+        opts.isAiAgentChatEnabled &&
+        isChatIntegrationMissing(formValues) &&
+        formValues.chatChannelDeactivatedDatetime === null
+    ) {
+        throw new Error(
+            StoreConfigurationValidationMessage.ChatIntegrationError
+        )
     }
 
     // Wizard related validations

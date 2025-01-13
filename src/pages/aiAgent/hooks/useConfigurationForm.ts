@@ -42,8 +42,6 @@ export const useConfigurationForm = ({
     )
     const isAiAgentChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChat]
-    const isMultiChannelEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentMultiChannelEnablement]
 
     const defaultValues = useMemo(
         () => ({
@@ -124,7 +122,6 @@ export const useConfigurationForm = ({
                 hasExternalFiles ?? false,
                 {
                     isAiAgentChatEnabled,
-                    isMultiChannelEnabled,
                     isOnboardingWizardPage,
                 }
             )

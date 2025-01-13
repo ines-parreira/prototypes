@@ -1,8 +1,6 @@
 import {screen} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {AI_AGENT} from 'pages/aiAgent/constants'
 import history from 'pages/history'
 import {renderWithRouter} from 'utils/testing'
@@ -43,15 +41,6 @@ describe('<AiAgentLayout />', () => {
     it('should render', () => {
         renderComponent({})
         expect(screen.getByText('Test Content')).toBeInTheDocument()
-    })
-
-    it('should not render ai agent enable when multi channel support enabled', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentMultiChannelEnablement]: true,
-        })
-        renderComponent({})
-
-        expect(screen.queryByRole('switcher')).not.toBeInTheDocument()
     })
 
     it('should render ai agent ticket view button and redirect to ticket view on click', () => {
