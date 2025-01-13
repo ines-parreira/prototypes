@@ -60,6 +60,7 @@ type State = {
     ticketMessageCreated: boolean
     ticketUpdated: boolean
     ticketSelfUnsnoozed: boolean
+    ticketMessageFailed: boolean
     url: string
 }
 
@@ -76,6 +77,7 @@ export class Integration extends Component<Props, State> {
         ticketUpdated: true,
         ticketSelfUnsnoozed: true,
         ticketMessageCreated: true,
+        ticketMessageFailed: true,
         headers: [],
         form: '',
     }
@@ -131,6 +133,8 @@ export class Integration extends Component<Props, State> {
                 integration.http?.triggers['ticket-self-unsnoozed'] || false,
             ticketMessageCreated:
                 integration.http?.triggers['ticket-message-created'] || false,
+            ticketMessageFailed:
+                integration.http?.triggers['ticket-message-failed'] || false,
             form: formData,
         }
     }
@@ -223,6 +227,8 @@ export class Integration extends Component<Props, State> {
                         this.state.ticketSelfUnsnoozed,
                     [EventType.TicketMessageCreated]:
                         this.state.ticketMessageCreated,
+                    [EventType.TicketMessageFailed]:
+                        this.state.ticketMessageFailed,
                 },
                 form,
             },
@@ -297,6 +303,7 @@ export class Integration extends Component<Props, State> {
             ticketUpdated,
             ticketSelfUnsnoozed,
             ticketMessageCreated,
+            ticketMessageFailed,
         } = this.state
 
         const form = this.state.form
@@ -417,6 +424,18 @@ export class Integration extends Component<Props, State> {
                                         }
                                     >
                                         Ticket message created
+                                    </CheckBox>
+                                    <CheckBox
+                                        className="mb-2"
+                                        name="http.triggers.ticket-message-failed"
+                                        isChecked={ticketMessageFailed}
+                                        onChange={(value: boolean) =>
+                                            this.setState({
+                                                ticketMessageFailed: value,
+                                            })
+                                        }
+                                    >
+                                        Ticket message failed
                                     </CheckBox>
                                 </FormGroup>
                                 <DEPRECATED_InputField
