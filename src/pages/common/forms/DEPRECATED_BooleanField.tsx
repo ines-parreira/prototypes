@@ -11,6 +11,11 @@ import Errors from './Errors'
 
 type Props = InputFieldProps<boolean>
 
+/**
+ * @deprecated
+ * @date 2022-02-22
+ * @type ui-component
+ */
 export default class DEPRECATED_BooleanField extends InputField<Props> {
     static defaultProps = {
         type: 'checkbox',

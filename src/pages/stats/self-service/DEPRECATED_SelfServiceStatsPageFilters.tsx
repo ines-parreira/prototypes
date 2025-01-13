@@ -11,6 +11,11 @@ import {
 } from 'state/stats/selectors'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 
+/**
+ * @deprecated
+ * @date 2023-08-28
+ * @type feature-component
+ */
 export const DEPRECATED_SelfServiceStatsPageFilters = () => {
     const dispatch = useAppDispatch()
 

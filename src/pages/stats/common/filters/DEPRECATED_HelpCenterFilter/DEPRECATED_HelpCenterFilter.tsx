@@ -13,7 +13,11 @@ type HelpCenterFilterProps = {
     helpCenters: HelpCenter[]
     setSelectedHelpCenter: (helpCenters: {helpCenters: number[]}) => void
 }
-
+/**
+ * @deprecated
+ * @date 2023-11-08
+ * @type feature-component
+ */
 const DEPRECATED_HelpCenterFilter = ({
     selectedHelpCenter,
     setSelectedHelpCenter,

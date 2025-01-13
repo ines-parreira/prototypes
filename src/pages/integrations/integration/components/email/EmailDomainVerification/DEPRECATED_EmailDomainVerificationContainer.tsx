@@ -7,6 +7,11 @@ import DEPRECATED_EmailDomainVerification, {
     Props,
 } from './DEPRECATED_EmailDomainVerification'
 
+/**
+ * @deprecated
+ * @date 2024-11-08
+ * @type feature-component
+ */
 export default function DEPRECATED_EmailDomainVerificationContainer(
     props: Props
 ) {

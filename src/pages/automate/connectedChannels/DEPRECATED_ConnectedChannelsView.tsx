@@ -39,6 +39,8 @@ import css from './DEPRECATED_ConnectedChannelsView.less'
 
 /**
  * @deprecated Use ConnectedChannelsView.tsx instead
+ * @date 2024-07-23
+ * @type feature-component
  */
 const DEPRECATED_ConnectedChannelsView = () => {
     useHistoryTracking(SegmentEvent.AutomateChannelsVisited)

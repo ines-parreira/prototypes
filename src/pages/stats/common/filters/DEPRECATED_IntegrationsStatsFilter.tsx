@@ -80,6 +80,11 @@ export const getIntegrationIcon = (integration: Integration) => {
     )
 }
 
+/**
+ * @deprecated
+ * @date 2024-07-03
+ * @type feature-component
+ */
 export default function DEPRECATED_IntegrationsStatsFilter({
     value = [],
     integrations,

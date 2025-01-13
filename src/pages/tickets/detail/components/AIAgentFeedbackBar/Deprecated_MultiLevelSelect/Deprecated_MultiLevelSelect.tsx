@@ -31,6 +31,11 @@ export type MultiLevelSelectProps = {
     onApplyClick: () => void
 }
 
+/**
+ * @deprecated
+ * @date 2024-10-04
+ * @type ui-component
+ */
 export default function MultiLevelSelect({
     dropdownClassName,
     choices,

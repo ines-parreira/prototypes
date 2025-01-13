@@ -11,7 +11,11 @@ type Props = {
     value: LegacyStatsFilters['integrations']
     onChange: (value: LegacyStatsFilters['integrations']) => void
 }
-
+/**
+ * @deprecated
+ * @date 2023-08-28
+ * @type feature-component
+ */
 const DEPRECATED_SelfServiceIntegrationsFilter = ({
     value = [],
     onChange,

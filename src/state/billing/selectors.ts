@@ -29,6 +29,11 @@ import {
     ReduxBillingState,
 } from './types'
 
+/**
+ * @deprecated
+ * @date 2021-02-01
+ * @type feature-helper-fn
+ */
 export const DEPRECATED_getBillingState = (
     state: RootState
 ): BillingImmutableState => state.billing || fromJS({})

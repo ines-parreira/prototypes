@@ -21,6 +21,11 @@ export const agentsStatsFilterLabels = {
     singular: 'agent',
 }
 
+/**
+ * @deprecated
+ * @date 2024-07-19
+ * @type feature-component
+ */
 export default function DEPRECATED_AgentsStatsFilter({
     value = [],
     variant = 'fill',

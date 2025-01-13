@@ -52,6 +52,11 @@ type IntegrationsCountMap = {
     [key in IntegrationType]?: number
 }
 
+/**
+ * @deprecated
+ * @date 2021-02-01
+ * @type feature-helper-fn
+ */
 export const DEPRECATED_getIntegrationsState = (state: RootState) =>
     state.integrations || fromJS({})
 
@@ -62,6 +67,11 @@ export const getIntegrationsState = createSelector(
     }
 )
 
+/**
+ * @deprecated
+ * @date 2023-01-17
+ * @type feature-helper-fn
+ */
 export const DEPRECATED_getIntegrations = createSelector(
     DEPRECATED_getIntegrationsState,
     (state) => state.get('integrations', fromJS([])) as List<any>
@@ -188,6 +198,11 @@ export const getIntegrationsByTypes = <T extends Integration['type']>(
         )
     })
 
+/**
+ * @deprecated
+ * @date 2022-09-14
+ * @type feature-helper-fn
+ */
 export const DEPRECATED_getIntegrationsByTypes = (
     types: readonly IntegrationType[] | IntegrationType
 ) =>
@@ -280,6 +295,11 @@ export const getEmailIntegrations = createSelector(
         ) as List<any>
 )
 
+/**
+ * @deprecated
+ * @date 2023-01-17
+ * @type feature-helper-fn
+ */
 export const DEPRECATED_getPhoneIntegrations = createSelector(
     DEPRECATED_getIntegrations,
     (state) =>

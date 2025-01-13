@@ -39,6 +39,11 @@ export type UseDomainVerificationRequestHookOptions = {
     onVerify?: () => void
 }
 
+/**
+ * @deprecated
+ * @date 2024-11-25
+ * @type feature-helper-fn
+ */
 export function DEPRECATED_useDomainVerification(
     domainName: string,
     options?: UseDomainVerificationRequestHookOptions

@@ -22,6 +22,11 @@ type Props = {
     tooltipMessageForPreviousPeriod?: string
 }
 
+/**
+ * @deprecated
+ * @date 2024-06-26
+ * @type feature-component
+ */
 export default function DEPRECATED_PeriodStatsFilter({
     initialSettings: initialSettingsProp,
     value,

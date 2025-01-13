@@ -26,7 +26,11 @@ export const channelsStatsFilterLabels = {
     plural: 'channels',
     singular: 'channel',
 }
-
+/**
+ * @deprecated
+ * @date 2024-06-27
+ * @type feature-component
+ */
 export default function DEPRECATED_ChannelsStatsFilter({
     value = [],
     channelsFilter,

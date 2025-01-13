@@ -13,6 +13,12 @@ It's built using ReactJS + Redux + many other smaller tools.
     - [Storybook](#storybook)
     - [Design tokens](#design-tokens)
   - [Testing](#testing)
+    - [General testing](#general-testing)
+    - [Static analysis](#static-analysis)
+      - [Deprecated entries](#deprecated-entries)
+        - [Generate new snapshot](#generate-new-snapshot)
+        - [Deprecated entries lint check](#deprecated-entries-lint-check)
+        - [Add new deprecated entries](#add-new-deprecated-entries)
   - [Contributing](#contributing)
   - [FAQ / Troubleshooting](#faq--troubleshooting)
     - [yarn dependencies installation error](#yarn-dependencies-installation-error)
@@ -61,12 +67,51 @@ Tokens are provided by the `@gorgias/design-tokens` package.
 
 ## Testing
 
-```
+### General testing
+
+```bash
 yarn test
-yarn lint   # Only code linting
+yarn lint   # Only code all the linting scripts
 yarn types  # Only type-check
 yarn jest   # Only unit tests
 ```
+
+### Static analysis
+
+#### Deprecated entries
+
+##### Generate new snapshot
+
+This script will generate a new snapshot of the deprecated code according to the `sa.config.ts` file.
+
+```bash
+yarn static-analysis:deprecated
+```
+
+##### Deprecated entries lint check
+
+This script will check if there are any new deprecated entries in the codebase based on the current snapshot.
+
+```bash
+yarn lint:deprecated
+```
+
+##### Add new deprecated entries
+
+To add new deprecated entries, you can use the `@deprecated` JSDoc comment, with a following `@date` (used to prioritize the deprecation) and an optional `@type` which is used to categorize the deprecation (e.g. `ui-migration`).
+
+```tsx
+/**
+ * @deprecated
+ * @date 2025-01-09
+ * @type ui-migration
+ */
+const Component = () => {
+    // ...
+}
+```
+
+Once you add the `@deprecated` comment, you can run `yarn static-analysis:deprecated` to generate a new snapshot.
 
 ## Contributing
 

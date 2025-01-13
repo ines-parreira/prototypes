@@ -173,6 +173,11 @@ export const getAgentCostsSettings = createSelector(
             : (setting.toJS() as AccountSettingAgentCosts)
 )
 
+/**
+ * @deprecated
+ * @date 2021-08-21
+ * @type feature-helper-fn
+ */
 export const DEPRECATED_getBusinessHoursSettings = createSettingByTypeSelector(
     AccountSettingType.BusinessHours
 )
@@ -257,6 +262,11 @@ export const getBusinessHoursRangesByUserTimezone = createSelector(
 export const getTicketAssignmentSettings = createSettingByTypeSelector(
     AccountSettingType.TicketAssignment
 )
+/**
+ * @deprecated
+ * @date 2021-08-06
+ * @type feature-helper-fn
+ */
 export const DEPRECATED_getViewsOrderingSetting = createSettingByTypeSelector(
     AccountSettingType.ViewsOrdering
 )

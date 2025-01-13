@@ -30,7 +30,11 @@ export const tagsStatsFilterLabels = {
         },
     },
 }
-
+/**
+ * @deprecated
+ * @date 2024-07-29
+ * @type feature-component
+ */
 export default function DEPRECATED_TagsStatsFilter({
     value = [],
     variant = 'fill',

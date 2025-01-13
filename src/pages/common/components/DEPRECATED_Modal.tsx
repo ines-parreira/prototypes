@@ -21,6 +21,11 @@ type Props = {
     bodyClassName?: string
 } & RemoveIndex<ModalProps>
 
+/**
+ * @deprecated
+ * @date 2024-05-16
+ * @type ui-component
+ */
 export default function DEPRECATED_Modal({
     dismissible = true,
     isOpen,

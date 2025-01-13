@@ -31,6 +31,11 @@ export type Props = {
     onDeleteDomain?: () => void
 }
 
+/**
+ * @deprecated
+ * @date 2024-11-08
+ * @type feature-component
+ */
 export default function DEPRECATED_EmailDomainVerification({
     integration,
     loading,

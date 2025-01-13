@@ -12,6 +12,11 @@ type Props = {
     tabIndex?: number
 }
 
+/**
+ * @deprecated
+ * @date 2024-03-22
+ * @type feature-component
+ */
 const SenderSelectField = ({tabIndex}: Props) => {
     const {selectedSender, selectedChannel, senders, selectSender} =
         useSendersForSelectedChannel()

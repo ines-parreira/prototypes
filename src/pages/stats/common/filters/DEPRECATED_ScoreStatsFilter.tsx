@@ -17,7 +17,11 @@ export const scoreStatsFilterLabels = {
     plural: 'scores',
     singular: 'score',
 }
-
+/**
+ * @deprecated
+ * @date 2024-10-21
+ * @type feature-component
+ */
 export function DEPRECATED_ScoreStatsFilter({
     value = [],
     minValue,

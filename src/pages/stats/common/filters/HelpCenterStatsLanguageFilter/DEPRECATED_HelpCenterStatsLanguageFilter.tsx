@@ -12,6 +12,11 @@ type Props = {
     onFilterChange: (locales: string[]) => void
 }
 
+/**
+ * @deprecated
+ * @date 2023-11-29
+ * @type feature-component
+ */
 const DEPRECATED_HelpCenterStatsLanguageFilter = ({
     supportedLocales,
     onFilterChange,

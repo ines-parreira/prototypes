@@ -34,6 +34,11 @@ export const getProperty = (property: string) =>
         (state) => state.get(property) as Map<any, any>
     )
 
+/**
+ * @deprecated
+ * @date 2023-01-17
+ * @type feature-helper-fn
+ */
 export const DEPRECATED_getTicket = createImmutableSelector(
     getTicketState,
     (state) => state.delete('_internal').delete('state') || fromJS({})

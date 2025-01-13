@@ -42,6 +42,11 @@ export const getCustomers = createSelector(
     (state: CustomersState) => (state.get('items') as List<any>) || fromJS([])
 )
 
+/**
+ * @deprecated
+ * @date 2023-01-17
+ * @type feature-helper-fn
+ */
 export const DEPRECATED_getActiveCustomer = createSelector(
     getCustomersState,
     (state: CustomersState) =>

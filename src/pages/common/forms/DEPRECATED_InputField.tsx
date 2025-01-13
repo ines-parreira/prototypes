@@ -18,6 +18,11 @@ export type InputFieldProps<T = any> = {
 } & Omit<InputProps, 'onChange' | 'value'>
 
 export type InputFieldState = Record<string, unknown>
+/**
+ * @deprecated Use InputField at src/pages/common/forms/input/InputField.tsx instead
+ * @date 2021-03-24
+ * @type ui-component
+ */
 export default class InputField<
     T extends InputFieldProps = InputFieldProps,
     U extends InputFieldState = InputFieldState,

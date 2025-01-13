@@ -1,0 +1,748 @@
+{
+  "summary": {
+    "totalEntries": 30,
+    "totalUsages": 560,
+    "reportGeneratedAt": "2025-01-08T15:57:30.670Z"
+  },
+  "entries": [
+    {
+      "type": "feature-component",
+      "entries": [
+        {
+          "usageCount": 23,
+          "name": "SenderSelectField",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2024-03-22",
+          "deprecationType": "feature-component",
+          "declarationFile": "src/pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/DEPRECATED_SenderSelectField.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/tickets/detail/components/ReplyArea/MessageSourceFields/MessageSourceFields.tsx",
+              "src/pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/DEPRECATED_SenderSelectField.tsx",
+              "src/pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/SenderSelectField.tsx",
+              "src/pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/index.ts",
+              "src/pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/tests/DEPRECATED_SenderSelectField.spec.tsx",
+              "src/pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/tests/SenderSelectField.spec.tsx"
+            ],
+            "default": [
+              "src/pages/tickets/detail/components/ReplyArea/MessageSourceFields/MessageSourceFields.tsx",
+              "src/pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/index.ts",
+              "src/pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/tests/DEPRECATED_SenderSelectField.spec.tsx",
+              "src/pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/tests/SenderSelectField.spec.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "DEPRECATED_SenderSelectField",
+            "SenderSelectField"
+          ]
+        },
+        {
+          "usageCount": 21,
+          "name": "DEPRECATED_PeriodStatsFilter",
+          "nodeType": "FunctionDeclaration",
+          "deprecationDate": "2024-06-26",
+          "deprecationType": "feature-component",
+          "declarationFile": "src/pages/stats/common/filters/DEPRECATED_PeriodStatsFilter.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/stats/AutomateMacros.tsx",
+              "src/pages/stats/AutomateOverviewFilters.tsx",
+              "src/pages/stats/common/filters/PeriodStatsFilter.stories.tsx",
+              "src/pages/stats/common/filters/tests/DEPRECATED_PeriodStatsFilter.spec.tsx",
+              "src/pages/stats/convert/containers/RevenueFilters/RevenueFilters.tsx",
+              "src/pages/stats/help-center/pages/HelpCenterStats.tsx",
+              "src/pages/stats/self-service/DEPRECATED_SelfServiceStatsPageFilters.tsx",
+              "src/pages/stats/support-performance/SupportPerformanceFilters.tsx",
+              "src/pages/stats/support-performance/revenue/SupportPerformanceRevenueFilters.tsx",
+              "src/pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionFilters.tsx",
+              "src/pages/stats/voice/pages/VoiceAgents.tsx",
+              "src/pages/stats/voice/pages/VoiceOverview.tsx"
+            ],
+            "default": [
+              "src/pages/stats/AutomateMacros.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "PeriodStatsFilter"
+          ]
+        },
+        {
+          "usageCount": 17,
+          "name": "DEPRECATED_ChannelsStatsFilter",
+          "nodeType": "FunctionDeclaration",
+          "deprecationDate": "2024-06-27",
+          "deprecationType": "feature-component",
+          "declarationFile": "src/pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/stats/AutomateMacros.tsx",
+              "src/pages/stats/LiveAgentsFilters.tsx",
+              "src/pages/stats/LiveOverviewFilters.tsx",
+              "src/pages/stats/common/filters/tests/ChanelsStatsFilter.spec.tsx",
+              "src/pages/stats/common/filters/tests/ChannelsStatsFilter.spec.tsx",
+              "src/pages/stats/support-performance/SupportPerformanceFilters.tsx",
+              "src/pages/stats/support-performance/revenue/SupportPerformanceRevenueFilters.tsx",
+              "src/pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionFilters.tsx"
+            ],
+            "default": [
+              "src/pages/stats/AutomateMacros.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "ChannelsStatsFilter"
+          ]
+        },
+        {
+          "usageCount": 14,
+          "name": "DEPRECATED_TagsStatsFilter",
+          "nodeType": "FunctionDeclaration",
+          "deprecationDate": "2024-07-29",
+          "deprecationType": "feature-component",
+          "declarationFile": "src/pages/stats/common/filters/DEPRECATED_TagsStatsFilter.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/stats/common/filters/tests/DEPRECATED_TagsStatsFilter.spec.tsx",
+              "src/pages/stats/support-performance/SupportPerformanceFilters.tsx",
+              "src/pages/stats/support-performance/revenue/SupportPerformanceRevenueFilters.tsx",
+              "src/pages/stats/support-performance/revenue/tests/SupportPerformanceRevenue.spec.tsx",
+              "src/pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionFilters.tsx",
+              "src/pages/stats/support-performance/satisfaction/tests/SupportPerformanceSatisfaction.spec.tsx",
+              "src/pages/stats/tests/AutomateOverview.spec.tsx",
+              "src/pages/stats/tests/LiveAgents.spec.tsx",
+              "src/pages/stats/voice/pages/VoiceAgents.tsx",
+              "src/pages/stats/voice/pages/VoiceOverview.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 12,
+          "name": "DEPRECATED_IntegrationsStatsFilter",
+          "nodeType": "FunctionDeclaration",
+          "deprecationDate": "2024-07-03",
+          "deprecationType": "feature-component",
+          "declarationFile": "src/pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/stats/AutomateMacros.tsx",
+              "src/pages/stats/common/filters/tests/DEPRECATED_IntegrationsStatsFilter.spec.tsx",
+              "src/pages/stats/support-performance/SupportPerformanceFilters.tsx",
+              "src/pages/stats/support-performance/revenue/SupportPerformanceRevenueFilters.tsx",
+              "src/pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionFilters.tsx",
+              "src/pages/stats/voice/pages/VoiceAgents.tsx",
+              "src/pages/stats/voice/pages/VoiceOverview.tsx"
+            ],
+            "default": [
+              "src/pages/stats/AutomateMacros.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "DEPRECATED_IntegrationsStatsFilter"
+          ]
+        },
+        {
+          "usageCount": 8,
+          "name": "DEPRECATED_AgentsStatsFilter",
+          "nodeType": "FunctionDeclaration",
+          "deprecationDate": "2024-07-19",
+          "deprecationType": "feature-component",
+          "declarationFile": "src/pages/stats/common/filters/DEPRECATED_AgentsStatsFilter.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/stats/LiveAgentsFilters.tsx",
+              "src/pages/stats/LiveOverviewFilters.tsx",
+              "src/pages/stats/common/filters/tests/AgentsStatsFilter.spec.tsx",
+              "src/pages/stats/support-performance/SupportPerformanceFilters.tsx",
+              "src/pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionFilters.tsx",
+              "src/pages/stats/voice/pages/VoiceAgents.tsx",
+              "src/pages/stats/voice/pages/VoiceOverview.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 7,
+          "name": "DEPRECATED_EmailDomainVerification",
+          "nodeType": "FunctionDeclaration",
+          "deprecationDate": "2024-11-08",
+          "deprecationType": "feature-component",
+          "declarationFile": "src/pages/integrations/integration/components/email/EmailDomainVerification/DEPRECATED_EmailDomainVerification.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/integrations/integration/components/email/EmailDomainVerification/DEPRECATED_EmailDomainVerificationContainer.tsx",
+              "src/pages/integrations/integration/components/email/EmailDomainVerification/tests/DEPRECATED_EmailDomainVerification.spec.tsx",
+              "src/pages/integrations/integration/components/email/EmailOutboundVerification/EmailOutboundVerification.tsx"
+            ],
+            "default": [
+              "src/pages/integrations/integration/components/email/EmailDomainVerification/DEPRECATED_EmailDomainVerificationContainer.tsx",
+              "src/pages/integrations/integration/components/email/EmailDomainVerification/tests/DEPRECATED_EmailDomainVerification.spec.tsx",
+              "src/pages/integrations/integration/components/email/EmailOutboundVerification/EmailOutboundVerification.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "DEPRECATED_EmailDomainVerification"
+          ]
+        },
+        {
+          "usageCount": 6,
+          "name": "DEPRECATED_ConnectedChannelsView",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2024-07-23",
+          "deprecationType": "feature-component",
+          "declarationFile": "src/pages/automate/connectedChannels/DEPRECATED_ConnectedChannelsView.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/automate/connectedChannels/ConnectedChannelsViewContainer.tsx",
+              "src/pages/automate/connectedChannels/DEPRECATED_ConnectedChannelsView.tsx",
+              "src/pages/automate/connectedChannels/tests/DEPRECATED_ConnectedChannelsView.spec.tsx"
+            ],
+            "default": [
+              "src/pages/automate/connectedChannels/ConnectedChannelsViewContainer.tsx",
+              "src/pages/automate/connectedChannels/tests/DEPRECATED_ConnectedChannelsView.spec.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "DEPRECATED_ConnectedChannelsView",
+            "ConnectedChannelsView"
+          ]
+        },
+        {
+          "usageCount": 6,
+          "name": "DEPRECATED_HelpCenterFilter",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2023-11-08",
+          "deprecationType": "feature-component",
+          "declarationFile": "src/pages/stats/common/filters/DEPRECATED_HelpCenterFilter/DEPRECATED_HelpCenterFilter.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/stats/common/filters/DEPRECATED_HelpCenterFilter/DEPRECATED_HelpCenterFilter.spec.tsx",
+              "src/pages/stats/common/filters/DEPRECATED_HelpCenterFilter/DEPRECATED_HelpCenterFilter.tsx",
+              "src/pages/stats/help-center/pages/HelpCenterStats.tsx"
+            ],
+            "default": [
+              "src/pages/stats/common/filters/DEPRECATED_HelpCenterFilter/DEPRECATED_HelpCenterFilter.spec.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "DEPRECATED_HelpCenterFilter"
+          ]
+        },
+        {
+          "usageCount": 5,
+          "name": "DEPRECATED_HelpCenterStatsLanguageFilter",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2023-11-29",
+          "deprecationType": "feature-component",
+          "declarationFile": "src/pages/stats/common/filters/HelpCenterStatsLanguageFilter/DEPRECATED_HelpCenterStatsLanguageFilter.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/stats/common/filters/HelpCenterStatsLanguageFilter/DEPRECATED_HelpCenterStatsLanguageFilter.tsx",
+              "src/pages/stats/common/filters/HelpCenterStatsLanguageFilter/tests/HelpCenterStatsLanguageFilter.spec.tsx",
+              "src/pages/stats/help-center/pages/HelpCenterStats.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 4,
+          "name": "DEPRECATED_CampaignStatusMultiSelect",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2023-08-08",
+          "deprecationType": "feature-component",
+          "declarationFile": "src/pages/stats/convert/components/DEPRECATED_CampaignStatusMultiSelect/DEPRECATED_CampaignStatusMultiSelect.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/stats/convert/components/DEPRECATED_CampaignStatusMultiSelect/DEPRECATED_CampaignStatusMultiSelect.tsx",
+              "src/pages/stats/convert/components/DEPRECATED_CampaignStatusMultiSelect/tests/DEPRECATED_CampaignStatusMultiSelect.spec.tsx",
+              "src/pages/stats/convert/containers/RevenueFilters/RevenueFilters.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 3,
+          "name": "DEPRECATED_ScoreStatsFilter",
+          "nodeType": "FunctionDeclaration",
+          "deprecationDate": "2024-10-21",
+          "deprecationType": "feature-component",
+          "declarationFile": "src/pages/stats/common/filters/DEPRECATED_ScoreStatsFilter.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/stats/common/filters/tests/DEPRECATED_ScoreStatsFilter.spec.tsx",
+              "src/pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionFilters.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 3,
+          "name": "DEPRECATED_SelfServiceIntegrationsFilter",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2023-08-28",
+          "deprecationType": "feature-component",
+          "declarationFile": "src/pages/stats/self-service/DEPRECATED_SelfServiceIntegrationsFilter.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/stats/self-service/DEPRECATED_SelfServiceIntegrationsFilter.tsx",
+              "src/pages/stats/self-service/DEPRECATED_SelfServiceStatsPageFilters.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 2,
+          "name": "DEPRECATED_EmailDomainVerificationContainer",
+          "nodeType": "FunctionDeclaration",
+          "deprecationDate": "2024-11-08",
+          "deprecationType": "feature-component",
+          "declarationFile": "src/pages/integrations/integration/components/email/EmailDomainVerification/DEPRECATED_EmailDomainVerificationContainer.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/integrations/integration/Integration.tsx"
+            ],
+            "default": [
+              "src/pages/integrations/integration/Integration.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "DEPRECATED_EmailDomainVerificationContainer"
+          ]
+        },
+        {
+          "usageCount": 2,
+          "name": "DEPRECATED_SelfServiceStatsPageFilters",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2023-08-28",
+          "deprecationType": "feature-component",
+          "declarationFile": "src/pages/stats/self-service/DEPRECATED_SelfServiceStatsPageFilters.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/stats/self-service/DEPRECATED_SelfServiceStatsPageFilters.tsx",
+              "src/pages/stats/self-service/SelfServiceStatsPage.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 2,
+          "name": "DEPRECATED_CampaignMultiSelect",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2023-08-21",
+          "deprecationType": "feature-component",
+          "declarationFile": "src/pages/stats/convert/components/CampaignMultiSelect/DEPRECATED_CampaignMultiSelect.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/stats/convert/components/CampaignMultiSelect/DEPRECATED_CampaignMultiSelect.tsx",
+              "src/pages/stats/convert/containers/RevenueFilters/RevenueFilters.tsx"
+            ],
+            "default": []
+          }
+        }
+      ]
+    },
+    {
+      "type": "feature-helper-fn",
+      "entries": [
+        {
+          "usageCount": 21,
+          "name": "DEPRECATED_getIntegrationsState",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2021-02-01",
+          "deprecationType": "feature-helper-fn",
+          "declarationFile": "src/state/integrations/selectors.ts",
+          "usageUrls": {
+            "named": [
+              "src/state/integrations/selectors.ts",
+              "src/state/integrations/tests/reducers.spec.ts",
+              "src/state/integrations/tests/selectors.spec.ts"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 20,
+          "name": "DEPRECATED_getIntegrationsByTypes",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2022-09-14",
+          "deprecationType": "feature-helper-fn",
+          "declarationFile": "src/state/integrations/selectors.ts",
+          "usageUrls": {
+            "named": [
+              "src/pages/common/components/ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration.ts",
+              "src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/components/steps/GorgiasChatCreationWizardStepBasics.tsx",
+              "src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.tsx",
+              "src/pages/settings/helpCenter/components/HelpCenterContactView/components/ChatApplication/ChatApplication.tsx",
+              "src/pages/settings/helpCenter/hooks/useShopifyStoreWithChatConnectionsOptions.tsx",
+              "src/state/integrations/selectors.ts",
+              "src/state/stats/selectors.ts"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 14,
+          "name": "DEPRECATED_getIntegrations",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2023-01-17",
+          "deprecationType": "feature-helper-fn",
+          "declarationFile": "src/state/integrations/selectors.ts",
+          "usageUrls": {
+            "named": [
+              "src/pages/common/components/sourceWidgets/SourceWrapper.tsx",
+              "src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/hooks/useLogWizardEvent.ts",
+              "src/state/integrations/selectors.ts",
+              "src/state/integrations/tests/selectors.spec.ts"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 12,
+          "name": "DEPRECATED_getTicket",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2023-01-17",
+          "deprecationType": "feature-helper-fn",
+          "declarationFile": "src/state/ticket/selectors.ts",
+          "usageUrls": {
+            "named": [
+              "src/pages/common/components/ClickablePhoneNumber/PhoneIntegrationsDropdownList.tsx",
+              "src/pages/common/forms/RichField/EmailExtraButton.tsx",
+              "src/pages/tickets/detail/components/ReplyArea/MacrosQuickReply/MacrosQuickReply.tsx",
+              "src/pages/tickets/detail/components/ReplyArea/PhoneTicketSubmitButtons.tsx",
+              "src/pages/tickets/detail/components/ReplyArea/TicketReplyArea.tsx",
+              "src/state/newMessage/actions.ts",
+              "src/state/prediction/selectors.ts",
+              "src/state/ticket/selectors.ts",
+              "src/state/ticket/tests/selectors.spec.ts"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 9,
+          "name": "DEPRECATED_getActiveCustomer",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2023-01-17",
+          "deprecationType": "feature-helper-fn",
+          "declarationFile": "src/state/customers/selectors.ts",
+          "usageUrls": {
+            "named": [
+              "src/pages/customers/detail/CustomerDetailContainer.tsx",
+              "src/pages/customers/detail/CustomerInfobarContainer.tsx",
+              "src/pages/tickets/detail/TicketDetailContainer.tsx",
+              "src/state/customers/selectors.ts",
+              "src/state/customers/tests/selectors.spec.ts",
+              "src/state/widgets/selectors.ts"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 9,
+          "name": "DEPRECATED_getBillingState",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2021-02-01",
+          "deprecationType": "feature-helper-fn",
+          "declarationFile": "src/state/billing/selectors.ts",
+          "usageUrls": {
+            "named": [
+              "src/state/billing/selectors.ts",
+              "src/state/billing/tests/selectors.spec.ts"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 5,
+          "name": "DEPRECATED_getViewsOrderingSetting",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2021-08-06",
+          "deprecationType": "feature-helper-fn",
+          "declarationFile": "src/state/currentAccount/selectors.ts",
+          "usageUrls": {
+            "named": [
+              "src/state/currentAccount/selectors.ts",
+              "src/state/currentAccount/tests/selectors.spec.ts",
+              "src/state/views/selectors.ts"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 4,
+          "name": "DEPRECATED_useDomainVerification",
+          "nodeType": "FunctionDeclaration",
+          "deprecationDate": "2024-11-25",
+          "deprecationType": "feature-helper-fn",
+          "declarationFile": "src/pages/integrations/integration/components/email/EmailDomainVerification/DEPRECATED_useDomainVerification.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/integrations/integration/components/email/EmailDomainVerification/DEPRECATED_EmailDomainVerification.tsx",
+              "src/pages/integrations/integration/components/email/EmailDomainVerification/tests/DEPRECATED_useDomainVerification.spec.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 3,
+          "name": "DEPRECATED_getPhoneIntegrations",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2023-01-17",
+          "deprecationType": "feature-helper-fn",
+          "declarationFile": "src/state/integrations/selectors.ts",
+          "usageUrls": {
+            "named": [
+              "src/state/integrations/selectors.ts",
+              "src/state/integrations/tests/selectors.spec.ts"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 3,
+          "name": "DEPRECATED_getBusinessHoursSettings",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2021-08-21",
+          "deprecationType": "feature-helper-fn",
+          "declarationFile": "src/state/currentAccount/selectors.ts",
+          "usageUrls": {
+            "named": [
+              "src/pages/settings/businessHours/BusinessHours.tsx",
+              "src/state/currentAccount/selectors.ts",
+              "src/state/currentAccount/tests/selectors.spec.ts"
+            ],
+            "default": []
+          }
+        }
+      ]
+    },
+    {
+      "type": "ui-component",
+      "entries": [
+        {
+          "usageCount": 277,
+          "name": "InputField",
+          "nodeType": "ClassDeclaration",
+          "deprecationDate": "2021-03-24",
+          "deprecationType": "ui-component",
+          "declarationFile": "src/pages/common/forms/DEPRECATED_InputField.tsx",
+          "usageUrls": {
+            "named": [
+              "src/Widgets/modules/Template/modules/Card/components/views/CardEditForm.tsx",
+              "src/components/Form/FormField.tsx",
+              "src/components/Form/tests/FormField.spec.tsx",
+              "src/pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsView.tsx",
+              "src/pages/aiAgent/actions/components/AppConfirmationModal.tsx",
+              "src/pages/aiAgent/actions/components/CustomActionForm.tsx",
+              "src/pages/aiAgent/actions/components/TemplateActionForm.tsx",
+              "src/pages/aiAgent/components/GuidanceForm/GuidanceForm.tsx",
+              "src/pages/aiAgent/components/PublicSourcesSection/PublicSourcesItem.tsx",
+              "src/pages/aiAgent/components/TicketTag/TagList.tsx",
+              "src/pages/automate/actionsPlatform/ActionsPlatformCreateStepView.tsx",
+              "src/pages/automate/actionsPlatform/ActionsPlatformEditStepView.tsx",
+              "src/pages/automate/actionsPlatform/components/ActionsPlatformAppForm.tsx",
+              "src/pages/automate/actionsPlatform/components/ActionsPlatformTemplateName.tsx",
+              "src/pages/automate/common/components/AutomateExploreDataModal.tsx",
+              "src/pages/automate/orderManagement/reportOrderIssue/components/ReportOrderIssueScenarioForm.tsx",
+              "src/pages/automate/orderManagement/returnOrder/components/LoopReturnsIntegrationCreateModal.tsx",
+              "src/pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchItem.tsx",
+              "src/pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsNodeEditor.tsx",
+              "src/pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/conditions/DateConditionType.tsx",
+              "src/pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/conditions/StringConditionType.tsx",
+              "src/pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/TestRequestInputs.tsx",
+              "src/pages/automate/workflows/editor/visualBuilder/editors/ReusableLLMPromptCallEditor.tsx",
+              "src/pages/automate/workflows/editor/visualBuilder/editors/ShopperAuthenticationEditor/ShopperAuthenticationEditor.tsx",
+              "src/pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch.tsx",
+              "src/pages/common/components/PageEmbedmentForm/PageEmbedmentForm.tsx",
+              "src/pages/common/components/UniqueDiscountOfferCreateModal/UniqueDiscountOfferCreateModal.tsx",
+              "src/pages/common/components/accordion/Accordion.stories.tsx",
+              "src/pages/common/components/ast/widget/CustomFieldInput.tsx",
+              "src/pages/common/components/ast/widget/Select.tsx",
+              "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton.tsx",
+              "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/AddCustomProductPopover.tsx",
+              "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/Coupon.tsx",
+              "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/CustomAddressModal.tsx",
+              "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Display/ActionEditor.tsx",
+              "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Editor/Form/Action.tsx",
+              "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Editor/Form/Form.tsx",
+              "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Editor/Form/Parameters/Parameter.tsx",
+              "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/Links/Editor.tsx",
+              "src/pages/common/draftjs/plugins/toolbar/components/AddLink.tsx",
+              "src/pages/common/draftjs/plugins/toolbar/components/AddUtm.tsx",
+              "src/pages/common/forms/AutoPopulateInput/AutoPopulateInput.tsx",
+              "src/pages/common/forms/ColorField.tsx",
+              "src/pages/common/forms/DEPRECATED_BooleanField.tsx",
+              "src/pages/common/forms/DEPRECATED_InputField.tsx",
+              "src/pages/common/forms/FileField.tsx",
+              "src/pages/common/forms/JsonField.tsx",
+              "src/pages/common/forms/ProvinceInput/ProvinceInput.tsx",
+              "src/pages/common/forms/input/InputField.stories.tsx",
+              "src/pages/common/forms/input/InputField.tsx",
+              "src/pages/common/forms/input/tests/InputField.spec.tsx",
+              "src/pages/common/forms/tests/DEPRECATED_InputField.spec.tsx",
+              "src/pages/convert/abTests/components/UpdateReportLinkModal/UpdateReportLinkModal.tsx",
+              "src/pages/convert/campaigns/components/AdvancedTriggerFactory/AmountSpentTrigger.tsx",
+              "src/pages/convert/campaigns/components/AdvancedTriggerFactory/CartValueTrigger.tsx",
+              "src/pages/convert/campaigns/components/AdvancedTriggerFactory/CurrentProductTagsTrigger.tsx",
+              "src/pages/convert/campaigns/components/AdvancedTriggerFactory/CurrentUrlTrigger.tsx",
+              "src/pages/convert/campaigns/components/AdvancedTriggerFactory/OrdersCountTrigger.tsx",
+              "src/pages/convert/campaigns/components/AdvancedTriggerFactory/ProductTagsTrigger.tsx",
+              "src/pages/convert/campaigns/components/AdvancedTriggerFactory/SessionTimeTrigger.tsx",
+              "src/pages/convert/campaigns/components/AdvancedTriggerFactory/TimeSpentOnPageTrigger.tsx",
+              "src/pages/convert/campaigns/components/AdvancedTriggerFactory/VisitCountTrigger.tsx",
+              "src/pages/convert/campaigns/components/CampaignCustomSchedule/CustomScheduleForm.tsx",
+              "src/pages/convert/campaigns/components/ContactCaptureForm/steps/Customization/Customization.tsx",
+              "src/pages/convert/campaigns/containers/CampaignBasicStep/CampaignBasicStep.tsx",
+              "src/pages/convert/campaigns/containers/CampaignPublishScheduleStep/CampaignSchedulePicker/CampaignSchedulePicker.tsx",
+              "src/pages/convert/clickTracking/components/ClickTrackingCustomDomain/ClickTrackingCustomDomain.tsx",
+              "src/pages/customers/common/components/CustomerChannelFieldArray.tsx",
+              "src/pages/customers/common/components/CustomerForm.tsx",
+              "src/pages/integrations/integration/components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification.tsx",
+              "src/pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate.tsx",
+              "src/pages/integrations/integration/components/email/EmailOutboundVerification/VerificationForm/VerificationForm.tsx",
+              "src/pages/integrations/integration/components/facebook/FacebookIntegrationDetail.tsx",
+              "src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/components/steps/GorgiasChatCreationWizardStepBasics.tsx",
+              "src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/components/steps/GorgiasChatCreationWizardStepBranding.tsx",
+              "src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.tsx",
+              "src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationVisibilityCondition.tsx",
+              "src/pages/integrations/integration/components/http/Integration/Integration.tsx",
+              "src/pages/integrations/integration/components/http/Integration/ObjectListField.tsx",
+              "src/pages/integrations/integration/components/klaviyo/KlaviyoIntegrationDetail.tsx",
+              "src/pages/integrations/integration/components/magento2/ManualIntegrationForm.tsx",
+              "src/pages/integrations/integration/components/smile/SmileIntegrationDetail.tsx",
+              "src/pages/integrations/integration/components/voice/VoiceIntegrationPreferencesInboundCalls.tsx",
+              "src/pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateLine.tsx",
+              "src/pages/integrations/integration/components/whatsapp/WhatsAppMigrationForm.tsx",
+              "src/pages/integrations/integration/components/whatsapp/WhatsAppMigrationVerificationForm.tsx",
+              "src/pages/integrations/integration/components/yotpo/YotpoIntegrationDetail.tsx",
+              "src/pages/phoneNumbers/PhoneAddressFields.tsx",
+              "src/pages/phoneNumbers/PhoneMetaFields.tsx",
+              "src/pages/phoneNumbers/PhoneNumberCreateForm.tsx",
+              "src/pages/phoneNumbers/PhoneNumberCreateModalForm.tsx",
+              "src/pages/settings/access/Access.tsx",
+              "src/pages/settings/billing/automate/ROICalculator/ROICalculator.tsx",
+              "src/pages/settings/billing/common/BillingAddressInputs.tsx",
+              "src/pages/settings/businessHours/BusinessHours.tsx",
+              "src/pages/settings/contactForm/components/ContactFormNameInputSection/ContactFormNameInputSection.tsx",
+              "src/pages/settings/customFields/components/FieldForm.tsx",
+              "src/pages/settings/helpCenter/components/CustomDomain/CustomDomain.tsx",
+              "src/pages/settings/helpCenter/components/GoogleAnalyticSection/GoogleAnalyticsSection.tsx",
+              "src/pages/settings/helpCenter/components/HelpCenterAppearanceView/HelpCenterAppearanceView.tsx",
+              "src/pages/settings/helpCenter/components/HelpCenterContactView/components/PhoneContactInfoSection/PhoneNumbersForm/PhoneNumbersForm.tsx",
+              "src/pages/settings/helpCenter/components/HelpCenterCreationWizard/components/steps/HelpCenterCreationWizardStepBasics.tsx",
+              "src/pages/settings/helpCenter/components/HelpCenterCustomizationView.tsx",
+              "src/pages/settings/helpCenter/components/HelpCenterNewView.tsx",
+              "src/pages/settings/helpCenter/components/HelpCenterPreferencesView/components/SEO/SEO.tsx",
+              "src/pages/settings/helpCenter/components/HelpCenterPublishAndTrackView.tsx",
+              "src/pages/settings/helpCenter/components/Imports/components/ImportSection/components/MigrationCredentialsModal/MigrationCredentialsModal.tsx",
+              "src/pages/settings/helpCenter/components/ManageRedirects/ManageRedirects.tsx",
+              "src/pages/settings/helpCenter/components/SubdomainSection/components/SubdomainInput/SubdomainInput.tsx",
+              "src/pages/settings/helpCenter/components/articles/HelpCenterEditAdvancedArticleForm.tsx",
+              "src/pages/settings/importData/zendesk/EditCredentialsForm.tsx",
+              "src/pages/settings/importData/zendesk/ImportZendeskCreate.tsx",
+              "src/pages/settings/new_billing/components/AddressForm/AddressForm.tsx",
+              "src/pages/settings/new_billing/components/FormInputField/FormInputField.tsx",
+              "src/pages/settings/rules/accountRules/components/ruleEditors/AutoReplyReturnEditor.tsx",
+              "src/pages/settings/teams/Form.tsx",
+              "src/pages/settings/teams/TeamCreationModal.tsx",
+              "src/pages/settings/users/Detail/Info.tsx",
+              "src/pages/settings/yourProfile/ChangePassword.tsx",
+              "src/pages/settings/yourProfile/components/YourProfileView.tsx",
+              "src/pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationDisableModal.tsx",
+              "src/pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/ModalSteps/QRCodeStep/CantScanQRCode.tsx",
+              "src/pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/ModalSteps/QRCodeStep/QRCodeStep.tsx",
+              "src/pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/ModalSteps/ValidateVerificationCodeStep/ValidateVerificationCodeStep.tsx",
+              "src/pages/stats/common/filters/FiltersEditableTitle/FiltersEditableTitle.tsx",
+              "src/pages/stats/custom-reports/CustomReportNameForm.tsx",
+              "src/pages/tasks/detail/CreateShopifyCharge.tsx",
+              "src/pages/tasks/detail/CreditShopifyBillingIntegration.tsx",
+              "src/pages/tickets/common/macros/components/MacroEdit.tsx",
+              "src/pages/tickets/common/macros/components/ParametersEditor.tsx",
+              "src/pages/tickets/common/macros/components/actions/HttpAction.tsx",
+              "src/pages/tickets/detail/components/ReplyArea/TicketReplyAction.tsx"
+            ],
+            "default": [
+              "src/pages/common/components/ast/widget/Select.tsx",
+              "src/pages/common/forms/AutoPopulateInput/AutoPopulateInput.tsx",
+              "src/pages/common/forms/ColorField.tsx",
+              "src/pages/common/forms/DEPRECATED_BooleanField.tsx",
+              "src/pages/common/forms/FileField.tsx",
+              "src/pages/common/forms/JsonField.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "DEPRECATED_InputField",
+            "InputField"
+          ]
+        },
+        {
+          "usageCount": 24,
+          "name": "MultiLevelSelect",
+          "nodeType": "FunctionDeclaration",
+          "deprecationDate": "2024-10-04",
+          "deprecationType": "ui-component",
+          "declarationFile": "src/pages/tickets/detail/components/AIAgentFeedbackBar/Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect.tsx",
+          "usageUrls": {
+            "named": [
+              "src/custom-fields/components/CustomFieldInput.tsx",
+              "src/custom-fields/components/MultiLevelSelect/tests/MultiLevelSelect.spec.tsx",
+              "src/custom-fields/components/tests/CustomFieldInput.spec.tsx",
+              "src/pages/common/components/ast/widget/CustomFieldInput.tsx",
+              "src/pages/tickets/detail/components/AIAgentFeedbackBar/Deprecated_MultiLevelSelect/tests/Deprecated_MultiLevelSelect.spec.tsx",
+              "src/pages/tickets/detail/components/AIAgentFeedbackBar/FeedbackOtherResourcesSelect.tsx",
+              "src/pages/tickets/detail/components/TicketFields/components/fields/DropdownField.tsx"
+            ],
+            "default": [
+              "src/pages/tickets/detail/components/AIAgentFeedbackBar/Deprecated_MultiLevelSelect/tests/Deprecated_MultiLevelSelect.spec.tsx",
+              "src/pages/tickets/detail/components/AIAgentFeedbackBar/FeedbackOtherResourcesSelect.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "Deprecated_MultiLevelSelect"
+          ]
+        },
+        {
+          "usageCount": 14,
+          "name": "DEPRECATED_Modal",
+          "nodeType": "FunctionDeclaration",
+          "deprecationDate": "2024-05-16",
+          "deprecationType": "ui-component",
+          "declarationFile": "src/pages/common/components/DEPRECATED_Modal.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/settings/common/FontSelectField/components/FontCatalogueModal/FontCatalogueModal.tsx",
+              "src/pages/settings/helpCenter/components/ConfirmationModal/ConfirmationModal.tsx",
+              "src/pages/settings/helpCenter/components/ConnectToShopSection/ConnectToShopSection.tsx",
+              "src/pages/settings/helpCenter/components/ImageRepositioningModal/ImageRepositioningModal.tsx",
+              "src/pages/settings/helpCenter/components/articles/CloseModal/CloseModal.tsx",
+              "src/pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationDisableModal.tsx",
+              "src/pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 10,
+          "name": "DEPRECATED_BooleanField",
+          "nodeType": "ClassDeclaration",
+          "deprecationDate": "2022-02-22",
+          "deprecationType": "ui-component",
+          "declarationFile": "src/pages/common/forms/DEPRECATED_BooleanField.tsx",
+          "usageUrls": {
+            "named": [
+              "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton.tsx",
+              "src/pages/common/forms/DEPRECATED_BooleanField.tsx",
+              "src/pages/common/forms/tests/DEPRECATED_BooleanField.spec.tsx"
+            ],
+            "default": [
+              "src/pages/common/forms/tests/DEPRECATED_BooleanField.spec.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "DEPRECATED_BooleanField"
+          ]
+        }
+      ]
+    }
+  ]
+}

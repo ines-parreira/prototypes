@@ -10,7 +10,11 @@ type Props = {
     selected: Value[]
     onChangeItem: ComponentProps<typeof SelectStatsFilter>['onChange']
 }
-
+/**
+ * @deprecated
+ * @date 2023-08-08
+ * @type feature-component
+ */
 export const DEPRECATED_CampaignStatusMultiSelect = ({
     selected,
     onChangeItem,
