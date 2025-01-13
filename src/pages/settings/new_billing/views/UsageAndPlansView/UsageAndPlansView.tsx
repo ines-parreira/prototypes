@@ -14,7 +14,6 @@ import {isLegacyAutomate} from 'models/billing/utils'
 import useMeetAiAgentNotifications from 'pages/aiAgent/hooks/useMeetAiAgentNotification'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import BillingScheduledDowngrades from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades'
-import {useHasCreditCard} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useHasCreditCard'
 import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskInterval,
@@ -30,6 +29,7 @@ import {
 } from 'state/billing/types'
 import {
     getCurrentSubscription,
+    hasCreditCard as getHasCreditCard,
     isTrialing,
     shouldPayWithShopify as getShouldPayWithShopify,
 } from 'state/currentAccount/selectors'
@@ -118,7 +118,7 @@ const UsageAndPlansView = ({
         return diff <= 3 && diff >= 0
     }, [trialingEnd])
 
-    const hasCreditCard = useHasCreditCard()
+    const hasCreditCard = useAppSelector(getHasCreditCard)
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
 
     const productDisabledForTrialingUser: boolean =
