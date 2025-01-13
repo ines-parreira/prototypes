@@ -41,6 +41,17 @@ jest.mock('../../hooks/useWelcomePageAcknowledgedMutation', () => ({
     })),
 }))
 
+jest.mock('../../hooks/useAiAgentOnboardingNotification', () => ({
+    useAiAgentOnboardingNotification: jest.fn(() => ({
+        isAdmin: true,
+        isLoading: false,
+        onboardingNotificationState: undefined,
+        handleOnSave: jest.fn(),
+        handleOnSendOrCancelNotification: jest.fn(),
+        isAiAgentOnboardingNotificationEnabled: true,
+    })),
+}))
+
 jest.mock('hooks/useAppDispatch')
 
 jest.mock('state/notifications/actions', () => ({

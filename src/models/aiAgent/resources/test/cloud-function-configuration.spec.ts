@@ -1,5 +1,8 @@
 import MockAdapter from 'axios-mock-adapter'
 
+import {AiAgentOnboardingState} from 'models/aiAgent/types'
+import {getOnboardingNotificationStateFixture} from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
+
 import authClient from '../../../../models/api/resources'
 import {getAccountConfigurationWithHttpIntegrationFixture} from '../../../../pages/aiAgent/fixtures/accountConfiguration.fixture'
 import {getStoreConfigurationFixture} from '../../../../pages/aiAgent/fixtures/storeConfiguration.fixtures'
@@ -16,6 +19,9 @@ import {
     getStoreConfiguration,
     upsertAccountConfiguration,
     upsertStoreConfiguration,
+    getOnboardingNotificationState,
+    createOnboardingNotificationState,
+    upsertOnboardingNotificationState,
 } from '../cloud-function-configuration'
 
 describe('Cloud Function Configuration', () => {
@@ -276,6 +282,123 @@ describe('Cloud Function Configuration', () => {
             await expect(
                 createWelcomePageAcknowledged(accountDomain, storeName)
             ).rejects.toThrow('Request failed with status code 500')
+        })
+    })
+
+    describe('getOnboardingNotificationState', () => {
+        const mockedOnboardingNotificationState =
+            getOnboardingNotificationStateFixture({shopName: storeName})
+
+        it('should resolve with the correct data on success', async () => {
+            const data = mockedOnboardingNotificationState
+
+            apiServer
+                .onGet(
+                    `/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`
+                )
+                .reply(200, data)
+
+            const res = await getOnboardingNotificationState(
+                accountDomain,
+                storeName
+            )
+            expect(res.data).toEqual(data)
+        })
+
+        it('should handle an error correctly', async () => {
+            apiServer
+                .onGet(
+                    `/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`
+                )
+                .reply(400)
+
+            await expect(
+                getOnboardingNotificationState(accountDomain, storeName)
+            ).rejects.toThrow('Request failed with status code 400')
+        })
+    })
+
+    describe('createOnboardingNotificationState', () => {
+        const mockedOnboardingNotificationState =
+            getOnboardingNotificationStateFixture({shopName: storeName})
+
+        it('should resolve with the correct data on success', async () => {
+            const data = {
+                ...mockedOnboardingNotificationState,
+                onboardingState: AiAgentOnboardingState.VisitedAiAgent,
+            }
+
+            apiServer
+                .onPost(
+                    `/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`
+                )
+                .reply(201, data)
+
+            const res = await createOnboardingNotificationState(
+                accountDomain,
+                storeName,
+                {
+                    shopName: storeName,
+                    onboardingState: AiAgentOnboardingState.VisitedAiAgent,
+                }
+            )
+            expect(res.data).toEqual(data)
+        })
+
+        it('should handle an error correctly', async () => {
+            apiServer
+                .onPost(
+                    `/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`
+                )
+                .reply(400)
+
+            await expect(
+                createOnboardingNotificationState(accountDomain, storeName, {
+                    shopName: storeName,
+                })
+            ).rejects.toThrow('Request failed with status code 400')
+        })
+    })
+
+    describe('upsertOnboardingNotificationState', () => {
+        const mockedOnboardingNotificationState =
+            getOnboardingNotificationStateFixture({shopName: storeName})
+
+        it('should resolve with the correct data on success', async () => {
+            const data = {
+                ...mockedOnboardingNotificationState,
+                onboardingState: AiAgentOnboardingState.VisitedAiAgent,
+            }
+
+            apiServer
+                .onPut(
+                    `/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`
+                )
+                .reply(200, data)
+
+            const res = await upsertOnboardingNotificationState(
+                accountDomain,
+                storeName,
+                {
+                    ...mockedOnboardingNotificationState,
+                    onboardingState: AiAgentOnboardingState.VisitedAiAgent,
+                }
+            )
+            expect(res.data).toEqual(data)
+        })
+
+        it('should handle an error correctly', async () => {
+            apiServer
+                .onPut(
+                    `/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`
+                )
+                .reply(400)
+
+            await expect(
+                upsertOnboardingNotificationState(accountDomain, storeName, {
+                    ...mockedOnboardingNotificationState,
+                })
+            ).rejects.toThrow('Request failed with status code 400')
         })
     })
 })

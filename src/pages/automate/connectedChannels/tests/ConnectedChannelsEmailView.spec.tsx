@@ -12,6 +12,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {billingState} from 'fixtures/billing'
 import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
 import {useStoreConfigurationMutation} from 'pages/aiAgent/hooks/useStoreConfigurationMutation'
 import history from 'pages/history'
@@ -37,6 +38,10 @@ jest.mock('react-router-dom', () => ({
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
+jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification')
+const mockUseAiAgentOnboardingNotification = jest.mocked(
+    useAiAgentOnboardingNotification
+)
 const mockStore = configureMockStore([thunk])
 
 const defaultState = {
@@ -60,6 +65,14 @@ describe('ConnectedChannelsEmailView', () => {
 
         mockUseEnableAiAgent.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),
+        })
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            isAdmin: true,
+            isLoading: false,
+            onboardingNotificationState: undefined,
+            handleOnSave: jest.fn(),
+            handleOnSendOrCancelNotification: jest.fn(),
+            isAiAgentOnboardingNotificationEnabled: true,
         })
         mockFlags({
             [FeatureFlagKey.AiAgentOnboardingWizard]: false,

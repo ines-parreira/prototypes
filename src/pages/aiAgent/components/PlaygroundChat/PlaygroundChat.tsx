@@ -1,14 +1,17 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     AccountConfigurationWithHttpIntegration,
+    AiAgentOnboardingState,
+    OnboardingNotificationState,
     StoreConfiguration,
 } from 'models/aiAgent/types'
 import {PlaygroundPromptType} from 'models/aiAgentPlayground/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
+import {useAiAgentOnboardingNotification} from '../../hooks/useAiAgentOnboardingNotification'
 import {usePlaygroundForm} from '../../hooks/usePlaygroundForm'
 import {usePlaygroundMessages} from '../../hooks/usePlaygroundMessages'
 import {
@@ -85,6 +88,38 @@ export const PlaygroundChat = ({
         onFormValuesChange('message', '')
     }
 
+    const {
+        isAdmin,
+        isLoading,
+        onboardingNotificationState,
+        handleOnSave,
+        isAiAgentOnboardingNotificationEnabled,
+    } = useAiAgentOnboardingNotification({
+        shopName: storeData.storeName,
+    })
+
+    const handleOnSaveTestBeforeActivation = useCallback(async () => {
+        const isFullyOnboarded =
+            onboardingNotificationState?.onboardingState ===
+            AiAgentOnboardingState.FullyOnboarded
+        const isActivated =
+            onboardingNotificationState?.onboardingState ===
+            AiAgentOnboardingState.Activated
+
+        if (isFullyOnboarded || isActivated) return
+
+        const payload: Partial<OnboardingNotificationState> = {
+            onboardingState: AiAgentOnboardingState.FinishedSetup,
+            testBeforeActivationDatetimes: onboardingNotificationState
+                ? [
+                      ...onboardingNotificationState.testBeforeActivationDatetimes,
+                      new Date().toISOString(),
+                  ]
+                : [new Date().toISOString()],
+        }
+        await handleOnSave(payload)
+    }, [handleOnSave, onboardingNotificationState])
+
     const onSendMessage = () => {
         if (!isFormValid) {
             return
@@ -97,6 +132,10 @@ export const PlaygroundChat = ({
         })
 
         onFormValuesChange('message', '')
+
+        if (isAdmin && isAiAgentOnboardingNotificationEnabled) {
+            void handleOnSaveTestBeforeActivation()
+        }
     }
     const onChannelChange = (channel: PlaygroundChannels) => {
         setChannel(channel)
@@ -144,7 +183,7 @@ export const PlaygroundChat = ({
                 <PlaygroundInputSection
                     formValues={formValues}
                     onFormValuesChange={onFormValuesChange}
-                    isDisabled={isDisabled || isMessageSending}
+                    isDisabled={isDisabled || isMessageSending || isLoading}
                     disabledMessage={disabledMessage}
                     isInitialMessage={isInitialMessage}
                     isMessageSending={isMessageSending}

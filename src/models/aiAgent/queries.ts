@@ -6,13 +6,16 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import * as CloudFunctionConfig from 'models/aiAgent/resources/cloud-function-configuration'
 import * as KubernetesConfig from 'models/aiAgent/resources/configuration'
 import {
+    createOnboardingNotificationState,
     createStoreConfiguration,
     createStoreSnippetHelpCenter,
     createWelcomePageAcknowledged,
     getAccountConfiguration,
+    getOnboardingNotificationState,
     getStoreConfiguration,
     getWelcomePageAcknowledged,
     upsertAccountConfiguration,
+    upsertOnboardingNotificationState,
     upsertStoreConfiguration,
 } from 'models/aiAgent/resources/configuration'
 import {searchCustomer} from 'models/aiAgentPlayground/resources'
@@ -26,11 +29,6 @@ import {
     createContextAndGenerateCustomToneOfVoicePreview,
     createContextAndSubmitPlaygroundTicket,
 } from './resources/message-processing'
-import {
-    createOnboardingNotificationState,
-    getOnboardingNotificationState,
-    upsertOnboardingNotificationState,
-} from './resources/onboarding-notification-state'
 import {
     GetOnboardingNotificationStateParams,
     GetStoreConfigurationParams,
@@ -318,6 +316,13 @@ export const useGetOnboardingNotificationState = (
         Awaited<ReturnType<typeof getOnboardingNotificationState>>
     >
 ) => {
+    const useKubernetesConfigManager =
+        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
+
+    const {getOnboardingNotificationState} = getConfigManager(
+        useKubernetesConfigManager
+    )
+
     return useQuery({
         queryKey: onboardingNotificationStateKeys.detail(params),
         queryFn: () =>
@@ -331,9 +336,58 @@ export const useGetOnboardingNotificationState = (
     })
 }
 
+export const useGetOrCreateOnboardingNotificationState = (
+    params: GetOnboardingNotificationStateParams,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getOnboardingNotificationState>>
+    >
+) => {
+    const useKubernetesConfigManager =
+        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
+
+    const {getOnboardingNotificationState, createOnboardingNotificationState} =
+        getConfigManager(useKubernetesConfigManager)
+
+    const {accountDomain, storeName} = params
+
+    return useQuery({
+        queryKey: onboardingNotificationStateKeys.detail(params),
+        queryFn: async () => {
+            const fetchData = await getOnboardingNotificationState(
+                accountDomain,
+                storeName
+            )
+
+            if (!fetchData?.data.onboardingNotificationState) {
+                const createdData = await createOnboardingNotificationState(
+                    accountDomain,
+                    storeName,
+                    {
+                        shopName: storeName,
+                    }
+                )
+
+                return createdData
+            }
+
+            return fetchData
+        },
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        ...overrides,
+    })
+}
+
 export const useCreateOnboardingNotificationState = (
     overrides?: MutationOverrides<typeof createOnboardingNotificationState>
 ) => {
+    const useKubernetesConfigManager =
+        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
+
+    const {createOnboardingNotificationState} = getConfigManager(
+        useKubernetesConfigManager
+    )
+
     return useMutation({
         mutationFn: (params) => createOnboardingNotificationState(...params),
         ...overrides,
@@ -343,6 +397,13 @@ export const useCreateOnboardingNotificationState = (
 export const useUpsertOnboardingNotificationState = (
     overrides?: MutationOverrides<typeof upsertOnboardingNotificationState>
 ) => {
+    const useKubernetesConfigManager =
+        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
+
+    const {upsertOnboardingNotificationState} = getConfigManager(
+        useKubernetesConfigManager
+    )
+
     return useMutation({
         mutationFn: (params) => upsertOnboardingNotificationState(...params),
         ...overrides,

@@ -1,4 +1,4 @@
-import {useGetOnboardingNotificationState} from 'models/aiAgent/queries'
+import {useGetOrCreateOnboardingNotificationState} from 'models/aiAgent/queries'
 
 type Params = {
     accountDomain: string
@@ -12,7 +12,7 @@ export const useOnboardingNotificationState = ({
     const {
         data: onboardingNotificationStateData,
         isLoading: isOnboardingNotificationStateLoading,
-    } = useGetOnboardingNotificationState(
+    } = useGetOrCreateOnboardingNotificationState(
         {
             accountDomain,
             storeName: shopName,

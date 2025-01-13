@@ -2,10 +2,12 @@ import {Label} from '@gorgias/merchant-ui-kit'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
+import {AiAgentNotificationType} from 'automate/notifications/types'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
+    AiAgentOnboardingState,
     AiAgentOnboardingWizardStep,
     AiAgentOnboardingWizardType,
 } from 'models/aiAgent/types'
@@ -29,6 +31,7 @@ import {
     WIZARD_BUTTON_ACTIONS,
     WizardPostCompletionPathway,
 } from '../constants'
+import {useAiAgentOnboardingNotification} from '../hooks/useAiAgentOnboardingNotification'
 import {AiAgentOnboardingWizardProps} from './AiAgentOnboardingWizard'
 import css from './AiAgentOnboardingWizardKnowledge.less'
 import {useAiAgentOnboardingWizard} from './hooks/useAiAgentOnboardingWizard'
@@ -37,6 +40,12 @@ type Props = AiAgentOnboardingWizardProps
 
 const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
     const dispatch = useAppDispatch()
+    const {
+        handleOnSave,
+        handleOnSendOrCancelNotification,
+        isLoading: isLoadingOnboardingNotificationState,
+        isAiAgentOnboardingNotificationEnabled,
+    } = useAiAgentOnboardingNotification({shopName})
 
     const [publicUrls, setPublicUrls] = useState<string[]>([])
     const [pendingUrlCount, setPendingUrlCount] = useState(0)
@@ -143,9 +152,23 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
         }
     }
 
-    const handleWizardCompletion = () => {
-        const {redirectTo, onCompletePathway} = getRedirectionPathway()
+    const handleOnFinishedSetup = useCallback(async () => {
+        await handleOnSave({
+            onboardingState: AiAgentOnboardingState.FinishedSetup,
+        })
 
+        handleOnSendOrCancelNotification({
+            aiAgentNotificationType: AiAgentNotificationType.FinishAiAgentSetup,
+            isCancel: true,
+        })
+    }, [handleOnSave, handleOnSendOrCancelNotification])
+
+    const handleWizardCompletion = () => {
+        if (isAiAgentOnboardingNotificationEnabled) {
+            void handleOnFinishedSetup()
+        }
+
+        const {redirectTo, onCompletePathway} = getRedirectionPathway()
         handleSave({
             publicUrls,
             hasExternalFiles,
@@ -262,7 +285,9 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
                         displayBackButton
                         displayFinishButton
                         onClick={onFooterAction}
-                        isDisabled={isLoading}
+                        isDisabled={
+                            isLoading || isLoadingOnboardingNotificationState
+                        }
                     />
                 }
             >

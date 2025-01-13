@@ -7,7 +7,9 @@ import {useParams} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {AiAgentNotificationType} from 'automate/notifications/types'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {AiAgentOnboardingState} from 'models/aiAgent/types'
 import {getAiAgentStoreFixture} from 'pages/aiAgent/fixtures/aiAgentStoreFixture'
 import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import {useGetOrCreateSnippetHelpCenter} from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
@@ -19,6 +21,8 @@ import {NotificationStatus} from 'state/notifications/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 
+import {getOnboardingNotificationStateFixture} from '../../fixtures/onboardingNotificationState.fixture'
+import {useAiAgentOnboardingNotification} from '../../hooks/useAiAgentOnboardingNotification'
 import {AiAgentPreviewModeSettingsContainer} from '../AiAgentPreviewModeSettingsContainer'
 
 jest.mock('react-router-dom', () => {
@@ -56,6 +60,22 @@ jest.mock('pages/aiAgent/hooks/usePublicResources', () => ({
     usePublicResources: jest.fn(),
 }))
 const mockUsePublicResources = assumeMock(usePublicResources)
+
+jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
+    useAiAgentOnboardingNotification: jest.fn(),
+}))
+const mockUseAiAgentOnboardingNotification = assumeMock(
+    useAiAgentOnboardingNotification
+)
+
+const defaultUseAiAgentOnboardingNotification = {
+    isAdmin: true,
+    onboardingNotificationState: undefined,
+    handleOnSave: jest.fn(),
+    handleOnSendOrCancelNotification: jest.fn(),
+    isLoading: false,
+    isAiAgentOnboardingNotificationEnabled: true,
+}
 
 const mockUseParams = assumeMock(useParams)
 const queryClient = mockQueryClient()
@@ -97,6 +117,9 @@ describe('AiAgentPreviewModeSettingsView', () => {
             ],
             isSourceItemsListLoading: false,
         } as unknown as ReturnType<typeof usePublicResources>)
+        mockUseAiAgentOnboardingNotification.mockReturnValue(
+            defaultUseAiAgentOnboardingNotification
+        )
     })
 
     it('renders form elements properly', () => {
@@ -223,6 +246,99 @@ describe('AiAgentPreviewModeSettingsView', () => {
         expect(
             within(labelElement).getByText(/to enable Preview\./i)
         ).toBeInTheDocument()
+    })
+
+    it('should trigger cancelation call on activate AI agent notification and update onboarding state when Preview mode is enabled', async () => {
+        renderComponent()
+        fireEvent.click(screen.getByText('Enable Preview'))
+        fireEvent.change(screen.getByLabelText('Set duration'), {
+            target: {value: '10'},
+        })
+        fireEvent.click(screen.getByText('Save Changes'))
+
+        await waitFor(() => {
+            expect(
+                defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+            ).toHaveBeenCalledWith({
+                aiAgentNotificationType:
+                    AiAgentNotificationType.ActivateAiAgent,
+                isCancel: true,
+            })
+
+            expect(
+                defaultUseAiAgentOnboardingNotification.handleOnSave
+            ).toHaveBeenCalledWith({
+                onboardingState: AiAgentOnboardingState.Activated,
+                firstActivationDatetime: expect.any(String),
+            })
+        })
+    })
+
+    it('should not trigger cancelation call on activate AI agent notification when merchant already fully onboarded', () => {
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            onboardingNotificationState: getOnboardingNotificationStateFixture({
+                onboardingState: AiAgentOnboardingState.FullyOnboarded,
+            }),
+        })
+
+        renderComponent()
+        fireEvent.click(screen.getByText('Enable Preview'))
+        fireEvent.change(screen.getByLabelText('Set duration'), {
+            target: {value: '10'},
+        })
+        fireEvent.click(screen.getByText('Save Changes'))
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+        ).not.toHaveBeenCalled()
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSave
+        ).not.toHaveBeenCalled()
+    })
+
+    it('should not trigger cancelation call on activate AI agent notification when merchant already activated AI agent previously', () => {
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            onboardingNotificationState: getOnboardingNotificationStateFixture({
+                onboardingState: AiAgentOnboardingState.Activated,
+            }),
+        })
+
+        renderComponent()
+        fireEvent.click(screen.getByText('Enable Preview'))
+        fireEvent.change(screen.getByLabelText('Set duration'), {
+            target: {value: '10'},
+        })
+        fireEvent.click(screen.getByText('Save Changes'))
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+        ).not.toHaveBeenCalled()
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSave
+        ).not.toHaveBeenCalled()
+    })
+
+    it('should not trigger cancelation call on activate AI agent notification when AiAgentOnboardingNotification flag is disabled', () => {
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            isAiAgentOnboardingNotificationEnabled: false,
+        })
+
+        renderComponent()
+        fireEvent.click(screen.getByText('Enable Preview'))
+        fireEvent.change(screen.getByLabelText('Set duration'), {
+            target: {value: '10'},
+        })
+        fireEvent.click(screen.getByText('Save Changes'))
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+        ).not.toHaveBeenCalled()
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSave
+        ).not.toHaveBeenCalled()
     })
 
     it('should calls updateStoreConfiguration and displays success notification on enabling Preview mode', async () => {

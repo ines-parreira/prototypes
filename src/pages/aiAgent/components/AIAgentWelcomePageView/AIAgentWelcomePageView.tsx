@@ -1,12 +1,17 @@
 import classNames from 'classnames'
-import React, {useCallback, useEffect} from 'react'
+import React, {useCallback, useEffect, useRef} from 'react'
 
 import Skeleton from 'react-loading-skeleton'
 import {useHistory} from 'react-router-dom'
 
+import {AiAgentNotificationType} from 'automate/notifications/types'
 import {SegmentEvent, logEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {StoreConfiguration} from 'models/aiAgent/types'
+import {
+    AiAgentOnboardingState,
+    OnboardingNotificationState,
+    StoreConfiguration,
+} from 'models/aiAgent/types'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -15,6 +20,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import {assetsUrl} from 'utils'
 
 import {WIZARD_UPDATE_QUERY_KEY} from '../../constants'
+import {useAiAgentOnboardingNotification} from '../../hooks/useAiAgentOnboardingNotification'
 import {useWelcomePageAcknowledgedMutation} from '../../hooks/useWelcomePageAcknowledgedMutation'
 import css from './AIAgentWelcomePageView.less'
 
@@ -50,8 +56,19 @@ type Props = AiAgentWelcomePageProps &
 export const AIAgentWelcomePageView = (props: Props) => {
     const {isLoading, createWelcomePageAcknowledged} =
         useWelcomePageAcknowledgedMutation({shopName: props.shopName})
+
+    const {
+        isAdmin,
+        isLoading: isLoadingOnboardingNotificationState,
+        onboardingNotificationState,
+        handleOnSave,
+        handleOnSendOrCancelNotification,
+        isAiAgentOnboardingNotificationEnabled,
+    } = useAiAgentOnboardingNotification({shopName: props.shopName})
+
     const dispatch = useAppDispatch()
     const history = useHistory()
+    const sameVisitRef = useRef(false)
 
     const isOnUpdateOnboardingWizard =
         props.state === 'onboardingWizard' &&
@@ -67,8 +84,40 @@ export const AIAgentWelcomePageView = (props: Props) => {
     }
 
     const aiAgentNavigation = useAiAgentNavigation({shopName: props.shopName})
+    const handleOnFinishSetupNotification = useCallback(async () => {
+        const isFinishedSetupNotificationAlreadyReceived =
+            !!onboardingNotificationState?.finishAiAgentSetupNotificationReceivedDatetime
+
+        if (!isFinishedSetupNotificationAlreadyReceived) {
+            handleOnSendOrCancelNotification({
+                aiAgentNotificationType:
+                    AiAgentNotificationType.FinishAiAgentSetup,
+            })
+        }
+
+        if (isOnUpdateOnboardingWizard) return
+
+        await handleOnSave({
+            onboardingState: AiAgentOnboardingState.StartedSetup,
+        })
+    }, [
+        handleOnSave,
+        handleOnSendOrCancelNotification,
+        isOnUpdateOnboardingWizard,
+        onboardingNotificationState?.finishAiAgentSetupNotificationReceivedDatetime,
+    ])
 
     const onOnboardingWizardClick = useCallback(() => {
+        if (isAdmin) {
+            void handleOnFinishSetupNotification()
+
+            handleOnSendOrCancelNotification({
+                aiAgentNotificationType:
+                    AiAgentNotificationType.StartAiAgentSetup,
+                isCancel: true,
+            })
+        }
+
         logEvent(SegmentEvent.AiAgentWelcomePageCtaClicked, {
             version: 'Dynamic',
             store: props.shopName,
@@ -81,10 +130,13 @@ export const AIAgentWelcomePageView = (props: Props) => {
                 : '',
         })
     }, [
+        aiAgentNavigation.routes.onboardingWizard,
+        handleOnFinishSetupNotification,
+        handleOnSendOrCancelNotification,
         history,
+        isAdmin,
         isOnUpdateOnboardingWizard,
         props.shopName,
-        aiAgentNavigation.routes.onboardingWizard,
     ])
 
     const onAcknowledgedClick = async () => {
@@ -119,6 +171,81 @@ export const AIAgentWelcomePageView = (props: Props) => {
             store: props.shopName,
         })
     }, [props.state, props.shopName])
+
+    const handleOnStartSetupNotification = useCallback(async () => {
+        const isStartedSetup =
+            onboardingNotificationState?.onboardingState ===
+            AiAgentOnboardingState.StartedSetup
+
+        const isStartedSetupNotificationAlreadyReceived =
+            !!onboardingNotificationState?.startAiAgentSetupNotificationReceivedDatetime
+
+        if (
+            sameVisitRef.current ||
+            isStartedSetup ||
+            isStartedSetupNotificationAlreadyReceived
+        )
+            return
+
+        sameVisitRef.current = true
+
+        handleOnSendOrCancelNotification({
+            aiAgentNotificationType: AiAgentNotificationType.MeetAiAgent,
+            isCancel: true,
+        })
+
+        let payload: Partial<OnboardingNotificationState> = {}
+        if (isOnUpdateOnboardingWizard) {
+            payload = {
+                onboardingState: AiAgentOnboardingState.StartedSetup,
+            }
+        } else {
+            payload = {
+                onboardingState: AiAgentOnboardingState.VisitedAiAgent,
+                welcomePageVisitedDatetimes: onboardingNotificationState
+                    ? [
+                          ...onboardingNotificationState.welcomePageVisitedDatetimes,
+                          new Date().toISOString(),
+                      ]
+                    : [new Date().toISOString()],
+            }
+        }
+        const updatedOnboardingNotificationState = await handleOnSave(payload)
+
+        if (
+            updatedOnboardingNotificationState?.welcomePageVisitedDatetimes &&
+            updatedOnboardingNotificationState.welcomePageVisitedDatetimes
+                .length >= 3
+        ) {
+            handleOnSendOrCancelNotification({
+                aiAgentNotificationType:
+                    AiAgentNotificationType.StartAiAgentSetup,
+            })
+        }
+    }, [
+        handleOnSave,
+        handleOnSendOrCancelNotification,
+        isOnUpdateOnboardingWizard,
+        onboardingNotificationState,
+    ])
+
+    useEffect(() => {
+        if (
+            props.state === 'loading' ||
+            isLoadingOnboardingNotificationState ||
+            !isAdmin ||
+            !isAiAgentOnboardingNotificationEnabled
+        )
+            return
+
+        void handleOnStartSetupNotification()
+    }, [
+        handleOnStartSetupNotification,
+        isAdmin,
+        isAiAgentOnboardingNotificationEnabled,
+        isLoadingOnboardingNotificationState,
+        props.state,
+    ])
 
     return (
         <div className={css.pageContainer}>
@@ -179,7 +306,10 @@ export const AIAgentWelcomePageView = (props: Props) => {
                                                 ? onOnboardingWizardClick
                                                 : onAcknowledgedClick
                                         }
-                                        isDisabled={isLoading}
+                                        isDisabled={
+                                            isLoading ||
+                                            isLoadingOnboardingNotificationState
+                                        }
                                     >
                                         {isOnUpdateOnboardingWizard
                                             ? 'Continue Setup'

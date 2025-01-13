@@ -25,16 +25,14 @@ import {
     useUpsertOnboardingNotificationState,
 } from '../queries'
 import {
+    createOnboardingNotificationState,
     createWelcomePageAcknowledged,
+    getOnboardingNotificationState,
     getWelcomePageAcknowledged,
+    upsertOnboardingNotificationState,
 } from '../resources/cloud-function-configuration'
 import * as guidanceResources from '../resources/guidances'
 import {createContextAndGenerateCustomToneOfVoicePreview} from '../resources/message-processing'
-import {
-    createOnboardingNotificationState,
-    getOnboardingNotificationState,
-    upsertOnboardingNotificationState,
-} from '../resources/onboarding-notification-state'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useHelpCenterApi: jest.fn(),
@@ -43,9 +41,6 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
 jest.mock('models/aiAgent/resources/cloud-function-configuration', () => ({
     createWelcomePageAcknowledged: jest.fn(),
     getWelcomePageAcknowledged: jest.fn(),
-}))
-
-jest.mock('models/aiAgent/resources/onboarding-notification-state', () => ({
     getOnboardingNotificationState: jest.fn(),
     createOnboardingNotificationState: jest.fn(),
     upsertOnboardingNotificationState: jest.fn(),

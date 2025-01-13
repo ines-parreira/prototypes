@@ -1,6 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 
-import {useGetOnboardingNotificationState} from 'models/aiAgent/queries'
+import {useGetOrCreateOnboardingNotificationState} from 'models/aiAgent/queries'
 import {
     OnboardingNotificationState,
     OnboardingNotificationStateResponse,
@@ -27,17 +27,19 @@ describe('useOnboardingNotificationState', () => {
         )
     }
 
-    const mockUseGetOnboardingNotificationState = (
+    const mockUseGetOrCreateOnboardingNotificationState = (
         data?: OnboardingNotificationStateResponse
     ) => {
-        ;(useGetOnboardingNotificationState as jest.Mock).mockReturnValue({
+        ;(
+            useGetOrCreateOnboardingNotificationState as jest.Mock
+        ).mockReturnValue({
             isLoading: data === undefined,
             data: data !== undefined ? {data} : undefined,
         })
     }
 
     it('should return loading state correctly', () => {
-        mockUseGetOnboardingNotificationState()
+        mockUseGetOrCreateOnboardingNotificationState()
         const {result} = renderUseOnboardingNotificationStateHook()
         expect(result.current).toEqual({
             isLoading: true,
@@ -49,7 +51,7 @@ describe('useOnboardingNotificationState', () => {
         const data: OnboardingNotificationStateResponse = {
             onboardingNotificationState: mockedOnboardingNotificationState,
         }
-        mockUseGetOnboardingNotificationState(data)
+        mockUseGetOrCreateOnboardingNotificationState(data)
         const {result} = renderUseOnboardingNotificationStateHook()
         expect(result.current).toEqual({
             isLoading: false,

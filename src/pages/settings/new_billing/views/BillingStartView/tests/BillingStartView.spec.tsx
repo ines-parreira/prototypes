@@ -29,6 +29,8 @@ import BillingStartView from '../BillingStartView'
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
+jest.mock('pages/aiAgent/hooks/useMeetAiAgentNotification')
+
 // Mock action creators
 jest.mock('state/billing/actions', () => {
     const actions: Record<string, unknown> = jest.requireActual(

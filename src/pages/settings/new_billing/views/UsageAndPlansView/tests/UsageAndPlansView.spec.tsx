@@ -5,9 +5,13 @@ import {fromJS} from 'immutable'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import React from 'react'
 
+import {AiAgentNotificationType} from 'automate/notifications/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
+import {shopifyIntegration} from 'fixtures/integrations'
 import {
+    AUTOMATION_PRODUCT_ID,
+    basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
     basicYearlyHelpdeskPlan,
     CONVERT_PRODUCT_ID,
@@ -22,6 +26,8 @@ import {
     voicePlan1,
 } from 'fixtures/productPrices'
 import {ProductType} from 'models/billing/types'
+import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
+import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
 import {AlertType} from 'pages/common/components/Alert/Alert'
 import ProductCard from 'pages/settings/new_billing/components/ProductCard'
 import {ProductCardProps} from 'pages/settings/new_billing/components/ProductCard/ProductCard'
@@ -45,6 +51,24 @@ jest.mock('pages/settings/new_billing/components/ProductCard', () =>
         return <div data-testid={dataTestId}></div>
     })
 )
+
+jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification')
+jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
+
+const mockUseAiAgentOnboardingNotification = assumeMock(
+    useAiAgentOnboardingNotification
+)
+const mockUseStoreConfiguration = assumeMock(useStoreConfiguration)
+
+const mockedUseAiAgentOnboardingNotification = {
+    isAdmin: true,
+    onboardingNotificationState: undefined,
+    handleOnSave: jest.fn(),
+    handleOnSendOrCancelNotification: jest.fn(),
+    isLoading: false,
+    isAiAgentOnboardingNotificationEnabled: true,
+}
+
 const ProductCardMock = assumeMock(ProductCard)
 
 const mockedUsage = {
@@ -71,9 +95,15 @@ const mockedAccount = {
         status: 'active',
     },
 }
+
+const mockedIntegrations = {
+    integrations: [shopifyIntegration],
+}
+
 const store = {
     billing: fromJS(mockedBilling),
     currentAccount: fromJS(mockedAccount),
+    integrations: fromJS(mockedIntegrations),
 }
 
 describe('UsageAndPlansView', () => {
@@ -83,6 +113,13 @@ describe('UsageAndPlansView', () => {
         resetLDMocks()
         mockFlags({
             [FeatureFlagKey.BillingVoiceSmsSelfServe]: false,
+        })
+        mockUseAiAgentOnboardingNotification.mockReturnValue(
+            mockedUseAiAgentOnboardingNotification
+        )
+        mockUseStoreConfiguration.mockReturnValue({
+            isLoading: false,
+            storeConfiguration: undefined,
         })
     })
 
@@ -169,6 +206,7 @@ describe('UsageAndPlansView', () => {
     it('should render with scheduled cancellation including Helpdesk and Convert products', () => {
         const alteredStore = {
             billing: fromJS(mockedBilling),
+            integrations: fromJS(mockedIntegrations),
             currentAccount: fromJS({
                 ...mockedAccount,
                 current_subscription: {
@@ -279,6 +317,7 @@ describe('UsageAndPlansView', () => {
         }
         const alteredStore = {
             billing: fromJS(alteredBilling),
+            integrations: fromJS(mockedIntegrations),
             currentAccount: fromJS({
                 ...mockedAccount,
                 current_subscription: {
@@ -398,6 +437,7 @@ describe('UsageAndPlansView', () => {
         }
         const alteredStore = {
             billing: fromJS(alteredBilling),
+            integrations: fromJS(mockedIntegrations),
             currentAccount: fromJS({
                 ...mockedAccount,
                 current_subscription: {
@@ -468,6 +508,7 @@ describe('UsageAndPlansView', () => {
     it('should not be possible to update plan frequency when the user is on a yearly plan', () => {
         const alteredStore = {
             billing: fromJS(mockedBilling),
+            integrations: fromJS(mockedIntegrations),
             currentAccount: fromJS({
                 ...mockedAccount,
                 current_subscription: {
@@ -501,6 +542,7 @@ describe('UsageAndPlansView', () => {
         })
         const alteredStore = {
             billing: fromJS(mockedBilling),
+            integrations: fromJS(mockedIntegrations),
             currentAccount: fromJS({
                 ...mockedAccount,
                 current_subscription: {
@@ -557,6 +599,7 @@ describe('UsageAndPlansView', () => {
         }
         const alteredStore = {
             billing: fromJS(alteredBilling),
+            integrations: fromJS(mockedIntegrations),
             currentAccount: fromJS({
                 ...mockedAccount,
                 current_subscription: {
@@ -637,5 +680,58 @@ describe('UsageAndPlansView', () => {
             },
             {}
         )
+    })
+
+    it('should trigger call for meet AI agent notification if it has an active Automate subscription', () => {
+        const alteredBilling = {
+            ...mockedBilling,
+            currentProductsUsage: {
+                [ProductType.Helpdesk]:
+                    currentProductsUsage[ProductType.Helpdesk],
+                [ProductType.Automation]:
+                    currentProductsUsage[ProductType.Automation],
+                [ProductType.Voice]: null,
+                [ProductType.SMS]: null,
+                [ProductType.Convert]: null,
+            },
+        }
+        const alteredStore = {
+            billing: fromJS(alteredBilling),
+            integrations: fromJS(mockedIntegrations),
+            currentAccount: fromJS({
+                ...mockedAccount,
+                current_subscription: {
+                    ...mockedAccount.current_subscription,
+                    products: {
+                        [HELPDESK_PRODUCT_ID]:
+                            basicMonthlyHelpdeskPlan.price_id,
+                        [AUTOMATION_PRODUCT_ID]:
+                            basicMonthlyAutomationPlan.price_id,
+                    },
+                },
+            }),
+        }
+
+        renderWithStoreAndQueryClientAndRouter(
+            <UsageAndPlansView
+                contactBilling={jest.fn()}
+                periodEnd="2021-01-01"
+                currentUsage={alteredBilling.currentProductsUsage}
+            />,
+            alteredStore
+        )
+
+        expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledTimes(1)
+        expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledWith({
+            shopName: 'shopify-store',
+        })
+        expect(
+            mockedUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+        ).toHaveBeenCalledTimes(1)
+        expect(
+            mockedUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+        ).toHaveBeenCalledWith({
+            aiAgentNotificationType: AiAgentNotificationType.MeetAiAgent,
+        })
     })
 })

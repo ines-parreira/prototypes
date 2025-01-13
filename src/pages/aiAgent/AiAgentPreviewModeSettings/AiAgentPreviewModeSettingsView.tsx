@@ -2,9 +2,14 @@ import classnames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useState} from 'react'
 
+import {AiAgentNotificationType} from 'automate/notifications/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {StoreConfiguration} from 'models/aiAgent/types'
+import {
+    AiAgentOnboardingState,
+    OnboardingNotificationState,
+    StoreConfiguration,
+} from 'models/aiAgent/types'
 import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {
     AI_AGENT,
@@ -20,6 +25,7 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
+import {useAiAgentOnboardingNotification} from '../hooks/useAiAgentOnboardingNotification'
 import css from './AiAgentPreviewModeSettingsView.less'
 
 interface AiAgentPreviewModeSettingsViewProps {
@@ -94,6 +100,41 @@ const AiAgentPreviewModeSettingsView: React.FC<
         setIsToggled(isPreviewModeEnabled)
     }
 
+    const {
+        isLoading: isLoadingOnboardingNotificationState,
+        onboardingNotificationState,
+        handleOnSave,
+        isAiAgentOnboardingNotificationEnabled,
+        handleOnSendOrCancelNotification,
+    } = useAiAgentOnboardingNotification({shopName})
+
+    const handleActivatedAiAgent = async () => {
+        if (!isAiAgentOnboardingNotificationEnabled) return
+
+        const isFullyOnboarded =
+            onboardingNotificationState?.onboardingState ===
+            AiAgentOnboardingState.FullyOnboarded
+        const isActivated =
+            onboardingNotificationState?.onboardingState ===
+            AiAgentOnboardingState.Activated
+
+        if (isFullyOnboarded || isActivated) return
+
+        handleOnSendOrCancelNotification({
+            aiAgentNotificationType: AiAgentNotificationType.ActivateAiAgent,
+            isCancel: true,
+        })
+
+        const payload: Partial<OnboardingNotificationState> = {
+            onboardingState: AiAgentOnboardingState.Activated,
+            firstActivationDatetime:
+                onboardingNotificationState?.firstActivationDatetime ??
+                new Date().toISOString(),
+        }
+
+        await handleOnSave(payload)
+    }
+
     const onSubmit = async () => {
         if (!storeConfiguration || hasNoEmailConnected || hasNoKnowledgeBase) {
             return
@@ -148,6 +189,11 @@ const AiAgentPreviewModeSettingsView: React.FC<
                     status: NotificationStatus.Success,
                 })
             )
+
+            if (isToggled) {
+                await handleActivatedAiAgent()
+            }
+
             setIsPristine(true)
         } catch (error) {
             void dispatch(
@@ -234,7 +280,9 @@ const AiAgentPreviewModeSettingsView: React.FC<
                                 setIsPristine(false)
                             }}
                             isDisabled={
-                                hasNoEmailConnected || hasNoKnowledgeBase
+                                hasNoEmailConnected ||
+                                hasNoKnowledgeBase ||
+                                isLoadingOnboardingNotificationState
                             }
                         >
                             Enable Preview

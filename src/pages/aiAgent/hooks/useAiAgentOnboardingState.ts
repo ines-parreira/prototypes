@@ -23,7 +23,8 @@ export enum OnboardingState {
 }
 
 export const useAiAgentOnboardingState = (
-    shopName: string
+    shopName: string,
+    isLoading?: boolean
 ): OnboardingState => {
     const welcomePageFeatureFlag: WelcomePageFeatureFlag =
         useFlags()[FeatureFlagKey.AIAgentWelcomePage]
@@ -49,7 +50,11 @@ export const useAiAgentOnboardingState = (
         shopName,
     })
 
-    if (isStoreConfigurationLoading || isWelcomePageAcknowledgedLoading)
+    if (
+        isStoreConfigurationLoading ||
+        isWelcomePageAcknowledgedLoading ||
+        isLoading
+    )
         return OnboardingState.Loading
 
     const displayWelcomePage =

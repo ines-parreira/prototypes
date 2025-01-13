@@ -1,7 +1,7 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
 import {QueryClientProvider} from '@tanstack/react-query'
-import {act, fireEvent, screen} from '@testing-library/react'
+import {act, fireEvent, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {createMemoryHistory} from 'history'
 import {mockFlags} from 'jest-launchdarkly-mock'
@@ -11,9 +11,11 @@ import {Router} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {AiAgentNotificationType} from 'automate/notifications/types'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
+    AiAgentOnboardingState,
     AiAgentOnboardingWizardStep,
     AiAgentOnboardingWizardType,
 } from 'models/aiAgent/types'
@@ -31,6 +33,7 @@ import {
 } from '../../constants'
 import {getStoreConfigurationFormValuesFixture} from '../../fixtures/onboardingWizard.fixture'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
+import {useAiAgentOnboardingNotification} from '../../hooks/useAiAgentOnboardingNotification'
 import {useFileIngestion} from '../../hooks/useFileIngestion'
 import {usePublicResourcesPooling} from '../../hooks/usePublicResourcesPooling'
 import AiAgentOnboardingWizardStepKnowledge from '../AiAgentOnboardingWizardKnowledge'
@@ -45,6 +48,11 @@ jest.mock('state/notifications/actions')
 
 jest.mock('../hooks/useAiAgentOnboardingWizard')
 const mockUseAiAgentOnboardingWizard = assumeMock(useAiAgentOnboardingWizard)
+
+jest.mock('../../hooks/useAiAgentOnboardingNotification')
+const mockUseAiAgentOnboardingNotification = assumeMock(
+    useAiAgentOnboardingNotification
+)
 
 jest.mock('../../hooks/useFileIngestion')
 const mockUseFileIngestion = assumeMock(useFileIngestion)
@@ -76,6 +84,15 @@ const mockedUseAiAgentOnboardingWizard = {
     handleAction: jest.fn(),
     updateValue: jest.fn(),
     storeConfiguration: mockedStoreConfiguration,
+}
+
+const mockedUseAiAgentOnboardingNotification = {
+    isAdmin: true,
+    onboardingNotificationState: undefined,
+    handleOnSave: jest.fn(),
+    handleOnSendOrCancelNotification: jest.fn(),
+    isLoading: false,
+    isAiAgentOnboardingNotificationEnabled: false,
 }
 
 const queryClient = mockQueryClient()
@@ -130,6 +147,9 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         mockUsePublicResourcesPooling.mockReturnValue({
             articleIngestionLogsStatus: [],
         })
+        mockUseAiAgentOnboardingNotification.mockReturnValue(
+            mockedUseAiAgentOnboardingNotification
+        )
     })
 
     it('should render the header and footer correctly', () => {
@@ -507,6 +527,33 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
                     onClick: expect.any(Function),
                 }),
             ],
+        })
+    })
+
+    it('should trigger cancellation call on finish AI agent setup notification when Finish is clicked', async () => {
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...mockedUseAiAgentOnboardingNotification,
+            isAiAgentOnboardingNotificationEnabled: true,
+        })
+
+        renderComponent({})
+
+        userEvent.click(screen.getByText('Finish'))
+
+        await waitFor(() => {
+            expect(
+                mockedUseAiAgentOnboardingNotification.handleOnSave
+            ).toHaveBeenCalledWith({
+                onboardingState: AiAgentOnboardingState.FinishedSetup,
+            })
+
+            expect(
+                mockedUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+            ).toHaveBeenCalledWith({
+                aiAgentNotificationType:
+                    AiAgentNotificationType.FinishAiAgentSetup,
+                isCancel: true,
+            })
         })
     })
 })

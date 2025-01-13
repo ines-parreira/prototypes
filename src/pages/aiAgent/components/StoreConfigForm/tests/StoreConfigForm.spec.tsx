@@ -9,19 +9,22 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {AiAgentNotificationType} from 'automate/notifications/types'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {billingState} from 'fixtures/billing'
 import * as useLocalStorageImports from 'hooks/useLocalStorage'
 import {useSearchParam} from 'hooks/useSearchParam'
-import {StoreConfiguration} from 'models/aiAgent/types'
+import {AiAgentOnboardingState, StoreConfiguration} from 'models/aiAgent/types'
 import {HelpCenter} from 'models/helpCenter/types'
 import {IntegrationType} from 'models/integration/types'
 import {applicationsAutomationSettingsAiAgentEnabledFixture} from 'pages/aiAgent/fixtures/applicationAutomationSettings.fixture'
 import {mockChatChannels} from 'pages/aiAgent/fixtures/chatChannels.fixture'
+import {getOnboardingNotificationStateFixture} from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 import {useAccountStoreConfiguration} from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
 import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import {useConfigurationForm} from 'pages/aiAgent/hooks/useConfigurationForm'
 import {useGetOrCreateSnippetHelpCenter} from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
 import {usePublicResources} from 'pages/aiAgent/hooks/usePublicResources'
@@ -71,6 +74,9 @@ jest.mock('pages/aiAgent/hooks/usePublicResources', () => ({
 jest.mock('../../PublicSourcesSection/PublicSourcesSection', () => ({
     PublicSourcesSection: jest.fn(() => <p>Public Source Section</p>),
 }))
+jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
+    useAiAgentOnboardingNotification: jest.fn(),
+}))
 jest.mock('state/billing/selectors', () => ({
     __esModule: true,
     getHasAutomate: jest.fn(),
@@ -102,6 +108,9 @@ const mockedUseConfigurationForm = jest.mocked(useConfigurationForm)
 const mockedUsePublicResources = jest.mocked(usePublicResources)
 const mockGetHasAutomate = jest.mocked(getHasAutomate)
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
+const mockUseAiAgentOnboardingNotification = jest.mocked(
+    useAiAgentOnboardingNotification
+)
 
 mockedUsePublicResources.mockReturnValue({
     sourceItems: [],
@@ -272,6 +281,15 @@ describe('<StoreConfigForm />', () => {
         isPendingCreateOrUpdate: false,
     }
 
+    const defaultUseAiAgentOnboardingNotification = {
+        isAdmin: true,
+        onboardingNotificationState: undefined,
+        handleOnSave: jest.fn(),
+        handleOnSendOrCancelNotification: jest.fn(),
+        isLoading: false,
+        isAiAgentOnboardingNotificationEnabled: true,
+    }
+
     beforeEach(() => {
         updateValueMocked.mockReset()
         mockLogEvent.mockClear()
@@ -305,6 +323,9 @@ describe('<StoreConfigForm />', () => {
             aiAgentTicketViewId: 1,
             aiAgentPreviewTicketViewId: 2,
         })
+        mockUseAiAgentOnboardingNotification.mockReturnValue(
+            defaultUseAiAgentOnboardingNotification
+        )
     })
 
     afterAll(() => {
@@ -905,6 +926,151 @@ describe('<StoreConfigForm />', () => {
                 INITIAL_FORM_VALUES.chatChannelDeactivatedDatetime
             )
         })
+    })
+
+    it('should trigger cancelation call on activate AI agent notification and update onboarding state when AI agent is activated', () => {
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...storeConfiguration,
+                emailChannelDeactivatedDatetime: null,
+            },
+            isLoading: false,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: jest
+                .fn()
+                .mockRejectedValue(new Error('Test error')),
+            isPendingCreateOrUpdate: false,
+        })
+
+        renderComponent()
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+        ).toHaveBeenCalledWith({
+            aiAgentNotificationType: AiAgentNotificationType.ActivateAiAgent,
+            isCancel: true,
+        })
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSave
+        ).toHaveBeenCalledWith({
+            onboardingState: AiAgentOnboardingState.Activated,
+            firstActivationDatetime: expect.any(String),
+        })
+    })
+
+    it('should not trigger cancelation call on activate AI agent notification when AI agent is not active', () => {
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...storeConfiguration,
+                emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                previewModeActivatedDatetime: null,
+            },
+            isLoading: false,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: jest
+                .fn()
+                .mockRejectedValue(new Error('Test error')),
+            isPendingCreateOrUpdate: false,
+        })
+
+        renderComponent()
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+        ).not.toHaveBeenCalled()
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSave
+        ).not.toHaveBeenCalled()
+    })
+
+    it('should not trigger cancelation call on activate AI agent notification when merchant already fully onboarded', () => {
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...storeConfiguration,
+                previewModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+            },
+            isLoading: false,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: jest
+                .fn()
+                .mockRejectedValue(new Error('Test error')),
+            isPendingCreateOrUpdate: false,
+        })
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            onboardingNotificationState: getOnboardingNotificationStateFixture({
+                onboardingState: AiAgentOnboardingState.FullyOnboarded,
+            }),
+        })
+
+        renderComponent()
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+        ).not.toHaveBeenCalled()
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSave
+        ).not.toHaveBeenCalled()
+    })
+
+    it('should not trigger cancelation call on activate AI agent notification when merchant already activated AI agent previously', () => {
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...storeConfiguration,
+                chatChannelDeactivatedDatetime: null,
+            },
+            isLoading: false,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: jest
+                .fn()
+                .mockRejectedValue(new Error('Test error')),
+            isPendingCreateOrUpdate: false,
+        })
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            onboardingNotificationState: getOnboardingNotificationStateFixture({
+                onboardingState: AiAgentOnboardingState.Activated,
+            }),
+        })
+
+        renderComponent()
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+        ).not.toHaveBeenCalled()
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSave
+        ).not.toHaveBeenCalled()
+    })
+
+    it('should not trigger cancelation call on activate AI agent notification when AiAgentOnboardingNotification flag is disabled', () => {
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...storeConfiguration,
+                chatChannelDeactivatedDatetime: null,
+            },
+            isLoading: false,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: jest
+                .fn()
+                .mockRejectedValue(new Error('Test error')),
+            isPendingCreateOrUpdate: false,
+        })
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            isAiAgentOnboardingNotificationEnabled: false,
+        })
+
+        renderComponent()
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+        ).not.toHaveBeenCalled()
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSave
+        ).not.toHaveBeenCalled()
     })
 
     describe('AI Agent ticket view modal', () => {

@@ -18,6 +18,7 @@ import {
 } from '../../constants'
 import {getAccountConfigurationWithHttpIntegrationFixture} from '../../fixtures/accountConfiguration.fixture'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
+import {useAiAgentOnboardingNotification} from '../../hooks/useAiAgentOnboardingNotification'
 import {usePlaygroundForm} from '../../hooks/usePlaygroundForm'
 import {usePlaygroundMessages} from '../../hooks/usePlaygroundMessages'
 import {PlaygroundChat} from './PlaygroundChat'
@@ -34,6 +35,10 @@ jest.mock('models/aiAgent/queries', () => ({
 }))
 const mockUseSearchCustomer = jest.mocked(useSearchCustomer)
 
+jest.mock('../../hooks/useAiAgentOnboardingNotification', () => ({
+    useAiAgentOnboardingNotification: jest.fn(),
+}))
+
 jest.mock(
     'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent.js',
     () => () => <div />
@@ -44,6 +49,9 @@ jest.mock('hooks/useSearchParam', () => ({
 const mockUseSearchParam = jest.mocked(useSearchParam)
 const mockedUsePlaygroundMessages = jest.mocked(usePlaygroundMessages)
 const mockedUsePlaygroundForm = jest.mocked(usePlaygroundForm)
+const mockUseAiAgentOnboardingNotification = jest.mocked(
+    useAiAgentOnboardingNotification
+)
 
 const defaultUsePlaygroundMessagesProps = {
     messages: [],
@@ -87,6 +95,14 @@ describe('PlaygroundChat', () => {
             isPendingResources: false,
             isKnowledgeBaseEmpty: false,
             disabledMessage: undefined,
+        })
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            isAdmin: true,
+            isLoading: false,
+            onboardingNotificationState: undefined,
+            handleOnSave: jest.fn(),
+            handleOnSendOrCancelNotification: jest.fn(),
+            isAiAgentOnboardingNotificationEnabled: true,
         })
 
         mockFlags({

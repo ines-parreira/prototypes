@@ -11,6 +11,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {ProductType} from 'models/billing/types'
 import {isLegacyAutomate} from 'models/billing/utils'
+import useMeetAiAgentNotifications from 'pages/aiAgent/hooks/useMeetAiAgentNotification'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import BillingScheduledDowngrades from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades'
 import {useHasCreditCard} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useHasCreditCard'
@@ -203,6 +204,8 @@ const UsageAndPlansView = ({
         trialPeriodEnd,
         currentVoicePlan,
     ])
+
+    useMeetAiAgentNotifications()
 
     return (
         <div className={css.container}>

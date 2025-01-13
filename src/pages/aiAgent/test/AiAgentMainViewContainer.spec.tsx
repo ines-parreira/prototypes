@@ -26,6 +26,7 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 
 import AiAgentMainViewContainer from '../AiAgentMainViewContainer'
+import {useAiAgentOnboardingNotification} from '../hooks/useAiAgentOnboardingNotification'
 import {useStoreConfiguration} from '../hooks/useStoreConfiguration'
 
 jest.mock('launchdarkly-react-client-sdk')
@@ -44,6 +45,13 @@ jest.mock('../hooks/useGetOrCreateSnippetHelpCenter', () => ({
 }))
 const mockUseGetOrCreateSnippetHelpCenter = jest.mocked(
     useGetOrCreateSnippetHelpCenter
+)
+
+jest.mock('../hooks/useAiAgentOnboardingNotification', () => ({
+    useAiAgentOnboardingNotification: jest.fn(),
+}))
+const mockUseAiAgentOnboardingNotification = jest.mocked(
+    useAiAgentOnboardingNotification
 )
 
 jest.mock('hooks/useAppDispatch')
@@ -203,6 +211,15 @@ const setupMocks = ({
             ? getStoreConfigurationFixture()
             : undefined,
         isLoading: isStoreConfigurationLoading,
+    })
+
+    mockUseAiAgentOnboardingNotification.mockReturnValue({
+        isAdmin: true,
+        isLoading: false,
+        onboardingNotificationState: undefined,
+        handleOnSave: jest.fn(),
+        handleOnSendOrCancelNotification: jest.fn(),
+        isAiAgentOnboardingNotificationEnabled: true,
     })
 
     mockUseGetHelpCenterList.mockReturnValue({

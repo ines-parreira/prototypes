@@ -1,8 +1,10 @@
 import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React, {useEffect} from 'react'
 
+import {AiAgentNotificationType} from 'automate/notifications/types'
 import {SegmentEvent, logEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {AiAgentOnboardingState} from 'models/aiAgent/types'
 import {LocaleCode} from 'models/helpCenter/types'
 import history from 'pages/history'
 import {notify} from 'state/notifications/actions'
@@ -15,6 +17,7 @@ import {GuidanceHeader} from './components/GuidanceHeader/GuidanceHeader'
 import {GuidanceList} from './components/GuidanceList/GuidanceList'
 import {GuidanceTopRecommendations} from './components/GuidanceTopRecommendations/GuidanceTopRecommendations'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
+import {useAiAgentOnboardingNotification} from './hooks/useAiAgentOnboardingNotification'
 import {useGuidanceAiSuggestions} from './hooks/useGuidanceAiSuggestions'
 import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
 
@@ -47,6 +50,54 @@ export const AiAgentGuidanceView = ({
         helpCenterId,
         shopName,
     })
+
+    const {
+        isAdmin,
+        onboardingNotificationState,
+        isLoading: isLoadingOnboardingNotificationState,
+        handleOnSendOrCancelNotification,
+        isAiAgentOnboardingNotificationEnabled,
+    } = useAiAgentOnboardingNotification({shopName})
+
+    useEffect(() => {
+        if (
+            isLoadingOnboardingNotificationState ||
+            !isAiAgentOnboardingNotificationEnabled ||
+            !isAdmin
+        )
+            return
+
+        const isFullyOnboarded =
+            onboardingNotificationState?.onboardingState ===
+            AiAgentOnboardingState.FullyOnboarded
+        const isActivated =
+            onboardingNotificationState?.onboardingState ===
+            AiAgentOnboardingState.Activated
+        const isActivateAiAgentNotificationAlreadyReceived =
+            !!onboardingNotificationState?.activateAiAgentNotificationReceivedDatetime
+
+        if (
+            isFullyOnboarded ||
+            isActivated ||
+            isActivateAiAgentNotificationAlreadyReceived
+        )
+            return
+
+        if (guidanceArticles.length >= 3) {
+            handleOnSendOrCancelNotification({
+                aiAgentNotificationType:
+                    AiAgentNotificationType.ActivateAiAgent,
+            })
+        }
+    }, [
+        guidanceArticles.length,
+        handleOnSendOrCancelNotification,
+        isAdmin,
+        isAiAgentOnboardingNotificationEnabled,
+        isLoadingOnboardingNotificationState,
+        onboardingNotificationState?.activateAiAgentNotificationReceivedDatetime,
+        onboardingNotificationState?.onboardingState,
+    ])
 
     useEffect(() => {
         if (isLoadingAiGuidances) return

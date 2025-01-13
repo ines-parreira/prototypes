@@ -1,5 +1,7 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {useCallback} from 'react'
+
 import {
     AI_AGENT_SET_AND_OPTIMIZED_TYPE,
     AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
@@ -35,52 +37,67 @@ export const useAiAgentOnboardingNotification = ({shopName}: Params) => {
     const currentUser = useAppSelector(getCurrentUser)
     const isAdmin = hasRole(currentUser, UserRole.Admin)
 
-    const {
-        isLoading: isLoadingCreateOrUpdate,
-        createOnboardingNotificationState,
-        upsertOnboardingNotificationState,
-    } = useOnboardingNotificationStateMutation({accountDomain, shopName})
-
     const {onboardingNotificationState, isLoading: isLoadingGet} =
         useOnboardingNotificationState({
             accountDomain,
             shopName,
         })
 
+    const {
+        isLoading: isLoadingCreateOrUpdate,
+        createOnboardingNotificationState,
+        upsertOnboardingNotificationState,
+    } = useOnboardingNotificationStateMutation({accountDomain, shopName})
+
     const isAiAgentOnboardingNotificationEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentOnboardingNotification]
 
-    const handleOnSave = async (
-        payload: Partial<OnboardingNotificationState>
-    ): Promise<OnboardingNotificationState | undefined> => {
-        const isUpdate = !!onboardingNotificationState
-        let result: OnboardingNotificationState | undefined
-
-        try {
-            if (isUpdate) {
-                const updatedValue = {
-                    ...onboardingNotificationState,
-                    ...payload,
-                }
-                result = await upsertOnboardingNotificationState(updatedValue)
-            } else {
-                const initValues = {
-                    ...payload,
-                    shopName,
-                }
-                result = await createOnboardingNotificationState(initValues)
+    const handleOnSave = useCallback(
+        async (
+            payload: Partial<OnboardingNotificationState>
+        ): Promise<OnboardingNotificationState | undefined> => {
+            if (!isAiAgentOnboardingNotificationEnabled) {
+                return onboardingNotificationState
             }
-        } catch (error) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to save onboarding notification state',
-                })
-            )
-        }
 
-        return result
-    }
+            const isUpdate = !!onboardingNotificationState
+            let result: OnboardingNotificationState | undefined
+
+            try {
+                if (isUpdate) {
+                    const updatedValue = {
+                        ...onboardingNotificationState,
+                        ...payload,
+                    }
+                    result =
+                        await upsertOnboardingNotificationState(updatedValue)
+                } else {
+                    const initValues = {
+                        ...payload,
+                        shopName,
+                    }
+                    result = await createOnboardingNotificationState(initValues)
+                }
+            } catch (error) {
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message: 'Failed to save onboarding notification state',
+                    })
+                )
+            }
+
+            return result
+        },
+        [
+            createOnboardingNotificationState,
+            dispatch,
+            isAiAgentOnboardingNotificationEnabled,
+            onboardingNotificationState,
+            shopName,
+            upsertOnboardingNotificationState,
+        ]
+    )
 
     const handleOnSendOrCancelNotification = ({
         aiAgentNotificationType,
@@ -89,33 +106,36 @@ export const useAiAgentOnboardingNotification = ({shopName}: Params) => {
         aiAgentNotificationType: AiAgentNotificationType
         isCancel?: boolean
     }) => {
-        if (isAdmin) {
-            const idempotencyKey = `idempotency:${accountDomain}+${shopName}+${aiAgentNotificationType}`
-            const cancellationKey = `cancel:${accountDomain}+${shopName}+${aiAgentNotificationType}`
-            const notificationData = {
-                ai_agent_notification_type: aiAgentNotificationType,
-                shop_name: shopName,
-                shop_type: 'shopify',
-            }
-            const notificationProps = {
-                command_type: 'cancel-notification',
-                notification_workflow: AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
-                notification_type: AI_AGENT_SET_AND_OPTIMIZED_TYPE,
-                cancellation_key: cancellationKey,
-            }
-
-            logNotificationEvent(
-                NotificationEvent,
-                isCancel
-                    ? notificationProps
-                    : {
-                          ...notificationProps,
-                          command_type: 'send-notification',
-                          idempotency_key: idempotencyKey,
-                          notification_data: notificationData,
-                      }
-            )
+        if (!isAdmin || !isAiAgentOnboardingNotificationEnabled) {
+            return
         }
+
+        const idempotencyKey = `idempotency:${accountDomain}+${shopName}+${aiAgentNotificationType}`
+        const cancellationKey = `cancel:${accountDomain}+${shopName}+${aiAgentNotificationType}`
+        const notificationData = {
+            ai_agent_notification_type: aiAgentNotificationType,
+            shop_name: shopName,
+            shop_type: 'shopify',
+        }
+        const notificationProps = {
+            command_type: 'cancel-notification',
+            notification_workflow: AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
+            notification_type: AI_AGENT_SET_AND_OPTIMIZED_TYPE,
+            cancellation_key: cancellationKey,
+            idempotency_key: idempotencyKey,
+            notification_data: {},
+        }
+
+        logNotificationEvent(
+            NotificationEvent,
+            isCancel
+                ? notificationProps
+                : {
+                      ...notificationProps,
+                      command_type: 'send-notification',
+                      notification_data: notificationData,
+                  }
+        )
     }
 
     return {

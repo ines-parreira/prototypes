@@ -4,9 +4,11 @@ import {useParams, Link} from 'react-router-dom'
 
 import emptyStateTemplate from 'assets/img/actions/empty-state-template.png'
 import emptyState from 'assets/img/actions/empty-state.png'
+import {AiAgentNotificationType} from 'automate/notifications/types'
 import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {AiAgentOnboardingState} from 'models/aiAgent/types'
 import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
@@ -16,6 +18,7 @@ import {ACTIONS, AI_AGENT} from 'pages/aiAgent/constants'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
 
+import {useAiAgentOnboardingNotification} from '../hooks/useAiAgentOnboardingNotification'
 import css from './ActionsView.less'
 import ActionsList from './components/ActionsList'
 import ActionsTemplatesCards from './components/ActionsTemplatesCards'
@@ -42,8 +45,8 @@ const ActionsView = () => {
         shopName: string
     }>()
     const {
-        data: storeConfigurations = [],
-        isInitialLoading: isStoreConfigurationsInitialLoading,
+        data: storeWfConfigurations = [],
+        isInitialLoading: isStoreWfConfigurationsInitialLoading,
         isError,
         error,
     } = useGetStoreWorkflowsConfigurations({
@@ -68,17 +71,65 @@ const ActionsView = () => {
         }
     }, [dispatch, error, isError])
 
+    const {
+        isAdmin,
+        onboardingNotificationState,
+        isLoading: isLoadingOnboardingNotificationState,
+        handleOnSendOrCancelNotification,
+        isAiAgentOnboardingNotificationEnabled,
+    } = useAiAgentOnboardingNotification({shopName})
+
+    useEffect(() => {
+        if (
+            isLoadingOnboardingNotificationState ||
+            !isAiAgentOnboardingNotificationEnabled ||
+            !isAdmin
+        )
+            return
+
+        const isFullyOnboarded =
+            onboardingNotificationState?.onboardingState ===
+            AiAgentOnboardingState.FullyOnboarded
+        const isActivated =
+            onboardingNotificationState?.onboardingState ===
+            AiAgentOnboardingState.Activated
+        const isActivateAiAgentNotificationAlreadyReceived =
+            !!onboardingNotificationState?.activateAiAgentNotificationReceivedDatetime
+
+        if (
+            isFullyOnboarded ||
+            isActivated ||
+            isActivateAiAgentNotificationAlreadyReceived
+        )
+            return
+
+        if (!!storeWfConfigurations.length) {
+            handleOnSendOrCancelNotification({
+                aiAgentNotificationType:
+                    AiAgentNotificationType.ActivateAiAgent,
+            })
+        }
+    }, [
+        handleOnSendOrCancelNotification,
+        isAdmin,
+        isAiAgentOnboardingNotificationEnabled,
+        isLoadingOnboardingNotificationState,
+        onboardingNotificationState?.activateAiAgentNotificationReceivedDatetime,
+        onboardingNotificationState?.onboardingState,
+        storeWfConfigurations.length,
+    ])
+
     return (
         <AiAgentLayout
             shopName={shopName}
             isLoading={
-                isStoreConfigurationsInitialLoading ||
+                isStoreWfConfigurationsInitialLoading ||
                 isTemplateConfigurationsInitialLoading
             }
             className={css.container}
             title={isStandaloneMenuEnabled ? ACTIONS : AI_AGENT}
         >
-            {storeConfigurations.length > 0 ? (
+            {storeWfConfigurations.length > 0 ? (
                 <div className={css.actionsListContainer}>
                     <div className={css.actionListDescription}>
                         <div data-candu-id="custom-action-view-header">
@@ -91,7 +142,7 @@ const ActionsView = () => {
                             <BrowseAllActionsButton />
                         </div>
                     </div>
-                    <ActionsList actions={storeConfigurations} />
+                    <ActionsList actions={storeWfConfigurations} />
                 </div>
             ) : (
                 <>

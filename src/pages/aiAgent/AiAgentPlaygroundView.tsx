@@ -3,6 +3,7 @@ import {isAxiosError} from 'axios'
 import React, {useEffect, useState} from 'react'
 import {Redirect} from 'react-router-dom'
 
+import {AiAgentNotificationType} from 'automate/notifications/types'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -10,7 +11,10 @@ import {
     useGetAccountConfiguration,
     useGetStoreConfigurationPure,
 } from 'models/aiAgent/queries'
-import {AccountConfigurationWithHttpIntegration} from 'models/aiAgent/types'
+import {
+    AccountConfigurationWithHttpIntegration,
+    AiAgentOnboardingState,
+} from 'models/aiAgent/types'
 import history from 'pages/history'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
@@ -23,6 +27,7 @@ import {PlaygroundChat} from './components/PlaygroundChat/PlaygroundChat'
 import {CheckPlaygroundPrerequisites} from './components/PlaygroundPrerequisites/PlaygroundPrerequisites'
 import {MissingKnowledgeSourceAlert} from './components/PlaygroundPrerequisites/PlaygroundPrerequisitesAlerts'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
+import {useAiAgentOnboardingNotification} from './hooks/useAiAgentOnboardingNotification'
 import {useGetOrCreateSnippetHelpCenter} from './hooks/useGetOrCreateSnippetHelpCenter'
 
 type Props = {
@@ -98,6 +103,58 @@ export const AiAgentPlaygroundView = ({shopName}: Props) => {
             }
         }
     }, [storeFetchError, dispatch, shopName, routes])
+
+    const {
+        isAdmin,
+        onboardingNotificationState,
+        isLoading: isLoadingOnboardingNotificationState,
+        handleOnSendOrCancelNotification,
+        isAiAgentOnboardingNotificationEnabled,
+    } = useAiAgentOnboardingNotification({shopName})
+
+    useEffect(() => {
+        if (
+            isLoadingOnboardingNotificationState ||
+            !isAiAgentOnboardingNotificationEnabled ||
+            !isAdmin
+        )
+            return
+
+        const isFullyOnboarded =
+            onboardingNotificationState?.onboardingState ===
+            AiAgentOnboardingState.FullyOnboarded
+        const isActivated =
+            onboardingNotificationState?.onboardingState ===
+            AiAgentOnboardingState.Activated
+        const isActivateAiAgentNotificationAlreadyReceived =
+            !!onboardingNotificationState?.activateAiAgentNotificationReceivedDatetime
+
+        if (
+            isFullyOnboarded ||
+            isActivated ||
+            isActivateAiAgentNotificationAlreadyReceived
+        )
+            return
+
+        if (
+            onboardingNotificationState?.testBeforeActivationDatetimes &&
+            onboardingNotificationState?.testBeforeActivationDatetimes.length >=
+                5
+        ) {
+            handleOnSendOrCancelNotification({
+                aiAgentNotificationType:
+                    AiAgentNotificationType.ActivateAiAgent,
+            })
+        }
+    }, [
+        handleOnSendOrCancelNotification,
+        isAdmin,
+        isAiAgentOnboardingNotificationEnabled,
+        isLoadingOnboardingNotificationState,
+        onboardingNotificationState?.activateAiAgentNotificationReceivedDatetime,
+        onboardingNotificationState?.onboardingState,
+        onboardingNotificationState?.testBeforeActivationDatetimes,
+    ])
 
     if (storeDataLoading || accountDataLoading || snippetHelpCenterLoading) {
         return (

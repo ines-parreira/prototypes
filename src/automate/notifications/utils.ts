@@ -1,3 +1,4 @@
+import {OnboardingNotificationState} from 'models/aiAgent/types'
 import {getAiAgentNavigationRoutes} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import {getLDClient} from 'utils/launchDarkly'
@@ -64,5 +65,61 @@ export const getNotificationParams = (
             }
         default:
             return null
+    }
+}
+
+export const getNotificationReceivedDatetime = (
+    aiAgentNotificationType: AiAgentNotificationType
+): Partial<OnboardingNotificationState> => {
+    const receivedDatetime = new Date().toISOString()
+    switch (aiAgentNotificationType) {
+        case AiAgentNotificationType.StartAiAgentSetup:
+            return {
+                startAiAgentSetupNotificationReceivedDatetime: receivedDatetime,
+            }
+        case AiAgentNotificationType.FinishAiAgentSetup:
+            return {
+                finishAiAgentSetupNotificationReceivedDatetime:
+                    receivedDatetime,
+            }
+        case AiAgentNotificationType.ActivateAiAgent:
+            return {
+                activateAiAgentNotificationReceivedDatetime: receivedDatetime,
+            }
+        case AiAgentNotificationType.MeetAiAgent:
+            return {
+                meetAiAgentNotificationReceivedDatetime: receivedDatetime,
+            }
+        case AiAgentNotificationType.FirstAiAgentTicket:
+            return {
+                firstAiAgentTicketNotificationReceivedDatetime:
+                    receivedDatetime,
+            }
+        default:
+            return {}
+    }
+}
+
+export const isNotificationAlreadyReceived = (
+    aiAgentNotificationType: AiAgentNotificationType,
+    onboardingNotificationState?: OnboardingNotificationState
+) => {
+    if (!onboardingNotificationState) {
+        return false
+    }
+
+    switch (aiAgentNotificationType) {
+        case AiAgentNotificationType.StartAiAgentSetup:
+            return !!onboardingNotificationState.startAiAgentSetupNotificationReceivedDatetime
+        case AiAgentNotificationType.FinishAiAgentSetup:
+            return !!onboardingNotificationState.finishAiAgentSetupNotificationReceivedDatetime
+        case AiAgentNotificationType.ActivateAiAgent:
+            return !!onboardingNotificationState.activateAiAgentNotificationReceivedDatetime
+        case AiAgentNotificationType.MeetAiAgent:
+            return !!onboardingNotificationState.meetAiAgentNotificationReceivedDatetime
+        case AiAgentNotificationType.FirstAiAgentTicket:
+            return !!onboardingNotificationState.firstAiAgentTicketNotificationReceivedDatetime
+        default:
+            return false
     }
 }

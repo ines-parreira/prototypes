@@ -4,12 +4,18 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {useParams} from 'react-router-dom'
 
+import {AiAgentNotificationType} from 'automate/notifications/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {
+    AiAgentOnboardingState,
+    OnboardingNotificationState,
+} from 'models/aiAgent/types'
 import {isPreviewModeActivated} from 'pages/aiAgent/components/StoreConfigForm/StoreConfigForm.utils'
 import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
 import {useStoreConfigurationMutation} from 'pages/aiAgent/hooks/useStoreConfigurationMutation'
 import {isAiAgentEnabled} from 'pages/aiAgent/util'
@@ -64,7 +70,15 @@ export const ConnectedChannelsEmailView = () => {
         accountDomain,
     })
 
-    if (isLoading) {
+    const {
+        onboardingNotificationState,
+        isLoading: isLoadingOnboardingNotificationState,
+        handleOnSave,
+        isAiAgentOnboardingNotificationEnabled,
+        handleOnSendOrCancelNotification,
+    } = useAiAgentOnboardingNotification({shopName})
+
+    if (isLoading || isLoadingOnboardingNotificationState) {
         return (
             <div className={css.loadingContainer}>
                 <LoadingSpinner size="big" />
@@ -107,6 +121,33 @@ export const ConnectedChannelsEmailView = () => {
           }
         : {}
 
+    const handleActivatedAiAgent = async () => {
+        if (!isAiAgentOnboardingNotificationEnabled) return
+
+        const isFullyOnboarded =
+            onboardingNotificationState?.onboardingState ===
+            AiAgentOnboardingState.FullyOnboarded
+        const isActivated =
+            onboardingNotificationState?.onboardingState ===
+            AiAgentOnboardingState.Activated
+
+        if (isFullyOnboarded || isActivated) return
+
+        handleOnSendOrCancelNotification({
+            aiAgentNotificationType: AiAgentNotificationType.ActivateAiAgent,
+            isCancel: true,
+        })
+
+        const payload: Partial<OnboardingNotificationState> = {
+            onboardingState: AiAgentOnboardingState.Activated,
+            firstActivationDatetime:
+                onboardingNotificationState?.firstActivationDatetime ??
+                new Date().toISOString(),
+        }
+
+        await handleOnSave(payload)
+    }
+
     const onToggle = async (value: boolean) => {
         if (!storeConfiguration) return
 
@@ -128,6 +169,8 @@ export const ConnectedChannelsEmailView = () => {
         if (!isAIAgentToggled && isAiAgentOnboardingWizardEnabled) {
             updateSettingsAfterAiAgentEnabled()
         }
+
+        await handleActivatedAiAgent()
     }
 
     return (

@@ -8,9 +8,12 @@ import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
 import {
     AccountConfiguration,
     AccountConfigurationResponse,
+    CreateOnboardingNotificationStatePayload,
     CreateStoreConfigurationPayload,
     GetStoreConfigurationParams,
+    OnboardingNotificationStateResponse,
     StoreConfigurationResponse,
+    UpsertOnboardingNotificationStatePayload,
     UpsertStoreConfigurationPayload,
     WelcomePageAcknowledgedResponse,
 } from '../types'
@@ -135,5 +138,40 @@ export const createWelcomePageAcknowledged = async (
 ) => {
     return await apiClient.post<WelcomePageAcknowledgedResponse>(
         `/stores/${storeName}/welcome-page-acknowledged`
+    )
+}
+
+/**
+ * Endpoints "/accounts/<gorgiasDomain>/stores/<storeName>/onboarding-notification"
+ */
+
+export const getOnboardingNotificationState = async (
+    accountDomain: string,
+    storeName: string
+) => {
+    return await apiClient.get<OnboardingNotificationStateResponse>(
+        `/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`
+    )
+}
+
+export const createOnboardingNotificationState = async (
+    accountDomain: string,
+    storeName: string,
+    onboardingNotificationState: CreateOnboardingNotificationStatePayload
+) => {
+    return await apiClient.post<OnboardingNotificationStateResponse>(
+        `/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`,
+        onboardingNotificationState
+    )
+}
+
+export const upsertOnboardingNotificationState = async (
+    accountDomain: string,
+    storeName: string,
+    onboardingNotificationState: UpsertOnboardingNotificationStatePayload
+) => {
+    return await apiClient.put<OnboardingNotificationStateResponse>(
+        `/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`,
+        onboardingNotificationState
     )
 }

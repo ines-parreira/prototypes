@@ -14,6 +14,7 @@ import React, {
 import {Link} from 'react-router-dom'
 
 // Absolute Imports
+import {AiAgentNotificationType} from 'automate/notifications/types'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
@@ -21,7 +22,11 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {useSearchParam} from 'hooks/useSearchParam'
-import {Tag} from 'models/aiAgent/types'
+import {
+    AiAgentOnboardingState,
+    OnboardingNotificationState,
+    Tag,
+} from 'models/aiAgent/types'
 import {HelpCenter} from 'models/helpCenter/types'
 import {useConfigurationForm} from 'pages/aiAgent/hooks/useConfigurationForm'
 import HelpCenterSelect, {
@@ -54,6 +59,7 @@ import {
 } from '../../constants'
 import {useAccountStoreConfiguration} from '../../hooks/useAccountStoreConfiguration'
 import {useAiAgentEnabled} from '../../hooks/useAiAgentEnabled'
+import {useAiAgentOnboardingNotification} from '../../hooks/useAiAgentOnboardingNotification'
 import useCustomToneOfVoicePreview from '../../hooks/useCustomToneOfVoicePreview'
 import {useFileIngestion} from '../../hooks/useFileIngestion'
 import {useGetOrCreateSnippetHelpCenter} from '../../hooks/useGetOrCreateSnippetHelpCenter'
@@ -562,6 +568,58 @@ export const StoreConfigForm = ({
             })
         }
     }
+
+    const {
+        isLoading,
+        onboardingNotificationState,
+        handleOnSave: handleOnSaveOnboardingNotificationState,
+        handleOnSendOrCancelNotification,
+        isAiAgentOnboardingNotificationEnabled,
+    } = useAiAgentOnboardingNotification({shopName})
+
+    useEffect(() => {
+        if (isLoading || !isAiAgentOnboardingNotificationEnabled) return
+
+        const isFullyOnboarded =
+            onboardingNotificationState?.onboardingState ===
+            AiAgentOnboardingState.FullyOnboarded
+        const isActivated =
+            onboardingNotificationState?.onboardingState ===
+            AiAgentOnboardingState.Activated
+
+        if (isFullyOnboarded || isActivated) return
+
+        if (
+            !!storeConfiguration?.previewModeActivatedDatetime ||
+            storeConfiguration?.chatChannelDeactivatedDatetime === null ||
+            storeConfiguration?.emailChannelDeactivatedDatetime === null
+        ) {
+            handleOnSendOrCancelNotification({
+                aiAgentNotificationType:
+                    AiAgentNotificationType.ActivateAiAgent,
+                isCancel: true,
+            })
+
+            const payload: Partial<OnboardingNotificationState> = {
+                onboardingState: AiAgentOnboardingState.Activated,
+                firstActivationDatetime:
+                    onboardingNotificationState?.firstActivationDatetime ??
+                    new Date().toISOString(),
+            }
+
+            void handleOnSaveOnboardingNotificationState(payload)
+        }
+    }, [
+        handleOnSaveOnboardingNotificationState,
+        handleOnSendOrCancelNotification,
+        isAiAgentOnboardingNotificationEnabled,
+        isLoading,
+        onboardingNotificationState?.firstActivationDatetime,
+        onboardingNotificationState?.onboardingState,
+        storeConfiguration?.chatChannelDeactivatedDatetime,
+        storeConfiguration?.emailChannelDeactivatedDatetime,
+        storeConfiguration?.previewModeActivatedDatetime,
+    ])
 
     return (
         <>

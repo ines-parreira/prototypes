@@ -19,6 +19,16 @@ jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
         aiAgentTicketViewId: mockAiAgentTicketViewId,
     })),
 }))
+jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
+    useAiAgentOnboardingNotification: jest.fn(() => ({
+        isAdmin: true,
+        isLoading: false,
+        onboardingNotificationState: undefined,
+        handleOnSave: jest.fn(),
+        handleOnSendOrCancelNotification: jest.fn(),
+        isAiAgentOnboardingNotificationEnabled: true,
+    })),
+}))
 
 describe('AiAgentNotification', () => {
     beforeEach(() => {

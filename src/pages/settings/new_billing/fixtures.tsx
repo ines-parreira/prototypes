@@ -1,6 +1,7 @@
 import {fromJS} from 'immutable'
 
 import {account} from 'fixtures/account'
+import {shopifyIntegration} from 'fixtures/integrations'
 import {
     automate02MonthlyMeteredPlan,
     basicMonthlyHelpdeskPlan,
@@ -34,6 +35,7 @@ export const storeWithCanceledSubscription = {
         products,
         currentProductsUsage: {},
     }),
+    integrations: fromJS({integrations: [shopifyIntegration]}),
 }
 
 export const storeWithActiveSubscriptionWithConvert = {
