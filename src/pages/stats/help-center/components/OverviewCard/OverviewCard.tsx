@@ -1,7 +1,5 @@
 import React, {ReactNode} from 'react'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
@@ -9,8 +7,7 @@ import {formatMetricValue} from 'pages/stats/common/utils'
 import MetricCard from 'pages/stats/MetricCard'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import PerformanceTip from 'pages/stats/PerformanceTip'
-import {formatDatetime} from 'utils'
-import {formatReportingQueryDate} from 'utils/reporting'
+import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
 
 import css from './OverviewCard.less'
 
@@ -37,20 +34,6 @@ const OverviewCard = ({
     startDate,
     endDate,
 }: OverviewCardProps) => {
-    const periodStart = formatReportingQueryDate(startDate)
-    const periodEnd = formatReportingQueryDate(endDate)
-    const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.LongDateWithYear
-    )
-    const formattedStartDate = formatDatetime(
-        periodStart,
-        datetimeFormat
-    ).toString()
-    const formattedEndDate = formatDatetime(
-        periodEnd,
-        datetimeFormat
-    ).toString()
-
     return (
         <MetricCard
             isLoading={isLoading}
@@ -84,7 +67,10 @@ const OverviewCard = ({
                             value={trendValue}
                             interpretAs="more-is-better"
                             tooltipData={{
-                                period: `${formattedStartDate} - ${formattedEndDate}`,
+                                period: getBadgeTooltipForPreviousPeriod({
+                                    start_datetime: startDate,
+                                    end_datetime: endDate,
+                                }),
                             }}
                         />
                     }
