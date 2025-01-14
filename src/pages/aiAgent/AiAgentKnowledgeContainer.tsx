@@ -10,7 +10,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {ExternalFilesSection} from 'pages/aiAgent/components/Knowledge/ExternalFilesSection'
-import {getFormValuesFromStoreConfiguration} from 'pages/aiAgent/components/StoreConfigForm/StoreConfigForm.utils'
 import {useConfigurationForm} from 'pages/aiAgent/hooks/useConfigurationForm'
 import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import {FormValues} from 'pages/aiAgent/types'
@@ -31,6 +30,7 @@ import {ConfigurationSection} from './components/ConfigurationSection/Configurat
 import {CreatePublicSourcesSection} from './components/StoreConfigForm/StoreConfigForm'
 import {AI_AGENT, INITIAL_FORM_VALUES, KNOWLEDGE} from './constants'
 import {useGetOrCreateSnippetHelpCenter} from './hooks/useGetOrCreateSnippetHelpCenter'
+import {getFormValuesFromStoreConfiguration} from './hooks/utils/configurationForm.utils'
 
 export const AiAgentKnowledgeContainer = () => {
     const isAiAgentSnippetsFromExternalFilesEnabled =

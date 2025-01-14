@@ -17,13 +17,13 @@ import {HelpCenter} from 'models/helpCenter/types'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {useConfigurationForm} from 'pages/aiAgent/hooks/useConfigurationForm'
 import {useGetOrCreateSnippetHelpCenter} from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
+import {getFormValuesFromStoreConfiguration} from 'pages/aiAgent/hooks/utils/configurationForm.utils'
 import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import history from 'pages/history'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
-import {getFormValuesFromStoreConfiguration} from '../../components/StoreConfigForm/StoreConfigForm.utils'
 import {
     DEFAULT_FORM_VALUES_WITH_WIZARD,
     INITIAL_FORM_VALUES,

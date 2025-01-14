@@ -14,7 +14,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
 
-import {isAiAgentOnboardingWizardStep} from '../components/StoreConfigForm/StoreConfigForm.utils'
+import {isAiAgentOnboardingWizardStep} from '../hooks/utils/configurationForm.utils'
 import css from './AiAgentOnboardingWizard.less'
 import AiAgentOnboardingWizardEducation from './AiAgentOnboardingWizardEducation'
 import AiAgentOnboardingWizardKnowledge from './AiAgentOnboardingWizardKnowledge'

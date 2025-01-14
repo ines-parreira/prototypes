@@ -14,15 +14,13 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
-import {
-    getFormValuesFromStoreConfiguration,
-    getStoreConfigurationFromFormValues,
-} from '../components/StoreConfigForm/StoreConfigForm.utils'
+import {getStoreConfigurationFromFormValues} from '../components/StoreConfigForm/StoreConfigForm.utils'
 import {DEFAULT_FORM_VALUES} from '../constants'
 import {FormValues, UpdateValue, ValidFormValues} from '../types'
 import {getValidStoreConfigurationFormValues} from '../utils/store-configuration-validation.utils'
 import {useAiAgentNavigation} from './useAiAgentNavigation'
 import {useStoreConfigurationMutation} from './useStoreConfigurationMutation'
+import {getFormValuesFromStoreConfiguration} from './utils/configurationForm.utils'
 
 export const useConfigurationForm = ({
     initValues,

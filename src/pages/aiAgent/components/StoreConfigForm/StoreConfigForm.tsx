@@ -17,9 +17,7 @@ import {Link} from 'react-router-dom'
 import {AiAgentNotificationType} from 'automate/notifications/types'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {useSearchParam} from 'hooks/useSearchParam'
 import {
@@ -28,19 +26,16 @@ import {
     Tag,
 } from 'models/aiAgent/types'
 import {HelpCenter} from 'models/helpCenter/types'
-import {useConfigurationForm} from 'pages/aiAgent/hooks/useConfigurationForm'
+import {useStoreConfigurationForm} from 'pages/aiAgent/hooks/useStoreConfigurationForm'
 import HelpCenterSelect, {
     EMPTY_HELP_CENTER_ID,
 } from 'pages/automate/common/components/HelpCenterSelect'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import ListField from 'pages/common/forms/ListField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
@@ -65,26 +60,18 @@ import {useFileIngestion} from '../../hooks/useFileIngestion'
 import {useGetOrCreateSnippetHelpCenter} from '../../hooks/useGetOrCreateSnippetHelpCenter'
 import {usePublicResources} from '../../hooks/usePublicResources'
 import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
-import {FormValues} from '../../types'
-import {isAiAgentEnabled, isHandoffEnabled} from '../../util'
+
+import {isHandoffEnabled} from '../../util'
 import {AIAgentIntroduction} from '../AIAgentIntroduction/AIAgentIntroduction'
 import {AiAgentPreviewModeSection} from '../AIAgentPreviewModeSection/AiAgentPreviewModeSection'
 import {ConfigurationSection} from '../ConfigurationSection/ConfigurationSection'
 import {PublicSourcesSection} from '../PublicSourcesSection/PublicSourcesSection'
 import TagList from '../TicketTag/TagList'
 
-import {SettingsBannerType} from './constants'
-import {ChannelToggleInput} from './FormComponents/ChannelToggleInput'
-import {ChatSettingsFormComponent} from './FormComponents/ChatSettingsFormComponent'
-import {EmailFormComponent} from './FormComponents/EmailFormComponent'
-import {SettingsBanner} from './FormComponents/SettingsBanner'
-import {SignatureFormComponent} from './FormComponents/SignatureFormComponent'
+import {ChannelsFormComponent} from './FormComponents/ChannelsFormComponent'
 import {ToneOfVoiceFormComponent} from './FormComponents/ToneOfVoiceFormComponent'
 import css from './StoreConfigForm.less'
-import {
-    getFormValuesFromStoreConfiguration,
-    isPreviewModeActivated,
-} from './StoreConfigForm.utils'
+import {isPreviewModeActivated} from './StoreConfigForm.utils'
 
 const AI_SETTINGS_TICKET_VIEW_MODAL_VIEWED =
     'ai-settings-ticket-view-modal-viewed'
@@ -103,16 +90,14 @@ export const StoreConfigForm = ({
     faqHelpCenters,
 }: Props) => {
     const trialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
-    const isAiAgentChatEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentChat]
     const isAiAgentOnboardingWizardEnabled =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
     const isFollowUpAiAgentPreviewModeEnabled =
         useFlags()[FeatureFlagKey.FollowUpAiAgentPreviewMode]
+    const isAiAgentKnowledgeTabEnabled =
+        useFlags()[FeatureFlagKey.AiAgentKnowledgeTab]
 
     const dispatch = useAppDispatch()
-
-    const hasAutomate = useAppSelector(getHasAutomate)
 
     const [isUrlSyncSuccess, setIsUrlSyncSuccess] = useState(false)
     const [isUrlSyncFail, setIsUrlSyncFail] = useState(false)
@@ -200,34 +185,6 @@ export const StoreConfigForm = ({
         useAiAgentStoreConfigurationContext()
     const isCreate = storeConfiguration === undefined
 
-    // because this selector is a function which return function we need to memoized it before send to reselect
-    const selector = useMemo(
-        () => getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES),
-        []
-    )
-    const emailIntegrations = useAppSelector(selector)
-    const emailItems = useMemo(() => {
-        return emailIntegrations.map((integration) => ({
-            email: integration.meta.address,
-            id: integration.id,
-        }))
-    }, [emailIntegrations])
-
-    const chatChannels = useSelfServiceChatChannels(shopType, shopName)
-
-    const defaultFormValues: Partial<FormValues> = useMemo(() => {
-        const initialHelpCenter = faqHelpCenters[0]
-        const initialEmail = emailItems[0]
-
-        return storeConfiguration
-            ? getFormValuesFromStoreConfiguration(storeConfiguration)
-            : {
-                  ...INITIAL_FORM_VALUES,
-                  monitoredEmailIntegrations: [initialEmail],
-                  helpCenterId: initialHelpCenter?.id ?? null,
-              }
-    }, [emailItems, faqHelpCenters, storeConfiguration])
-
     const {
         handleOnSave,
         formValues,
@@ -235,7 +192,9 @@ export const StoreConfigForm = ({
         resetForm,
         updateValue,
         isPendingCreateOrUpdate,
-    } = useConfigurationForm({initValues: defaultFormValues, shopName})
+        isChatChannelEnabled,
+        isEmailChannelEnabled,
+    } = useStoreConfigurationForm(shopName, faqHelpCenters)
 
     const {updateSettingsAfterAiAgentEnabled} = useAiAgentEnabled({
         monitoredEmailIntegrations: formValues.monitoredEmailIntegrations ?? [],
@@ -256,21 +215,6 @@ export const StoreConfigForm = ({
     })
 
     const toggleHandoffId = `toggle-handoff-${useId()}`
-
-    const isEmailChannelEnabled = isAiAgentEnabled(
-        formValues.emailChannelDeactivatedDatetime !== undefined
-            ? formValues.emailChannelDeactivatedDatetime
-            : INITIAL_FORM_VALUES.emailChannelDeactivatedDatetime
-    )
-
-    const isChatChannelEnabled = isAiAgentEnabled(
-        formValues.chatChannelDeactivatedDatetime !== undefined
-            ? formValues.chatChannelDeactivatedDatetime
-            : INITIAL_FORM_VALUES.chatChannelDeactivatedDatetime
-    )
-
-    const isAiAgentKnowledgeTabEnabled =
-        useFlags()[FeatureFlagKey.AiAgentKnowledgeTab]
 
     const aiAgentMode = useMemo(() => {
         const isTrialMode =
@@ -663,96 +607,42 @@ export const StoreConfigForm = ({
                         />
                     </section>
 
-                    {isAiAgentChatEnabled && (
-                        <ConfigurationSection
-                            title="Chat settings"
-                            data-candu-id="ai-agent-configuration-chat-settings"
-                            isBeta={true}
-                        >
-                            <SettingsBanner
-                                type={SettingsBannerType.Chat}
-                                deactivatedDatetime={
-                                    formValues.chatChannelDeactivatedDatetime
-                                }
-                            />
-                            <div className={css.sectionBlock}>
-                                <ChannelToggleInput
-                                    isToggled={isChatChannelEnabled}
-                                    onUpdate={(isToggled) => {
-                                        updateValue(
-                                            'chatChannelDeactivatedDatetime',
-                                            isToggled
-                                                ? null
-                                                : new Date().toISOString()
-                                        )
-                                    }}
-                                    channel="chat"
-                                    isDisabled={!hasAutomate}
-                                />
-                            </div>
-
-                            <ChatSettingsFormComponent
-                                monitoredChatIntegrations={
-                                    formValues.monitoredChatIntegrations
-                                }
-                                isRequired={
-                                    formValues.chatChannelDeactivatedDatetime ===
-                                    null
-                                }
-                                updateValue={updateValue}
-                                chatChannels={chatChannels}
-                            />
-                        </ConfigurationSection>
-                    )}
-
-                    <section ref={emailSectionRef}>
-                        <h2
-                            className={css.sectionHeader}
-                            data-candu-id="ai-agent-configuration-email-settings"
-                        >
-                            Email settings
-                        </h2>
-                        <SettingsBanner
-                            type={SettingsBannerType.Email}
-                            deactivatedDatetime={
-                                formValues.emailChannelDeactivatedDatetime
-                            }
-                        />
-                        <div className={css.sectionBlock}>
-                            <ChannelToggleInput
-                                isToggled={isEmailChannelEnabled}
-                                onUpdate={(isToggled) => {
-                                    updateValue(
-                                        'emailChannelDeactivatedDatetime',
-                                        isToggled
-                                            ? null
-                                            : new Date().toISOString()
-                                    )
-                                }}
-                                channel="email"
-                                isDisabled={!hasAutomate}
-                            />
-                        </div>
-
-                        <EmailFormComponent
-                            updateValue={updateValue}
-                            monitoredEmailIntegrations={
-                                formValues.monitoredEmailIntegrations
-                            }
-                            isRequired={
-                                formValues.emailChannelDeactivatedDatetime ===
-                                null
-                            }
-                        />
-                        <SignatureFormComponent
-                            isRequired={
-                                formValues.emailChannelDeactivatedDatetime ===
-                                null
-                            }
-                            updateValue={updateValue}
-                            signature={formValues.signature}
-                        />
-                    </section>
+                    <ChannelsFormComponent
+                        shopName={shopName}
+                        shopType={shopType}
+                        updateValue={updateValue}
+                        monitoredChatIntegrations={
+                            formValues.monitoredChatIntegrations
+                        }
+                        isChatChannelEnabled={isChatChannelEnabled}
+                        chatChannelDeactivatedDatetime={
+                            formValues.chatChannelDeactivatedDatetime
+                        }
+                        updateChatChannelDeactivatedDatetime={(
+                            deactivatedDatetime
+                        ) => {
+                            updateValue(
+                                'chatChannelDeactivatedDatetime',
+                                deactivatedDatetime
+                            )
+                        }}
+                        signature={formValues.signature}
+                        monitoredEmailIntegrations={
+                            formValues.monitoredEmailIntegrations
+                        }
+                        isEmailChannelEnabled={isEmailChannelEnabled}
+                        emailChannelDeactivatedDatetime={
+                            formValues.emailChannelDeactivatedDatetime
+                        }
+                        updateEmailChannelDeactivatedDatetime={(
+                            deactivatedDatetime
+                        ) => {
+                            updateValue(
+                                'emailChannelDeactivatedDatetime',
+                                deactivatedDatetime
+                            )
+                        }}
+                    />
 
                     {!isAiAgentKnowledgeTabEnabled && (
                         <ConfigurationSection
