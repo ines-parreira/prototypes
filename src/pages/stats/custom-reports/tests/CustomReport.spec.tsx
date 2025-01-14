@@ -1,3 +1,4 @@
+import {useGetAnalyticsCustomReport} from '@gorgias/api-queries'
 import React from 'react'
 
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
@@ -12,9 +13,17 @@ import {
     CustomReportSectionSchema,
 } from 'pages/stats/custom-reports/types'
 import {useFiltersFromDashboard} from 'pages/stats/custom-reports/useFiltersFromDashboard'
-import {DrillDownModal} from 'pages/stats/DrillDownModal'
 import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {assumeMock, renderWithStore} from 'utils/testing'
+
+jest.mock('react-router-dom', () => ({
+    useParams: jest.fn(),
+}))
+jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+    DrillDownModal: () => null,
+}))
+jest.mock('@gorgias/api-queries')
+const useGetAnalyticsCustomReportMock = assumeMock(useGetAnalyticsCustomReport)
 
 jest.mock('pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper')
 const FiltersPanelWrapperMock = assumeMock(FiltersPanelWrapper)
@@ -22,8 +31,6 @@ jest.mock('pages/stats/custom-reports/CustomReportChart')
 const CustomReportChartMock = assumeMock(CustomReportChart)
 jest.mock('pages/stats/custom-reports/CustomReportSection')
 const CustomReportSectionMock = assumeMock(CustomReportSection)
-jest.mock('pages/stats/DrillDownModal')
-const DrillDownModalMock = assumeMock(DrillDownModal)
 jest.mock('pages/stats/custom-reports/useFiltersFromDashboard')
 const useFiltersFromDashboardMock = assumeMock(useFiltersFromDashboard)
 
@@ -53,7 +60,12 @@ describe('CustomReport', () => {
         FiltersPanelWrapperMock.mockReturnValue(<div />)
         CustomReportSectionMock.mockReturnValue(<div />)
         CustomReportChartMock.mockReturnValue(<div />)
-        DrillDownModalMock.mockReturnValue(<div />)
+    })
+
+    beforeEach(() => {
+        useGetAnalyticsCustomReportMock.mockReturnValue({
+            data: undefined,
+        } as any)
 
         useFiltersFromDashboardMock.mockReturnValue({
             persistentFilters: [],

@@ -1,6 +1,7 @@
 import {useGetAnalyticsCustomReport} from '@gorgias/api-queries'
 import {fireEvent, screen, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
+
 import React from 'react'
 import {useParams} from 'react-router-dom'
 
@@ -9,6 +10,7 @@ import {user} from 'fixtures/users'
 import {useUpdateCustomReportName} from 'hooks/reporting/custom-reports/useUpdateCustomReportName'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {FiltersPanelWrapper} from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import {CreateCustomReport} from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
 import {CustomReport} from 'pages/stats/custom-reports/CustomReport'
 import {CustomReportActionButton} from 'pages/stats/custom-reports/CustomReportActionButton'
 import {CustomReportNameForm} from 'pages/stats/custom-reports/CustomReportNameForm'
@@ -20,7 +22,6 @@ import {
 } from 'pages/stats/custom-reports/CustomReportPage'
 import {CustomReportsModal} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
 import {CustomReportSchema} from 'pages/stats/custom-reports/types'
-import {customReportFromApi} from 'pages/stats/custom-reports/utils'
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
@@ -52,8 +53,8 @@ const CustomReportNameFormMock = assumeMock(CustomReportNameForm)
 jest.mock('pages/stats/custom-reports/CustomReport')
 const CustomReportMock = assumeMock(CustomReport)
 
-jest.mock('pages/stats/custom-reports/utils')
-const customReportFromApiMock = assumeMock(customReportFromApi)
+jest.mock('pages/stats/custom-reports/CreateCustomReport/CreateCustomReport')
+const CreateCustomReportMock = assumeMock(CreateCustomReport)
 
 const mockUseParams = assumeMock(useParams)
 const customReportId = '2'
@@ -84,32 +85,25 @@ describe('CustomReportPage', () => {
         })
 
         FiltersPanelWrapperMock.mockReturnValue(<div />)
-
         AddChartsModalMock.mockReturnValue(<div />)
-
         CustomReportMock.mockReturnValue(<div />)
-
+        CreateCustomReportMock.mockReturnValue(<div />)
         CustomReportNameFormMock.mockImplementation(({onSubmit}) => (
             <button onClick={() => onSubmit({name: 'Test Report'})}>
                 submit
             </button>
         ))
-
         DrillDownModalMock.mockReturnValue(<div />)
-
         CustomReportActionButtonMock.mockReturnValue(
             <div>{CUSTOM_REPORT_ID_CTA}</div>
         )
-
         useUpdateCustomReportNameMock.mockReturnValue({
             updateCustomReport: updateCustomReportMock,
         } as any)
-
         useGetAnalyticsCustomReportMock.mockReturnValue({
             data: {data: customReport},
             isLoading: false,
         } as any)
-
         useAppDispatchMock.mockReturnValue(dispatchMock)
     })
 
@@ -183,9 +177,39 @@ describe('CustomReportPage', () => {
     })
 
     it('should format the report data correctly', () => {
+        useGetAnalyticsCustomReportMock.mockReturnValue({
+            data: {
+                data: {
+                    ...customReport,
+                    children: [
+                        {
+                            children: [
+                                {
+                                    config_id:
+                                        'customer_satisfaction_trend_card',
+                                    type: 'chart',
+                                },
+                            ],
+                            type: 'row',
+                        },
+                    ],
+                },
+            },
+            isLoading: false,
+        } as any)
         renderWithStore(<CustomReportPage />, {})
 
-        expect(customReportFromApiMock).toHaveBeenCalledTimes(1)
+        expect(CustomReportMock).toHaveBeenCalled()
+    })
+
+    it('should render the CreateCustomReport when no report', () => {
+        useGetAnalyticsCustomReportMock.mockReturnValue({
+            data: null,
+            isLoading: false,
+        } as any)
+        renderWithStore(<CustomReportPage />, {})
+
+        expect(CreateCustomReportMock).toHaveBeenCalled()
     })
 
     it('should call `updateCustomReport` with correct params', () => {

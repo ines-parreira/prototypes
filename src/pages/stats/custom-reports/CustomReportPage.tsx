@@ -1,7 +1,7 @@
 import {useGetAnalyticsCustomReport} from '@gorgias/api-queries'
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React, {useCallback, useMemo, useState} from 'react'
 import {useParams} from 'react-router-dom'
-import {Spinner} from 'reactstrap'
 
 import {useUpdateCustomReportName} from 'hooks/reporting/custom-reports/useUpdateCustomReportName'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -15,6 +15,7 @@ import {
 } from 'pages/stats/custom-reports/CustomReportNameForm'
 import {CustomReportsModal} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
 import {CustomReportSchema} from 'pages/stats/custom-reports/types'
+
 import {
     customReportFromApi,
     getErrorMessage,
@@ -38,22 +39,17 @@ export const CustomReportPage = () => {
     const currentUser = useAppSelector(getCurrentUser)
 
     const {id} = useParams<{id: string}>()
+    const {data, isLoading, isError} = useGetAnalyticsCustomReport(Number(id))
+    const customReport: CustomReportSchema | undefined = customReportFromApi(
+        data?.data
+    )
 
     const isCurrentUserAnAdmin = useMemo(
         () => isTeamLead(currentUser),
         [currentUser]
     )
 
-    const {data, isLoading, isError} = useGetAnalyticsCustomReport(Number(id))
-
     const [isModalOpen, setOpenModal] = useState<boolean>(false)
-
-    const customReport: CustomReportSchema | undefined = customReportFromApi(
-        data?.data
-    )
-
-    const isEditMode = !!customReport?.children.length
-
     const {updateCustomReport} = useUpdateCustomReportName(Number(id))
 
     const handleUpdateCustomReportName: CustomReportNameFormSubmitHandler =
@@ -98,10 +94,10 @@ export const CustomReportPage = () => {
             />
             <StatsPageContent>
                 {isLoading ? (
-                    <Spinner />
+                    <LoadingSpinner />
                 ) : isError ? (
                     <div>{CUSTOM_REPORT_SCHEMA_ERROR}</div>
-                ) : isEditMode ? (
+                ) : customReport ? (
                     <CustomReport customReport={customReport} />
                 ) : (
                     <CreateCustomReport />

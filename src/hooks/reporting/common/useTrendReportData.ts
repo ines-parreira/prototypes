@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react'
 
 import {MetricTrendFetch} from 'hooks/reporting/useMetricTrend'
 import {StatsFilters} from 'models/stat/types'
+import {TrendDataWithLabel} from 'services/reporting/supportPerformanceReportingService'
 
 export const useTrendReportData = (
     cleanStatsFilters: StatsFilters,
@@ -10,11 +11,7 @@ export const useTrendReportData = (
 ) => {
     const [workloadTrendData, setWorkloadTrendData] = useState<{
         isFetching: boolean
-        data: {
-            label: string
-            value: number | string | null | undefined
-            prevValue: number | string | null | undefined
-        }[]
+        data: TrendDataWithLabel[]
     }>({
         isFetching: true,
         data: [],

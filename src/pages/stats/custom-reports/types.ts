@@ -66,15 +66,34 @@ export type DashboardInput = {
     children?: CustomReportChild[]
 }
 
+export enum DataExportFormat {
+    Trend = 'trend',
+    TimeSeries = 'time-series',
+    Distribution = 'distribution',
+}
+
+export type DistributionDataExportFetch = {
+    type: DataExportFormat.Distribution
+    fetch: {
+        fetchCurrentDistribution: MetricPerDimensionFetch
+        fetchPreviousDistribution: MetricPerDimensionFetch
+        labelPrefix: string
+    }
+}
+
 type DataExportFetch =
-    | MetricTrendFetch
-    | TimeSeriesFetch
-    | MetricPerDimensionFetch[]
+    | {type: DataExportFormat.Trend; fetch: MetricTrendFetch}
+    | {
+          type: DataExportFormat.TimeSeries
+          fetch: TimeSeriesFetch
+          label?: string
+      }
+    | DistributionDataExportFetch
 
 export type ChartConfig = {
     chartComponent: ({chartId}: {chartId: string}) => React.JSX.Element
     label: ReactNode
-    csvProducer: DataExportFetch | null
+    csvProducer: DataExportFetch[] | null
     description: ReactNode
     icon: {name: string; tooltip: string}
 }

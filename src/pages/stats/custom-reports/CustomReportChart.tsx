@@ -1,8 +1,8 @@
 import _flatten from 'lodash/flatten'
 import React from 'react'
 
-import {CustomReportComponent} from 'pages/stats/common/CustomReport/CustomReportComponent'
 import {REPORTS_MODAL_CONFIG} from 'pages/stats/custom-reports/config'
+import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
 import {
     ReportConfig,
     CustomReportChartSchema,

@@ -1,17 +1,13 @@
-import moment from 'moment/moment'
-
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {Period} from 'models/stat/types'
 import {
     CURRENT_PERIOD_LABEL,
-    DATE_TIME_FORMAT,
     EMPTY_LABEL,
     NOT_AVAILABLE_LABEL,
     PREVIOUS_PERIOD_LABEL,
 } from 'services/reporting/constants'
 import {createCsv} from 'utils/file'
 
-type TrendDataWithLabel = {
+export type TrendDataWithLabel = {
     label: string
     value: number | string | null | undefined
     prevValue: number | string | null | undefined
@@ -29,7 +25,7 @@ const getTrendDataReport = (data: TrendDataWithLabel[]) => {
     ]
 }
 
-const getTicketVolumeData = (data: TimeSeriesDataWithLabels[]) => {
+const getTimeSeriesDataReport = (data: TimeSeriesDataWithLabels[]) => {
     const dates = data[0]?.data?.[0].map((r) => r.dateTime) || []
 
     return [
@@ -45,41 +41,35 @@ const getTicketVolumeData = (data: TimeSeriesDataWithLabels[]) => {
     ]
 }
 
-export const getFileNameWithDates = (period: Period, reportName: string) => {
-    const export_datetime = moment().format(DATE_TIME_FORMAT)
-    const startDate = moment(period.start_datetime).format(DATE_TIME_FORMAT)
-    const endDate = moment(period.end_datetime).format(DATE_TIME_FORMAT)
-    const periodPrefix = `${startDate}_${endDate}`
-
-    return `${periodPrefix}-${reportName}-${export_datetime}`
-}
-
 export const createTimeSeriesReport = (
-    timeSeriesData: TimeSeriesDataWithLabels[],
-    period: Period,
-    fileSuffix: string
+    data: TimeSeriesDataWithLabels[],
+    fileName: string
 ) => {
-    const ticketVolumeData = getTicketVolumeData(timeSeriesData)
+    if (data.length === 0) {
+        return {files: {}}
+    }
+
+    const ticketVolumeData = getTimeSeriesDataReport(data)
 
     return {
         files: {
-            [`${getFileNameWithDates(period, fileSuffix)}.csv`]:
-                createCsv(ticketVolumeData),
+            [fileName]: createCsv(ticketVolumeData),
         },
     }
 }
 
 export const createTrendReport = (
     data: TrendDataWithLabel[],
-    period: Period,
-    fileSuffix: string
+    fileName: string
 ) => {
+    if (data.length === 0) {
+        return {files: {}}
+    }
     const reportData = getTrendDataReport(data)
 
     return {
         files: {
-            [`${getFileNameWithDates(period, fileSuffix)}.csv`]:
-                createCsv(reportData),
+            [fileName]: createCsv(reportData),
         },
     }
 }

@@ -1,17 +1,29 @@
+import moment from 'moment'
+
 import {useMemo} from 'react'
+
+import {useDistributionTrendReportData} from 'hooks/reporting/common/useDistributionTrendReportData'
 
 import {useTimeSeriesReportData} from 'hooks/reporting/common/useTimeSeriesReportData'
 import {useTrendReportData} from 'hooks/reporting/common/useTrendReportData'
-import {useWorkloadChannelReport} from 'hooks/reporting/support-performance/overview/useWorkloadChannelReport'
+import {
+    fetchWorkloadPerChannelDistribution,
+    fetchWorkloadPerChannelDistributionForPreviousPeriod,
+} from 'hooks/reporting/distributions'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import {Period} from 'models/stat/types'
 import {
     OverviewChartConfig,
     OverviewMetric,
     OverviewMetricConfig,
     TimeSeriesMetric,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+
 import {
-    getFileNameWithDates,
+    DATE_TIME_FORMAT,
+    WORKLOAD_BY_CHANNEL_LABEL,
+} from 'services/reporting/constants'
+import {
     createTimeSeriesReport,
     createTrendReport,
 } from 'services/reporting/supportPerformanceReportingService'
@@ -47,6 +59,15 @@ export const workloadReportSource = [
     OverviewMetric.MessagesSent,
 ].map((metric) => OverviewMetricConfig[metric])
 
+export const getCsvFileNameWithDates = (period: Period, reportName: string) => {
+    const export_datetime = moment().format(DATE_TIME_FORMAT)
+    const startDate = moment(period.start_datetime).format(DATE_TIME_FORMAT)
+    const endDate = moment(period.end_datetime).format(DATE_TIME_FORMAT)
+    const periodPrefix = `${startDate}_${endDate}`
+
+    return `${periodPrefix}-${reportName}-${export_datetime}.csv`
+}
+
 export const useDownloadOverViewData = (fetchingEnabled = true) => {
     const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
 
@@ -69,10 +90,21 @@ export const useDownloadOverViewData = (fetchingEnabled = true) => {
         timeSeriesReportSource
     )
 
-    const workloadChannelData = useWorkloadChannelReport(
+    const workloadPerChannelDataSourceRuntime = useMemo(
+        () => ({
+            fetchCurrentDistribution: fetchWorkloadPerChannelDistribution,
+            fetchPreviousDistribution: fetchingEnabled
+                ? fetchWorkloadPerChannelDistributionForPreviousPeriod
+                : () => Promise.resolve({data: []}),
+            labelPrefix: WORKLOAD_BY_CHANNEL_LABEL,
+        }),
+        [fetchingEnabled]
+    )
+
+    const workloadChannelData = useDistributionTrendReportData(
         cleanStatsFilters,
         userTimezone,
-        fetchingEnabled
+        workloadPerChannelDataSourceRuntime
     )
 
     const loading = useMemo(() => {
@@ -91,20 +123,26 @@ export const useDownloadOverViewData = (fetchingEnabled = true) => {
 
     const customerExperienceReport = createTrendReport(
         customerExperienceData.data,
-        cleanStatsFilters.period,
-        CUSTOMER_EXPERIENCE_REPORT_FILE_NAME
+        getCsvFileNameWithDates(
+            cleanStatsFilters.period,
+            CUSTOMER_EXPERIENCE_REPORT_FILE_NAME
+        )
     )
     const workloadReport = createTrendReport(
         [...workloadTrendData.data, ...workloadChannelData.data],
-        cleanStatsFilters.period,
-        WORKLOAD_REPORT_FILE_NAME
+        getCsvFileNameWithDates(
+            cleanStatsFilters.period,
+            WORKLOAD_REPORT_FILE_NAME
+        )
     )
     const ticketVolumeReport = createTimeSeriesReport(
         timeSeriesData.data,
-        cleanStatsFilters.period,
-        TICKET_VOLUME_REPORT_FILE_NAME
+        getCsvFileNameWithDates(
+            cleanStatsFilters.period,
+            TICKET_VOLUME_REPORT_FILE_NAME
+        )
     )
-    const fileName = getFileNameWithDates(
+    const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
         OVER_VIEW_METRICS_REPORT_FILE_NAME
     )

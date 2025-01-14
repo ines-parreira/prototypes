@@ -1,6 +1,9 @@
 import {render, screen, waitFor, within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import React from 'react'
+
+import {useDownloadCustomReportData} from 'hooks/reporting/custom-reports/useDownloadCustomReportData'
 
 import {
     CUSTOM_REPORT_ID_CTA,
@@ -18,6 +21,7 @@ import {
     CustomReportChildType,
     CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
+import {assumeMock} from 'utils/testing'
 
 const mockPush = jest.fn()
 const baseURL = '/some/path'
@@ -42,6 +46,8 @@ jest.mock('hooks/reporting/custom-reports/useCustomReportActions', () => ({
         deleteReportHandler: mockDeleteReport,
     }),
 }))
+jest.mock('hooks/reporting/custom-reports/useDownloadCustomReportData')
+const useDownloadCustomReportDataMock = assumeMock(useDownloadCustomReportData)
 
 describe('CustomReportActionButton', () => {
     const customReport: CustomReportSchema = {
@@ -56,6 +62,13 @@ describe('CustomReportActionButton', () => {
         ],
         emoji: '',
     }
+
+    beforeEach(() => {
+        useDownloadCustomReportDataMock.mockReturnValue({
+            isLoading: false,
+            triggerDownload: jest.fn(),
+        })
+    })
 
     it('should check that all actions are present in the actions dropdown', async () => {
         render(

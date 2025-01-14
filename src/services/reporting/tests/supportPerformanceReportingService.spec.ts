@@ -2,7 +2,6 @@ import moment from 'moment'
 
 import {Period} from 'models/stat/types'
 import {
-    DATE_TIME_FORMAT,
     MESSAGES_SENT_LABEL,
     NOT_AVAILABLE_LABEL,
     OPEN_TICKETS_LABEL,
@@ -167,51 +166,63 @@ const testData = [
         period,
         'Overridden one dimensional report data'
     ),
-    testDataFactory([], period, 'No data'),
 ]
 
 describe('supportPerformanceReportingService', () => {
-    describe('saveTimeSeriesReport', () => {
+    describe('createTimeSeriesReport', () => {
         it.each(testData)(
             'should call saveReport with a report $testName',
-            ({data, period}) => {
+            ({data}) => {
                 const fakeReport = 'someValue'
-                const fileSuffix = 'some-name'
+                const fileName = 'some-name'
                 jest.spyOn(files, 'createCsv').mockReturnValue(fakeReport)
 
-                const result = createTimeSeriesReport(data, period, fileSuffix)
+                const result = createTimeSeriesReport(data, fileName)
 
                 expect(result).toEqual({
                     files: {
-                        [`${period.start_datetime}_${
-                            period.end_datetime
-                        }-${fileSuffix}-${moment().format(DATE_TIME_FORMAT)}.csv`]:
-                            fakeReport,
+                        [fileName]: fakeReport,
                     },
                 })
             }
         )
-    })
 
-    describe('saveTrendReport', () => {
-        it('should call saveTrendReport with a report', () => {
+        it('should return empty object when no data provided', () => {
             const fakeReport = 'someValue'
-            const fileSuffix = 'some-name'
+            const fileName = 'some-name'
+            const data = testDataFactory([], period, 'No data').data
             jest.spyOn(files, 'createCsv').mockReturnValue(fakeReport)
 
-            const result = createTrendReport(
-                workloadDataSource,
-                period,
-                fileSuffix
-            )
+            const result = createTimeSeriesReport(data, fileName)
+
+            expect(result).toEqual({
+                files: {},
+            })
+        })
+    })
+
+    describe('createTrendReport', () => {
+        const fileName = 'some-name'
+
+        it('should call saveTrendReport with a report', () => {
+            const fakeReport = 'someValue'
+
+            jest.spyOn(files, 'createCsv').mockReturnValue(fakeReport)
+
+            const result = createTrendReport(workloadDataSource, fileName)
 
             expect(result).toEqual({
                 files: {
-                    [`${period.start_datetime}_${
-                        period.end_datetime
-                    }-${fileSuffix}-${moment().format(DATE_TIME_FORMAT)}.csv`]:
-                        fakeReport,
+                    [fileName]: fakeReport,
                 },
+            })
+        })
+
+        it('should return empty files object when no data provided', () => {
+            const result = createTrendReport([], fileName)
+
+            expect(result).toEqual({
+                files: {},
             })
         })
     })

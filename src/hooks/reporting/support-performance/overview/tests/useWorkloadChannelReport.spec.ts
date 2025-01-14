@@ -4,15 +4,14 @@ import {renderHook} from '@testing-library/react-hooks'
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
+import {formatPerDimensionTrendData} from 'hooks/reporting/common/useDistributionTrendReportData'
 import {
     fetchWorkloadPerChannelDistribution,
     fetchWorkloadPerChannelDistributionForPreviousPeriod,
 } from 'hooks/reporting/distributions'
-import {
-    formatWorkloadData,
-    useWorkloadChannelReport,
-} from 'hooks/reporting/support-performance/overview/useWorkloadChannelReport'
+import {useWorkloadChannelReport} from 'hooks/reporting/support-performance/overview/useWorkloadChannelReport'
 import {LegacyStatsFilters} from 'models/stat/types'
+import {WORKLOAD_BY_CHANNEL_LABEL} from 'services/reporting/constants'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/distributions')
@@ -80,9 +79,10 @@ describe('useWorkloadChannelReport', () => {
         await waitFor(() => {
             expect(result.current).toEqual({
                 isFetching: false,
-                data: formatWorkloadData(
-                    workloadDistribution,
-                    workloadDistributionPrevious
+                data: formatPerDimensionTrendData(
+                    workloadDistribution.data,
+                    workloadDistributionPrevious.data,
+                    WORKLOAD_BY_CHANNEL_LABEL
                 ),
             })
         })
@@ -99,7 +99,11 @@ describe('useWorkloadChannelReport', () => {
         await waitFor(() => {
             expect(result.current).toEqual({
                 isFetching: false,
-                data: formatWorkloadData(workloadDistribution, {data: null}),
+                data: formatPerDimensionTrendData(
+                    workloadDistribution.data,
+                    [],
+                    WORKLOAD_BY_CHANNEL_LABEL
+                ),
             })
         })
     })

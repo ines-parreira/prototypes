@@ -6,10 +6,13 @@ import React from 'react'
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
+import {useDistributionTrendReportData} from 'hooks/reporting/common/useDistributionTrendReportData'
 import {useTimeSeriesReportData} from 'hooks/reporting/common/useTimeSeriesReportData'
 import {useTrendReportData} from 'hooks/reporting/common/useTrendReportData'
+import {fetchWorkloadPerChannelDistribution} from 'hooks/reporting/distributions'
 import {
     CUSTOMER_EXPERIENCE_REPORT_FILE_NAME,
+    getCsvFileNameWithDates,
     TICKET_VOLUME_REPORT_FILE_NAME,
     useDownloadOverViewData,
     WORKLOAD_REPORT_FILE_NAME,
@@ -19,7 +22,10 @@ import {useTimeSeries} from 'hooks/reporting/useTimeSeries'
 import {ReportingGranularity} from 'models/reporting/types'
 import {LegacyStatsFilters} from 'models/stat/types'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-import {MESSAGES_SENT_LABEL} from 'services/reporting/constants'
+import {
+    MESSAGES_SENT_LABEL,
+    WORKLOAD_BY_CHANNEL_LABEL,
+} from 'services/reporting/constants'
 import {
     createTimeSeriesReport,
     createTrendReport,
@@ -42,6 +48,11 @@ const useTrendReportDataMock = assumeMock(useTrendReportData)
 
 jest.mock('hooks/reporting/common/useTimeSeriesReportData')
 const useTimeSeriesReportDataMock = assumeMock(useTimeSeriesReportData)
+
+jest.mock('hooks/reporting/common/useDistributionTrendReportData')
+const useDistributionTrendReportDataMock = assumeMock(
+    useDistributionTrendReportData
+)
 
 describe('useDownloadOverviewData', () => {
     const defaultStatsFilters: LegacyStatsFilters = {
@@ -86,6 +97,18 @@ describe('useDownloadOverviewData', () => {
         const timeSeriesReportData = [
             {label: MESSAGES_SENT_LABEL, ...defaultTimeSeries},
         ]
+        const workloadData = [
+            {
+                label: 'email',
+                value: 1,
+                prevValue: 2,
+            },
+            {
+                label: 'facebook',
+                value: 1,
+                prevValue: 2,
+            },
+        ]
         useTrendReportDataMock.mockReturnValue({
             isFetching: false,
             data: trendReportData,
@@ -93,6 +116,10 @@ describe('useDownloadOverviewData', () => {
         useTimeSeriesReportDataMock.mockReturnValue({
             isFetching: false,
             data: timeSeriesReportData,
+        })
+        useDistributionTrendReportDataMock.mockReturnValue({
+            isFetching: false,
+            data: workloadData,
         })
 
         renderHook(useDownloadOverViewData, {
@@ -102,19 +129,49 @@ describe('useDownloadOverviewData', () => {
         await waitFor(() => {
             expect(saveTrendReportMock).toHaveBeenCalledWith(
                 trendReportData,
-                defaultStatsFilters.period,
-                CUSTOMER_EXPERIENCE_REPORT_FILE_NAME
+                getCsvFileNameWithDates(
+                    defaultStatsFilters.period,
+                    CUSTOMER_EXPERIENCE_REPORT_FILE_NAME
+                )
             )
             expect(saveTrendReportMock).toHaveBeenCalledWith(
-                trendReportData,
-                defaultStatsFilters.period,
-                WORKLOAD_REPORT_FILE_NAME
+                [...trendReportData, ...workloadData],
+                getCsvFileNameWithDates(
+                    defaultStatsFilters.period,
+                    WORKLOAD_REPORT_FILE_NAME
+                )
             )
             expect(saveTimeSeriesReportMock).toHaveBeenCalledWith(
                 timeSeriesReportData,
-                defaultStatsFilters.period,
-                TICKET_VOLUME_REPORT_FILE_NAME
+                getCsvFileNameWithDates(
+                    defaultStatsFilters.period,
+                    TICKET_VOLUME_REPORT_FILE_NAME
+                )
             )
         })
+    })
+
+    it('should not fetch previous workload data when the fetching is disabled', async () => {
+        renderHook(() => useDownloadOverViewData(false), {
+            wrapper: ({children}) => <div>{children}</div>,
+        })
+
+        expect(useDistributionTrendReportDataMock).toHaveBeenCalledWith(
+            fromLegacyStatsFilters(defaultStatsFilters),
+            'UTC',
+            {
+                fetchCurrentDistribution: fetchWorkloadPerChannelDistribution,
+                fetchPreviousDistribution: expect.any(Function),
+                labelPrefix: WORKLOAD_BY_CHANNEL_LABEL,
+            }
+        )
+        const previousFetchFunction =
+            useDistributionTrendReportDataMock.mock.calls[0][2]
+                ?.fetchPreviousDistribution
+        if (previousFetchFunction) {
+            expect(
+                await previousFetchFunction(defaultStatsFilters, 'someString')
+            ).toEqual({data: []})
+        }
     })
 })

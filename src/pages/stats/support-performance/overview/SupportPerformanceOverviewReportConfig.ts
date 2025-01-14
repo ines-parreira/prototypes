@@ -4,7 +4,7 @@ import {
 } from 'hooks/reporting/distributions'
 import {FilterKey} from 'models/stat/types'
 import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
-import {ReportConfig} from 'pages/stats/custom-reports/types'
+import {DataExportFormat, ReportConfig} from 'pages/stats/custom-reports/types'
 import {CustomerSatisfactionTrendCard} from 'pages/stats/support-performance/overview/charts/CustomerSatisfactionTrendCard'
 import {MedianResolutionTimeTrendCard} from 'pages/stats/support-performance/overview/charts/MedianResolutionTimeTrendCard'
 import {MedianFirstResponseTimeTrendCard} from 'pages/stats/support-performance/overview/charts/MedianResponseTimeTrendCard'
@@ -28,6 +28,10 @@ import {
     TICKETS_CREATED_VS_CLOSED_HINT,
     WORKLOAD_BY_CHANNEL_HINT,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import {
+    TOTAL_WORKLOAD_BY_CHANNEL_LABEL,
+    WORKLOAD_BY_CHANNEL_LABEL,
+} from 'services/reporting/constants'
 
 export const SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE =
     'Support performance overview'
@@ -59,9 +63,14 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 chartComponent: CustomerSatisfactionTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.CustomerSatisfaction]
                     .title,
-                csvProducer:
-                    OverviewMetricConfig[OverviewMetric.CustomerSatisfaction]
-                        .fetchTrend,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: OverviewMetricConfig[
+                            OverviewMetric.CustomerSatisfaction
+                        ].fetchTrend,
+                    },
+                ],
                 description:
                     OverviewMetricConfig[OverviewMetric.CustomerSatisfaction]
                         .hint.title,
@@ -72,9 +81,14 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 label: OverviewMetricConfig[
                     OverviewMetric.MedianFirstResponseTime
                 ].title,
-                csvProducer:
-                    OverviewMetricConfig[OverviewMetric.MedianFirstResponseTime]
-                        .fetchTrend,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: OverviewMetricConfig[
+                            OverviewMetric.MedianFirstResponseTime
+                        ].fetchTrend,
+                    },
+                ],
                 description:
                     OverviewMetricConfig[OverviewMetric.MedianFirstResponseTime]
                         .hint.title,
@@ -84,9 +98,14 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 chartComponent: MedianResolutionTimeTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.MedianResolutionTime]
                     .title,
-                csvProducer:
-                    OverviewMetricConfig[OverviewMetric.MedianResolutionTime]
-                        .fetchTrend,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: OverviewMetricConfig[
+                            OverviewMetric.MedianResolutionTime
+                        ].fetchTrend,
+                    },
+                ],
                 description:
                     OverviewMetricConfig[OverviewMetric.MedianResolutionTime]
                         .hint.title,
@@ -96,9 +115,14 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 chartComponent: MessagesPerTicketTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.MessagesPerTicket]
                     .title,
-                csvProducer:
-                    OverviewMetricConfig[OverviewMetric.MessagesPerTicket]
-                        .fetchTrend,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: OverviewMetricConfig[
+                            OverviewMetric.MessagesPerTicket
+                        ].fetchTrend,
+                    },
+                ],
                 description:
                     OverviewMetricConfig[OverviewMetric.MessagesPerTicket].hint
                         .title,
@@ -108,9 +132,14 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 chartComponent: TicketsCreatedTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.TicketsCreated]
                     .title,
-                csvProducer:
-                    OverviewMetricConfig[OverviewMetric.TicketsCreated]
-                        .fetchTrend,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: OverviewMetricConfig[
+                            OverviewMetric.TicketsCreated
+                        ].fetchTrend,
+                    },
+                ],
                 description:
                     OverviewMetricConfig[OverviewMetric.TicketsCreated].hint
                         .title,
@@ -119,9 +148,14 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
             [OverviewChart.TicketsClosedTrendCard]: {
                 chartComponent: TicketsClosedTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.TicketsClosed].title,
-                csvProducer:
-                    OverviewMetricConfig[OverviewMetric.TicketsClosed]
-                        .fetchTrend,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: OverviewMetricConfig[
+                            OverviewMetric.TicketsClosed
+                        ].fetchTrend,
+                    },
+                ],
                 description:
                     OverviewMetricConfig[OverviewMetric.TicketsClosed].hint
                         .title,
@@ -130,18 +164,31 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
             [OverviewChart.OpenTicketsTrendCard]: {
                 chartComponent: OpenTicketsTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.OpenTickets].title,
-                csvProducer:
-                    OverviewMetricConfig[OverviewMetric.OpenTickets].fetchTrend,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: OverviewMetricConfig[OverviewMetric.OpenTickets]
+                            .fetchTrend,
+                    },
+                ],
                 description:
                     OverviewMetricConfig[OverviewMetric.OpenTickets].hint.title,
                 icon: CHARTS_MODAL_ICONS.card,
             },
             [OverviewChart.WorkloadPerChannelChart]: {
                 chartComponent: WorkloadPerChannelChart,
-                label: WORKLOAD_BY_CHANNEL_HINT.title,
+                label: TOTAL_WORKLOAD_BY_CHANNEL_LABEL,
                 csvProducer: [
-                    fetchWorkloadPerChannelDistribution,
-                    fetchWorkloadPerChannelDistributionForPreviousPeriod,
+                    {
+                        type: DataExportFormat.Distribution,
+                        fetch: {
+                            fetchCurrentDistribution:
+                                fetchWorkloadPerChannelDistribution,
+                            fetchPreviousDistribution:
+                                fetchWorkloadPerChannelDistributionForPreviousPeriod,
+                            labelPrefix: WORKLOAD_BY_CHANNEL_LABEL,
+                        },
+                    },
                 ],
                 description: WORKLOAD_BY_CHANNEL_HINT.description,
                 icon: CHARTS_MODAL_ICONS.graph,
@@ -149,7 +196,24 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
             [OverviewChart.TicketsCreatedVsClosedChart]: {
                 chartComponent: TicketsCreatedVsClosedChart,
                 label: TICKETS_CREATED_VS_CLOSED_HINT.title,
-                csvProducer: null,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.TimeSeries,
+                        fetch: OverviewChartConfig[
+                            OverviewMetric.TicketsCreated
+                        ].fetchTimeSeries,
+                        label: OverviewChartConfig[
+                            OverviewMetric.TicketsCreated
+                        ].title,
+                    },
+                    {
+                        type: DataExportFormat.TimeSeries,
+                        fetch: OverviewChartConfig[OverviewMetric.TicketsClosed]
+                            .fetchTimeSeries,
+                        label: OverviewChartConfig[OverviewMetric.TicketsClosed]
+                            .title,
+                    },
+                ],
                 description: TICKETS_CREATED_VS_CLOSED_HINT.description,
                 icon: CHARTS_MODAL_ICONS.graph,
             },
@@ -157,9 +221,14 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 chartComponent: TicketsRepliedTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.TicketsReplied]
                     .title,
-                csvProducer:
-                    OverviewMetricConfig[OverviewMetric.TicketsReplied]
-                        .fetchTrend,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: OverviewMetricConfig[
+                            OverviewMetric.TicketsReplied
+                        ].fetchTrend,
+                    },
+                ],
                 description:
                     OverviewMetricConfig[OverviewMetric.TicketsReplied].hint
                         .title,
@@ -168,9 +237,13 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
             [OverviewChart.MessagesSentTrendCard]: {
                 chartComponent: MessagesSentTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.MessagesSent].title,
-                csvProducer:
-                    OverviewMetricConfig[OverviewMetric.MessagesSent]
-                        .fetchTrend,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: OverviewMetricConfig[OverviewMetric.MessagesSent]
+                            .fetchTrend,
+                    },
+                ],
                 description:
                     OverviewMetricConfig[OverviewMetric.MessagesSent].hint
                         .title,
@@ -180,9 +253,14 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 chartComponent: TicketHandleTimeTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.TicketHandleTime]
                     .title,
-                csvProducer:
-                    OverviewMetricConfig[OverviewMetric.TicketHandleTime]
-                        .fetchTrend,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: OverviewMetricConfig[
+                            OverviewMetric.TicketHandleTime
+                        ].fetchTrend,
+                    },
+                ],
                 description:
                     OverviewMetricConfig[OverviewMetric.TicketHandleTime].hint
                         .title,
@@ -192,9 +270,14 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 chartComponent: OneTouchTicketsTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.OneTouchTickets]
                     .title,
-                csvProducer:
-                    OverviewMetricConfig[OverviewMetric.OneTouchTickets]
-                        .fetchTrend,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: OverviewMetricConfig[
+                            OverviewMetric.OneTouchTickets
+                        ].fetchTrend,
+                    },
+                ],
                 description:
                     OverviewMetricConfig[OverviewMetric.OneTouchTickets].hint
                         .title,
@@ -203,9 +286,14 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
             [OverviewChart.TicketsRepliedGraph]: {
                 chartComponent: TicketsRepliedGraph,
                 label: OverviewChartConfig[OverviewMetric.TicketsReplied].title,
-                csvProducer:
-                    OverviewChartConfig[OverviewMetric.TicketsReplied]
-                        .fetchTimeSeries,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.TimeSeries,
+                        fetch: OverviewChartConfig[
+                            OverviewMetric.TicketsReplied
+                        ].fetchTimeSeries,
+                    },
+                ],
                 description:
                     OverviewChartConfig[OverviewMetric.TicketsReplied].hint
                         .title,
@@ -214,9 +302,13 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
             [OverviewChart.MessagesSentGraph]: {
                 chartComponent: MessagesSentGraph,
                 label: OverviewChartConfig[OverviewMetric.MessagesSent].title,
-                csvProducer:
-                    OverviewChartConfig[OverviewMetric.MessagesSent]
-                        .fetchTimeSeries,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.TimeSeries,
+                        fetch: OverviewChartConfig[OverviewMetric.MessagesSent]
+                            .fetchTimeSeries,
+                    },
+                ],
                 description:
                     OverviewChartConfig[OverviewMetric.MessagesSent].hint.title,
                 icon: CHARTS_MODAL_ICONS.card,

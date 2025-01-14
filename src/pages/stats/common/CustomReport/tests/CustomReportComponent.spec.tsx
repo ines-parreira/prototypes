@@ -3,7 +3,7 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {CustomReportComponent} from 'pages/stats/common/CustomReport/CustomReportComponent'
+import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
 
 const content = 'Test'
 const chart = 'chart-id'

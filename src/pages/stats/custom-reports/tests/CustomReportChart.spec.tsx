@@ -1,8 +1,9 @@
 import {render} from '@testing-library/react'
 import React from 'react'
 
-import {CustomReportComponent} from 'pages/stats/common/CustomReport/CustomReportComponent'
 import {CustomReportChart} from 'pages/stats/custom-reports/CustomReportChart'
+import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+
 import {
     CustomReportChartSchema,
     CustomReportChildType,
@@ -13,7 +14,7 @@ import {
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import {assumeMock} from 'utils/testing'
 
-jest.mock('pages/stats/common/CustomReport/CustomReportComponent', () => ({
+jest.mock('pages/stats/custom-reports/CustomReportComponent', () => ({
     __esModule: true,
     default: jest.fn(),
     CustomReportComponent: jest.fn(),
