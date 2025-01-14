@@ -153,20 +153,22 @@ export default function VoiceIntegrationPreferencesInboundCalls({
             <div>
                 <Label className="control-label">Other settings</Label>
                 <div className={css.otherSettings}>
-                    <CheckBox
-                        isChecked={preferencesWaitTimeEnabled}
-                        onChange={(value) =>
-                            onPreferencesChange({
-                                wait_time: {
-                                    enabled: value,
-                                    value: preferencesWaitTimeValue,
-                                },
-                            })
-                        }
-                        caption="If toggled off, calls will go directly to voicemail when agents are not available."
-                    >
-                        Hold calls in queue until an agent becomes available
-                    </CheckBox>
+                    {!isIvr && (
+                        <CheckBox
+                            isChecked={preferencesWaitTimeEnabled}
+                            onChange={(value) =>
+                                onPreferencesChange({
+                                    wait_time: {
+                                        enabled: value,
+                                        value: preferencesWaitTimeValue,
+                                    },
+                                })
+                            }
+                            caption="If toggled off, calls will go directly to voicemail when agents are not available."
+                        >
+                            Hold calls in queue until an agent becomes available
+                        </CheckBox>
+                    )}
                     <CheckBox
                         isChecked={preferences.voicemail_outside_business_hours}
                         onChange={(value) =>

@@ -69,6 +69,11 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
         expect(screen.getByText('Set ringing behaviour')).toBeInTheDocument()
         expect(screen.getByText('Ring time per agent')).toBeInTheDocument()
         expect(screen.getByText('Max wait time')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Hold calls in queue until an agent becomes available'
+            )
+        ).toBeInTheDocument()
     })
 
     it('should not display team select, ringing behaviour, recording section and ring/wait time when it is not IVR', () => {
@@ -79,6 +84,11 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
         expect(screen.queryByText('Start recording automatically')).toBeNull()
         expect(screen.queryByText('Ring Time')).toBeNull()
         expect(screen.queryByText('Wait Time')).toBeNull()
+        expect(
+            screen.queryByText(
+                'Hold calls in queue until an agent becomes available'
+            )
+        ).toBeNull()
     })
 
     it('should call onPreferencesChange when ringing behaviour is changed', () => {
