@@ -152,6 +152,13 @@ describe('useAiAgentInsightsDataset', () => {
 })
 
 describe('useAutomationOpportunityPerIntent', () => {
+    beforeEach(() => {
+        useCustomFieldDefinitionsMock.mockReturnValue({
+            data: {data: ticketFieldDefinitions},
+            isLoading: false,
+        } as any)
+    })
+
     it('should calculate ai agent insights correctly', () => {
         useMetricMock.mockReturnValueOnce({
             // aiAgentTickets
@@ -278,6 +285,13 @@ describe('useAutomationOpportunityPerIntent', () => {
 })
 
 describe('useAIAgentTicketsPerIntent', () => {
+    beforeEach(() => {
+        useCustomFieldDefinitionsMock.mockReturnValue({
+            data: {data: ticketFieldDefinitions},
+            isLoading: false,
+        } as any)
+    })
+
     it('should return ai agent tickets correctly', () => {
         useMetricPerDimensionMock
             .mockReturnValueOnce({
@@ -311,6 +325,13 @@ describe('useAIAgentTicketsPerIntent', () => {
 })
 
 describe('useSuccessRatePerIntent', () => {
+    beforeEach(() => {
+        useCustomFieldDefinitionsMock.mockReturnValue({
+            data: {data: ticketFieldDefinitions},
+            isLoading: false,
+        } as any)
+    })
+
     it('should enrich success rate per intent correctly', () => {
         useMetricPerDimensionMock
             .mockReturnValueOnce({
@@ -381,6 +402,13 @@ describe('useSuccessRatePerIntent', () => {
 })
 
 describe('useCustomerSatisfactionPerIntent', () => {
+    beforeEach(() => {
+        useCustomFieldDefinitionsMock.mockReturnValue({
+            data: {data: ticketFieldDefinitions},
+            isLoading: false,
+        } as any)
+    })
+
     it('should return csat per intent correctly', () => {
         useMetricPerDimensionMock.mockReturnValueOnce(csatPerIntentMetric)
 

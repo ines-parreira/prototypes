@@ -6,6 +6,7 @@ import {
     transformIntentName,
     enrichWithAutomationOpportunity,
     enrichWithSuccessRate,
+    calculateAiAgentKnowledgeResourcePerIntent,
 } from 'hooks/reporting/automate/utils'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
@@ -29,6 +30,8 @@ import {
     useAiAgenTickets,
     useAiAgentTicketCountPerIntent,
     useCustomerSatisfactionMetricPerIntent,
+    useAIAgentTicketsWithIntent,
+    useAIAgentResourcePerTicket,
 } from './aiAgentMetrics'
 import {
     getAiAgentCoverageRate,
@@ -341,6 +344,57 @@ export const useSuccessRatePerIntent = (
     }
 }
 
+// AI AGENT Recommended resources per intent
+export const useAiAgentKnowledgeResourcePerIntent = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+) => {
+    const {data: {data: activeFields = []} = {}} =
+        useCustomFieldDefinitions(activeParams)
+
+    const customFieldAiIntent = activeFields.find(
+        (field) => field.managed_type === AI_MANAGED_TYPES.AI_INTENT
+    )
+
+    const customFiledId = customFieldAiIntent?.id
+        ? String(customFieldAiIntent.id)
+        : null
+
+    const aiAgentTicketsWithIntent = useAIAgentTicketsWithIntent(
+        filters,
+        timezone,
+        customFiledId,
+        sorting
+    )
+
+    const ticketIds =
+        aiAgentTicketsWithIntent.data?.allData
+            .map((item) => item[TicketDimension.TicketId])
+            .filter((id): id is string => id !== null) || []
+
+    const resourcePerTicketId = useAIAgentResourcePerTicket(
+        filters,
+        timezone,
+        ticketIds
+    )
+
+    const aiAgentKnowledgeResourcePerIntent =
+        calculateAiAgentKnowledgeResourcePerIntent(
+            aiAgentTicketsWithIntent.data?.allData || [],
+            resourcePerTicketId.data?.allData || []
+        )
+
+    return {
+        isError:
+            aiAgentTicketsWithIntent.isError || resourcePerTicketId.isError,
+        isFetching:
+            aiAgentTicketsWithIntent.isFetching ||
+            resourcePerTicketId.isFetching,
+        data: aiAgentKnowledgeResourcePerIntent,
+    }
+}
+
 export const useCustomerSatisfactionPerIntent = (
     filters: StatsFilters,
     timezone: string,
@@ -411,11 +465,15 @@ const useFetchAllIntentsMetrics = (
         sorting
     )
 
+    const aiAgentKnowledgeResourcePerIntent =
+        useAiAgentKnowledgeResourcePerIntent(filters, timezone, sorting)
+
     return {
         automationOpportunityPerIntent,
         ticketsPerIntent,
         successRatePerIntent,
         customerSatisfactionPerIntent,
+        aiAgentKnowledgeResourcePerIntent,
     }
 }
 
@@ -441,8 +499,8 @@ export const useAIAgentInsightsDataset = (
         ticketsPerIntent,
         successRatePerIntent,
         customerSatisfactionPerIntent,
+        aiAgentKnowledgeResourcePerIntent,
     } = useFetchAllIntentsMetrics(filters, timezone, sorting)
-
     const results: Record<string, IntentMetrics> = {}
     const metrics = [
         {
@@ -464,6 +522,11 @@ export const useAIAgentInsightsDataset = (
             metricKey: 'TicketSatisfactionSurveyEnriched.avgSurveyScore',
             resultKey: 'avgCustomerSatisfaction',
         },
+        {
+            data: aiAgentKnowledgeResourcePerIntent.data || [],
+            metricKey: 'resources',
+            resultKey: 'resources',
+        },
     ]
 
     metrics.forEach(({data, metricKey, resultKey}) =>
@@ -477,7 +540,8 @@ export const useAIAgentInsightsDataset = (
         automationOpportunityPerIntent.isFetching ||
         ticketsPerIntent.isFetching ||
         successRatePerIntent.isFetching ||
-        customerSatisfactionPerIntent.isFetching
+        customerSatisfactionPerIntent.isFetching ||
+        aiAgentKnowledgeResourcePerIntent.isFetching
 
     return {
         data: convertedArray,

@@ -32,20 +32,24 @@ import {
     TICKET_COUNT,
     WorkflowTrendMetrics,
 } from 'hooks/reporting/automate/types'
+import {DisplayEventType} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
 import {
     MetricWithDecile,
     QueryReturnType,
 } from 'hooks/reporting/useMetricPerDimension'
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {Cubes} from 'models/reporting/cubes'
 import {
     AutomationBillingEventCubeWithJoins,
     AutomationBillingEventMeasure,
 } from 'models/reporting/cubes/automate/AutomationBillingEventCube'
+import {AutomationDatasetMeasure} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {
     WorkflowDatasetDimension,
     WorkflowDatasetMeasure,
 } from 'models/reporting/cubes/automate_v2/WorkflowDatasetCube'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {
     TicketCustomFieldsCube,
     TicketCustomFieldsMeasure,
@@ -59,9 +63,6 @@ import {
     AutomatedInteractionByFeatures,
     TwoDimensionalDataItem,
 } from 'pages/stats/types'
-
-import {MetricTrend} from '../useMetricTrend'
-import {DisplayEventType} from './useAutomateStatsMeasureLabelMap'
 
 export type WorkflowMetrics = {
     workflowStarted: number
@@ -599,3 +600,50 @@ export const enrichWithSuccessRate = (
  * Transform intent name from aaa::bbb to aaa/bbb format
  */
 export const transformIntentName = (name: string) => name.replace(/::/g, '/')
+
+/**
+ * Calculates the number of AI agent knowledge resource per intent.
+ *
+ * @param {QueryReturnType<Cubes>} aiAgentTicketsWithIntentData - Array of ticket data with intents.
+ * @param {QueryReturnType<Cubes>} resourcePerTicketIdData - Array of resource data per ticket ID.
+ * @returns {Array} - An array of objects mapping intents to number of resource used in tickets.
+ */
+export const calculateAiAgentKnowledgeResourcePerIntent = (
+    aiAgentTicketsWithIntentData: QueryReturnType<Cubes>,
+    resourcePerTicketIdData: QueryReturnType<Cubes>
+): {'TicketCustomFieldsEnriched.valueString': string; resources: number}[] => {
+    const aiAgentKnowledgeResourcePerIntent: Record<string, number> = {}
+
+    aiAgentTicketsWithIntentData.forEach((ticketWithIntent) => {
+        const intent =
+            ticketWithIntent[
+                TicketCustomFieldsDimension.TicketCustomFieldsValueString
+            ]
+        const ticketId = ticketWithIntent[TicketDimension.TicketId]
+
+        if (!intent) {
+            return
+        }
+
+        if (!aiAgentKnowledgeResourcePerIntent[intent]) {
+            aiAgentKnowledgeResourcePerIntent[intent] = 0
+        }
+
+        const resource = resourcePerTicketIdData.find(
+            (item) => item['AutomationDataset.ticketId'] === ticketId
+        )
+
+        if (resource) {
+            aiAgentKnowledgeResourcePerIntent[intent] += Number(
+                resource[AutomationDatasetMeasure.AutomatedInteractions]
+            )
+        }
+    })
+
+    return Object.entries(aiAgentKnowledgeResourcePerIntent).map(
+        ([intent, resources]) => ({
+            'TicketCustomFieldsEnriched.valueString': intent,
+            resources,
+        })
+    )
+}

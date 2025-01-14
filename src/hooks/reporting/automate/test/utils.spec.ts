@@ -7,11 +7,18 @@ import {
     emptyMetric,
     totalTicketsMetric,
 } from 'fixtures/aiAgentInsights'
+import {QueryReturnType} from 'hooks/reporting/useMetricPerDimension'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {BREAKDOWN_FIELD} from 'hooks/reporting/withBreakdown'
 import {OrderDirection} from 'models/api/types'
+import {Cubes} from 'models/reporting/cubes'
 import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
-import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {AutomationDatasetMeasure} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import {
+    TicketCustomFieldsDimension,
+    TicketCustomFieldsMeasure,
+} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {SHORT_FORMAT} from 'pages/stats/common/utils'
@@ -32,6 +39,7 @@ import {
     sortAllData,
     enrichWithAutomationOpportunity,
     enrichWithSuccessRate,
+    calculateAiAgentKnowledgeResourcePerIntent,
 } from '../utils'
 
 describe('mergeAutomateDataByEventType', () => {
@@ -804,6 +812,132 @@ describe('enrichWithSuccessRate', () => {
             emptyMetric,
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
         )
+        expect(result).toEqual([])
+    })
+})
+
+describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
+    it('returns correct resource mapping for valid inputs', () => {
+        const aiAgentTicketsWithIntentData = [
+            {
+                [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
+                    'intentA',
+                [TicketDimension.TicketId]: 'ticket1',
+            },
+            {
+                [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
+                    'intentB',
+                [TicketDimension.TicketId]: 'ticket2',
+            },
+        ]
+        const resourcePerTicketIdData = [
+            {
+                'AutomationDataset.ticketId': 'ticket1',
+                [AutomationDatasetMeasure.AutomatedInteractions]: '5',
+            },
+            {
+                'AutomationDataset.ticketId': 'ticket2',
+                [AutomationDatasetMeasure.AutomatedInteractions]: '3',
+            },
+        ]
+
+        const result = calculateAiAgentKnowledgeResourcePerIntent(
+            aiAgentTicketsWithIntentData,
+            resourcePerTicketIdData
+        )
+
+        expect(result).toEqual([
+            {'TicketCustomFieldsEnriched.valueString': 'intentA', resources: 5},
+            {'TicketCustomFieldsEnriched.valueString': 'intentB', resources: 3},
+        ])
+    })
+
+    it('returns empty array when no intents are present', () => {
+        const aiAgentTicketsWithIntentData: QueryReturnType<Cubes> = []
+        const resourcePerTicketIdData: QueryReturnType<Cubes> = []
+
+        const result = calculateAiAgentKnowledgeResourcePerIntent(
+            aiAgentTicketsWithIntentData,
+            resourcePerTicketIdData
+        )
+
+        expect(result).toEqual([])
+    })
+
+    it('ignores tickets without matching resources', () => {
+        const aiAgentTicketsWithIntentData = [
+            {
+                [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
+                    'intentA',
+                [TicketDimension.TicketId]: 'ticket1',
+            },
+        ]
+        const resourcePerTicketIdData: QueryReturnType<Cubes> = []
+
+        const result = calculateAiAgentKnowledgeResourcePerIntent(
+            aiAgentTicketsWithIntentData,
+            resourcePerTicketIdData
+        )
+
+        expect(result).toEqual([
+            {'TicketCustomFieldsEnriched.valueString': 'intentA', resources: 0},
+        ])
+    })
+
+    it('handles multiple resources for the same intent', () => {
+        const aiAgentTicketsWithIntentData = [
+            {
+                [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
+                    'intentA',
+                [TicketDimension.TicketId]: 'ticket1',
+            },
+            {
+                [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
+                    'intentA',
+                [TicketDimension.TicketId]: 'ticket2',
+            },
+        ]
+        const resourcePerTicketIdData = [
+            {
+                'AutomationDataset.ticketId': 'ticket1',
+                [AutomationDatasetMeasure.AutomatedInteractions]: '5',
+            },
+            {
+                'AutomationDataset.ticketId': 'ticket2',
+                [AutomationDatasetMeasure.AutomatedInteractions]: '3',
+            },
+        ]
+
+        const result = calculateAiAgentKnowledgeResourcePerIntent(
+            aiAgentTicketsWithIntentData,
+            resourcePerTicketIdData
+        )
+
+        expect(result).toEqual([
+            {'TicketCustomFieldsEnriched.valueString': 'intentA', resources: 8},
+        ])
+    })
+
+    it('handles tickets with null intents', () => {
+        const aiAgentTicketsWithIntentData = [
+            {
+                [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
+                    null,
+                [TicketDimension.TicketId]: 'ticket1',
+            },
+        ]
+        const resourcePerTicketIdData = [
+            {
+                'AutomationDataset.ticketId': 'ticket1',
+                [AutomationDatasetMeasure.AutomatedInteractions]: '5',
+            },
+        ]
+
+        const result = calculateAiAgentKnowledgeResourcePerIntent(
+            aiAgentTicketsWithIntentData,
+            resourcePerTicketIdData
+        )
+
         expect(result).toEqual([])
     })
 })

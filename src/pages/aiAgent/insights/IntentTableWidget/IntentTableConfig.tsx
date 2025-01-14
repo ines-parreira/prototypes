@@ -26,7 +26,7 @@ export const TableColumnsOrder: IntentTableColumn[] = [
     IntentTableColumn.Tickets,
     IntentTableColumn.SuccessRate,
     IntentTableColumn.AvgCustomerSatisfaction,
-    // IntentTableColumn.Resources,
+    IntentTableColumn.Resources,
 ]
 
 export const TableLabels: Record<IntentTableColumn, string> = {
@@ -35,7 +35,7 @@ export const TableLabels: Record<IntentTableColumn, string> = {
     [IntentTableColumn.Tickets]: 'Tickets',
     [IntentTableColumn.SuccessRate]: 'Success Rate',
     [IntentTableColumn.AvgCustomerSatisfaction]: 'AVG CSAT',
-    // [IntentTableColumn.Resources]: 'Resources',
+    [IntentTableColumn.Resources]: 'Resources',
 }
 
 export const IntentsColumnsConfig: Partial<
@@ -82,14 +82,13 @@ export const IntentsColumnsConfig: Partial<
         perAgent: true,
         notAvailableText: '-',
     },
-    // TODO uncomment when the feature is ready
-    // [IntentTableColumn.Resources]: {
-    //     format: 'decimal',
-    //     hint: {
-    //         title: 'Number of unique Guidance, articles, URLs, external documents or Actions used to answer tickets in this intent',
-    //     },
-    //     perAgent: true,
-    // },
+    [IntentTableColumn.Resources]: {
+        format: 'decimal',
+        hint: {
+            title: 'Number of unique Guidance, articles, URLs, external documents or Actions used to answer tickets in this intent',
+        },
+        perAgent: true,
+    },
 }
 
 export const INTENT_NAME_COLUMN_WIDTH = isExtraLargeScreen() ? 160 : 300
