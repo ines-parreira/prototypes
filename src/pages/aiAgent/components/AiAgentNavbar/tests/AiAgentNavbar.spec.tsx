@@ -1,4 +1,4 @@
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, screen, within} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import type {ReactNode} from 'react'
@@ -122,7 +122,7 @@ describe('<AiAgentNavbar />', () => {
 
     describe('render()', () => {
         it('should render ai agent navbar with all options', () => {
-            const {getAllByText, getByText} = render(
+            render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -142,29 +142,31 @@ describe('<AiAgentNavbar />', () => {
                 {wrapper}
             )
 
-            expect(getByText('teststore1')).toBeInTheDocument()
-            expect(getByText('teststore2')).toBeInTheDocument()
-            expect(getByText('teststore3')).toBeInTheDocument()
-            expect(getByText('teststore4')).toBeInTheDocument()
+            const navbar = within(screen.getByTestId('ai-agent-navbar'))
 
-            expect(getAllByText('Optimize').length).toBe(1)
-            expect(getAllByText('Knowledge').length).toBe(1)
-            expect(getAllByText('Guidance').length).toBe(1)
-            expect(getAllByText('Test').length).toBe(1)
+            expect(navbar.getByText('teststore1')).toBeInTheDocument()
+            expect(navbar.getByText('teststore2')).toBeInTheDocument()
+            expect(navbar.getByText('teststore3')).toBeInTheDocument()
+            expect(navbar.getByText('teststore4')).toBeInTheDocument()
 
-            fireEvent.click(getByText('teststore4'))
+            expect(navbar.getAllByText('Optimize').length).toBe(1)
+            expect(navbar.getAllByText('Knowledge').length).toBe(1)
+            expect(navbar.getAllByText('Settings').length).toBe(1)
+            expect(navbar.getAllByText('Test').length).toBe(1)
 
-            expect(getAllByText('Optimize').length).toBe(2)
-            expect(getAllByText('Knowledge').length).toBe(2)
-            expect(getAllByText('Guidance').length).toBe(2)
-            expect(getAllByText('Test').length).toBe(2)
+            fireEvent.click(navbar.getByText('teststore4'))
 
-            fireEvent.click(getByText('teststore4'))
+            expect(navbar.getAllByText('Optimize').length).toBe(2)
+            expect(navbar.getAllByText('Knowledge').length).toBe(2)
+            expect(navbar.getAllByText('Settings').length).toBe(2)
+            expect(navbar.getAllByText('Test').length).toBe(2)
 
-            expect(getAllByText('Optimize').length).toBe(1)
-            expect(getAllByText('Knowledge').length).toBe(1)
-            expect(getAllByText('Guidance').length).toBe(1)
-            expect(getAllByText('Test').length).toBe(1)
+            fireEvent.click(navbar.getByText('teststore4'))
+
+            expect(navbar.getAllByText('Optimize').length).toBe(1)
+            expect(navbar.getAllByText('Knowledge').length).toBe(1)
+            expect(navbar.getAllByText('Settings').length).toBe(1)
+            expect(navbar.getAllByText('Test').length).toBe(1)
         })
 
         it('should not render ai agent navbar without automate', () => {

@@ -1,17 +1,15 @@
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {ReactNode, useMemo} from 'react'
 
 import {SegmentEvent, logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {useAccountStoreConfiguration} from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import Button from 'pages/common/components/button/Button'
 
 import history from 'pages/history'
 
 import {AiAgentView} from '../AiAgentView/AiAgentView'
 import css from './AiAgentLayout.less'
+import {useAiAgentHeaderNavbarItems} from './useAiAgentHeaderNavbarItems'
 
 type Props = {
     children?: ReactNode
@@ -28,10 +26,7 @@ export const AiAgentLayout = ({
     title,
     isLoading,
 }: Props) => {
-    const isStandaloneMenuEnabled =
-        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
-
-    const {headerNavbarItems} = useAiAgentNavigation({shopName})
+    const headerNavbarItems = useAiAgentHeaderNavbarItems(shopName)
 
     const {aiAgentTicketViewId} = useAccountStoreConfiguration({
         storeNames: [shopName],
@@ -63,9 +58,7 @@ export const AiAgentLayout = ({
         <AiAgentView
             isLoading={isLoading}
             title={AiAgentTitle}
-            headerNavbarItems={
-                isStandaloneMenuEnabled ? undefined : headerNavbarItems
-            }
+            headerNavbarItems={headerNavbarItems}
             className={classnames(css.container, className)}
         >
             {children}

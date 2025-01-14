@@ -75,7 +75,7 @@ export const AiAgentNavbarView = () => {
     }
 
     return (
-        <div className={navbarCss.category}>
+        <div className={navbarCss.category} data-testid="ai-agent-navbar">
             {storeIntegrations.map((storeIntegration) => {
                 const shopType = storeIntegration.type
                 const shopName =

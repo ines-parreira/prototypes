@@ -6,6 +6,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import useShowAutomateActions from 'pages/aiAgent/actions/hooks/useShowAutomateActions'
 import {
     ACTIONS,
+    GENERAL,
     GUIDANCE,
     KNOWLEDGE,
     OPTIMIZE,
@@ -34,9 +35,12 @@ export const getAiAgentNavigationRoutes = (
         test: `${basePath}/test`,
         guidance: `${basePath}/guidance`,
         knowledge: `${basePath}/knowledge`,
+        knowledgeGuidance: `${basePath}/knowledge/guidance`,
+        knowledgeActions: `${basePath}/knowledge/actions`,
         newGuidanceArticle: `${basePath}/guidance/new`,
         configuration: (section?: 'knowledge' | 'email') =>
             `${basePath}/settings${section ? `?section=${section}` : ''}`,
+        settingsChannels: `${basePath}/settings/channels`,
         guidanceArticleEdit: (articleId: number) =>
             `${basePath}/guidance/${articleId}`,
         guidanceTemplates: `${basePath}/guidance/templates`,
@@ -61,9 +65,18 @@ export const getAiAgentNavigationRoutes = (
     }
 }
 
-export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
-    const showAutomateActions = useShowAutomateActions()
+type NavigationItem = {
+    route: string
+    title: string
+    exact?: boolean
+    dataCanduId?: string
+    items?: NavigationItem[]
+}
 
+const useNavigationItems = (
+    routes: ReturnType<typeof getAiAgentNavigationRoutes>
+) => {
+    const showAutomateActions = useShowAutomateActions()
     const flags = useFlags()
 
     const isGorgiasUser =
@@ -75,72 +88,120 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
 
     const isAiAgentOptimizeTabEnabled = flags[FeatureFlagKey.AiAgentOptimizeTab]
 
-    const routes = useMemo(
-        () => getAiAgentNavigationRoutes(shopName, flags),
-        [shopName, flags]
-    )
+    const isStandaloneMenuEnabled =
+        useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
-    const headerNavbarItems = useMemo(
-        () => [
-            ...(isAiAgentOptimizeTabEnabled
-                ? [
-                      {
-                          route: routes.optimize,
-                          title: OPTIMIZE,
-                          exact: false,
-                      },
-                  ]
-                : []),
+    return useMemo<NavigationItem[]>(() => {
+        if (isStandaloneMenuEnabled) {
+            return [
+                isAiAgentOptimizeTabEnabled && {
+                    route: routes.optimize,
+                    title: OPTIMIZE,
+                    exact: false,
+                },
+                isAiAgentKnowledgeTabEnabled && {
+                    route: routes.knowledge,
+                    title: KNOWLEDGE,
+                    dataCanduId: 'ai-agent-navbar-knowledge',
+                    items: [
+                        {
+                            route: routes.knowledge,
+                            title: GENERAL,
+                            exact: true,
+                        },
+                        //   {
+                        //       route: routes.knowledgeGuidance,
+                        //       title: GUIDANCE,
+                        //   },
+                        //   {
+                        //       route: routes.knowledgeActions,
+                        //       title: ACTIONS,
+                        //   },
+                    ],
+                },
+                {
+                    route: routes.configuration(),
+                    title: SETTINGS,
+                    dataCanduId: 'ai-agent-navbar-configuration',
+                    items: [
+                        {
+                            route: routes.configuration(),
+                            title: GENERAL,
+                            exact: true,
+                        },
+                        // {
+                        //     route: routes.settingsChannels,
+                        //     title: CHANNELS,
+                        // },
+                    ],
+                },
+                // TODO: Add "Sales" tab here
+                {
+                    route: routes.test,
+                    title: TEST,
+                },
+                isGorgiasUser && {
+                    route: routes.previewMode,
+                    title: PREVIEW,
+                },
+            ].filter((x) => !!x) as NavigationItem[]
+        }
+
+        return [
+            isAiAgentOptimizeTabEnabled && {
+                route: routes.optimize,
+                title: OPTIMIZE,
+                exact: false,
+            },
             {
                 route: routes.configuration(),
                 title: SETTINGS,
                 dataCanduId: 'ai-agent-navbar-configuration',
             },
-            ...(isAiAgentKnowledgeTabEnabled
-                ? [
-                      {
-                          route: routes.knowledge,
-                          title: KNOWLEDGE,
-                          dataCanduId: 'ai-agent-navbar-knowledge',
-                      },
-                  ]
-                : []),
+            isAiAgentKnowledgeTabEnabled && {
+                route: routes.knowledge,
+                title: KNOWLEDGE,
+                dataCanduId: 'ai-agent-navbar-knowledge',
+            },
             {
                 route: routes.guidance,
                 title: GUIDANCE,
                 exact: false,
             },
-            ...(showAutomateActions
-                ? [
-                      {
-                          route: routes.actions,
-                          title: ACTIONS,
-                          exact: false,
-                          dataCanduId: 'ai-agent-navbar-actions',
-                      },
-                  ]
-                : []),
+            showAutomateActions && {
+                route: routes.actions,
+                title: ACTIONS,
+                exact: false,
+                dataCanduId: 'ai-agent-navbar-actions',
+            },
             {
                 route: routes.test,
                 title: TEST,
             },
-            ...(isGorgiasUser
-                ? [
-                      {
-                          route: routes.previewMode,
-                          title: PREVIEW,
-                      },
-                  ]
-                : []),
-        ],
-        [
-            isAiAgentKnowledgeTabEnabled,
-            isAiAgentOptimizeTabEnabled,
-            isGorgiasUser,
-            routes,
-            showAutomateActions,
-        ]
+            isGorgiasUser && {
+                route: routes.previewMode,
+                title: PREVIEW,
+            },
+        ].filter((x) => !!x) as NavigationItem[]
+    }, [
+        isStandaloneMenuEnabled,
+        isAiAgentKnowledgeTabEnabled,
+        isAiAgentOptimizeTabEnabled,
+        isGorgiasUser,
+        routes,
+        showAutomateActions,
+    ])
+}
+
+export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
+    const flags = useFlags()
+
+    const routes = useMemo(
+        () => getAiAgentNavigationRoutes(shopName, flags),
+        [shopName, flags]
     )
 
-    return {headerNavbarItems, routes}
+    const navigationItems = useNavigationItems(routes)
+
+    return {navigationItems, routes}
 }

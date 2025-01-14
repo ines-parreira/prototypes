@@ -23,11 +23,11 @@ describe('useAiAgentNavigation', () => {
         })
     })
 
-    it('should return headerNavbarItems with guidance and playground', () => {
+    it('should return navigationItems with guidance and playground', () => {
         const {result} = renderHook(() =>
             useAiAgentNavigation({shopName: 'test'})
         )
-        expect(result.current.headerNavbarItems).toEqual([
+        expect(result.current.navigationItems).toEqual([
             {
                 route: '/app/automation/shopify/test/ai-agent/settings',
                 title: 'Settings',
@@ -51,7 +51,7 @@ describe('useAiAgentNavigation', () => {
         const {result} = renderHook(() =>
             useAiAgentNavigation({shopName: 'test'})
         )
-        expect(result.current.headerNavbarItems).toEqual([
+        expect(result.current.navigationItems).toEqual([
             {
                 route: '/app/automation/shopify/test/ai-agent/settings',
                 title: 'Settings',
@@ -84,7 +84,7 @@ describe('useAiAgentNavigation', () => {
             useAiAgentNavigation({shopName: 'test'})
         )
 
-        expect(result.current.headerNavbarItems).toEqual(
+        expect(result.current.navigationItems).toEqual(
             expect.arrayContaining([
                 {
                     dataCanduId: 'ai-agent-navbar-knowledge',
@@ -104,7 +104,7 @@ describe('useAiAgentNavigation', () => {
             useAiAgentNavigation({shopName: 'test'})
         )
 
-        expect(result.current.headerNavbarItems).toEqual(
+        expect(result.current.navigationItems).toEqual(
             expect.arrayContaining([
                 {
                     route: '/app/automation/shopify/test/ai-agent/optimize',
@@ -122,7 +122,7 @@ describe('useAiAgentNavigation', () => {
         const {result} = renderHook(() =>
             useAiAgentNavigation({shopName: 'test'})
         )
-        expect(result.current.headerNavbarItems).toEqual([
+        expect(result.current.navigationItems).toEqual([
             {
                 route: '/app/automation/shopify/test/ai-agent/settings',
                 title: 'Settings',
@@ -151,7 +151,7 @@ describe('useAiAgentNavigation', () => {
         const {result} = renderHook(() =>
             useAiAgentNavigation({shopName: 'test'})
         )
-        expect(result.current.headerNavbarItems).toEqual([
+        expect(result.current.navigationItems).toEqual([
             {
                 route: '/app/automation/shopify/test/ai-agent/settings',
                 title: 'Settings',
@@ -176,7 +176,7 @@ describe('useAiAgentNavigation', () => {
         const {result} = renderHook(() =>
             useAiAgentNavigation({shopName: 'test'})
         )
-        expect(result.current.headerNavbarItems).toEqual([
+        expect(result.current.navigationItems).toEqual([
             {
                 route: '/app/automation/shopify/test/ai-agent/settings',
                 title: 'Settings',
@@ -205,7 +205,7 @@ describe('useAiAgentNavigation', () => {
         const {result} = renderHook(() =>
             useAiAgentNavigation({shopName: 'test'})
         )
-        expect(result.current.headerNavbarItems).toEqual([
+        expect(result.current.navigationItems).toEqual([
             {
                 route: '/app/automation/shopify/test/ai-agent/settings',
                 title: 'Settings',

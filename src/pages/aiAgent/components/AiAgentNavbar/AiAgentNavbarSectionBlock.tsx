@@ -26,7 +26,7 @@ export const AiAgentNavbarSectionBlock = ({
     shopName,
     ...props
 }: Props) => {
-    const {headerNavbarItems, routes} = useAiAgentNavigation({shopName})
+    const {navigationItems, routes} = useAiAgentNavigation({shopName})
 
     const onboardingState = useAiAgentOnboardingState(shopName)
 
@@ -47,7 +47,7 @@ export const AiAgentNavbarSectionBlock = ({
             {...props}
         >
             {onboardingState === OnboardingState.Onboarded ? (
-                headerNavbarItems.map((item) => (
+                navigationItems?.map((item) => (
                     <div
                         key={item.route}
                         className={classNames(

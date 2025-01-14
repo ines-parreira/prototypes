@@ -13,13 +13,15 @@ import {
     useAiAgentOnboardingState,
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
 
+import {assumeMock} from 'utils/testing'
+
 import {AiAgentNavbarSectionBlock} from '../AiAgentNavbarSectionBlock'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingState')
 
-const mockUseAiAgentNavigation = useAiAgentNavigation as jest.Mock
-const mockUseAiAgentOnboardingState = useAiAgentOnboardingState as jest.Mock
+const mockUseAiAgentNavigation = assumeMock(useAiAgentNavigation)
+const mockUseAiAgentOnboardingState = assumeMock(useAiAgentOnboardingState)
 
 describe('AiAgentNavbarSectionBlock', () => {
     const defaultProps = {
@@ -32,11 +34,12 @@ describe('AiAgentNavbarSectionBlock', () => {
 
     beforeEach(() => {
         mockUseAiAgentNavigation.mockReturnValue({
-            headerNavbarItems: [
+            // @ts-ignore We don't test this part
+            routes: {main: '/main'},
+            navigationItems: [
                 {route: '/route1', title: 'Route 1', dataCanduId: 'candu-1'},
                 {route: '/route2', title: 'Route 2'},
             ],
-            routes: {main: '/main'},
         })
         mockUseAiAgentOnboardingState.mockReturnValue(OnboardingState.Onboarded)
     })

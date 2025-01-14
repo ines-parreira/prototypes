@@ -1,4 +1,4 @@
-import {screen} from '@testing-library/react'
+import {screen, within} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
@@ -300,7 +300,9 @@ describe('AiAgentPlayground', () => {
 
             renderComponent()
 
-            expect(screen.getByText(title)).toBeInTheDocument()
+            expect(
+                within(document.querySelector('.page-header')!).getByText(title)
+            ).toBeInTheDocument()
         })
     })
     it('should trigger activate AI agent notification when merchant have tested for at least 5 times', () => {
