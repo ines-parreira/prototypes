@@ -168,32 +168,48 @@ describe('useUpdateOrDeleteCustomerFieldValue', () => {
         })
     })
 
-    it('should provide a onError param that calls the notify action even if an onError param is provided', () => {
-        const onError = jest.fn()
-        renderHook(() => useUpdateOrDeleteCustomerFieldValue({onError}), {
-            wrapper: ({children}) => (
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore}>{children}</Provider>
-                </QueryClientProvider>
-            ),
-        })
+    it.each([true, false])(
+        'should provide a onError param that calls the notify action even if an onError param is provided (%s)',
+        (useResponseError) => {
+            mockStore.clearActions()
 
-        useDeleteCustomFieldValueMock.mock.calls[0][0]?.onError!(
-            {
-                error: new Error('foo'),
-                message: 'fooloulou',
-            },
-            [dataToMutate],
-            undefined
-        )
+            const onError = jest.fn()
+            renderHook(() => useUpdateOrDeleteCustomerFieldValue({onError}), {
+                wrapper: ({children}) => (
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={mockStore}>{children}</Provider>
+                    </QueryClientProvider>
+                ),
+            })
 
-        expect(onError).toHaveBeenCalled()
-        expect(mockStore.getActions()).toMatchObject([
-            {
-                payload: {
-                    status: NotificationStatus.Error,
+            useDeleteCustomFieldValueMock.mock.calls[0][0]?.onError!(
+                useResponseError
+                    ? {
+                          isAxiosError: true,
+                          response: {
+                              status: 403,
+                              data: {error: {msg: 'Unauthorized'}},
+                          },
+                      }
+                    : {
+                          error: new Error('foo'),
+                          message: 'fooloulou',
+                      },
+                [dataToMutate],
+                undefined
+            )
+
+            expect(onError).toHaveBeenCalled()
+            expect(mockStore.getActions()).toMatchObject([
+                {
+                    payload: {
+                        status: NotificationStatus.Error,
+                        message: useResponseError
+                            ? 'Unauthorized'
+                            : 'Failed to update customer field value. Please try again in a few seconds.',
+                    },
                 },
-            },
-        ])
-    })
+            ])
+        }
+    )
 })

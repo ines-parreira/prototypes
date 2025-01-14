@@ -12,6 +12,7 @@ import {
     updateCustomFieldValue,
 } from 'custom-fields/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {isGorgiasApiError} from 'models/api/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {updateCustomFieldPrediction} from 'state/ticket/actions'
@@ -23,7 +24,9 @@ const onErrorCreator =
     (dispatch: StoreDispatch) => (error: Record<string, unknown>) => {
         void dispatch(
             notify({
-                title: `Failed to update ticket field value. Please try again in a few seconds.`,
+                title: isGorgiasApiError(error)
+                    ? error.response?.data.error.msg
+                    : 'Failed to update ticket field value. Please try again in a few seconds.',
                 message: errorToChildren(error) || undefined,
                 allowHTML: true,
                 status: NotificationStatus.Error,
