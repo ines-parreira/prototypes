@@ -24,7 +24,7 @@ const defaultState = {
         stats: {filters: uiStatsInitialState},
     },
     integrations: fromJS(integrationsState),
-    currentUser: fromJS({role: {name: UserRole.Admin}}),
+    currentUser: fromJS({role: {name: UserRole.Agent}}),
 } as RootState
 
 const storyConfig: Meta = {

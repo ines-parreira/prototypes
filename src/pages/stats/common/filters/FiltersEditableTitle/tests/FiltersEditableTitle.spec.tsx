@@ -11,12 +11,13 @@ import {
     NOT_EXISTENT_ADMIN_ERROR,
     NOT_EXISTENT_AGENT_ERROR,
 } from 'pages/stats/common/filters/FiltersEditableTitle/FiltersEditableTitle'
-import {isAdmin} from 'utils'
+import {isTeamLead} from 'utils'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('utils')
-const isAdminMock = isAdmin as jest.Mock
+const isTeamLeadMock = assumeMock(isTeamLead)
 jest.mock('hooks/useAppSelector', () => jest.fn())
-const useAppSelectorMock = useAppSelector as jest.Mock
+const useAppSelectorMock = assumeMock(useAppSelector)
 jest.mock('state/currentUser/selectors', () => ({
     getCurrentUser: jest.fn(),
 }))
@@ -26,7 +27,7 @@ const toggleIsEditModeMock = jest.fn()
 describe('FiltersEditableTitle', () => {
     beforeEach(() => {
         useAppSelectorMock.mockReturnValueOnce({})
-        isAdminMock.mockReturnValueOnce(false)
+        isTeamLeadMock.mockReturnValueOnce(false)
     })
 
     it('should render the component', () => {
@@ -120,8 +121,8 @@ describe('getTooltipContent', () => {
         [true, 'not-applicable', NOT_APPLICABLE_ERROR],
     ])(
         'should return the right error message ',
-        (isAdmin, errorType, expected) => {
-            expect(getTooltipContent(isAdmin, errorType as any)).toEqual(
+        (canEdit, errorType, expected) => {
+            expect(getTooltipContent(canEdit, errorType as any)).toEqual(
                 expected
             )
         }

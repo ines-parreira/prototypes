@@ -6,7 +6,7 @@ import InputField from 'pages/common/forms/input/InputField'
 import {FilterWarningIcon} from 'pages/stats/common/components/Filter/components/FilterWarning/FilterWarningIcon'
 import css from 'pages/stats/common/filters/FiltersEditableTitle/FiltersEditableTitle.less'
 import {getCurrentUser} from 'state/currentUser/selectors'
-import {isAdmin} from 'utils'
+import {isTeamLead} from 'utils'
 
 type Props = {
     isEditMode: boolean
@@ -27,11 +27,11 @@ export const NOT_EXISTENT_ADMIN_ERROR =
     'Some filters or values have been archived or deleted. They will be ignored. Check your settings and update your Saved Filters.'
 
 export const getTooltipContent = (
-    isAdmin: boolean,
+    canEdit: boolean,
     errorType?: 'not-applicable' | 'non-existent'
 ): string => {
     if (errorType === 'non-existent') {
-        if (isAdmin) {
+        if (canEdit) {
             return NOT_EXISTENT_ADMIN_ERROR
         }
         return NOT_EXISTENT_AGENT_ERROR
@@ -63,11 +63,11 @@ export const FiltersEditableTitle = ({
     const currentUser = useAppSelector(getCurrentUser)
 
     const prefix = getPrefixIcon(title)
-    const isCurrentUserAdmin = isAdmin(currentUser)
+    const isCurrentUserTeamLead = isTeamLead(currentUser)
 
     const tooltipContent = useMemo(
-        () => getTooltipContent(isCurrentUserAdmin, errorType),
-        [errorType, isCurrentUserAdmin]
+        () => getTooltipContent(isCurrentUserTeamLead, errorType),
+        [errorType, isCurrentUserTeamLead]
     )
 
     return isEditMode ? (

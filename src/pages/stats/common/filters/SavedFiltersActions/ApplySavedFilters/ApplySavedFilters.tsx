@@ -24,7 +24,7 @@ type SavedFilterType = Pick<SavedFilter, 'id' | 'name'>
 
 type Props = {
     savedFilters: Array<SavedFilterAPI>
-    isAdmin: boolean
+    canEdit: boolean
     isDisabled?: boolean
 }
 
@@ -58,7 +58,7 @@ export const getApplyFiltersButtonName = (
     )
 }
 
-const ApplySavedFilters = ({savedFilters, isAdmin, isDisabled}: Props) => {
+const ApplySavedFilters = ({savedFilters, canEdit, isDisabled}: Props) => {
     const savedFilterAppliedId = useAppSelector(getSavedFilterAppliedId)
     const savedFilterDraft = useAppSelector(getSavedFilterDraft)
     const [toggleDropdown, setToggleDropdown] = useState<boolean>(false)
@@ -82,7 +82,7 @@ const ApplySavedFilters = ({savedFilters, isAdmin, isDisabled}: Props) => {
         if (!savedFilters.length) {
             return (
                 <div className={css.content}>
-                    {isAdmin ? NO_FILTERS_CONTENT : NOT_ADMIN_CONTENT}
+                    {canEdit ? NO_FILTERS_CONTENT : NOT_ADMIN_CONTENT}
                 </div>
             )
         }
@@ -110,7 +110,7 @@ const ApplySavedFilters = ({savedFilters, isAdmin, isDisabled}: Props) => {
                 <span>{filter.name}</span>
             </DropdownItem>
         ))
-    }, [savedFilters, isAdmin, applySavedFilterHandler])
+    }, [savedFilters, canEdit, applySavedFilterHandler])
 
     const applyFiltersButtonName = useMemo(
         () =>
@@ -151,7 +151,7 @@ const ApplySavedFilters = ({savedFilters, isAdmin, isDisabled}: Props) => {
                 <DropdownFooter>
                     <Button
                         fillStyle="ghost"
-                        isDisabled={!isAdmin}
+                        isDisabled={!canEdit}
                         onClick={createSavedFilterHandler}
                     >
                         {CREATE_SAVED_FILTERS_LABEL}

@@ -12,7 +12,7 @@ import {SaveFilters} from 'pages/stats/common/filters/SavedFiltersActions/SaveFi
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {initialiseSavedFilterDraftFromFilters} from 'state/ui/stats/filtersSlice'
-import {isAdmin} from 'utils'
+import {isTeamLead} from 'utils'
 
 type Props = {optionalFilters: OptionalFilter[]; shouldHideFilters?: boolean}
 
@@ -25,7 +25,7 @@ export const SavedFiltersActions = ({
     const currentUser = useAppSelector(getCurrentUser)
     const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
 
-    const isCurrentUserAdmin = isAdmin(currentUser)
+    const isCurrentUserTeamLead = isTeamLead(currentUser)
 
     const {data} = useListAnalyticsFilters()
     const savedFilters: SavedFilterAPI[] =
@@ -40,7 +40,7 @@ export const SavedFiltersActions = ({
         [dispatch, statsFilters]
     )
 
-    const showSaveFilters = isCurrentUserAdmin && hasSaveFilters
+    const showSaveFilters = isCurrentUserTeamLead && hasSaveFilters
 
     return (
         <div className={css.buttonsWrapper}>
@@ -52,7 +52,7 @@ export const SavedFiltersActions = ({
             )}
             <ApplySavedFilters
                 savedFilters={savedFilters}
-                isAdmin={isCurrentUserAdmin}
+                canEdit={isCurrentUserTeamLead}
                 isDisabled={shouldHideFilters}
             />
         </div>

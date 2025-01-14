@@ -37,7 +37,7 @@ describe('SavedFilterMenu', () => {
         getCurrentUserMock.mockReturnValue(
             fromJS({
                 ...agents[0],
-                role: {name: UserRole.Admin},
+                role: {name: UserRole.Agent},
             })
         )
         renderWithStore(<SavedFilterMenu actions={actions} />, {})

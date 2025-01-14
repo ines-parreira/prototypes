@@ -49,7 +49,7 @@ import {
     initialiseSavedFilterDraftFromSavedFilter,
     updateSavedFilterDraftName,
 } from 'state/ui/stats/filtersSlice'
-import {isAdmin} from 'utils'
+import {isTeamLead} from 'utils'
 
 export const FILTER_SAVED_MESSAGE = 'Filter successfully saved!'
 export const FILTER_EDIT_SAVED_MESSAGE = 'Filter successfully edited!'
@@ -207,8 +207,8 @@ export const SavedFiltersPanel = ({
         setErrorMessage(undefined)
     }
 
-    const isCurrentUserAnAdmin = useMemo(
-        () => isAdmin(currentUser),
+    const isCurrentUserATeamLead = useMemo(
+        () => isTeamLead(currentUser),
         [currentUser]
     )
 
@@ -440,7 +440,7 @@ export const SavedFiltersPanel = ({
                                         ]}
                                     />
                                 </CampaignStatsFilters>
-                                {isCurrentUserAnAdmin && (
+                                {isCurrentUserATeamLead && (
                                     <div className={classnames(css.buttons)}>
                                         <Button
                                             intent={'secondary'}

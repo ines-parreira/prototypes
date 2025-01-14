@@ -68,7 +68,7 @@ export const extendedAgents: User[] = [
         id: 4,
         firstname: 'Jamie',
         email: 'JamievanLeijden@gorgias.com',
-        role: {name: UserRole.Admin},
+        role: {name: UserRole.Agent},
         updated_datetime: '2017-07-31T21:43:08.033390+00:00',
         bio: null,
         meta: {

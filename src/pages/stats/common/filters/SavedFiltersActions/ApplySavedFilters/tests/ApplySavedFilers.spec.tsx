@@ -30,7 +30,7 @@ const defaultState = {
 describe('ApplySavedFilers', () => {
     it('should render the component for an admin', () => {
         const {getByText, queryByText} = renderWithStore(
-            <ApplySavedFilers isAdmin savedFilters={[]} />,
+            <ApplySavedFilers canEdit savedFilters={[]} />,
             defaultState
         )
 
@@ -42,7 +42,7 @@ describe('ApplySavedFilers', () => {
 
     it('should render a different content for a normal user', () => {
         const {getByText, queryByText} = renderWithStore(
-            <ApplySavedFilers isAdmin={false} savedFilters={[]} />,
+            <ApplySavedFilers canEdit={false} savedFilters={[]} />,
             defaultState
         )
 
@@ -54,7 +54,7 @@ describe('ApplySavedFilers', () => {
 
     it('should have a descriptive tooltip', async () => {
         const {getByText} = renderWithStore(
-            <ApplySavedFilers isAdmin={false} savedFilters={[]} />,
+            <ApplySavedFilers canEdit={false} savedFilters={[]} />,
             defaultState
         )
 
@@ -67,7 +67,7 @@ describe('ApplySavedFilers', () => {
 
     it('should show the saved filters for a normal user', () => {
         const {getByText, queryByText} = renderWithStore(
-            <ApplySavedFilers isAdmin={false} savedFilters={savedFilters} />,
+            <ApplySavedFilers canEdit={false} savedFilters={savedFilters} />,
             defaultState
         )
         expect(queryByText(NOT_ADMIN_CONTENT)).toBeFalsy()
@@ -79,7 +79,7 @@ describe('ApplySavedFilers', () => {
 
     it('should allow admin to create the Saved Filter Draft', () => {
         const {getByText, store} = renderWithStore(
-            <ApplySavedFilers isAdmin={true} savedFilters={savedFilters} />,
+            <ApplySavedFilers canEdit={true} savedFilters={savedFilters} />,
             defaultState
         )
 
@@ -92,7 +92,7 @@ describe('ApplySavedFilers', () => {
 
     it('should render a dropdown items for Admins', () => {
         const {getByText} = renderWithStore(
-            <ApplySavedFilers isAdmin savedFilters={savedFilters} />,
+            <ApplySavedFilers canEdit savedFilters={savedFilters} />,
             defaultState
         )
 
@@ -105,7 +105,7 @@ describe('ApplySavedFilers', () => {
 
     it('should log segment event on filter click', () => {
         const {getByText} = renderWithStore(
-            <ApplySavedFilers isAdmin savedFilters={savedFilters} />,
+            <ApplySavedFilers canEdit savedFilters={savedFilters} />,
             defaultState
         )
 
@@ -123,7 +123,7 @@ describe('ApplySavedFilers', () => {
 
     it('should render the component for an admin', () => {
         const {getByText, queryByText} = renderWithStore(
-            <ApplySavedFilers isAdmin savedFilters={savedFilters} />,
+            <ApplySavedFilers canEdit savedFilters={savedFilters} />,
             {
                 ui: {stats: {filters: {appliedSavedFilterId: 1}}},
             } as RootState
@@ -135,7 +135,7 @@ describe('ApplySavedFilers', () => {
 
     it('should render draft filter name instead of applied filter name', () => {
         const {getByText, queryByText} = renderWithStore(
-            <ApplySavedFilers isAdmin savedFilters={savedFilters} />,
+            <ApplySavedFilers canEdit savedFilters={savedFilters} />,
             {
                 ui: {
                     stats: {
@@ -154,7 +154,7 @@ describe('ApplySavedFilers', () => {
 
     it('should show default value if the saved filters name is empty', () => {
         const {getByText} = renderWithStore(
-            <ApplySavedFilers isAdmin savedFilters={savedFilters} />,
+            <ApplySavedFilers canEdit savedFilters={savedFilters} />,
             {
                 ui: {
                     stats: {

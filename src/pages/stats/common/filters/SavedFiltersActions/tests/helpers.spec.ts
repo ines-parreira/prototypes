@@ -11,7 +11,11 @@ import {
     areFiltersFilled,
     isFilterFilled,
 } from 'pages/stats/common/filters/SavedFiltersActions/helpers'
-import {isAdmin} from 'utils'
+import {isTeamLead} from 'utils'
+import {assumeMock} from 'utils/testing'
+
+jest.mock('utils')
+const isTeamLeadMock = assumeMock(isTeamLead)
 
 export const filterKeysMock: OptionalFilter[] = [
     FilterKey.Channels,
@@ -156,15 +160,9 @@ const filtersWithOnlyOneFilledFilter = {
     },
 } as unknown as StatsFiltersWithLogicalOperator
 
-jest.mock('utils', () => ({
-    isAdmin: jest.fn(),
-}))
-
-const isAdminMock = isAdmin as jest.Mock
-
 describe('isFilterFilled', () => {
     beforeEach(() => {
-        isAdminMock.mockReturnValue(true)
+        isTeamLeadMock.mockReturnValue(true)
     })
 
     it.each(filterKeysMock)(

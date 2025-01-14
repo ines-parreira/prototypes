@@ -23,7 +23,7 @@ type Props = {
 }
 
 const DISABLED_MENU_TOOLTIP =
-    'Only admin users are able to save, duplicate, or delete saved filters.'
+    'Only team leads and admin users are able to save, duplicate, or delete saved filters.'
 export const SAVED_FILTER_ACTIONS_MENU_ICON = 'more_vert'
 
 export const SavedFilterMenu = ({actions}: Props) => {

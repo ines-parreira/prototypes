@@ -16,7 +16,7 @@ import {
     filtersMock,
 } from 'pages/stats/common/filters/SavedFiltersActions/tests/helpers.spec'
 import {initialiseSavedFilterDraftFromFilters} from 'state/ui/stats/filtersSlice'
-import {isAdmin} from 'utils'
+import {isTeamLead} from 'utils'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('state/currentUser/selectors', () => ({
@@ -28,9 +28,9 @@ jest.mock('state/stats/selectors', () => ({
 }))
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
-const useAppSelectorMock = useAppSelector as jest.Mock
+const useAppSelectorMock = assumeMock(useAppSelector)
 jest.mock('utils')
-const isAdminMock = isAdmin as jest.Mock
+const isTeamLeadMock = assumeMock(isTeamLead)
 
 jest.mock('@gorgias/api-queries')
 const useListAnalyticsFiltersMock = assumeMock(useListAnalyticsFilters)
@@ -39,7 +39,7 @@ describe('SavedFiltersActions for an Agent', () => {
     beforeEach(() => {
         useAppSelectorMock.mockReturnValueOnce({})
         useAppSelectorMock.mockReturnValueOnce(emptyFiltersMock)
-        isAdminMock.mockReturnValueOnce(false)
+        isTeamLeadMock.mockReturnValueOnce(false)
         useListAnalyticsFiltersMock.mockReturnValue({
             data: {
                 data: [],
@@ -70,11 +70,11 @@ describe('SavedFiltersActions for an Agent', () => {
     })
 })
 
-describe('SavedFiltersActions for an Admin', () => {
+describe('SavedFiltersActions for an Admin or Team Lead', () => {
     beforeEach(() => {
         useAppSelectorMock.mockReturnValueOnce({})
         useAppSelectorMock.mockReturnValueOnce(filtersMock)
-        isAdminMock.mockReturnValueOnce(true)
+        isTeamLeadMock.mockReturnValueOnce(true)
         useListAnalyticsFiltersMock.mockReturnValue({
             data: {
                 data: [],
