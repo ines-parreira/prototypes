@@ -89,6 +89,11 @@ type GlobalNavigationItemTooltipProps = {
     targetId: string
 }
 
+const tooltipDelay = {
+    show: 1000,
+    hide: 0,
+}
+
 function GlobalNavigationItemTooltip({
     children,
     targetId,
@@ -97,6 +102,7 @@ function GlobalNavigationItemTooltip({
         <Tooltip
             target={targetId}
             boundariesElement="viewport"
+            delay={tooltipDelay}
             offset="0, 8"
             placement="right"
         >

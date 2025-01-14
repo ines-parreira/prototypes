@@ -23,6 +23,7 @@ export default function GlobalNavigation() {
                     <Item
                         icon="home"
                         isActive={activeItem === 'home'}
+                        tooltip={<span>Home</span>}
                         url="/app/home"
                     />
                     <GlobalNavigationSpotlight />
@@ -33,12 +34,14 @@ export default function GlobalNavigation() {
                     <Item
                         icon="question_answer"
                         isActive={activeItem === 'tickets'}
+                        tooltip={<span>Tickets</span>}
                         url="/app/tickets"
                     />
                     {hasRole(currentUser, UserRole.Agent) && (
                         <Item
                             icon="bolt"
                             isActive={activeItem === 'automate'}
+                            tooltip={<span>Automate</span>}
                             url="/app/automation"
                         />
                     )}
@@ -46,17 +49,20 @@ export default function GlobalNavigation() {
                         <Item
                             icon="monetization_on"
                             isActive={activeItem === 'convert'}
+                            tooltip={<span>Convert</span>}
                             url="/app/convert"
                         />
                     )}
                     <Item
                         icon="people"
                         isActive={activeItem === 'customers'}
+                        tooltip={<span>Customers</span>}
                         url="/app/customers"
                     />
                     <Item
                         icon="bar_chart"
                         isActive={activeItem === 'statistics'}
+                        tooltip={<span>Statistics</span>}
                         url="/app/stats"
                     />
                 </div>
@@ -66,6 +72,7 @@ export default function GlobalNavigation() {
                     <Item
                         icon="settings"
                         isActive={activeItem === 'settings'}
+                        tooltip={<span>Settings</span>}
                         url="/app/settings"
                     />
                     <UserItem />

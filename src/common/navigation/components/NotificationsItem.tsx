@@ -9,7 +9,11 @@ export default function NotificationsItem() {
     const [, onToggle] = useNotificationsOverlay()
 
     return (
-        <Item icon="notifications" onClick={onToggle}>
+        <Item
+            icon="notifications"
+            onClick={onToggle}
+            tooltip={<span>Notifications</span>}
+        >
             <Badge className={css.badge} />
         </Item>
     )
