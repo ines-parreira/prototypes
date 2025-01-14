@@ -83,12 +83,14 @@ export const withVisualBuilderContext =
         )
     }
 
-export function useVisualBuilder(
-    visualBuilderGraph: VisualBuilderGraph,
+export function useVisualBuilder<
+    T extends VisualBuilderTriggerNode = VisualBuilderTriggerNode,
+>(
+    visualBuilderGraph: VisualBuilderGraph<T>,
     dispatch: Dispatch<VisualBuilderGraphAction>,
     isNew: boolean,
     availableIntegrations: AvailableIntegrations = []
-): VisualBuilderContextType {
+): VisualBuilderContextType<T> {
     const initialVisualBuilderGraph = useMemo(
         () => visualBuilderGraph,
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -228,7 +230,7 @@ export function useVisualBuilder(
         [isNew, initialVisualBuilderGraph]
     )
 
-    return useMemo<VisualBuilderContextType>(
+    return useMemo<VisualBuilderContextType<T>>(
         () => ({
             visualBuilderGraph,
             checkNodeHasVariablesUsedInChildren,

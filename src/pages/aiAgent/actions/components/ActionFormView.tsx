@@ -20,9 +20,16 @@ import {SimplifiedStepBuilder} from './SimplifiedStepBuilder'
 type Props = {
     onEditSteps: () => void
     steps: ActionTemplate[]
+    isConditionsRecommendationAlertOpen?: boolean
+    onConditionsRecommendationAlertClose?: () => void
 }
 
-const ActionFormView = ({onEditSteps, steps}: Props) => {
+const ActionFormView = ({
+    onEditSteps,
+    steps,
+    isConditionsRecommendationAlertOpen,
+    onConditionsRecommendationAlertClose,
+}: Props) => {
     const {visualBuilderGraph, dispatch, getVariableListForNode} =
         useVisualBuilderContext<LLMPromptTriggerNodeType>()
 
@@ -124,6 +131,12 @@ const ActionFormView = ({onEditSteps, steps}: Props) => {
                         })
                     }}
                     errors={triggerNode.data.errors?.conditions}
+                    isRecommendationAlertOpen={
+                        isConditionsRecommendationAlertOpen
+                    }
+                    onRecommendationAlertClose={
+                        onConditionsRecommendationAlertClose
+                    }
                 />
                 <ActionsPlatformTemplateConfirmation
                     steps={steps}

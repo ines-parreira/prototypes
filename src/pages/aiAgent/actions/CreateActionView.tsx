@@ -152,7 +152,8 @@ const CreateActionView = () => {
         availableIntegrations
     )
 
-    const {getVariableListForNode} = visualBuilderContextValue
+    const {getVariableListForNode, initialVisualBuilderGraph} =
+        visualBuilderContextValue
 
     const {data: actions = []} = useGetStoreWorkflowsConfigurations({
         storeName: shopName,
@@ -238,6 +239,11 @@ const CreateActionView = () => {
         }
     }, [isCreateActionSuccess, isCreateAndTestButtonClicked, history, routes])
 
+    const [
+        isConditionsRecommendationAlertOpen,
+        setIsConditionsRecommendationAlertOpen,
+    ] = useState(() => !!initialVisualBuilderGraph.nodes[0].data.conditionsType)
+
     if (isEditingSteps) {
         return (
             <StoreAppsProvider storeName={shopName} storeType={shopType}>
@@ -290,6 +296,12 @@ const CreateActionView = () => {
                                 setVisualBuilderGraph(visualBuilderGraphDirty)
                             }}
                             steps={steps}
+                            isConditionsRecommendationAlertOpen={
+                                isConditionsRecommendationAlertOpen
+                            }
+                            onConditionsRecommendationAlertClose={() => {
+                                setIsConditionsRecommendationAlertOpen(false)
+                            }}
                         />
                     </VisualBuilderContext.Provider>
                 </div>

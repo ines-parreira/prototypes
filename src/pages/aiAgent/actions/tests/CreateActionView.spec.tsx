@@ -7,6 +7,8 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import {ulid} from 'ulidx'
+
 import {useFlag} from 'common/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -21,6 +23,7 @@ import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {RootState, StoreDispatch} from 'state/types'
@@ -528,5 +531,106 @@ describe('<CreateActionView />', () => {
             )
         ).not.toBeInTheDocument()
         expect(screen.getByText('Create Action')).toBeInTheDocument()
+    })
+
+    it('should display recommended conditions alert', () => {
+        const b = new WorkflowConfigurationBuilder({
+            id: ulid(),
+            name: 'test name',
+            initialStep: {
+                id: ulid(),
+                kind: 'reusable-llm-prompt-call',
+                settings: {
+                    configuration_id: 'someid1',
+                    configuration_internal_id: 'someid1',
+                    values: {},
+                },
+            },
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        instructions: 'test instructions',
+                        requires_confirmation: true,
+                    },
+                    deactivated_datetime: null,
+                },
+            ],
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [
+                            {
+                                kind: 'customer',
+                                integration_id:
+                                    '{{store.helpdesk_integration_id}}',
+                            },
+                            {
+                                kind: 'order',
+                                integration_id:
+                                    '{{store.helpdesk_integration_id}}',
+                            },
+                        ],
+                        outputs: [],
+                        conditions: {
+                            and: [
+                                {
+                                    notEqual: [
+                                        {
+                                            var: 'objects.order.external_status',
+                                        },
+                                        'open',
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                },
+            ],
+            is_draft: false,
+            apps: [{type: 'shopify'}],
+            available_languages: [],
+        })
+        b.insertReusableLLMPromptCallConditionAndEndStepAndSelect('success', {
+            success: true,
+        })
+        b.selectParentStep()
+        b.insertReusableLLMPromptCallConditionAndEndStepAndSelect('error', {
+            success: false,
+        })
+
+        const configuration = b.build()
+        const history = createMemoryHistory({
+            initialEntries: [
+                `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+            ],
+        })
+
+        history.push(
+            '/app/automation/:shopType/:shopName/ai-agent/actions/new',
+            configuration
+        )
+
+        renderWithRouter(
+            <Provider store={mockStore({} as RootState)}>
+                <QueryClientProvider client={queryClient}>
+                    <CreateActionView />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                history,
+                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
+                route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+            }
+        )
+
+        expect(
+            screen.getByText(
+                'We recommend the conditions below to ensure this Action works properly.'
+            )
+        ).toBeInTheDocument()
     })
 })

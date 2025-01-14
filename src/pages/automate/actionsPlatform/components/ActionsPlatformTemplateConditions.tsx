@@ -7,6 +7,7 @@ import {buildConditionSchemaByVariableType} from 'pages/automate/workflows/edito
 import {ConditionSchema} from 'pages/automate/workflows/models/conditions.types'
 import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import Alert from 'pages/common/components/Alert/Alert'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 
 import css from './ActionsPlatformTemplateConditions.less'
@@ -23,6 +24,8 @@ type Props = {
     onConditionBlur?: (index: number) => void
     errors?: string | Record<string, string>
     variables: WorkflowVariableList
+    isRecommendationAlertOpen?: boolean
+    onRecommendationAlertClose?: () => void
 }
 
 const ActionsPlatformTemplateConditions = ({
@@ -35,10 +38,18 @@ const ActionsPlatformTemplateConditions = ({
     onConditionBlur,
     errors,
     variables,
+    isRecommendationAlertOpen,
+    onRecommendationAlertClose,
 }: Props) => {
     return (
-        <div>
-            <Label className={css.label}>Action conditions</Label>
+        <div className={css.container}>
+            <Label>Action conditions</Label>
+            {isRecommendationAlertOpen && (
+                <Alert onClose={onRecommendationAlertClose}>
+                    We recommend the conditions below to ensure this Action
+                    works properly.
+                </Alert>
+            )}
             <ToolbarProvider workflowVariables={variables}>
                 <ConditionsBranchBody
                     maxConditionsTooltipMessage="You’ve reached the maximum number of conditions for this Action"
