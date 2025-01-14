@@ -68,11 +68,11 @@ describe('AiAgentNotification', () => {
             title: 'Activate AI Agent',
             subtitle:
                 'You’re just one click away from automating 60% of your tickets!',
-            redirectTo: '/app/automation/shopify/store_1/ai-agent',
+            redirectTo: '/app/automation/shopify/store_1/ai-agent/settings',
         },
         {
             type: AiAgentNotificationType.MeetAiAgent,
-            title: 'Meet your newest team member: AI Agent',
+            title: 'Meet your new team member: AI Agent',
             subtitle:
                 'Delight customers with instant and personalized answers, automating up to 60% of your tickets!',
             redirectTo: '/app/automation/shopify/store_1/ai-agent',

@@ -30,6 +30,7 @@ export const getAiAgentNavigationRoutes = (
     return {
         automation: `/app/automation`,
         main: basePath,
+        settings: `${basePath}/settings`,
         test: `${basePath}/test`,
         guidance: `${basePath}/guidance`,
         knowledge: `${basePath}/knowledge`,

@@ -44,11 +44,11 @@ export const getNotificationParams = (
                 title: 'Activate AI Agent',
                 subtitle:
                     'You’re just one click away from automating 60% of your tickets!',
-                redirectTo: routes.main,
+                redirectTo: routes.settings,
             }
         case AiAgentNotificationType.MeetAiAgent:
             return {
-                title: 'Meet your newest team member: AI Agent',
+                title: 'Meet your new team member: AI Agent',
                 subtitle:
                     'Delight customers with instant and personalized answers, automating up to 60% of your tickets!',
                 redirectTo: routes.main,
