@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import _isNil from 'lodash/isNil'
 import _keyBy from 'lodash/keyBy'
 
 import React, {
@@ -962,7 +963,7 @@ const AppMenuCategoryItems = ({
 
                 if (
                     visualBuilderGraph.isTemplate &&
-                    !visualBuilderGraph.category &&
+                    _isNil(visualBuilderGraph.category) &&
                     !visualBuilderGraph.apps?.some((templateApp) => {
                         switch (templateApp.type) {
                             case 'shopify':
@@ -1162,7 +1163,7 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
                             </>
                         )}
                         {visualBuilderGraph.isTemplate &&
-                            !visualBuilderGraph.category && (
+                            _isNil(visualBuilderGraph.category) && (
                                 <>
                                     <LLMPromptTemplateShopifyMenuItems
                                         nodeId={nodeId}
