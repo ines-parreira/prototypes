@@ -1,3 +1,4 @@
+import {useGetCustomFieldCondition} from '@gorgias/api-queries'
 import React from 'react'
 import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
@@ -8,18 +9,26 @@ import PageHeader from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
 import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
 
-export default function EditConditionalField() {
+import ConditionForm from './components/ConditionForm'
+
+export default function ConditionalField() {
     const params = useParams<{id: string}>()
-    const id = parseInt(params.id, 10)
+    const isNewCondition = params.id === 'add'
+    const conditionId = isNewCondition ? null : Number.parseInt(params.id, 10)
 
-    const condition = {
-        label: 'Condition',
-    }
-    const isLoading = false
+    const {data: condition, isLoading} = useGetCustomFieldCondition(
+        conditionId ?? 0,
+        {
+            query: {
+                select: (data) => data?.data,
+                enabled: !isNewCondition,
+            },
+        }
+    )
 
-    useTitle(condition?.label)
+    useTitle(isNewCondition ? 'Create condition' : condition?.name)
 
-    if (isLoading || !condition) {
+    if (!isNewCondition && isLoading) {
         return <Loader />
     }
 
@@ -36,13 +45,17 @@ export default function EditConditionalField() {
                             </Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>
-                            {condition.label} {id}
+                            {isNewCondition
+                                ? 'Create condition'
+                                : condition?.name}
                         </BreadcrumbItem>
                     </Breadcrumb>
                 }
             />
             <div className={css.pageContainer}>
-                <div className={css.contentWrapper}></div>
+                <div className={css.contentWrapper}>
+                    <ConditionForm condition={condition} />
+                </div>
             </div>
         </div>
     )

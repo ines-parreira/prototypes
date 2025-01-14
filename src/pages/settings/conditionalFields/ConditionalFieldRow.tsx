@@ -7,15 +7,16 @@ import {DateAndTimeFormatting} from 'constants/datetime'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import history from 'pages/history'
 
+import {DeletionPopover} from './components/DeletionPopover'
 import css from './ConditionalFieldRow.less'
-import useCreateCustomFieldCondition from './queries/useCreateCustomFieldCondition'
-import useDeleteCustomFieldCondition from './queries/useDeleteCustomFieldCondition'
-import useUpdateCustomFieldCondition from './queries/useUpdateCustomFieldCondition'
+import useCreateCustomFieldCondition from './hooks/useCreateCustomFieldCondition'
+import useUpdateCustomFieldCondition from './hooks/useUpdateCustomFieldCondition'
 
 interface ConditionalFieldRowProps {
     condition: CustomFieldCondition
@@ -30,8 +31,6 @@ export default function ConditionalFieldRow({
         useUpdateCustomFieldCondition()
     const {mutateAsync: createCondition, isLoading: isCreating} =
         useCreateCustomFieldCondition()
-    const {mutateAsync: deleteCondition, isLoading: isDeleting} =
-        useDeleteCustomFieldCondition()
 
     const handleActivate = useCallback(() => {
         void updateCondition({
@@ -78,8 +77,6 @@ export default function ConditionalFieldRow({
         }
     }
 
-    const handleDelete = () => deleteCondition({id: condition.id})
-
     return (
         <TableBodyRow>
             <BodyCell>
@@ -109,13 +106,13 @@ export default function ConditionalFieldRow({
                     )}
                 </ConfirmationPopover>
             </BodyCell>
-            <BodyCell className={css.nameCell}>
+            <td className={css.nameCell}>
                 <Link
                     to={`/app/settings/ticket-field-conditions/${condition.id}`}
                 >
-                    {condition.name}
+                    <BodyCellContent>{condition.name}</BodyCellContent>
                 </Link>
-            </BodyCell>
+            </td>
             <BodyCell>
                 {/* FIXME(Nicolas): should be updated_datetime */}
                 <DatetimeLabel
@@ -139,32 +136,19 @@ export default function ConditionalFieldRow({
                 >
                     file_copy
                 </IconButton>
-                <ConfirmationPopover
-                    buttonProps={{
-                        intent: 'destructive',
-                    }}
-                    id={`delete-condition-${condition.id}`}
-                    content={
-                        <>
-                            You are about to delete <b>{condition.name}</b>.
-                            This action will not be reversible.
-                        </>
-                    }
-                    onConfirm={handleDelete}
-                >
+                <DeletionPopover condition={condition}>
                     {({uid, onDisplayConfirmation}) => (
                         <IconButton
                             fillStyle="ghost"
                             intent="destructive"
                             title="Delete Condition"
-                            isLoading={isDeleting}
                             onClick={onDisplayConfirmation}
                             id={uid}
                         >
                             delete
                         </IconButton>
                     )}
-                </ConfirmationPopover>
+                </DeletionPopover>
             </BodyCell>
         </TableBodyRow>
     )

@@ -5,6 +5,7 @@ import FormField from 'components/Form/FormField'
 import FormSubmitButton from 'components/Form/FormSubmitButton'
 import {FormValidator} from 'components/Form/validation'
 import Button from 'pages/common/components/button/Button'
+import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 import PageHeader from 'pages/settings/SLAs/features/PageHeader/PageHeader'
@@ -17,7 +18,6 @@ import ChannelSelectBox from './ChannelSelectBox'
 import FormSection from './FormSection'
 import MetricsFieldArray from './MetricsFieldArray'
 import css from './SLAFormView.less'
-import ToggleInputFormField from './ToggleInputFormField'
 
 type SLAFormViewProps = {
     policy: MappedFormSLAPolicy | undefined
@@ -79,8 +79,7 @@ export default function SLAFormView({
                             <MetricsFieldArray />
                             <FormField
                                 name="active"
-                                field={ToggleInputFormField}
-                                isToggled={true}
+                                field={ToggleInputField}
                                 caption={
                                     <span>
                                         When enabled new tickets that fit this

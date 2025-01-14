@@ -26,9 +26,10 @@ export type FormProps<TFieldValues extends FieldValues> = PropsWithChildren<
 export function Form<TFieldValues extends FieldValues>({
     children,
     validator,
-    errors,
     onValidSubmit,
     onInvalidSubmit,
+    errors,
+    defaultValues,
     ...props
 }: FormProps<TFieldValues>) {
     const resolver = validator
@@ -37,6 +38,7 @@ export function Form<TFieldValues extends FieldValues>({
 
     const methods = useForm({
         resolver,
+        defaultValues,
         errors: errors ? toFieldErrors(errors) : undefined,
         ...props,
     })

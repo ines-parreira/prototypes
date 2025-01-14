@@ -8,9 +8,9 @@ import {PageSection} from 'config/pages'
 import {ADMIN_ROLE} from 'config/user'
 
 import NoMatch from 'pages/common/components/NoMatch'
-import AddConditionalField from 'pages/settings/conditionalFields/AddConditionalField'
+
+import ConditionalFieldForm from 'pages/settings/conditionalFields/ConditionalField'
 import ConditionalFieldsComponent from 'pages/settings/conditionalFields/ConditionalFields'
-import EditConditionalField from 'pages/settings/conditionalFields/EditConditionalField'
 
 import {renderAppSettings} from './helpers/settingsRenderer'
 
@@ -25,13 +25,8 @@ export function ConditionalFields() {
 
     return (
         <Switch>
-            <Route path={`${path}/add`} exact>
-                {renderAppSettings(AddConditionalField, {
-                    roleParams: [ADMIN_ROLE, PageSection.ConditionalFields],
-                })}
-            </Route>
-            <Route path={`${path}/:id/edit`} exact>
-                {renderAppSettings(EditConditionalField, {
+            <Route path={`${path}/:id`} exact>
+                {renderAppSettings(ConditionalFieldForm, {
                     roleParams: [ADMIN_ROLE, PageSection.ConditionalFields],
                 })}
             </Route>

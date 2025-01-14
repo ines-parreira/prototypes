@@ -5,9 +5,8 @@ import {Route, useRouteMatch} from 'react-router-dom'
 import {useFlag} from 'common/flags'
 import {PageSection} from 'config/pages'
 import {ADMIN_ROLE} from 'config/user'
-import AddConditionalField from 'pages/settings/conditionalFields/AddConditionalField'
+import ConditionalField from 'pages/settings/conditionalFields/ConditionalField'
 import ConditionalFieldsComponent from 'pages/settings/conditionalFields/ConditionalFields'
-import EditConditionalField from 'pages/settings/conditionalFields/EditConditionalField'
 import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
 import {assumeMock} from 'utils/testing'
 
@@ -53,20 +52,13 @@ describe('ConditionalFields', () => {
         [
             {
                 callOrder: 0,
-                path: CUSTOM_FIELD_CONDITIONS_ROUTE + '/add',
-                component: AddConditionalField,
+                path: CUSTOM_FIELD_CONDITIONS_ROUTE + '/:id',
+                component: ConditionalField,
             },
         ],
         [
             {
                 callOrder: 1,
-                path: CUSTOM_FIELD_CONDITIONS_ROUTE + '/:id/edit',
-                component: EditConditionalField,
-            },
-        ],
-        [
-            {
-                callOrder: 2,
                 path: CUSTOM_FIELD_CONDITIONS_ROUTE + '/',
                 component: ConditionalFieldsComponent,
             },
