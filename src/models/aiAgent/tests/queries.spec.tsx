@@ -291,6 +291,7 @@ describe('queries', () => {
                 queryFn: expect.any(Function),
                 staleTime: 2000,
                 cacheTime: CACHE_TIME_MS,
+                enabled: true,
             })
 
             const queryFn = (

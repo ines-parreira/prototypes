@@ -15,7 +15,7 @@ import {
 
 type Params = {
     accountDomain: string
-    shopName: string
+    shopName: string | undefined
 }
 
 export const useOnboardingNotificationStateMutation = ({
@@ -60,14 +60,14 @@ export const useOnboardingNotificationStateMutation = ({
             const createdOnboardingNotificationState =
                 await createOnboardingNotificationStateAsync([
                     accountDomain,
-                    shopName,
+                    fieldsToSubmit.shopName,
                     fieldsToSubmit,
                 ])
 
             return createdOnboardingNotificationState.data
                 .onboardingNotificationState
         },
-        [accountDomain, createOnboardingNotificationStateAsync, shopName]
+        [accountDomain, createOnboardingNotificationStateAsync]
     )
 
     const upsertOnboardingNotificationState = useCallback(
@@ -77,14 +77,14 @@ export const useOnboardingNotificationStateMutation = ({
             const upsertedOnboardingNotificationState =
                 await upsertOnboardingNotificationStateAsync([
                     accountDomain,
-                    shopName,
+                    fieldsToSubmit.shopName,
                     fieldsToSubmit,
                 ])
 
             return upsertedOnboardingNotificationState.data
                 .onboardingNotificationState
         },
-        [accountDomain, shopName, upsertOnboardingNotificationStateAsync]
+        [accountDomain, upsertOnboardingNotificationStateAsync]
     )
 
     return {

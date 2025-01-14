@@ -168,5 +168,5 @@ export type UpsertOnboardingNotificationStatePayload =
 
 export type GetOnboardingNotificationStateParams = {
     accountDomain: string
-    storeName: string
+    storeName: string | undefined
 }

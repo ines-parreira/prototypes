@@ -27,7 +27,7 @@ import {useOnboardingNotificationState} from './useOnboardingNotificationState'
 import {useOnboardingNotificationStateMutation} from './useOnboardingNotificationStateMutation'
 
 type Params = {
-    shopName: string
+    shopName: string | undefined
 }
 
 export const useAiAgentOnboardingNotification = ({shopName}: Params) => {
@@ -68,6 +68,7 @@ export const useAiAgentOnboardingNotification = ({shopName}: Params) => {
                     const updatedValue = {
                         ...onboardingNotificationState,
                         ...payload,
+                        shopName,
                     }
                     result =
                         await upsertOnboardingNotificationState(updatedValue)

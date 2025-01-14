@@ -2,7 +2,7 @@ import {useGetOrCreateOnboardingNotificationState} from 'models/aiAgent/queries'
 
 type Params = {
     accountDomain: string
-    shopName: string
+    shopName: string | undefined
 }
 
 export const useOnboardingNotificationState = ({
@@ -17,7 +17,7 @@ export const useOnboardingNotificationState = ({
             accountDomain,
             storeName: shopName,
         },
-        {retry: 1, refetchOnWindowFocus: false, enabled: !!shopName}
+        {retry: 1, refetchOnWindowFocus: false}
     )
 
     return {

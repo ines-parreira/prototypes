@@ -150,7 +150,7 @@ export const createWelcomePageAcknowledged = async (
 
 export const getOnboardingNotificationState = async (
     accountDomain: string,
-    storeName: string
+    storeName: string | undefined
 ) => {
     return await apiClient.get<OnboardingNotificationStateResponse>(
         `/config/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`

@@ -19,7 +19,8 @@ const useMeetAiAgentNotifications = () => {
     const shopifyStoreIntegrations: ShopifyIntegration[] =
         useShopifyIntegrations()
     const [storeIndex, setStoreIndex] = useState(0)
-    const shopName = shopifyStoreIntegrations[storeIndex]?.meta?.shop_name
+    const shopName: string | undefined =
+        shopifyStoreIntegrations[storeIndex]?.meta?.shop_name
 
     const {
         isAdmin,

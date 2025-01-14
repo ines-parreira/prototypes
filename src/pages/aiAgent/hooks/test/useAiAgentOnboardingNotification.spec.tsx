@@ -259,4 +259,55 @@ describe('useAiAgentOnboardingNotification', () => {
             cancellation_key: `cancel:${ACCOUNT_DOMAIN}+${SHOP_NAME}+${notificationType}`,
         })
     })
+
+    it('should not call createOnboardingNotificationState when shopName is not provided', async () => {
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: undefined}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        const payload = {
+            onboardingState: AiAgentOnboardingState.Activated,
+        }
+
+        await act(async () => {
+            await result.current.handleOnSave(payload)
+        })
+
+        expect(mockCreateOnboardingNotificationState).not.toHaveBeenCalled()
+    })
+
+    it('should not call updateOnboardingNotificationState when shopName is not provided', async () => {
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: mockedOnboardingNotificationState,
+            isLoading: false,
+        })
+
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: undefined}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        const payload = {
+            onboardingState: AiAgentOnboardingState.Activated,
+        }
+
+        await act(async () => {
+            await result.current.handleOnSave(payload)
+        })
+
+        expect(mockUpsertOnboardingNotificationState).not.toHaveBeenCalled()
+    })
 })
