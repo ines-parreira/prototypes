@@ -24,7 +24,7 @@ export default function RequirementTypeInput(props: RequirementTypeInputProps) {
             </p>
             <p className="mb-4">
                 <a
-                    href="https://docs.gorgias.com/en-US/articles/ticket-fields-63498"
+                    href="https://link.gorgias.com/ticket-fields-playbook"
                     target="_blank"
                     rel="noopener noreferrer"
                 >

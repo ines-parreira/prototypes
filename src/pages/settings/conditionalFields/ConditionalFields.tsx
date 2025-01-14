@@ -101,17 +101,17 @@ export default function ConditionalFields() {
                         >
                             <p className="mb-3">
                                 Set Field Conditions to control visibility and
-                                requirements for ticket fields based on specific
+                                requirements for Ticket Fields based on specific
                                 factors like other field values or channels.
                             </p>
                             <a
-                                className="d-block mb-3"
-                                href="https://docs.gorgias.com/en-US/articles/rules-18380"
+                                className="d-block"
+                                href="https://link.gorgias.com/ticket-fields-playbook-conditional"
                                 rel="noopener noreferrer"
                                 target="_blank"
                             >
                                 <i className="material-icons">menu_book</i>{' '}
-                                <span>Learn more about conditions</span>
+                                <span>Field Conditions playbook</span>
                             </a>
                         </div>
                         <div className="d-flex">

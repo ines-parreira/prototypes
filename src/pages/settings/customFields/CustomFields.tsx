@@ -1,5 +1,7 @@
+import classNames from 'classnames'
 import React, {useState} from 'react'
 import {Link, NavLink, useParams} from 'react-router-dom'
+import {Container} from 'reactstrap'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {AI_MANAGED_TYPES, OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
@@ -17,7 +19,9 @@ import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
 import Search from 'pages/common/components/Search'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import Video from 'pages/common/components/Video/Video'
 import List from 'pages/settings/customFields/components/List'
+import settingsCss from 'pages/settings/settings.less'
 
 import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
 
@@ -128,12 +132,58 @@ export default function CustomFields({
                         )}
                     </div>
                 </PageHeader>
-                {shouldDisplayListingPage && (
-                    <>
+                {shouldDisplayListingPage && objectType === 'Ticket' && (
+                    <Container
+                        fluid
+                        className={classNames(
+                            css.info,
+                            settingsCss.pageContainer
+                        )}
+                    >
                         <div
                             ref={setListingNode}
                             data-candu-id="custom-fields-listing-educational-material"
-                        />
+                            className="pr-4"
+                        >
+                            <p className="mb-3">
+                                Use Ticket Fields to track and report common
+                                ticket categories.
+                            </p>
+                            <a
+                                className="d-block"
+                                href="https://docs.gorgias.com/en-US/articles/ticket-fields-63498"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                <i className="material-icons">menu_book</i>{' '}
+                                <span>How to set up Ticket Fields</span>
+                            </a>
+                            <a
+                                className="d-block"
+                                href="http://link.gorgias.com/ticket-fields-playbook"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                <i className="material-icons">menu_book</i>{' '}
+                                <span>Ticket Fields playbook</span>
+                            </a>
+                        </div>
+                        <div className="d-flex">
+                            <Video
+                                youtubeId="Vp7WAaKhiBE"
+                                legend="How to set up Ticket Fields?"
+                            />
+                        </div>
+                    </Container>
+                )}
+                {shouldDisplayListingPage && objectType !== 'Ticket' && (
+                    <div
+                        ref={setListingNode}
+                        data-candu-id="custom-fields-listing-educational-material"
+                    />
+                )}
+                {shouldDisplayListingPage && (
+                    <>
                         <SecondaryNavbar>
                             <NavLink
                                 to={`/app/settings/${CUSTOM_FIELD_ROUTES[objectType]}/active`}
