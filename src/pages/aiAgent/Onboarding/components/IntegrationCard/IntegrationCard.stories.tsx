@@ -1,0 +1,31 @@
+import {Meta, StoryObj} from '@storybook/react'
+
+import React from 'react'
+
+import gmailLogo from 'assets/img/integrations/gmail.svg'
+
+import StatusBadge, {StatusEnum} from '../StatusBadge'
+
+import IntegrationCard from './IntegrationCard'
+
+const storyConfig: Meta<typeof IntegrationCard> = {
+    title: 'AI Agent/Onboarding/IntegrationCard',
+    component: IntegrationCard,
+}
+
+type Story = StoryObj<typeof IntegrationCard>
+
+/** Default onboarding */
+export const Default: Story = {
+    args: {
+        icon: <img src={gmailLogo} alt="Gmail" />,
+        status: <StatusBadge status={StatusEnum.Connected} />,
+        buttonLabel: 'Connect Gmail',
+        description:
+            'Log into your Gmail or Google Workspace  account to allow Gorgias access to emails.',
+        title: 'Connect Gmail account',
+        onClick: () => {},
+    },
+}
+
+export default storyConfig

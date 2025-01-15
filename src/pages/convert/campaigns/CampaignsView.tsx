@@ -211,7 +211,6 @@ export const CampaignsView = () => {
                     You can now display campaigns on your website.
                 </div>
             </NavigatedSuccessModal>
-
             <div className={classnames('full-width', css.pageWrapper)}>
                 <PageHeader title={'Campaigns'}>
                     {isConvertSubscriber && hasStoreConnected ? (

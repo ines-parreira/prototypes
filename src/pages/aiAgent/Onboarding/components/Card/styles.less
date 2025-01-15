@@ -1,0 +1,32 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .cardContainer {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--neutral-grey-2);
+        border-radius: 8px;
+        padding: @layout-spacing-m;
+        cursor: pointer;
+        transition: ease-in-out 0.2s;
+        gap: @layout-spacing-m;
+
+        box-shadow: 0px 2px 4px 0px rgba(22, 22, 22, 0.16);
+    }
+
+    .cardHeader {
+        display: flex;
+        justify-content: space-between;
+        color: var(--neutral-grey-3);
+    }
+
+    .cardContent {
+        display: flex;
+    }
+
+    .cardFooter {
+        display: flex;
+        color: var(--neutral-grey-3);
+    }
+}
