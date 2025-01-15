@@ -3,8 +3,6 @@ import {screen} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -24,7 +22,7 @@ import StatsNavbarView, {
 import {SERVICE_LEVEL_AGREEMENT_PAGE_TITLE} from 'pages/stats/sla/ServiceLevelAgreementsConfig'
 import {AUTO_QA_PAGE_TITLE} from 'pages/stats/support-performance/auto-qa/AutoQA'
 import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import {assumeMock, renderWithRouterAndDnD} from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -71,22 +69,18 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render', () => {
-        const {container} = renderWithRouter(
+        const {container} = renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
-                <DndProvider backend={HTML5Backend}>
-                    <StatsNavbarView />
-                </DndProvider>
+                <StatsNavbarView />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the link to new busiest times of days', () => {
-        renderWithRouter(
+        renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
-                <DndProvider backend={HTML5Backend}>
-                    <StatsNavbarView />
-                </DndProvider>
+                <StatsNavbarView />
             </Provider>
         )
 
@@ -97,11 +91,9 @@ describe('StatsNavbarView', () => {
 
     describe('New Agents Performance', () => {
         it('should render the link to new agents page when having flag enabled', () => {
-            renderWithRouter(
+            renderWithRouterAndDnD(
                 <Provider store={mockStore(defaultState)}>
-                    <DndProvider backend={HTML5Backend}>
-                        <StatsNavbarView />
-                    </DndProvider>
+                    <StatsNavbarView />
                 </Provider>
             )
 
@@ -118,11 +110,9 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the Convert Campaigns', () => {
-        renderWithRouter(
+        renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
-                <DndProvider backend={HTML5Backend}>
-                    <StatsNavbarView />
-                </DndProvider>
+                <StatsNavbarView />
             </Provider>
         )
 
@@ -133,11 +123,9 @@ describe('StatsNavbarView', () => {
         mockFlags({
             [FeatureFlagKey.HelpCenterAnalytics]: true,
         })
-        renderWithRouter(
+        renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
-                <DndProvider backend={HTML5Backend}>
-                    <StatsNavbarView />
-                </DndProvider>
+                <StatsNavbarView />
             </Provider>
         )
 
@@ -145,11 +133,9 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the Voice Overview', () => {
-        renderWithRouter(
+        renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
-                <DndProvider backend={HTML5Backend}>
-                    <StatsNavbarView />
-                </DndProvider>
+                <StatsNavbarView />
             </Provider>
         )
 
@@ -158,11 +144,9 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the Service Level Agreements', () => {
-        renderWithRouter(
+        renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
-                <DndProvider backend={HTML5Backend}>
-                    <StatsNavbarView />
-                </DndProvider>
+                <StatsNavbarView />
             </Provider>
         )
 
@@ -192,11 +176,9 @@ describe('StatsNavbarView', () => {
                 [FeatureFlagKey.AnalyticsAutoQA]: true,
             })
 
-            renderWithRouter(
+            renderWithRouterAndDnD(
                 <Provider store={mockStore(state)}>
-                    <DndProvider backend={HTML5Backend}>
-                        <StatsNavbarView />
-                    </DndProvider>
+                    <StatsNavbarView />
                 </Provider>
             )
 
@@ -205,11 +187,9 @@ describe('StatsNavbarView', () => {
     )
 
     it('should render the link to the New Tags Report page', () => {
-        const {container} = renderWithRouter(
+        const {container} = renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
-                <DndProvider backend={HTML5Backend}>
-                    <StatsNavbarView />
-                </DndProvider>
+                <StatsNavbarView />
             </Provider>
         )
 
@@ -221,11 +201,9 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the New Channels Reports', () => {
-        const {container} = renderWithRouter(
+        const {container} = renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
-                <DndProvider backend={HTML5Backend}>
-                    <StatsNavbarView />
-                </DndProvider>
+                <StatsNavbarView />
             </Provider>
         )
         const newChannelsReportLink = container.querySelector(
@@ -239,11 +217,9 @@ describe('StatsNavbarView', () => {
             [FeatureFlagKey.NewSatisfactionReport]: true,
         })
 
-        const {container} = renderWithRouter(
+        const {container} = renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
-                <DndProvider backend={HTML5Backend}>
-                    <StatsNavbarView />
-                </DndProvider>
+                <StatsNavbarView />
             </Provider>
         )
         const newSatisfactionReportLink = container.querySelector(
@@ -256,11 +232,9 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the Live Voice', () => {
-        const {container} = renderWithRouter(
+        const {container} = renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
-                <DndProvider backend={HTML5Backend}>
-                    <StatsNavbarView />
-                </DndProvider>
+                <StatsNavbarView />
             </Provider>
         )
 
@@ -288,11 +262,9 @@ describe('StatsNavbarView', () => {
             data: mockData,
         } as any)
 
-        const {container} = renderWithRouter(
+        const {container} = renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
-                <DndProvider backend={HTML5Backend}>
-                    <StatsNavbarView />
-                </DndProvider>
+                <StatsNavbarView />
             </Provider>
         )
 
@@ -305,5 +277,87 @@ describe('StatsNavbarView', () => {
 
         expect(FirstCustomReportLink).toBeInTheDocument()
         expect(SecondCustomReportLink).toBeInTheDocument()
+    })
+
+    it('should render the Auto QA link exclusively within Quality Management section when NewSatisfactionReport feature flag is enabled', () => {
+        const state = {
+            ...defaultState,
+            currentUser: fromJS({
+                role: {name: UserRole.Admin},
+            }) as Map<any, any>,
+            currentAccount: fromJS({
+                current_subscription: {
+                    products: {
+                        [AUTOMATION_PRODUCT_ID]:
+                            basicMonthlyAutomationPlan.price_id,
+                    },
+                },
+            }),
+        }
+
+        mockFlags({
+            [FeatureFlagKey.NewSatisfactionReport]: true,
+            [FeatureFlagKey.AnalyticsAutoQA]: true,
+        })
+
+        const {container} = renderWithRouterAndDnD(
+            <Provider store={mockStore(state)}>
+                <StatsNavbarView />
+            </Provider>
+        )
+        const qualityManagementNavBarBlock = container.querySelector(
+            'div[data-candu-id="navbar-block-quality-management"]'
+        )?.parentElement?.parentElement
+
+        const autoQANavbarLinks = screen
+            .getAllByRole('link', {name: new RegExp('Auto QA')})
+            .filter((el) => el.getAttribute('href') === '/app/stats/auto-qa')
+
+        expect(qualityManagementNavBarBlock).toBeInTheDocument()
+        const autoQATextInclusion =
+            qualityManagementNavBarBlock?.textContent?.includes('Auto QA')
+        expect(autoQATextInclusion).toBe(true)
+        expect(autoQANavbarLinks.length).toBe(1)
+    })
+
+    it('should render the Auto QA link exclusively within Support Performance section when NewSatisfactionReport feature flag is disabled', () => {
+        const state = {
+            ...defaultState,
+            currentUser: fromJS({
+                role: {name: UserRole.Admin},
+            }) as Map<any, any>,
+            currentAccount: fromJS({
+                current_subscription: {
+                    products: {
+                        [AUTOMATION_PRODUCT_ID]:
+                            basicMonthlyAutomationPlan.price_id,
+                    },
+                },
+            }),
+        }
+
+        mockFlags({
+            [FeatureFlagKey.NewSatisfactionReport]: false,
+            [FeatureFlagKey.AnalyticsAutoQA]: true,
+        })
+
+        const {container} = renderWithRouterAndDnD(
+            <Provider store={mockStore(state)}>
+                <StatsNavbarView />
+            </Provider>
+        )
+        const supportPerformanceNavBarBlock = container.querySelector(
+            'div[data-candu-id="navbar-block-support-performance"]'
+        )?.parentElement?.parentElement
+
+        const autoQANavbarLinks = screen
+            .getAllByRole('link', {name: new RegExp('Auto QA')})
+            .filter((el) => el.getAttribute('href') === '/app/stats/auto-qa')
+
+        expect(supportPerformanceNavBarBlock).toBeInTheDocument()
+        const autoQATextInclusion =
+            supportPerformanceNavBarBlock?.textContent?.includes('Auto QA')
+        expect(autoQATextInclusion).toBe(true)
+        expect(autoQANavbarLinks.length).toBe(1)
     })
 })

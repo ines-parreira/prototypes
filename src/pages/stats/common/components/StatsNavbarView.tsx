@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import React from 'react'
+import React, {useMemo} from 'react'
 
 import cssNavbar from 'assets/css/navbar.less'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -23,6 +23,9 @@ const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
 }
 
 type FeatureFlag = boolean | undefined
+type AutoQANavBarLinkProps = {
+    isAvailable: boolean
+}
 
 export const BUSIEST_TIMES_OF_DAYS_NAV_LABEL = 'Busiest times'
 export const NEW_NAV_LABEL = 'NEW'
@@ -39,6 +42,11 @@ export default function StatsNavbarView() {
         useFlags()[FeatureFlagKey.NewSatisfactionReport]
     const isAnalyticsCustomReports: FeatureFlag =
         useFlags()[FeatureFlagKey.AnalyticsCustomReports]
+
+    const isAutoQANavLinkAvailable = useMemo(
+        () => !!isAutoQAEnabled && isTeamLeadOrAdmin && hasAutomate,
+        [hasAutomate, isAutoQAEnabled, isTeamLeadOrAdmin]
+    )
 
     return (
         <>
@@ -196,26 +204,10 @@ export default function StatsNavbarView() {
                             SLAs
                         </NavbarLink>
                     </div>
-                    {!!isAutoQAEnabled && isTeamLeadOrAdmin && hasAutomate && (
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested
-                            )}
-                        >
-                            <NavbarLink
-                                {...COMMON_NAV_LINK_PROPS}
-                                to="/app/stats/auto-qa"
-                            >
-                                Auto QA{' '}
-                                <Badge
-                                    type={ColorType.Blue}
-                                    className={cssNavbar.badge}
-                                >
-                                    {NEW_NAV_LABEL}
-                                </Badge>
-                            </NavbarLink>
-                        </div>
+                    {!isNewSatisfactionReportEnabled && (
+                        <AutoQANavBarLink
+                            isAvailable={isAutoQANavLinkAvailable}
+                        />
                     )}
                 </div>
             </NavbarBlock>
@@ -281,6 +273,9 @@ export default function StatsNavbarView() {
             {isNewSatisfactionReportEnabled && (
                 <NavbarBlock icon="star" title="Quality Management">
                     <div className={cssNavbar.menu}>
+                        <AutoQANavBarLink
+                            isAvailable={isAutoQANavLinkAvailable}
+                        />
                         <div
                             className={classNames(
                                 cssNavbar['link-wrapper'],
@@ -291,7 +286,7 @@ export default function StatsNavbarView() {
                                 {...COMMON_NAV_LINK_PROPS}
                                 to="/app/stats/quality-management-satisfaction"
                             >
-                                Satisfaction{' '}
+                                Satisfaction
                                 <Badge
                                     type={ColorType.Blue}
                                     className={cssNavbar.badge}
@@ -328,5 +323,27 @@ export default function StatsNavbarView() {
                 />
             </NavbarBlock>
         </>
+    )
+}
+
+function AutoQANavBarLink({isAvailable}: AutoQANavBarLinkProps) {
+    if (!isAvailable) {
+        return null
+    }
+
+    return (
+        <div
+            className={classNames(
+                cssNavbar['link-wrapper'],
+                cssNavbar.isNested
+            )}
+        >
+            <NavbarLink {...COMMON_NAV_LINK_PROPS} to="/app/stats/auto-qa">
+                Auto QA
+                <Badge type={ColorType.Blue} className={cssNavbar.badge}>
+                    {NEW_NAV_LABEL}
+                </Badge>
+            </NavbarLink>
+        </div>
     )
 }
