@@ -1,10 +1,8 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useMemo} from 'react'
 import {Redirect, useHistory, useLocation, useParams} from 'react-router-dom'
 import {ulid} from 'ulidx'
 
 import {SegmentEvent, logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
@@ -35,14 +33,6 @@ export default function WorkflowEditorViewContainer() {
     const goToWorkflowTemplatesPage = useCallback(() => {
         history.push(`/app/automation/${shopType}/${shopName}/flows/templates`)
     }, [history, shopName, shopType])
-    const goToConnectedChannelsPage = useCallback(() => {
-        history.push(
-            `/app/automation/${shopType}/${shopName}/connected-channels`,
-            {from: 'workflow-editor'}
-        )
-    }, [history, shopName, shopType])
-    const isPublishFlowFromFlowBuilder =
-        useFlags()[FeatureFlagKey.PublishFlowFromFlowBuilder]
 
     const isNewWorkflow = editWorkflowId == null
     const workflowId = useMemo(() => editWorkflowId ?? ulid(), [editWorkflowId])
@@ -69,14 +59,9 @@ export default function WorkflowEditorViewContainer() {
         [history, shopName, shopType, workflowId]
     )
 
-    const handleFlowPublished = useCallback(
-        (isFirstTimePublish: boolean) => {
-            logActionOnFlowBuilder('publish')
-            if (isFirstTimePublish && !isPublishFlowFromFlowBuilder)
-                goToConnectedChannelsPage()
-        },
-        [goToConnectedChannelsPage, isPublishFlowFromFlowBuilder]
-    )
+    const handleFlowPublished = useCallback(() => {
+        logActionOnFlowBuilder('publish')
+    }, [])
 
     const handleFlowDiscard = useCallback(
         (fromView: string | undefined) => {

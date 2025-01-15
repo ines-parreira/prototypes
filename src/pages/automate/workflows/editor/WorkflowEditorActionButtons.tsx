@@ -1,8 +1,6 @@
 import {Tooltip} from '@gorgias/merchant-ui-kit'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 
@@ -39,26 +37,20 @@ export const WorkflowEditorActionButtons = ({
     onDiscard,
     onViewChannel,
 }: Props) => {
-    const isPreviewTestButtonVisible =
-        useFlags()[FeatureFlagKey.FlowsPreviewTestButton]
-    const isPublishFlowFromFlowBuilder =
-        useFlags()[FeatureFlagKey.PublishFlowFromFlowBuilder]
-
     if (isNewWorkflow) {
         return (
             <>
-                {isPreviewTestButtonVisible && (
-                    <Button
-                        onClick={() => onTest()}
-                        intent="secondary"
-                        isDisabled={isTestDisabled}
-                        id="test-disabled"
-                        leadingIcon="play_circle"
-                    >
-                        Test
-                    </Button>
-                )}
-                {isPreviewTestButtonVisible && isTestDisabled && (
+                <Button
+                    onClick={() => onTest()}
+                    intent="secondary"
+                    isDisabled={isTestDisabled}
+                    id="test-disabled"
+                    leadingIcon="play_circle"
+                >
+                    Test
+                </Button>
+
+                {isTestDisabled && (
                     <Tooltip target="test-disabled">
                         Connect a Chat to this store to test and make sure it’s
                         not hidden. Testing is currently available for Chat
@@ -87,7 +79,7 @@ export const WorkflowEditorActionButtons = ({
                 >
                     Publish
                 </Button>
-                {isPublishFlowFromFlowBuilder && !isDraft && (
+                {!isDraft && (
                     <>
                         <IconButton
                             id="view-channel"
@@ -107,18 +99,16 @@ export const WorkflowEditorActionButtons = ({
 
     return (
         <>
-            {isPreviewTestButtonVisible && (
-                <Button
-                    onClick={() => onTest()}
-                    intent="secondary"
-                    isDisabled={isTestDisabled}
-                    id="test-disabled"
-                    leadingIcon="play_circle"
-                >
-                    Test
-                </Button>
-            )}
-            {isPreviewTestButtonVisible && isTestDisabled && (
+            <Button
+                onClick={() => onTest()}
+                intent="secondary"
+                isDisabled={isTestDisabled}
+                id="test-disabled"
+                leadingIcon="play_circle"
+            >
+                Test
+            </Button>
+            {isTestDisabled && (
                 <Tooltip target="test-disabled">
                     Connect a Chat to this store to test and make sure it’s not
                     hidden. Testing is currently available for Chat only.
@@ -153,7 +143,7 @@ export const WorkflowEditorActionButtons = ({
             >
                 Publish
             </Button>
-            {isPublishFlowFromFlowBuilder && !isDraft && (
+            {!isDraft && (
                 <>
                     <IconButton
                         id="view-channel"

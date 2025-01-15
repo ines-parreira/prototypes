@@ -63,7 +63,7 @@ type WorkflowEditorViewProps = {
     onDiscard: (fromView: string | undefined) => void
     onSave?: () => void
     onNewWorkflowCreated: (isDraft: boolean) => void
-    onPublish: (isFirstTime: boolean) => void
+    onPublish: () => void
     notifyMerchant: (message: Notification) => void
     goToWorkflowAnalyticsPage: (zoom: number) => void
     logActionOnFlowBuilder: (action: string) => void
@@ -89,8 +89,7 @@ function WorkflowEditorViewWrapped({
     const workflowEditorContext = useWorkflowEditorContext()
     const location = useLocation<{doShowDisplayInChannels: boolean}>()
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
-    const isPublishFlowFromFlowBuilder =
-        useFlags()[FeatureFlagKey.PublishFlowFromFlowBuilder]
+
     const isFlowsBuilderAnalyticsEnabled =
         useFlags()[FeatureFlagKey.FlowsBuilderAnalytics]
 
@@ -221,18 +220,12 @@ function WorkflowEditorViewWrapped({
 
     const doOpenChannelsSidePanel = useCallback(
         (workflowId: string) => {
-            if (!isPublishFlowFromFlowBuilder) return false
             if (workflowsEnabledInChats.has(workflowId)) return false
             if (workflowsEnabledInCF.has(workflowId)) return false
             if (workflowsEnabledInHC.has(workflowId)) return false
             return true
         },
-        [
-            isPublishFlowFromFlowBuilder,
-            workflowsEnabledInCF,
-            workflowsEnabledInChats,
-            workflowsEnabledInHC,
-        ]
+        [workflowsEnabledInCF, workflowsEnabledInChats, workflowsEnabledInHC]
     )
 
     useEffectOnce(() => {
@@ -297,8 +290,8 @@ function WorkflowEditorViewWrapped({
         }
 
         if (!isDraft) {
-            onPublish(isFirstTimePublish)
-            if (isNewWorkflow && isPublishFlowFromFlowBuilder) {
+            onPublish()
+            if (isNewWorkflow) {
                 onNewWorkflowCreated(isDraft)
             } else if (doOpenChannelsSidePanel(workflowId)) {
                 openChannelSidePanel()
