@@ -81,7 +81,7 @@ export const Level1IntentsPerformance = () => {
                     title: 'Automated interactions',
                     hint: {
                         title: 'Total of fully automated AI Agent interactions solved without any agent intervention.',
-                        link: 'https://docs.gorgias.com/en-US/1024587-4ee311de71bc4401985c37a2907b7911',
+                        // link: 'https://docs.gorgias.com/en-US/1024587-4ee311de71bc4401985c37a2907b7911', TODO uncomment link when page is ready
                     },
                     trend: aiAgentMetrics.aiAgentAutomatedInteractionTrend,
                     interpretAs: 'more-is-better',
@@ -116,7 +116,7 @@ export const Level1IntentsPerformance = () => {
                     title: 'Success rate',
                     hint: {
                         title: 'Automated interactions by AI Agent as a percent of all AI Agent interactions.',
-                        link: 'https://docs.gorgias.com/en-US/1024587-4ee311de71bc4401985c37a2907b7911',
+                        // link: 'https://docs.gorgias.com/en-US/1024587-4ee311de71bc4401985c37a2907b7911', TODO uncomment link when page is ready
                     },
                     trend: aiAgentMetrics.aiAgentSuccessRate,
                     interpretAs: 'more-is-better',
@@ -145,7 +145,7 @@ export const Level1IntentsPerformance = () => {
                     title: 'Customer satisfaction',
                     hint: {
                         title: 'AI Agent’s average CSAT score for tickets for which a survey was sent within the timeframe; surveys are sent following ticket resolution.',
-                        link: 'https://www.gorgias.com',
+                        // link: 'https://www.gorgias.com', TODO uncomment link when page is ready
                     },
                     trend: aiAgentMetrics.aiAgentCSAT,
                     interpretAs: 'more-is-better',
