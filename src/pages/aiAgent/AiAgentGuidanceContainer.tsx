@@ -1,4 +1,3 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useEffect, useMemo} from 'react'
 import {Link, useParams} from 'react-router-dom'
@@ -76,20 +75,13 @@ export const AiAgentGuidanceContainer = () => {
         storeConfiguration,
     ])
 
-    if (isStoreConfigLoading || isLoadingHelpCenters) {
-        return (
-            <div className={css.spinner}>
-                <LoadingSpinner size="big" />
-            </div>
-        )
-    }
-
     if (!storeConfiguration || !guidanceHelpCenter) {
         return (
             <AiAgentLayout
                 shopName={shopName}
                 className={css.container}
                 title={isStandaloneMenuEnabled ? GUIDANCE : AI_AGENT}
+                isLoading={isStoreConfigLoading || isLoadingHelpCenters}
             >
                 <AutomateViewContent>
                     <Alert icon type={AlertType.Warning}>
@@ -109,6 +101,7 @@ export const AiAgentGuidanceContainer = () => {
             shopName={shopName}
             className={css.container}
             title={isStandaloneMenuEnabled ? GUIDANCE : AI_AGENT}
+            isLoading={isStoreConfigLoading || isLoadingHelpCenters}
         >
             <AiAgentGuidanceView
                 helpCenterId={guidanceHelpCenter.id}

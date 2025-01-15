@@ -50,7 +50,7 @@ export const AiAgentView = ({
                                 <NavLink
                                     key={route}
                                     to={route}
-                                    exact={exact ?? true}
+                                    exact={exact}
                                     {...(dataCanduId
                                         ? {'data-candu-id': dataCanduId}
                                         : {})}

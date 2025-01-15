@@ -13,8 +13,8 @@ export const useAiAgentHeaderNavbarItems = (shopName: string) => {
     const {navigationItems} = useAiAgentNavigation({shopName})
 
     const match = useRouteMatch()
-    const currentNavigationItem = navigationItems.find((x) =>
-        x.exact ? match.url === x.route : match.url.startsWith(x.route)
+    const currentNavigationItem = navigationItems.find((item) =>
+        item.exact ? match.url === item.route : match.url.startsWith(item.route)
     )
 
     return isStandaloneMenuEnabled

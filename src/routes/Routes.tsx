@@ -905,6 +905,8 @@ function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
                             component={AiAgentPlaygroundContainer}
                         />
                     </AiAgentErrorBoundary>
+
+                    {/* TODO: Remove this in favour of `/knowledge/actions`, after fully migrate to new AI Agent standalone menu */}
                     {!!showAutomateActions && (
                         <Switch>
                             <Route
@@ -934,6 +936,8 @@ function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
                             />
                         </Switch>
                     )}
+
+                    {/* TODO: Remove this in favour of `/knowledge/guidance`, after fully migrate to new AI Agent standalone menu */}
                     <AiAgentErrorBoundary section="ai-agent-guidance">
                         <Route
                             path={`${path}/guidance`}
@@ -1015,6 +1019,81 @@ function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
                                 component={AiAgentKnowledgeContainer}
                             />
                         </AiAgentErrorBoundary>
+                    )}
+                    <AiAgentErrorBoundary section="ai-agent-guidance">
+                        <Route
+                            path={`${path}/knowledge/guidance`}
+                            exact
+                            component={AiAgentGuidanceContainer}
+                        />
+                        <Switch>
+                            <Route
+                                path={`${path}/knowledge/guidance/new`}
+                                component={AiAgentGuidanceNewContainer}
+                            />
+                            {isAiAgentAIGeneratedGuidancesEnabled && (
+                                <Route
+                                    path={`${path}/knowledge/guidance/library`}
+                                    exact
+                                    component={AiAgentGuidanceLibraryContainer}
+                                />
+                            )}
+                            <Route
+                                path={`${path}/knowledge/guidance/templates`}
+                                exact
+                                component={AiAgentGuidanceTemplatesContainer}
+                            />
+                            <Route
+                                path={`${path}/knowledge/guidance/templates/:templateId`}
+                                component={AiAgentGuidanceTemplateNewContainer}
+                            />
+                            {isAiAgentAIGeneratedGuidancesEnabled && (
+                                <Route
+                                    path={`${path}/knowledge/guidance/library/:aiGuidanceId`}
+                                    component={
+                                        AiAgentGuidanceAiSuggestionNewContainer
+                                    }
+                                />
+                            )}
+                            <Route
+                                path={`${path}/knowledge/guidance/templates`}
+                                component={AiAgentGuidanceTemplatesContainer}
+                            />
+
+                            <Route
+                                path={`${path}/knowledge/guidance/:articleId`}
+                                component={AiAgentGuidanceDetailContainer}
+                            />
+                        </Switch>
+                    </AiAgentErrorBoundary>
+                    {!!showAutomateActions && (
+                        <Switch>
+                            <Route
+                                path={`${path}/knowledge/actions`}
+                                exact
+                                component={ActionsViewContainer}
+                            />
+                            <Route
+                                path={`${path}/knowledge/actions/new`}
+                                exact
+                                component={CreateActionViewContainer}
+                            />
+                            <Route
+                                path={`${path}/knowledge/actions/edit/:id`}
+                                exact
+                                component={EditActionViewContainer}
+                            />
+                            <Route
+                                path={`${path}/knowledge/actions/templates`}
+                                exact
+                                component={ActionsTemplatesViewContainer}
+                            />
+                            <Route
+                                path={`${path}/knowledge/actions/events/:id`}
+                                exact
+                                component={ActionEventsViewContainer}
+                            />
+                        </Switch>
                     )}
                 </AiAgentStoreConfigurationProvider>
             </AiAgentAccountConfigurationProvider>

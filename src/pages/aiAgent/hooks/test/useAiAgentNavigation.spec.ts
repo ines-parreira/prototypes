@@ -13,6 +13,8 @@ jest.mock('launchdarkly-react-client-sdk', () => ({
 const useFlagsMock = assumeMock(useFlags)
 
 jest.mock('pages/aiAgent/actions/hooks/useShowAutomateActions')
+const useShowAutomateActionsMock = jest.mocked(useShowAutomateActions)
+
 describe('useAiAgentNavigation', () => {
     beforeEach(() => {
         jest.resetAllMocks()
@@ -20,6 +22,7 @@ describe('useAiAgentNavigation', () => {
         useFlagsMock.mockReturnValue({
             [FeatureFlagKey.AiAgentKnowledgeTab]: false,
             [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
+            [FeatureFlagKey.ConvAiStandaloneMenu]: false,
         })
     })
 
@@ -46,7 +49,7 @@ describe('useAiAgentNavigation', () => {
     })
 
     it('should add Actions to navbar if show automate actions is true', () => {
-        ;(useShowAutomateActions as jest.Mock).mockReturnValue(true)
+        useShowAutomateActionsMock.mockReturnValue(true)
 
         const {result} = renderHook(() =>
             useAiAgentNavigation({shopName: 'test'})
@@ -250,6 +253,56 @@ describe('useAiAgentNavigation', () => {
         )
         expect(result.current.routes.actionEvents('configurationId')).toEqual(
             '/app/automation/shopify/test/ai-agent/actions/events/configurationId'
+        )
+    })
+
+    it('should return /guidance path when ConvAiStandaloneMenu flag is false', () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.ConvAiStandaloneMenu]: false,
+        })
+        const {result} = renderHook(() =>
+            useAiAgentNavigation({shopName: 'test'})
+        )
+        expect(result.current.routes.guidance).toEqual(
+            '/app/automation/shopify/test/ai-agent/guidance'
+        )
+    })
+
+    it('should return /knowledge/guidance path when ConvAiStandaloneMenu flag is true', () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
+        })
+
+        const {result} = renderHook(() =>
+            useAiAgentNavigation({shopName: 'test'})
+        )
+        expect(result.current.routes.guidance).toEqual(
+            '/app/ai-agent/shopify/test/knowledge/guidance'
+        )
+    })
+
+    it('should return /actions path when ConvAiStandaloneMenu flag is false', () => {
+        useShowAutomateActionsMock.mockReturnValue(true)
+
+        const {result} = renderHook(() =>
+            useAiAgentNavigation({shopName: 'test'})
+        )
+        expect(result.current.routes.actions).toEqual(
+            '/app/automation/shopify/test/ai-agent/actions'
+        )
+    })
+
+    it('should return /knowledge/actions path when ConvAiStandaloneMenu flag is true', () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
+        })
+        useShowAutomateActionsMock.mockReturnValue(true)
+
+        const {result} = renderHook(() =>
+            useAiAgentNavigation({shopName: 'test'})
+        )
+        expect(result.current.routes.actions).toEqual(
+            '/app/ai-agent/shopify/test/knowledge/actions'
         )
     })
 })

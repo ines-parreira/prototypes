@@ -29,35 +29,43 @@ export const getAiAgentNavigationRoutes = (
     flags: LDFlagSet
 ) => {
     const basePath = getAiAgentBasePath(shopName, flags)
+    const isStandaloneMenuEnabled = flags[FeatureFlagKey.ConvAiStandaloneMenu]
+
+    const guidancePath = isStandaloneMenuEnabled
+        ? 'knowledge/guidance'
+        : 'guidance'
+
+    const actionsPath = isStandaloneMenuEnabled
+        ? 'knowledge/actions'
+        : 'actions'
+
     return {
         automation: `/app/automation`,
         main: basePath,
         settings: `${basePath}/settings`,
         test: `${basePath}/test`,
-        guidance: `${basePath}/guidance`,
         knowledge: `${basePath}/knowledge`,
-        knowledgeGuidance: `${basePath}/knowledge/guidance`,
-        knowledgeActions: `${basePath}/knowledge/actions`,
-        newGuidanceArticle: `${basePath}/guidance/new`,
+        guidance: `${basePath}/${guidancePath}`,
+        newGuidanceArticle: `${basePath}/${guidancePath}/new`,
+        guidanceArticleEdit: (articleId: number) =>
+            `${basePath}/${guidancePath}/${articleId}`,
+        guidanceTemplates: `${basePath}/${guidancePath}/templates`,
+        guidanceLibrary: `${basePath}/${guidancePath}/library`,
+        newGuidanceTemplateArticle: (templateId: string) =>
+            `${basePath}/${guidancePath}/templates/${templateId}`,
+        newGuidanceAiSuggestionArticle: (aiGuidanceId: string) =>
+            `${basePath}/${guidancePath}/library/${aiGuidanceId}`,
         configuration: (section?: 'knowledge' | 'email') =>
             `${basePath}/settings${section ? `?section=${section}` : ''}`,
         settingsChannels: `${basePath}/settings/channels`,
-        guidanceArticleEdit: (articleId: number) =>
-            `${basePath}/guidance/${articleId}`,
-        guidanceTemplates: `${basePath}/guidance/templates`,
-        guidanceLibrary: `${basePath}/guidance/library`,
-        newGuidanceTemplateArticle: (templateId: string) =>
-            `${basePath}/guidance/templates/${templateId}`,
-        newGuidanceAiSuggestionArticle: (aiGuidanceId: string) =>
-            `${basePath}/guidance/library/${aiGuidanceId}`,
-        actions: `${basePath}/actions`,
+        actions: `${basePath}/${actionsPath}`,
         newAction: (templateId?: string) =>
-            `${basePath}/actions/new${templateId ? `?template_id=${templateId}` : ''}`,
+            `${basePath}/${actionsPath}/new${templateId ? `?template_id=${templateId}` : ''}`,
         editAction: (configurationId: string) =>
-            `${basePath}/actions/edit/${configurationId}`,
-        actionsTemplates: `${basePath}/actions/templates`,
+            `${basePath}/${actionsPath}/edit/${configurationId}`,
+        actionsTemplates: `${basePath}/${actionsPath}/templates`,
         actionEvents: (configurationId: string) =>
-            `${basePath}/actions/events/${configurationId}`,
+            `${basePath}/${actionsPath}/events/${configurationId}`,
         onboardingWizard: `${basePath}/new`,
         previewMode: `${basePath}/preview-mode`,
         optimize: `${basePath}/optimize`,
@@ -100,25 +108,27 @@ const useNavigationItems = (
                     title: OPTIMIZE,
                     exact: false,
                 },
-                isAiAgentKnowledgeTabEnabled && {
-                    route: routes.knowledge,
+                {
+                    route: isAiAgentKnowledgeTabEnabled
+                        ? routes.knowledge
+                        : routes.guidance,
                     title: KNOWLEDGE,
                     dataCanduId: 'ai-agent-navbar-knowledge',
                     items: [
-                        {
+                        isAiAgentKnowledgeTabEnabled && {
                             route: routes.knowledge,
                             title: GENERAL,
                             exact: true,
                         },
-                        //   {
-                        //       route: routes.knowledgeGuidance,
-                        //       title: GUIDANCE,
-                        //   },
-                        //   {
-                        //       route: routes.knowledgeActions,
-                        //       title: ACTIONS,
-                        //   },
-                    ],
+                        {
+                            route: routes.guidance,
+                            title: GUIDANCE,
+                        },
+                        showAutomateActions && {
+                            route: routes.actions,
+                            title: ACTIONS,
+                        },
+                    ].filter((x) => !!x) as NavigationItem[],
                 },
                 {
                     route: routes.configuration(),
