@@ -1,0 +1,36 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        width: 488px;
+        padding: @layout-spacing-s;
+        justify-content: space-between;
+        align-items: center;
+
+        border-radius: @layout-spacing-s;
+        border: 1px solid var(--neutral-grey-3);
+        background: var(--neutral-grey-0);
+
+        box-shadow: @layout-spacing-xxs @layout-spacing-xxs @layout-spacing-s 0
+            rgba(22, 22, 22, 0.1);
+    }
+
+    .progressTracker {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs, @layout-spacing-xs);
+
+        .label {
+            .body-semibold();
+        }
+    }
+
+    .cta {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: @layout-spacing-xs;
+    }
+}
