@@ -9,15 +9,24 @@ import {getCurrentUser} from 'state/currentUser/selectors'
 import {hasRole} from 'utils'
 
 import useActiveItem from '../hooks/useActiveItem'
+import {useNavBar} from '../hooks/useNavBar/useNavBar'
+import {useNavBarMenuIcon} from '../hooks/useNavBarMenuIcon'
+import {useNavBarShortcuts} from '../hooks/useNavBarShortcuts'
 import css from './GlobalNavigation.less'
 import Item from './GlobalNavigationItem'
 import {GlobalNavigationSpotlight} from './GlobalNavigationSpotlight'
+import {NavBarButtonTooltip} from './NavBarButtonTooltip'
+
 import NotificationsItem from './NotificationsItem'
 import UserItem from './UserItem'
 
 export default function GlobalNavigation() {
     const currentUser = useAppSelector(getCurrentUser)
     const activeItem = useActiveItem()
+    const navBarMenuIcon = useNavBarMenuIcon()
+    const {onMenuToggle, onGlobalNavHover, onGlobalNavLeave} = useNavBar()
+
+    useNavBarShortcuts()
 
     const hasAutomate = useAppSelector(getHasAutomate)
     const hasAiAgentStandaloneMenu = useFlag<boolean>(
@@ -32,9 +41,19 @@ export default function GlobalNavigation() {
         hasAiAgentStandaloneMenu && (hasAutomate || hasAiAgentPreview)
 
     return (
-        <nav className={css.container}>
+        <nav
+            className={css.container}
+            onMouseOver={onGlobalNavHover}
+            onMouseLeave={onGlobalNavLeave}
+            onFocus={onGlobalNavHover}
+        >
             <section className={css.section}>
                 <div className={css.items}>
+                    <Item
+                        icon={navBarMenuIcon}
+                        onClick={onMenuToggle}
+                        tooltip={<NavBarButtonTooltip />}
+                    />
                     <Item
                         icon="home"
                         isActive={activeItem === 'home'}

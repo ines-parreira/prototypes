@@ -21,6 +21,10 @@ const shortcuts: Record<string, KeyMap> = {
                 key: 'z',
                 description: 'Undo message sent',
             },
+            TOGGLE_NAVBAR: {
+                key: '[',
+                description: 'Toggle the navbar',
+            },
         },
     },
     SpotlightModal: {

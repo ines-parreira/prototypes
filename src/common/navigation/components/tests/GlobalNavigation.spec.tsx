@@ -10,6 +10,11 @@ import {getCurrentUser} from 'state/currentUser/selectors'
 import {assumeMock} from 'utils/testing'
 
 import useActiveItem from '../../hooks/useActiveItem'
+import {
+    NavBarContext,
+    NavBarContextType,
+    NavBarDisplayMode,
+} from '../../hooks/useNavBar/context'
 import GlobalNavigation from '../GlobalNavigation'
 
 jest.mock('state/currentUser/selectors', () => ({getCurrentUser: jest.fn()}))
@@ -33,6 +38,24 @@ jest.mock('common/flags')
 const mockUseFlag = useFlag as jest.Mock
 
 describe('GlobalNavigation', () => {
+    const mockNavBarContextValues: NavBarContextType = {
+        navBarDisplay: NavBarDisplayMode.Open,
+        setNavBarDisplay: jest.fn(),
+        isNavBarVisible: false,
+        isGlobalNavHovered: false,
+        onGlobalNavHover: jest.fn(),
+        onGlobalNavLeave: jest.fn(),
+        onOverlayEnter: jest.fn(),
+        onMenuToggle: jest.fn(),
+    }
+
+    const renderWithContext = () =>
+        render(
+            <NavBarContext.Provider value={mockNavBarContextValues}>
+                <GlobalNavigation />
+            </NavBarContext.Provider>
+        )
+
     beforeEach(() => {
         getCurrentUserMock.mockReturnValue(
             fromJS({role: {name: UserRole.BasicAgent}})
@@ -41,27 +64,27 @@ describe('GlobalNavigation', () => {
     })
 
     it('should render the home icon', () => {
-        const {getByText} = render(<GlobalNavigation />)
+        const {getByText} = renderWithContext()
         expect(getByText('home')).toBeInTheDocument()
     })
 
     it('should render the search icon', () => {
-        const {getByText} = render(<GlobalNavigation />)
+        const {getByText} = renderWithContext()
         expect(getByText('GlobalNavigationSpotlight')).toBeInTheDocument()
     })
 
     it('should render the notifications icon', () => {
-        const {getByText} = render(<GlobalNavigation />)
+        const {getByText} = renderWithContext()
         expect(getByText('NotificationsItem')).toBeInTheDocument()
     })
 
     it('should render the tickets icon', () => {
-        const {getByText} = render(<GlobalNavigation />)
+        const {getByText} = renderWithContext()
         expect(getByText('question_answer')).toBeInTheDocument()
     })
 
     it('should not render the automation icon if the user is not a lead agent', () => {
-        const {queryByText} = render(<GlobalNavigation />)
+        const {queryByText} = renderWithContext()
         expect(queryByText('bolt')).not.toBeInTheDocument()
     })
 
@@ -69,12 +92,12 @@ describe('GlobalNavigation', () => {
         getCurrentUserMock.mockReturnValue(
             fromJS({role: {name: UserRole.Agent}})
         )
-        const {getByText} = render(<GlobalNavigation />)
+        const {getByText} = renderWithContext()
         expect(getByText('bolt')).toBeInTheDocument()
     })
 
     it('should not render the convert icon if the user is not an admin', () => {
-        const {queryByText} = render(<GlobalNavigation />)
+        const {queryByText} = renderWithContext()
         expect(queryByText('monetization_on')).not.toBeInTheDocument()
     })
 
@@ -82,32 +105,32 @@ describe('GlobalNavigation', () => {
         getCurrentUserMock.mockReturnValue(
             fromJS({role: {name: UserRole.Admin}})
         )
-        const {getByText} = render(<GlobalNavigation />)
+        const {getByText} = renderWithContext()
         expect(getByText('monetization_on')).toBeInTheDocument()
     })
 
     it('should render the customers icon', () => {
-        const {getByText} = render(<GlobalNavigation />)
+        const {getByText} = renderWithContext()
         expect(getByText('people')).toBeInTheDocument()
     })
 
     it('should render the stats icon', () => {
-        const {getByText} = render(<GlobalNavigation />)
+        const {getByText} = renderWithContext()
         expect(getByText('bar_chart')).toBeInTheDocument()
     })
 
     it('should render the settings icon', () => {
-        const {getByText} = render(<GlobalNavigation />)
+        const {getByText} = renderWithContext()
         expect(getByText('settings')).toBeInTheDocument()
     })
 
     it('should render the user item', () => {
-        const {getByText} = render(<GlobalNavigation />)
+        const {getByText} = renderWithContext()
         expect(getByText('UserItem')).toBeInTheDocument()
     })
 
     it('should not render the ai agent icon if user is not a lead agent', () => {
-        const {queryByText} = render(<GlobalNavigation />)
+        const {queryByText} = renderWithContext()
         expect(queryByText('auto_awesome')).not.toBeInTheDocument()
     })
 
@@ -115,7 +138,7 @@ describe('GlobalNavigation', () => {
         getCurrentUserMock.mockReturnValue(
             fromJS({role: {name: UserRole.Agent}})
         )
-        const {queryByText} = render(<GlobalNavigation />)
+        const {queryByText} = renderWithContext()
         expect(queryByText('auto_awesome')).not.toBeInTheDocument()
     })
 
@@ -127,7 +150,7 @@ describe('GlobalNavigation', () => {
             flag === FeatureFlagKey.ConvAiStandaloneMenu ? true : false
         )
         getHasAutomateMock.mockReturnValue(false)
-        const {queryByText} = render(<GlobalNavigation />)
+        const {queryByText} = renderWithContext()
         expect(queryByText('auto_awesome')).not.toBeInTheDocument()
     })
 
@@ -139,7 +162,7 @@ describe('GlobalNavigation', () => {
             flag === FeatureFlagKey.ConvAiStandaloneMenu ? true : false
         )
         getHasAutomateMock.mockReturnValue(true)
-        const {queryByText} = render(<GlobalNavigation />)
+        const {queryByText} = renderWithContext()
         expect(queryByText('auto_awesome')).toBeInTheDocument()
     })
 })

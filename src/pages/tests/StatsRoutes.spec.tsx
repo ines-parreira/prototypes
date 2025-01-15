@@ -9,6 +9,11 @@ import {Route, Switch} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {
+    NavBarContext,
+    NavBarContextType,
+    NavBarDisplayMode,
+} from 'common/navigation/hooks/useNavBar/context'
 import {FeatureFlagKey} from 'config/featureFlags'
 import * as billingFixtures from 'fixtures/billing'
 
@@ -72,15 +77,28 @@ describe('<StatsRoutes/>', () => {
         mockHistory.replace('/app')
     })
 
+    const mockNavBarContextValues: NavBarContextType = {
+        navBarDisplay: NavBarDisplayMode.Collapsed,
+        setNavBarDisplay: jest.fn(),
+        isNavBarVisible: false,
+        isGlobalNavHovered: false,
+        onGlobalNavHover: jest.fn(),
+        onGlobalNavLeave: jest.fn(),
+        onOverlayEnter: jest.fn(),
+        onMenuToggle: jest.fn(),
+    }
+
     const renderStatsRoutes = () => {
         return renderWithRouter(
-            <Provider store={configureMockStore([thunk])(defaultState)}>
-                <Switch>
-                    <Route path={`/stats`}>
-                        <StatsRoutes />
-                    </Route>
-                </Switch>
-            </Provider>,
+            <NavBarContext.Provider value={mockNavBarContextValues}>
+                <Provider store={configureMockStore([thunk])(defaultState)}>
+                    <Switch>
+                        <Route path={`/stats`}>
+                            <StatsRoutes />
+                        </Route>
+                    </Switch>
+                </Provider>
+            </NavBarContext.Provider>,
             {
                 history: mockHistory,
             }

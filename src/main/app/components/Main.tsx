@@ -4,6 +4,7 @@ import React, {ReactElement} from 'react'
 import {CookiesProvider} from 'react-cookie'
 
 import {BannersContextProvider} from 'AlertBanners'
+import {NavBarProvider} from 'common/navigation/components/NavBarProvider'
 import {NotificationsProvider} from 'common/notifications'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 import VoiceDeviceProvider from 'pages/integrations/integration/components/voice/VoiceDeviceProvider'
@@ -30,7 +31,9 @@ export default function Main({children}: Props) {
                                         <CookiesProvider
                                             defaultSetOptions={{path: '/'}}
                                         >
-                                            <App>{children}</App>
+                                            <NavBarProvider>
+                                                <App>{children}</App>
+                                            </NavBarProvider>
                                         </CookiesProvider>
                                     </SplitTicketViewProvider>
                                 </AgentActivityProvider>
