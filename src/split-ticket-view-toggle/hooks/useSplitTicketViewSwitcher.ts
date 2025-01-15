@@ -54,7 +54,16 @@ export default function useSplitTicketViewSwitcher() {
             match = matchPath(path, '/app/ticket/:ticketId')
         }
 
-        return (match?.params || {}) as {ticketId?: string; viewId?: string}
+        let params = (match?.params || {}) as {
+            ticketId?: string
+            viewId?: string
+        }
+
+        if (params.viewId === 'new' || params.viewId === 'search') {
+            params = {}
+        }
+
+        return params
     }, [path])
 
     useEffect(() => {
