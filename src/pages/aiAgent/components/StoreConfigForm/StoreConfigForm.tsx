@@ -17,7 +17,9 @@ import {Link, useParams} from 'react-router-dom'
 import {AiAgentNotificationType} from 'automate/notifications/types'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {useSearchParam} from 'hooks/useSearchParam'
 import {
@@ -27,6 +29,8 @@ import {
 } from 'models/aiAgent/types'
 import {HelpCenter} from 'models/helpCenter/types'
 import {useStoreConfigurationForm} from 'pages/aiAgent/hooks/useStoreConfigurationForm'
+import {getFormValuesFromStoreConfiguration} from 'pages/aiAgent/hooks/utils/configurationForm.utils'
+import {FormValues} from 'pages/aiAgent/types'
 import HelpCenterSelect, {
     EMPTY_HELP_CENTER_ID,
 } from 'pages/automate/common/components/HelpCenterSelect'
@@ -36,6 +40,7 @@ import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import ListField from 'pages/common/forms/ListField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
@@ -200,6 +205,32 @@ export const StoreConfigForm = ({
     const {storeConfiguration, updateStoreConfiguration} =
         useAiAgentStoreConfigurationContext()
     const isCreate = storeConfiguration === undefined
+
+    // because this selector is a function which return function we need to memoized it before send to reselect
+    const selector = useMemo(
+        () => getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES),
+        []
+    )
+    const emailIntegrations = useAppSelector(selector)
+    const emailItems = useMemo(() => {
+        return emailIntegrations.map((integration) => ({
+            email: integration.meta.address,
+            id: integration.id,
+        }))
+    }, [emailIntegrations])
+
+    const defaultFormValues: Partial<FormValues> = useMemo(() => {
+        const initialHelpCenter = faqHelpCenters[0]
+        const initialEmail = emailItems[0]
+
+        return storeConfiguration
+            ? getFormValuesFromStoreConfiguration(storeConfiguration)
+            : {
+                  ...INITIAL_FORM_VALUES,
+                  monitoredEmailIntegrations: [initialEmail],
+                  helpCenterId: initialHelpCenter?.id ?? null,
+              }
+    }, [emailItems, faqHelpCenters, storeConfiguration])
 
     const {
         handleOnSave,
