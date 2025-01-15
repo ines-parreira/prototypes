@@ -27,7 +27,7 @@ export const useCreateCustomReport = () => {
     const createCustomReport = useCallback(
         (dashboard: DashboardInput) => {
             return mutateAsync({
-                data: createDashboardPayload({dashboard}),
+                data: createDashboardPayload(dashboard),
             })
         },
         [mutateAsync]

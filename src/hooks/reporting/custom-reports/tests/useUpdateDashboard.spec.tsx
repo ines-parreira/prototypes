@@ -9,8 +9,8 @@ import {noop} from 'lodash'
 
 import {
     updateDashboardMutationConfig,
-    useUpdateCustomReportName,
-} from 'hooks/reporting/custom-reports/useUpdateCustomReportName'
+    useUpdateDashboard,
+} from 'hooks/reporting/custom-reports/useUpdateDashboard'
 import {renderHookWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 
@@ -57,7 +57,7 @@ describe('createDashboardMutationConfig(queryClient)', () => {
     })
 })
 
-describe('useUpdateCustomReportName(id)', () => {
+describe('useUpdateDashboard(id)', () => {
     const mutateAsyncMock = jest.fn()
 
     beforeEach(() => {
@@ -72,11 +72,11 @@ describe('useUpdateCustomReportName(id)', () => {
         const name = 'Text Report'
 
         const {result} = renderHookWithQueryClientProvider(() =>
-            useUpdateCustomReportName(id)
+            useUpdateDashboard(id)
         )
 
         await act(async () => {
-            await result.current.updateCustomReport({name})
+            await result.current.updateDashboard({name})
         })
 
         expect(mutateAsyncMock).toHaveBeenCalledTimes(1)

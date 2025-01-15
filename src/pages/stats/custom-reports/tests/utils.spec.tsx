@@ -24,12 +24,11 @@ import {
 import {
     createDashboardPayload,
     customReportFromApi,
-    getGroupChartsIntoRows,
     getNumberOfSelections,
-    getSavedChartsIds,
     getErrorMessage,
     getChildrenOfTypeChart,
     getChildrenIds,
+    getGroupChartsIntoRows,
 } from 'pages/stats/custom-reports/utils'
 import {
     OverviewMetric,
@@ -200,11 +199,10 @@ describe('getGroupChartsIntoRows', () => {
         expect(result.length).toBe(1)
         expect(result[0]).toEqual({
             children: [
-                {config_id: 'chart1', metadata: {}, type: 'chart'},
-                {config_id: 'chart2', metadata: {}, type: 'chart'},
-                {config_id: 'chart3', metadata: {}, type: 'chart'},
+                {config_id: 'chart1', type: 'chart'},
+                {config_id: 'chart2', type: 'chart'},
+                {config_id: 'chart3', type: 'chart'},
             ],
-            metadata: {},
             type: 'row',
         })
     })
@@ -225,22 +223,20 @@ describe('getGroupChartsIntoRows', () => {
         expect(result.length).toBe(2)
         expect(result[0]).toEqual({
             children: [
-                {config_id: 'chart1', metadata: {}, type: 'chart'},
-                {config_id: 'chart2', metadata: {}, type: 'chart'},
-                {config_id: 'chart3', metadata: {}, type: 'chart'},
-                {config_id: 'chart4', metadata: {}, type: 'chart'},
+                {config_id: 'chart1', type: 'chart'},
+                {config_id: 'chart2', type: 'chart'},
+                {config_id: 'chart3', type: 'chart'},
+                {config_id: 'chart4', type: 'chart'},
             ],
-            metadata: {},
             type: 'row',
         })
         expect(result[1]).toEqual({
             children: [
-                {config_id: 'chart5', metadata: {}, type: 'chart'},
-                {config_id: 'chart6', metadata: {}, type: 'chart'},
-                {config_id: 'chart7', metadata: {}, type: 'chart'},
-                {config_id: 'chart8', metadata: {}, type: 'chart'},
+                {config_id: 'chart5', type: 'chart'},
+                {config_id: 'chart6', type: 'chart'},
+                {config_id: 'chart7', type: 'chart'},
+                {config_id: 'chart8', type: 'chart'},
             ],
-            metadata: {},
             type: 'row',
         })
     })
@@ -251,8 +247,7 @@ describe('getGroupChartsIntoRows', () => {
 
         expect(result.length).toBe(1)
         expect(result[0]).toEqual({
-            children: [{config_id: 'chart1', metadata: {}, type: 'chart'}],
-            metadata: {},
+            children: [{config_id: 'chart1', type: 'chart'}],
             type: 'row',
         })
     })
@@ -273,28 +268,25 @@ describe('getGroupChartsIntoRows', () => {
         expect(result.length).toBe(3)
         expect(result[0]).toEqual({
             children: [
-                {config_id: 'chart1', metadata: {}, type: 'chart'},
-                {config_id: 'chart2', metadata: {}, type: 'chart'},
-                {config_id: 'chart3', metadata: {}, type: 'chart'},
+                {config_id: 'chart1', type: 'chart'},
+                {config_id: 'chart2', type: 'chart'},
+                {config_id: 'chart3', type: 'chart'},
             ],
-            metadata: {},
             type: 'row',
         })
         expect(result[1]).toEqual({
             children: [
-                {config_id: 'chart4', metadata: {}, type: 'chart'},
-                {config_id: 'chart5', metadata: {}, type: 'chart'},
-                {config_id: 'chart6', metadata: {}, type: 'chart'},
+                {config_id: 'chart4', type: 'chart'},
+                {config_id: 'chart5', type: 'chart'},
+                {config_id: 'chart6', type: 'chart'},
             ],
-            metadata: {},
             type: 'row',
         })
         expect(result[2]).toEqual({
             children: [
-                {config_id: 'chart7', metadata: {}, type: 'chart'},
-                {config_id: 'chart8', metadata: {}, type: 'chart'},
+                {config_id: 'chart7', type: 'chart'},
+                {config_id: 'chart8', type: 'chart'},
             ],
-            metadata: {},
             type: 'row',
         })
     })
@@ -442,278 +434,151 @@ describe('getSearchConfig', () => {
     })
 })
 
-describe('getSavedChartsIds', () => {
-    it('should return chart config_ids from the report children', () => {
-        const report = {
+describe('getChildrenOfTypeChart', () => {
+    it('should return empty array for empty report', () => {
+        const report: CustomReportSchema = {
             id: 1,
-            name: 'Report 1',
+            name: 'Empty Report',
             analytics_filter_id: 101,
+            emoji: null,
+            children: [],
+        }
+        const result = getChildrenOfTypeChart(report)
+        expect(result).toEqual([])
+    })
+
+    it('should return direct chart children', () => {
+        const report: CustomReportSchema = {
+            id: 2,
+            name: 'Direct Charts',
+            analytics_filter_id: 102,
             emoji: '📊',
             children: [
                 {
                     type: CustomReportChildType.Chart,
                     config_id: 'chart-1',
-                    children: [],
-                },
-                {
-                    type: CustomReportChildType.Row,
-                    config_id: 'chart-2',
-                    children: [],
-                },
-            ],
-        } as unknown as CustomReportSchema
-
-        const result = getSavedChartsIds(report)
-        expect(result).toEqual(['chart-1'])
-    })
-
-    it('should return chart config_ids from nested children', () => {
-        const report: CustomReportSchema = {
-            id: 2,
-            name: 'Report 2',
-            analytics_filter_id: 102,
-            emoji: null,
-            children: [
-                {
-                    type: CustomReportChildType.Row,
-                    config_id: 'chart-2',
-                    children: [
-                        {
-                            type: CustomReportChildType.Chart,
-                            config_id: 'chart-3',
-                            children: [],
-                        },
-                    ],
                 },
                 {
                     type: CustomReportChildType.Chart,
-                    config_id: 'chart-1',
-                    children: [],
+                    config_id: 'chart-2',
                 },
             ],
-        } as unknown as CustomReportSchema
-
-        const result = getSavedChartsIds(report)
-        expect(result).toEqual(['chart-3', 'chart-1'])
+        }
+        const result = getChildrenOfTypeChart(report)
+        expect(result).toEqual([
+            {
+                type: CustomReportChildType.Chart,
+                config_id: 'chart-1',
+            },
+            {
+                type: CustomReportChildType.Chart,
+                config_id: 'chart-2',
+            },
+        ])
     })
 
-    it('should return an empty array when no charts are present', () => {
+    it('should return nested chart children', () => {
         const report: CustomReportSchema = {
             id: 3,
-            name: 'Report 3',
+            name: 'Nested Charts',
             analytics_filter_id: 103,
             emoji: '🌐',
             children: [
                 {
                     type: CustomReportChildType.Row,
-                    config_id: 'chart-2',
-                    children: [],
+                    children: [
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: 'chart-1',
+                        },
+                    ],
                 },
                 {
-                    type: CustomReportChildType.Row,
-                    config_id: 'chart-3',
-                    children: [null as any],
+                    type: CustomReportChildType.Section,
+                    children: [
+                        {
+                            type: CustomReportChildType.Row,
+                            children: [
+                                {
+                                    type: CustomReportChildType.Chart,
+                                    config_id: 'chart-2',
+                                },
+                            ],
+                        },
+                    ],
                 },
             ],
-        } as unknown as CustomReportSchema
-
-        const result = getSavedChartsIds(report)
-        expect(result).toEqual([])
+        }
+        const result = getChildrenOfTypeChart(report)
+        expect(result).toEqual([
+            {
+                type: CustomReportChildType.Chart,
+                config_id: 'chart-1',
+            },
+            {
+                type: CustomReportChildType.Chart,
+                config_id: 'chart-2',
+            },
+        ])
     })
 
-    it('should handle empty children array', () => {
+    it('should handle mixed chart and non-chart children', () => {
         const report: CustomReportSchema = {
             id: 4,
-            name: 'Report 4',
+            name: 'Mixed Children',
             analytics_filter_id: 104,
-            emoji: undefined,
-            children: [],
-        }
-
-        const result = getSavedChartsIds(report)
-        expect(result).toEqual([])
-    })
-
-    it('should handle null children in the report', () => {
-        const report: CustomReportSchema = {
-            id: 5,
-            name: 'Report 5',
-            analytics_filter_id: 105,
             emoji: '🔥',
             children: [
-                null as any,
-                undefined as any,
+                {
+                    type: CustomReportChildType.Row,
+                    children: [
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: 'chart-1',
+                        },
+                    ],
+                },
                 {
                     type: CustomReportChildType.Chart,
-                    config_id: 'chart-4',
-                    children: [],
+                    config_id: 'chart-2',
                 },
             ],
         }
-
-        const result = getSavedChartsIds(report)
-        expect(result).toEqual(['chart-4'])
+        const result = getChildrenOfTypeChart(report)
+        expect(result).toEqual([
+            {
+                type: CustomReportChildType.Chart,
+                config_id: 'chart-1',
+            },
+            {
+                type: CustomReportChildType.Chart,
+                config_id: 'chart-2',
+            },
+        ])
     })
 
-    it('should return an empty array for reports with no children or charts', () => {
+    it('should handle null/undefined children', () => {
         const report: CustomReportSchema = {
-            id: 6,
-            name: 'Report 6',
-            analytics_filter_id: 106,
+            id: 5,
+            name: 'Null Children',
+            analytics_filter_id: 105,
             emoji: null,
-            children: [],
+            children: [
+                null,
+                undefined,
+                {
+                    type: CustomReportChildType.Chart,
+                    config_id: 'chart-1',
+                },
+            ] as any,
         }
-
-        const result = getSavedChartsIds(report)
-        expect(result).toEqual([])
-    })
-
-    describe('getChildrenOfTypeChart', () => {
-        it('should return empty array for empty report', () => {
-            const report: CustomReportSchema = {
-                id: 1,
-                name: 'Empty Report',
-                analytics_filter_id: 101,
-                emoji: null,
-                children: [],
-            }
-            const result = getChildrenOfTypeChart(report)
-            expect(result).toEqual([])
-        })
-
-        it('should return direct chart children', () => {
-            const report: CustomReportSchema = {
-                id: 2,
-                name: 'Direct Charts',
-                analytics_filter_id: 102,
-                emoji: '📊',
-                children: [
-                    {
-                        type: CustomReportChildType.Chart,
-                        config_id: 'chart-1',
-                    },
-                    {
-                        type: CustomReportChildType.Chart,
-                        config_id: 'chart-2',
-                    },
-                ],
-            }
-            const result = getChildrenOfTypeChart(report)
-            expect(result).toEqual([
-                {
-                    type: CustomReportChildType.Chart,
-                    config_id: 'chart-1',
-                },
-                {
-                    type: CustomReportChildType.Chart,
-                    config_id: 'chart-2',
-                },
-            ])
-        })
-
-        it('should return nested chart children', () => {
-            const report: CustomReportSchema = {
-                id: 3,
-                name: 'Nested Charts',
-                analytics_filter_id: 103,
-                emoji: '🌐',
-                children: [
-                    {
-                        type: CustomReportChildType.Row,
-                        children: [
-                            {
-                                type: CustomReportChildType.Chart,
-                                config_id: 'chart-1',
-                            },
-                        ],
-                    },
-                    {
-                        type: CustomReportChildType.Section,
-                        children: [
-                            {
-                                type: CustomReportChildType.Row,
-                                children: [
-                                    {
-                                        type: CustomReportChildType.Chart,
-                                        config_id: 'chart-2',
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                ],
-            }
-            const result = getChildrenOfTypeChart(report)
-            expect(result).toEqual([
-                {
-                    type: CustomReportChildType.Chart,
-                    config_id: 'chart-1',
-                },
-                {
-                    type: CustomReportChildType.Chart,
-                    config_id: 'chart-2',
-                },
-            ])
-        })
-
-        it('should handle mixed chart and non-chart children', () => {
-            const report: CustomReportSchema = {
-                id: 4,
-                name: 'Mixed Children',
-                analytics_filter_id: 104,
-                emoji: '🔥',
-                children: [
-                    {
-                        type: CustomReportChildType.Row,
-                        children: [
-                            {
-                                type: CustomReportChildType.Chart,
-                                config_id: 'chart-1',
-                            },
-                        ],
-                    },
-                    {
-                        type: CustomReportChildType.Chart,
-                        config_id: 'chart-2',
-                    },
-                ],
-            }
-            const result = getChildrenOfTypeChart(report)
-            expect(result).toEqual([
-                {
-                    type: CustomReportChildType.Chart,
-                    config_id: 'chart-1',
-                },
-                {
-                    type: CustomReportChildType.Chart,
-                    config_id: 'chart-2',
-                },
-            ])
-        })
-
-        it('should handle null/undefined children', () => {
-            const report: CustomReportSchema = {
-                id: 5,
-                name: 'Null Children',
-                analytics_filter_id: 105,
-                emoji: null,
-                children: [
-                    null,
-                    undefined,
-                    {
-                        type: CustomReportChildType.Chart,
-                        config_id: 'chart-1',
-                    },
-                ] as any,
-            }
-            const result = getChildrenOfTypeChart(report)
-            expect(result).toEqual([
-                {
-                    type: CustomReportChildType.Chart,
-                    config_id: 'chart-1',
-                },
-            ])
-        })
+        const result = getChildrenOfTypeChart(report)
+        expect(result).toEqual([
+            {
+                type: CustomReportChildType.Chart,
+                config_id: 'chart-1',
+            },
+        ])
     })
 })
 
@@ -767,23 +632,27 @@ describe('getErrorMessage(error, defaultMessage)', () => {
 
 describe('createDashboardPayload', () => {
     it('should create a custom report with the correct payload', () => {
-        const dashboard: DashboardInput = {
+        const input: DashboardInput = {
             name: 'Test Dashboard',
             emoji: '🖖',
             analytics_filter_id: 123,
             children: [
                 {
-                    type: CustomReportChildType.Row,
+                    type: CustomReportChildType.Section,
                     children: [
                         {
-                            type: CustomReportChildType.Chart,
-                            config_id: 'config_id',
+                            type: CustomReportChildType.Row,
+                            children: [
+                                {
+                                    type: CustomReportChildType.Chart,
+                                    config_id: 'config_id',
+                                },
+                            ],
                         },
                     ],
                 },
             ],
         }
-
         const expected = {
             name: 'Test Dashboard',
             emoji: '🖖',
@@ -791,20 +660,26 @@ describe('createDashboardPayload', () => {
             type: 'custom',
             children: [
                 {
-                    type: CustomReportChildType.Row,
+                    type: CustomReportChildType.Section,
                     metadata: {},
                     children: [
                         {
-                            type: CustomReportChildType.Chart,
-                            config_id: 'config_id',
+                            type: CustomReportChildType.Row,
                             metadata: {},
+                            children: [
+                                {
+                                    type: CustomReportChildType.Chart,
+                                    config_id: 'config_id',
+                                    metadata: {},
+                                },
+                            ],
                         },
                     ],
                 },
             ],
         }
 
-        const actual = createDashboardPayload({dashboard})
+        const actual = createDashboardPayload(input)
 
         expect(actual).toEqual(expected)
     })
@@ -820,61 +695,7 @@ describe('createDashboardPayload', () => {
             children: [],
         }
 
-        const actual = createDashboardPayload({dashboard})
-
-        expect(actual).toEqual(expected)
-    })
-
-    it('should return chartIds instead of children', () => {
-        const firstChartId = 'first-chart-id'
-        const secondChartId = 'second-chart-id'
-
-        const dashboard: DashboardInput = {
-            name: 'Test Dashboard',
-            emoji: '🖖',
-            analytics_filter_id: 123,
-            children: [
-                {
-                    type: CustomReportChildType.Row,
-                    children: [
-                        {
-                            type: CustomReportChildType.Chart,
-                            config_id: 'config_id',
-                        },
-                    ],
-                },
-            ],
-        }
-
-        const expected = {
-            name: 'Test Dashboard',
-            emoji: '🖖',
-            analytics_filter_id: 123,
-            type: 'custom',
-            children: [
-                {
-                    type: CustomReportChildType.Row,
-                    metadata: {},
-                    children: [
-                        {
-                            type: CustomReportChildType.Chart,
-                            config_id: firstChartId,
-                            metadata: {},
-                        },
-                        {
-                            type: CustomReportChildType.Chart,
-                            config_id: secondChartId,
-                            metadata: {},
-                        },
-                    ],
-                },
-            ],
-        }
-
-        const actual = createDashboardPayload({
-            dashboard,
-            chartIds: [firstChartId, secondChartId],
-        })
+        const actual = createDashboardPayload(dashboard)
 
         expect(actual).toEqual(expected)
     })
@@ -972,7 +793,7 @@ describe('createDashboardPayload', () => {
             ],
         }
 
-        const actual = createDashboardPayload({dashboard})
+        const actual = createDashboardPayload(dashboard)
 
         expect(actual).toEqual(expected)
     })
@@ -988,7 +809,7 @@ describe('createDashboardPayload', () => {
             children: [],
         }
 
-        const actual = createDashboardPayload({dashboard})
+        const actual = createDashboardPayload(dashboard)
 
         expect(actual).toEqual(expected)
     })

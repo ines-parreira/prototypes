@@ -1,5 +1,10 @@
 import {useGetAnalyticsCustomReport} from '@gorgias/api-queries'
-import {fireEvent, screen, waitFor} from '@testing-library/react'
+import {
+    fireEvent,
+    screen,
+    waitFor,
+    waitForElementToBeRemoved,
+} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
 import React from 'react'
@@ -7,22 +12,20 @@ import {useParams} from 'react-router-dom'
 
 import {AGENT_ROLE, BASIC_AGENT_ROLE} from 'config/user'
 import {user} from 'fixtures/users'
-import {useUpdateCustomReportName} from 'hooks/reporting/custom-reports/useUpdateCustomReportName'
+import {useUpdateDashboard} from 'hooks/reporting/custom-reports/useUpdateDashboard'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {FiltersPanelWrapper} from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
-import {CreateCustomReport} from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
 import {CustomReport} from 'pages/stats/custom-reports/CustomReport'
 import {CustomReportActionButton} from 'pages/stats/custom-reports/CustomReportActionButton'
-import {CustomReportNameForm} from 'pages/stats/custom-reports/CustomReportNameForm'
-
 import {
     CUSTOM_REPORT_ID_CTA,
     CUSTOM_REPORT_SCHEMA_ERROR,
     CustomReportPage,
 } from 'pages/stats/custom-reports/CustomReportPage'
-import {CustomReportsModal} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
 import {CustomReportSchema} from 'pages/stats/custom-reports/types'
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('react-router-dom', () => ({
@@ -32,11 +35,13 @@ jest.mock('react-router-dom', () => ({
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
+jest.mock('state/notifications/actions')
+
+jest.mock('hooks/reporting/custom-reports/useUpdateDashboard')
+const useUpdateDashboardMock = assumeMock(useUpdateDashboard)
+
 jest.mock('@gorgias/api-queries')
 const useGetAnalyticsCustomReportMock = assumeMock(useGetAnalyticsCustomReport)
-
-jest.mock('hooks/reporting/custom-reports/useUpdateCustomReportName')
-const useUpdateCustomReportNameMock = assumeMock(useUpdateCustomReportName)
 
 jest.mock('pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper')
 const FiltersPanelWrapperMock = assumeMock(FiltersPanelWrapper)
@@ -44,17 +49,8 @@ const FiltersPanelWrapperMock = assumeMock(FiltersPanelWrapper)
 jest.mock('pages/stats/DrillDownModal')
 const DrillDownModalMock = assumeMock(DrillDownModal)
 
-jest.mock('pages/stats/custom-reports/CustomReportsModal/CustomReportsModal')
-const AddChartsModalMock = assumeMock(CustomReportsModal)
-
-jest.mock('pages/stats/custom-reports/CustomReportNameForm.tsx')
-const CustomReportNameFormMock = assumeMock(CustomReportNameForm)
-
 jest.mock('pages/stats/custom-reports/CustomReport')
 const CustomReportMock = assumeMock(CustomReport)
-
-jest.mock('pages/stats/custom-reports/CreateCustomReport/CreateCustomReport')
-const CreateCustomReportMock = assumeMock(CreateCustomReport)
 
 const mockUseParams = assumeMock(useParams)
 const customReportId = '2'
@@ -67,15 +63,17 @@ describe('CustomReportPage', () => {
         currentUser: fromJS({...user, role: {name: AGENT_ROLE}}),
     }
 
+    const dashboardName = 'Dashboard'
+
     const customReport: CustomReportSchema = {
-        id: 2,
+        id: Number(customReportId),
         analytics_filter_id: 1,
-        name: 'some report',
+        name: dashboardName,
         emoji: null,
         children: [],
     }
 
-    const updateCustomReportMock = jest.fn()
+    const updateDashboardMock = jest.fn()
 
     const dispatchMock = jest.fn()
 
@@ -85,32 +83,28 @@ describe('CustomReportPage', () => {
         })
 
         FiltersPanelWrapperMock.mockReturnValue(<div />)
-        AddChartsModalMock.mockReturnValue(<div />)
+
         CustomReportMock.mockReturnValue(<div />)
-        CreateCustomReportMock.mockReturnValue(<div />)
-        CustomReportNameFormMock.mockImplementation(({onSubmit}) => (
-            <button onClick={() => onSubmit({name: 'Test Report'})}>
-                submit
+
+        DrillDownModalMock.mockReturnValue(<div />)
+
+        CustomReportActionButtonMock.mockImplementation(({setOpenModal}) => (
+            <button onClick={() => setOpenModal(true)}>
+                {CUSTOM_REPORT_ID_CTA}
             </button>
         ))
-        DrillDownModalMock.mockReturnValue(<div />)
-        CustomReportActionButtonMock.mockReturnValue(
-            <div>{CUSTOM_REPORT_ID_CTA}</div>
-        )
-        useUpdateCustomReportNameMock.mockReturnValue({
-            updateCustomReport: updateCustomReportMock,
-        } as any)
+
         useGetAnalyticsCustomReportMock.mockReturnValue({
             data: {data: customReport},
             isLoading: false,
         } as any)
+
+        useUpdateDashboardMock.mockReturnValue({
+            updateDashboard: updateDashboardMock,
+            isLoading: false,
+        })
+
         useAppDispatchMock.mockReturnValue(dispatchMock)
-    })
-
-    it('should render <CustomReportNameInput />', () => {
-        renderWithStore(<CustomReportPage />, {})
-
-        expect(CustomReportNameForm).toHaveBeenCalled()
     })
 
     it('should render actions button', () => {
@@ -176,73 +170,190 @@ describe('CustomReportPage', () => {
         expect(screen.getByText(CUSTOM_REPORT_SCHEMA_ERROR))
     })
 
-    it('should format the report data correctly', () => {
-        useGetAnalyticsCustomReportMock.mockReturnValue({
-            data: {
-                data: {
-                    ...customReport,
-                    children: [
-                        {
-                            children: [
-                                {
-                                    config_id:
-                                        'customer_satisfaction_trend_card',
-                                    type: 'chart',
-                                },
-                            ],
-                            type: 'row',
-                        },
-                    ],
-                },
-            },
-            isLoading: false,
-        } as any)
+    it('should update name when input is blurred', async () => {
         renderWithStore(<CustomReportPage />, {})
 
-        expect(CustomReportMock).toHaveBeenCalled()
-    })
+        const nameInput = screen.getByRole('textbox', {name: 'Dashboard name'})
 
-    it('should render the CreateCustomReport when no report', () => {
-        useGetAnalyticsCustomReportMock.mockReturnValue({
-            data: null,
-            isLoading: false,
-        } as any)
-        renderWithStore(<CustomReportPage />, {})
+        fireEvent.change(nameInput, {target: {value: 'Some new name'}})
 
-        expect(CreateCustomReportMock).toHaveBeenCalled()
-    })
-
-    it('should call `updateCustomReport` with correct params', () => {
-        renderWithStore(<CustomReportPage />, {})
-
-        expect(useUpdateCustomReportNameMock).toHaveBeenCalledWith(
-            customReport.id
-        )
-    })
-
-    it('should call updateCustomReport when form is submitted', async () => {
-        updateCustomReportMock.mockResolvedValueOnce({
-            data: {id: customReportId},
-        })
-
-        renderWithStore(<CustomReportPage />, {})
-
-        fireEvent.click(screen.getByText('submit'))
+        fireEvent.blur(nameInput)
 
         await waitFor(() => {
-            expect(updateCustomReportMock).toHaveBeenCalledTimes(1)
+            expect(updateDashboardMock).toHaveBeenCalledTimes(1)
         })
     })
 
-    it('should notify on error', async () => {
-        updateCustomReportMock.mockRejectedValueOnce(new Error('Bad Request'))
+    it('should _not_ update name when name is less than 2 characters', async () => {
+        renderWithStore(<CustomReportPage />, {})
+
+        const nameInput = screen.getByRole('textbox', {name: 'Dashboard name'})
+
+        fireEvent.change(nameInput, {target: {value: 'a'}})
+
+        fireEvent.blur(nameInput)
+
+        await waitFor(() => {
+            expect(updateDashboardMock).not.toHaveBeenCalled()
+        })
+    })
+
+    it('should notify on update name error', async () => {
+        const errorMessage = 'Bad Request'
+        updateDashboardMock.mockRejectedValue(new Error(errorMessage))
 
         renderWithStore(<CustomReportPage />, {})
 
-        fireEvent.click(screen.getByText('submit'))
+        const nameInput = screen.getByRole('textbox', {name: 'Dashboard name'})
+
+        fireEvent.change(nameInput, {target: {value: 'Some new name'}})
+
+        fireEvent.blur(nameInput)
 
         await waitFor(() => {
             expect(dispatchMock).toHaveBeenCalledTimes(1)
+
+            expect(notify).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: errorMessage,
+                    status: NotificationStatus.Error,
+                })
+            )
+        })
+    })
+
+    it('should update charts when modal is saved', async () => {
+        renderWithStore(<CustomReportPage />, defaultState)
+
+        const actionButton = screen.getByText(CUSTOM_REPORT_ID_CTA)
+
+        fireEvent.click(actionButton)
+
+        const searchInput = screen.getByRole('textbox', {name: 'Search charts'})
+        fireEvent.change(searchInput, {
+            target: {value: 'messages'},
+        })
+
+        const firstCheckbox = screen.getAllByRole('checkbox')[0]
+        fireEvent.click(firstCheckbox)
+
+        const saveButton = screen.getByText('Add Charts (1)')
+        fireEvent.click(saveButton)
+
+        await waitFor(() => {
+            expect(updateDashboardMock).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    it('should notify on success and close modal', async () => {
+        updateDashboardMock.mockResolvedValue({
+            data: {id: customReportId},
+        })
+
+        renderWithStore(<CustomReportPage />, defaultState)
+
+        const actionButton = screen.getByText(CUSTOM_REPORT_ID_CTA)
+
+        fireEvent.click(actionButton)
+
+        const searchInput = screen.getByRole('textbox', {name: 'Search charts'})
+        fireEvent.change(searchInput, {
+            target: {value: 'messages'},
+        })
+
+        const firstCheckbox = screen.getAllByRole('checkbox')[0]
+        fireEvent.click(firstCheckbox)
+
+        const saveButton = screen.getByText('Add Charts (1)')
+        fireEvent.click(saveButton)
+
+        await waitForElementToBeRemoved(() =>
+            screen.getByRole('textbox', {name: 'Search charts'})
+        )
+
+        await waitFor(() => {
+            expect(dispatchMock).toHaveBeenCalledTimes(1)
+
+            expect(notify).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: `Successfully saved 1 chart to ${dashboardName}`,
+                    status: NotificationStatus.Success,
+                })
+            )
+        })
+    })
+
+    it('should show correct notification message when charts are updated', async () => {
+        updateDashboardMock.mockResolvedValue({
+            data: {id: customReportId},
+        })
+
+        renderWithStore(<CustomReportPage />, defaultState)
+
+        const actionButton = screen.getByText(CUSTOM_REPORT_ID_CTA)
+
+        fireEvent.click(actionButton)
+
+        const searchInput = screen.getByRole('textbox', {name: 'Search charts'})
+        fireEvent.change(searchInput, {
+            target: {value: 'messages'},
+        })
+
+        const firstCheckbox = screen.getAllByRole('checkbox')[0]
+        fireEvent.click(firstCheckbox)
+
+        const secondCheckbox = screen.getAllByRole('checkbox')[1]
+        fireEvent.click(secondCheckbox)
+
+        const saveButton = screen.getByText('Add Charts (2)')
+        fireEvent.click(saveButton)
+
+        await waitForElementToBeRemoved(() =>
+            screen.getByRole('textbox', {name: 'Search charts'})
+        )
+
+        await waitFor(() => {
+            expect(dispatchMock).toHaveBeenCalledTimes(1)
+
+            expect(notify).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: `Successfully saved 2 charts to ${dashboardName}`,
+                    status: NotificationStatus.Success,
+                })
+            )
+        })
+    })
+
+    it('should notify on update charts error', async () => {
+        const errorMessage = 'Bad Request'
+        updateDashboardMock.mockRejectedValue(new Error(errorMessage))
+
+        renderWithStore(<CustomReportPage />, defaultState)
+
+        const actionButton = screen.getByText(CUSTOM_REPORT_ID_CTA)
+
+        fireEvent.click(actionButton)
+
+        const searchInput = screen.getByRole('textbox', {name: 'Search charts'})
+        fireEvent.change(searchInput, {
+            target: {value: 'Customer satisfaction'},
+        })
+
+        const firstCheckbox = screen.getAllByRole('checkbox')[0]
+        fireEvent.click(firstCheckbox)
+
+        const saveButton = screen.getByText('Add Charts (1)')
+        fireEvent.click(saveButton)
+
+        await waitFor(() => {
+            expect(dispatchMock).toHaveBeenCalledTimes(1)
+
+            expect(notify).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: errorMessage,
+                    status: NotificationStatus.Error,
+                })
+            )
         })
     })
 })

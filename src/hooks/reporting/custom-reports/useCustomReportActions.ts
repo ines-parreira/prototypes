@@ -11,9 +11,10 @@ import {useCallback} from 'react'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {CustomReportSchema} from 'pages/stats/custom-reports/types'
 import {
-    createDashboardPayload,
     customReportFromApi,
     getChildrenIds,
+    getGroupChartsIntoRows,
+    createDashboardPayload,
 } from 'pages/stats/custom-reports/utils'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -132,9 +133,13 @@ export const useCustomReportActions = () => {
             successMessage?: string
         }) => {
             if (dashboard) {
+                const children = getGroupChartsIntoRows(
+                    chartIds || getChildrenIds(dashboard.children)
+                )
+
                 const apiDashboard = createDashboardPayload({
-                    dashboard,
-                    chartIds,
+                    ...dashboard,
+                    children,
                 })
 
                 updateMutation.mutate(

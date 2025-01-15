@@ -34,6 +34,7 @@ export const SearchBar = ({
             placeholder={placeholder}
             className={css.searchBar}
             onChange={onSearchValue}
+            aria-label="Search charts"
             prefix={<IconInput icon="search" className={css.searchBarPrefix} />}
             suffix={
                 <IconInput

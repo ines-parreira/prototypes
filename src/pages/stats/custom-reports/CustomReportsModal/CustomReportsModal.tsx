@@ -1,6 +1,5 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useState} from 'react'
 
-import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -13,17 +12,14 @@ import {ModalSearchBar} from 'pages/stats/custom-reports/CustomReportsModal/Moda
 import {SelectableCharts} from 'pages/stats/custom-reports/CustomReportsModal/SelectableCharts'
 import {SelectableReports} from 'pages/stats/custom-reports/CustomReportsModal/SelectableReports'
 import {
+    CustomReportChild,
     ReportConfig,
     ReportsModalConfig,
-    CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
-import {getSavedChartsIds} from 'pages/stats/custom-reports/utils'
-
-type Props = {
-    isOpen: boolean
-    setIsOpen: (isOpen: boolean) => void
-    customReport?: CustomReportSchema
-}
+import {
+    getChildrenIds,
+    getGroupChartsIntoRows,
+} from 'pages/stats/custom-reports/utils'
 
 export const MODAL_TITLE = 'Select charts to display'
 export const GRAPH_DESCRIPTION =
@@ -49,38 +45,38 @@ const InitialChartsFrame = () => {
             <ChartsDefaultFrame />
             <div className={css.footer}>
                 <div className={css.description}>{GRAPH_DESCRIPTION}</div>
-                <div className={css.link}>{READ_MORE_ABOUT_CHARTS}</div>
+                <a href="#">{READ_MORE_ABOUT_CHARTS}</a>
             </div>
         </div>
     )
 }
 
-export const CustomReportsModal = ({
-    isOpen,
-    setIsOpen,
-    customReport,
-}: Props) => {
+type ChartsSelectorProps = {
+    charts?: CustomReportChild[]
+    onSave: (charts: CustomReportChild[], size: number) => void
+    onCancel: () => void
+    isLoading?: boolean
+}
+
+const ChartsSelector = ({
+    charts,
+    onSave,
+    onCancel,
+    isLoading,
+}: ChartsSelectorProps) => {
+    const [checkedCharts, setCheckedCharts] = useState(() =>
+        getChildrenIds(charts)
+    )
+
     const [selectedReport, setSelectedReport] =
         useState<null | ReportConfig<string>>(null)
-    const [checkedCharts, setCheckedCharts] = useState<string[]>([])
+
     const [config, setConfig] = useState<ReportsModalConfig | null>(
         REPORTS_MODAL_CONFIG
     )
 
-    useEffect(() => {
-        setCheckedCharts(customReport ? getSavedChartsIds(customReport) : [])
-    }, [customReport])
-
-    const onClose = useCallback(() => {
-        setIsOpen(false)
-        setSelectedReport(null)
-        setConfig(REPORTS_MODAL_CONFIG)
-    }, [setIsOpen])
-
-    const {updateDashboardHandler} = useCustomReportActions()
-
     return (
-        <Modal isOpen={isOpen} onClose={onClose} size="huge">
+        <>
             <ModalHeader title={ADD_CHARTS_CTA} />
             <ModalBody className={css.body}>
                 <div className={css.left}>
@@ -111,22 +107,43 @@ export const CustomReportsModal = ({
                 </div>
             </ModalBody>
             <ModalActionsFooter>
-                <Button onClick={onClose} intent="secondary">
+                <Button onClick={onCancel} intent="secondary">
                     Cancel
                 </Button>
                 <Button
                     onClick={() => {
-                        updateDashboardHandler({
-                            dashboard: customReport,
-                            chartIds: checkedCharts,
-                            onClose,
-                        })
+                        onSave(
+                            getGroupChartsIntoRows(checkedCharts),
+                            checkedCharts.length
+                        )
                     }}
+                    isLoading={isLoading}
                 >
                     {ADD_CHARTS_CTA}
                     {checkedCharts.length ? ` (${checkedCharts.length})` : ''}
                 </Button>
             </ModalActionsFooter>
+        </>
+    )
+}
+
+export type CustomReportsModalProps = {isOpen: boolean} & ChartsSelectorProps
+
+export const CustomReportsModal = ({
+    charts = [],
+    onSave,
+    onCancel,
+    isLoading,
+    isOpen,
+}: CustomReportsModalProps) => {
+    return (
+        <Modal isOpen={isOpen} onClose={onCancel} size="huge">
+            <ChartsSelector
+                charts={charts}
+                onSave={onSave}
+                onCancel={onCancel}
+                isLoading={isLoading}
+            />
         </Modal>
     )
 }

@@ -27,21 +27,21 @@ export const updateDashboardMutationConfig = (queryClient: QueryClient) => ({
     },
 })
 
-export const useUpdateCustomReportName = (id: number) => {
+export const useUpdateDashboard = (id: number) => {
     const queryClient = useQueryClient()
-    const {mutateAsync} = useUpdateAnalyticsCustomReport({
+    const {mutateAsync, isLoading} = useUpdateAnalyticsCustomReport({
         mutation: updateDashboardMutationConfig(queryClient),
     })
 
-    const updateCustomReport = useCallback(
+    const updateDashboard = useCallback(
         (dashboard: DashboardInput) => {
             return mutateAsync({
                 id,
-                data: createDashboardPayload({dashboard}),
+                data: createDashboardPayload(dashboard),
             })
         },
         [mutateAsync, id]
     )
 
-    return {updateCustomReport}
+    return {updateDashboard, isLoading}
 }

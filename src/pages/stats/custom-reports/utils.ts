@@ -5,9 +5,12 @@ import {
     AnalyticsCustomReportSectionSchema,
 } from '@gorgias/api-queries'
 import {
+    AnalyticsCustomReportChartSchemaType,
     AnalyticsCustomReportChildrenItem,
-    UpdateAnalyticsCustomReportBodyChildrenItem,
-    UpdateAnalyticsCustomReportBody,
+    AnalyticsCustomReportRowSchemaType,
+    AnalyticsCustomReportSectionSchemaType,
+    CreateAnalyticsCustomReportBody,
+    CreateAnalyticsCustomReportBodyChildrenItem,
 } from '@gorgias/api-types'
 import _flatten from 'lodash/flatten'
 
@@ -103,47 +106,6 @@ export const customReportFromApi = (
     }
 }
 
-export const getSavedChartsIds = (report: CustomReportSchema) => {
-    const savedIds: string[] = []
-
-    report?.children?.forEach((child) => {
-        if (child?.type === CustomReportChildType.Chart) {
-            savedIds.push(child.config_id)
-        } else {
-            child?.children?.forEach((chart) => {
-                if (chart && chart.type === CustomReportChildType.Chart) {
-                    savedIds.push(chart.config_id)
-                }
-            })
-        }
-    })
-
-    return savedIds
-}
-
-export const getGroupChartsIntoRows = (
-    charts: string[],
-    chartsByRow: number = 4
-): UpdateAnalyticsCustomReportBodyChildrenItem[] => {
-    if (!charts.length) {
-        return []
-    }
-    const rowsLength = Math.ceil(charts.length / chartsByRow)
-    return Array.from({
-        length: rowsLength,
-    }).map((_, index) => ({
-        children: charts
-            .slice(index * chartsByRow, (index + 1) * chartsByRow)
-            .map((chartId) => ({
-                config_id: chartId,
-                metadata: {},
-                type: CustomReportChildType.Chart,
-            })),
-        type: CustomReportChildType.Row,
-        metadata: {},
-    }))
-}
-
 export const getNumberOfSelections = (
     charts: Record<string, ChartConfig>,
     checkedCharts: string[]
@@ -200,14 +162,62 @@ export function getErrorMessage(
     return defaultMessage
 }
 
+export const getGroupChartsIntoRows = (
+    charts: string[],
+    chartsByRow: number = 4
+): CustomReportChild[] => {
+    if (!charts.length) {
+        return []
+    }
+    const rowsLength = Math.ceil(charts.length / chartsByRow)
+    return Array.from({
+        length: rowsLength,
+    }).map((_, index) => ({
+        children: charts
+            .slice(index * chartsByRow, (index + 1) * chartsByRow)
+            .map((chartId) => ({
+                config_id: chartId,
+                type: CustomReportChildType.Chart,
+            })),
+        type: CustomReportChildType.Row,
+    }))
+}
+
+const createChildrenWithMetadata = (
+    children: CustomReportChild[]
+): CreateAnalyticsCustomReportBodyChildrenItem[] => {
+    return children.map((child) => {
+        switch (child.type) {
+            case CustomReportChildType.Chart:
+                return {
+                    type: AnalyticsCustomReportChartSchemaType.Chart,
+                    config_id: child.config_id,
+                    metadata: {},
+                } as AnalyticsCustomReportChartSchema
+
+            case CustomReportChildType.Row:
+                return {
+                    type: AnalyticsCustomReportRowSchemaType.Row,
+                    metadata: {},
+                    children: createChildrenWithMetadata(child.children),
+                } as AnalyticsCustomReportRowSchema
+
+            case CustomReportChildType.Section:
+                return {
+                    type: AnalyticsCustomReportSectionSchemaType.Section,
+                    metadata: {},
+                    children: createChildrenWithMetadata(child.children),
+                } as AnalyticsCustomReportSectionSchema
+        }
+    })
+}
+
 export const createDashboardPayload = ({
-    dashboard,
-    chartIds,
-}: {
-    dashboard: DashboardInput
-    chartIds?: string[]
-}): UpdateAnalyticsCustomReportBody => {
-    const {name, emoji, analytics_filter_id, children} = dashboard
+    name,
+    emoji,
+    analytics_filter_id,
+    children,
+}: DashboardInput): CreateAnalyticsCustomReportBody => {
     return {
         name,
         emoji: emoji ?? null,
@@ -215,7 +225,7 @@ export const createDashboardPayload = ({
         // Remove type casting when the API is fixed, related tickets: #3195 & #3196
         analytics_filter_id: (analytics_filter_id ?? null) as unknown as number,
         type: 'custom',
-        children: getGroupChartsIntoRows(chartIds || getChildrenIds(children)),
+        children: createChildrenWithMetadata(children || []),
     }
 }
 

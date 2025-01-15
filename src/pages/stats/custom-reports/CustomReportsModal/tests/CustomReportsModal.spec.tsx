@@ -33,27 +33,26 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {assumeMock} from 'utils/testing'
 
-const customReport: CustomReportSchema = {
-    id: 2,
-    analytics_filter_id: 1,
-    name: 'some report',
-    emoji: null,
-    children: [
-        {
-            type: CustomReportChildType.Row,
-            children: [
-                {
-                    type: CustomReportChildType.Chart,
-                    config_id: OverviewMetric.MedianFirstResponseTime,
-                },
-            ],
-        },
-    ],
-}
+const charts: CustomReportSchema['children'] = [
+    {
+        type: CustomReportChildType.Row,
+        children: [
+            {
+                type: CustomReportChildType.Chart,
+                config_id: OverviewMetric.MedianFirstResponseTime,
+            },
+        ],
+    },
+    {
+        type: CustomReportChildType.Chart,
+        config_id: OverviewMetric.MedianResolutionTime,
+    },
+]
 
 const props = {
-    setIsOpen: jest.fn(),
-    customReport,
+    onCancel: jest.fn(),
+    onSave: jest.fn(),
+    charts,
     isOpen: true,
 }
 const dispatchMock = jest.fn()
@@ -162,52 +161,46 @@ describe('AddChartsModal', () => {
     })
 
     it('should select a value and call the update method', () => {
-        render(<CustomReportsModal {...props} />, {})
+        const mockHandleSave = jest.fn()
+        render(<CustomReportsModal {...props} onSave={mockHandleSave} />, {})
 
         fireEvent.click(
             screen.getByText(SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE)
         )
         userEvent.click(screen.getByText(String(firstChartDescription)))
 
-        fireEvent.click(screen.getByText(`${ADD_CHARTS_CTA} (2)`))
+        fireEvent.click(screen.getByText(`${ADD_CHARTS_CTA} (3)`))
 
-        expect(mutateUpdateReportMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                chartIds: [
-                    OverviewMetric.MedianFirstResponseTime,
-                    customerSatisfactionMetric,
-                ],
-                dashboard: {
-                    analytics_filter_id: 1,
+        expect(mockHandleSave).toHaveBeenCalledWith(
+            [
+                {
                     children: [
                         {
-                            children: [
-                                {
-                                    config_id:
-                                        OverviewMetric.MedianFirstResponseTime,
-                                    type: CustomReportChildType.Chart,
-                                },
-                            ],
-                            type: CustomReportChildType.Row,
+                            config_id: OverviewMetric.MedianFirstResponseTime,
+                            type: CustomReportChildType.Chart,
+                        },
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: OverviewMetric.MedianResolutionTime,
+                        },
+                        {
+                            config_id: customerSatisfactionMetric,
+                            type: CustomReportChildType.Chart,
                         },
                     ],
-                    emoji: null,
-                    id: 2,
-                    name: 'some report',
+                    type: CustomReportChildType.Row,
                 },
-            })
+            ],
+            3
         )
     })
 
-    it('closing the modal should reset all states', () => {
-        const {container} = render(<CustomReportsModal {...props} />, {})
+    it('should select a value and not be able to call the update method', () => {
+        render(<CustomReportsModal {...props} charts={undefined} />, {})
 
-        fireEvent.keyDown(container, {key: 'Escape'})
-
-        expect(props.setIsOpen).toHaveBeenCalled()
-        expect(
-            screen.queryByText(String(firstChartDescription))
-        ).not.toBeInTheDocument()
+        fireEvent.click(
+            screen.getByText(SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE)
+        )
     })
 
     it('should show a notification error if the number of selected charts is more than MAX_CHECKED_CHARTS', () => {
