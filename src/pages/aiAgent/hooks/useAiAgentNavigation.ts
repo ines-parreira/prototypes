@@ -13,6 +13,7 @@ import {
     PREVIEW,
     SETTINGS,
     TEST,
+    CHANNELS,
 } from 'pages/aiAgent/constants'
 
 const getAiAgentBasePath = (shopName: string, flags: LDFlagSet) => {
@@ -129,10 +130,10 @@ const useNavigationItems = (
                             title: GENERAL,
                             exact: true,
                         },
-                        // {
-                        //     route: routes.settingsChannels,
-                        //     title: CHANNELS,
-                        // },
+                        {
+                            route: routes.settingsChannels,
+                            title: CHANNELS,
+                        },
                     ],
                 },
                 // TODO: Add "Sales" tab here

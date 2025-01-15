@@ -1,5 +1,5 @@
 import {QueryClientProvider} from '@tanstack/react-query'
-import {screen} from '@testing-library/react'
+import {screen, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import {keyBy} from 'lodash'
@@ -8,6 +8,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -21,6 +22,7 @@ import {assumeMock, renderWithRouter} from 'utils/testing'
 import AiAgentConfigurationContainer from '../AiAgentConfigurationContainer'
 import {getStoreConfigurationFixture} from '../fixtures/storeConfiguration.fixtures'
 import {useGetOrCreateSnippetHelpCenter} from '../hooks/useGetOrCreateSnippetHelpCenter'
+import * as useStoreConfigurationFormHookModule from '../hooks/useStoreConfigurationForm'
 import {useAiAgentStoreConfigurationContext} from '../providers/AiAgentStoreConfigurationContext'
 
 jest.mock('state/billing/selectors', () => ({
@@ -148,23 +150,36 @@ const getHelpCenterListResponse = {
     isLoading: false,
 } as unknown as ReturnType<typeof useGetHelpCenterList>
 
-const renderComponent = ({accountId = undefined}: {accountId?: number} = {}) =>
-    renderWithRouter(
+const renderComponent = ({
+    accountId = undefined,
+    tab = undefined,
+}: {accountId?: number; tab?: string} = {}) => {
+    let path = `/:shopType/:shopName/ai-agent/settings`
+    let route = '/shopify/test-shop/ai-agent/settings'
+
+    if (tab) {
+        path = `${path}/:tab`
+        route = `${route}/${tab}`
+    }
+
+    return renderWithRouter(
         <Provider store={mockStore(getState(accountId))}>
             <QueryClientProvider client={mockQueryClient()}>
                 <AiAgentConfigurationContainer />
             </QueryClientProvider>
         </Provider>,
         {
-            path: `/:shopType/:shopName/ai-agent/settings`,
-            route: '/shopify/test-shop/ai-agent/settings',
+            path,
+            route,
         }
     )
+}
 
 const setupMocks = ({
     isStoreConfigurationLoading = false,
     isHelpCentersLoading = false,
     hasStoreConfiguration = true,
+    storeConfigurationData = {},
 } = {}) => {
     mockFlags({})
 
@@ -179,7 +194,7 @@ const setupMocks = ({
     mockUseAiAgentStoreConfigurationContext.mockReturnValue({
         ...mockedAiAgentStoreConfigurationContext,
         storeConfiguration: hasStoreConfiguration
-            ? getStoreConfigurationFixture()
+            ? getStoreConfigurationFixture(storeConfigurationData ?? {})
             : undefined,
         isLoading: isStoreConfigurationLoading,
     })
@@ -226,5 +241,106 @@ describe('AiAgentConfigurationContainer', () => {
         expect(
             screen.getAllByText('Enable AI Agent on Email')[0]
         ).toBeInTheDocument()
+    })
+
+    it('renders all section on settings page if standalone menu feature flag is disabled', () => {
+        setupMocks()
+        mockFlags({
+            [FeatureFlagKey.ConvAiStandaloneMenu]: false,
+            [FeatureFlagKey.AiAgentChat]: true,
+        })
+        renderComponent()
+
+        expect(screen.queryByText('General settings')).toBeInTheDocument()
+        expect(screen.queryByText('Chat settings')).toBeInTheDocument()
+        expect(screen.queryByText('Email settings')).toBeInTheDocument()
+        expect(screen.queryByText('Handover and exclusion')).toBeInTheDocument()
+        expect(screen.queryByText('AI ticket tagging')).toBeInTheDocument()
+        expect(screen.queryByText('Save Changes')).toBeInTheDocument()
+    })
+
+    it('renders only general sections on general settings page if standalone menu feature flag is enabled and :tab param not set', () => {
+        setupMocks()
+        mockFlags({
+            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
+            [FeatureFlagKey.AiAgentChat]: true,
+        })
+        renderComponent()
+        expect(screen.queryByText('General settings')).toBeInTheDocument()
+        expect(screen.queryByText('Chat settings')).not.toBeInTheDocument()
+        expect(screen.queryByText('Email settings')).not.toBeInTheDocument()
+        expect(screen.queryByText('Handover and exclusion')).toBeInTheDocument()
+        expect(screen.queryByText('AI ticket tagging')).toBeInTheDocument()
+        expect(screen.queryByText('Save Changes')).toBeInTheDocument()
+    })
+
+    it('renders only channels section on channels settings page if standalone menu feature flag is enabled and :tab param set to "channels"', () => {
+        setupMocks()
+        mockFlags({
+            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
+            [FeatureFlagKey.AiAgentChat]: true,
+        })
+
+        renderComponent({tab: 'channels'})
+        expect(screen.queryByText('General settings')).not.toBeInTheDocument()
+        expect(screen.queryByText('Chat settings')).toBeInTheDocument()
+        expect(screen.queryByText('Email settings')).toBeInTheDocument()
+        expect(
+            screen.queryByText('Handover and exclusion')
+        ).not.toBeInTheDocument()
+        expect(screen.queryByText('AI ticket tagging')).not.toBeInTheDocument()
+        expect(screen.queryByText('Save Changes')).toBeInTheDocument()
+    })
+
+    describe('when toggling', () => {
+        const originalUseStoreConfigurationFormHook =
+            useStoreConfigurationFormHookModule.useStoreConfigurationForm
+        const mockUseStoreConfigurationFormHookUpdateValue = jest.fn()
+
+        beforeEach(() => {
+            jest.spyOn(
+                useStoreConfigurationFormHookModule,
+                'useStoreConfigurationForm'
+            ).mockImplementation((...args) => {
+                const originalResult = originalUseStoreConfigurationFormHook(
+                    ...args
+                )
+                return {
+                    ...originalResult,
+                    updateValue: jest.fn((...args) => {
+                        originalResult.updateValue(...args)
+                        mockUseStoreConfigurationFormHookUpdateValue(...args)
+                    }),
+                }
+            })
+        })
+
+        describe('silentHandover toggle', () => {
+            it.each([
+                {expected: true, defaultValue: null},
+                {expected: true, defaultValue: false},
+                {expected: false, defaultValue: true},
+            ])(
+                'should set silentHandover to $expected when the default value is $defaultValue',
+                ({expected, defaultValue}) => {
+                    setupMocks({
+                        storeConfigurationData: {silentHandover: defaultValue},
+                    })
+
+                    mockFlags({
+                        [FeatureFlagKey.ConvAiStandaloneMenu]: false,
+                        [FeatureFlagKey.AiAgentChat]: true,
+                    })
+
+                    const {getByText} = renderComponent()
+                    fireEvent.click(
+                        getByText('Tell customers when handing over')
+                    )
+                    expect(
+                        mockUseStoreConfigurationFormHookUpdateValue
+                    ).toHaveBeenCalledWith('silentHandover', expected)
+                }
+            )
+        })
     })
 })

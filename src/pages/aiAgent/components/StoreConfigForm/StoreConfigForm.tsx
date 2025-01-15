@@ -11,7 +11,7 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 
 // Absolute Imports
 import {AiAgentNotificationType} from 'automate/notifications/types'
@@ -89,13 +89,29 @@ export const StoreConfigForm = ({
     shopType,
     faqHelpCenters,
 }: Props) => {
-    const trialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
+    const flags = useFlags()
+    const trialModeAvailable = flags[FeatureFlagKey.AiAgentTrialMode]
     const isAiAgentOnboardingWizardEnabled =
-        useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
+        flags[FeatureFlagKey.AiAgentOnboardingWizard]
     const isFollowUpAiAgentPreviewModeEnabled =
-        useFlags()[FeatureFlagKey.FollowUpAiAgentPreviewMode]
+        flags[FeatureFlagKey.FollowUpAiAgentPreviewMode]
     const isAiAgentKnowledgeTabEnabled =
-        useFlags()[FeatureFlagKey.AiAgentKnowledgeTab]
+        flags[FeatureFlagKey.AiAgentKnowledgeTab]
+    const isStandaloneMenuEnabled = flags[FeatureFlagKey.ConvAiStandaloneMenu]
+
+    // Because this component is heavy and difficult to rework
+    // Standalone team decided to add the capability to show/hide some sections based on the current route (tab param)
+    const {tab = 'general'} = useParams<{tab?: 'channels'}>()
+    // Standalone menu feature flag is used to detect if we need to use the old settings page (all in one settings) or
+    // the new one (separated tabs for general and channels settings)
+    // On "old" settings page, we display all sections
+    // On "new" general settings page, we hide channels section and display the rest
+    // On "new" channels settings page, we hide general sections and display channels section
+    const shouldDisplayOldSettingsPage = !isStandaloneMenuEnabled
+    const shouldDisplayChannelsSection =
+        shouldDisplayOldSettingsPage || tab === 'channels'
+    const shouldDisplayGeneralSections =
+        shouldDisplayOldSettingsPage || tab === 'general'
 
     const dispatch = useAppDispatch()
 
@@ -577,226 +593,255 @@ export const StoreConfigForm = ({
             <div className={css.storeConfigSettings}>
                 <form onSubmit={onSubmit} className={css.automateView}>
                     <AIAgentIntroduction />
-                    <section>
-                        <div className={css.generalSettingsWrapper}>
-                            <h2 className={css.generalSettingsTitle}>
-                                General settings
-                            </h2>
-                            <span>How should AI Agent send responses?</span>
-                        </div>
-                        {(trialModeAvailable ||
-                            isFollowUpAiAgentPreviewModeEnabled) && (
-                            <AiAgentPreviewModeSection
-                                storeConfiguration={storeConfiguration}
-                                updateValue={updateValue}
-                                aiAgentMode={aiAgentMode}
-                                aiAgentPreviewTicketViewId={
-                                    aiAgentPreviewTicketViewId
-                                }
-                                isFollowUpAiAgentPreviewModeEnabled={
-                                    isFollowUpAiAgentPreviewModeEnabled
-                                }
-                            />
-                        )}
-                        <ToneOfVoiceFormComponent
-                            toneOfVoice={formValues.toneOfVoice}
-                            customToneOfVoiceGuidance={
-                                formValues.customToneOfVoiceGuidance
-                            }
-                            updateValue={updateValue}
-                        />
-                    </section>
-
-                    <ChannelsFormComponent
-                        shopName={shopName}
-                        shopType={shopType}
-                        updateValue={updateValue}
-                        monitoredChatIntegrations={
-                            formValues.monitoredChatIntegrations
-                        }
-                        isChatChannelEnabled={isChatChannelEnabled}
-                        chatChannelDeactivatedDatetime={
-                            formValues.chatChannelDeactivatedDatetime
-                        }
-                        updateChatChannelDeactivatedDatetime={(
-                            deactivatedDatetime
-                        ) => {
-                            updateValue(
-                                'chatChannelDeactivatedDatetime',
-                                deactivatedDatetime
-                            )
-                        }}
-                        signature={formValues.signature}
-                        monitoredEmailIntegrations={
-                            formValues.monitoredEmailIntegrations
-                        }
-                        isEmailChannelEnabled={isEmailChannelEnabled}
-                        emailChannelDeactivatedDatetime={
-                            formValues.emailChannelDeactivatedDatetime
-                        }
-                        updateEmailChannelDeactivatedDatetime={(
-                            deactivatedDatetime
-                        ) => {
-                            updateValue(
-                                'emailChannelDeactivatedDatetime',
-                                deactivatedDatetime
-                            )
-                        }}
-                    />
-
-                    {!isAiAgentKnowledgeTabEnabled && (
-                        <ConfigurationSection
-                            title="Knowledge"
-                            isRequired
-                            subtitle="Select a Help Center or add at least one URL in order to enable AI Agent."
-                            sectionRef={knowledgeSectionRef}
-                            data-candu-id="ai-agent-configuration-knowledge-copy"
-                        >
-                            <div className={css.formGroup}>
-                                <Label className={css.label}>Help Center</Label>
-                                <HelpCenterSelect
-                                    helpCenter={selectedHelpCenter}
-                                    setHelpCenterId={setHelpCenterId}
-                                    helpCenters={faqHelpCenters}
-                                    withEmptyItemSelection
-                                    className={css.helpCenterSelect}
-                                />
-                                <div className={css.formInputFooterInfo}>
-                                    Select a Help Center to connect to AI Agent.
-                                </div>
+                    {shouldDisplayGeneralSections && (
+                        <section>
+                            <div className={css.generalSettingsWrapper}>
+                                <h2 className={css.generalSettingsTitle}>
+                                    General settings
+                                </h2>
+                                <span>How should AI Agent send responses?</span>
                             </div>
-
-                            {snippetHelpCenter ? (
-                                <CreatePublicSourcesSection
-                                    helpCenterId={snippetHelpCenter.id}
-                                    selectedHelpCenterId={
-                                        selectedHelpCenter?.id
+                            {(trialModeAvailable ||
+                                isFollowUpAiAgentPreviewModeEnabled) && (
+                                <AiAgentPreviewModeSection
+                                    storeConfiguration={storeConfiguration}
+                                    updateValue={updateValue}
+                                    aiAgentMode={aiAgentMode}
+                                    aiAgentPreviewTicketViewId={
+                                        aiAgentPreviewTicketViewId
                                     }
-                                    onPublicURLsChanged={handlePublicURLsChange}
-                                    shopName={shopName}
-                                    setIsFailedResources={setIsUrlSyncFail}
-                                    setIsSuccessResources={setIsUrlSyncSuccess}
+                                    isFollowUpAiAgentPreviewModeEnabled={
+                                        isFollowUpAiAgentPreviewModeEnabled
+                                    }
                                 />
-                            ) : null}
-                        </ConfigurationSection>
+                            )}
+                            <ToneOfVoiceFormComponent
+                                toneOfVoice={formValues.toneOfVoice}
+                                customToneOfVoiceGuidance={
+                                    formValues.customToneOfVoiceGuidance
+                                }
+                                updateValue={updateValue}
+                            />
+                        </section>
                     )}
 
-                    <section>
-                        <h2
-                            className={css.sectionHeader}
-                            style={{marginBottom: '4px'}}
-                        >
-                            Handover and exclusion
-                        </h2>
-                        <div
-                            className={css.sectionDescription}
-                            style={{marginBottom: '24px'}}
-                        >
-                            When AI Agent is not confident in an answer, it
-                            automatically hands tickets over to your team.
-                            Choose how AI Agent behaves when handing over
-                            tickets, and add specific handover topics that
-                            should never be resolved by AI Agent.
-                        </div>
-                        <div className={css.formGroup}>
-                            <ToggleInput
-                                className={css.featureToggle}
-                                isToggled={isHandoffToggled}
-                                onClick={() => {
-                                    if (formValues.silentHandover !== null) {
-                                        updateValue(
-                                            'silentHandover',
-                                            !formValues.silentHandover
-                                        )
-                                    } else {
-                                        updateValue(
-                                            'silentHandover',
-                                            !INITIAL_FORM_VALUES.silentHandover
-                                        )
-                                    }
-                                }}
-                                name={toggleHandoffId}
-                                caption="When enabled, AI Agent will promptly respond and tell customers their request is being handed over for further assistance. When disabled, AI Agent will not respond before handing over."
-                            >
-                                Tell customers when handing over
-                            </ToggleInput>
-                        </div>
-                        <div className={css.formGroup}>
-                            <Label className={css.subsectionHeader}>
-                                Handover topics
-                            </Label>
-                            <div className={css.formGroupDescription}>
-                                Define topics for AI Agent to always hand over
-                                to agents.
-                            </div>
-                            <ListField
-                                className={css.container}
-                                items={List(
-                                    formValues.excludedTopics !== null
-                                        ? formValues.excludedTopics
-                                        : INITIAL_FORM_VALUES.excludedTopics
-                                )}
-                                onChange={(excludedTopics: List<string>) => {
-                                    updateValue(
-                                        'excludedTopics',
-                                        excludedTopics.toJS()
-                                    )
-                                }}
-                                placeholder="e.g. Invoice and billing, Data privacy, or Complaints"
-                                maxLength={EXCLUDED_TOPIC_MAX_LENGTH}
-                                maxItems={MAX_EXCLUDED_TOPICS}
-                                addLabel="Add Topic"
-                                dataCanduId="ai-agent-configuration-handover-topics"
-                            />
-                        </div>
-                        <div className={css.formGroup}>
-                            <Label className={css.subsectionHeader}>
-                                Prevent AI Agent from triggering on specific
-                                tickets
-                            </Label>
-                            <div
-                                className={css.preventAIAgentTriggerDescription}
-                            >
-                                Configure the{' '}
-                                <Link to="/app/settings/rules/library?auto-tag-ai-ignore">
-                                    Prevent AI Agent from answering rule{' '}
-                                </Link>
-                                to prevent AI Agent from reviewing specific
-                                tickets altogether. (e.g. tickets from certain
-                                email addresses, tickets with certain tags).
-                            </div>
-                        </div>
-                    </section>
-
-                    <section>
-                        <h2
-                            className={css.sectionHeader}
-                            style={{marginBottom: '4px'}}
-                        >
-                            AI ticket tagging
-                            <IconTooltip
-                                className={css.taggingTooltip}
-                                tooltipProps={{
-                                    placement: 'top-start',
-                                }}
-                            >
-                                Provide quick instructions in everyday speech,
-                                and let AI Agent handle the rest, saving you
-                                time and ensuring consistent categorization.
-                            </IconTooltip>
-                        </h2>
-                        <div className={css.sectionDescription}>
-                            Use AI tagging to let AI Agent automatically label
-                            tickets based on their content.
-                        </div>
-
-                        <TagList
-                            tags={formValues.tags ?? []}
-                            onTagsUpdate={(tags: Tag[]) => {
-                                updateValue('tags', tags)
+                    {shouldDisplayChannelsSection && (
+                        <ChannelsFormComponent
+                            shopName={shopName}
+                            shopType={shopType}
+                            updateValue={updateValue}
+                            monitoredChatIntegrations={
+                                formValues.monitoredChatIntegrations
+                            }
+                            isChatChannelEnabled={isChatChannelEnabled}
+                            chatChannelDeactivatedDatetime={
+                                formValues.chatChannelDeactivatedDatetime
+                            }
+                            updateChatChannelDeactivatedDatetime={(
+                                deactivatedDatetime
+                            ) => {
+                                updateValue(
+                                    'chatChannelDeactivatedDatetime',
+                                    deactivatedDatetime
+                                )
+                            }}
+                            signature={formValues.signature}
+                            monitoredEmailIntegrations={
+                                formValues.monitoredEmailIntegrations
+                            }
+                            isEmailChannelEnabled={isEmailChannelEnabled}
+                            emailChannelDeactivatedDatetime={
+                                formValues.emailChannelDeactivatedDatetime
+                            }
+                            updateEmailChannelDeactivatedDatetime={(
+                                deactivatedDatetime
+                            ) => {
+                                updateValue(
+                                    'emailChannelDeactivatedDatetime',
+                                    deactivatedDatetime
+                                )
                             }}
                         />
-                    </section>
+                    )}
+
+                    {shouldDisplayGeneralSections && (
+                        <>
+                            {!isAiAgentKnowledgeTabEnabled && (
+                                <ConfigurationSection
+                                    title="Knowledge"
+                                    isRequired
+                                    subtitle="Select a Help Center or add at least one URL in order to enable AI Agent."
+                                    sectionRef={knowledgeSectionRef}
+                                    data-candu-id="ai-agent-configuration-knowledge-copy"
+                                >
+                                    <div className={css.formGroup}>
+                                        <Label className={css.label}>
+                                            Help Center
+                                        </Label>
+                                        <HelpCenterSelect
+                                            helpCenter={selectedHelpCenter}
+                                            setHelpCenterId={setHelpCenterId}
+                                            helpCenters={faqHelpCenters}
+                                            withEmptyItemSelection
+                                            className={css.helpCenterSelect}
+                                        />
+                                        <div
+                                            className={css.formInputFooterInfo}
+                                        >
+                                            Select a Help Center to connect to
+                                            AI Agent.
+                                        </div>
+                                    </div>
+
+                                    {snippetHelpCenter ? (
+                                        <CreatePublicSourcesSection
+                                            helpCenterId={snippetHelpCenter.id}
+                                            selectedHelpCenterId={
+                                                selectedHelpCenter?.id
+                                            }
+                                            onPublicURLsChanged={
+                                                handlePublicURLsChange
+                                            }
+                                            shopName={shopName}
+                                            setIsFailedResources={
+                                                setIsUrlSyncFail
+                                            }
+                                            setIsSuccessResources={
+                                                setIsUrlSyncSuccess
+                                            }
+                                        />
+                                    ) : null}
+                                </ConfigurationSection>
+                            )}
+
+                            <section>
+                                <h2
+                                    className={css.sectionHeader}
+                                    style={{marginBottom: '4px'}}
+                                >
+                                    Handover and exclusion
+                                </h2>
+                                <div
+                                    className={css.sectionDescription}
+                                    style={{marginBottom: '24px'}}
+                                >
+                                    When AI Agent is not confident in an answer,
+                                    it automatically hands tickets over to your
+                                    team. Choose how AI Agent behaves when
+                                    handing over tickets, and add specific
+                                    handover topics that should never be
+                                    resolved by AI Agent.
+                                </div>
+                                <div className={css.formGroup}>
+                                    <ToggleInput
+                                        className={css.featureToggle}
+                                        isToggled={isHandoffToggled}
+                                        onClick={() => {
+                                            if (
+                                                formValues.silentHandover !==
+                                                null
+                                            ) {
+                                                updateValue(
+                                                    'silentHandover',
+                                                    !formValues.silentHandover
+                                                )
+                                            } else {
+                                                updateValue(
+                                                    'silentHandover',
+                                                    !INITIAL_FORM_VALUES.silentHandover
+                                                )
+                                            }
+                                        }}
+                                        name={toggleHandoffId}
+                                        caption="When enabled, AI Agent will promptly respond and tell customers their request is being handed over for further assistance. When disabled, AI Agent will not respond before handing over."
+                                    >
+                                        Tell customers when handing over
+                                    </ToggleInput>
+                                </div>
+                                <div className={css.formGroup}>
+                                    <Label className={css.subsectionHeader}>
+                                        Handover topics
+                                    </Label>
+                                    <div className={css.formGroupDescription}>
+                                        Define topics for AI Agent to always
+                                        hand over to agents.
+                                    </div>
+                                    <ListField
+                                        className={css.container}
+                                        items={List(
+                                            formValues.excludedTopics !== null
+                                                ? formValues.excludedTopics
+                                                : INITIAL_FORM_VALUES.excludedTopics
+                                        )}
+                                        onChange={(
+                                            excludedTopics: List<string>
+                                        ) => {
+                                            updateValue(
+                                                'excludedTopics',
+                                                excludedTopics.toJS()
+                                            )
+                                        }}
+                                        placeholder="e.g. Invoice and billing, Data privacy, or Complaints"
+                                        maxLength={EXCLUDED_TOPIC_MAX_LENGTH}
+                                        maxItems={MAX_EXCLUDED_TOPICS}
+                                        addLabel="Add Topic"
+                                        dataCanduId="ai-agent-configuration-handover-topics"
+                                    />
+                                </div>
+                                <div className={css.formGroup}>
+                                    <Label className={css.subsectionHeader}>
+                                        Prevent AI Agent from triggering on
+                                        specific tickets
+                                    </Label>
+                                    <div
+                                        className={
+                                            css.preventAIAgentTriggerDescription
+                                        }
+                                    >
+                                        Configure the{' '}
+                                        <Link to="/app/settings/rules/library?auto-tag-ai-ignore">
+                                            Prevent AI Agent from answering rule{' '}
+                                        </Link>
+                                        to prevent AI Agent from reviewing
+                                        specific tickets altogether. (e.g.
+                                        tickets from certain email addresses,
+                                        tickets with certain tags).
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section>
+                                <h2
+                                    className={css.sectionHeader}
+                                    style={{marginBottom: '4px'}}
+                                >
+                                    AI ticket tagging
+                                    <IconTooltip
+                                        className={css.taggingTooltip}
+                                        tooltipProps={{
+                                            placement: 'top-start',
+                                        }}
+                                    >
+                                        Provide quick instructions in everyday
+                                        speech, and let AI Agent handle the
+                                        rest, saving you time and ensuring
+                                        consistent categorization.
+                                    </IconTooltip>
+                                </h2>
+                                <div className={css.sectionDescription}>
+                                    Use AI tagging to let AI Agent automatically
+                                    label tickets based on their content.
+                                </div>
+
+                                <TagList
+                                    tags={formValues.tags ?? []}
+                                    onTagsUpdate={(tags: Tag[]) => {
+                                        updateValue('tags', tags)
+                                    }}
+                                />
+                            </section>
+                        </>
+                    )}
 
                     <section>
                         <Button

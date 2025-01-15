@@ -884,6 +884,13 @@ function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
                             </Switch>
                         </AiAgentErrorBoundary>
                     )}
+                    <AiAgentErrorBoundary section="ai-agent-configuration-channels">
+                        <Route
+                            path={`${path}/settings/:tab(channels)`}
+                            exact
+                            component={AiAgentConfigurationContainer}
+                        />
+                    </AiAgentErrorBoundary>
                     <AiAgentErrorBoundary section="ai-agent-configuration">
                         <Route
                             path={`${path}/settings`}
