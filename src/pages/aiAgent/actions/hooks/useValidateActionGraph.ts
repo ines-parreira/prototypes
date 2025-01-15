@@ -43,7 +43,7 @@ const useValidateActionGraph = (
                         _set(
                             draft.errors,
                             'name',
-                            'An Action already exists with this name'
+                            'An Action already exists with this name. Choose a unique name.'
                         )
                     }
                 }

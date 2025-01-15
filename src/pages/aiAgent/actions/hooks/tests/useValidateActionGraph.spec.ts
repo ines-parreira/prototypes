@@ -286,7 +286,7 @@ describe('useValidateActionGraph()', () => {
         ).toEqual(
             expect.objectContaining({
                 errors: {
-                    name: 'An Action already exists with this name',
+                    name: 'An Action already exists with this name. Choose a unique name.',
                 },
             })
         )

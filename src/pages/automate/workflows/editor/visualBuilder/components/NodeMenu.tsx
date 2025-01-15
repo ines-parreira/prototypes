@@ -949,6 +949,7 @@ const AppMenuCategoryItems = ({
     const {data: steps = []} = useGetWorkflowConfigurationTemplates({
         triggers: ['reusable-llm-prompt'],
     })
+
     const {apps} = useApps()
     const {recharge: rechargeIntegration} = useStoreAppsContext()
 
@@ -981,7 +982,7 @@ const AppMenuCategoryItems = ({
                 }
 
                 if (!app) {
-                    return <MenuSkeletonItem />
+                    return <MenuSkeletonItem key={appId} />
                 }
 
                 if (

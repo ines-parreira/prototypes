@@ -233,11 +233,20 @@ const CreateActionView = () => {
 
     useEffect(() => {
         if (isCreateActionSuccess) {
-            history.push(
-                isCreateAndTestButtonClicked ? routes.test : routes.actions
-            )
+            if (isCreateAndTestButtonClicked) {
+                history.replace(`${routes.actions}/edit/${configuration.id}`)
+                history.push(routes.test)
+            } else {
+                history.push(routes.actions)
+            }
         }
-    }, [isCreateActionSuccess, isCreateAndTestButtonClicked, history, routes])
+    }, [
+        isCreateActionSuccess,
+        isCreateAndTestButtonClicked,
+        history,
+        routes,
+        configuration.id,
+    ])
 
     const [
         isConditionsRecommendationAlertOpen,

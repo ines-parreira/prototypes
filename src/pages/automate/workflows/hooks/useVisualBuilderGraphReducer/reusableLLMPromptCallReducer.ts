@@ -6,6 +6,8 @@ import {buildEdgeCommonProperties} from '../../models/visualBuilderGraph.model'
 import {
     ReusableLLMPromptCallNodeType,
     VisualBuilderGraph,
+    VisualBuilderNode,
+    EndNodeType,
 } from '../../models/visualBuilderGraph.types'
 import {WorkflowConfiguration} from '../../models/workflowConfiguration.types'
 import {
@@ -253,53 +255,76 @@ export function reorderNodes(
     graph: VisualBuilderGraph,
     nodeIds: string[]
 ): VisualBuilderGraph {
-    // Create ordered reusable nodes
-    const orderedReusableNodes = nodeIds
+    const orderedNodes = nodeIds
         .map((id) => {
-            const nodeIndex = graph.nodes.findIndex((node) => node.id === id)
-            if (nodeIndex === -1) return undefined
-            return [graph.nodes[nodeIndex], graph.nodes[nodeIndex + 1]]
+            const node = graph.nodes.find(
+                (n) => n.id === id && n.type === 'reusable_llm_prompt_call'
+            )
+            if (!node) return undefined
+
+            const errorNode = graph.nodes.find((n) =>
+                graph.edges.some(
+                    (e) =>
+                        e.source === id &&
+                        e.target === n.id &&
+                        n.type === 'end' &&
+                        n.data.action === 'end-failure'
+                )
+            )
+            return errorNode ? [node, errorNode] : [node]
         })
-        .filter(Boolean)
-        .reduce((acc, node) => (acc ?? []).concat(node ?? []), [])
+        .filter(
+            (
+                nodes
+            ): nodes is [
+                ReusableLLMPromptCallNodeType,
+                ...VisualBuilderNode[],
+            ] =>
+                Array.isArray(nodes) &&
+                nodes[0]?.type === 'reusable_llm_prompt_call'
+        )
+        .reduce<VisualBuilderNode[]>((acc, nodes) => [...acc, ...nodes], [])
 
     const triggerNode = graph.nodes[0]
     const endNode = graph.nodes.find(
-        (node) => node.type === 'end' && node.data.action === 'end-success'
+        (node): node is EndNodeType =>
+            node.type === 'end' && node.data.action === 'end-success'
     )
 
-    if (!triggerNode || !endNode || !orderedReusableNodes) return graph
+    if (!triggerNode || !endNode || !orderedNodes.length) return graph
 
+    // Create edges
     const newEdges = [
         {
             ...graph.edges[0],
-            target: orderedReusableNodes[0].id,
+            target: orderedNodes[0].id,
         },
     ]
-    // Connect reusable nodes in sequence
-    orderedReusableNodes.forEach((node, index) => {
+
+    orderedNodes.forEach((node: VisualBuilderNode, i: number) => {
         if (node.type === 'reusable_llm_prompt_call') {
-            const nextNode = orderedReusableNodes[index + 2] // Skip the failure node
-            const failureNode = orderedReusableNodes[index + 1]
+            const nextActionNode = orderedNodes.find(
+                (n: VisualBuilderNode, index: number) =>
+                    index > i && n.type === 'reusable_llm_prompt_call'
+            )
+            const errorNode = orderedNodes[i + 1]
 
             newEdges.push({
                 ...buildEdgeCommonProperties(),
                 source: node.id,
-                target: nextNode ? nextNode.id : endNode.id,
+                target: nextActionNode?.id || endNode.id,
                 data: {
                     name: 'Success',
                     conditions: getFallibleNodeSuccessConditions(node.id),
                 },
             })
 
-            if (failureNode && failureNode.type === 'end') {
+            if (errorNode?.type === 'end') {
                 newEdges.push({
                     ...buildEdgeCommonProperties(),
                     source: node.id,
-                    target: failureNode.id,
-                    data: {
-                        name: 'Error',
-                    },
+                    target: errorNode.id,
+                    data: {name: 'Error'},
                 })
             }
         }
@@ -307,7 +332,7 @@ export function reorderNodes(
 
     return {
         ...graph,
-        nodes: [triggerNode, endNode, ...orderedReusableNodes],
+        nodes: [triggerNode, ...orderedNodes, endNode],
         edges: newEdges,
     }
 }

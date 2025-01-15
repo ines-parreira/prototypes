@@ -2,6 +2,8 @@ import classnames from 'classnames'
 
 import React, {useMemo} from 'react'
 
+import {useParams} from 'react-router-dom'
+
 import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
 import ActionsPlatformTemplateConditions from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConditions'
@@ -39,6 +41,11 @@ const ActionFormView = ({
         () => getVariableListForNode(triggerNode.id),
         [getVariableListForNode, triggerNode.id]
     )
+
+    const {shopName, shopType} = useParams<{
+        shopName: string
+        shopType: string
+    }>()
 
     const isSimplifiedStepBuilderEnabled = useFlag(
         FeatureFlagKey.SimplifiedStepBuilder,
@@ -162,6 +169,8 @@ const ActionFormView = ({
                         graph={visualBuilderGraph}
                         dispatch={dispatch}
                         steps={steps}
+                        shopName={shopName}
+                        shopType={shopType}
                     />
                 )}
                 <ToggleInput

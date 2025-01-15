@@ -49,7 +49,7 @@ const ActionsPlatformTemplateInstructions = ({
                 </FormLabel>
             }
             error={error}
-            caption="Describe the outcome of this Action. e.g. Cancels the customer’s order"
+            caption="Describe the outcome of this Action. e.g. Cancels the customer’s order when the customer asks"
             value={value}
             onChange={onChange}
             onBlur={onBlur}

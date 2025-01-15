@@ -1,12 +1,12 @@
 import {QueryClientProvider} from '@tanstack/react-query'
 import {act, fireEvent, screen} from '@testing-library/react'
-
 import {createMemoryHistory} from 'history'
 import {produce} from 'immer'
 import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 import {ulid} from 'ulidx'
 
 import {useFlag} from 'common/flags'
@@ -60,7 +60,23 @@ const mockUseGetStoreWorkflowsConfigurations = jest.mocked(
 )
 const mockUseListActionsApps = jest.mocked(useListActionsApps)
 
-const mockStore = configureMockStore<RootState, StoreDispatch>()
+// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+jest.mock('state/integrations/selectors', () => ({
+    ...jest.requireActual('state/integrations/selectors'),
+    getIntegrationsList: () => [
+        {type: 'shopify', count: 1},
+        {type: 'recharge', count: 0},
+    ],
+}))
+
+const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
+    integrations: fromJS({
+        integrations: [
+            {type: 'shopify', count: 1, meta: {store_name: 'shopify-store'}},
+            {type: 'recharge', count: 0, meta: {store_name: 'recharge-store'}},
+        ],
+    }),
+} as RootState)
 
 const queryClient = mockQueryClient()
 
@@ -151,7 +167,7 @@ describe('<EditActionView />', () => {
 
     it('should render edit action page', () => {
         renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider store={mockStore}>
                 <QueryClientProvider client={queryClient}>
                     <EditActionView configuration={configuration} />
                 </QueryClientProvider>
@@ -170,7 +186,7 @@ describe('<EditActionView />', () => {
         const historyPushSpy = jest.spyOn(history, 'push')
 
         renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider store={mockStore}>
                 <QueryClientProvider client={queryClient}>
                     <EditActionView configuration={configuration} />
                 </QueryClientProvider>
@@ -200,7 +216,7 @@ describe('<EditActionView />', () => {
         const historyPushSpy = jest.spyOn(history, 'push')
 
         renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider store={mockStore}>
                 <QueryClientProvider client={queryClient}>
                     <EditActionView configuration={configuration} />
                 </QueryClientProvider>
@@ -230,7 +246,7 @@ describe('<EditActionView />', () => {
         const historyPushSpy = jest.spyOn(history, 'push')
 
         renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider store={mockStore}>
                 <QueryClientProvider client={queryClient}>
                     <EditActionView configuration={configuration} />
                 </QueryClientProvider>
@@ -266,7 +282,7 @@ describe('<EditActionView />', () => {
         const historyPushSpy = jest.spyOn(history, 'push')
 
         renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider store={mockStore}>
                 <QueryClientProvider client={queryClient}>
                     <EditActionView configuration={configuration} />
                 </QueryClientProvider>
@@ -292,7 +308,7 @@ describe('<EditActionView />', () => {
         const historyPushSpy = jest.spyOn(history, 'push')
 
         const {rerender} = renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider store={mockStore}>
                 <QueryClientProvider client={queryClient}>
                     <EditActionView configuration={configuration} />
                 </QueryClientProvider>
@@ -315,7 +331,7 @@ describe('<EditActionView />', () => {
         } as unknown as ReturnType<typeof useUpsertAction>)
 
         rerender(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider store={mockStore}>
                 <QueryClientProvider client={queryClient}>
                     <EditActionView configuration={configuration} />
                 </QueryClientProvider>
@@ -342,7 +358,7 @@ describe('<EditActionView />', () => {
         const historyPushSpy = jest.spyOn(history, 'push')
 
         renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider store={mockStore}>
                 <QueryClientProvider client={queryClient}>
                     <EditActionView configuration={configuration} />
                 </QueryClientProvider>
@@ -361,7 +377,7 @@ describe('<EditActionView />', () => {
 
     it('should disable "Save and test" button if action is disabled', () => {
         renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider store={mockStore}>
                 <QueryClientProvider client={queryClient}>
                     <EditActionView
                         configuration={produce(configuration, (draft) => {
@@ -388,7 +404,7 @@ describe('<EditActionView />', () => {
         } as unknown as ReturnType<typeof useUpsertAction>)
 
         renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider store={mockStore}>
                 <QueryClientProvider client={queryClient}>
                     <EditActionView configuration={configuration} />
                 </QueryClientProvider>
@@ -413,7 +429,7 @@ describe('<EditActionView />', () => {
         } as unknown as ReturnType<typeof useUpsertAction>)
 
         renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider store={mockStore}>
                 <QueryClientProvider client={queryClient}>
                     <EditActionView configuration={configuration} />
                 </QueryClientProvider>
@@ -450,7 +466,7 @@ describe('<EditActionView />', () => {
         } as unknown as ReturnType<typeof useUpsertAction>)
 
         renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider store={mockStore}>
                 <QueryClientProvider client={queryClient}>
                     <EditActionView configuration={configuration} />
                 </QueryClientProvider>
@@ -482,13 +498,7 @@ describe('<EditActionView />', () => {
 
     it('should open/close visual builder', () => {
         renderWithRouter(
-            <Provider
-                store={mockStore({
-                    integrations: fromJS({
-                        integrations: [],
-                    }),
-                } as RootState)}
-            >
+            <Provider store={mockStore}>
                 <QueryClientProvider client={queryClient}>
                     <EditActionView configuration={configuration} />
                 </QueryClientProvider>

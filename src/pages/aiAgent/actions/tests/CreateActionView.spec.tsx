@@ -107,7 +107,13 @@ describe('<CreateActionView />', () => {
 
     it('should render create action page', () => {
         renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
@@ -126,7 +132,13 @@ describe('<CreateActionView />', () => {
         const historyPushSpy = jest.spyOn(history, 'push')
 
         renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
@@ -156,7 +168,13 @@ describe('<CreateActionView />', () => {
         const historyPushSpy = jest.spyOn(history, 'push')
 
         renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
@@ -192,7 +210,13 @@ describe('<CreateActionView />', () => {
         const historyPushSpy = jest.spyOn(history, 'push')
 
         renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
@@ -218,7 +242,13 @@ describe('<CreateActionView />', () => {
         const historyPushSpy = jest.spyOn(history, 'push')
 
         const {rerender} = renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
@@ -241,7 +271,13 @@ describe('<CreateActionView />', () => {
         } as unknown as ReturnType<typeof useUpsertAction>)
 
         rerender(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
@@ -255,7 +291,13 @@ describe('<CreateActionView />', () => {
 
     it('should disable "Create and test" button if action is disabled', () => {
         renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
@@ -279,7 +321,13 @@ describe('<CreateActionView />', () => {
         } as unknown as ReturnType<typeof useUpsertAction>)
 
         renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
@@ -304,7 +352,13 @@ describe('<CreateActionView />', () => {
         } as unknown as ReturnType<typeof useUpsertAction>)
 
         renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
@@ -323,6 +377,109 @@ describe('<CreateActionView />', () => {
 
         expect(screen.getByText('Action name is required')).toBeInTheDocument()
         expect(mockUpsertAction).not.toHaveBeenCalled()
+    })
+
+    it('should display recommended conditions alert', () => {
+        const b = new WorkflowConfigurationBuilder({
+            id: ulid(),
+            name: 'test name',
+            initialStep: {
+                id: ulid(),
+                kind: 'reusable-llm-prompt-call',
+                settings: {
+                    configuration_id: 'someid1',
+                    configuration_internal_id: 'someid1',
+                    values: {},
+                },
+            },
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        instructions: 'test instructions',
+                        requires_confirmation: true,
+                    },
+                    deactivated_datetime: null,
+                },
+            ],
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [
+                            {
+                                kind: 'customer',
+                                integration_id:
+                                    '{{store.helpdesk_integration_id}}',
+                            },
+                            {
+                                kind: 'order',
+                                integration_id:
+                                    '{{store.helpdesk_integration_id}}',
+                            },
+                        ],
+                        outputs: [],
+                        conditions: {
+                            and: [
+                                {
+                                    notEqual: [
+                                        {
+                                            var: 'objects.order.external_status',
+                                        },
+                                        'open',
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                },
+            ],
+            is_draft: false,
+            apps: [{type: 'shopify'}],
+            available_languages: [],
+        })
+        b.insertReusableLLMPromptCallConditionAndEndStepAndSelect('success', {
+            success: true,
+        })
+        b.selectParentStep()
+        b.insertReusableLLMPromptCallConditionAndEndStepAndSelect('error', {
+            success: false,
+        })
+        const configuration = b.build()
+        const history = createMemoryHistory({
+            initialEntries: [
+                `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+            ],
+        })
+        history.push(
+            '/app/automation/:shopType/:shopName/ai-agent/actions/new',
+            configuration
+        )
+        renderWithRouter(
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
+                <QueryClientProvider client={queryClient}>
+                    <CreateActionView />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                history,
+                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
+                route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+            }
+        )
+        expect(
+            screen.getByText(
+                'We recommend the conditions below to ensure this Action works properly.'
+            )
+        ).toBeInTheDocument()
     })
 
     it('should create Action in advanced view', () => {
@@ -533,89 +690,23 @@ describe('<CreateActionView />', () => {
         expect(screen.getByText('Create Action')).toBeInTheDocument()
     })
 
-    it('should display recommended conditions alert', () => {
-        const b = new WorkflowConfigurationBuilder({
-            id: ulid(),
-            name: 'test name',
-            initialStep: {
-                id: ulid(),
-                kind: 'reusable-llm-prompt-call',
-                settings: {
-                    configuration_id: 'someid1',
-                    configuration_internal_id: 'someid1',
-                    values: {},
-                },
-            },
-            entrypoints: [
-                {
-                    kind: 'llm-conversation',
-                    trigger: 'llm-prompt',
-                    settings: {
-                        instructions: 'test instructions',
-                        requires_confirmation: true,
-                    },
-                    deactivated_datetime: null,
-                },
-            ],
-            triggers: [
-                {
-                    kind: 'llm-prompt',
-                    settings: {
-                        custom_inputs: [],
-                        object_inputs: [
-                            {
-                                kind: 'customer',
-                                integration_id:
-                                    '{{store.helpdesk_integration_id}}',
-                            },
-                            {
-                                kind: 'order',
-                                integration_id:
-                                    '{{store.helpdesk_integration_id}}',
-                            },
-                        ],
-                        outputs: [],
-                        conditions: {
-                            and: [
-                                {
-                                    notEqual: [
-                                        {
-                                            var: 'objects.order.external_status',
-                                        },
-                                        'open',
-                                    ],
-                                },
-                            ],
-                        },
-                    },
-                },
-            ],
-            is_draft: false,
-            apps: [{type: 'shopify'}],
-            available_languages: [],
-        })
-        b.insertReusableLLMPromptCallConditionAndEndStepAndSelect('success', {
-            success: true,
-        })
-        b.selectParentStep()
-        b.insertReusableLLMPromptCallConditionAndEndStepAndSelect('error', {
-            success: false,
-        })
-
-        const configuration = b.build()
+    it('should set up correct navigation history when clicking Create and Test', () => {
         const history = createMemoryHistory({
             initialEntries: [
                 `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
             ],
         })
+        const historyPushSpy = jest.spyOn(history, 'push')
+        const historyReplaceSpy = jest.spyOn(history, 'replace')
 
-        history.push(
-            '/app/automation/:shopType/:shopName/ai-agent/actions/new',
-            configuration
-        )
-
-        renderWithRouter(
-            <Provider store={mockStore({} as RootState)}>
+        const {rerender} = renderWithRouter(
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
@@ -627,10 +718,47 @@ describe('<CreateActionView />', () => {
             }
         )
 
-        expect(
-            screen.getByText(
-                'We recommend the conditions below to ensure this Action works properly.'
+        // Click Create and Test button
+        act(() => {
+            fireEvent.click(screen.getByText('Create and test'))
+        })
+
+        // Mock successful creation
+        mockUseUpsertAction.mockReturnValue({
+            isLoading: false,
+            mutateAsync: jest.fn(),
+            isSuccess: true,
+        } as unknown as ReturnType<typeof useUpsertAction>)
+
+        rerender(
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
+                <QueryClientProvider client={queryClient}>
+                    <CreateActionView />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        // Verify that replace was called first with the edit route
+        expect(historyReplaceSpy).toHaveBeenCalledWith(
+            expect.stringMatching(
+                /\/app\/automation\/shopify\/shopify-store\/ai-agent\/actions\/edit\/.*/
             )
-        ).toBeInTheDocument()
+        )
+
+        // Verify that push was called second with the test route
+        expect(historyPushSpy).toHaveBeenCalledWith(
+            `/app/automation/shopify/shopify-store/ai-agent/test`
+        )
+
+        // Verify the order of operations
+        const replaceCalls = historyReplaceSpy.mock.invocationCallOrder
+        const pushCalls = historyPushSpy.mock.invocationCallOrder
+        expect(Math.min(...replaceCalls)).toBeLessThan(Math.min(...pushCalls))
     })
 })

@@ -8,6 +8,18 @@ import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 
 import ActionFormView from '../ActionFormView'
 
+jest.mock('react-router-dom', () => {
+    const actual = jest.requireActual('react-router-dom')
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return {
+        ...actual,
+        useParams: () => ({
+            shopName: 'test-store',
+            shopType: 'shopify' as const,
+        }),
+    } as unknown as any
+})
+
 describe('<ActionFormView />', () => {
     it('should dispatch SET_NAME action on name change', () => {
         const mockDispatch = jest.fn()

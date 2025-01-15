@@ -5,6 +5,7 @@ import {VisualBuilderGraphAction} from 'pages/automate/workflows/hooks/useVisual
 import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Button from 'pages/common/components/button/Button'
 
+import StoreAppsProvider from '../providers/StoreAppsProvider'
 import {ConvertActionToAdvancedViewDialog} from './ConvertActionToAdvancedViewDialog'
 import css from './SimplifiedStepBuilder.less'
 import {SimplifiedStepBuilderSteps} from './SimplifiedStepBuilderSteps'
@@ -13,13 +14,24 @@ type Props = {
     graph: VisualBuilderGraph
     dispatch: Dispatch<VisualBuilderGraphAction>
     steps: ActionTemplate[]
+    shopName: string
+    shopType: string
 }
 
-export const SimplifiedStepBuilder = ({graph, dispatch, steps}: Props) => {
+export const SimplifiedStepBuilder = ({
+    graph,
+    dispatch,
+    steps,
+    shopName,
+    shopType,
+}: Props) => {
     const [isAdvancedModalOpen, setIsAdvancedModalOpen] = useState(false)
 
     return (
-        <>
+        <StoreAppsProvider
+            storeName={shopName}
+            storeType={shopType as 'shopify'}
+        >
             <div>
                 <SimplifiedStepBuilderSteps
                     graph={graph}
@@ -60,6 +72,6 @@ export const SimplifiedStepBuilder = ({graph, dispatch, steps}: Props) => {
                     setIsAdvancedModalOpen(false)
                 }}
             />
-        </>
+        </StoreAppsProvider>
     )
 }

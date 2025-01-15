@@ -29,6 +29,14 @@ import useCreateActionTemplate from '../hooks/useCreateActionTemplate'
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useApps')
 jest.mock('../hooks/useCreateActionTemplate')
+// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+jest.mock('state/integrations/selectors', () => ({
+    ...jest.requireActual('state/integrations/selectors'),
+    getIntegrationsList: () => [
+        {type: 'shopify', count: 1},
+        {type: 'recharge', count: 0},
+    ],
+}))
 
 const mockUseListActionsApps = jest.mocked(useListActionsApps)
 const mockUseApps = jest.mocked(useApps)

@@ -812,7 +812,7 @@ describe('reusableLLMPromptCallReducer', () => {
                         data: {},
                     },
                     {
-                        id: 'failure1',
+                        id: 'error1',
                         type: 'end',
                         position: {x: 100, y: 100},
                         data: {action: 'end-failure'},
@@ -824,7 +824,7 @@ describe('reusableLLMPromptCallReducer', () => {
                         data: {},
                     },
                     {
-                        id: 'failure2',
+                        id: 'error2',
                         type: 'end',
                         position: {x: 100, y: 200},
                         data: {action: 'end-failure'},
@@ -841,6 +841,54 @@ describe('reusableLLMPromptCallReducer', () => {
                         id: 'edge1',
                         source: 'trigger',
                         target: 'node1',
+                    },
+                    {
+                        id: 'edge2',
+                        source: 'node1',
+                        target: 'error1',
+                        data: {name: 'Error'},
+                    },
+                    {
+                        id: 'edge3',
+                        source: 'node1',
+                        target: 'node2',
+                        data: {
+                            name: 'Success',
+                            conditions: {
+                                and: [
+                                    {
+                                        equals: [
+                                            {var: 'steps_state.node1.success'},
+                                            true,
+                                        ],
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                    {
+                        id: 'edge4',
+                        source: 'node2',
+                        target: 'error2',
+                        data: {name: 'Error'},
+                    },
+                    {
+                        id: 'edge5',
+                        source: 'node2',
+                        target: 'success',
+                        data: {
+                            name: 'Success',
+                            conditions: {
+                                and: [
+                                    {
+                                        equals: [
+                                            {var: 'steps_state.node2.success'},
+                                            true,
+                                        ],
+                                    },
+                                ],
+                            },
+                        },
                     },
                 ],
             } as unknown as VisualBuilderGraph
@@ -877,18 +925,20 @@ describe('reusableLLMPromptCallReducer', () => {
                 })
             )
 
-            // Verify node2 connects to failure2 with error condition
-            const node2ToFailure2Edge = result.edges.find(
-                (edge) => edge.source === 'node2' && edge.target === 'failure2'
+            // Verify error edges are preserved
+            const node2ToError2Edge = result.edges.find(
+                (edge) => edge.source === 'node2' && edge.target === 'error2'
             )
-            expect(node2ToFailure2Edge).toBeTruthy()
-            expect(node2ToFailure2Edge?.data).toEqual(
-                expect.objectContaining({
-                    name: 'Error',
-                })
-            )
+            expect(node2ToError2Edge).toBeTruthy()
+            expect(node2ToError2Edge?.data).toEqual({name: 'Error'})
 
-            // Verify node1 connects to success with success condition
+            const node1ToError1Edge = result.edges.find(
+                (edge) => edge.source === 'node1' && edge.target === 'error1'
+            )
+            expect(node1ToError1Edge).toBeTruthy()
+            expect(node1ToError1Edge?.data).toEqual({name: 'Error'})
+
+            // Verify final success edge
             const node1ToSuccessEdge = result.edges.find(
                 (edge) => edge.source === 'node1' && edge.target === 'success'
             )
@@ -909,16 +959,15 @@ describe('reusableLLMPromptCallReducer', () => {
                 })
             )
 
-            // Verify node1 connects to failure1 with error condition
-            const node1ToFailure1Edge = result.edges.find(
-                (edge) => edge.source === 'node1' && edge.target === 'failure1'
-            )
-            expect(node1ToFailure1Edge).toBeTruthy()
-            expect(node1ToFailure1Edge?.data).toEqual(
-                expect.objectContaining({
-                    name: 'Error',
-                })
-            )
+            // Verify nodes order in the final array
+            expect(result.nodes.map((n) => n.id)).toEqual([
+                'trigger',
+                'node2',
+                'error2',
+                'node1',
+                'error1',
+                'success',
+            ])
         })
 
         it('handles missing nodes gracefully', () => {

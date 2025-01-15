@@ -80,6 +80,7 @@ export default function ReusableLLMPromptCallEditor({
                                         isRequired
                                         type="text"
                                         value={graphApp?.api_key ?? ''}
+                                        autoFocus={true}
                                         onChange={(nextValue) => {
                                             dispatch({
                                                 type: 'SET_APP_API_KEY',
@@ -136,6 +137,7 @@ export default function ReusableLLMPromptCallEditor({
                                             })
                                         }}
                                         error={graphApp?.errors?.refresh_token}
+                                        autoFocus={true}
                                         caption={
                                             actionsApp.auth_settings.url && (
                                                 <a

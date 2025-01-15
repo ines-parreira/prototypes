@@ -50,6 +50,11 @@ jest.mock(
     }
 )
 
+jest.mock('../../providers/StoreAppsProvider', () => ({
+    __esModule: true,
+    default: ({children}: {children: React.ReactNode}) => <>{children}</>,
+}))
+
 const mockUseApps = useApps as jest.MockedFunction<typeof useApps>
 const mockUseGetAppFromTemplateApp =
     useGetAppFromTemplateApp as jest.MockedFunction<
@@ -220,6 +225,8 @@ describe('SimplifiedStepBuilder', () => {
                 graph={defaultGraph}
                 dispatch={mockDispatch}
                 steps={defaultSteps}
+                shopName="test-store"
+                shopType="shopify"
             />,
             defaultGraph,
             mockContextDispatch
@@ -233,6 +240,8 @@ describe('SimplifiedStepBuilder', () => {
                 graph={defaultGraph}
                 dispatch={mockDispatch}
                 steps={defaultSteps}
+                shopName="test-store"
+                shopType="shopify"
             />,
             defaultGraph,
             mockContextDispatch
@@ -261,6 +270,8 @@ describe('SimplifiedStepBuilder', () => {
                 graph={graphWithMissingAuth}
                 dispatch={mockDispatch}
                 steps={defaultSteps}
+                shopName="test-store"
+                shopType="shopify"
             />,
             graphWithMissingAuth,
             mockContextDispatch
@@ -289,6 +300,8 @@ describe('SimplifiedStepBuilder', () => {
                 graph={defaultGraph}
                 dispatch={mockDispatch}
                 steps={stepsWithInputs}
+                shopName="test-store"
+                shopType="shopify"
             />,
             defaultGraph,
             mockContextDispatch
@@ -324,6 +337,8 @@ describe('SimplifiedStepBuilder', () => {
                 graph={defaultGraph}
                 dispatch={mockDispatch}
                 steps={defaultSteps}
+                shopName="test-store"
+                shopType="shopify"
             />,
             defaultGraph,
             mockContextDispatch
@@ -367,6 +382,8 @@ describe('SimplifiedStepBuilder', () => {
                 graph={graphWithMissingAuth}
                 dispatch={mockDispatch}
                 steps={stepsWithInputs}
+                shopName="test-store"
+                shopType="shopify"
             />,
             graphWithMissingAuth,
             mockContextDispatch
@@ -383,6 +400,8 @@ describe('SimplifiedStepBuilder', () => {
                 graph={defaultGraph}
                 dispatch={mockDispatch}
                 steps={defaultSteps}
+                shopName="test-store"
+                shopType="shopify"
             />,
             defaultGraph,
             mockContextDispatch
@@ -417,6 +436,8 @@ describe('SimplifiedStepBuilder', () => {
                 graph={defaultGraph}
                 dispatch={mockDispatch}
                 steps={defaultSteps}
+                shopName="test-store"
+                shopType="shopify"
             />,
             defaultGraph,
             mockContextDispatch
@@ -510,6 +531,8 @@ describe('SimplifiedStepBuilder', () => {
                 graph={defaultGraph}
                 dispatch={mockDispatch}
                 steps={stepsWithMultipleApps}
+                shopName="test-store"
+                shopType="shopify"
             />,
             defaultGraph,
             mockContextDispatch
@@ -533,6 +556,8 @@ describe('SimplifiedStepBuilder', () => {
                 graph={defaultGraph}
                 dispatch={mockDispatch}
                 steps={[]}
+                shopName="test-store"
+                shopType="shopify"
             />,
             defaultGraph,
             mockContextDispatch
@@ -561,6 +586,8 @@ describe('SimplifiedStepBuilder', () => {
                 graph={defaultGraph}
                 dispatch={mockDispatch}
                 steps={stepsWithRequiredInputs}
+                shopName="test-store"
+                shopType="shopify"
             />,
             defaultGraph,
             mockContextDispatch
@@ -586,6 +613,8 @@ describe('SimplifiedStepBuilder', () => {
                 graph={initialGraph}
                 dispatch={mockDispatch}
                 steps={defaultSteps}
+                shopName="test-store"
+                shopType="shopify"
             />,
             initialGraph,
             mockContextDispatch
@@ -611,6 +640,8 @@ describe('SimplifiedStepBuilder', () => {
                 graph={graphWithInvalidAuth}
                 dispatch={mockDispatch}
                 steps={defaultSteps}
+                shopName="test-store"
+                shopType="shopify"
             />,
             graphWithInvalidAuth,
             mockContextDispatch
@@ -677,6 +708,8 @@ describe('SimplifiedStepBuilder', () => {
                         name: 'Step 2',
                     },
                 ]}
+                shopName="test-store"
+                shopType="shopify"
             />,
             graphWithMultipleSteps,
             mockContextDispatch
@@ -735,6 +768,8 @@ describe('SimplifiedStepBuilder', () => {
                         name: 'Step 1',
                     },
                 ]}
+                shopName="test-store"
+                shopType="shopify"
             />,
             graphWithMultipleSteps,
             mockContextDispatch
@@ -799,6 +834,8 @@ describe('SimplifiedStepBuilder', () => {
                 graph={graphWithEditingNode}
                 dispatch={mockDispatch}
                 steps={defaultSteps}
+                shopName="test-store"
+                shopType="shopify"
             />,
             graphWithEditingNode,
             mockContextDispatch
@@ -821,6 +858,8 @@ describe('SimplifiedStepBuilder', () => {
                 graph={defaultGraph}
                 dispatch={mockDispatch}
                 steps={defaultSteps}
+                shopName="test-store"
+                shopType="shopify"
             />,
             defaultGraph,
             mockContextDispatch
@@ -843,6 +882,8 @@ describe('SimplifiedStepBuilder', () => {
                 graph={defaultGraph}
                 dispatch={mockDispatch}
                 steps={defaultSteps}
+                shopName="test-store"
+                shopType="shopify"
             />,
             defaultGraph,
             mockContextDispatch
@@ -908,6 +949,8 @@ describe('SimplifiedStepBuilder', () => {
                         name: 'Step 1',
                     },
                 ]}
+                shopName="test-store"
+                shopType="shopify"
             />,
             graph,
             mockContextDispatch
@@ -944,6 +987,8 @@ describe('SimplifiedStepBuilder', () => {
                 graph={graphWithEditingNode}
                 dispatch={mockDispatch}
                 steps={defaultSteps}
+                shopName="test-store"
+                shopType="shopify"
             />,
             graphWithEditingNode,
             mockContextDispatch
@@ -956,6 +1001,462 @@ describe('SimplifiedStepBuilder', () => {
 
         expect(mockDispatch).toHaveBeenCalledWith({
             type: 'CLOSE_EDITOR',
+        })
+    })
+
+    it('handles step reordering with error nodes correctly', () => {
+        const graphWithMultipleSteps = {
+            ...defaultGraph,
+            nodes: [
+                defaultGraph.nodes[0], // trigger node
+                {
+                    id: 'node1',
+                    type: 'reusable_llm_prompt_call',
+                    position: {x: 0, y: 100},
+                    data: {
+                        configuration_id: 'config1',
+                        values: {},
+                        configuration_internal_id: 'internal1',
+                    },
+                },
+                {
+                    id: 'error1',
+                    type: 'end',
+                    position: {x: 100, y: 100},
+                    data: {action: 'end-failure'},
+                },
+                {
+                    id: 'node2',
+                    type: 'reusable_llm_prompt_call',
+                    position: {x: 0, y: 200},
+                    data: {
+                        configuration_id: 'config2',
+                        values: {},
+                        configuration_internal_id: 'internal2',
+                    },
+                },
+                {
+                    id: 'error2',
+                    type: 'end',
+                    position: {x: 100, y: 200},
+                    data: {action: 'end-failure'},
+                },
+                {
+                    id: 'success',
+                    type: 'end',
+                    position: {x: 0, y: 300},
+                    data: {action: 'end-success'},
+                },
+            ],
+            edges: [
+                {
+                    id: 'edge1',
+                    source: 'start',
+                    target: 'node1',
+                },
+                {
+                    id: 'edge2',
+                    source: 'node1',
+                    target: 'error1',
+                    data: {name: 'Error'},
+                },
+                {
+                    id: 'edge3',
+                    source: 'node1',
+                    target: 'node2',
+                    data: {
+                        name: 'Success',
+                        conditions: {
+                            and: [
+                                {
+                                    equals: [
+                                        {var: 'steps_state.node1.success'},
+                                        true,
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                },
+                {
+                    id: 'edge4',
+                    source: 'node2',
+                    target: 'error2',
+                    data: {name: 'Error'},
+                },
+                {
+                    id: 'edge5',
+                    source: 'node2',
+                    target: 'success',
+                    data: {
+                        name: 'Success',
+                        conditions: {
+                            and: [
+                                {
+                                    equals: [
+                                        {var: 'steps_state.node2.success'},
+                                        true,
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                },
+            ],
+        } as unknown as VisualBuilderGraph
+
+        const {container} = renderWithProviders(
+            <SimplifiedStepBuilder
+                graph={graphWithMultipleSteps}
+                dispatch={mockDispatch}
+                shopName="test-store"
+                shopType="shopify"
+                steps={[
+                    {
+                        ...defaultSteps[0],
+                        id: 'config1',
+                        internal_id: 'internal1',
+                        name: 'Step 1',
+                    },
+                    {
+                        ...defaultSteps[0],
+                        id: 'config2',
+                        internal_id: 'internal2',
+                        name: 'Step 2',
+                    },
+                ]}
+            />,
+            graphWithMultipleSteps,
+            mockContextDispatch
+        )
+
+        const stepItems = container.querySelectorAll('[draggable="true"]')
+        expect(stepItems).toHaveLength(2)
+
+        fireEvent.dragStart(stepItems[1])
+        fireEvent.dragOver(stepItems[0])
+        fireEvent.drop(stepItems[0])
+
+        expect(mockDispatch).toHaveBeenCalledWith({
+            type: 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE',
+            nodeIds: ['node2', 'node1'],
+        })
+    })
+
+    it('preserves error nodes and connections when reordering multiple steps', () => {
+        const graphWithThreeSteps = {
+            ...defaultGraph,
+            nodes: [
+                defaultGraph.nodes[0],
+                {
+                    id: 'node1',
+                    type: 'reusable_llm_prompt_call',
+                    position: {x: 0, y: 100},
+                    data: {
+                        configuration_id: 'config1',
+                        values: {},
+                        configuration_internal_id: 'internal1',
+                    },
+                },
+                {
+                    id: 'error1',
+                    type: 'end',
+                    position: {x: 100, y: 100},
+                    data: {action: 'end-failure'},
+                },
+                {
+                    id: 'node2',
+                    type: 'reusable_llm_prompt_call',
+                    position: {x: 0, y: 200},
+                    data: {
+                        configuration_id: 'config2',
+                        values: {},
+                        configuration_internal_id: 'internal2',
+                    },
+                },
+                {
+                    id: 'error2',
+                    type: 'end',
+                    position: {x: 100, y: 200},
+                    data: {action: 'end-failure'},
+                },
+                {
+                    id: 'node3',
+                    type: 'reusable_llm_prompt_call',
+                    position: {x: 0, y: 300},
+                    data: {
+                        configuration_id: 'config3',
+                        values: {},
+                        configuration_internal_id: 'internal3',
+                    },
+                },
+                {
+                    id: 'error3',
+                    type: 'end',
+                    position: {x: 100, y: 300},
+                    data: {action: 'end-failure'},
+                },
+                {
+                    id: 'success',
+                    type: 'end',
+                    position: {x: 0, y: 400},
+                    data: {action: 'end-success'},
+                },
+            ],
+            edges: [
+                {
+                    id: 'edge1',
+                    source: 'start',
+                    target: 'node1',
+                },
+                {
+                    id: 'edge2',
+                    source: 'node1',
+                    target: 'error1',
+                    data: {name: 'Error'},
+                },
+                {
+                    id: 'edge3',
+                    source: 'node1',
+                    target: 'node2',
+                    data: {
+                        name: 'Success',
+                        conditions: {
+                            and: [
+                                {
+                                    equals: [
+                                        {var: 'steps_state.node1.success'},
+                                        true,
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                },
+                {
+                    id: 'edge4',
+                    source: 'node2',
+                    target: 'error2',
+                    data: {name: 'Error'},
+                },
+                {
+                    id: 'edge5',
+                    source: 'node2',
+                    target: 'node3',
+                    data: {
+                        name: 'Success',
+                        conditions: {
+                            and: [
+                                {
+                                    equals: [
+                                        {var: 'steps_state.node2.success'},
+                                        true,
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                },
+                {
+                    id: 'edge6',
+                    source: 'node3',
+                    target: 'error3',
+                    data: {name: 'Error'},
+                },
+                {
+                    id: 'edge7',
+                    source: 'node3',
+                    target: 'success',
+                    data: {
+                        name: 'Success',
+                        conditions: {
+                            and: [
+                                {
+                                    equals: [
+                                        {var: 'steps_state.node3.success'},
+                                        true,
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                },
+            ],
+        } as unknown as VisualBuilderGraph
+
+        const {container} = renderWithProviders(
+            <SimplifiedStepBuilder
+                graph={graphWithThreeSteps}
+                dispatch={mockDispatch}
+                shopName="test-store"
+                shopType="shopify"
+                steps={[
+                    {
+                        ...defaultSteps[0],
+                        id: 'config1',
+                        internal_id: 'internal1',
+                        name: 'Step 1',
+                    },
+                    {
+                        ...defaultSteps[0],
+                        id: 'config2',
+                        internal_id: 'internal2',
+                        name: 'Step 2',
+                    },
+                    {
+                        ...defaultSteps[0],
+                        id: 'config3',
+                        internal_id: 'internal3',
+                        name: 'Step 3',
+                    },
+                ]}
+            />,
+            graphWithThreeSteps,
+            mockContextDispatch
+        )
+
+        // Find the draggable items
+        const stepItems = container.querySelectorAll('[draggable="true"]')
+        expect(stepItems).toHaveLength(3)
+
+        // Simulate complex reordering: move last item to first position
+        fireEvent.dragStart(stepItems[2]) // Start dragging third item
+        fireEvent.dragOver(stepItems[0]) // Drag over first item
+        fireEvent.drop(stepItems[0]) // Drop on first item
+
+        // Verify the dispatch was called with the correct reordering action
+        expect(mockDispatch).toHaveBeenCalledWith({
+            type: 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE',
+            nodeIds: ['node3', 'node1', 'node2'],
+        })
+    })
+
+    it('handles reordering when some steps have no error nodes', () => {
+        const graphWithMixedSteps = {
+            ...defaultGraph,
+            nodes: [
+                defaultGraph.nodes[0], // trigger node
+                {
+                    id: 'node1',
+                    type: 'reusable_llm_prompt_call',
+                    position: {x: 0, y: 100},
+                    data: {
+                        configuration_id: 'config1',
+                        values: {},
+                        configuration_internal_id: 'internal1',
+                    },
+                },
+                {
+                    id: 'node2',
+                    type: 'reusable_llm_prompt_call',
+                    position: {x: 0, y: 200},
+                    data: {
+                        configuration_id: 'config2',
+                        values: {},
+                        configuration_internal_id: 'internal2',
+                    },
+                },
+                {
+                    id: 'error2',
+                    type: 'end',
+                    position: {x: 100, y: 200},
+                    data: {action: 'end-failure'},
+                },
+                {
+                    id: 'success',
+                    type: 'end',
+                    position: {x: 0, y: 300},
+                    data: {action: 'end-success'},
+                },
+            ],
+            edges: [
+                {
+                    id: 'edge1',
+                    source: 'start',
+                    target: 'node1',
+                },
+                {
+                    id: 'edge2',
+                    source: 'node1',
+                    target: 'node2',
+                    data: {
+                        name: 'Success',
+                        conditions: {
+                            and: [
+                                {
+                                    equals: [
+                                        {var: 'steps_state.node1.success'},
+                                        true,
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                },
+                {
+                    id: 'edge3',
+                    source: 'node2',
+                    target: 'error2',
+                    data: {name: 'Error'},
+                },
+                {
+                    id: 'edge4',
+                    source: 'node2',
+                    target: 'success',
+                    data: {
+                        name: 'Success',
+                        conditions: {
+                            and: [
+                                {
+                                    equals: [
+                                        {var: 'steps_state.node2.success'},
+                                        true,
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                },
+            ],
+        } as unknown as VisualBuilderGraph
+
+        const {container} = renderWithProviders(
+            <SimplifiedStepBuilder
+                graph={graphWithMixedSteps}
+                dispatch={mockDispatch}
+                shopName="test-store"
+                shopType="shopify"
+                steps={[
+                    {
+                        ...defaultSteps[0],
+                        id: 'config1',
+                        internal_id: 'internal1',
+                        name: 'Step 1',
+                    },
+                    {
+                        ...defaultSteps[0],
+                        id: 'config2',
+                        internal_id: 'internal2',
+                        name: 'Step 2',
+                    },
+                ]}
+            />,
+            graphWithMixedSteps,
+            mockContextDispatch
+        )
+
+        // Find the draggable items
+        const stepItems = container.querySelectorAll('[draggable="true"]')
+        expect(stepItems).toHaveLength(2)
+
+        // Simulate reordering
+        fireEvent.dragStart(stepItems[1]) // Start dragging second item
+        fireEvent.dragOver(stepItems[0]) // Drag over first item
+        fireEvent.drop(stepItems[0]) // Drop on first item
+
+        expect(mockDispatch).toHaveBeenCalledWith({
+            type: 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE',
+            nodeIds: ['node2', 'node1'],
         })
     })
 })
