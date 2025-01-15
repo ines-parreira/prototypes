@@ -94,8 +94,8 @@ const defaultRules = [
 const DEFAULT_PARAMS: Parameters<typeof useAiAgentEnabled>[0] = {
     monitoredChatIntegrations: [],
     monitoredEmailIntegrations: [],
-    isChatChanelEnabled: false,
-    isEmailChannelEnabled: false,
+    isEnablingChatChannel: false,
+    isEnablingEmailChannel: false,
 }
 
 describe('useAiAgentEnabled', () => {
@@ -163,7 +163,7 @@ describe('useAiAgentEnabled', () => {
                 useAiAgentEnabled({
                     ...DEFAULT_PARAMS,
                     monitoredChatIntegrations: [1],
-                    isChatChanelEnabled: true,
+                    isEnablingChatChannel: true,
                 }),
             {wrapper}
         )
@@ -186,7 +186,7 @@ describe('useAiAgentEnabled', () => {
             () =>
                 useAiAgentEnabled({
                     ...DEFAULT_PARAMS,
-                    isEmailChannelEnabled: true,
+                    isEnablingEmailChannel: true,
                     monitoredEmailIntegrations: [
                         {id: 1, email: 'test@example.com'},
                     ],
@@ -210,7 +210,7 @@ describe('useAiAgentEnabled', () => {
                 useAiAgentEnabled({
                     ...DEFAULT_PARAMS,
                     monitoredChatIntegrations: [1],
-                    isChatChanelEnabled: true,
+                    isEnablingChatChannel: true,
                 }),
             {wrapper}
         )
@@ -234,7 +234,7 @@ describe('useAiAgentEnabled', () => {
             () =>
                 useAiAgentEnabled({
                     ...DEFAULT_PARAMS,
-                    isEmailChannelEnabled: true,
+                    isEnablingEmailChannel: true,
                     monitoredEmailIntegrations: [
                         {id: 1, email: 'test@example/com'},
                     ],
@@ -276,7 +276,7 @@ describe('useAiAgentEnabled', () => {
             () =>
                 useAiAgentEnabled({
                     ...DEFAULT_PARAMS,
-                    isChatChanelEnabled: true,
+                    isEnablingChatChannel: true,
                     monitoredChatIntegrations: [1],
                 }),
             {wrapper}
@@ -317,8 +317,8 @@ describe('useAiAgentEnabled', () => {
                         {id: 1, email: 'test@mail.com'},
                     ],
                     monitoredChatIntegrations: [1],
-                    isChatChanelEnabled: false,
-                    isEmailChannelEnabled: false,
+                    isEnablingChatChannel: false,
+                    isEnablingEmailChannel: false,
                 }),
             {wrapper}
         )

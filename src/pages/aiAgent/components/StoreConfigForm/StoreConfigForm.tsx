@@ -215,8 +215,11 @@ export const StoreConfigForm = ({
     const {updateSettingsAfterAiAgentEnabled} = useAiAgentEnabled({
         monitoredEmailIntegrations: formValues.monitoredEmailIntegrations ?? [],
         monitoredChatIntegrations: formValues.monitoredChatIntegrations ?? [],
-        isChatChanelEnabled: formValues.chatChannelDeactivatedDatetime === null,
-        isEmailChannelEnabled:
+        isEnablingChatChannel:
+            Boolean(defaultFormValues.chatChannelDeactivatedDatetime) &&
+            !formValues.chatChannelDeactivatedDatetime,
+        isEnablingEmailChannel:
+            Boolean(defaultFormValues.emailChannelDeactivatedDatetime) &&
             formValues.emailChannelDeactivatedDatetime === null,
     })
 

@@ -52,11 +52,10 @@ export const ConnectedChannelsEmailView = () => {
             storeConfiguration?.monitoredEmailIntegrations ?? [],
         monitoredChatIntegrations:
             storeConfiguration?.monitoredChatIntegrations ?? [],
-        isChatChanelEnabled:
-            storeConfiguration?.chatChannelDeactivatedDatetime === null,
+        isEnablingChatChannel: false,
         // Reverse the condition because this component update email channel without "Save" button how it works on Settings Page.
         // Linear to refactor this hook to support params in updateSettingsAfterAiAgentEnabled https://linear.app/gorgias/issue/AUTAI-1993/useaiagentenabled-hook-incorrectly-working-with-one-click-updates
-        isEmailChannelEnabled: !(
+        isEnablingEmailChannel: !(
             storeConfiguration?.emailChannelDeactivatedDatetime === null
         ),
     })

@@ -13,13 +13,13 @@ import {NotificationStatus} from 'state/notifications/types'
 export const useAiAgentEnabled = ({
     monitoredEmailIntegrations,
     monitoredChatIntegrations,
-    isChatChanelEnabled,
-    isEmailChannelEnabled,
+    isEnablingChatChannel,
+    isEnablingEmailChannel,
 }: {
     monitoredEmailIntegrations: {id: number; email: string}[]
     monitoredChatIntegrations: number[]
-    isChatChanelEnabled: boolean
-    isEmailChannelEnabled: boolean
+    isEnablingChatChannel: boolean
+    isEnablingEmailChannel: boolean
 }) => {
     const {shopType, shopName} = useParams<{
         shopType: string
@@ -59,30 +59,30 @@ export const useAiAgentEnabled = ({
     }, [rules, isLoadingRules])
 
     const successNotification = useMemo(() => {
-        const isAutorespondersTurnedOff =
-            isEmailChannelEnabled && monitoredEmailIntegrations.length > 0
-        const isArticleRecommendationsTurnedOff =
-            isChatChanelEnabled && monitoredChatIntegrations.length > 0
+        const isDisablingAutoresponders =
+            isEnablingEmailChannel && monitoredEmailIntegrations.length > 0
+        const isDisablingArticleRecommendations =
+            isEnablingChatChannel && monitoredChatIntegrations.length > 0
 
-        if (!isAutorespondersTurnedOff && !isArticleRecommendationsTurnedOff) {
+        if (!isDisablingAutoresponders && !isDisablingArticleRecommendations) {
             return ''
         }
 
-        if (isAutorespondersTurnedOff && isArticleRecommendationsTurnedOff) {
+        if (isDisablingAutoresponders && isDisablingArticleRecommendations) {
             return 'AI Agent enabled. Autoresponders and Article Recommendations have been turned off to avoid conflicting responses.'
         }
 
-        if (isAutorespondersTurnedOff) {
+        if (isDisablingAutoresponders) {
             return 'AI Agent enabled. Autoresponders have been turned off to avoid conflicting responses.'
         }
 
-        if (isArticleRecommendationsTurnedOff) {
+        if (isDisablingArticleRecommendations) {
             return 'AI Agent enabled. Article Recommendations have been turned off to avoid conflicting responses.'
         }
     }, [
-        isEmailChannelEnabled,
+        isEnablingEmailChannel,
         monitoredEmailIntegrations.length,
-        isChatChanelEnabled,
+        isEnablingChatChannel,
         monitoredChatIntegrations.length,
     ])
 
@@ -97,7 +97,7 @@ export const useAiAgentEnabled = ({
         const calls = []
 
         //turn off article recommendations for all monitored chat integrations
-        if (isChatChanelEnabled) {
+        if (isEnablingChatChannel) {
             for (const chatApplicationId of chatApplicationsIds) {
                 const updateChatApplicationAutomationSettings =
                     handleChatApplicationAutomationSettingsUpdate(
@@ -115,7 +115,7 @@ export const useAiAgentEnabled = ({
         }
 
         //turn off autoresponder for all managed rules
-        if (isEmailChannelEnabled && monitoredEmailIntegrations.length > 0) {
+        if (isEnablingEmailChannel && monitoredEmailIntegrations.length > 0) {
             for (const rule of managedRules) {
                 calls.push(
                     updateRule({
@@ -151,8 +151,8 @@ export const useAiAgentEnabled = ({
         chatApplicationsIds,
         dispatch,
         handleChatApplicationAutomationSettingsUpdate,
-        isChatChanelEnabled,
-        isEmailChannelEnabled,
+        isEnablingChatChannel,
+        isEnablingEmailChannel,
         managedRules,
         monitoredChatIntegrations.length,
         monitoredEmailIntegrations.length,
