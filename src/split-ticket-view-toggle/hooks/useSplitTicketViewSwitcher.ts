@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useRef} from 'react'
-import {useHistory, useLocation, useParams} from 'react-router-dom'
+import {matchPath, useHistory, useLocation} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
@@ -45,7 +45,17 @@ export default function useSplitTicketViewSwitcher() {
         [activeView]
     )
 
-    const {ticketId, viewId} = useParams<{ticketId?: string; viewId?: string}>()
+    const {ticketId, viewId} = useMemo(() => {
+        let match = matchPath(path, '/app/views/:viewId/:ticketId?')
+        if (!match) {
+            match = matchPath(path, '/app/tickets/:viewId/:viewSlug?')
+        }
+        if (!match) {
+            match = matchPath(path, '/app/ticket/:ticketId')
+        }
+
+        return (match?.params || {}) as {ticketId?: string; viewId?: string}
+    }, [path])
 
     useEffect(() => {
         if (

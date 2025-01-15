@@ -1,11 +1,15 @@
 import React from 'react'
 import {Route, Switch} from 'react-router-dom'
 
-import PanelLayout from 'pages/PanelLayout'
-import {useSplitTicketPage} from 'tickets/pages/SplitTicketPage'
-import {useSplitViewPage} from 'tickets/pages/SplitViewPage'
-import {useTicketPage} from 'tickets/pages/TicketPage'
-import {useViewPage} from 'tickets/pages/ViewPage'
+import {PanelGroup, Panels} from 'core/layout/panels'
+import {GlobalNavigationPanel} from 'core/navigation'
+import useWindowSize from 'hooks/useWindowSize'
+import {TicketsNavbarPanel} from 'tickets/navigation'
+import {TicketDetailPanel} from 'tickets/ticket-detail'
+import {TicketEmptyPanel} from 'tickets/ticket-empty'
+import {TicketInfobarPanel} from 'tickets/ticket-infobar'
+import {TicketsListPanel} from 'tickets/tickets-list'
+import {ViewPanel} from 'tickets/view'
 
 export const panelRoutesRegexps = [
     /^\/app\/?$/,
@@ -15,37 +19,49 @@ export const panelRoutesRegexps = [
 ]
 
 export default function PanelRoutes() {
-    const splitTicketLayoutProps = useSplitTicketPage()
-    const splitViewLayoutProps = useSplitViewPage()
-    const fullWidthTicketLayoutProps = useTicketPage()
-    const fullWidthViewLayoutProps = useViewPage()
+    const {width} = useWindowSize()
 
+    // The `key` props below are not really needed in most cases, but they are
+    // needed in the case of the `TicketListPanel`, `TicketDetailPanel` and
+    // `TicketInfobarPanel`. When switching between the ticket routes, the
+    // `TicketListPanel` can simply (dis)appear without the detail/infobar
+    // panels re-rendering, but this can only be achieved by using react keys.
     return (
-        <Switch>
-            <Route exact path="/app">
-                <PanelLayout {...fullWidthViewLayoutProps} />
-            </Route>
-            <Route exact path="/app/tickets">
-                <PanelLayout {...fullWidthViewLayoutProps} />
-            </Route>
-            <Route exact path="/app/tickets/new/:visibility?">
-                <PanelLayout {...fullWidthViewLayoutProps} />
-            </Route>
-            <Route exact path="/app/tickets/search">
-                <PanelLayout {...fullWidthViewLayoutProps} />
-            </Route>
-            <Route exact path="/app/tickets/:viewId/:viewSlug?">
-                <PanelLayout {...fullWidthViewLayoutProps} />
-            </Route>
-            <Route exact path="/app/ticket/:ticketId">
-                <PanelLayout {...fullWidthTicketLayoutProps} />
-            </Route>
-            <Route exact path="/app/views/:viewId?">
-                <PanelLayout {...splitViewLayoutProps} />
-            </Route>
-            <Route exact path="/app/views/:viewId/:ticketId">
-                <PanelLayout {...splitTicketLayoutProps} />
-            </Route>
-        </Switch>
+        <Panels size={width}>
+            <GlobalNavigationPanel key="global-navigation" />
+            <TicketsNavbarPanel key="navbar" />
+            <PanelGroup>
+                <Switch>
+                    <Route exact path="/app">
+                        <ViewPanel key="view-panel" />
+                    </Route>
+                    <Route exact path="/app/tickets">
+                        <ViewPanel key="view-panel" />
+                    </Route>
+                    <Route exact path="/app/tickets/new/:visibility?">
+                        <ViewPanel key="view-panel" />
+                    </Route>
+                    <Route exact path="/app/tickets/search">
+                        <ViewPanel key="view-panel" />
+                    </Route>
+                    <Route exact path="/app/tickets/:viewId/:viewSlug?">
+                        <ViewPanel key="view-panel" />
+                    </Route>
+                    <Route exact path="/app/ticket/:ticketId">
+                        <TicketDetailPanel key="ticket-detail-panel" />
+                        <TicketInfobarPanel key="infobar-panel" />
+                    </Route>
+                    <Route exact path="/app/views/:viewId?">
+                        <TicketsListPanel key="ticket-list-panel" />
+                        <TicketEmptyPanel key="ticket-empty-panel" />
+                    </Route>
+                    <Route exact path="/app/views/:viewId/:ticketId">
+                        <TicketsListPanel key="ticket-list-panel" />
+                        <TicketDetailPanel key="ticket-detail-panel" />
+                        <TicketInfobarPanel key="infobar-panel" />
+                    </Route>
+                </Switch>
+            </PanelGroup>
+        </Panels>
     )
 }

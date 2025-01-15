@@ -9,7 +9,7 @@ import Routes from './Routes'
 
 export default function RoutesWrapper() {
     const shouldRedirectDeprecatedTicketRoutes = useFlag<boolean>(
-        FeatureFlagKey.RedirectDeprecatedTicketRoutes,
+        FeatureFlagKey.GlobalNavigation,
         false
     )
     const {pathname} = useLocation()
