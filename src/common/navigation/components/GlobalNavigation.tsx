@@ -1,7 +1,10 @@
 import React from 'react'
 
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
+import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {hasRole} from 'utils'
 
@@ -15,6 +18,18 @@ import UserItem from './UserItem'
 export default function GlobalNavigation() {
     const currentUser = useAppSelector(getCurrentUser)
     const activeItem = useActiveItem()
+
+    const hasAutomate = useAppSelector(getHasAutomate)
+    const hasAiAgentStandaloneMenu = useFlag<boolean>(
+        FeatureFlagKey.ConvAiStandaloneMenu,
+        false
+    )
+    const hasAiAgentPreview = useFlag<boolean>(
+        FeatureFlagKey.AIAgentPreviewModeAllowed,
+        false
+    )
+    const isAiAgentItemEnabled =
+        hasAiAgentStandaloneMenu && (hasAutomate || hasAiAgentPreview)
 
     return (
         <nav className={css.container}>
@@ -45,6 +60,14 @@ export default function GlobalNavigation() {
                             url="/app/automation"
                         />
                     )}
+                    {isAiAgentItemEnabled &&
+                        hasRole(currentUser, UserRole.Agent) && (
+                            <Item
+                                icon="auto_awesome"
+                                isActive={activeItem === 'ai-agent'}
+                                url="/app/ai-agent"
+                            />
+                        )}
                     {hasRole(currentUser, UserRole.Admin) && (
                         <Item
                             icon="monetization_on"

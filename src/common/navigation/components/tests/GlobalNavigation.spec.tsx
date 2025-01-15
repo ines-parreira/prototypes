@@ -2,7 +2,10 @@ import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
 
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
+import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {assumeMock} from 'utils/testing'
 
@@ -14,6 +17,9 @@ const getCurrentUserMock = assumeMock(getCurrentUser)
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 
+jest.mock('state/billing/selectors', () => ({getHasAutomate: jest.fn()}))
+const getHasAutomateMock = assumeMock(getHasAutomate)
+
 jest.mock('../../hooks/useActiveItem', () => jest.fn())
 const useActiveItemMock = assumeMock(useActiveItem)
 
@@ -22,6 +28,9 @@ jest.mock('../GlobalNavigationSpotlight', () => ({
 }))
 jest.mock('../NotificationsItem', () => () => <div>NotificationsItem</div>)
 jest.mock('../UserItem', () => () => <div>UserItem</div>)
+
+jest.mock('common/flags')
+const mockUseFlag = useFlag as jest.Mock
 
 describe('GlobalNavigation', () => {
     beforeEach(() => {
@@ -95,5 +104,42 @@ describe('GlobalNavigation', () => {
     it('should render the user item', () => {
         const {getByText} = render(<GlobalNavigation />)
         expect(getByText('UserItem')).toBeInTheDocument()
+    })
+
+    it('should not render the ai agent icon if user is not a lead agent', () => {
+        const {queryByText} = render(<GlobalNavigation />)
+        expect(queryByText('auto_awesome')).not.toBeInTheDocument()
+    })
+
+    it('should not render the ai agent icon if the feature flag is not enabled', () => {
+        getCurrentUserMock.mockReturnValue(
+            fromJS({role: {name: UserRole.Agent}})
+        )
+        const {queryByText} = render(<GlobalNavigation />)
+        expect(queryByText('auto_awesome')).not.toBeInTheDocument()
+    })
+
+    it('should not render the ai agent icon if the feature flag is enabled but user does not have access to automate', () => {
+        getCurrentUserMock.mockReturnValue(
+            fromJS({role: {name: UserRole.Agent}})
+        )
+        mockUseFlag.mockImplementation((flag) =>
+            flag === FeatureFlagKey.ConvAiStandaloneMenu ? true : false
+        )
+        getHasAutomateMock.mockReturnValue(false)
+        const {queryByText} = render(<GlobalNavigation />)
+        expect(queryByText('auto_awesome')).not.toBeInTheDocument()
+    })
+
+    it('should render the ai agent icon if the feature flag is enabled and user has access to automate', () => {
+        getCurrentUserMock.mockReturnValue(
+            fromJS({role: {name: UserRole.Agent}})
+        )
+        mockUseFlag.mockImplementation((flag) =>
+            flag === FeatureFlagKey.ConvAiStandaloneMenu ? true : false
+        )
+        getHasAutomateMock.mockReturnValue(true)
+        const {queryByText} = render(<GlobalNavigation />)
+        expect(queryByText('auto_awesome')).toBeInTheDocument()
     })
 })

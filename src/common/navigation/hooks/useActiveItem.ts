@@ -3,6 +3,7 @@ import {useLocation} from 'react-router-dom'
 
 const pathItemMap: Record<string, string> = {
     '/app/automation': 'automate',
+    '/app/ai-agent': 'ai-agent',
     '/app/convert': 'convert',
     '/app/customers': 'customers',
     '/app/home': 'home',
