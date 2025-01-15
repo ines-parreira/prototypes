@@ -15,7 +15,7 @@ import ScriptTagMigrationModal from 'pages/common/components/ScriptTagMigrationM
 import SessionChangeDetection from 'pages/common/components/SessionChangeDetection'
 import Spotlight from 'pages/common/components/Spotlight/Spotlight'
 import OutOfRecoveryCodesModal from 'pages/settings/yourProfile/twoFactorAuthentication/OutOfRecoveryCodesModal'
-import {useTheme} from 'theme'
+import {useApplyTheme} from 'theme'
 
 import useActivityTracker from '../hooks/useActivityTracker'
 import useAppShortcuts from '../hooks/useAppShortcuts'
@@ -29,9 +29,9 @@ type Props = {
 }
 
 export default function App({children}: Props) {
-    const theme = useTheme()
     const hasPhone = useHasPhone()
 
+    useApplyTheme()
     useAppShortcuts()
     usePollingManager()
     useSetBanners()
@@ -40,7 +40,7 @@ export default function App({children}: Props) {
     useActivityTracker()
 
     return (
-        <AppNode className={theme.resolvedName}>
+        <AppNode>
             <UIKitRootNodeProvider>
                 <SessionChangeDetection />
                 <NotificationsToasts />

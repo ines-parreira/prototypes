@@ -50,7 +50,7 @@ jest.mock(
 
 jest.mock('AlertBanners', () => jest.fn(() => <div>banners</div>))
 
-jest.mock('theme', () => ({useTheme: () => 'theme'}))
+jest.mock('theme', () => ({useApplyTheme: jest.fn()}))
 jest.mock('../../hooks/useSetBanners', () => ({
     useSetBanners: jest.fn(),
 }))
