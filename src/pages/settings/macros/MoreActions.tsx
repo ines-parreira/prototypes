@@ -1,7 +1,7 @@
 import {Macro} from '@gorgias/api-queries'
 import classNames from 'classnames'
 import React, {useRef, useState} from 'react'
-import {useParams} from 'react-router-dom'
+import {useRouteMatch} from 'react-router-dom'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -28,8 +28,7 @@ export default function MoreActions({
     const handleMacroArchive = (__macro: Macro) => {}
     const ref = useRef<HTMLButtonElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-    const {activeTab} = useParams<{activeTab: string}>()
-    const isArchiveTab = activeTab === 'archived'
+    const isArchiveTab = !!useRouteMatch('/app/settings/macros/archived')
 
     const archiveLabel = `${isArchiveTab ? 'Unarchive' : 'Archive'} macro`
 

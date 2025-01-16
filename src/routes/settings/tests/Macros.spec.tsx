@@ -63,31 +63,53 @@ describe('Macros', () => {
                 role: AGENT_ROLE,
                 pageSection: PageSection.SidebarSettings,
                 component: MacrosSettingsForm,
+                exact: true,
             },
         ],
         [
             {
                 callOrder: 1,
                 routeCallOrder: 2,
-                path: basePath + '/:macroId/edit',
+                path: basePath + '/active',
                 role: undefined,
                 pageSection: undefined,
-                component: MacrosSettingsForm,
+                component: MacrosSettingsContent,
+                exact: true,
             },
         ],
         [
             {
                 callOrder: 2,
                 routeCallOrder: 3,
-                path: basePath + '/:activeTab',
+                path: basePath + '/archived',
                 role: undefined,
                 pageSection: undefined,
                 component: MacrosSettingsContent,
+                exact: true,
+            },
+        ],
+        [
+            {
+                callOrder: 3,
+                routeCallOrder: 4,
+                path: basePath + '/:macroId',
+                role: undefined,
+                pageSection: undefined,
+                component: MacrosSettingsForm,
+                exact: undefined,
             },
         ],
     ])(
         'should call renderer and Route with correct props',
-        ({callOrder, routeCallOrder, path, role, pageSection, component}) => {
+        ({
+            callOrder,
+            routeCallOrder,
+            path,
+            role,
+            pageSection,
+            component,
+            exact,
+        }) => {
             render(<Macros />)
 
             expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
@@ -101,7 +123,7 @@ describe('Macros', () => {
             expect(mockedRoute.mock.calls[routeCallOrder]).toEqual([
                 {
                     path,
-                    exact: true,
+                    exact,
                     children: ComponentToRender,
                 },
                 {},

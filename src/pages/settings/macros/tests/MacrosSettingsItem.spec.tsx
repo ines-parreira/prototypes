@@ -1,12 +1,11 @@
 import {act, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {useParams} from 'react-router-dom'
+import {useRouteMatch} from 'react-router-dom'
 
 import {macros} from 'fixtures/macro'
 import {OrderDirection} from 'models/api/types'
 import {MacroSortableProperties} from 'models/macro/types'
-import {assumeMock} from 'utils/testing'
 
 import {MacrosSettingsItem} from '../MacrosSettingsItem'
 
@@ -34,14 +33,15 @@ jest.mock(
     () =>
         ({
             ...jest.requireActual('react-router-dom'),
-            useParams: jest.fn(),
+            useRouteMatch: jest.fn(),
             Link: jest.fn(
                 ({children}: {children: React.ReactNode}) => children
             ),
             NavLink: ({children}: {children: React.ReactNode}) => children,
         }) as Record<string, unknown>
 )
-const mockUseParams = assumeMock(useParams)
+
+const mockUseRouteMatch = useRouteMatch as jest.Mock
 
 describe('<MacrosSettingsItem />', () => {
     const minProps = {
@@ -60,9 +60,7 @@ describe('<MacrosSettingsItem />', () => {
     }
 
     beforeEach(() => {
-        mockUseParams.mockReturnValue({
-            activeTab: '',
-        })
+        mockUseRouteMatch.mockReturnValue(false)
     })
 
     it('should display a macro row', () => {

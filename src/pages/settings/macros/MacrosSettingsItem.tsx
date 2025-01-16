@@ -42,7 +42,7 @@ export function MacrosSettingsItem({
     setSelectedMacrosIds,
 }: Props) {
     const {actions, language, name, updated_datetime, usage} = macro
-    const to = `/app/settings/macros/${macro.id}/edit`
+    const to = `/app/settings/macros/${macro.id}`
 
     const tags = useMemo(() => {
         const tags = actions

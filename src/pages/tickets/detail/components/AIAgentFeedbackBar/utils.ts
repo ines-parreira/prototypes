@@ -22,7 +22,7 @@ export const getKnowledgeUrl = (
             return aiAgentRoutes.knowledge
         }
         case 'macro':
-            return `/app/settings/macros/${knowledge.id}/edit`
+            return `/app/settings/macros/${knowledge.id}`
         default:
             return ''
     }

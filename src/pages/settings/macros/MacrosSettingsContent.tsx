@@ -9,7 +9,7 @@ import {
 import {useQueryClient} from '@tanstack/react-query'
 import classnames from 'classnames'
 import React, {useCallback, useEffect, useState} from 'react'
-import {NavLink, useParams} from 'react-router-dom'
+import {NavLink, useRouteMatch} from 'react-router-dom'
 
 import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -40,8 +40,7 @@ export function MacrosSettingsContent() {
     const queryKey = queryKeys.macros.listMacros() as string[]
     queryKey.pop()
     const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives, false)
-    const {activeTab} = useParams<{activeTab: string}>()
-    const isArchiveTab = activeTab === 'archived'
+    const isArchiveTab = !!useRouteMatch('/app/settings/macros/archived')
 
     const [listMacrosParams, setListMacrosParams] = useState<ListMacrosParams>({
         order_by: 'created_datetime:asc',
@@ -150,7 +149,7 @@ export function MacrosSettingsContent() {
                     })
                 },
                 onSuccess: (resp) => {
-                    history.push(`/app/settings/macros/${resp.data.id}/edit`)
+                    history.push(`/app/settings/macros/${resp.data.id}`)
                 },
             }
         )

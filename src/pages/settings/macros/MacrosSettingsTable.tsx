@@ -1,7 +1,7 @@
 import {ListMacrosParams, Macro} from '@gorgias/api-queries'
 import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React, {ComponentProps, useCallback, useMemo} from 'react'
-import {useParams} from 'react-router-dom'
+import {useRouteMatch} from 'react-router-dom'
 
 import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -49,8 +49,7 @@ export function MacrosSettingsTable({
     selectedMacrosIds,
     setSelectedMacrosIds,
 }: Props) {
-    const {activeTab} = useParams<{activeTab: string}>()
-    const isArchiveTab = activeTab === 'archived'
+    const isArchiveTab = useRouteMatch('/app/settings/macros/archived')
     const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives, false)
     const selectedMacrosLength = useMemo(
         () => selectedMacrosIds.length,

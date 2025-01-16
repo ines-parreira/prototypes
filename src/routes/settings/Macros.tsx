@@ -24,12 +24,14 @@ export function Macros() {
                 })}
             </Route>
 
-            <Route path={`${path}/:macroId/edit`} exact>
-                {renderAppSettings(MacrosSettingsForm)}
-            </Route>
-
-            <Route path={`${path}/:activeTab`} exact>
+            <Route path={`${path}/active`} exact>
                 {renderAppSettings(MacrosSettingsContent)}
+            </Route>
+            <Route path={`${path}/archived`} exact>
+                {renderAppSettings(MacrosSettingsContent)}
+            </Route>
+            <Route path={`${path}/:macroId`}>
+                {renderAppSettings(MacrosSettingsForm)}
             </Route>
         </Switch>
     )

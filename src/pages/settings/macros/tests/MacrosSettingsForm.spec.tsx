@@ -446,7 +446,7 @@ describe('<MacrosSettingsForm/>', () => {
             })
             expect(history.push).toHaveBeenNthCalledWith(
                 2,
-                '/app/settings/macros/5/edit'
+                '/app/settings/macros/5'
             )
         })
     })

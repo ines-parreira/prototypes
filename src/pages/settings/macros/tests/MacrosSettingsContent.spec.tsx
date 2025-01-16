@@ -9,7 +9,7 @@ import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
-import {useParams} from 'react-router-dom'
+import {useRouteMatch} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import {useFlag} from 'common/flags'
@@ -59,7 +59,7 @@ jest.mock(
     () =>
         ({
             ...jest.requireActual('react-router-dom'),
-            useParams: jest.fn(),
+            useRouteMatch: jest.fn(),
             Link: jest.fn(
                 ({children}: {children: React.ReactNode}) => children
             ),
@@ -72,7 +72,7 @@ jest.mock(
             }) => <div onClick={onClick}>{children}</div>,
         }) as Record<string, unknown>
 )
-const mockUseParams = assumeMock(useParams)
+const mockUseRouteMatch = useRouteMatch as jest.Mock
 
 jest.mock('common/flags', () => ({
     useFlag: jest.fn(),
@@ -123,8 +123,8 @@ describe('<MacrosSettingsContent/>', () => {
             mutateAsync: mockMutateAsyncDelete,
         } as unknown as ReturnType<typeof useDeleteMacro>)
         mockUseFlag.mockImplementation(() => false)
-        mockUseParams.mockReturnValue({
-            activeTab: '',
+        mockUseRouteMatch.mockReturnValue({
+            url: '/app/settings/macros',
         })
     })
 
@@ -454,9 +454,7 @@ describe('<MacrosSettingsContent/>', () => {
             }[]
         )[1].onSuccess({data: {id}})
 
-        expect(history.push).toHaveBeenCalledWith(
-            `/app/settings/macros/${id}/edit`
-        )
+        expect(history.push).toHaveBeenCalledWith(`/app/settings/macros/${id}`)
     })
 
     it('should fail to duplicate macro', () => {
@@ -579,8 +577,8 @@ describe('<MacrosSettingsContent/>', () => {
 
     it('should display list of archived macros', () => {
         mockUseFlag.mockImplementation(() => true)
-        mockUseParams.mockReturnValue({
-            activeTab: 'archived',
+        mockUseRouteMatch.mockReturnValue({
+            url: '/app/settings/macros/archived',
         })
         render(
             <Provider
