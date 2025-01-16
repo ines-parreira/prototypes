@@ -41,6 +41,8 @@
         background: linear-gradient(165.76deg, #eeeeee 30.85%, #c34ced 145.54%);
         height: 100%;
         width: 100%;
+        align-items: center;
+        justify-items: center;
     }
 
     .onboardingHeader {
@@ -50,6 +52,23 @@
         align-items: center;
         padding: @layout-spacing-m;
         width: 100%;
+    }
+
+    .ghostContainer {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: inherit;
+        align-items: inherit;
+    }
+
+    .progressTrackerContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-top: auto;
+        padding: @layout-spacing-m;
     }
 
     .loadingPulserIcon {
