@@ -19,6 +19,7 @@ const ActionsPlatformTemplateInstructions = ({
 }: Props) => {
     return (
         <TextArea
+            autoRowHeight
             label={
                 <FormLabel
                     isRequired
