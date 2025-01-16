@@ -164,7 +164,7 @@ const ActionsView = () => {
                         <div className={css.templateHeader}>
                             <p>
                                 {isMultiStepActionEnabled
-                                    ? 'Allow AI Agent to perform Actions such as canceling orders, updating shipping addresses, and more.'
+                                    ? 'Choose a template and customize it to fit your needs'
                                     : 'Choose an Action and customize it to fit your needs'}
                             </p>
                             <div className={css.actionButtons}>

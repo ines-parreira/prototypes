@@ -1,2 +1,2 @@
 export const ACTIONS_DESCRIPTION =
-    'Actions enable AI Agent to perform tasks with your 3rd party apps such as cancel order, edit shipping address, and more.'
+    'Allow AI Agent to perform Actions such as canceling orders, updating shipping addresses, and more.'
