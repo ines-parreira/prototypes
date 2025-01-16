@@ -713,10 +713,21 @@ describe('<Routes/>', () => {
         })
 
         describe('when conv-ai-standalone-menu flag is enabled', () => {
-            it('should redirect to the new namespace when accessing /app/automation/*/*/ai-agent', () => {
-                mockFlags({
-                    [FeatureFlagKey.ConvAiStandaloneMenu]: true,
-                })
+            it.each([
+                {
+                    from: '/app/automation/shopify/test-shop/ai-agent',
+                    to: '/app/ai-agent/shopify/test-shop',
+                },
+                {
+                    from: '/app/automation/shopify/test-shop/ai-agent/guidance',
+                    to: '/app/ai-agent/shopify/test-shop/knowledge/guidance',
+                },
+                {
+                    from: '/app/automation/shopify/test-shop/ai-agent/actions',
+                    to: '/app/ai-agent/shopify/test-shop/knowledge/actions',
+                },
+            ])('should redirect to $to when accessing $from', ({from, to}) => {
+                mockFlags({[FeatureFlagKey.ConvAiStandaloneMenu]: true})
 
                 render(
                     <QueryClientProvider client={mockQueryClient()}>
@@ -728,15 +739,9 @@ describe('<Routes/>', () => {
                     </QueryClientProvider>
                 )
 
-                act(() =>
-                    mockHistory.push(
-                        '/app/automation/shopify/test-shop/ai-agent'
-                    )
-                )
+                act(() => mockHistory.push(from))
 
-                expect(mockHistory.location.pathname).toBe(
-                    '/app/ai-agent/shopify/test-shop'
-                )
+                expect(mockHistory.location.pathname).toBe(to)
             })
         })
     })

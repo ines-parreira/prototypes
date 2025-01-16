@@ -843,18 +843,39 @@ function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
         return <Redirect to="/app/automation" />
     }
 
+    // TMP: Remove it when AI Agent will be fully migrated to its new route
+    // Redirect from old /app/automation/../../ai-agent/.. to new `/app/ai-agent/../../..` route
     if (
         isAiAgentStandaloneMenuEnabled &&
         location.pathname.startsWith('/app/automation')
     ) {
-        // TMP: Remove it when AI Agent will be fully migrated to its new route
-        // Redirect from old /app/automation/../../ai-agent/.. to new `/app/ai-agent/../../..` route
         const newLocation = {
             ...location,
             pathname: location.pathname
                 .replace('/ai-agent', '')
                 .replace('/automation', '/ai-agent'),
         }
+
+        if (
+            newLocation.pathname.includes('/guidance') &&
+            !newLocation.pathname.includes('/knowledge/guidance')
+        ) {
+            newLocation.pathname = newLocation.pathname.replace(
+                '/guidance',
+                '/knowledge/guidance'
+            )
+        }
+
+        if (
+            location.pathname.includes('/actions') &&
+            !newLocation.pathname.includes('/knowledge/actions')
+        ) {
+            newLocation.pathname = newLocation.pathname.replace(
+                '/actions',
+                '/knowledge/actions'
+            )
+        }
+
         return <Redirect to={newLocation} />
     }
 
