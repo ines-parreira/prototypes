@@ -482,6 +482,96 @@ describe('<CreateActionView />', () => {
         ).toBeInTheDocument()
     })
 
+    it('should have action name not focused when isTemplate=true', () => {
+        const b = new WorkflowConfigurationBuilder({
+            id: ulid(),
+            name: 'test name',
+            initialStep: {
+                id: ulid(),
+                kind: 'end',
+                settings: {
+                    success: true,
+                },
+            },
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        instructions: 'test instructions',
+                        requires_confirmation: false,
+                    },
+                    deactivated_datetime: null,
+                },
+            ],
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [],
+                        outputs: [],
+                        conditions: null,
+                    },
+                },
+            ],
+            is_draft: false,
+            apps: [],
+            available_languages: [],
+        })
+        const configuration = b.build()
+        const history = createMemoryHistory({
+            initialEntries: [
+                `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+            ],
+        })
+        history.push(
+            '/app/automation/:shopType/:shopName/ai-agent/actions/new',
+            configuration
+        )
+
+        renderWithRouter(
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
+                <QueryClientProvider client={queryClient}>
+                    <CreateActionView />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                history,
+                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
+                route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+            }
+        )
+
+        const nameInput = screen.queryAllByRole('textbox')[0]
+        expect(document.activeElement).not.toBe(nameInput)
+    })
+
+    it('should have action name focused when not a template', () => {
+        renderWithRouter(
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
+                <QueryClientProvider client={queryClient}>
+                    <CreateActionView />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        const nameInput = screen.queryAllByRole('textbox')[0]
+        expect(document.activeElement).toBe(nameInput)
+    })
+
     it('should create Action in advanced view', () => {
         const mockUpsertAction = jest.fn()
 

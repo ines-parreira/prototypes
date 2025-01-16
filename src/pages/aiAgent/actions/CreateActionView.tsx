@@ -300,6 +300,7 @@ const CreateActionView = () => {
                         value={visualBuilderContextValue}
                     >
                         <ActionFormView
+                            isTemplate={!!configurationFromTemplate.current}
                             onEditSteps={() => {
                                 setIsEditingSteps(true)
                                 setVisualBuilderGraph(visualBuilderGraphDirty)

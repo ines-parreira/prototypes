@@ -20,6 +20,7 @@ import css from './ActionFormView.less'
 import {SimplifiedStepBuilder} from './SimplifiedStepBuilder'
 
 type Props = {
+    isTemplate?: boolean
     onEditSteps: () => void
     steps: ActionTemplate[]
     isConditionsRecommendationAlertOpen?: boolean
@@ -27,6 +28,7 @@ type Props = {
 }
 
 const ActionFormView = ({
+    isTemplate = false,
     onEditSteps,
     steps,
     isConditionsRecommendationAlertOpen,
@@ -58,6 +60,7 @@ const ActionFormView = ({
         <>
             <div className={css.section}>
                 <ActionsPlatformTemplateName
+                    autoFocus={!isTemplate}
                     value={visualBuilderGraph.name}
                     onChange={(nextValue) => {
                         dispatch({
