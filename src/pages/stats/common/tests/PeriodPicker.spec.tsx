@@ -3,8 +3,8 @@ import moment from 'moment-timezone'
 import React from 'react'
 import {Props as MockDateRangePickerProps} from 'react-bootstrap-daterangepicker'
 
+import {useTheme} from 'core/theme'
 import {PeriodPickerContainer, Props} from 'pages/stats/common/PeriodPicker'
-import {useTheme} from 'theme'
 
 const periodPickerClassListMockSpy = jest.fn()
 const periodPickerRangesClassListMockSpy = jest.fn()

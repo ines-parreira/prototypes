@@ -33,7 +33,7 @@ jest.mock('split-ticket-view-toggle', () => ({
     ),
 }))
 
-jest.mock('theme', () => ({
+jest.mock('core/theme', () => ({
     ThemeProvider: ({children}: {children: React.ReactNode}) => (
         <div data-testid="theme-provider">{children}</div>
     ),

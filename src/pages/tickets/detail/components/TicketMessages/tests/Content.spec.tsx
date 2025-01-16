@@ -1,7 +1,7 @@
 import {render, screen} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 
-import {THEME_NAME} from 'theme'
+import {THEME_NAME} from 'core/theme'
 
 import Content from '../Content'
 

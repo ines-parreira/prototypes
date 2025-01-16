@@ -325,10 +325,10 @@ global.fetch = jest.fn(() =>
     Promise.resolve({arrayBuffer: () => ({})} as Response)
 )
 
-jest.mock('theme/useTheme.ts', () => {
+jest.mock('core/theme/useTheme.ts', () => {
     const {THEME_NAME, themeTokenMap} =
         // eslint-disable-next-line @typescript-eslint/no-var-requires
-        require('theme') as typeof import('theme')
+        require('core/theme') as typeof import('core/theme')
 
     return () => ({
         name: THEME_NAME.Light,

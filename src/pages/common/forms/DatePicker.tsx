@@ -13,9 +13,8 @@ import DateRangePicker, {
 } from 'react-bootstrap-daterangepicker'
 import {Tooltip} from 'reactstrap'
 
+import {useTheme} from 'core/theme'
 import useUpdateEffect from 'hooks/useUpdateEffect'
-
-import {useTheme} from 'theme'
 
 import css from './DatePicker.less'
 

@@ -1,10 +1,10 @@
 import React from 'react'
 
+import {THEME_CONFIGS} from 'core/theme'
+import type {HelpdeskThemeName} from 'core/theme'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import css from 'pages/settings/yourProfile/components/ThemeList.less'
-import {THEME_CONFIGS} from 'theme'
-import type {HelpdeskThemeName} from 'theme'
 
 type Props = {
     savedTheme: HelpdeskThemeName

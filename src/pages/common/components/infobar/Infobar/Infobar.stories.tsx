@@ -9,9 +9,9 @@ import thunk from 'redux-thunk'
 
 import {appQueryClient} from 'api/queryClient'
 import {HTTP_INTEGRATION_TYPE} from 'constants/integration'
+import {ThemeProvider, useTheme} from 'core/theme'
 import {ticket} from 'fixtures/ticket'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
-import {ThemeProvider, useTheme} from 'theme'
 import {initLaunchDarkly} from 'utils/launchDarkly'
 
 initLaunchDarkly(null as any, null as any)

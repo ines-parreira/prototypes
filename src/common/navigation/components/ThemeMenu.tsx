@@ -2,8 +2,8 @@ import cn from 'classnames'
 import React, {useCallback} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {THEME_CONFIGS, useSetTheme, useTheme} from 'theme'
-import type {HelpdeskThemeName} from 'theme'
+import {THEME_CONFIGS, useSetTheme, useTheme} from 'core/theme'
+import type {HelpdeskThemeName} from 'core/theme'
 
 import css from './UserMenu.less'
 

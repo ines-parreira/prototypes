@@ -3,10 +3,9 @@ import {render, waitFor, fireEvent} from '@testing-library/react'
 import * as chartjs from 'chart.js'
 import React from 'react'
 
+import {ThemeProvider} from 'core/theme'
 import {ticketsCreatedDataItem} from 'fixtures/chart'
-
 import {useCustomTooltip} from 'pages/stats/common/useCustomTooltip'
-import {ThemeProvider} from 'theme'
 import {assumeMock} from 'utils/testing'
 
 import LineChart, {

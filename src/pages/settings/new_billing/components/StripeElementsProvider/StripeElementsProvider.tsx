@@ -4,9 +4,9 @@ import {loadStripe, Stripe} from '@stripe/stripe-js'
 
 import React, {useEffect} from 'react'
 
+import {useTheme} from 'core/theme'
 import Button from 'pages/common/components/button/Button'
 import {reportCRMGrowthError} from 'pages/settings/new_billing/utils/reportCRMGrowthError'
-import {useTheme} from 'theme'
 
 type StripeElementsProviderProps = {
     clientSecret?: string

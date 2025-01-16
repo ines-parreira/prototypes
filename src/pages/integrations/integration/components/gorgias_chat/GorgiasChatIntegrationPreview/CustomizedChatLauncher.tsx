@@ -4,6 +4,7 @@ import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
+import {THEME_NAME} from 'core/theme'
 import Launcher from 'gorgias-design-system/Launcher/Launcher'
 import {
     GorgiasChatLauncherType,
@@ -12,7 +13,6 @@ import {
 } from 'models/integration/types'
 import {PositionAxis} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
 import {addLinkToDownloadFonts} from 'pages/settings/common/FontSelectField/FontSelectField'
-import {THEME_NAME} from 'theme'
 import {assetsUrl} from 'utils'
 
 import css from './CustomizedChatLauncher.less'

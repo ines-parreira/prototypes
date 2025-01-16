@@ -15,12 +15,12 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {THEME_NAME} from 'core/theme'
+import type {ColorTokens} from 'core/theme'
 import {user} from 'fixtures/users'
 import {DateFormattingSetting, TimeFormattingSetting} from 'models/agents/types'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import {YourProfileView} from 'pages/settings/yourProfile/components/YourProfileView'
-import {THEME_NAME} from 'theme'
-import type {ColorTokens} from 'theme'
 
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>

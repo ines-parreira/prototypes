@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 
+import {useTheme} from 'core/theme'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
@@ -7,7 +8,6 @@ import {MacroAction} from 'models/macroAction/types'
 import {TicketMessage} from 'models/ticket/types'
 import Button from 'pages/common/components/button/Button'
 import {setInTicketSuggestionState} from 'state/ticket/actions'
-import {useTheme} from 'theme'
 
 import css from './InTicketSuggestion.less'
 import InTicketSuggestionContainer from './InTicketSuggestionContainer'

@@ -5,6 +5,7 @@ import type {ReactNode} from 'react'
 import {StaticRouter} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {THEME_NAME, themeTokenMap, useTheme} from 'core/theme'
 import {
     ActivityEvents,
     clearActivityTrackerSession,
@@ -13,7 +14,6 @@ import {
 } from 'services/activityTracker'
 import shortcutManager from 'services/shortcutManager'
 import {ignoreHTML} from 'tests/ignoreHTML'
-import {THEME_NAME, themeTokenMap, useTheme} from 'theme'
 import {assumeMock} from 'utils/testing'
 
 import UserMenu from '../UserMenu'
@@ -44,12 +44,12 @@ jest.mock('services/shortcutManager', () => ({
 }))
 
 jest.mock(
-    'theme',
+    'core/theme',
     () =>
         ({
-            ...jest.requireActual('theme'),
+            ...jest.requireActual('core/theme'),
             useTheme: jest.fn(),
-        }) as typeof import('theme')
+        }) as typeof import('core/theme')
 )
 const useThemeMock = assumeMock(useTheme)
 

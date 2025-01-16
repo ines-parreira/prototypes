@@ -7,8 +7,8 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import {ThemeProvider} from 'core/theme'
 import RightContainer from 'pages/common/components/ViewTable/Filters/Right'
-import {ThemeProvider} from 'theme'
 
 const defaultState = {}
 

@@ -6,8 +6,8 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import {ThemeProvider} from 'core/theme'
 import {PeriodFilter} from 'pages/stats/common/filters/PeriodFilter'
-import {ThemeProvider} from 'theme'
 
 const defaultState = {}
 

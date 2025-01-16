@@ -3,7 +3,7 @@ import {loadStripe, Stripe} from '@stripe/stripe-js'
 import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {THEME_NAME, themeTokenMap, useTheme} from 'theme'
+import {THEME_NAME, themeTokenMap, useTheme} from 'core/theme'
 import {assumeMock} from 'utils/testing'
 
 import {StripeElementsProvider} from '../StripeElementsProvider'
@@ -17,7 +17,7 @@ assumeMock(Elements).mockImplementation(({children}) => (
     </div>
 ))
 
-jest.mock('theme/useTheme.ts', () => jest.fn())
+jest.mock('core/theme/useTheme.ts', () => jest.fn())
 const useThemeMock = assumeMock(useTheme)
 
 describe('StripeElementsProvider', () => {

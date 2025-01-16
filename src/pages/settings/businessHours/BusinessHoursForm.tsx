@@ -3,9 +3,9 @@ import {Map} from 'immutable'
 import React from 'react'
 import {Input} from 'reactstrap'
 
+import {THEME_NAME, useTheme} from 'core/theme'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
-import {THEME_NAME, useTheme} from 'theme'
 
 import css from './BusinessHours.less'
 import {DAYS_OPTIONS} from './constants'

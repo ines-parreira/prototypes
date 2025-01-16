@@ -2,11 +2,11 @@ import {render} from '@testing-library/react'
 import userEvent, {TargetElement} from '@testing-library/user-event'
 import React from 'react'
 
-import {THEME_NAME, useTheme} from 'theme'
+import {THEME_NAME, useTheme} from 'core/theme'
 
 import BaseCard from '../BaseCard'
 
-jest.mock('theme/useTheme.ts', () => jest.fn())
+jest.mock('core/theme/useTheme.ts', () => jest.fn())
 const useThemeMock = useTheme as jest.Mock
 
 describe('<BaseCard />', () => {

@@ -2,6 +2,7 @@ import cn from 'classnames'
 import React, {useState} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {THEME_CONFIGS, useTheme} from 'core/theme'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
@@ -15,7 +16,6 @@ import {
     unregisterAppActivityTrackerHooks,
 } from 'services/activityTracker'
 import shortcutManager from 'services/shortcutManager'
-import {THEME_CONFIGS, useTheme} from 'theme'
 
 import AvailabilityToggle from './AvailabilityToggle'
 import NavbarLink from './NavbarLink'

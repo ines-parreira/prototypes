@@ -9,7 +9,7 @@ import {
     themeTokenMap,
     useSetTheme,
     useTheme,
-} from 'theme'
+} from 'core/theme'
 import {assumeMock} from 'utils/testing'
 
 import ThemeMenu from '../ThemeMenu'
@@ -24,13 +24,13 @@ jest.mock(
 )
 
 jest.mock(
-    'theme',
+    'core/theme',
     () =>
         ({
-            ...jest.requireActual('theme'),
+            ...jest.requireActual('core/theme'),
             useSetTheme: jest.fn(),
             useTheme: jest.fn(),
-        }) as typeof import('theme')
+        }) as typeof import('core/theme')
 )
 const useSetThemeMock = assumeMock(useSetTheme)
 const useThemeMock = assumeMock(useTheme)

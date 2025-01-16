@@ -5,7 +5,7 @@ import React, {ComponentProps, useMemo} from 'react'
 import {useFlag} from 'common/flags'
 import Tag from 'components/Tag'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {THEME_NAME, useTheme} from 'theme'
+import {THEME_NAME, useTheme} from 'core/theme'
 import {getEnoughContrastedColor, isValidColor} from 'utils/colors'
 
 type Props = {

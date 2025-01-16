@@ -6,9 +6,9 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import {ThemeProvider} from 'core/theme'
 import PeriodPicker from 'pages/stats/common/PeriodPicker'
 import {getNewSetOfRanges} from 'pages/stats/constants'
-import {ThemeProvider} from 'theme'
 
 const defaultState = {}
 

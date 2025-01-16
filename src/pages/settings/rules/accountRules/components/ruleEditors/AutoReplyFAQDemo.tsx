@@ -2,10 +2,10 @@ import classnames from 'classnames'
 import _noop from 'lodash/noop'
 import React from 'react'
 
+import {THEME_NAME} from 'core/theme'
 import RichField from 'pages/common/forms/RichField/RichField'
 import {FakeFAQArticlePreview} from 'pages/settings/rules/components/FakeFAQArticlePreview'
 import {AutoReplyFAQSettings} from 'state/rules/types'
-import {THEME_NAME} from 'theme'
 
 import {ManagedRuleDetailProps} from './ManagedRuleEditor'
 import css from './ManagedRuleEditor.less'

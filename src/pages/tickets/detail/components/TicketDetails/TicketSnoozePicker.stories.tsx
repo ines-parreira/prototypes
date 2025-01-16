@@ -3,8 +3,8 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import {ThemeProvider} from 'core/theme'
 import TicketSnoozePicker from 'pages/tickets/detail/components/TicketDetails/TicketSnoozePicker'
-import {ThemeProvider} from 'theme'
 
 const defaultState = {}
 

@@ -6,6 +6,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {ThemeProvider} from 'core/theme'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {IntegrationType} from 'models/integration/constants'
@@ -14,7 +15,6 @@ import {initialState as articlesState} from 'state/entities/helpCenter/articles/
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
-import {ThemeProvider} from 'theme'
 
 import {ConnectToShopSection} from '../ConnectToShopSection'
 

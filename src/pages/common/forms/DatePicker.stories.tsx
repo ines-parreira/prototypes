@@ -1,8 +1,8 @@
 import {Meta, StoryFn} from '@storybook/react'
 import React, {ComponentProps} from 'react'
 
+import {ThemeProvider} from 'core/theme'
 import {DatePicker} from 'pages/common/forms/DatePicker'
-import {ThemeProvider} from 'theme'
 
 const DATE = '2024-04-14T12:34:56.000Z'
 

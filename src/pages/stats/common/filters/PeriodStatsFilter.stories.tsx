@@ -6,8 +6,8 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import {ThemeProvider} from 'core/theme'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-import {ThemeProvider} from 'theme'
 
 const defaultState = {}
 const DATE = '2023-04-14T12:34:56.000Z'

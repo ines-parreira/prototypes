@@ -12,6 +12,7 @@ import {
     DateTimeFormatMapper,
     DateTimeResultFormatType,
 } from 'constants/datetime'
+import {useTheme} from 'core/theme'
 import Button, {type ButtonProps} from 'pages/common/components/button/Button'
 import css from 'pages/stats/common/PeriodPicker.less'
 import {
@@ -21,7 +22,6 @@ import {
 import {getDefaultSetOfRanges} from 'pages/stats/constants'
 import {getTimezone} from 'state/currentUser/selectors'
 import {RootState} from 'state/types'
-import {useTheme} from 'theme'
 
 export type Props = {
     endDatetime: Moment

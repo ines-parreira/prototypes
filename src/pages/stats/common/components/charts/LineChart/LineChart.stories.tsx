@@ -2,8 +2,8 @@ import {Meta, StoryFn} from '@storybook/react'
 import moment from 'moment'
 import React, {ComponentProps} from 'react'
 
+import {ThemeProvider} from 'core/theme'
 import {ticketsCreatedDataItem} from 'fixtures/chart'
-import {ThemeProvider} from 'theme'
 
 import LineChart from './LineChart'
 

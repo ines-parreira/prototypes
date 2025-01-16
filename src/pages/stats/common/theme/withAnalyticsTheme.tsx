@@ -4,8 +4,8 @@ import analyticsColorsDark from 'assets/css/new/stats/dark.json'
 import analyticsColorsLight from 'assets/css/new/stats/light.json'
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
 
-import {THEME_NAME, useTheme} from 'theme'
-import type {ThemeName} from 'theme'
+import {THEME_NAME, useTheme} from 'core/theme'
+import type {ThemeName} from 'core/theme'
 
 interface ThemeColorValue {
     value: string

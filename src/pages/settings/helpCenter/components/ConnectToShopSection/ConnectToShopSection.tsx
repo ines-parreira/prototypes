@@ -6,6 +6,7 @@ import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 
 import store from 'assets/img/icons/store.svg'
 
+import {useTheme} from 'core/theme'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
@@ -18,7 +19,6 @@ import settingsCss from 'pages/settings/settings.less'
 
 import {getHasAutomate} from 'state/billing/selectors'
 import {getIconFromType} from 'state/integrations/helpers'
-import {useTheme} from 'theme'
 
 import {useStoreWithChatConnectionsOptions} from '../../hooks/useStoreWithChatConnectionsOptions'
 

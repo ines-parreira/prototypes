@@ -1,10 +1,10 @@
 import classNames from 'classnames'
 import React, {useCallback} from 'react'
 
+import {useTheme} from 'core/theme'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useBeforeUnload from 'hooks/useBeforeUnload'
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
-import {useTheme} from 'theme'
 
 import IncomingPhoneCall from './IncomingPhoneCall/IncomingPhoneCall'
 import OngoingPhoneCall from './OngoingPhoneCall/OngoingPhoneCall'

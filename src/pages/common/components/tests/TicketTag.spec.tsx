@@ -4,7 +4,7 @@ import React from 'react'
 
 import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {THEME_NAME, useTheme} from 'theme'
+import {THEME_NAME, useTheme} from 'core/theme'
 import {getEnoughContrastedColor} from 'utils/colors'
 
 import TicketTag from '../TicketTag'
@@ -18,7 +18,7 @@ const mockFlagSet = {
     [FeatureFlagKey.TagNewDesign]: false,
 }
 
-jest.mock('theme/useTheme.ts', () => jest.fn())
+jest.mock('core/theme/useTheme.ts', () => jest.fn())
 const useThemeMock = useTheme as jest.Mock
 
 jest.mock('utils/launchDarkly')

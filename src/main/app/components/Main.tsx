@@ -6,11 +6,11 @@ import {CookiesProvider} from 'react-cookie'
 import {BannersContextProvider} from 'AlertBanners'
 import {NavBarProvider} from 'common/navigation/components/NavBarProvider'
 import {NotificationsProvider} from 'common/notifications'
+import {ThemeProvider} from 'core/theme'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 import VoiceDeviceProvider from 'pages/integrations/integration/components/voice/VoiceDeviceProvider'
 import {SpotlightProvider} from 'providers/ui/SpotlightProvider'
 import {SplitTicketViewProvider} from 'split-ticket-view-toggle'
-import {ThemeProvider} from 'theme'
 
 import App from './App'
 

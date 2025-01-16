@@ -4,6 +4,7 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import {ThemeProvider} from 'core/theme'
 import * as billingFixtures from 'fixtures/billing'
 import {IntegrationType} from 'models/integration/constants'
 import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
@@ -12,7 +13,6 @@ import StoreFilter from 'pages/stats/common/filters/StoreFilter'
 import {initialState as billingInitialState} from 'state/billing/reducers'
 import {getStoreIntegrations} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
-import {ThemeProvider} from 'theme'
 
 const storyConfig: Meta = {
     title: 'Stats/Filters/StoreFilter',

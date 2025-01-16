@@ -1,8 +1,8 @@
 import classNames from 'classnames'
 import React, {CSSProperties, MouseEventHandler, ReactNode} from 'react'
 
+import {THEME_NAME, useTheme} from 'core/theme'
 import Button from 'pages/common/components/button/Button'
-import {THEME_NAME, useTheme} from 'theme'
 
 import css from './Card.less'
 

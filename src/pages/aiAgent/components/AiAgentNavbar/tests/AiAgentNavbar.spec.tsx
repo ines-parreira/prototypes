@@ -8,6 +8,7 @@ import {StaticRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {ThemeProvider} from 'core/theme'
 import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {integrationsState} from 'fixtures/integrations'
@@ -17,7 +18,6 @@ import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfigur
 import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
 import {useWelcomePageAcknowledged} from 'pages/aiAgent/hooks/useWelcomePageAcknowledged'
 import {RootState} from 'state/types'
-import {ThemeProvider} from 'theme'
 
 import {assumeMock} from 'utils/testing'
 

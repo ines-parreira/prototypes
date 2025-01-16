@@ -23,8 +23,8 @@ import React, {
     useRef,
 } from 'react'
 
+import {THEME_NAME, useTheme} from 'core/theme'
 import Button, {type ButtonProps} from 'pages/common/components/button/Button'
-import {THEME_NAME, useTheme} from 'theme'
 
 import css from './Popover.less'
 
