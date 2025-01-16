@@ -1,12 +1,16 @@
 import React, {useRef, useState} from 'react'
 
 import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
+import {CustomReportChild} from 'models/stat/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import IconInput from 'pages/common/forms/input/IconInput'
 import css from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu.less'
-import {CustomReportSchema} from 'pages/stats/custom-reports/types'
+import {
+    CustomReportChildType,
+    CustomReportSchema,
+} from 'pages/stats/custom-reports/types'
 
 export const ADD_TO_DASHBOARD = 'Add to dashboard'
 
@@ -34,6 +38,24 @@ const ActionMenuItem = ({
     )
 }
 
+const childrenContainChart =
+    (chartId: string) =>
+    (hasChart: boolean, dashboardChild: CustomReportChild): boolean => {
+        if (dashboardChild.type !== CustomReportChildType.Chart) {
+            return dashboardChild.children.reduce(
+                childrenContainChart(chartId),
+                hasChart
+            )
+        } else if (dashboardChild.config_id === chartId) {
+            return true
+        }
+        return hasChart
+    }
+
+const containsChart = (dashboard: CustomReportSchema, chartId: string) => {
+    return dashboard.children.reduce(childrenContainChart(chartId), false)
+}
+
 export const ChartsActionMenu = ({chartId}: {chartId: string}) => {
     const toggleRef = useRef(null)
     const [showDropdown, setShowDropdown] = useState(false)
@@ -46,7 +68,9 @@ export const ChartsActionMenu = ({chartId}: {chartId: string}) => {
         setShowActions(false)
     }
 
-    const dashboards = getDashboardsHandler()
+    const dashboards = getDashboardsHandler().filter(
+        (dashboard) => !containsChart(dashboard, chartId)
+    )
 
     return (
         <div
