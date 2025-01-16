@@ -6,6 +6,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import {isFieldRequired} from 'custom-fields/helpers/isFieldRequired'
 import {CustomFieldDefinition} from 'custom-fields/types'
 import {
     ticketDropdownFieldDefinition,
@@ -61,6 +62,7 @@ describe('<TicketField />', () => {
                         <TicketField
                             fieldDefinition={customField}
                             fieldState={fieldState}
+                            isRequired={isFieldRequired(customField)}
                         />
                     </Provider>
                 </QueryClientProvider>
@@ -143,6 +145,7 @@ describe('<TicketField />', () => {
                         <TicketField
                             fieldDefinition={customField}
                             fieldState={fieldState}
+                            isRequired={isFieldRequired(customField)}
                         />
                     </Provider>
                 </QueryClientProvider>

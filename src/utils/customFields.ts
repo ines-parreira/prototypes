@@ -1,21 +1,36 @@
 import {Macro} from '@gorgias/api-queries'
 
 import {isFieldErrored} from 'custom-fields/helpers/isFieldErrored'
-import {CustomField, CustomFields, CustomFieldState} from 'custom-fields/types'
+import {
+    CustomField,
+    CustomFields,
+    CustomFieldState,
+    CustomFieldConditionsEvaluationResults,
+} from 'custom-fields/types'
 import {MacroAction, MacroActionName} from 'models/macroAction/types'
 
 export function getInvalidTicketFieldIds({
     fieldsState,
     fieldDefinitions,
+    evaluatedConditions,
 }: {
     fieldsState: CustomFields
     fieldDefinitions: CustomField[]
+    evaluatedConditions: CustomFieldConditionsEvaluationResults
 }) {
     const erroredCustomFields: CustomFieldState['id'][] = []
     fieldDefinitions.forEach((fieldDefinition) => {
         const fieldState = fieldsState[fieldDefinition.id]
-        if (isFieldErrored({fieldDefinition, fieldState}))
+        if (
+            isFieldErrored({
+                fieldState,
+                fieldDefinition,
+                conditionalRequirementType:
+                    evaluatedConditions[fieldDefinition.id],
+            })
+        ) {
             erroredCustomFields.push(fieldDefinition.id)
+        }
     })
     return erroredCustomFields
 }

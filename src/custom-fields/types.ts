@@ -1,3 +1,5 @@
+import {ExpressionFieldType} from '@gorgias/api-types'
+
 import {ApiPaginationParams} from 'models/api/types'
 
 import {AI_MANAGED_TYPES, MANAGED_TYPES, OBJECT_TYPES} from './constants'
@@ -114,3 +116,8 @@ export type CustomFieldPrediction = {
     modified: boolean
     predicted: string
 }
+
+export type CustomFieldConditionsEvaluationResults = Record<
+    number,
+    ExpressionFieldType | undefined
+>

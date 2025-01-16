@@ -15,15 +15,17 @@ import TextField from './components/fields/TextField'
 type Props = {
     fieldDefinition: CustomField
     fieldState?: CustomFieldState
+    isRequired: boolean
 }
 
-function TicketField({fieldDefinition, fieldState}: Props) {
-    const {id, label, required, definition, managed_type} = fieldDefinition
+function TicketField({fieldDefinition, fieldState, isRequired}: Props) {
+    const {id, label, definition, managed_type} = fieldDefinition
+
     const baseFieldProps = {
         id,
         label,
         fieldState,
-        isRequired: required,
+        isRequired,
         isDisabled: isCustomFieldAIManagedType(managed_type),
     }
 

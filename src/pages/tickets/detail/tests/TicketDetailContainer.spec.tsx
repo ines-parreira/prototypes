@@ -12,7 +12,10 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import useFlag from 'common/flags/hooks/useFlag'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {OBJECT_TYPES} from 'custom-fields/constants'
+import {useCustomFieldConditions} from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
@@ -96,6 +99,8 @@ jest.mock('state/ticket/actions', () => ({
     triggerTicketFieldsErrors: jest.fn(),
 }))
 
+jest.mock('common/flags/hooks/useFlag')
+const mockedUseFlag = assumeMock(useFlag)
 const mockStore = configureMockStore([thunk])
 let mockedStore = mockStore({
     ticket: fromJS({
@@ -138,6 +143,13 @@ const mockUseGoToNextTicket = useGoToNextTicket as jest.Mock
 
 jest.mock('pages/tickets/detail/hooks/useTicketActivityTracking')
 const mockUseTicketActivityTracking = useTicketActivityTracking as jest.Mock
+
+jest.mock('custom-fields/hooks/queries/useCustomFieldConditions', () => ({
+    useCustomFieldConditions: jest.fn(() => ({
+        customFieldConditions: [],
+        isLoading: false,
+    })),
+}))
 
 jest.mock('@gorgias/realtime')
 const mockUseAgentActivity = useAgentActivity as jest.Mock
@@ -1413,54 +1425,64 @@ describe('TicketDetailContainer component', () => {
     })
 
     describe('ticket fields', () => {
-        it('should not allow ticket to be set to close if errored', async () => {
-            mockedServer.onGet('/api/custom-fields/').reply(200, {
-                data: [
-                    ticketDropdownFieldDefinition,
-                    {...ticketInputFieldDefinition, required: true},
-                ],
-            })
-            const {getByTestId} = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockedStore}>
-                        <TicketDetailContainer
-                            {...{
-                                ...minProps,
-                                canSendMessage: true,
-                                fieldsState: {},
-                            }}
-                        />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    path: '/foo/:ticketId',
-                    route: '/foo/new',
-                }
-            )
-            await waitFor(() => {
-                expect(queryClient.isFetching()).toBe(0)
-            })
-            userEvent.click(getByTestId('TicketView-submit'))
-            expect(triggerTicketFieldsErrors).toHaveBeenNthCalledWith(1, [
-                ticketInputFieldDefinition.id,
-            ])
-            userEvent.click(getByTestId('TicketView-change-status'))
-            expect(triggerTicketFieldsErrors).toHaveBeenNthCalledWith(2, [
-                ticketInputFieldDefinition.id,
-            ])
-            expect(spiedMergeFieldsStateWithMacroValues).toHaveBeenCalledTimes(
-                1
-            )
-            makeExecuteKeyboardAction(shortcutManagerMock)(
-                'SUBMIT_CLOSE_TICKET'
-            )
-            expect(triggerTicketFieldsErrors).toHaveBeenNthCalledWith(3, [
-                ticketInputFieldDefinition.id,
-            ])
-            expect(spiedMergeFieldsStateWithMacroValues).toHaveBeenCalledTimes(
-                2
-            )
-        })
+        it.each([true, false])(
+            'should not allow ticket to be set to close if errored. Conditional fields enabled: %s',
+            async (conditionalFieldsEnabled: boolean) => {
+                mockedUseFlag.mockReturnValue(conditionalFieldsEnabled)
+                mockedServer.onGet('/api/custom-fields/').reply(200, {
+                    data: [
+                        ticketDropdownFieldDefinition,
+                        {...ticketInputFieldDefinition, required: true},
+                    ],
+                })
+
+                const {getByTestId} = renderWithRouter(
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={mockedStore}>
+                            <TicketDetailContainer
+                                {...{
+                                    ...minProps,
+                                    canSendMessage: true,
+                                    fieldsState: {},
+                                }}
+                            />
+                        </Provider>
+                    </QueryClientProvider>,
+                    {
+                        path: '/foo/:ticketId',
+                        route: '/foo/new',
+                    }
+                )
+                await waitFor(() => {
+                    expect(queryClient.isFetching()).toBe(0)
+                })
+                userEvent.click(getByTestId('TicketView-submit'))
+
+                expect(useCustomFieldConditions).toHaveBeenCalledWith(
+                    OBJECT_TYPES.TICKET,
+                    conditionalFieldsEnabled
+                )
+                expect(triggerTicketFieldsErrors).toHaveBeenNthCalledWith(1, [
+                    ticketInputFieldDefinition.id,
+                ])
+                userEvent.click(getByTestId('TicketView-change-status'))
+                expect(triggerTicketFieldsErrors).toHaveBeenNthCalledWith(2, [
+                    ticketInputFieldDefinition.id,
+                ])
+                expect(
+                    spiedMergeFieldsStateWithMacroValues
+                ).toHaveBeenCalledTimes(1)
+                makeExecuteKeyboardAction(shortcutManagerMock)(
+                    'SUBMIT_CLOSE_TICKET'
+                )
+                expect(triggerTicketFieldsErrors).toHaveBeenNthCalledWith(3, [
+                    ticketInputFieldDefinition.id,
+                ])
+                expect(
+                    spiedMergeFieldsStateWithMacroValues
+                ).toHaveBeenCalledTimes(2)
+            }
+        )
     })
 
     describe('ticket voice calls', () => {

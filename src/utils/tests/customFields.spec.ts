@@ -1,5 +1,7 @@
 import {Macro} from '@gorgias/api-queries'
 
+import {CustomFieldRequirementType} from '@gorgias/api-types'
+
 import {ticketInputFieldDefinition} from 'fixtures/customField'
 import {macroFixture, setCustomFieldValueAction} from 'fixtures/macro'
 
@@ -19,7 +21,11 @@ describe('getInvalidTicketFieldIds', () => {
             {...ticketInputFieldDefinition, id: 2},
         ]
         expect(
-            getInvalidTicketFieldIds({fieldsState, fieldDefinitions})
+            getInvalidTicketFieldIds({
+                fieldsState,
+                fieldDefinitions,
+                evaluatedConditions: {},
+            })
         ).toEqual([])
     })
     it('should return an array of invalid field ids', () => {
@@ -30,9 +36,19 @@ describe('getInvalidTicketFieldIds', () => {
         const fieldDefinitions = [
             ticketInputFieldDefinition,
             {...ticketInputFieldDefinition, id: 2, required: true},
+            {
+                ...ticketInputFieldDefinition,
+                id: 3,
+                required: false,
+                requirement_type: CustomFieldRequirementType.Conditional,
+            },
         ]
         expect(
-            getInvalidTicketFieldIds({fieldsState, fieldDefinitions})
+            getInvalidTicketFieldIds({
+                fieldsState,
+                fieldDefinitions,
+                evaluatedConditions: {},
+            })
         ).toEqual([2])
     })
 })
