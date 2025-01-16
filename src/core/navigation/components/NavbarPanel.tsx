@@ -1,6 +1,9 @@
 import React from 'react'
 import type {ReactNode} from 'react'
 
+import {CollapsibleNavbarContainer} from 'common/navigation/components/CollapsibleNavbarContainer'
+import {NavBarDisplayMode} from 'common/navigation/hooks/useNavBar/context'
+import {useNavBar} from 'common/navigation/hooks/useNavBar/useNavBar'
 import {Panel} from 'core/layout/panels'
 
 const panelConfig = {
@@ -14,9 +17,15 @@ type Props = {
 }
 
 export default function NavbarPanel({children}: Props) {
-    return (
-        <Panel name="navigation" config={panelConfig}>
-            {children}
-        </Panel>
-    )
+    const {navBarDisplay} = useNavBar()
+
+    if (navBarDisplay === NavBarDisplayMode.Open) {
+        return (
+            <Panel name="navigation" config={panelConfig}>
+                {children}
+            </Panel>
+        )
+    }
+
+    return <CollapsibleNavbarContainer>{children}</CollapsibleNavbarContainer>
 }

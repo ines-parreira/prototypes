@@ -2,15 +2,16 @@ import {createContext} from 'react'
 
 export const NavBarDisplayMode = {
     /**
-     * When when the user hovers over the nav bar and global navigation
+     * When the user hovers over the GlobalNavigation and the Navbar is not open
      */
     Hover: 'hover',
     /**
-     * When the user click the nav bar Menu button, also the default state
+     * When the user click the GlobalNavigation Menu button,
+     * Also is the default state
      */
     Open: 'open',
     /**
-     * When the NavBar is not visibile
+     * When the NavBar is not visible
      */
     Collapsed: 'collapsed',
 } as const
@@ -18,9 +19,9 @@ export const NavBarDisplayMode = {
 export type NavBarContextType = {
     navBarDisplay: ValueOf<typeof NavBarDisplayMode>
     setNavBarDisplay: (value: ValueOf<typeof NavBarDisplayMode>) => void
-    isGlobalNavHovered: boolean
-    onGlobalNavHover: () => void
-    onGlobalNavLeave: () => void
+    isNavHovered: boolean
+    onNavHover: () => void
+    onNavLeave: () => void
     onOverlayEnter: () => void
     onMenuToggle: () => void
     isNavBarVisible: boolean

@@ -7,6 +7,7 @@ import {useHistory, useParams} from 'react-router-dom'
 import navbarCss from 'assets/css/navbar.less'
 
 import {ActiveContent, Navbar} from 'common/navigation'
+
 import {
     UserRole,
     UserSetting,
@@ -15,6 +16,7 @@ import {
 } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
+
 import useSearch from 'hooks/useSearch'
 import {createAccountSetting, updateAccountSetting} from 'models/account'
 import {

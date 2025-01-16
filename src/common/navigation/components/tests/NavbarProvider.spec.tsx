@@ -19,8 +19,8 @@ function TestComponent() {
             </button>
             <div
                 data-testid="navbar-area"
-                onMouseEnter={navBar.onGlobalNavHover}
-                onMouseLeave={navBar.onGlobalNavLeave}
+                onMouseEnter={navBar.onNavHover}
+                onMouseLeave={navBar.onNavLeave}
             >
                 Navbar Area
             </div>
@@ -41,7 +41,7 @@ describe('NavBarProvider', () => {
         ) as NavBarContextType
         expect(state.navBarDisplay).toBe(NavBarDisplayMode.Open)
         expect(state.isNavBarVisible).toBe(true)
-        expect(state.isGlobalNavHovered).toBe(false)
+        expect(state.isNavHovered).toBe(false)
     })
 
     it('handles hover enter/leave correctly', () => {
@@ -67,14 +67,14 @@ describe('NavBarProvider', () => {
                 getByTestId('test-component').dataset.state!
             ) as NavBarContextType
 
-        expect(getState().isGlobalNavHovered).toBe(true)
+        expect(getState().isNavHovered).toBe(true)
         expect(getState().navBarDisplay).toBe(NavBarDisplayMode.Hover)
 
         act(() => {
             fireEvent.mouseLeave(navbarArea)
         })
 
-        expect(getState().isGlobalNavHovered).toBe(false)
+        expect(getState().isNavHovered).toBe(false)
         expect(getState().navBarDisplay).toBe(NavBarDisplayMode.Hover)
     })
 

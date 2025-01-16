@@ -78,12 +78,12 @@ describe('<StatsRoutes/>', () => {
     })
 
     const mockNavBarContextValues: NavBarContextType = {
-        navBarDisplay: NavBarDisplayMode.Collapsed,
+        navBarDisplay: NavBarDisplayMode.Open,
         setNavBarDisplay: jest.fn(),
         isNavBarVisible: false,
-        isGlobalNavHovered: false,
-        onGlobalNavHover: jest.fn(),
-        onGlobalNavLeave: jest.fn(),
+        isNavHovered: false,
+        onNavHover: jest.fn(),
+        onNavLeave: jest.fn(),
         onOverlayEnter: jest.fn(),
         onMenuToggle: jest.fn(),
     }

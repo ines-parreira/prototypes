@@ -42,9 +42,9 @@ describe('GlobalNavigation', () => {
         navBarDisplay: NavBarDisplayMode.Open,
         setNavBarDisplay: jest.fn(),
         isNavBarVisible: false,
-        isGlobalNavHovered: false,
-        onGlobalNavHover: jest.fn(),
-        onGlobalNavLeave: jest.fn(),
+        isNavHovered: false,
+        onNavHover: jest.fn(),
+        onNavLeave: jest.fn(),
         onOverlayEnter: jest.fn(),
         onMenuToggle: jest.fn(),
     }
@@ -61,6 +61,11 @@ describe('GlobalNavigation', () => {
             fromJS({role: {name: UserRole.BasicAgent}})
         )
         useActiveItemMock.mockReturnValue('tickets')
+    })
+
+    it('should render the menu icon', () => {
+        const {getByText} = renderWithContext()
+        expect(getByText('menu')).toBeInTheDocument()
     })
 
     it('should render the home icon', () => {

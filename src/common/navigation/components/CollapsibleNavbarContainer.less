@@ -1,0 +1,56 @@
+:local {
+    .container {
+        z-index: 10;
+        position: absolute;
+        top: 0;
+        left: 49px;
+        transform: translateX(0);
+        height: 100%;
+        width: 238px;
+        box-sizing: border-box;
+        box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+        border-radius: 0 10px 10px 0;
+        background: var(--navigation-background);
+        overflow-x: hidden;
+
+        &[data-display='collapsed'],
+        &[data-display='open'] {
+            pointer-events: none;
+            visibility: hidden;
+            opacity: 0;
+            transform: translateX(-100%);
+            transition:
+                opacity 0.3s ease-in-out,
+                visibility 0.3s ease-in-out,
+                transform 0.3s ease-in-out;
+        }
+        &[data-display='hover'] {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(0);
+            transition:
+                opacity 0.3s ease-in-out,
+                visibility 0.3s ease-in-out,
+                transform 0.3s ease-in-out;
+        }
+    }
+
+    .overlay {
+        &[data-display='collapsed'],
+        &[data-display='open'] {
+            display: none;
+        }
+
+        &[data-display='hover'] {
+            z-index: 9;
+            position: absolute;
+            top: 0;
+            left: 49px;
+            display: flex;
+            flex-grow: 1;
+            width: calc(100% - 49px);
+            height: 100%;
+            background: transparent;
+        }
+    }
+}

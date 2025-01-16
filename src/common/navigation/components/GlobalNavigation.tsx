@@ -24,7 +24,7 @@ export default function GlobalNavigation() {
     const currentUser = useAppSelector(getCurrentUser)
     const activeItem = useActiveItem()
     const navBarMenuIcon = useNavBarMenuIcon()
-    const {onMenuToggle, onGlobalNavHover, onGlobalNavLeave} = useNavBar()
+    const {onMenuToggle, onNavHover, onNavLeave} = useNavBar()
 
     useNavBarShortcuts()
 
@@ -43,9 +43,9 @@ export default function GlobalNavigation() {
     return (
         <nav
             className={css.container}
-            onMouseOver={onGlobalNavHover}
-            onMouseLeave={onGlobalNavLeave}
-            onFocus={onGlobalNavHover}
+            onMouseOver={onNavHover}
+            onMouseLeave={onNavLeave}
+            onFocus={onNavHover}
         >
             <section className={css.section}>
                 <div className={css.items}>

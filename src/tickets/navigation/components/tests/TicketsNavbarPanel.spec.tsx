@@ -1,6 +1,7 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 
+import {NavBarProvider} from 'common/navigation/components/NavBarProvider'
 import {Panels} from 'core/layout/panels'
 
 import TicketsNavbarPanel from '../TicketsNavbarPanel'
@@ -12,9 +13,11 @@ jest.mock('pages/tickets/navbar/TicketNavbar', () => () => (
 describe('TicketsNavbarPanel', () => {
     it('should render the ticket navbar', () => {
         render(
-            <Panels size={1000}>
-                <TicketsNavbarPanel />
-            </Panels>
+            <NavBarProvider>
+                <Panels size={1000}>
+                    <TicketsNavbarPanel />
+                </Panels>
+            </NavBarProvider>
         )
         expect(screen.getByText('TicketNavbar')).toBeInTheDocument()
     })

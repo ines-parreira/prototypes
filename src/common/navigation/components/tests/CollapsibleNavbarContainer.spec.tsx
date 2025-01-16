@@ -1,4 +1,4 @@
-import {render, screen} from '@testing-library/react'
+import {render, fireEvent} from '@testing-library/react'
 
 import React from 'react'
 
@@ -11,7 +11,7 @@ import {useNavBar} from 'common/navigation/hooks/useNavBar/useNavBar'
 
 import {Panels} from 'core/layout/panels'
 
-import NavbarPanel from '../NavbarPanel'
+import {CollapsibleNavbarContainer} from '../CollapsibleNavbarContainer'
 
 jest.mock('common/navigation/hooks/useNavBar/useNavBar')
 const mockUseNavBar = useNavBar as jest.MockedFunction<typeof useNavBar>
@@ -26,7 +26,7 @@ const mockNavBarContextValues: NavBarContextType = {
     onMenuToggle: jest.fn(),
 }
 
-describe('NavbarPanel', () => {
+describe('CollapsibleNavbarContainer', () => {
     const defaultProps = {
         children: <div>Test Content</div>,
     }
@@ -35,45 +35,47 @@ describe('NavbarPanel', () => {
         render(
             <NavBarContext.Provider value={mockNavBarContextValues}>
                 <Panels size={100}>
-                    <NavbarPanel {...defaultProps} />
+                    <CollapsibleNavbarContainer {...defaultProps} />
                 </Panels>
             </NavBarContext.Provider>
         )
 
-    it('renders Panel component when display mode is Open', () => {
+    it('calls appropriate handlers on overlay mouse enter', () => {
+        const mockOnOverlayEnter = jest.fn()
+        const mockOnNavLeave = jest.fn()
+
         mockUseNavBar.mockReturnValue({
             ...mockNavBarContextValues,
-            navBarDisplay: NavBarDisplayMode.Open,
-            onOverlayEnter: jest.fn(),
-            onNavHover: jest.fn(),
-            onNavLeave: jest.fn(),
+            navBarDisplay: NavBarDisplayMode.Collapsed,
+            onOverlayEnter: mockOnOverlayEnter,
+            onNavLeave: mockOnNavLeave,
         })
 
         const {container} = renderWithContext()
+        const overlay = container.querySelector('[data-name="navbar-overlay"]')!
 
-        expect(
-            container.querySelector('[data-panel-name="navigation"]')
-        ).toBeInTheDocument()
-        expect(screen.getByText('Test Content')).toBeInTheDocument()
+        fireEvent.mouseEnter(overlay)
+
+        expect(mockOnOverlayEnter).toHaveBeenCalled()
+        expect(mockOnNavLeave).toHaveBeenCalled()
     })
 
-    it('renders the CollapsibleNavbar component when display mode is Hover', () => {
+    it('calls onNavHover when mouse enters collapsible container', () => {
+        const mockOnNavHover = jest.fn()
+
         mockUseNavBar.mockReturnValue({
             ...mockNavBarContextValues,
-            navBarDisplay: NavBarDisplayMode.Hover,
-            isNavHovered: true,
-            onOverlayEnter: jest.fn(),
-            onNavHover: jest.fn(),
-            onNavLeave: jest.fn(),
+            navBarDisplay: NavBarDisplayMode.Collapsed,
+            onNavHover: mockOnNavHover,
         })
 
         const {container} = renderWithContext()
+        const collapsible = container.querySelector(
+            '[data-name="navbar-collapsible-container"]'
+        )!
 
-        expect(
-            container.querySelector(
-                '[data-name="navbar-collapsible-container"]'
-            )
-        ).toBeInTheDocument()
-        expect(screen.getByText('Test Content')).toBeInTheDocument()
+        fireEvent.mouseEnter(collapsible)
+
+        expect(mockOnNavHover).toHaveBeenCalled()
     })
 })

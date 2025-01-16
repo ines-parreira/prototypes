@@ -3,7 +3,7 @@ import React, {ReactNode, useMemo, useState, useCallback} from 'react'
 import {NavBarContext, NavBarDisplayMode} from '../hooks/useNavBar/context'
 
 export function NavBarProvider({children}: {children: ReactNode}) {
-    const [isGlobalNavHovered, setIsGlobalNavHovered] = useState(false)
+    const [isNavHovered, setisNavHovered] = useState(false)
     const [navBarDisplay, setNavBarDisplay] = useState<
         ValueOf<typeof NavBarDisplayMode>
     >(NavBarDisplayMode.Open)
@@ -16,19 +16,19 @@ export function NavBarProvider({children}: {children: ReactNode}) {
         )
     }, [])
 
-    // Used for the global nav and the nav bar enter
-    const onGlobalNavHover = useCallback(() => {
-        setIsGlobalNavHovered(true)
+    // Used for both the global nav and the collapsible navbar mouse hover events
+    const onNavHover = useCallback(() => {
+        setisNavHovered(true)
         if (navBarDisplay === NavBarDisplayMode.Collapsed) {
             setNavBarDisplay(NavBarDisplayMode.Hover)
         }
     }, [navBarDisplay])
 
-    const onGlobalNavLeave = useCallback(() => {
-        setIsGlobalNavHovered(false)
+    // Used for the both global nav and the collapsible navbar mouse leave events
+    const onNavLeave = useCallback(() => {
+        setisNavHovered(false)
     }, [])
 
-    // Used for the global nav and the nav bar leave
     const onOverlayEnter = useCallback(() => {
         if (navBarDisplay === NavBarDisplayMode.Hover) {
             setNavBarDisplay(NavBarDisplayMode.Collapsed)
@@ -39,9 +39,9 @@ export function NavBarProvider({children}: {children: ReactNode}) {
         () => ({
             navBarDisplay,
             setNavBarDisplay,
-            isGlobalNavHovered,
-            onGlobalNavHover,
-            onGlobalNavLeave,
+            isNavHovered,
+            onNavHover,
+            onNavLeave,
             onOverlayEnter,
             onMenuToggle,
             isNavBarVisible: navBarDisplay !== NavBarDisplayMode.Collapsed,
@@ -49,9 +49,9 @@ export function NavBarProvider({children}: {children: ReactNode}) {
         [
             navBarDisplay,
             setNavBarDisplay,
-            isGlobalNavHovered,
-            onGlobalNavHover,
-            onGlobalNavLeave,
+            isNavHovered,
+            onNavHover,
+            onNavLeave,
             onOverlayEnter,
             onMenuToggle,
         ]

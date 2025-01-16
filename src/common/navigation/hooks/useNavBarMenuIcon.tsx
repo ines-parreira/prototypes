@@ -8,15 +8,15 @@ export const NavBarMenuIcons = {
 } as const
 
 export function useNavBarMenuIcon() {
-    const {isGlobalNavHovered, navBarDisplay} = useNavBar()
+    const {isNavHovered, navBarDisplay} = useNavBar()
 
     switch (navBarDisplay) {
         case NavBarDisplayMode.Open:
-            return isGlobalNavHovered
+            return isNavHovered
                 ? NavBarMenuIcons.DoubleLeft
                 : NavBarMenuIcons.Menu
         case NavBarDisplayMode.Hover:
-            return isGlobalNavHovered
+            return isNavHovered
                 ? NavBarMenuIcons.DoubleRight
                 : NavBarMenuIcons.Menu
         case NavBarDisplayMode.Collapsed:
