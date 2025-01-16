@@ -5,12 +5,12 @@ import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPop
 
 type Props = {
     onDelete: () => void
-    isUpdatePending: boolean
+    isDisabled: boolean
 }
 
 export default function DeleteActionConfirmation({
     onDelete,
-    isUpdatePending,
+    isDisabled,
 }: Props) {
     return (
         <ConfirmationPopover
@@ -29,7 +29,7 @@ export default function DeleteActionConfirmation({
                     intent="destructive"
                     title="Delete"
                     id={uid}
-                    isDisabled={isUpdatePending}
+                    isDisabled={isDisabled}
                 >
                     delete
                 </IconButton>

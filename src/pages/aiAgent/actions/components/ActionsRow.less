@@ -6,59 +6,36 @@
         cursor: pointer;
     }
 
-    .innerActionCell {
-        display: inline;
+    .nameCell {
+        width: 360px;
+        max-width: 360px;
     }
 
-    .actionNameTogleGroup {
-        display: inline-block;
-        padding-block: @layout-spacing-s;
-
-        & > div {
-            display: inline-flex;
-        }
-
-        .toggleInput {
-            vertical-align: text-top;
-        }
-
-        i {
-            vertical-align: middle;
-        }
+    .nameWrapper {
+        display: inline-flex;
+        overflow: hidden;
     }
 
-    .ellipsis {
+    .name {
+        .body-semibold();
+
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
     }
 
-    .nameCell {
-        max-width: 280px;
+    .icon {
+        margin-right: @layout-spacing-xs;
+
+        & > i {
+            color: var(--feedback-error);
+            font-size: 20px;
+        }
     }
 
-    .appImageFiller {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        object-fit: contain;
-    }
-
-    .actionTypeText {
-        padding-left: @layout-spacing-xs;
-        vertical-align: middle;
-        margin: 0;
-    }
-    .actionNameText {
-        .body-semibold;
-        vertical-align: text-top;
-        margin: 0;
-    }
-
-    .warningIcon {
-        padding-right: @layout-spacing-xs;
-        color: var(--feedback-error);
-        font-size: @layout-spacing-m;
-        vertical-align: bottom;
+    .apps {
+        display: flex;
+        gap: @layout-spacing-xs;
+        align-items: center;
     }
 }

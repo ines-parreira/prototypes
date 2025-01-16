@@ -1,5 +1,7 @@
 import React, {useMemo} from 'react'
 
+import {useParams} from 'react-router-dom'
+
 import useOrderBy from 'hooks/useOrderBy'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -7,6 +9,7 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
+import StoreAppsProvider from '../providers/StoreAppsProvider'
 import {StoresWorkflowConfiguration} from '../types'
 import css from './ActionsList.less'
 import ActionsRow from './ActionsRow'
@@ -16,6 +19,10 @@ type Props = {
 }
 
 export default function ActionsList({actions}: Props) {
+    const {shopName, shopType} = useParams<{
+        shopType: 'shopify'
+        shopName: string
+    }>()
     const {orderDirection, orderBy, orderParam, toggleOrderBy} =
         useOrderBy<'updated'>('updated')
 
@@ -35,26 +42,31 @@ export default function ActionsList({actions}: Props) {
     }, [actions, orderParam])
 
     return (
-        <TableWrapper className={css.container}>
-            <TableHead>
-                <HeaderCellProperty title="NAME" />
-                <HeaderCellProperty justifyContent="left" title="ACTION" />
-                <HeaderCellProperty
-                    justifyContent="right"
-                    title="LAST UPDATED"
-                    direction={orderDirection}
-                    isOrderedBy={orderBy === 'updated'}
-                    onClick={() => {
-                        toggleOrderBy('updated')
-                    }}
-                />
-                <HeaderCell />
-            </TableHead>
-            <TableBody>
-                {sortedActions.map((action) => (
-                    <ActionsRow action={action} key={action.id} />
-                ))}
-            </TableBody>
-        </TableWrapper>
+        <StoreAppsProvider storeName={shopName} storeType={shopType}>
+            <TableWrapper>
+                <TableHead>
+                    <HeaderCellProperty
+                        title="ACTION NAME"
+                        className={css.name}
+                    />
+                    <HeaderCellProperty title="APPS" />
+                    <HeaderCellProperty
+                        justifyContent="right"
+                        title="LAST UPDATED"
+                        direction={orderDirection}
+                        isOrderedBy={orderBy === 'updated'}
+                        onClick={() => {
+                            toggleOrderBy('updated')
+                        }}
+                    />
+                    <HeaderCell />
+                </TableHead>
+                <TableBody>
+                    {sortedActions.map((action) => (
+                        <ActionsRow action={action} key={action.id} />
+                    ))}
+                </TableBody>
+            </TableWrapper>
+        </StoreAppsProvider>
     )
 }

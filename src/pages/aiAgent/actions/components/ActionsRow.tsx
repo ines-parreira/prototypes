@@ -1,28 +1,25 @@
 import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {useMemo, useState} from 'react'
-import {Link, useLocation, useParams} from 'react-router-dom'
+import React, {MouseEvent, useCallback, useState} from 'react'
+import {Link, useHistory, useParams} from 'react-router-dom'
 
 import webhooksIcon from 'assets/img/icons/webhooks.svg'
 import {DateAndTimeFormatting} from 'constants/datetime'
-import useDimensions from 'hooks/useDimensions'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
+import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
+import {useStoreAppsContext} from 'pages/aiAgent/actions/providers/StoreAppsContext'
+import {StoreWorkflowsConfiguration} from 'pages/aiAgent/actions/types'
+import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
+import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import history from 'pages/history'
-
 import {formatDatetime} from 'utils'
 
-import useDeleteAction from '../hooks/useDeleteAction'
-import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
-import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
-import useUpsertAction from '../hooks/useUpsertAction'
-
-import {StoreWorkflowsConfiguration} from '../types'
 import css from './ActionsRow.less'
-import AppIntegrationDisabledModal from './AppIntegrationDisabledModal'
 import DeleteActionConfirmation from './DeleteActionConfirmation'
 
 type Props = {
@@ -30,265 +27,140 @@ type Props = {
 }
 
 export default function ActionsRow({action}: Props) {
-    const location = useLocation()
     const {shopName, shopType} = useParams<{
-        shopType: string
+        shopType: 'shopify'
         shopName: string
     }>()
 
-    const getActionNameTypeBodyCellElementId = `action-name-type-body-cell-${action.id}`
-    const getActionNameBodyCellElementId = `action-name-body-cell-${action.id}`
+    const {routes} = useAiAgentNavigation({shopName})
 
-    const [isDisabledAppModalOpen, setIsDisabledAppModalOpen] = useState(false)
+    const history = useHistory()
 
-    const disabledNativeAppWarningIconId = `disable-native-app-warning-icon-${action.id}`
+    const {mutate: deleteAction, isLoading: isDeleteActionLoading} =
+        useDeleteAction(action.name, shopName, shopType)
 
-    const [actionTypeCellRef, actionTypeCellRefDimension] = useDimensions()
-    const [actionTypeTextRef, actionTypeTextRefDimension] = useDimensions()
-    const [actionNameCellRef, actionNameCellRefDimension] = useDimensions()
-    const [actionNameTextRef, actionNameTextRefDimension] = useDimensions()
-
-    const {mutate: deleteAction, isLoading: isDeletingAction} = useDeleteAction(
-        action.name,
-        shopName,
-        shopType
-    )
-
-    const {mutate: updateAction, isLoading: isActionUpdating} = useUpsertAction(
-        'update',
-        shopName,
-        shopType
-    )
+    const {mutate: updateAction, isLoading: isEditActionLoading} =
+        useUpsertAction('update', shopName, shopType)
 
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.CompactDate
     )
 
-    function handleToggleAction(_nextValue: boolean, event: React.MouseEvent) {
-        event.stopPropagation()
-        const updatedAction = {
-            ...action,
-            entrypoints: action.entrypoints.map((entrypoint) =>
-                entrypoint.kind === 'llm-conversation'
-                    ? {
-                          ...entrypoint,
-                          deactivated_datetime: entrypoint.deactivated_datetime
-                              ? null
-                              : new Date().toISOString(),
-                      }
-                    : entrypoint
-            ),
-        }
+    const handleToggleAction = useCallback(
+        (nextValue: boolean, event: MouseEvent<HTMLLabelElement>) => {
+            event.stopPropagation()
 
-        if (shopType !== 'shopify') {
-            throw new Error('Unsupported shop type')
-        }
-
-        updateAction([
-            {
-                internal_id: updatedAction.internal_id,
-                store_name: shopName,
-                store_type: shopType,
-            },
-            updatedAction,
-        ])
-    }
-
-    const {data: templateConfigurations} = useGetWorkflowConfigurationTemplates(
-        {triggers: ['llm-prompt']}
+            updateAction([
+                {
+                    internal_id: action.internal_id,
+                    store_name: shopName,
+                    store_type: shopType,
+                },
+                {
+                    ...action,
+                    entrypoints: action.entrypoints.map((entrypoint) =>
+                        entrypoint.kind === 'llm-conversation'
+                            ? {
+                                  ...entrypoint,
+                                  deactivated_datetime: nextValue
+                                      ? null
+                                      : new Date().toISOString(),
+                              }
+                            : entrypoint
+                    ),
+                },
+            ])
+        },
+        [action, shopName, shopType, updateAction]
     )
 
-    const isCustomAction = !action.template_internal_id
+    const {apps} = useApps()
+    const getAppFromTemplateApp = useGetAppFromTemplateApp({apps})
 
-    const templateConfiguration = useMemo(
-        () =>
-            templateConfigurations?.find(
-                (template) =>
-                    template.internal_id === action.template_internal_id
-            ),
-        [action.template_internal_id, templateConfigurations]
-    )
+    const {recharge: rechargeIntegration} = useStoreAppsContext()
 
-    const llmConversationEntryPoint = useMemo(
-        () =>
-            action.entrypoints.find(
-                (entrypoint) => entrypoint.kind === 'llm-conversation'
-            ),
-        [action.entrypoints]
-    )
-
-    const actionDisplayName = useMemo(() => {
-        if (isCustomAction) {
-            return 'Custom'
-        }
-        return templateConfiguration?.name ?? ''
-    }, [isCustomAction, templateConfiguration?.name])
-
-    const actionApp = action.apps?.[0]
-
-    const isNativeAppIntegration = !!actionApp && actionApp.type !== 'app'
-
-    const actionAppIntegration = useGetActionAppIntegration({
-        appType: actionApp?.type,
-        shopName,
-    })
-
-    const appImageUrl = useGetAppImageUrl(actionApp)
-
-    const isNativeAppIntegrationDisabled =
-        isNativeAppIntegration && !actionAppIntegration
-
-    const isActionTypeTextOverflow = useMemo(() => {
-        if (!actionTypeCellRefDimension || !actionTypeTextRefDimension) {
-            return false
-        }
-        const imageOffset = 40
-        if (
-            actionTypeCellRefDimension.width <
-            actionTypeTextRefDimension.width + imageOffset
-        ) {
-            return true
-        }
-        return false
-    }, [actionTypeCellRefDimension, actionTypeTextRefDimension])
-
-    const isActionNameTextOverflow = useMemo(() => {
-        if (!actionNameCellRefDimension || !actionNameTextRefDimension) {
-            return false
-        }
-        const toogleIconOffset = 84 + (isNativeAppIntegrationDisabled ? 32 : 0)
-        if (
-            actionNameCellRefDimension.width <
-            actionNameTextRefDimension.width + toogleIconOffset
-        ) {
-            return true
-        }
-        return false
-    }, [
-        actionNameCellRefDimension,
-        actionNameTextRefDimension,
-        isNativeAppIntegrationDisabled,
-    ])
+    const [nameRef, setNameRef] = useState<HTMLSpanElement | null>(null)
 
     return (
         <TableBodyRow
             className={css.container}
             onClick={() => {
-                if (isNativeAppIntegrationDisabled) {
-                    if (isDisabledAppModalOpen) return
-                    setIsDisabledAppModalOpen(true)
-                    return
+                if (!isDeleteActionLoading) {
+                    history.push(routes.editAction(action.id))
                 }
-                history.push(`${location.pathname}/edit/${action.id}`)
             }}
         >
-            {actionApp && actionApp.type !== 'app' && (
-                <AppIntegrationDisabledModal
-                    templateDescription={action.description}
-                    templateName={action.name}
-                    actionAppConfiguration={actionApp}
-                    isOpen={isDisabledAppModalOpen}
-                    setOpen={setIsDisabledAppModalOpen}
-                />
-            )}
-            <BodyCell
-                ref={actionNameCellRef}
-                onClick={(event) => {
-                    if (isActionUpdating) event.stopPropagation()
-                }}
-                innerClassName={css.innerActionCell}
-                className={classNames(css.ellipsis, css.nameCell)}
-            >
-                <div className={css.actionNameTogleGroup}>
+            <BodyCell className={css.nameCell}>
+                <div className={css.nameWrapper}>
                     <ToggleInput
-                        className={css.toggleInput}
-                        isLoading={isActionUpdating}
-                        isDisabled={isNativeAppIntegrationDisabled}
+                        isLoading={isEditActionLoading}
+                        isDisabled={isDeleteActionLoading}
                         onClick={handleToggleAction}
-                        isToggled={
-                            !isNativeAppIntegrationDisabled &&
-                            llmConversationEntryPoint?.deactivated_datetime ===
-                                null
-                        }
+                        isToggled={!action.entrypoints[0].deactivated_datetime}
                     />
-                    {isNativeAppIntegrationDisabled && (
-                        <>
-                            <i
-                                id={disabledNativeAppWarningIconId}
-                                className={classNames(
-                                    'material-icons-round',
-                                    css.warningIcon
-                                )}
-                            >
-                                warning
-                            </i>
-                            <Tooltip
-                                placement="top-end"
-                                target={disabledNativeAppWarningIconId}
-                                autohide={false}
-                            >
-                                The integration associated with this Action has
-                                been disconnected. Reconfigure this integration
-                                in{' '}
-                                <Link
-                                    to="/app/settings/integrations"
-                                    onClick={(e) => e.stopPropagation()}
+                    {action.apps?.map((templateApp) => {
+                        const app = getAppFromTemplateApp(templateApp)
+
+                        if (app?.type === 'recharge' && !rechargeIntegration) {
+                            return (
+                                <IconTooltip
+                                    key={app.id}
+                                    tooltipProps={{
+                                        placement: 'top-end',
+                                        autohide: false,
+                                    }}
+                                    icon="error"
+                                    className={css.icon}
                                 >
-                                    the App Store.
-                                </Link>
-                            </Tooltip>
-                        </>
+                                    The Recharge integration associated with
+                                    this Action has been disconnected.
+                                    Reconfigure this integration in{' '}
+                                    <Link
+                                        to="/app/settings/integrations"
+                                        onClick={(event) => {
+                                            event.stopPropagation()
+                                        }}
+                                    >
+                                        the App Store.
+                                    </Link>
+                                </IconTooltip>
+                            )
+                        }
+
+                        return null
+                    })}
+                    <span className={css.name} ref={setNameRef}>
+                        {action.name}
+                    </span>
+                    {nameRef && nameRef.scrollWidth > nameRef.offsetWidth && (
+                        <Tooltip placement="top-end" target={nameRef}>
+                            {action.name}
+                        </Tooltip>
                     )}
                 </div>
-                <span
-                    id={getActionNameBodyCellElementId}
-                    className={css.actionNameText}
-                    ref={actionNameTextRef}
-                >
-                    {action.name}
-                </span>
-                {isActionNameTextOverflow && (
-                    <Tooltip
-                        placement="top-end"
-                        target={getActionNameBodyCellElementId}
-                    >
-                        {action.name}
-                    </Tooltip>
-                )}
             </BodyCell>
-            <BodyCell
-                id={getActionNameTypeBodyCellElementId}
-                innerClassName={css.innerActionCell}
-                className={css.ellipsis}
-                size="small"
-                justifyContent="left"
-                ref={actionTypeCellRef}
-            >
-                {isCustomAction ? (
-                    <img src={webhooksIcon} alt={'webhooks'} />
-                ) : (
-                    <>
-                        {appImageUrl ? (
-                            <img
-                                className={css.appImageFiller}
-                                src={appImageUrl}
-                                alt={action?.apps?.[0].type}
-                            />
-                        ) : (
-                            <div className={css.appImageFiller}></div>
-                        )}
-                    </>
-                )}
-                <span className={css.actionTypeText} ref={actionTypeTextRef}>
-                    {actionDisplayName}
-                </span>
-                {isActionTypeTextOverflow && (
-                    <Tooltip
-                        placement="top-end"
-                        target={getActionNameTypeBodyCellElementId}
-                    >
-                        {actionDisplayName}
-                    </Tooltip>
+            <BodyCell innerClassName={css.apps}>
+                {action.apps?.map((templateApp) => {
+                    const app = getAppFromTemplateApp(templateApp)
+
+                    return (
+                        <AppIcon
+                            key={
+                                templateApp.type === 'app'
+                                    ? templateApp.app_id
+                                    : templateApp.type
+                            }
+                            name={app?.name}
+                            icon={app?.icon}
+                        />
+                    )
+                })}
+                {action.steps.some((step) => step.kind === 'http-request') && (
+                    <img
+                        src={webhooksIcon}
+                        alt="HTTP request"
+                        title="HTTP request"
+                    />
                 )}
             </BodyCell>
             <BodyCell size="smallest" justifyContent="right">
@@ -305,7 +177,7 @@ export default function ActionsRow({action}: Props) {
                     onDelete={() => {
                         void deleteAction([{internal_id: action.internal_id}])
                     }}
-                    isUpdatePending={isDeletingAction}
+                    isDisabled={isDeleteActionLoading || isEditActionLoading}
                 />
             </BodyCell>
         </TableBodyRow>

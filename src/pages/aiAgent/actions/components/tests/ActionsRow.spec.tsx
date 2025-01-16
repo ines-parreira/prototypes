@@ -1,131 +1,231 @@
 import {QueryClientProvider} from '@tanstack/react-query'
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
+import {act, fireEvent, screen} from '@testing-library/react'
+import {createMemoryHistory} from 'history'
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import {dummyAppListData} from 'fixtures/apps'
-import {useGetApps, useGetAppsByIds} from 'models/integration/queries'
-import {
-    useGetWorkflowConfigurationTemplates,
-    useListActionsApps,
-} from 'models/workflows/queries'
-import {RootState} from 'state/types'
+import {ulid} from 'ulidx'
+
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import {IntegrationType} from 'models/integration/constants'
+import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
+import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
+import {StoreWorkflowsConfiguration} from 'pages/aiAgent/actions/types'
+import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {renderWithRouter} from 'utils/testing'
 
-import useDeleteAction from '../../hooks/useDeleteAction'
-import useUpsertAction from '../../hooks/useUpsertAction'
 import ActionsRow from '../ActionsRow'
 
-jest.mock('models/integration/queries')
+jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 jest.mock('models/workflows/queries')
-jest.mock('../../hooks/useDeleteAction')
-jest.mock('../../hooks/useUpsertAction')
+jest.mock('hooks/useGetDateAndTimeFormat')
+jest.mock('pages/aiAgent/actions/hooks/useDeleteAction')
+jest.mock('pages/aiAgent/actions/hooks/useUpsertAction')
 
-const mockStore = configureMockStore([thunk])
 const queryClient = mockQueryClient()
 
-const mockUseGetApps = jest.mocked(useGetApps)
-const mockUseGetAppsByIds = jest.mocked(useGetAppsByIds)
-const mockUseListActionsApps = jest.mocked(useListActionsApps)
+const mockUseApps = jest.mocked(useApps)
 const mockUseUpsertAction = jest.mocked(useUpsertAction)
 const mockUseDeleteAction = jest.mocked(useDeleteAction)
-const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
-    useGetWorkflowConfigurationTemplates
-)
+const mockUseGetDateAndTimeFormat = jest.mocked(useGetDateAndTimeFormat)
+
+const b = new WorkflowConfigurationBuilder({
+    id: ulid(),
+    name: 'Action name',
+    initialStep: {
+        id: ulid(),
+        kind: 'http-request',
+        settings: {
+            headers: {},
+            method: 'GET',
+            name: 'name',
+            url: 'https://example.com',
+            variables: [],
+        },
+    },
+    entrypoints: [
+        {
+            kind: 'llm-conversation',
+            trigger: 'llm-prompt',
+            settings: {
+                instructions: 'instructions',
+                requires_confirmation: false,
+            },
+            deactivated_datetime: null,
+        },
+    ],
+    triggers: [
+        {
+            kind: 'llm-prompt',
+            settings: {
+                custom_inputs: [],
+                object_inputs: [],
+                outputs: [],
+                conditions: null,
+            },
+        },
+    ],
+    is_draft: false,
+    apps: [
+        {
+            type: 'shopify',
+        },
+        {
+            type: 'recharge',
+        },
+        {
+            type: 'app',
+            app_id: 'someid',
+        },
+    ],
+    available_languages: [],
+})
+
+const configuration = b.build() as StoreWorkflowsConfiguration
 
 describe('<ActionsRow />', () => {
-    it('should render component', () => {
-        mockUseGetApps.mockReturnValue({
-            data: [dummyAppListData],
-            isInitialLoading: false,
-        } as unknown as ReturnType<typeof useGetApps>)
-
-        mockUseListActionsApps.mockReturnValue({
-            data: [],
-            isInitialLoading: false,
-        } as unknown as ReturnType<typeof useListActionsApps>)
-
-        mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
-            data: [],
-            isInitialLoading: false,
-        } as unknown as ReturnType<
-            typeof mockUseGetWorkflowConfigurationTemplates
-        >)
-
+    beforeEach(() => {
+        mockUseApps.mockReturnValue({
+            apps: [
+                {
+                    icon: '/assets/img/integrations/someid.png',
+                    id: 'someid',
+                    name: 'Some App',
+                    type: IntegrationType.App,
+                },
+                {
+                    icon: '/assets/img/integrations/recharge.png',
+                    id: 'recharge',
+                    name: 'Recharge',
+                    type: IntegrationType.Recharge,
+                },
+                {
+                    icon: '/assets/img/integrations/shopify.png',
+                    id: 'shopify',
+                    name: 'Shopify',
+                    type: IntegrationType.Shopify,
+                },
+            ],
+            isLoading: false,
+            actionsApps: [],
+        })
         mockUseDeleteAction.mockReturnValue({
             mutate: jest.fn(),
             isLoading: false,
             isSuccess: false,
         } as unknown as ReturnType<typeof useDeleteAction>)
-
         mockUseUpsertAction.mockReturnValue({
             mutate: jest.fn(),
             isLoading: false,
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
+        mockUseGetDateAndTimeFormat.mockReturnValue('MM/DD/YYYY')
+    })
 
-        mockUseGetAppsByIds.mockReturnValue([])
-        const storeState = {
-            integrations: fromJS({
-                integrations: [
-                    {
-                        type: 'shopify',
-                        meta: {
-                            shop_name: 'shop-name',
-                            oauth: {status: 'success'},
-                        },
-                    },
-                ],
-            }),
-        } as RootState
-        const action = {
-            account_id: 1,
-            name: 'test',
-            internal_id: '1',
-            id: '1',
-            initial_step_id: '',
-            is_draft: false,
-            entrypoints: [
-                {
-                    kind: 'llm-conversation' as const,
-                    trigger: 'llm-prompt' as const,
-                    settings: {
-                        instructions: 'test',
-                        requires_confirmation: false,
-                    },
-                    deactivated_datetime: null,
-                },
-            ],
-            triggers: [
-                {
-                    kind: 'llm-prompt' as const,
-                    settings: {
-                        custom_inputs: [],
-                        object_inputs: [],
-                        outputs: [],
-                    },
-                },
-            ],
-            steps: [],
-            transitions: [],
-            available_languages: [],
-            created_datetime: new Date().toISOString(),
-            updated_datetime: new Date().toISOString(),
-            apps: [{type: 'app' as const, app_id: '1'}],
-        }
-
+    it('should render component', () => {
         renderWithRouter(
-            <Provider store={mockStore(storeState)}>
-                <QueryClientProvider client={queryClient}>
-                    <ActionsRow action={action} />
-                </QueryClientProvider>
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <ActionsRow action={configuration} />
+            </QueryClientProvider>
         )
 
-        expect(screen.getByText('test')).toBeInTheDocument()
+        expect(screen.getByText('Action name')).toBeInTheDocument()
+
+        expect(screen.getByTitle('Shopify')).toBeInTheDocument()
+        expect(screen.getByTitle('Recharge')).toBeInTheDocument()
+        expect(screen.getByTitle('Some App')).toBeInTheDocument()
+        expect(screen.getByTitle('HTTP request')).toBeInTheDocument()
+    })
+
+    it('should display last updated at datetime', () => {
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <ActionsRow
+                    action={{
+                        ...configuration,
+                        updated_datetime: '2025-01-15T14:58:19.164Z',
+                    }}
+                />
+            </QueryClientProvider>
+        )
+
+        expect(screen.getByText('01/15/2025')).toBeInTheDocument()
+    })
+
+    it('should toggle availability for AI Agent', () => {
+        const mockUpsertAction = jest.fn()
+
+        mockUseUpsertAction.mockReturnValue({
+            mutate: mockUpsertAction,
+            isLoading: false,
+            isSuccess: false,
+        } as unknown as ReturnType<typeof useUpsertAction>)
+
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <ActionsRow action={configuration} />
+            </QueryClientProvider>
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByRole('switch'))
+        })
+
+        expect(mockUpsertAction).toHaveBeenCalled()
+    })
+
+    it('should redirect to edit Action page on click', () => {
+        const history = createMemoryHistory({
+            initialEntries: [
+                `/app/automation/shopify/shopify-store/ai-agent/actions`,
+            ],
+        })
+        const historyPushSpy = jest.spyOn(history, 'push')
+
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <ActionsRow action={configuration} />
+            </QueryClientProvider>,
+            {
+                history,
+                path: '/app/automation/:shopType/:shopName/ai-agent/actions',
+                route: `/app/automation/shopify/shopify-store/ai-agent/actions`,
+            }
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Action name'))
+        })
+
+        expect(historyPushSpy).toHaveBeenCalledWith(
+            `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`
+        )
+    })
+
+    it('should delete Action', () => {
+        const mockDeleteAction = jest.fn()
+
+        mockUseDeleteAction.mockReturnValue({
+            mutate: mockDeleteAction,
+            isLoading: false,
+            isSuccess: false,
+        } as unknown as ReturnType<typeof useDeleteAction>)
+
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <ActionsRow action={configuration} />
+            </QueryClientProvider>
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('delete'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Delete'))
+        })
+
+        expect(mockDeleteAction).toHaveBeenCalled()
     })
 })
