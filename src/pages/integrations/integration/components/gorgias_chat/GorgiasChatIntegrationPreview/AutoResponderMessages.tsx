@@ -51,6 +51,7 @@ const AutoResponderMessages: React.FC<Props> = ({
             {currentUser && (
                 <AgentMessages
                     currentUser={currentUser}
+                    conversationColor={conversationColor}
                     messages={[
                         {
                             content:

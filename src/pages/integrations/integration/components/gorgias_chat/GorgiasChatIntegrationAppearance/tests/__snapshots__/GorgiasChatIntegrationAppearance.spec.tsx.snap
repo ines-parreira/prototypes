@@ -1287,10 +1287,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             <div
                               class="messages"
                             >
-                              <div
-                                class="bubble firstMessageOfAppMaker"
-                              >
-                                Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                              <div>
+                                <div
+                                  class="bubble firstMessageOfAppMaker"
+                                >
+                                  Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                                </div>
                               </div>
                               <div
                                 class="automatedTimestamp"
@@ -2787,10 +2789,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             <div
                               class="messages"
                             >
-                              <div
-                                class="bubble firstMessageOfAppMaker"
-                              >
-                                Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                              <div>
+                                <div
+                                  class="bubble firstMessageOfAppMaker"
+                                >
+                                  Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                                </div>
                               </div>
                               <div
                                 class="automatedTimestamp"
@@ -4257,10 +4261,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             <div
                               class="messages"
                             >
-                              <div
-                                class="bubble firstMessageOfAppMaker"
-                              >
-                                Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                              <div>
+                                <div
+                                  class="bubble firstMessageOfAppMaker"
+                                >
+                                  Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                                </div>
                               </div>
                               <div
                                 class="automatedTimestamp"
@@ -5727,10 +5733,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                             <div
                               class="messages"
                             >
-                              <div
-                                class="bubble firstMessageOfAppMaker"
-                              >
-                                Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                              <div>
+                                <div
+                                  class="bubble firstMessageOfAppMaker"
+                                >
+                                  Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                                </div>
                               </div>
                               <div
                                 class="automatedTimestamp"
@@ -7197,10 +7205,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             <div
                               class="messages"
                             >
-                              <div
-                                class="bubble firstMessageOfAppMaker"
-                              >
-                                Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                              <div>
+                                <div
+                                  class="bubble firstMessageOfAppMaker"
+                                >
+                                  Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                                </div>
                               </div>
                               <div
                                 class="automatedTimestamp"
@@ -8667,10 +8677,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             <div
                               class="messages"
                             >
-                              <div
-                                class="bubble firstMessageOfAppMaker"
-                              >
-                                Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                              <div>
+                                <div
+                                  class="bubble firstMessageOfAppMaker"
+                                >
+                                  Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                                </div>
                               </div>
                               <div
                                 class="automatedTimestamp"
@@ -10029,10 +10041,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                             <div
                               class="messages"
                             >
-                              <div
-                                class="bubble firstMessageOfAppMaker"
-                              >
-                                Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                              <div>
+                                <div
+                                  class="bubble firstMessageOfAppMaker"
+                                >
+                                  Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                                </div>
                               </div>
                               <div
                                 class="automatedTimestamp"
@@ -11401,10 +11415,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                             <div
                               class="messages"
                             >
-                              <div
-                                class="bubble firstMessageOfAppMaker"
-                              >
-                                Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                              <div>
+                                <div
+                                  class="bubble firstMessageOfAppMaker"
+                                >
+                                  Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                                </div>
                               </div>
                               <div
                                 class="automatedTimestamp"
@@ -12889,10 +12905,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                             <div
                               class="messages"
                             >
-                              <div
-                                class="bubble firstMessageOfAppMaker"
-                              >
-                                Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                              <div>
+                                <div
+                                  class="bubble firstMessageOfAppMaker"
+                                >
+                                  Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                                </div>
                               </div>
                               <div
                                 class="automatedTimestamp"
@@ -14301,10 +14319,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             <div
                               class="messages"
                             >
-                              <div
-                                class="bubble firstMessageOfAppMaker"
-                              >
-                                Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                              <div>
+                                <div
+                                  class="bubble firstMessageOfAppMaker"
+                                >
+                                  Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                                </div>
                               </div>
                               <div
                                 class="automatedTimestamp"
@@ -15771,10 +15791,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             <div
                               class="messages"
                             >
-                              <div
-                                class="bubble firstMessageOfAppMaker"
-                              >
-                                Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                              <div>
+                                <div
+                                  class="bubble firstMessageOfAppMaker"
+                                >
+                                  Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                                </div>
                               </div>
                               <div
                                 class="automatedTimestamp"

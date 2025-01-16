@@ -697,6 +697,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     chatTitle={chatTitle}
                     currentUser={currentUser}
                     language={language}
+                    mainColor={mainColor}
                 />
             ) : null
         } else if (

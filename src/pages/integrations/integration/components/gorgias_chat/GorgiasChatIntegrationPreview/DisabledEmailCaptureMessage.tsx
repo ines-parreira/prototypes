@@ -10,6 +10,7 @@ import {GorgiasChatAvatarSettings} from 'models/integration/types'
 import AgentMessages from './AgentMessages'
 
 type DisabledEmailCaptureMessageProps = {
+    mainColor: string
     avatar?: GorgiasChatAvatarSettings
     chatTitle?: string
     currentUser?: Map<any, any>
@@ -21,6 +22,7 @@ const DisabledEmailCaptureMessage = ({
     chatTitle,
     currentUser,
     language,
+    mainColor,
 }: DisabledEmailCaptureMessageProps) => {
     const translatedTexts =
         GORGIAS_CHAT_WIDGET_TEXTS[
@@ -34,6 +36,7 @@ const DisabledEmailCaptureMessage = ({
                     avatar={avatar}
                     chatTitle={chatTitle}
                     currentUser={currentUser}
+                    conversationColor={mainColor}
                     messages={[
                         {
                             content: translatedTexts.waitTimeShortEmailCaptured,

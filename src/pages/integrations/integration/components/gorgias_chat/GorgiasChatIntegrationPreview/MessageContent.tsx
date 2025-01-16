@@ -47,6 +47,7 @@ const MessageContent: FC<Props> = ({
             {agentMessages.length > 0 && (
                 <AgentMessages
                     currentUser={currentUser}
+                    conversationColor={conversationColor}
                     messages={agentMessages}
                     enableAgentMessagesAnimations={
                         enableAgentMessagesAnimations

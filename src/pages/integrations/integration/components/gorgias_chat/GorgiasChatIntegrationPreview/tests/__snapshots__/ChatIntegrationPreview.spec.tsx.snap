@@ -455,10 +455,12 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
             <div
               class="messages"
             >
-              <div
-                class="bubble firstMessageOfAppMaker"
-              >
-                test
+              <div>
+                <div
+                  class="bubble firstMessageOfAppMaker"
+                >
+                  test
+                </div>
               </div>
               <div
                 class="automatedTimestamp"
@@ -663,10 +665,12 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
             <div
               class="messages"
             >
-              <div
-                class="bubble firstMessageOfAppMaker"
-              >
-                test
+              <div>
+                <div
+                  class="bubble firstMessageOfAppMaker"
+                >
+                  test
+                </div>
               </div>
               <div
                 class="automatedTimestamp"
@@ -1451,10 +1455,12 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
             <div
               class="messages"
             >
-              <div
-                class="bubble firstMessageOfAppMaker"
-              >
-                test
+              <div>
+                <div
+                  class="bubble firstMessageOfAppMaker"
+                >
+                  test
+                </div>
               </div>
               <div
                 class="automatedTimestamp"
@@ -1717,10 +1723,12 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
             <div
               class="messages"
             >
-              <div
-                class="bubble firstMessageOfAppMaker"
-              >
-                test
+              <div>
+                <div
+                  class="bubble firstMessageOfAppMaker"
+                >
+                  test
+                </div>
               </div>
               <div
                 class="automatedTimestamp"
@@ -1972,10 +1980,12 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
             <div
               class="messages"
             >
-              <div
-                class="bubble firstMessageOfAppMaker"
-              >
-                test
+              <div>
+                <div
+                  class="bubble firstMessageOfAppMaker"
+                >
+                  test
+                </div>
               </div>
               <div
                 class="automatedTimestamp"
@@ -2227,10 +2237,12 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
             <div
               class="messages"
             >
-              <div
-                class="bubble firstMessageOfAppMaker"
-              >
-                test
+              <div>
+                <div
+                  class="bubble firstMessageOfAppMaker"
+                >
+                  test
+                </div>
               </div>
               <div
                 class="automatedTimestamp"
@@ -2514,10 +2526,12 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
             <div
               class="messages"
             >
-              <div
-                class="bubble firstMessageOfAppMaker"
-              >
-                test
+              <div>
+                <div
+                  class="bubble firstMessageOfAppMaker"
+                >
+                  test
+                </div>
               </div>
               <div
                 class="automatedTimestamp"
@@ -2733,10 +2747,12 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
             <div
               class="messages"
             >
-              <div
-                class="bubble firstMessageOfAppMaker"
-              >
-                test
+              <div>
+                <div
+                  class="bubble firstMessageOfAppMaker"
+                >
+                  test
+                </div>
               </div>
               <div
                 class="automatedTimestamp"
@@ -2952,10 +2968,12 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
             <div
               class="messages"
             >
-              <div
-                class="bubble firstMessageOfAppMaker"
-              >
-                test
+              <div>
+                <div
+                  class="bubble firstMessageOfAppMaker"
+                >
+                  test
+                </div>
               </div>
               <div
                 class="automatedTimestamp"
@@ -3171,10 +3189,12 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
             <div
               class="messages"
             >
-              <div
-                class="bubble firstMessageOfAppMaker"
-              >
-                test
+              <div>
+                <div
+                  class="bubble firstMessageOfAppMaker"
+                >
+                  test
+                </div>
               </div>
               <div
                 class="automatedTimestamp"
@@ -3277,10 +3297,12 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
             <div
               class="messages"
             >
-              <div
-                class="bubble firstMessageOfAppMaker"
-              >
-                test
+              <div>
+                <div
+                  class="bubble firstMessageOfAppMaker"
+                >
+                  test
+                </div>
               </div>
               <div
                 class="automatedTimestamp"

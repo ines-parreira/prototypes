@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import {Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import React from 'react'
 
 import {
@@ -10,18 +10,21 @@ import {
 import ArticleAttachment from 'gorgias-design-system/Attachments/ArticleAttachment'
 import {GorgiasChatAvatarSettings} from 'models/integration/types'
 
+import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import {ProductCarousel} from 'pages/convert/campaigns/components/CampaignPreview/components/ProductCarousel'
+import {transformAttachmentToProduct} from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
+
 import {AgentDisplayName} from './AgentDisplayName'
 
 import {ArticleAttachmentSchema, isArticleAttachment} from './ArticleAttachment'
 import ChatAvatar from './ChatAvatar'
 import css from './ChatIntegrationPreview.less'
 import {FileIcon} from './icon-utils'
-import ProductCardAttachment, {ProductAttachment} from './ProductCardAttachment'
 
 export type AgentMessage = {
     content: string
     isHtml: boolean
-    attachments: ProductAttachment[] | ArticleAttachmentSchema[]
+    attachments: ProductCardAttachment[] | ArticleAttachmentSchema[]
 }
 
 const renderAgentMessage = ({
@@ -31,7 +34,7 @@ const renderAgentMessage = ({
 }: {
     content: string
     isHtml: boolean
-    attachments: ProductAttachment[] | ArticleAttachmentSchema[]
+    attachments: ProductCardAttachment[] | ArticleAttachmentSchema[]
 }) => {
     if (isHtml) {
         return (
@@ -41,7 +44,7 @@ const renderAgentMessage = ({
                         __html: content,
                     }}
                 />
-                {attachments.map((attachment, index) => {
+                {attachments.map((attachment) => {
                     if (isArticleAttachment(attachment)) {
                         return (
                             <ArticleAttachment
@@ -52,14 +55,6 @@ const renderAgentMessage = ({
                             />
                         )
                     }
-                    const {url} = attachment
-
-                    return (
-                        <ProductCardAttachment
-                            key={`${url}-${index}`}
-                            attachment={attachment}
-                        />
-                    )
                 })}
             </>
         )
@@ -67,9 +62,30 @@ const renderAgentMessage = ({
     return <>{content}</>
 }
 
+const renderAttachments = (
+    attachments: ProductCardAttachment[] | ArticleAttachmentSchema[],
+    conversationColor: string
+) => {
+    const products = transformAttachmentToProduct(fromJS(attachments), {})
+
+    if (products.length) {
+        return (
+            <div className={css.productCarousel}>
+                <ProductCarousel
+                    products={products}
+                    mainColor={conversationColor}
+                    shouldHideRepositionImage={true}
+                />
+            </div>
+        )
+    }
+}
+
 type Props = {
     currentUser: Map<any, any>
     messages: AgentMessage[]
+    conversationColor: string
+    backgroundColor?: string
     enableAgentMessagesAnimations?: boolean
     chatTitle?: string
     avatar?: GorgiasChatAvatarSettings
@@ -83,6 +99,8 @@ const AgentMessages: React.FC<Props> = ({
     chatTitle,
     avatar,
     language,
+    conversationColor,
+    backgroundColor,
 }) => {
     const widgetTranslatedTexts =
         GORGIAS_CHAT_WIDGET_TEXTS[
@@ -119,20 +137,35 @@ const AgentMessages: React.FC<Props> = ({
             <div className={css.messages}>
                 {messages.map((message, index) => (
                     <div
-                        className={classnames(
-                            css.bubble,
-                            css.firstMessageOfAppMaker,
-                            {
-                                [css.isAnimated]: enableAgentMessagesAnimations,
-                            }
-                        )}
                         key={
                             enableAgentMessagesAnimations
                                 ? index
                                 : message.content
                         }
                     >
-                        {renderAgentMessage(message)}
+                        <div
+                            className={classnames(
+                                css.bubble,
+                                css.firstMessageOfAppMaker,
+                                {
+                                    [css.isAnimated]:
+                                        enableAgentMessagesAnimations,
+                                }
+                            )}
+                            style={
+                                backgroundColor
+                                    ? {
+                                          backgroundColor: backgroundColor,
+                                      }
+                                    : {}
+                            }
+                        >
+                            {renderAgentMessage(message)}
+                        </div>
+                        {renderAttachments(
+                            message.attachments,
+                            conversationColor
+                        )}
                     </div>
                 ))}
                 <div className={css.automatedTimestamp}>

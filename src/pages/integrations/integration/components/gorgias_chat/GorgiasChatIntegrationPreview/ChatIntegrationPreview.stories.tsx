@@ -1,12 +1,16 @@
 import {Meta, Story} from '@storybook/react'
 import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
+import {AttachmentEnum} from 'common/types'
 import {CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES} from 'config/integrations'
 import {
     GORGIAS_CHAT_DEFAULT_COLOR,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
 } from 'config/integrations/gorgias_chat'
+import {billingState} from 'fixtures/billing'
 import {user} from 'fixtures/users'
 
 import {
@@ -17,6 +21,10 @@ import {
 import ChatIntegrationPreview from './ChatIntegrationPreview'
 import css from './ChatIntegrationPreview.less'
 import MessageContent from './MessageContent'
+
+const defaultState = {
+    billing: fromJS(billingState),
+}
 
 const storyConfig: Meta = {
     title: 'Chat/ChatIntegrationPreview',
@@ -33,7 +41,11 @@ const storyConfig: Meta = {
 
 const Template: Story<ComponentProps<typeof ChatIntegrationPreview>> = (
     props
-) => <ChatIntegrationPreview {...props} />
+) => (
+    <Provider store={configureMockStore()(defaultState)}>
+        <ChatIntegrationPreview {...props} />
+    </Provider>
+)
 
 const defaultProps: ComponentProps<typeof ChatIntegrationPreview> = {
     name: 'My chat',
@@ -128,6 +140,68 @@ WithAgentMessagesAnimations.args = {
                         'Hi 👋  Our sizes are made for all shapes and body types. Check out this standard size chart for a measurement guide and international conversion.',
                     isHtml: false,
                     attachments: [],
+                },
+                {
+                    content: 'Was this helpful?',
+                    isHtml: false,
+                    attachments: [],
+                },
+            ]}
+            enableAgentMessagesAnimations
+        />
+    ),
+}
+
+export const WithProductCards = Template.bind({})
+WithProductCards.args = {
+    ...defaultProps,
+    children: (
+        <MessageContent
+            conversationColor=""
+            currentUser={fromJS(user)}
+            customerInitialMessages={['Hello']}
+            agentMessages={[
+                {
+                    content:
+                        'Hi 👋  Our sizes are made for all shapes and body types. Check out this standard size chart for a measurement guide and international conversion.',
+                    isHtml: false,
+                    attachments: [
+                        {
+                            content_type: AttachmentEnum.Product,
+                            name: 'ADIDAS | SUPERSTAR 80S',
+                            size: 0,
+                            url: 'https://test.com/products/test-product1',
+                            extra: {
+                                price: '120.5',
+                                variant_name: 'ADIDAS | SUPERSTAR 80S',
+                                product_link:
+                                    'https://test.com/products/test-product1',
+                                currency: 'USD',
+                                featured_image:
+                                    'https://cdn.mos.cms.futurecdn.net/gPvyaz76tASn87RCGuSdDc.jpg',
+                                product_id: 1,
+                                variant_id: 2,
+                            },
+                        },
+                        {
+                            content_type: AttachmentEnum.Product,
+                            name: 'CONVERSE | CHUCK TAYLOR ALL STAR',
+                            size: 0,
+                            url: 'https://test.com/products/test-product2',
+                            extra: {
+                                price: '145.5',
+                                variant_name:
+                                    'CONVERSE | CHUCK TAYLOR ALL STAR',
+                                product_link:
+                                    'https://test.com/products/test-product2',
+                                currency: 'USD',
+                                featured_image:
+                                    'https://cdn.mos.cms.futurecdn.net/gPvyaz76tASn87RCGuSdDc.jpg',
+                                product_id: 3,
+                                variant_id: 4,
+                            },
+                        },
+                    ],
                 },
                 {
                     content: 'Was this helpful?',

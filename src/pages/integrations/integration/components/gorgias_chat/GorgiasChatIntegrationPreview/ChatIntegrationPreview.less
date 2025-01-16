@@ -101,7 +101,8 @@
         }
 
         .content {
-            overflow: auto;
+            overflow-x: hidden;
+            overflow-y: auto;
             padding: 20px;
             flex: 1;
             pointer-events: initial;
@@ -469,5 +470,9 @@
         color: var(--feedback-error);
         font-weight: 600;
         font-size: 14px;
+    }
+
+    .productCarousel {
+        margin: @layout-spacing-s 0 @layout-spacing-s -38px;
     }
 }

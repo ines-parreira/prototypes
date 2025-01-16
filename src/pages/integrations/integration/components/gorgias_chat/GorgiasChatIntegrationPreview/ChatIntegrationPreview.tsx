@@ -77,6 +77,7 @@ type Props = {
     offlineIntroductionText?: string
     headerText?: string
     mainColor: string
+    background?: string
     mainFontFamily: string
     isOnline: boolean
     language?: string
@@ -139,6 +140,7 @@ const ChatIntegrationPreview = (props: Props) => {
         showBackground = true,
         isWidgetConversation = true,
         backgroundColorStyle = GorgiasChatBackgroundColorStyle.Gradient,
+        background,
         headerPictureUrl,
         displayBotLabel,
         avatar,
@@ -352,6 +354,13 @@ const ChatIntegrationPreview = (props: Props) => {
                                     css.conversationContentWrapper,
                                 !isWidgetConversation && css.contentWrapper
                             )}
+                            style={
+                                background
+                                    ? {
+                                          background: background,
+                                      }
+                                    : {}
+                            }
                         >
                             {children}
 

@@ -5,6 +5,7 @@ import {Provider} from 'react-redux'
 
 import configureMockStore from 'redux-mock-store'
 
+import {AttachmentEnum} from 'common/types'
 import {
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
@@ -17,6 +18,7 @@ import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from 'config/integrations/gorgias_chat'
+import {billingState} from 'fixtures/billing'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
@@ -65,6 +67,7 @@ const defaultState = {
             },
         ],
     }),
+    billing: fromJS(billingState),
 } as RootState
 
 describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', () => {
@@ -238,6 +241,54 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
             )
 
             expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should display display product cards', () => {
+            const {getByText} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <ChatIntegrationPreview
+                        {...minProps}
+                        renderFooter={false}
+                        editedPositionAxis={PositionAxis.AXIS_Y}
+                    >
+                        <MessageContent
+                            {...{
+                                ...messageContentMinProps,
+                                agentMessages: [
+                                    {
+                                        content: 'Here are my recommendations',
+                                        isHtml: false,
+                                        attachments: [
+                                            {
+                                                content_type:
+                                                    AttachmentEnum.Product,
+                                                name: 'ADIDAS | SUPERSTAR 80S',
+                                                size: 0,
+                                                url: 'https://test.com/products/test-product1',
+                                                extra: {
+                                                    price: '120.5',
+                                                    variant_name:
+                                                        'ADIDAS | SUPERSTAR 80S',
+                                                    product_link:
+                                                        'https://test.com/products/test-product1',
+                                                    currency: 'USD',
+                                                    featured_image:
+                                                        'https://cdn.mos.cms.futurecdn.net/gPvyaz76tASn87RCGuSdDc.jpg',
+                                                    product_id: 1,
+                                                    variant_id: 2,
+                                                },
+                                            },
+                                        ],
+                                    },
+                                ],
+                            }}
+                        />
+                    </ChatIntegrationPreview>
+                </Provider>
+            )
+
+            expect(getByText('ADIDAS | SUPERSTAR 80S')).toBeInTheDocument()
+            expect(getByText('$120.50')).toBeInTheDocument()
         })
 
         it.each([
