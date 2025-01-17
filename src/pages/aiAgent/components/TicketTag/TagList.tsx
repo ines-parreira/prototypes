@@ -59,6 +59,7 @@ const TagList = ({tags, onTagsUpdate}: Props) => {
                             value={t.description}
                             onChange={(v) => handleDescriptionChange(index, v)}
                             placeholder="e.g. Shipping status or tracking related questions"
+                            maxLength={255}
                         />
                     </div>
                     <IconButton
