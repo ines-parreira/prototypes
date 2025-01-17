@@ -4,6 +4,7 @@ import React, {useState} from 'react'
 import {useDispatch} from 'react-redux'
 import {useParams} from 'react-router-dom'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
@@ -79,6 +80,12 @@ export const OptimizeContainer = () => {
         )
 
         setIsPeriodFilterSet(true)
+    })
+
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.AiAgentOptimizePageViewed, {
+            type: 'Optimize overview',
+        })
     })
 
     const getCalendarRangeFilters = (): {[label: string]: [Moment, Moment]} => {

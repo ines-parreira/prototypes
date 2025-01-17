@@ -1,5 +1,6 @@
 import React, {ReactNode} from 'react'
 
+import {SegmentEvent} from 'common/segment'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {useGridSize} from 'hooks/useGridSize'
@@ -17,8 +18,8 @@ import DashboardSection from 'pages/stats/DashboardSection'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import MetricCard from 'pages/stats/MetricCard'
 import {
-    STATS_TIPS_VISIBILITY_KEY,
     OverviewMetric,
+    STATS_TIPS_VISIBILITY_KEY,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import TipsToggle from 'pages/stats/TipsToggle'
 import {TooltipData} from 'pages/stats/types'
@@ -144,6 +145,9 @@ export const IntentsPerformance = ({
                                         } as DrillDownMetric
                                     }
                                     useNewFilterData={isAnalyticsNewFilters}
+                                    segmentEventName={
+                                        SegmentEvent.AiAgentTicketDrilldownClicked
+                                    }
                                 >
                                     {config.formattedMetric}
                                 </DrillDownModalTrigger>

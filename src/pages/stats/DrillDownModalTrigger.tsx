@@ -25,6 +25,7 @@ type Props = {
     metricData: DrillDownMetric
     enabled?: boolean
     useNewFilterData?: boolean
+    segmentEventName?: SegmentEvent
 }
 
 const getTooltipText = (metricName: string) => {
@@ -54,6 +55,7 @@ export const DrillDownModalTrigger = ({
     metricData,
     enabled = true,
     useNewFilterData = false,
+    segmentEventName = SegmentEvent.StatClicked,
 }: PropsWithChildren<Props>) => {
     const dispatch = useAppDispatch()
 
@@ -62,7 +64,7 @@ export const DrillDownModalTrigger = ({
         if (useNewFilterData) {
             dispatch(setShouldUseNewFilterData(true))
         }
-        logEvent(SegmentEvent.StatClicked, {metric: metricData.metricName})
+        logEvent(segmentEventName, {metric: metricData.metricName})
     }
 
     const targetId = `${TRIGGER_ID}-${useId()}`

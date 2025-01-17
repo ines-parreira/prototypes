@@ -1,6 +1,7 @@
 import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {useMemo} from 'react'
 
+import {SegmentEvent} from 'common/segment'
 import useId from 'hooks/useId'
 import {BadgeWithTiers} from 'pages/aiAgent/insights/IntentTableWidget/BadgeWithTiers/BadgeWithTiers'
 import {
@@ -209,6 +210,9 @@ const DrillDownModalWrapper = ({
                     enabled={!!metricValue}
                     metricData={drillDownMetricData}
                     useNewFilterData={true}
+                    segmentEventName={
+                        SegmentEvent.AiAgentTicketDrilldownClicked
+                    }
                 >
                     {children}
                 </DrillDownModalTrigger>
