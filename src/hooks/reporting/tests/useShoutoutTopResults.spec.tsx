@@ -9,7 +9,7 @@ import {agents} from 'fixtures/agents'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {useShoutoutTopResults} from 'hooks/reporting/useShoutoutTopResults'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {agentsShoutoutsConfig} from 'pages/stats/support-performance/agents/AgentsShoutoutsConfig'
+import {AgentsShoutOutsConfig} from 'pages/stats/support-performance/agents/AgentsShoutOutsConfig'
 import {RootState} from 'state/types'
 
 const mockStore = configureMockStore([thunk])
@@ -44,7 +44,7 @@ describe('useShoutoutTopResults', () => {
         ui: {stats: {filters: {cleanStatsFilters: null}}},
     } as RootState
 
-    it.each(agentsShoutoutsConfig)(
+    it.each(Object.values(AgentsShoutOutsConfig))(
         'should pick the best result per metric $measure',
         ({formatValue, measure}) => {
             const {result} = renderHook(

@@ -10,25 +10,27 @@ import {
     AnalyticsCustomReportType,
 } from '@gorgias/api-types'
 import {AxiosError} from 'axios'
+
 import React from 'react'
 
 import {REPORTS_MODAL_CONFIG} from 'pages/stats/custom-reports/config'
 import {getSearchConfig} from 'pages/stats/custom-reports/CustomReportsModal/ModalSearchBar'
 import {
     ChartConfig,
-    CustomReportSchema,
-    CustomReportChildType,
-    DashboardInput,
+    ChartType,
     CustomReportChild,
+    CustomReportChildType,
+    CustomReportSchema,
+    DashboardInput,
 } from 'pages/stats/custom-reports/types'
 import {
     createDashboardPayload,
     customReportFromApi,
-    getNumberOfSelections,
-    getErrorMessage,
-    getChildrenOfTypeChart,
     getChildrenIds,
+    getChildrenOfTypeChart,
+    getErrorMessage,
     getGroupChartsIntoRows,
+    getNumberOfSelections,
 } from 'pages/stats/custom-reports/utils'
 import {
     OverviewMetric,
@@ -299,21 +301,21 @@ describe('getNumberOfSelections', () => {
             label: 'Chart 1 Label',
             csvProducer: null,
             description: 'Description for chart 1',
-            icon: {name: 'chart1-icon', tooltip: 'Chart 1 tooltip'},
+            chartType: ChartType.Graph,
         },
         chart2: {
             chartComponent: () => <div>Chart 2</div>,
             label: 'Chart 2 Label',
             csvProducer: null,
             description: 'Description for chart 2',
-            icon: {name: 'chart2-icon', tooltip: 'Chart 2 tooltip'},
+            chartType: ChartType.Graph,
         },
         chart3: {
             chartComponent: () => <div>Chart 3</div>,
             label: 'Chart 3 Label',
             csvProducer: null,
             description: 'Description for chart 3',
-            icon: {name: 'chart3-icon', tooltip: 'Chart 3 tooltip'},
+            chartType: ChartType.Graph,
         },
     }
 

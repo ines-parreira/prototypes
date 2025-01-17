@@ -11,7 +11,7 @@ import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComp
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
-import {AGENTS_SHOUT_OUTS_TITLE} from 'pages/stats/support-performance/agents/AgentsShoutout'
+import {AGENTS_SHOUT_OUTS_TITLE} from 'pages/stats/support-performance/agents/AgentsShoutOut'
 import {DownloadAgentsPerformanceDataButton} from 'pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton'
 import {
     AGENTS_OPTIONAL_FILTERS,
@@ -70,9 +70,30 @@ export default function SupportPerformanceAgentsReport() {
                     title={AGENTS_SHOUT_OUTS_TITLE}
                     className="pb-0"
                 >
-                    <DashboardGridCell size={12}>
+                    <DashboardGridCell size={getGridCellSize(3)}>
                         <CustomReportComponent
-                            chart={AgentsChart.TopPerformers}
+                            chart={AgentsChart.TopCSATPerformers}
+                            config={SupportPerformanceAgentsReportConfig}
+                            activateActionsMenu
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={getGridCellSize(3)}>
+                        <CustomReportComponent
+                            chart={AgentsChart.TopFirstResponseTimePerformers}
+                            config={SupportPerformanceAgentsReportConfig}
+                            activateActionsMenu
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={getGridCellSize(3)}>
+                        <CustomReportComponent
+                            chart={AgentsChart.TopResponseTimePerformers}
+                            config={SupportPerformanceAgentsReportConfig}
+                            activateActionsMenu
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={getGridCellSize(3)}>
+                        <CustomReportComponent
+                            chart={AgentsChart.TopClosedTicketsPerformers}
                             config={SupportPerformanceAgentsReportConfig}
                             activateActionsMenu
                         />

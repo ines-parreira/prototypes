@@ -1,6 +1,5 @@
 import {FilterComponentKey, FilterKey, StaticFilter} from 'models/stat/types'
-import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
-import {ReportConfig} from 'pages/stats/custom-reports/types'
+import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
 import {CustomFieldsTicketCountBreakdownTableChart} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
 import {TicketDistributionChart} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
 import {
@@ -31,7 +30,7 @@ export const TICKET_INSIGHTS_PERSISTENT_FILTERS = [
     FilterKey.AggregationWindow,
 ] satisfies StaticFilter[]
 
-export const TicketFieldsConfig: ReportConfig<TicketFieldsChart> = {
+export const TicketFieldsReportConfig: ReportConfig<TicketFieldsChart> = {
     reportName: TICKET_INSIGHTS_PAGE_TITLE,
     reportPath: 'ticket-fields',
     reportFilters: {
@@ -49,7 +48,7 @@ export const TicketFieldsConfig: ReportConfig<TicketFieldsChart> = {
                     TicketInsightsFieldsMetric.TicketDistribution
                 ].hint.title,
             csvProducer: null,
-            icon: CHARTS_MODAL_ICONS.graph,
+            chartType: ChartType.Graph,
         },
         [TicketFieldsChart.TicketInsightsFieldTrend]: {
             chartComponent: TicketInsightsFieldTrend,
@@ -61,7 +60,7 @@ export const TicketFieldsConfig: ReportConfig<TicketFieldsChart> = {
                     TicketInsightsFieldsMetric.TicketInsightsFieldTrend
                 ].hint.title,
             csvProducer: null,
-            icon: CHARTS_MODAL_ICONS.graph,
+            chartType: ChartType.Graph,
         },
         [TicketFieldsChart.CustomFieldsTicketCountBreakdownTableChart]: {
             chartComponent: CustomFieldsTicketCountBreakdownTableChart,
@@ -73,7 +72,7 @@ export const TicketFieldsConfig: ReportConfig<TicketFieldsChart> = {
                     TicketInsightsFieldsMetric.CustomFieldsTicketCountBreakdown
                 ].hint.title,
             csvProducer: null,
-            icon: CHARTS_MODAL_ICONS.table,
+            chartType: ChartType.Table,
         },
     },
 }

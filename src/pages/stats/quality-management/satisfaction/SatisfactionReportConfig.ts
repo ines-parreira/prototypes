@@ -1,6 +1,5 @@
 import {FilterKey, StaticFilter} from 'models/stat/types'
-import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
-import {ReportConfig} from 'pages/stats/custom-reports/types'
+import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
 import {ResponseRateTrendCard} from 'pages/stats/quality-management/satisfaction/ResponseRateTrendCard'
 import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
 
@@ -42,7 +41,7 @@ export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {
                 SatisfactionMetricConfig[SatisfactionMetric.SatisfactionScore]
                     .hint.title,
             csvProducer: null,
-            icon: CHARTS_MODAL_ICONS.card,
+            chartType: ChartType.Card,
         },
         [SatisfactionChart.ResponseRateTrendCard]: {
             chartComponent: ResponseRateTrendCard,
@@ -52,7 +51,7 @@ export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {
                 SatisfactionMetricConfig[SatisfactionMetric.ResponseRate].hint
                     .title,
             csvProducer: null,
-            icon: CHARTS_MODAL_ICONS.card,
+            chartType: ChartType.Card,
         },
         [SatisfactionChart.SurveysSentTrendCard]: {
             chartComponent: SurveysSentTrendCard,
@@ -62,7 +61,7 @@ export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {
                 SatisfactionMetricConfig[SatisfactionMetric.SurveysSent].hint
                     .title,
             csvProducer: null,
-            icon: CHARTS_MODAL_ICONS.card,
+            chartType: ChartType.Card,
         },
     },
 }

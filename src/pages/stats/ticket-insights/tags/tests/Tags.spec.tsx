@@ -18,7 +18,7 @@ import {Tags} from 'pages/stats/ticket-insights/tags/Tags'
 import {
     TAGS_TITLE,
     TAGS_OPTIONAL_FILTERS,
-} from 'pages/stats/ticket-insights/tags/TagsConfig'
+} from 'pages/stats/ticket-insights/tags/TagsReportConfig'
 import {TagsReportDownloadDataButton} from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
 import {TagsTrendChart} from 'pages/stats/ticket-insights/tags/TagsTrendChart'
 import {TopUsedTagsChart} from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'

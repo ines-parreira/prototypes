@@ -19,8 +19,8 @@ import {TicketFieldsBlankState} from 'pages/stats/ticket-insights/ticket-fields/
 import {
     TICKET_INSIGHTS_OPTIONAL_FILTERS,
     TicketFieldsChart,
-    TicketFieldsConfig,
-} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsConfig'
+    TicketFieldsReportConfig,
+} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 
 export function SupportPerformanceTicketInsights() {
@@ -35,7 +35,10 @@ export function SupportPerformanceTicketInsights() {
 
     if (!selectedCustomField.isLoading && selectedCustomField.id === null) {
         return (
-            <StatsPage title={TicketFieldsConfig.reportName} titleExtra={null}>
+            <StatsPage
+                title={TicketFieldsReportConfig.reportName}
+                titleExtra={null}
+            >
                 <TicketFieldsBlankState />
             </StatsPage>
         )
@@ -43,7 +46,7 @@ export function SupportPerformanceTicketInsights() {
 
     return (
         <StatsPage
-            title={TicketFieldsConfig.reportName}
+            title={TicketFieldsReportConfig.reportName}
             titleExtra={
                 selectedCustomField.id ? (
                     <>
@@ -65,7 +68,8 @@ export function SupportPerformanceTicketInsights() {
                     >
                         <FiltersPanelWrapper
                             persistentFilters={
-                                TicketFieldsConfig.reportFilters.persistent
+                                TicketFieldsReportConfig.reportFilters
+                                    .persistent
                             }
                             optionalFilters={
                                 supportPerformanceTicketInsightsOptionalFilters
@@ -92,14 +96,14 @@ export function SupportPerformanceTicketInsights() {
                     <DashboardGridCell size={getGridCellSize(1)}>
                         <CustomReportComponent
                             chart={TicketFieldsChart.TicketDistributionTable}
-                            config={TicketFieldsConfig}
+                            config={TicketFieldsReportConfig}
                             activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(11)}>
                         <CustomReportComponent
                             chart={TicketFieldsChart.TicketInsightsFieldTrend}
-                            config={TicketFieldsConfig}
+                            config={TicketFieldsReportConfig}
                             activateActionsMenu
                         />
                     </DashboardGridCell>
@@ -108,7 +112,7 @@ export function SupportPerformanceTicketInsights() {
                             chart={
                                 TicketFieldsChart.CustomFieldsTicketCountBreakdownTableChart
                             }
-                            config={TicketFieldsConfig}
+                            config={TicketFieldsReportConfig}
                             activateActionsMenu
                         />
                     </DashboardGridCell>

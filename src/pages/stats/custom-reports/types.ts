@@ -7,13 +7,13 @@ import {StaticFilter} from 'models/stat/types'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
 import {HelpCenterChart} from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
 import {SatisfactionChart} from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
-import {ServiceLevelAgreementsChart} from 'pages/stats/sla/ServiceLevelAgreementsConfig'
+import {ServiceLevelAgreementsChart} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
 import {AgentsChart} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import {BusiestTimesChart} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
 import {ChannelsChart} from 'pages/stats/support-performance/channels/ChannelsReportConfig'
 import {OverviewChart} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import {TicketInsightsTagsChart} from 'pages/stats/ticket-insights/tags/TagsConfig'
-import {TicketFieldsChart} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsConfig'
+import {TicketInsightsTagsChart} from 'pages/stats/ticket-insights/tags/TagsReportConfig'
+import {TicketFieldsChart} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 
 type FilterSettings = {
     optional: OptionalFilter[]
@@ -96,7 +96,7 @@ export type ChartConfig = {
     label: ReactNode
     csvProducer: DataExportFetch[] | null
     description: ReactNode
-    icon: {name: string; tooltip: string}
+    chartType: ChartType
 }
 
 export type ReportConfig<T extends string> = {

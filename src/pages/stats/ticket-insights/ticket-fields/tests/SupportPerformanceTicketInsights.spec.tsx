@@ -24,7 +24,7 @@ import {TicketFieldsBlankState} from 'pages/stats/ticket-insights/ticket-fields/
 import {
     TICKET_INSIGHTS_OPTIONAL_FILTERS,
     TICKET_INSIGHTS_PAGE_TITLE,
-} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsConfig'
+} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
 import {initialState} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'

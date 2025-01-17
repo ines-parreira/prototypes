@@ -1,6 +1,5 @@
 import {FilterKey} from 'models/stat/types'
-import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
-import {ReportConfig} from 'pages/stats/custom-reports/types'
+import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
 import {
     CHANNEL_PERFORMANCE_TABLE_TITLE,
     ChannelsPerformanceTableChart,
@@ -30,7 +29,7 @@ export const ChannelsReportConfig: ReportConfig<ChannelsChart> = {
             csvProducer: null,
             description:
                 'Selected metrics broken by channel (e.g Closed tickets, CSAT, FRT, Ticket Handle Time...)',
-            icon: CHARTS_MODAL_ICONS.table,
+            chartType: ChartType.Table,
         },
     },
     reportFilters: {

@@ -1,7 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks'
 
 import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
-import {getComponentConfig} from 'pages/stats/custom-reports/CustomReportChart'
+import {getComponentConfig} from 'pages/stats/custom-reports/config'
 import {
     CustomReportSchema,
     CustomReportChildType,
@@ -9,7 +9,7 @@ import {
 import {useFiltersFromDashboard} from 'pages/stats/custom-reports/useFiltersFromDashboard'
 import {assumeMock} from 'utils/testing'
 
-jest.mock('pages/stats/custom-reports/CustomReportChart')
+jest.mock('pages/stats/custom-reports/config')
 const getComponentConfigMock = assumeMock(getComponentConfig)
 
 jest.mock(
@@ -20,20 +20,22 @@ const useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFiltersMock =
 
 const mockConfigs = {
     chart1: {
-        config: {
+        reportConfig: {
             reportFilters: {
                 persistent: ['persistent_1', 'persistent_2'],
                 optional: ['optional_1'],
             },
         },
+        chartConfig: {},
     },
     chart2: {
-        config: {
+        reportConfig: {
             reportFilters: {
                 persistent: ['persistent_1', 'persistent_3'],
                 optional: ['optional_2'],
             },
         },
+        chartConfig: {},
     },
 } as unknown as Record<string, ReturnType<typeof getComponentConfig>>
 

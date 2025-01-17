@@ -1,47 +1,43 @@
-import _flatten from 'lodash/flatten'
 import React from 'react'
 
-import {REPORTS_MODAL_CONFIG} from 'pages/stats/custom-reports/config'
+import {useGridSize} from 'hooks/useGridSize'
+import {getComponentConfig} from 'pages/stats/custom-reports/config'
 import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
 import {
-    ReportConfig,
+    ChartType,
     CustomReportChartSchema,
 } from 'pages/stats/custom-reports/types'
+
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
 
 type Props = {
     schema: CustomReportChartSchema
 }
 
-export const getComponentConfig = (
-    configId: string
-): {config: ReportConfig<string> | null; chart: string | null} => {
-    const availableCharts = _flatten(
-        REPORTS_MODAL_CONFIG.map((report) => report.children)
-    )
-    for (const chart of availableCharts) {
-        if (Object.values(chart.type).includes(configId)) {
-            return {
-                config: chart.config,
-                chart: configId,
-            }
-        }
-    }
-
-    return {chart: null, config: null}
+export const CHART_SIZE: Record<ChartType, number> = {
+    [ChartType.Card]: 3,
+    [ChartType.Graph]: 6,
+    [ChartType.Table]: 12,
 }
 
 export const CustomReportChart = ({schema}: Props) => {
-    const {chart, config} = getComponentConfig(schema.config_id)
+    const getGridCellSize = useGridSize()
+    const {reportConfig, chartConfig} = getComponentConfig(schema.config_id)
 
-    if (chart === null || config === null || config === undefined) {
+    if (reportConfig === null || chartConfig === null) {
         return null
     }
 
     return (
-        <CustomReportComponent
-            chart={chart}
-            config={config}
-            activateActionsMenu={false}
-        />
+        <DashboardGridCell
+            size={getGridCellSize(CHART_SIZE[chartConfig.chartType])}
+            className="pb-0"
+        >
+            <CustomReportComponent
+                chart={schema.config_id}
+                config={reportConfig}
+                activateActionsMenu={false}
+            />
+        </DashboardGridCell>
     )
 }

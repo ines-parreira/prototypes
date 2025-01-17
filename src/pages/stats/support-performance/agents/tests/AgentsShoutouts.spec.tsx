@@ -1,5 +1,6 @@
 import {render, screen, within} from '@testing-library/react'
 import {fromJS} from 'immutable'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 
@@ -15,15 +16,20 @@ import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {SHOUTOUT_NO_VALUE_PLACEHOLDER} from 'pages/common/components/Shoutout/Shoutout'
+import {
+    AgentsShoutOutsConfig,
+    TopPerformersChart,
+} from 'pages/stats/support-performance/agents/AgentsShoutOutsConfig'
 import {TableLabels} from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import {TopClosedTicketsPerformers} from 'pages/stats/support-performance/agents/TopClosedTicketsPerformers'
+import {TopCsatPerformers} from 'pages/stats/support-performance/agents/TopCsatPerformers'
+import {TopFirstResponseTimePerformers} from 'pages/stats/support-performance/agents/TopFirstResponseTimePerformers'
+import {TopResponseTimePerformers} from 'pages/stats/support-performance/agents/TopResponseTimePerformers'
 import {initialState} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import {assumeMock, mockStore} from 'utils/testing'
-
-import AgentsShoutouts from '../AgentsShoutouts'
-import {agentsShoutoutsConfig} from '../AgentsShoutoutsConfig'
 
 jest.mock('hooks/reporting/metricsPerAgent')
 const useMedianFirstResponseTimeMetricPerAgentMock = assumeMock(
@@ -101,7 +107,10 @@ describe('<AgentsShoutouts />', () => {
 
         render(
             <Provider store={mockStore(defaultState as any)}>
-                <AgentsShoutouts />
+                <TopClosedTicketsPerformers />
+                <TopResponseTimePerformers />
+                <TopFirstResponseTimePerformers />
+                <TopCsatPerformers />
             </Provider>
         )
 
@@ -150,12 +159,15 @@ describe('<AgentsShoutouts />', () => {
 
         render(
             <Provider store={mockStore(defaultState as any)}>
-                <AgentsShoutouts />
+                <TopClosedTicketsPerformers />
+                <TopResponseTimePerformers />
+                <TopFirstResponseTimePerformers />
+                <TopCsatPerformers />
             </Provider>
         )
         const satisfactionShoutout = within(
             screen.getByLabelText(
-                `Agents' information for ${agentsShoutoutsConfig[0].metricName}`
+                `Agents' information for ${AgentsShoutOutsConfig[TopPerformersChart.TopCSATPerformers].metricName}`
             )
         )
 
@@ -169,7 +181,7 @@ describe('<AgentsShoutouts />', () => {
 
         const frtShoutout = within(
             screen.getByLabelText(
-                `Agents' information for ${agentsShoutoutsConfig[1].metricName}`
+                `Agents' information for ${AgentsShoutOutsConfig[TopPerformersChart.TopFirstResponseTimePerformers].metricName}`
             )
         )
         const shoutoutedAgent = frtShoutout.queryByText(agents[0].name)
@@ -194,7 +206,10 @@ describe('<AgentsShoutouts />', () => {
 
         render(
             <Provider store={mockStore(defaultState as any)}>
-                <AgentsShoutouts />
+                <TopClosedTicketsPerformers />
+                <TopResponseTimePerformers />
+                <TopFirstResponseTimePerformers />
+                <TopCsatPerformers />
             </Provider>
         )
 
@@ -202,42 +217,4 @@ describe('<AgentsShoutouts />', () => {
             3
         )
     })
-
-    it.each([
-        {screenWidth: 1800, expectedColumns: 4},
-        {screenWidth: 700, expectedColumns: 0},
-    ])(
-        'it should check the number of grid columns for $screenWidth should be $expectedColumns',
-        ({screenWidth, expectedColumns}) => {
-            global.innerWidth = screenWidth
-            useCustomerSatisfactionMetricPerAgentMock.mockReturnValue(
-                allDataMockedMetric
-            )
-            useMedianFirstResponseTimeMetricPerAgentMock.mockReturnValue(
-                allDataMockedMetric
-            )
-            useMedianResolutionTimeMetricPerAgentMock.mockReturnValue(
-                allDataMockedMetric
-            )
-            useClosedTicketsMetricPerAgentMock.mockReturnValue(
-                allDataMockedMetric
-            )
-
-            const {container} = render(
-                <Provider store={mockStore(defaultState as any)}>
-                    <AgentsShoutouts />
-                </Provider>
-            )
-
-            const shoutoutsContainerComputedStyle = getComputedStyle(
-                container.querySelector('.grid') as HTMLElement
-            )
-
-            expect(
-                shoutoutsContainerComputedStyle.getPropertyValue(
-                    '--agents-shoutouts-columns'
-                )
-            ).toEqual(`${expectedColumns}`)
-        }
-    )
 })

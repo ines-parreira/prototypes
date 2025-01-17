@@ -6,11 +6,11 @@ import Shoutout, {
     SHOUTOUT_HEIGHT_PX,
 } from 'pages/common/components/Shoutout/Shoutout'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {ShoutoutConfig} from 'pages/stats/support-performance/agents/AgentsShoutoutsConfig'
+import {ShoutoutConfig} from 'pages/stats/support-performance/agents/AgentsShoutOutsConfig'
 
 export const AGENTS_SHOUT_OUTS_TITLE = 'Top performers'
 
-export default function AgentsShoutout({
+export default function AgentsShoutOut({
     useQuery,
     queryOrder,
     metricName,

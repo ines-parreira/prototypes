@@ -1,6 +1,7 @@
 import {screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentProps} from 'react'
 import {MemoryRouter} from 'react-router-dom'
 
@@ -20,7 +21,6 @@ import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {AgentsPerformanceCardExtra} from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
-import AgentsShoutouts from 'pages/stats/support-performance/agents/AgentsShoutouts'
 import {AgentsTableWithDefaultState} from 'pages/stats/support-performance/agents/AgentsTable'
 import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/agents/AgentsTableChart'
 import {TableColumnsOrder} from 'pages/stats/support-performance/agents/AgentsTableConfig'
@@ -29,9 +29,14 @@ import SupportPerformanceAgentsReport, {
     AGENTS_PAGE_TITLE,
 } from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReport'
 import {AGENTS_OPTIONAL_FILTERS} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
+import {TopCsatPerformers} from 'pages/stats/support-performance/agents/TopCsatPerformers'
+import {TopFirstResponseTimePerformers} from 'pages/stats/support-performance/agents/TopFirstResponseTimePerformers'
+import {TopResponseTimePerformers} from 'pages/stats/support-performance/agents/TopResponseTimePerformers'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 import {RootState} from 'state/types'
 import {assumeMock, renderWithStore} from 'utils/testing'
+
+import {TopClosedTicketsPerformers} from '../TopClosedTicketsPerformers'
 
 jest.unmock('react-router-dom')
 
@@ -52,14 +57,24 @@ jest.mock(
     'pages/stats/support-performance/agents/AgentsPerformanceCardExtra.tsx'
 )
 const AgentsPerformanceCardExtraMock = assumeMock(AgentsPerformanceCardExtra)
-jest.mock('pages/stats/support-performance/agents/AgentsShoutouts.tsx')
-const AgentsShoutoutsMock = assumeMock(AgentsShoutouts)
 jest.mock(
     'pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton'
 )
 const DownloadAgentsPerformanceDataButtonMock = assumeMock(
     DownloadAgentsPerformanceDataButton
 )
+jest.mock('pages/stats/support-performance/agents/TopCsatPerformers')
+const TopCsatPerformersMock = assumeMock(TopCsatPerformers)
+jest.mock(
+    'pages/stats/support-performance/agents/TopFirstResponseTimePerformers'
+)
+const TopFirstResponseTimePerformersMock = assumeMock(
+    TopFirstResponseTimePerformers
+)
+jest.mock('pages/stats/support-performance/agents/TopResponseTimePerformers')
+const TopResponseTimePerformersMock = assumeMock(TopResponseTimePerformers)
+jest.mock('pages/stats/support-performance/agents/TopClosedTicketsPerformers')
+const TopClosedTicketsPerformersMock = assumeMock(TopClosedTicketsPerformers)
 jest.mock('pages/stats/AnalyticsFooter.tsx')
 const AnalyticsFooterMock = assumeMock(AnalyticsFooter)
 jest.mock('hooks/reporting/support-performance/agents/useAgentsMetrics')
@@ -79,9 +94,12 @@ const defaultState = {
 
 describe('SupportPerformanceAgents', () => {
     SupportPerformanceFiltersMock.mockImplementation(componentMock)
-    AgentsShoutoutsMock.mockImplementation(componentMock)
     AgentsPerformanceCardExtraMock.mockImplementation(componentMock)
     AgentTableWithDefaultStateMock.mockImplementation(componentMock)
+    TopCsatPerformersMock.mockImplementation(componentMock)
+    TopFirstResponseTimePerformersMock.mockImplementation(componentMock)
+    TopResponseTimePerformersMock.mockImplementation(componentMock)
+    TopClosedTicketsPerformersMock.mockImplementation(componentMock)
     DownloadAgentsPerformanceDataButtonMock.mockImplementation(componentMock)
     AnalyticsFooterMock.mockImplementation(componentMock)
     useAgentsMetricsMock.mockReturnValue({
@@ -140,7 +158,10 @@ describe('SupportPerformanceAgents', () => {
         )
 
         expect(AgentsPerformanceCardExtraMock).toHaveBeenCalled()
-        expect(AgentsShoutoutsMock).toHaveBeenCalled()
+        expect(TopCsatPerformersMock).toHaveBeenCalled()
+        expect(TopFirstResponseTimePerformersMock).toHaveBeenCalled()
+        expect(TopResponseTimePerformersMock).toHaveBeenCalled()
+        expect(TopClosedTicketsPerformersMock).toHaveBeenCalled()
     })
 
     it('should render New FiltersPanel and hide legacy filters', () => {

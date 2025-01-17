@@ -13,15 +13,15 @@ import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
 import {
     TicketInsightsTagsChart,
-    TicketInsightsTagsConfig,
-} from 'pages/stats/ticket-insights/tags/TagsConfig'
+    TicketInsightsTagsReportConfig,
+} from 'pages/stats/ticket-insights/tags/TagsReportConfig'
 import {TagsReportDownloadDataButton} from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 
 export function Tags() {
     const tagsOptionalFilters =
         useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            TicketInsightsTagsConfig.reportFilters.optional
+            TicketInsightsTagsReportConfig.reportFilters.optional
         )
     const getGridCellSize = useGridSize()
     const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
@@ -30,7 +30,7 @@ export function Tags() {
     return (
         <div className="full-width">
             <StatsPage
-                title={TicketInsightsTagsConfig.reportName}
+                title={TicketInsightsTagsReportConfig.reportName}
                 titleExtra={<TagsReportDownloadDataButton />}
             >
                 <DashboardSection>
@@ -40,7 +40,7 @@ export function Tags() {
                     >
                         <FiltersPanelWrapper
                             persistentFilters={
-                                TicketInsightsTagsConfig.reportFilters
+                                TicketInsightsTagsReportConfig.reportFilters
                                     .persistent
                             }
                             optionalFilters={tagsOptionalFilters}
@@ -62,7 +62,7 @@ export function Tags() {
                     >
                         <CustomReportComponent
                             chart={TicketInsightsTagsChart.TopUsedTagsChart}
-                            config={TicketInsightsTagsConfig}
+                            config={TicketInsightsTagsReportConfig}
                             activateActionsMenu
                         />
                     </DashboardGridCell>
@@ -72,7 +72,7 @@ export function Tags() {
                     >
                         <CustomReportComponent
                             chart={TicketInsightsTagsChart.TagsTrendChart}
-                            config={TicketInsightsTagsConfig}
+                            config={TicketInsightsTagsReportConfig}
                             activateActionsMenu
                         />
                     </DashboardGridCell>
@@ -81,7 +81,7 @@ export function Tags() {
                             chart={
                                 TicketInsightsTagsChart.AllUsedTagsTableChart
                             }
-                            config={TicketInsightsTagsConfig}
+                            config={TicketInsightsTagsReportConfig}
                             activateActionsMenu
                         />
                     </DashboardGridCell>

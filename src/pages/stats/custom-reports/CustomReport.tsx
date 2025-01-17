@@ -7,9 +7,9 @@ import {CustomReportChart} from 'pages/stats/custom-reports/CustomReportChart'
 import {CustomReportRow} from 'pages/stats/custom-reports/CustomReportRow'
 import {CustomReportSection} from 'pages/stats/custom-reports/CustomReportSection'
 import {
-    CustomReportSchema,
     CustomReportChild,
     CustomReportChildType,
+    CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
 import {useFiltersFromDashboard} from 'pages/stats/custom-reports/useFiltersFromDashboard'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
@@ -23,7 +23,7 @@ const renderCustomReportChild = (child: CustomReportChild, key: string) => {
     switch (child.type) {
         case CustomReportChildType.Row:
             return (
-                <CustomReportRow schema={child} key={key}>
+                <CustomReportRow key={key}>
                     {child.children.map(renderCustomReportChildWithKeys)}
                 </CustomReportRow>
             )
@@ -33,8 +33,9 @@ const renderCustomReportChild = (child: CustomReportChild, key: string) => {
                     {child.children.map(renderCustomReportChildWithKeys)}
                 </CustomReportSection>
             )
-        case CustomReportChildType.Chart:
+        case CustomReportChildType.Chart: {
             return <CustomReportChart schema={child} key={child.type} />
+        }
     }
 }
 

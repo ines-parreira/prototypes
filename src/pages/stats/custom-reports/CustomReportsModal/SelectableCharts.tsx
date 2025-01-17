@@ -3,7 +3,10 @@ import React, {useCallback} from 'react'
 import useAppDispatch from 'hooks/useAppDispatch'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {MAX_CHECKED_CHARTS} from 'pages/stats/custom-reports/config'
-import {ChartIcon} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
+import {
+    ChartIcon,
+    CHARTS_MODAL_ICONS,
+} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
 import css from 'pages/stats/custom-reports/CustomReportsModal/SelectableCharts.less'
 import {ChartConfig} from 'pages/stats/custom-reports/types'
 import {notify} from 'state/notifications/actions'
@@ -61,7 +64,10 @@ export const SelectableCharts = ({
                     isChecked={isChartChecked(chartId)}
                     onClick={() => selectReport(chartId)}
                 >
-                    <ChartIcon icon={chart.icon} id={chartId} />
+                    <ChartIcon
+                        icon={CHARTS_MODAL_ICONS[chart.chartType]}
+                        id={chartId}
+                    />
                     <div>
                         <div className={css.title}>{chart.label}</div>
                         <div className={css.description}>

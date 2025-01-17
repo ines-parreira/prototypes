@@ -1,12 +1,13 @@
 import {FilterKey} from 'models/stat/types'
-import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
-import {ReportConfig} from 'pages/stats/custom-reports/types'
-import {AGENTS_SHOUT_OUTS_TITLE} from 'pages/stats/support-performance/agents/AgentsShoutout'
-import AgentsShoutOuts from 'pages/stats/support-performance/agents/AgentsShoutouts'
+import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
 import {
     AGENT_PERFORMANCE_SECTION_TITLE,
     AgentsTableChart,
 } from 'pages/stats/support-performance/agents/AgentsTableChart'
+import {TopClosedTicketsPerformers} from 'pages/stats/support-performance/agents/TopClosedTicketsPerformers'
+import {TopCsatPerformers} from 'pages/stats/support-performance/agents/TopCsatPerformers'
+import {TopFirstResponseTimePerformers} from 'pages/stats/support-performance/agents/TopFirstResponseTimePerformers'
+import {TopResponseTimePerformers} from 'pages/stats/support-performance/agents/TopResponseTimePerformers'
 
 export const AGENTS_OPTIONAL_FILTERS = [
     FilterKey.Channels,
@@ -18,7 +19,10 @@ export const AGENTS_OPTIONAL_FILTERS = [
 
 export enum AgentsChart {
     Table = 'agents_table',
-    TopPerformers = 'agents_top_performers',
+    TopCSATPerformers = 'agents_top_csat_performers',
+    TopFirstResponseTimePerformers = 'agents_top_first_response_time_performers',
+    TopResponseTimePerformers = 'agents_top_response_time_performers',
+    TopClosedTicketsPerformers = 'agents_top_closed_tickets_performers',
 }
 
 export const SupportPerformanceAgentsReportConfig: ReportConfig<AgentsChart> = {
@@ -31,14 +35,35 @@ export const SupportPerformanceAgentsReportConfig: ReportConfig<AgentsChart> = {
             csvProducer: null,
             description:
                 'Selected metrics broken by agent (e.g Closed tickets, CSAT, FRT, Ticket Handle Time...)',
-            icon: CHARTS_MODAL_ICONS.table,
+            chartType: ChartType.Table,
         },
-        [AgentsChart.TopPerformers]: {
-            chartComponent: AgentsShoutOuts,
-            label: AGENTS_SHOUT_OUTS_TITLE,
+        [AgentsChart.TopCSATPerformers]: {
+            chartComponent: TopCsatPerformers,
+            label: '',
             csvProducer: null,
             description: '',
-            icon: CHARTS_MODAL_ICONS.card,
+            chartType: ChartType.Card,
+        },
+        [AgentsChart.TopFirstResponseTimePerformers]: {
+            chartComponent: TopFirstResponseTimePerformers,
+            label: '',
+            csvProducer: null,
+            description: '',
+            chartType: ChartType.Card,
+        },
+        [AgentsChart.TopResponseTimePerformers]: {
+            chartComponent: TopResponseTimePerformers,
+            label: '',
+            csvProducer: null,
+            description: '',
+            chartType: ChartType.Card,
+        },
+        [AgentsChart.TopClosedTicketsPerformers]: {
+            chartComponent: TopClosedTicketsPerformers,
+            label: '',
+            csvProducer: null,
+            description: '',
+            chartType: ChartType.Card,
         },
     },
     reportFilters: {

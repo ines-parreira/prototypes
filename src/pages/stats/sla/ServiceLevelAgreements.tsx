@@ -15,9 +15,9 @@ import {DownloadSLAsData} from 'pages/stats/sla/components/DownloadSLAsData'
 import {SLAPolicySelect} from 'pages/stats/sla/components/SLAPolicySelect'
 import {WithSlaEmptyState} from 'pages/stats/sla/components/WithSlaEmptyState'
 import {
-    ServiceLevelAgreementsConfig,
+    ServiceLevelAgreementsReportConfig,
     ServiceLevelAgreementsChart,
-} from 'pages/stats/sla/ServiceLevelAgreementsConfig'
+} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
 import StatsPage from 'pages/stats/StatsPage'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 
@@ -29,13 +29,13 @@ export function ServiceLevelAgreements() {
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
     const SLAsOptionalFilters =
         useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            ServiceLevelAgreementsConfig.reportFilters.optional
+            ServiceLevelAgreementsReportConfig.reportFilters.optional
         )
     return (
         <WithSlaEmptyState>
             <div className="full-width">
                 <StatsPage
-                    title={ServiceLevelAgreementsConfig.reportName}
+                    title={ServiceLevelAgreementsReportConfig.reportName}
                     titleExtra={
                         <>
                             <SupportPerformanceFilters
@@ -53,7 +53,7 @@ export function ServiceLevelAgreements() {
                             >
                                 <FiltersPanelWrapper
                                     persistentFilters={
-                                        ServiceLevelAgreementsConfig
+                                        ServiceLevelAgreementsReportConfig
                                             .reportFilters.persistent
                                     }
                                     optionalFilters={SLAsOptionalFilters}
@@ -80,7 +80,7 @@ export function ServiceLevelAgreements() {
                                 chart={
                                     ServiceLevelAgreementsChart.AchievementRateTrend
                                 }
-                                config={ServiceLevelAgreementsConfig}
+                                config={ServiceLevelAgreementsReportConfig}
                                 activateActionsMenu
                             />
                         </DashboardGridCell>
@@ -89,7 +89,7 @@ export function ServiceLevelAgreements() {
                                 chart={
                                     ServiceLevelAgreementsChart.BreachedTicketsRateTrend
                                 }
-                                config={ServiceLevelAgreementsConfig}
+                                config={ServiceLevelAgreementsReportConfig}
                                 activateActionsMenu
                             />
                         </DashboardGridCell>
@@ -98,7 +98,7 @@ export function ServiceLevelAgreements() {
                                 chart={
                                     ServiceLevelAgreementsChart.AchievedAndBreachedTicketsChart
                                 }
-                                config={ServiceLevelAgreementsConfig}
+                                config={ServiceLevelAgreementsReportConfig}
                                 activateActionsMenu
                             />
                         </DashboardGridCell>

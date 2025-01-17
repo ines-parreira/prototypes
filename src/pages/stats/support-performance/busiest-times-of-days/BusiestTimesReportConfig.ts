@@ -1,6 +1,5 @@
 import {FilterComponentKey, FilterKey} from 'models/stat/types'
-import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
-import {ReportConfig} from 'pages/stats/custom-reports/types'
+import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
 import {BusiestTimesOfDaysTableChart} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTableChart'
 
 export const BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS = [
@@ -27,7 +26,7 @@ export const BusiestTimesReportConfig: ReportConfig<BusiestTimesChart> = {
             csvProducer: null,
             description:
                 'Selected metric broken down per hour per day of the week',
-            icon: CHARTS_MODAL_ICONS.table,
+            chartType: ChartType.Table,
         },
     },
     reportFilters: {

@@ -27,7 +27,7 @@ import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
 import {
     SERVICE_LEVEL_AGREEMENT_PAGE_TITLE,
     SERVICE_LEVEL_OPTIONAL_FILTERS,
-} from 'pages/stats/sla/ServiceLevelAgreementsConfig'
+} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
 

@@ -1,4 +1,10 @@
-import {ReportsModalConfig} from 'pages/stats/custom-reports/types'
+import _flatten from 'lodash/flatten'
+
+import {
+    ChartConfig,
+    ReportConfig,
+    ReportsModalConfig,
+} from 'pages/stats/custom-reports/types'
 import {
     HelpCenterChart,
     HelpCenterReportConfig,
@@ -9,8 +15,8 @@ import {
 } from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
 import {
     ServiceLevelAgreementsChart,
-    ServiceLevelAgreementsConfig,
-} from 'pages/stats/sla/ServiceLevelAgreementsConfig'
+    ServiceLevelAgreementsReportConfig,
+} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
 import {
     AgentsChart,
     SupportPerformanceAgentsReportConfig,
@@ -29,12 +35,12 @@ import {
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import {
     TicketInsightsTagsChart,
-    TicketInsightsTagsConfig,
-} from 'pages/stats/ticket-insights/tags/TagsConfig'
+    TicketInsightsTagsReportConfig,
+} from 'pages/stats/ticket-insights/tags/TagsReportConfig'
 import {
     TicketFieldsChart,
-    TicketFieldsConfig,
-} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsConfig'
+    TicketFieldsReportConfig,
+} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 
 export const MAX_CHECKED_CHARTS = 20
 
@@ -52,7 +58,7 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
             },
             {
                 type: ServiceLevelAgreementsChart,
-                config: ServiceLevelAgreementsConfig,
+                config: ServiceLevelAgreementsReportConfig,
             },
             {
                 type: HelpCenterChart,
@@ -65,11 +71,11 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
         children: [
             {
                 type: TicketFieldsChart,
-                config: TicketFieldsConfig,
+                config: TicketFieldsReportConfig,
             },
             {
                 type: TicketInsightsTagsChart,
-                config: TicketInsightsTagsConfig,
+                config: TicketInsightsTagsReportConfig,
             },
         ],
     },
@@ -101,3 +107,24 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
         ],
     },
 ]
+
+export const getComponentConfig = (
+    configId: string
+): {
+    reportConfig: ReportConfig<string> | null
+    chartConfig: ChartConfig | null
+} => {
+    const availableCharts = _flatten(
+        REPORTS_MODAL_CONFIG.map((report) => report.children)
+    )
+    for (const chart of availableCharts) {
+        if (Object.values(chart.type).includes(configId)) {
+            return {
+                reportConfig: chart.config,
+                chartConfig: chart.config.charts[configId],
+            }
+        }
+    }
+
+    return {reportConfig: null, chartConfig: null}
+}

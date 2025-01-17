@@ -3,16 +3,16 @@ import uniq from 'lodash/uniq'
 import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import {StaticFilter} from 'models/stat/types'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
-import {getComponentConfig} from 'pages/stats/custom-reports/CustomReportChart'
+import {getComponentConfig} from 'pages/stats/custom-reports/config'
 import {CustomReportSchema} from 'pages/stats/custom-reports/types'
 import {getChildrenOfTypeChart} from 'pages/stats/custom-reports/utils'
 
 function getFiltersByConfigId(chartId: string) {
-    const {config} = getComponentConfig(chartId)
+    const {reportConfig} = getComponentConfig(chartId)
 
     return {
-        persistentFilters: config?.reportFilters.persistent || [],
-        optionalFilters: config?.reportFilters.optional || [],
+        persistentFilters: reportConfig?.reportFilters.persistent || [],
+        optionalFilters: reportConfig?.reportFilters.optional || [],
     }
 }
 

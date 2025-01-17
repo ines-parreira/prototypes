@@ -1,6 +1,5 @@
 import {FilterKey, StaticFilter} from 'models/stat/types'
-import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
-import {ReportConfig} from 'pages/stats/custom-reports/types'
+import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
 import {
     AchievedAndBreachedTicketsChart,
     CHART_TITLE,
@@ -33,7 +32,7 @@ export const SERVICE_LEVEL_PERSISTENT_FILTERS = [
     FilterKey.AggregationWindow,
 ] satisfies StaticFilter[]
 
-export const ServiceLevelAgreementsConfig: ReportConfig<ServiceLevelAgreementsChart> =
+export const ServiceLevelAgreementsReportConfig: ReportConfig<ServiceLevelAgreementsChart> =
     {
         reportName: SERVICE_LEVEL_AGREEMENT_PAGE_TITLE,
         reportPath: 'slas',
@@ -48,7 +47,7 @@ export const ServiceLevelAgreementsConfig: ReportConfig<ServiceLevelAgreementsCh
                 description:
                     SlaMetricConfig[SlaMetric.AchievementRate].hint.title,
                 csvProducer: null,
-                icon: CHARTS_MODAL_ICONS.card,
+                chartType: ChartType.Card,
             },
             [ServiceLevelAgreementsChart.BreachedTicketsRateTrend]: {
                 chartComponent: BreachedTicketsRateTrendCard,
@@ -56,14 +55,14 @@ export const ServiceLevelAgreementsConfig: ReportConfig<ServiceLevelAgreementsCh
                 description:
                     SlaMetricConfig[SlaMetric.BreachedTicketsRate].hint.title,
                 csvProducer: null,
-                icon: CHARTS_MODAL_ICONS.card,
+                chartType: ChartType.Card,
             },
             [ServiceLevelAgreementsChart.AchievedAndBreachedTicketsChart]: {
                 chartComponent: AchievedAndBreachedTicketsChart,
                 label: CHART_TITLE,
                 description: HINT,
                 csvProducer: null,
-                icon: CHARTS_MODAL_ICONS.graph,
+                chartType: ChartType.Graph,
             },
         },
     }

@@ -3,8 +3,11 @@ import {
     fetchWorkloadPerChannelDistributionForPreviousPeriod,
 } from 'hooks/reporting/distributions'
 import {FilterKey} from 'models/stat/types'
-import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
-import {DataExportFormat, ReportConfig} from 'pages/stats/custom-reports/types'
+import {
+    ChartType,
+    DataExportFormat,
+    ReportConfig,
+} from 'pages/stats/custom-reports/types'
 import {CustomerSatisfactionTrendCard} from 'pages/stats/support-performance/overview/charts/CustomerSatisfactionTrendCard'
 import {MedianResolutionTimeTrendCard} from 'pages/stats/support-performance/overview/charts/MedianResolutionTimeTrendCard'
 import {MedianFirstResponseTimeTrendCard} from 'pages/stats/support-performance/overview/charts/MedianResponseTimeTrendCard'
@@ -74,7 +77,7 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 description:
                     OverviewMetricConfig[OverviewMetric.CustomerSatisfaction]
                         .hint.title,
-                icon: CHARTS_MODAL_ICONS.card,
+                chartType: ChartType.Card,
             },
             [OverviewChart.MedianFirstResponseTimeTrendCard]: {
                 chartComponent: MedianFirstResponseTimeTrendCard,
@@ -92,7 +95,7 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 description:
                     OverviewMetricConfig[OverviewMetric.MedianFirstResponseTime]
                         .hint.title,
-                icon: CHARTS_MODAL_ICONS.card,
+                chartType: ChartType.Card,
             },
             [OverviewChart.MedianResolutionTimeTrendCard]: {
                 chartComponent: MedianResolutionTimeTrendCard,
@@ -109,7 +112,7 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 description:
                     OverviewMetricConfig[OverviewMetric.MedianResolutionTime]
                         .hint.title,
-                icon: CHARTS_MODAL_ICONS.card,
+                chartType: ChartType.Card,
             },
             [OverviewChart.MessagesPerTicketTrendCard]: {
                 chartComponent: MessagesPerTicketTrendCard,
@@ -126,7 +129,7 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 description:
                     OverviewMetricConfig[OverviewMetric.MessagesPerTicket].hint
                         .title,
-                icon: CHARTS_MODAL_ICONS.card,
+                chartType: ChartType.Card,
             },
             [OverviewChart.TicketsCreatedTrendCard]: {
                 chartComponent: TicketsCreatedTrendCard,
@@ -143,7 +146,7 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 description:
                     OverviewMetricConfig[OverviewMetric.TicketsCreated].hint
                         .title,
-                icon: CHARTS_MODAL_ICONS.card,
+                chartType: ChartType.Card,
             },
             [OverviewChart.TicketsClosedTrendCard]: {
                 chartComponent: TicketsClosedTrendCard,
@@ -159,7 +162,7 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 description:
                     OverviewMetricConfig[OverviewMetric.TicketsClosed].hint
                         .title,
-                icon: CHARTS_MODAL_ICONS.card,
+                chartType: ChartType.Card,
             },
             [OverviewChart.OpenTicketsTrendCard]: {
                 chartComponent: OpenTicketsTrendCard,
@@ -173,7 +176,7 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 ],
                 description:
                     OverviewMetricConfig[OverviewMetric.OpenTickets].hint.title,
-                icon: CHARTS_MODAL_ICONS.card,
+                chartType: ChartType.Card,
             },
             [OverviewChart.WorkloadPerChannelChart]: {
                 chartComponent: WorkloadPerChannelChart,
@@ -191,7 +194,7 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                     },
                 ],
                 description: WORKLOAD_BY_CHANNEL_HINT.description,
-                icon: CHARTS_MODAL_ICONS.graph,
+                chartType: ChartType.Graph,
             },
             [OverviewChart.TicketsCreatedVsClosedChart]: {
                 chartComponent: TicketsCreatedVsClosedChart,
@@ -215,7 +218,7 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                     },
                 ],
                 description: TICKETS_CREATED_VS_CLOSED_HINT.description,
-                icon: CHARTS_MODAL_ICONS.graph,
+                chartType: ChartType.Graph,
             },
             [OverviewChart.TicketsRepliedTrendCard]: {
                 chartComponent: TicketsRepliedTrendCard,
@@ -232,7 +235,7 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 description:
                     OverviewMetricConfig[OverviewMetric.TicketsReplied].hint
                         .title,
-                icon: CHARTS_MODAL_ICONS.graph,
+                chartType: ChartType.Card,
             },
             [OverviewChart.MessagesSentTrendCard]: {
                 chartComponent: MessagesSentTrendCard,
@@ -247,7 +250,7 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 description:
                     OverviewMetricConfig[OverviewMetric.MessagesSent].hint
                         .title,
-                icon: CHARTS_MODAL_ICONS.graph,
+                chartType: ChartType.Card,
             },
             [OverviewChart.TicketHandleTimeTrendCard]: {
                 chartComponent: TicketHandleTimeTrendCard,
@@ -264,7 +267,7 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 description:
                     OverviewMetricConfig[OverviewMetric.TicketHandleTime].hint
                         .title,
-                icon: CHARTS_MODAL_ICONS.card,
+                chartType: ChartType.Card,
             },
             [OverviewChart.OneTouchTicketsTrendCard]: {
                 chartComponent: OneTouchTicketsTrendCard,
@@ -281,7 +284,7 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 description:
                     OverviewMetricConfig[OverviewMetric.OneTouchTickets].hint
                         .title,
-                icon: CHARTS_MODAL_ICONS.card,
+                chartType: ChartType.Card,
             },
             [OverviewChart.TicketsRepliedGraph]: {
                 chartComponent: TicketsRepliedGraph,
@@ -297,7 +300,7 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 description:
                     OverviewChartConfig[OverviewMetric.TicketsReplied].hint
                         .title,
-                icon: CHARTS_MODAL_ICONS.graph,
+                chartType: ChartType.Graph,
             },
             [OverviewChart.MessagesSentGraph]: {
                 chartComponent: MessagesSentGraph,
@@ -311,7 +314,7 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 ],
                 description:
                     OverviewChartConfig[OverviewMetric.MessagesSent].hint.title,
-                icon: CHARTS_MODAL_ICONS.card,
+                chartType: ChartType.Graph,
             },
         },
         reportFilters: {
