@@ -217,64 +217,79 @@ describe('aiAgentMetrics', () => {
                         filters,
                         timezone,
                         ticketIds,
-                        sorting
+                        sorting,
+                        false
                     ),
                 {}
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith({
-                measures: [AutomationDatasetMeasure.AutomatedInteractions],
-                dimensions: [AutomationDatasetDimension.TicketId],
-                timezone,
-                filters: [
-                    ...automationDatasetDefaultFilters(filters),
-                    ...automationDatasetAdditionalFilters(filters),
-                    {
-                        member: AutomationDatasetFilterMember.TicketId,
-                        operator: ReportingFilterOperator.In,
-                        values: ticketIds,
-                    },
-                    {
-                        member: AutomationDatasetFilterMember.EventType,
-                        operator: ReportingFilterOperator.Equals,
-                        values: [
-                            AutomatedDatesetEventTypes.AiAgentRecommendedResource,
-                        ],
-                    },
-                ],
-                order: [[AutomationDatasetDimension.TicketId, sorting]],
-            })
+            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                {
+                    measures: [AutomationDatasetMeasure.AutomatedInteractions],
+                    dimensions: [AutomationDatasetDimension.TicketId],
+                    timezone,
+                    filters: [
+                        ...automationDatasetDefaultFilters(filters),
+                        ...automationDatasetAdditionalFilters(filters),
+                        {
+                            member: AutomationDatasetFilterMember.TicketId,
+                            operator: ReportingFilterOperator.In,
+                            values: ticketIds,
+                        },
+                        {
+                            member: AutomationDatasetFilterMember.EventType,
+                            operator: ReportingFilterOperator.Equals,
+                            values: [
+                                AutomatedDatesetEventTypes.AiAgentRecommendedResource,
+                            ],
+                        },
+                    ],
+                    order: [[AutomationDatasetDimension.TicketId, sorting]],
+                },
+                undefined,
+                false
+            )
         })
 
         it('should handle empty ticketIds array', () => {
             renderHook(
                 () =>
-                    useAIAgentResourcePerTicket(filters, timezone, [], sorting),
+                    useAIAgentResourcePerTicket(
+                        filters,
+                        timezone,
+                        [],
+                        sorting,
+                        true
+                    ),
                 {}
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith({
-                measures: [AutomationDatasetMeasure.AutomatedInteractions],
-                dimensions: [AutomationDatasetDimension.TicketId],
-                timezone,
-                filters: [
-                    ...automationDatasetDefaultFilters(filters),
-                    ...automationDatasetAdditionalFilters(filters),
-                    {
-                        member: AutomationDatasetFilterMember.TicketId,
-                        operator: ReportingFilterOperator.In,
-                        values: [],
-                    },
-                    {
-                        member: AutomationDatasetFilterMember.EventType,
-                        operator: ReportingFilterOperator.Equals,
-                        values: [
-                            AutomatedDatesetEventTypes.AiAgentRecommendedResource,
-                        ],
-                    },
-                ],
-                order: [[AutomationDatasetDimension.TicketId, sorting]],
-            })
+            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                {
+                    measures: [AutomationDatasetMeasure.AutomatedInteractions],
+                    dimensions: [AutomationDatasetDimension.TicketId],
+                    timezone,
+                    filters: [
+                        ...automationDatasetDefaultFilters(filters),
+                        ...automationDatasetAdditionalFilters(filters),
+                        {
+                            member: AutomationDatasetFilterMember.TicketId,
+                            operator: ReportingFilterOperator.In,
+                            values: [],
+                        },
+                        {
+                            member: AutomationDatasetFilterMember.EventType,
+                            operator: ReportingFilterOperator.Equals,
+                            values: [
+                                AutomatedDatesetEventTypes.AiAgentRecommendedResource,
+                            ],
+                        },
+                    ],
+                    order: [[AutomationDatasetDimension.TicketId, sorting]],
+                },
+                undefined,
+                true
+            )
         })
 
         it('should handle undefined sorting', () => {
@@ -283,27 +298,31 @@ describe('aiAgentMetrics', () => {
                 {}
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith({
-                measures: [AutomationDatasetMeasure.AutomatedInteractions],
-                dimensions: [AutomationDatasetDimension.TicketId],
-                timezone,
-                filters: [
-                    ...automationDatasetDefaultFilters(filters),
-                    ...automationDatasetAdditionalFilters(filters),
-                    {
-                        member: AutomationDatasetFilterMember.TicketId,
-                        operator: ReportingFilterOperator.In,
-                        values: ticketIds,
-                    },
-                    {
-                        member: AutomationDatasetFilterMember.EventType,
-                        operator: ReportingFilterOperator.Equals,
-                        values: [
-                            AutomatedDatesetEventTypes.AiAgentRecommendedResource,
-                        ],
-                    },
-                ],
-            })
+            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                {
+                    measures: [AutomationDatasetMeasure.AutomatedInteractions],
+                    dimensions: [AutomationDatasetDimension.TicketId],
+                    timezone,
+                    filters: [
+                        ...automationDatasetDefaultFilters(filters),
+                        ...automationDatasetAdditionalFilters(filters),
+                        {
+                            member: AutomationDatasetFilterMember.TicketId,
+                            operator: ReportingFilterOperator.In,
+                            values: ticketIds,
+                        },
+                        {
+                            member: AutomationDatasetFilterMember.EventType,
+                            operator: ReportingFilterOperator.Equals,
+                            values: [
+                                AutomatedDatesetEventTypes.AiAgentRecommendedResource,
+                            ],
+                        },
+                    ],
+                },
+                undefined,
+                undefined
+            )
         })
     })
 })

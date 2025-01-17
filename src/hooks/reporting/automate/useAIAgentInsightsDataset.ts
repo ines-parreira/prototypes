@@ -90,12 +90,12 @@ export const useAIAgentMetrics = (
         customFieldsTicketTotalCountQueryFactory(
             filters,
             timezone,
-            String(customField?.id)
+            String(customField?.id || -1)
         ),
         customFieldsTicketTotalCountQueryFactory(
             {...filters, period: getPreviousPeriod(filters.period)},
             timezone,
-            String(customField?.id)
+            String(customField?.id || -1)
         )
     )
 
@@ -368,15 +368,16 @@ export const useAiAgentKnowledgeResourcePerIntent = (
         sorting
     )
 
-    const ticketIds =
-        aiAgentTicketsWithIntent.data?.allData
-            .map((item) => item[TicketDimension.TicketId])
-            .filter((id): id is string => id !== null) || []
+    const ticketIds = aiAgentTicketsWithIntent.data?.allData
+        .map((item) => item[TicketDimension.TicketId])
+        .filter((id): id is string => id !== null) || ['0']
 
     const resourcePerTicketId = useAIAgentResourcePerTicket(
         filters,
         timezone,
-        ticketIds
+        ticketIds,
+        undefined,
+        !!aiAgentTicketsWithIntent.data?.allData
     )
 
     const aiAgentKnowledgeResourcePerIntent =

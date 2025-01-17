@@ -97,12 +97,14 @@ const selectMetric =
 
 export function useMetricPerDimension<TCube extends Cubes>(
     query: ReportingQuery<TCube>,
-    dimensionId?: string
+    dimensionId?: string,
+    enabled?: boolean
 ): MetricWithDecile<TCube> {
     const metricData = usePostReporting<
         QueryReturnType<TCube>,
         QueryReturnType<TCube>
     >([query], {
+        enabled,
         select: (data) => data.data.data,
         queryFn: () =>
             postReporting<QueryReturnType<TCube>>([query]).then(withDeciles),

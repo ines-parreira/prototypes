@@ -31,6 +31,7 @@ import {
     useSuccessRatePerIntent,
     addMetricDataToResults,
     convertResultToTableArrayFormat,
+    useAiAgentKnowledgeResourcePerIntent,
 } from '../useAIAgentInsightsDataset'
 import {useAIAgentUserId} from '../useAIAgentUserId'
 
@@ -149,433 +150,529 @@ describe('useAiAgentInsightsDataset', () => {
             })
         })
     })
-})
 
-describe('useAutomationOpportunityPerIntent', () => {
-    beforeEach(() => {
-        useCustomFieldDefinitionsMock.mockReturnValue({
-            data: {data: ticketFieldDefinitions},
-            isLoading: false,
-        } as any)
-    })
-
-    it('should calculate ai agent insights correctly', () => {
-        useMetricMock.mockReturnValueOnce({
-            // aiAgentTickets
-            data: {
-                value: 5,
-            },
-            isFetching: false,
-            isError: false,
-        } as any)
-        useMetricPerDimensionMock
-            .mockReturnValueOnce({
-                // aiAgentNotAutomatedTicketsData
+    describe('useAutomationOpportunityPerIntent', () => {
+        it('should calculate ai agent insights correctly', () => {
+            useMetricMock.mockReturnValueOnce({
+                // aiAgentTickets
                 data: {
-                    allData: [
-                        {[TicketDimension.TicketId]: '1'},
-                        {[TicketDimension.TicketId]: '2'},
-                        {[TicketDimension.TicketId]: '3'},
-                    ],
+                    value: 5,
                 },
                 isFetching: false,
                 isError: false,
             } as any)
-            // useAiAgentTicketCountPerIntent
-            .mockReturnValueOnce(customFieldsMetric)
+            useMetricPerDimensionMock
+                .mockReturnValueOnce({
+                    // aiAgentNotAutomatedTicketsData
+                    data: {
+                        allData: [
+                            {[TicketDimension.TicketId]: '1'},
+                            {[TicketDimension.TicketId]: '2'},
+                            {[TicketDimension.TicketId]: '3'},
+                        ],
+                    },
+                    isFetching: false,
+                    isError: false,
+                } as any)
+                // useAiAgentTicketCountPerIntent
+                .mockReturnValueOnce(customFieldsMetric)
 
-        jest.spyOn(queryClient, 'invalidateQueries')
-        const {result} = renderHook(
-            () => useAutomationOpportunityPerIntent(statsFilters, timezone),
-            {
-                wrapper: ({children}) => (
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                    </QueryClientProvider>
-                ),
-            }
-        )
+            jest.spyOn(queryClient, 'invalidateQueries')
+            const {result} = renderHook(
+                () => useAutomationOpportunityPerIntent(statsFilters, timezone),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    ),
+                }
+            )
 
-        expect(result.current.isError).toBe(false)
-        expect(result.current.isFetching).toBe(false)
-        expect(result.current.data).toEqual([
-            {
-                [BREAKDOWN_FIELD]: 'Other::Platform',
-                [TICKET_COUNT]: '5',
-                [CUSTOM_FIELD_COUNT]: '3',
-                automationOpportunity: 0.6,
-            },
-            {
-                [BREAKDOWN_FIELD]: 'Other::Other',
-                [TICKET_COUNT]: '5',
-                [CUSTOM_FIELD_COUNT]: '1',
-                automationOpportunity: 0.2,
-            },
-            {
-                [BREAKDOWN_FIELD]: 'Other::App',
-                [TICKET_COUNT]: '5',
-                [CUSTOM_FIELD_COUNT]: '1',
-                automationOpportunity: 0.2,
-            },
-        ])
+            expect(result.current.isError).toBe(false)
+            expect(result.current.isFetching).toBe(false)
+            expect(result.current.data).toEqual([
+                {
+                    [BREAKDOWN_FIELD]: 'Other::Platform',
+                    [TICKET_COUNT]: '5',
+                    [CUSTOM_FIELD_COUNT]: '3',
+                    automationOpportunity: 0.6,
+                },
+                {
+                    [BREAKDOWN_FIELD]: 'Other::Other',
+                    [TICKET_COUNT]: '5',
+                    [CUSTOM_FIELD_COUNT]: '1',
+                    automationOpportunity: 0.2,
+                },
+                {
+                    [BREAKDOWN_FIELD]: 'Other::App',
+                    [TICKET_COUNT]: '5',
+                    [CUSTOM_FIELD_COUNT]: '1',
+                    automationOpportunity: 0.2,
+                },
+            ])
+        })
     })
-})
 
-describe('useAutomationOpportunityPerIntent', () => {
-    it('should enrich automation opportunity per intent correctly', () => {
-        useMetricMock.mockReturnValueOnce({
-            // aiAgentTickets
-            data: {
-                value: 5,
-            },
-            isFetching: false,
-            isError: false,
-        } as any)
-        useMetricPerDimensionMock
-            .mockReturnValueOnce({
-                // aiAgentNotAutomatedTicketsData
+    describe('useAutomationOpportunityPerIntent', () => {
+        it('should enrich automation opportunity per intent correctly', () => {
+            useMetricMock.mockReturnValueOnce({
+                // aiAgentTickets
                 data: {
-                    allData: [
-                        {[TicketDimension.TicketId]: '1'},
-                        {[TicketDimension.TicketId]: '2'},
-                        {[TicketDimension.TicketId]: '3'},
-                    ],
+                    value: 5,
                 },
                 isFetching: false,
                 isError: false,
             } as any)
-            // useAiAgentTicketCountPerIntent
-            .mockReturnValueOnce(customFieldsMetric)
+            useMetricPerDimensionMock
+                .mockReturnValueOnce({
+                    // aiAgentNotAutomatedTicketsData
+                    data: {
+                        allData: [
+                            {[TicketDimension.TicketId]: '1'},
+                            {[TicketDimension.TicketId]: '2'},
+                            {[TicketDimension.TicketId]: '3'},
+                        ],
+                    },
+                    isFetching: false,
+                    isError: false,
+                } as any)
+                // useAiAgentTicketCountPerIntent
+                .mockReturnValueOnce(customFieldsMetric)
 
-        jest.spyOn(queryClient, 'invalidateQueries')
-        const {result} = renderHook(
-            () => useAutomationOpportunityPerIntent(statsFilters, timezone),
-            {
-                wrapper: ({children}) => (
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                    </QueryClientProvider>
-                ),
-            }
-        )
+            jest.spyOn(queryClient, 'invalidateQueries')
+            const {result} = renderHook(
+                () => useAutomationOpportunityPerIntent(statsFilters, timezone),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    ),
+                }
+            )
 
-        expect(result.current.isError).toBe(false)
-        expect(result.current.isFetching).toBe(false)
-        expect(result.current.data).toEqual([
-            {
-                [BREAKDOWN_FIELD]: 'Other::Platform',
-                [TICKET_COUNT]: '5',
-                [CUSTOM_FIELD_COUNT]: '3',
-                automationOpportunity: 0.6,
-            },
-            {
-                [BREAKDOWN_FIELD]: 'Other::Other',
-                [TICKET_COUNT]: '5',
-                [CUSTOM_FIELD_COUNT]: '1',
-                automationOpportunity: 0.2,
-            },
-            {
-                [BREAKDOWN_FIELD]: 'Other::App',
-                [TICKET_COUNT]: '5',
-                [CUSTOM_FIELD_COUNT]: '1',
-                automationOpportunity: 0.2,
-            },
-        ])
-    })
-})
-
-describe('useAIAgentTicketsPerIntent', () => {
-    beforeEach(() => {
-        useCustomFieldDefinitionsMock.mockReturnValue({
-            data: {data: ticketFieldDefinitions},
-            isLoading: false,
-        } as any)
-    })
-
-    it('should return ai agent tickets correctly', () => {
-        useMetricPerDimensionMock
-            .mockReturnValueOnce({
-                // aiAgentTicketsData
-                data: {
-                    allData: [
-                        {[TicketDimension.TicketId]: '1'},
-                        {[TicketDimension.TicketId]: '2'},
-                        {[TicketDimension.TicketId]: '3'},
-                    ],
+            expect(result.current.isError).toBe(false)
+            expect(result.current.isFetching).toBe(false)
+            expect(result.current.data).toEqual([
+                {
+                    [BREAKDOWN_FIELD]: 'Other::Platform',
+                    [TICKET_COUNT]: '5',
+                    [CUSTOM_FIELD_COUNT]: '3',
+                    automationOpportunity: 0.6,
                 },
-                isFetching: false,
-                isError: false,
-            } as any)
-            // aiAgentTicketsGroupedByIntent
-            .mockReturnValueOnce(totalTicketsMetric)
-
-        jest.spyOn(queryClient, 'invalidateQueries')
-        const {result} = renderHook(
-            () => useAIAgentTicketsPerIntent(statsFilters, timezone),
-            {
-                wrapper: ({children}) => (
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                    </QueryClientProvider>
-                ),
-            }
-        )
-        expect(result.current).toEqual(totalTicketsMetric)
-    })
-})
-
-describe('useSuccessRatePerIntent', () => {
-    beforeEach(() => {
-        useCustomFieldDefinitionsMock.mockReturnValue({
-            data: {data: ticketFieldDefinitions},
-            isLoading: false,
-        } as any)
-    })
-
-    it('should enrich success rate per intent correctly', () => {
-        useMetricPerDimensionMock
-            .mockReturnValueOnce({
-                // aiAgentAutomatedTicketsData
-                data: {
-                    decile: null,
-                    value: null,
-                    allData: [
-                        {[TicketDimension.TicketId]: '1'},
-                        {[TicketDimension.TicketId]: '2'},
-                        {[TicketDimension.TicketId]: '3'},
-                    ],
+                {
+                    [BREAKDOWN_FIELD]: 'Other::Other',
+                    [TICKET_COUNT]: '5',
+                    [CUSTOM_FIELD_COUNT]: '1',
+                    automationOpportunity: 0.2,
                 },
-                isFetching: false,
-                isError: false,
+                {
+                    [BREAKDOWN_FIELD]: 'Other::App',
+                    [TICKET_COUNT]: '5',
+                    [CUSTOM_FIELD_COUNT]: '1',
+                    automationOpportunity: 0.2,
+                },
+            ])
+        })
+    })
+
+    describe('useAIAgentTicketsPerIntent', () => {
+        it('should return ai agent tickets correctly', () => {
+            useMetricPerDimensionMock
+                .mockReturnValueOnce({
+                    // aiAgentTicketsData
+                    data: {
+                        allData: [
+                            {[TicketDimension.TicketId]: '1'},
+                            {[TicketDimension.TicketId]: '2'},
+                            {[TicketDimension.TicketId]: '3'},
+                        ],
+                    },
+                    isFetching: false,
+                    isError: false,
+                } as any)
+                // aiAgentTicketsGroupedByIntent
+                .mockReturnValueOnce(totalTicketsMetric)
+
+            jest.spyOn(queryClient, 'invalidateQueries')
+            const {result} = renderHook(
+                () => useAIAgentTicketsPerIntent(statsFilters, timezone),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    ),
+                }
+            )
+            expect(result.current).toEqual(totalTicketsMetric)
+        })
+    })
+
+    describe('useSuccessRatePerIntent', () => {
+        it('should enrich success rate per intent correctly', () => {
+            useMetricPerDimensionMock
+                .mockReturnValueOnce({
+                    // aiAgentAutomatedTicketsData
+                    data: {
+                        decile: null,
+                        value: null,
+                        allData: [
+                            {[TicketDimension.TicketId]: '1'},
+                            {[TicketDimension.TicketId]: '2'},
+                            {[TicketDimension.TicketId]: '3'},
+                        ],
+                    },
+                    isFetching: false,
+                    isError: false,
+                })
+                .mockReturnValueOnce({
+                    // aiAgentTicketsData
+                    data: {
+                        decile: null,
+                        value: null,
+                        allData: [
+                            {[TicketDimension.TicketId]: '1'},
+                            {[TicketDimension.TicketId]: '2'},
+                            {[TicketDimension.TicketId]: '3'},
+                        ],
+                    },
+                    isFetching: false,
+                    isError: false,
+                })
+                // aiAgentTicketsGroupedByIntent
+                .mockReturnValueOnce(totalTicketsMetric)
+                //useAiAgentTicketCountPerIntent
+                .mockReturnValueOnce(customFieldsMetric)
+
+            jest.spyOn(queryClient, 'invalidateQueries')
+            const {result} = renderHook(
+                () => useSuccessRatePerIntent(statsFilters, timezone),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    ),
+                }
+            )
+            expect(result.current.data).toEqual([
+                {
+                    [BREAKDOWN_FIELD]: 'Other::Other',
+                    [TICKET_COUNT]: '5',
+                    [CUSTOM_FIELD_COUNT]: '1',
+                    successRate: 0.2,
+                },
+                {
+                    [BREAKDOWN_FIELD]: 'Other::App',
+                    [TICKET_COUNT]: '4',
+                    [CUSTOM_FIELD_COUNT]: '1',
+                    successRate: 0.25,
+                },
+                {
+                    [BREAKDOWN_FIELD]: 'Other::Platform',
+                    [TICKET_COUNT]: '10',
+                    [CUSTOM_FIELD_COUNT]: '3',
+                    successRate: 0.3,
+                },
+            ])
+        })
+    })
+
+    describe('useCustomerSatisfactionPerIntent', () => {
+        it('should return csat per intent correctly', () => {
+            useMetricPerDimensionMock.mockReturnValueOnce(csatPerIntentMetric)
+
+            jest.spyOn(queryClient, 'invalidateQueries')
+            const {result} = renderHook(
+                () => useCustomerSatisfactionPerIntent(statsFilters, timezone),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    ),
+                }
+            )
+            expect(result.current).toEqual(csatPerIntentMetric)
+        })
+    })
+
+    describe('useAiAgentKnowledgeResourcePerIntent', () => {
+        it('should return ai agent knowledge resource per intent correctly', () => {
+            useMetricPerDimensionMock
+                .mockReturnValueOnce({
+                    // aiAgentAutomatedTicketsDataWithIntent
+                    data: {
+                        decile: null,
+                        value: null,
+                        allData: [
+                            {
+                                'TicketCustomFieldsEnriched.valueString':
+                                    'intentA',
+                                'TicketEnriched.ticketId': '1',
+                            },
+                            {
+                                'TicketCustomFieldsEnriched.valueString':
+                                    'intentA',
+                                'TicketEnriched.ticketId': '2',
+                            },
+                            {
+                                'TicketCustomFieldsEnriched.valueString':
+                                    'intentA',
+                                'TicketEnriched.ticketId': '3',
+                            },
+                        ],
+                    },
+                    isFetching: false,
+                    isError: false,
+                })
+                .mockReturnValueOnce({
+                    // resourcePerTicketId
+                    data: {
+                        decile: null,
+                        value: null,
+                        allData: [
+                            {
+                                'AutomationDataset.automatedInteractions': '1',
+                                'AutomationDataset.ticketId': '1',
+                            },
+                            {
+                                'AutomationDataset.automatedInteractions': '2',
+                                'AutomationDataset.ticketId': '2',
+                            },
+                        ],
+                    },
+                    isFetching: false,
+                    isError: false,
+                })
+
+            jest.spyOn(queryClient, 'invalidateQueries')
+            const {result} = renderHook(
+                () =>
+                    useAiAgentKnowledgeResourcePerIntent(
+                        statsFilters,
+                        timezone
+                    ),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    ),
+                }
+            )
+            expect(result.current.data).toEqual([
+                {
+                    'TicketCustomFieldsEnriched.valueString': 'intentA',
+                    resources: 3,
+                },
+            ])
+        })
+
+        it('should return empty array when data not available', () => {
+            useMetricPerDimensionMock
+                .mockReturnValueOnce({
+                    // aiAgentAutomatedTicketsDataWithIntent
+                    data: {
+                        decile: null,
+                        value: null,
+                        allData: [],
+                    },
+                    isFetching: false,
+                    isError: false,
+                })
+                .mockReturnValueOnce({
+                    // resourcePerTicketId
+                    data: {
+                        decile: null,
+                        value: null,
+                        allData: [],
+                    },
+                    isFetching: false,
+                    isError: false,
+                })
+
+            jest.spyOn(queryClient, 'invalidateQueries')
+            const {result} = renderHook(
+                () =>
+                    useAiAgentKnowledgeResourcePerIntent(
+                        statsFilters,
+                        timezone
+                    ),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    ),
+                }
+            )
+            expect(result.current.data).toEqual([])
+        })
+    })
+
+    describe('addMetricDataToResults', () => {
+        it('adds metric data correctly when intents are present', () => {
+            const results: Record<string, any> = {}
+            const metricData = [
+                {
+                    'TicketCustomFieldsEnriched.valueString': 'intentA',
+                    metricKey: 10,
+                },
+                {
+                    'TicketCustomFieldsEnriched.valueString': 'intentB',
+                    metricKey: 20,
+                },
+            ]
+
+            addMetricDataToResults(results, metricData, 'metricKey')
+
+            expect(results).toEqual({
+                intentA: {metricKey: 10},
+                intentB: {metricKey: 20},
             })
-            .mockReturnValueOnce({
-                // aiAgentTicketsData
-                data: {
-                    decile: null,
-                    value: null,
-                    allData: [
-                        {[TicketDimension.TicketId]: '1'},
-                        {[TicketDimension.TicketId]: '2'},
-                        {[TicketDimension.TicketId]: '3'},
-                    ],
+        })
+
+        it('uses resultKey when provided to rename the metric key', () => {
+            const results: Record<string, any> = {}
+            const metricData = [
+                {
+                    'TicketCustomFieldsEnriched.valueString': 'intentA',
+                    ticketCount: 5,
                 },
-                isFetching: false,
-                isError: false,
+                {
+                    'TicketCustomFieldsEnriched.valueString': 'intentB',
+                    ticketCount: 8,
+                },
+            ]
+
+            addMetricDataToResults(
+                results,
+                metricData,
+                'ticketCount',
+                'tickets'
+            )
+
+            expect(results).toEqual({
+                intentA: {tickets: 5},
+                intentB: {tickets: 8},
             })
-            // aiAgentTicketsGroupedByIntent
-            .mockReturnValueOnce(totalTicketsMetric)
-            //useAiAgentTicketCountPerIntent
-            .mockReturnValueOnce(customFieldsMetric)
+        })
 
-        jest.spyOn(queryClient, 'invalidateQueries')
-        const {result} = renderHook(
-            () => useSuccessRatePerIntent(statsFilters, timezone),
-            {
-                wrapper: ({children}) => (
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                    </QueryClientProvider>
-                ),
+        it('merges new metrics with existing results', () => {
+            const results: Record<string, any> = {
+                intentA: {metricKey: 10},
             }
-        )
-        expect(result.current.data).toEqual([
-            {
-                [BREAKDOWN_FIELD]: 'Other::Other',
-                [TICKET_COUNT]: '5',
-                [CUSTOM_FIELD_COUNT]: '1',
-                successRate: 0.2,
-            },
-            {
-                [BREAKDOWN_FIELD]: 'Other::App',
-                [TICKET_COUNT]: '4',
-                [CUSTOM_FIELD_COUNT]: '1',
-                successRate: 0.25,
-            },
-            {
-                [BREAKDOWN_FIELD]: 'Other::Platform',
-                [TICKET_COUNT]: '10',
-                [CUSTOM_FIELD_COUNT]: '3',
-                successRate: 0.3,
-            },
-        ])
-    })
-})
+            const metricData = [
+                {
+                    'TicketCustomFieldsEnriched.valueString': 'intentA',
+                    ticketCount: 15,
+                },
+                {
+                    'TicketCustomFieldsEnriched.valueString': 'intentB',
+                    ticketCount: 20,
+                },
+            ]
 
-describe('useCustomerSatisfactionPerIntent', () => {
-    beforeEach(() => {
-        useCustomFieldDefinitionsMock.mockReturnValue({
-            data: {data: ticketFieldDefinitions},
-            isLoading: false,
-        } as any)
-    })
+            addMetricDataToResults(
+                results,
+                metricData,
+                'ticketCount',
+                'tickets'
+            )
 
-    it('should return csat per intent correctly', () => {
-        useMetricPerDimensionMock.mockReturnValueOnce(csatPerIntentMetric)
+            expect(results).toEqual({
+                intentA: {metricKey: 10, tickets: 15},
+                intentB: {tickets: 20},
+            })
+        })
 
-        jest.spyOn(queryClient, 'invalidateQueries')
-        const {result} = renderHook(
-            () => useCustomerSatisfactionPerIntent(statsFilters, timezone),
-            {
-                wrapper: ({children}) => (
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                    </QueryClientProvider>
-                ),
+        it('handles empty metricData array gracefully', () => {
+            const results: Record<string, any> = {}
+            const metricData: Record<string, string | number | null>[] = []
+
+            addMetricDataToResults(results, metricData, 'metricKey')
+
+            expect(results).toEqual({})
+        })
+
+        it('overwrites existing metric keys with new values', () => {
+            const results: Record<string, any> = {
+                intentA: {metricKey: 10},
             }
-        )
-        expect(result.current).toEqual(csatPerIntentMetric)
-    })
-})
+            const metricData: Record<string, string | number | null>[] = [
+                {
+                    'TicketCustomFieldsEnriched.valueString': 'intentA',
+                    metricKey: 25,
+                },
+            ]
 
-describe('addMetricDataToResults', () => {
-    it('adds metric data correctly when intents are present', () => {
-        const results: Record<string, any> = {}
-        const metricData = [
-            {
-                'TicketCustomFieldsEnriched.valueString': 'intentA',
-                metricKey: 10,
-            },
-            {
-                'TicketCustomFieldsEnriched.valueString': 'intentB',
-                metricKey: 20,
-            },
-        ]
+            addMetricDataToResults(results, metricData, 'metricKey')
 
-        addMetricDataToResults(results, metricData, 'metricKey')
-
-        expect(results).toEqual({
-            intentA: {metricKey: 10},
-            intentB: {metricKey: 20},
+            expect(results).toEqual({
+                intentA: {metricKey: 25},
+            })
         })
     })
 
-    it('uses resultKey when provided to rename the metric key', () => {
-        const results: Record<string, any> = {}
-        const metricData = [
-            {
-                'TicketCustomFieldsEnriched.valueString': 'intentA',
-                ticketCount: 5,
-            },
-            {
-                'TicketCustomFieldsEnriched.valueString': 'intentB',
-                ticketCount: 8,
-            },
-        ]
+    describe('convertResultToTableArrayFormat', () => {
+        it('converts results object to array format with transformed names', () => {
+            const results = {
+                'intentA::subIntentA': {
+                    [IntentTableColumn.AutomationOpportunities]: 10,
+                    [IntentTableColumn.Tickets]: 20,
+                },
+                'intentB::subIntentB': {
+                    [IntentTableColumn.AutomationOpportunities]: 15,
+                    [IntentTableColumn.Tickets]: 25,
+                },
+            } as unknown as Record<string, IntentMetrics>
 
-        addMetricDataToResults(results, metricData, 'ticketCount', 'tickets')
+            const result = convertResultToTableArrayFormat(results)
 
-        expect(results).toEqual({
-            intentA: {tickets: 5},
-            intentB: {tickets: 8},
+            expect(result).toEqual([
+                {
+                    [IntentTableColumn.AutomationOpportunities]: 10,
+                    [IntentTableColumn.Tickets]: 20,
+                    [IntentTableColumn.IntentName]: 'intentA/subIntentA',
+                },
+                {
+                    [IntentTableColumn.AutomationOpportunities]: 15,
+                    [IntentTableColumn.Tickets]: 25,
+                    [IntentTableColumn.IntentName]: 'intentB/subIntentB',
+                },
+            ])
         })
-    })
 
-    it('merges new metrics with existing results', () => {
-        const results: Record<string, any> = {
-            intentA: {metricKey: 10},
-        }
-        const metricData = [
-            {
-                'TicketCustomFieldsEnriched.valueString': 'intentA',
-                ticketCount: 15,
-            },
-            {
-                'TicketCustomFieldsEnriched.valueString': 'intentB',
-                ticketCount: 20,
-            },
-        ]
+        it('handles empty results object gracefully', () => {
+            const results: Record<string, IntentMetrics> = {}
 
-        addMetricDataToResults(results, metricData, 'ticketCount', 'tickets')
+            const result = convertResultToTableArrayFormat(results)
 
-        expect(results).toEqual({
-            intentA: {metricKey: 10, tickets: 15},
-            intentB: {tickets: 20},
+            expect(result).toEqual([])
         })
-    })
 
-    it('handles empty metricData array gracefully', () => {
-        const results: Record<string, any> = {}
-        const metricData: Record<string, string | number | null>[] = []
+        it('preserves all metric fields in the converted array', () => {
+            const results = {
+                intentA: {
+                    [IntentTableColumn.AutomationOpportunities]: 5,
+                    [IntentTableColumn.Tickets]: 10,
+                    [IntentTableColumn.SuccessRate]: 15,
+                },
+            } as unknown as Record<string, IntentMetrics>
 
-        addMetricDataToResults(results, metricData, 'metricKey')
+            const result = convertResultToTableArrayFormat(results)
 
-        expect(results).toEqual({})
-    })
-
-    it('overwrites existing metric keys with new values', () => {
-        const results: Record<string, any> = {
-            intentA: {metricKey: 10},
-        }
-        const metricData: Record<string, string | number | null>[] = [
-            {
-                'TicketCustomFieldsEnriched.valueString': 'intentA',
-                metricKey: 25,
-            },
-        ]
-
-        addMetricDataToResults(results, metricData, 'metricKey')
-
-        expect(results).toEqual({
-            intentA: {metricKey: 25},
+            expect(result).toEqual([
+                {
+                    [IntentTableColumn.AutomationOpportunities]: 5,
+                    [IntentTableColumn.Tickets]: 10,
+                    [IntentTableColumn.SuccessRate]: 15,
+                    [IntentTableColumn.IntentName]: 'intentA',
+                },
+            ])
         })
-    })
-})
-
-describe('convertResultToTableArrayFormat', () => {
-    it('converts results object to array format with transformed names', () => {
-        const results = {
-            'intentA::subIntentA': {
-                [IntentTableColumn.AutomationOpportunities]: 10,
-                [IntentTableColumn.Tickets]: 20,
-            },
-            'intentB::subIntentB': {
-                [IntentTableColumn.AutomationOpportunities]: 15,
-                [IntentTableColumn.Tickets]: 25,
-            },
-        } as unknown as Record<string, IntentMetrics>
-
-        const result = convertResultToTableArrayFormat(results)
-
-        expect(result).toEqual([
-            {
-                [IntentTableColumn.AutomationOpportunities]: 10,
-                [IntentTableColumn.Tickets]: 20,
-                [IntentTableColumn.IntentName]: 'intentA/subIntentA',
-            },
-            {
-                [IntentTableColumn.AutomationOpportunities]: 15,
-                [IntentTableColumn.Tickets]: 25,
-                [IntentTableColumn.IntentName]: 'intentB/subIntentB',
-            },
-        ])
-    })
-
-    it('handles empty results object gracefully', () => {
-        const results: Record<string, IntentMetrics> = {}
-
-        const result = convertResultToTableArrayFormat(results)
-
-        expect(result).toEqual([])
-    })
-
-    it('preserves all metric fields in the converted array', () => {
-        const results = {
-            intentA: {
-                [IntentTableColumn.AutomationOpportunities]: 5,
-                [IntentTableColumn.Tickets]: 10,
-                [IntentTableColumn.SuccessRate]: 15,
-            },
-        } as unknown as Record<string, IntentMetrics>
-
-        const result = convertResultToTableArrayFormat(results)
-
-        expect(result).toEqual([
-            {
-                [IntentTableColumn.AutomationOpportunities]: 5,
-                [IntentTableColumn.Tickets]: 10,
-                [IntentTableColumn.SuccessRate]: 15,
-                [IntentTableColumn.IntentName]: 'intentA',
-            },
-        ])
     })
 })

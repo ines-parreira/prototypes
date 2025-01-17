@@ -48,7 +48,7 @@ export const useTotalAiAgentTicketsByCustomField = (
         customFieldsTicketTotalCountQueryFactory(
             filters,
             timezone,
-            String(customField?.id),
+            String(customField?.id || -1),
             sorting
         )
     )
@@ -66,7 +66,7 @@ export const useAiAgenTickets = (
         customFieldsTicketFactory(
             filters,
             timezone,
-            String(customField?.id),
+            String(customField?.id || -1),
             customFieldFilter
                 ? {
                       member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
@@ -89,7 +89,7 @@ export const useAiAgentTicketCountPerIntent = (
         customFieldsTicketCountQueryFactory(
             filters,
             timezone,
-            String(customField?.id),
+            String(customField?.id || -1),
             sorting,
             ...(ticketIds && ticketIds.length
                 ? [
@@ -174,30 +174,37 @@ export const useAIAgentResourcePerTicket = (
     filters: StatsFilters,
     timezone: string,
     ticketIds: string[],
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
+    enabled?: boolean
 ) => {
-    return useMetricPerDimension({
-        measures: [AutomationDatasetMeasure.AutomatedInteractions],
-        dimensions: [AutomationDatasetDimension.TicketId],
-        timezone,
-        filters: [
-            ...automationDatasetDefaultFilters(filters),
-            ...automationDatasetAdditionalFilters(filters),
-            {
-                member: AutomationDatasetFilterMember.TicketId,
-                operator: ReportingFilterOperator.In,
-                values: ticketIds,
-            },
-            {
-                member: AutomationDatasetFilterMember.EventType,
-                operator: ReportingFilterOperator.Equals,
-                values: [AutomatedDatesetEventTypes.AiAgentRecommendedResource],
-            },
-        ],
-        ...(sorting
-            ? {
-                  order: [[AutomationDatasetDimension.TicketId, sorting]],
-              }
-            : {}),
-    })
+    return useMetricPerDimension(
+        {
+            measures: [AutomationDatasetMeasure.AutomatedInteractions],
+            dimensions: [AutomationDatasetDimension.TicketId],
+            timezone,
+            filters: [
+                ...automationDatasetDefaultFilters(filters),
+                ...automationDatasetAdditionalFilters(filters),
+                {
+                    member: AutomationDatasetFilterMember.TicketId,
+                    operator: ReportingFilterOperator.In,
+                    values: ticketIds,
+                },
+                {
+                    member: AutomationDatasetFilterMember.EventType,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [
+                        AutomatedDatesetEventTypes.AiAgentRecommendedResource,
+                    ],
+                },
+            ],
+            ...(sorting
+                ? {
+                      order: [[AutomationDatasetDimension.TicketId, sorting]],
+                  }
+                : {}),
+        },
+        undefined,
+        enabled
+    )
 }
