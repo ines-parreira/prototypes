@@ -1,15 +1,13 @@
 import React, {useState} from 'react'
 
-import {StatsFilters} from 'models/stat/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ChartCard from 'pages/stats/ChartCard'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 
-import {useSearchTermsMetrics} from '../../hooks/useSearchTermsMetrics'
+import Modal from 'pages/common/components/modal/Modal'
 import HelpCenterStatsTable, {
     TableCellType,
-} from '../HelpCenterStatsTable/HelpCenterStatsTable'
-import SearchQueryModal from '../SearchQueryModal/SearchQueryModal'
+} from 'pages/stats/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
+import SearchQueryModal from 'pages/stats/help-center/components/SearchQueryModal/SearchQueryModal'
+import {useSearchTermsMetrics} from 'pages/stats/help-center/hooks/useSearchTermsMetrics'
 
 const ITEMS_PER_PAGE = 20
 
@@ -43,12 +41,6 @@ const columns = [
     },
 ]
 
-type SearchTermsTableProps = {
-    statsFilters: StatsFilters
-    timezone: string
-    helpCenterDomain: string
-}
-
 type ModalStateType =
     | {
           isOpen: false
@@ -63,11 +55,12 @@ const modalIntiState: ModalStateType = {
     isOpen: false,
 }
 
-const SearchTermsTable = ({
-    statsFilters,
-    timezone,
-    helpCenterDomain,
-}: SearchTermsTableProps) => {
+type Props = {
+    helpCenterDomain: string
+}
+
+export const SearchTermsTable = ({helpCenterDomain}: Props) => {
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const [currentPage, setCurrentPage] = useState(1)
 
     const [modalState, setModalState] = useState<ModalStateType>(modalIntiState)
@@ -80,8 +73,8 @@ const SearchTermsTable = ({
     }
 
     const {data, total, isLoading} = useSearchTermsMetrics({
-        statsFilters,
-        timezone,
+        statsFilters: cleanStatsFilters,
+        timezone: userTimezone,
         currentPage: currentPage,
         itemPerPage: ITEMS_PER_PAGE,
         onModalOpen,
@@ -100,44 +93,32 @@ const SearchTermsTable = ({
     }
 
     return (
-        <ChartCard title="Search terms with results" noPadding>
-            {!isLoading && data.length === 0 ? (
-                <NoDataAvailable
-                    title="No data available"
-                    description="Try adjusting filters to get results."
-                    style={{height: 448}}
-                />
-            ) : (
-                <>
-                    <HelpCenterStatsTable
-                        onPageChange={onPageChange}
-                        isLoading={isLoading}
-                        currentPage={currentPage}
-                        count={count}
-                        pageSize={ITEMS_PER_PAGE}
-                        columns={columns}
-                        data={data}
-                    />
-                    <Modal
-                        isOpen={modalState.isOpen}
+        <>
+            <HelpCenterStatsTable
+                onPageChange={onPageChange}
+                isLoading={isLoading}
+                currentPage={currentPage}
+                count={count}
+                pageSize={ITEMS_PER_PAGE}
+                columns={columns}
+                data={data}
+            />
+            <Modal
+                isOpen={modalState.isOpen}
+                onClose={onModalClose}
+                size="huge"
+            >
+                {modalState.isOpen && (
+                    <SearchQueryModal
+                        timezone={userTimezone}
+                        statsFilters={cleanStatsFilters}
+                        searchQuery={modalState.searchQuery}
                         onClose={onModalClose}
-                        size="huge"
-                    >
-                        {modalState.isOpen && (
-                            <SearchQueryModal
-                                timezone={timezone}
-                                statsFilters={statsFilters}
-                                searchQuery={modalState.searchQuery}
-                                onClose={onModalClose}
-                                helpCenterDomain={helpCenterDomain}
-                                articlesCount={modalState.articlesCount}
-                            />
-                        )}
-                    </Modal>
-                </>
-            )}
-        </ChartCard>
+                        helpCenterDomain={helpCenterDomain}
+                        articlesCount={modalState.articlesCount}
+                    />
+                )}
+            </Modal>
+        </>
     )
 }
-
-export default SearchTermsTable

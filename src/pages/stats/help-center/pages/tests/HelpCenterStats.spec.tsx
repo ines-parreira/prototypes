@@ -3,17 +3,21 @@ import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useArticleViewTimeSeries} from 'hooks/reporting/help-center/useArticleViewTimeSeries'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {useHasAccessToAILibrary} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
+import {useHelpCenterAIArticlesLibrary} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import {FiltersPanelWrapper} from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
-import {useArticleViewTimeSeries} from 'pages/stats/help-center/hooks/useArticleViewTimeSeries'
+import AIBanner from 'pages/stats/help-center/components/AIBanner'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
 import {HELP_CENTER_STATS_TEST_IDS} from 'pages/stats/help-center/pages/tests/constants'
 import {initialState} from 'state/stats/statsSlice'
@@ -24,22 +28,22 @@ import {getSortByName} from 'utils/getSortByName'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('common/segment')
-
 jest.mock(
     'pages/stats/common/components/charts/LineChart/LineChart',
     () => () => <div>line-chart</div>
 )
-
-jest.mock('pages/stats/help-center/hooks/useHelpCenterTrend', () => ({
-    useHelpCenterTrend: () => ({data: {value: 1}, isFetching: false}),
+jest.mock('pages/stats/help-center/hooks/useArticleViewsTrend', () => ({
+    useArticleViewsTrend: () => ({data: {value: 1}, isFetching: false}),
 }))
-jest.mock('pages/stats/help-center/hooks/useArticleViewTimeSeries', () => ({
+jest.mock('pages/stats/help-center/hooks/useSearchRequestedTrend', () => ({
+    useSearchRequestedTrend: () => ({data: {value: 1}, isFetching: false}),
+}))
+jest.mock('hooks/reporting/help-center/useArticleViewTimeSeries', () => ({
     useArticleViewTimeSeries: jest.fn(),
 }))
 jest.mock('pages/stats/help-center/hooks/useSearchTermsMetrics', () => ({
     useSearchTermsMetrics: () => ({data: [], isFetching: false}),
 }))
-
 jest.mock(
     'pages/stats/help-center/hooks/usePerformanceByArticleMetrics',
     () => ({
@@ -58,24 +62,26 @@ jest.mock('pages/stats/help-center/hooks/useSearchResultRange', () => ({
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
-
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
     useSupportedLocales: jest.fn(() => [
         {code: 'en-US', name: 'English'},
         {code: 'fr-FR', name: 'French'},
     ]),
 }))
-
 jest.mock(
-    'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary',
-    () => ({
-        useHelpCenterAIArticlesLibrary: () => ({hasNewArticles: false}),
-    })
+    'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
 )
-
+const useHelpCenterAIArticlesLibraryMock = assumeMock(
+    useHelpCenterAIArticlesLibrary
+)
 jest.mock('pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper')
-const filtersPanelMock = assumeMock(FiltersPanelWrapper)
-
+const FiltersPanelMock = assumeMock(FiltersPanelWrapper)
+jest.mock('pages/stats/help-center/components/AIBanner')
+const AIBannerMock = assumeMock(AIBanner)
+jest.mock(
+    'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
+)
+const useHasAccessToAILibraryMock = assumeMock(useHasAccessToAILibrary)
 const mockUseHelpCenterList = jest.mocked(useHelpCenterList)
 const mockUseArticleViewTimeSeries = jest.mocked(useArticleViewTimeSeries)
 const mockedLogEvent = jest.mocked(logEvent)
@@ -108,8 +114,11 @@ describe('<HelpCenterStats />', () => {
             data: [],
             isLoading: false,
         } as unknown as UseQueryResult<TimeSeriesDataItem[][]>)
-
-        filtersPanelMock.mockImplementation(() => <div>FiltersPanelMock</div>)
+        useHelpCenterAIArticlesLibraryMock.mockReturnValue({
+            hasNewArticles: false,
+        } as any)
+        FiltersPanelMock.mockImplementation(() => <div>FiltersPanelMock</div>)
+        AIBannerMock.mockImplementation(() => <div />)
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFiltersHelpCenter]: false,
         })
@@ -217,7 +226,7 @@ describe('<HelpCenterStats />', () => {
 
         expect(mockUseArticleViewTimeSeries).toHaveBeenCalledWith(
             expect.objectContaining({
-                helpCenters: withDefaultLogicalOperator([helpCenters[0].id]),
+                helpCenters: [helpCenters[0].id],
             }),
             expect.anything(),
             expect.anything()
@@ -228,7 +237,7 @@ describe('<HelpCenterStats />', () => {
 
         expect(mockUseArticleViewTimeSeries).toHaveBeenLastCalledWith(
             expect.objectContaining({
-                helpCenters: withDefaultLogicalOperator([helpCenters[1].id]),
+                helpCenters: [helpCenters[1].id],
             }),
             expect.anything(),
             expect.anything()
@@ -371,7 +380,7 @@ describe('<HelpCenterStats />', () => {
 
         expect(mockUseArticleViewTimeSeries).toHaveBeenCalledWith(
             expect.objectContaining({
-                localeCodes: withDefaultLogicalOperator(['en-US', 'fr-FR']),
+                localeCodes: ['en-US', 'fr-FR'],
             }),
             expect.anything(),
             expect.anything()
@@ -386,11 +395,21 @@ describe('<HelpCenterStats />', () => {
 
         expect(mockUseArticleViewTimeSeries).toHaveBeenLastCalledWith(
             expect.objectContaining({
-                localeCodes: withDefaultLogicalOperator(['fr-FR']),
+                localeCodes: ['fr-FR'],
             }),
             expect.anything(),
             expect.anything()
         )
+    })
+
+    it('should show AIBanner', () => {
+        useHasAccessToAILibraryMock.mockReturnValue(true)
+        useHelpCenterAIArticlesLibraryMock.mockReturnValue({
+            hasNewArticles: true,
+        } as any)
+        renderComponent()
+
+        expect(AIBannerMock).toHaveBeenCalled()
     })
 
     describe('FilterPanel', () => {
@@ -403,7 +422,7 @@ describe('<HelpCenterStats />', () => {
         it('should show New Filters Panel', () => {
             renderComponent()
 
-            expect(filtersPanelMock).toHaveBeenCalled()
+            expect(FiltersPanelMock).toHaveBeenCalled()
         })
     })
 })

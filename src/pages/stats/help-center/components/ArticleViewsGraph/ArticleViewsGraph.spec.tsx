@@ -1,26 +1,39 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {render, screen} from '@testing-library/react'
 import {CoreScaleOptions, Scale} from 'chart.js'
+
 import moment from 'moment'
-import React, {ComponentProps} from 'react'
 
-import {TimeSeriesDataItem} from '../../../../../hooks/reporting/useTimeSeries'
-import {useArticleViewTimeSeries} from '../../hooks/useArticleViewTimeSeries'
-import ArticleViewsGraph, {renderXTickLabel} from './ArticleViewsGraph'
+import React from 'react'
 
-jest.mock('../../hooks/useArticleViewTimeSeries', () => ({
+import {useArticleViewTimeSeries} from 'hooks/reporting/help-center/useArticleViewTimeSeries'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+
+import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
+import {ReportingGranularity} from 'models/reporting/types'
+
+import ArticleViewsGraph, {
+    renderXTickLabel,
+} from 'pages/stats/help-center/components/ArticleViewsGraph/ArticleViewsGraph'
+import {assumeMock} from 'utils/testing'
+
+jest.mock('hooks/reporting/help-center/useArticleViewTimeSeries', () => ({
     useArticleViewTimeSeries: jest.fn(),
 }))
+jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
 const mockUseArticleViewTimeSeries = jest.mocked(useArticleViewTimeSeries)
-const defaultArticleViewTimeseriesResponse = {
+const defaultArticleViewTimeSeriesResponse = {
     data: undefined,
     isFetching: false,
 } as UseQueryResult<TimeSeriesDataItem[][]>
 
-const renderComponent = (
-    props: Partial<ComponentProps<typeof ArticleViewsGraph>>
-) => {
+const renderComponent = () => {
+    return render(<ArticleViewsGraph />)
+}
+
+describe('<ArticleViewsGraphComponent />', () => {
     const statsFilters = {
         period: {
             end_datetime: new Date().toString(),
@@ -28,35 +41,31 @@ const renderComponent = (
         },
     }
 
-    return render(
-        <ArticleViewsGraph
-            statsFilters={statsFilters}
-            timezone="US"
-            {...props}
-        />
-    )
-}
-
-describe('<ArticleViewsGraphComponent />', () => {
     beforeEach(() => {
+        useNewStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: statsFilters,
+            userTimezone: 'US',
+            granularity: ReportingGranularity.Day,
+            isAnalyticsNewFilters: true,
+        })
         mockUseArticleViewTimeSeries.mockClear()
         mockUseArticleViewTimeSeries.mockReturnValue(
-            defaultArticleViewTimeseriesResponse
+            defaultArticleViewTimeSeriesResponse
         )
     })
     it('should render', () => {
-        renderComponent({})
+        renderComponent()
 
         expect(screen.getByText('Article views')).toBeInTheDocument()
     })
 
     it('should show loading state', () => {
         mockUseArticleViewTimeSeries.mockReturnValue({
-            ...defaultArticleViewTimeseriesResponse,
+            ...defaultArticleViewTimeSeriesResponse,
             isFetching: true,
         })
 
-        renderComponent({})
+        renderComponent()
 
         expect(document.querySelector('.skeleton')).toBeInTheDocument()
     })

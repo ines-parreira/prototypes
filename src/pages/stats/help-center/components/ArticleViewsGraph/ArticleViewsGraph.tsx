@@ -1,14 +1,21 @@
 import {Scale} from 'chart.js'
+
 import moment from 'moment/moment'
+
 import React, {useMemo} from 'react'
+
+import {useArticleViewTimeSeries} from 'hooks/reporting/help-center/useArticleViewTimeSeries'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import {formatTimeSeriesData, SHORT_FORMAT} from 'pages/stats/common/utils'
-import {useArticleViewTimeSeries} from 'pages/stats/help-center/hooks/useArticleViewTimeSeries'
+import {
+    HelpCenterMetric,
+    HelpCenterMetricConfig,
+} from 'pages/stats/help-center/HelpCenterMetricsConfig'
 
 type ArticleViewsGraphComponentProps = {
     isLoading: boolean
@@ -44,7 +51,9 @@ export const ArticleViewsGraphComponent = ({
     )
 
     return (
-        <ChartCard title="Article views">
+        <ChartCard
+            title={HelpCenterMetricConfig[HelpCenterMetric.ArticleViews].title}
+        >
             <LineChart
                 renderXTickLabel={renderXTickLabel}
                 isLoading={isLoading}
@@ -55,18 +64,11 @@ export const ArticleViewsGraphComponent = ({
     )
 }
 
-type ArticleViewsGraphProps = {
-    statsFilters: StatsFilters
-    timezone: string
-}
-
-const ArticleViewsGraph = ({
-    statsFilters,
-    timezone,
-}: ArticleViewsGraphProps) => {
+const ArticleViewsGraph = () => {
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const articleViewTimeSeries = useArticleViewTimeSeries(
-        statsFilters,
-        timezone,
+        cleanStatsFilters,
+        userTimezone,
         ReportingGranularity.Day
     )
 

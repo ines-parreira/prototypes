@@ -551,10 +551,14 @@ export function StatsRoutes() {
                         exact
                         path={`${path}/custom-reports/new`}
                         render={() => (
-                            <App
-                                content={CustomReports}
-                                navbar={StatsNavbarContainer}
-                            />
+                            <HelpCenterApiClientProvider>
+                                <SupportedLocalesProvider>
+                                    <App
+                                        content={CustomReports}
+                                        navbar={StatsNavbarContainer}
+                                    />
+                                </SupportedLocalesProvider>
+                            </HelpCenterApiClientProvider>
                         )}
                     />
                 )}
@@ -563,10 +567,14 @@ export function StatsRoutes() {
                         exact
                         path={`${path}/custom-reports/:id`}
                         render={() => (
-                            <App
-                                content={CustomReportPage}
-                                navbar={StatsNavbarContainer}
-                            />
+                            <HelpCenterApiClientProvider>
+                                <SupportedLocalesProvider>
+                                    <App
+                                        content={CustomReportPage}
+                                        navbar={StatsNavbarContainer}
+                                    />
+                                </SupportedLocalesProvider>
+                            </HelpCenterApiClientProvider>
                         )}
                     />
                 )}

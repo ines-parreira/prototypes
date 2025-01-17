@@ -1,18 +1,27 @@
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import React, {ComponentProps} from 'react'
+
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {usePerformanceByArticleMetrics} from '../../../hooks/usePerformanceByArticleMetrics'
-import {TableCellType} from '../../HelpCenterStatsTable/HelpCenterStatsTable'
-import {PerformanceByArticle} from '../PerformanceByArticle'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import {ReportingGranularity} from 'models/reporting/types'
 
-jest.mock('../../../hooks/usePerformanceByArticleMetrics', () => ({
-    usePerformanceByArticleMetrics: jest.fn(),
-}))
+import {TableCellType} from 'pages/stats/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
+import {PerformanceByArticle} from 'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticle'
+import {usePerformanceByArticleMetrics} from 'pages/stats/help-center/hooks/usePerformanceByArticleMetrics'
+import {assumeMock} from 'utils/testing'
 
+jest.mock(
+    'pages/stats/help-center/hooks/usePerformanceByArticleMetrics',
+    () => ({
+        usePerformanceByArticleMetrics: jest.fn(),
+    })
+)
+jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 const mockUsePerformanceByArticleMetrics = jest.mocked(
     usePerformanceByArticleMetrics
 )
@@ -20,29 +29,48 @@ const mockUsePerformanceByArticleMetrics = jest.mocked(
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})
 
-const renderComponent = (
-    props: Partial<ComponentProps<typeof PerformanceByArticle>>
-) => {
+const helpCenterId = 1
+const helpCenterDomain = 'acme'
+
+const renderComponent = () => {
     render(
         <Provider store={store}>
             <PerformanceByArticle
-                statsFilters={{
-                    period: {
-                        start_datetime: '2021-05-29T00:00:00+02:00',
-                        end_datetime: '2021-06-04T23:59:59+02:00',
-                    },
-                }}
-                helpCenterId={1}
-                timezone="US"
-                helpCenterDomain="acme"
-                {...props}
+                helpCenterDomain={helpCenterDomain}
+                helpCenterId={helpCenterId}
             />
         </Provider>
     )
 }
 
 describe('<PerformanceByArticle/>', () => {
+    const statsFilters = {
+        period: {
+            start_datetime: '2021-05-29T00:00:00+02:00',
+            end_datetime: '2021-06-04T23:59:59+02:00',
+        },
+    }
+
+    const timezone = 'US'
+
     beforeEach(() => {
+        useNewStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: statsFilters,
+            userTimezone: timezone,
+            granularity: ReportingGranularity.Day,
+            isAnalyticsNewFilters: true,
+        })
+        // useSelectedHelpCenterMock.mockReturnValue({
+        //     activeHelpCenters: [],
+        //     helpCenters: [],
+        //     isLoading: false,
+        //     selectedHelpCenter: {} as any,
+        //     setStatsFilters: noop,
+        //     sortedHelpCenters: [],
+        //     statsFilters,
+        //     helpCenterId,
+        //     selectedHelpCenterDomain: helpCenterDomain,
+        // })
         mockUsePerformanceByArticleMetrics.mockClear()
         mockUsePerformanceByArticleMetrics.mockReturnValue({
             data: [[]],
@@ -50,8 +78,10 @@ describe('<PerformanceByArticle/>', () => {
             total: 0,
         })
     })
+
     it('should render', () => {
-        renderComponent({})
+        renderComponent()
+
         expect(screen.getByText('Performance by articles')).toBeInTheDocument()
     })
 
@@ -70,7 +100,7 @@ describe('<PerformanceByArticle/>', () => {
             total: 50,
         })
 
-        renderComponent({})
+        renderComponent()
 
         expect(
             screen.getByText(
@@ -90,7 +120,7 @@ describe('<PerformanceByArticle/>', () => {
             total: 0,
         })
 
-        renderComponent({})
+        renderComponent()
 
         expect(document.querySelector('.loader')).toBeInTheDocument()
     })
@@ -110,7 +140,7 @@ describe('<PerformanceByArticle/>', () => {
             total: 50,
         })
 
-        renderComponent({})
+        renderComponent()
 
         expect(screen.getByText('1')).toHaveAttribute('aria-current', 'true')
         expect(screen.getByText('2')).toHaveAttribute('aria-current', 'false')
@@ -129,7 +159,7 @@ describe('<PerformanceByArticle/>', () => {
             total: 50,
         })
 
-        renderComponent({})
+        renderComponent()
 
         expect(screen.getByText('No data available')).toBeInTheDocument()
     })

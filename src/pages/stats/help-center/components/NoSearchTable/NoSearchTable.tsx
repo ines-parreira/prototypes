@@ -1,13 +1,13 @@
 import React from 'react'
 
-import {StatsFilters} from 'models/stat/types'
-import ChartCard from 'pages/stats/ChartCard'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 
-import {useNoSearchResultsMetrics} from '../../hooks/useNoSearchResultsMetrics'
+import ChartCard from 'pages/stats/ChartCard'
 import HelpCenterStatsTable, {
     TableCellType,
-} from '../HelpCenterStatsTable/HelpCenterStatsTable'
+} from 'pages/stats/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
+import {useNoSearchResultsMetrics} from 'pages/stats/help-center/hooks/useNoSearchResultsMetrics'
+import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 
 const ITEMS_PER_PAGE = 20
 
@@ -26,17 +26,15 @@ const columns = [
     },
 ]
 
-type SearchTermsTableProps = {
-    statsFilters: StatsFilters
-    timezone: string
-}
+export const NO_SEARCH_TABLE_TITLE = 'No search results'
 
-const NoSearchTable = ({statsFilters, timezone}: SearchTermsTableProps) => {
+const NoSearchTable = () => {
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const [currentPage, setCurrentPage] = React.useState(1)
 
     const {data, total, isLoading} = useNoSearchResultsMetrics({
-        statsFilters,
-        timezone,
+        statsFilters: cleanStatsFilters,
+        timezone: userTimezone,
         currentPage: currentPage,
         itemPerPage: ITEMS_PER_PAGE,
     })
@@ -50,7 +48,7 @@ const NoSearchTable = ({statsFilters, timezone}: SearchTermsTableProps) => {
     const count = Math.ceil(total / ITEMS_PER_PAGE)
 
     return (
-        <ChartCard title="No search results" noPadding>
+        <ChartCard title={NO_SEARCH_TABLE_TITLE} noPadding>
             {!isLoading && data.length === 0 ? (
                 <NoDataAvailable
                     title="No data available"

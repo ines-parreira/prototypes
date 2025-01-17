@@ -1,31 +1,29 @@
 import React from 'react'
 
-import {StatsFilters} from 'models/stat/types'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+
 import ChartCard from 'pages/stats/ChartCard'
 import DonutChart from 'pages/stats/common/components/charts/DonutChart/DonutChart'
+import css from 'pages/stats/help-center/components/SearchResultDonut/SearchResultDonut.less'
+import {
+    SEARCH_RESULTS_DONUT_TITLE,
+    SEARCH_RESULTS_DONUT_TOOLTIP,
+} from 'pages/stats/help-center/HelpCenterMetricsConfig'
+import {useSearchResultRange} from 'pages/stats/help-center/hooks/useSearchResultRange'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 
-import {useSearchResultRange} from '../../hooks/useSearchResultRange'
-import css from './SearchResultDonut.less'
-
-type SearchResultDonutProps = {
-    statsFilters: StatsFilters
-    timezone: string
-}
-
-const SearchResultDonut = ({
-    statsFilters,
-    timezone,
-}: SearchResultDonutProps) => {
-    const {data, isLoading} = useSearchResultRange(statsFilters, timezone)
+const SearchResultDonut = () => {
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const {data, isLoading} = useSearchResultRange(
+        cleanStatsFilters,
+        userTimezone
+    )
 
     return (
         <ChartCard
-            title="Search results"
+            title={SEARCH_RESULTS_DONUT_TITLE}
             className={css.card}
-            hint={{
-                title: 'Distribution of total searches resulting in articles shown to the user vs. no search results',
-            }}
+            hint={SEARCH_RESULTS_DONUT_TOOLTIP}
         >
             {!isLoading && data.length === 0 ? (
                 <NoDataAvailable

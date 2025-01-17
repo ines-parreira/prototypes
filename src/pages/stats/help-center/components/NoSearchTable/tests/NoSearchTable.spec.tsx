@@ -1,40 +1,42 @@
-import {render, screen} from '@testing-library/react'
+import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import {useNoSearchResultsMetrics} from '../../../hooks/useNoSearchResultsMetrics'
-import NoSearchTable from '../NoSearchTable'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import {ReportingGranularity} from 'models/reporting/types'
+import NoSearchTable from 'pages/stats/help-center/components/NoSearchTable/NoSearchTable'
+import {useNoSearchResultsMetrics} from 'pages/stats/help-center/hooks/useNoSearchResultsMetrics'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
-jest.mock('../../../hooks/useNoSearchResultsMetrics', () => ({
+jest.mock('pages/stats/help-center/hooks/useNoSearchResultsMetrics', () => ({
     useNoSearchResultsMetrics: jest.fn(),
 }))
 
+jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+
 const mockUseNoSearchResultsMetrics = jest.mocked(useNoSearchResultsMetrics)
 
-const mockStore = configureMockStore([thunk])
-const store = mockStore({})
-
 const renderComponent = () => {
-    render(
-        <Provider store={store}>
-            <NoSearchTable
-                statsFilters={{
-                    period: {
-                        start_datetime: '2021-05-29T00:00:00+02:00',
-                        end_datetime: '2021-06-04T23:59:59+02:00',
-                    },
-                }}
-                timezone="US"
-            />
-        </Provider>
-    )
+    renderWithStore(<NoSearchTable />, {})
 }
 
 describe('<NoSearchTable/>', () => {
+    const statsFilters = {
+        period: {
+            start_datetime: '2021-05-29T00:00:00+02:00',
+            end_datetime: '2021-06-04T23:59:59+02:00',
+        },
+    }
+    const timezone = 'US'
     beforeEach(() => {
+        useNewStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: statsFilters,
+            userTimezone: timezone,
+            granularity: ReportingGranularity.Day,
+            isAnalyticsNewFilters: true,
+        })
         mockUseNoSearchResultsMetrics.mockReturnValue({
             data: [],
             isLoading: false,

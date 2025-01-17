@@ -1,13 +1,13 @@
 import React from 'react'
 
-import {StatsFilters} from 'models/stat/types'
-import ChartCard from 'pages/stats/ChartCard'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 
-import {usePerformanceByArticleMetrics} from '../../hooks/usePerformanceByArticleMetrics'
+import ChartCard from 'pages/stats/ChartCard'
 import HelpCenterStatsTable, {
     TableCellType,
-} from '../HelpCenterStatsTable/HelpCenterStatsTable'
+} from 'pages/stats/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
+import {usePerformanceByArticleMetrics} from 'pages/stats/help-center/hooks/usePerformanceByArticleMetrics'
+import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 
 const columns = [
     {
@@ -48,19 +48,16 @@ const columns = [
 
 const ITEMS_PER_PAGE = 20
 
-type PerformanceByArticleProps = {
-    statsFilters: StatsFilters
-    timezone: string
+type Props = {
     helpCenterDomain: string
     helpCenterId: number
 }
 
 export const PerformanceByArticle = ({
-    statsFilters,
-    timezone,
     helpCenterDomain,
     helpCenterId,
-}: PerformanceByArticleProps) => {
+}: Props) => {
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const [currentPage, setCurrentPage] = React.useState(1)
 
     const onPageChange = (page: number) => {
@@ -71,9 +68,9 @@ export const PerformanceByArticle = ({
 
     const {data, total, isLoading} = usePerformanceByArticleMetrics({
         itemPerPage: ITEMS_PER_PAGE,
-        timezone,
+        timezone: userTimezone,
         currentPage,
-        statsFilters,
+        statsFilters: cleanStatsFilters,
         helpCenterDomain,
         helpCenterId,
     })
@@ -81,7 +78,7 @@ export const PerformanceByArticle = ({
     const count = Math.ceil(total / ITEMS_PER_PAGE)
 
     return (
-        <ChartCard title="Performance by articles" noPadding>
+        <ChartCard title={'Performance by articles'} noPadding>
             {!isLoading && data.length === 0 ? (
                 <NoDataAvailable
                     title="No data available"

@@ -1,5 +1,9 @@
 import {ReportsModalConfig} from 'pages/stats/custom-reports/types'
 import {
+    HelpCenterChart,
+    HelpCenterReportConfig,
+} from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
+import {
     SatisfactionChart,
     SatisfactionReportConfig,
 } from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
@@ -49,6 +53,10 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
             {
                 type: ServiceLevelAgreementsChart,
                 config: ServiceLevelAgreementsConfig,
+            },
+            {
+                type: HelpCenterChart,
+                config: HelpCenterReportConfig,
             },
         ],
     },

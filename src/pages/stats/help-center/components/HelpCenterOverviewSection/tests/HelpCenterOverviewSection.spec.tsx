@@ -1,22 +1,28 @@
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import HelpCenterOverviewSection from '../HelpCenterOverviewSection'
+import {ArticleViewsTrendCard} from 'pages/stats/help-center/components/ArticleViewsTrendCard/ArticleViewsTrendCard'
 
-jest.mock('../../../hooks/useHelpCenterTrend', () => ({
-    useHelpCenterTrend: () => ({data: {value: 1}, isFetching: false}),
+import HelpCenterOverviewSection from 'pages/stats/help-center/components/HelpCenterOverviewSection/HelpCenterOverviewSection'
+import {SearchesTrendCard} from 'pages/stats/help-center/components/SearchesTrendCard/SearchesTrendCard'
+import {assumeMock} from 'utils/testing'
+
+jest.mock('pages/stats/help-center/hooks/useArticleViewsTrend', () => ({
+    useArticleViewsTrend: () => ({data: {value: 1}, isFetching: false}),
 }))
-
-const defaultStatsFilters = {
-    period: {
-        end_datetime: new Date().toString(),
-        start_datetime: new Date('01/08/2023').toString(),
-    },
-}
+jest.mock(
+    'pages/stats/help-center/components/ArticleViewsTrendCard/ArticleViewsTrendCard'
+)
+const ArticleViewsTrendCardMock = assumeMock(ArticleViewsTrendCard)
+jest.mock(
+    'pages/stats/help-center/components/SearchesTrendCard/SearchesTrendCard'
+)
+const SearchesTrendCardMock = assumeMock(SearchesTrendCard)
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore()
@@ -24,19 +30,22 @@ const store = mockStore()
 const renderComponent = () => {
     render(
         <Provider store={store}>
-            <HelpCenterOverviewSection
-                statsFilters={defaultStatsFilters}
-                timezone="US"
-            />
+            <HelpCenterOverviewSection />
         </Provider>
     )
 }
 
 describe('<HelpCenterOverviewSection />', () => {
+    beforeEach(() => {
+        ArticleViewsTrendCardMock.mockImplementation(() => <div />)
+        SearchesTrendCardMock.mockImplementation(() => <div />)
+    })
     it('should render', () => {
         renderComponent()
 
         expect(screen.getByText('Overview')).toBeInTheDocument()
+        expect(ArticleViewsTrendCardMock).toHaveBeenCalled()
+        expect(SearchesTrendCardMock).toHaveBeenCalled()
     })
 
     // FIXME: remove the `skip` as soon as the documentation article links are ready

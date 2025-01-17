@@ -12,6 +12,19 @@ import {
     statsFiltersToReportingFilters,
 } from 'utils/reporting'
 
+export const articleViewQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string
+) => ({
+    measures: [HelpCenterTrackingEventMeasures.ArticleView],
+    dimensions: [],
+    filters: statsFiltersToReportingFilters(
+        HelpCenterStatsFiltersMembers,
+        statsFilters
+    ),
+    timezone,
+})
+
 export const articleViewTimeSeriesQueryFactory = (
     filters: StatsFilters,
     timezone: string,

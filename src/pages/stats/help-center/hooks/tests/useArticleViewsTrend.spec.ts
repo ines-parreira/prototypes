@@ -3,14 +3,14 @@ import moment from 'moment/moment'
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
 import {HelpCenterTrackingEventMeasures} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 import {LegacyStatsFilters} from 'models/stat/types'
-import {useHelpCenterTrend} from 'pages/stats/help-center/hooks/useHelpCenterTrend'
+import {useArticleViewsTrend} from 'pages/stats/help-center/hooks/useArticleViewsTrend'
 import {formatReportingQueryDate} from 'utils/reporting'
 
 jest.mock('hooks/reporting/useMetricTrend', () => jest.fn())
 
 const mockUseMetricTrend = jest.mocked(useMetricTrend)
 
-describe('useHelpCenterTrend', () => {
+describe('useArticleViewsTrend', () => {
     beforeEach(() => {
         mockUseMetricTrend.mockClear()
 
@@ -19,6 +19,7 @@ describe('useHelpCenterTrend', () => {
         jest.useFakeTimers()
         jest.setSystemTime(mockedDate)
     })
+
     it('should call metric trend hook with correct params', () => {
         const periodStart = formatReportingQueryDate(moment())
         const periodEnd = formatReportingQueryDate(moment().subtract(7, 'd'))
@@ -30,11 +31,7 @@ describe('useHelpCenterTrend', () => {
         }
         const timezone = 'UTC'
 
-        useHelpCenterTrend({
-            statsFilters,
-            timezone,
-            metric: HelpCenterTrackingEventMeasures.SearchRequestedCount,
-        })
+        useArticleViewsTrend(statsFilters, timezone)
 
         expect(mockUseMetricTrend).toHaveBeenCalledWith(
             {
@@ -51,9 +48,7 @@ describe('useHelpCenterTrend', () => {
                         values: ['2023-11-06T00:00:00.000'],
                     },
                 ],
-                measures: [
-                    HelpCenterTrackingEventMeasures.SearchRequestedCount,
-                ],
+                measures: [HelpCenterTrackingEventMeasures.ArticleView],
                 timezone: timezone,
             },
             {
@@ -70,9 +65,7 @@ describe('useHelpCenterTrend', () => {
                         values: ['2023-11-12T23:59:59.000'],
                     },
                 ],
-                measures: [
-                    HelpCenterTrackingEventMeasures.SearchRequestedCount,
-                ],
+                measures: [HelpCenterTrackingEventMeasures.ArticleView],
                 timezone: timezone,
             }
         )

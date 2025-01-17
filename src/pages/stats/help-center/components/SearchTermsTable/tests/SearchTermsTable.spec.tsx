@@ -1,9 +1,13 @@
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import noop from 'lodash/noop'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 
 import {useMetric} from 'hooks/reporting/useMetric'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
@@ -11,8 +15,10 @@ import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
-
-import SearchTermsTable from '../SearchTermsTable'
+import {ReportingGranularity} from 'models/reporting/types'
+import {SearchTermsTable} from 'pages/stats/help-center/components/SearchTermsTable/SearchTermsTable'
+import {useSelectedHelpCenter} from 'pages/stats/help-center/hooks/useSelectedHelpCenter'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetric', () => ({
     useMetric: jest.fn(),
@@ -20,9 +26,13 @@ jest.mock('hooks/reporting/useMetric', () => ({
 jest.mock('hooks/reporting/useMetricPerDimension', () => ({
     useMetricPerDimension: jest.fn(),
 }))
-jest.mock('../../../hooks/useSearchQueryMetrics', () => ({
+jest.mock('pages/stats/help-center/hooks/useSearchQueryMetrics', () => ({
     useSearchQueryMetrics: () => ({data: []}),
 }))
+jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('pages/stats/help-center/hooks/useSelectedHelpCenter')
+const useSelectedHelpCenterMock = assumeMock(useSelectedHelpCenter)
 
 const mockUseMetricPerDimension = jest.mocked(useMetricPerDimension)
 const mockUseMetric = jest.mocked(useMetric)
@@ -30,25 +40,42 @@ const mockUseMetric = jest.mocked(useMetric)
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})
 
+const helpCenterDomain = 'acme'
+
 const renderComponent = () => {
     render(
         <Provider store={store}>
-            <SearchTermsTable
-                helpCenterDomain="acme"
-                statsFilters={{
-                    period: {
-                        start_datetime: '2021-05-29T00:00:00+02:00',
-                        end_datetime: '2021-06-04T23:59:59+02:00',
-                    },
-                }}
-                timezone="US"
-            />
+            <SearchTermsTable helpCenterDomain={helpCenterDomain} />
         </Provider>
     )
 }
 
 describe('<SearchTermsTable/>', () => {
+    const statsFilters = {
+        period: {
+            start_datetime: '2021-05-29T00:00:00+02:00',
+            end_datetime: '2021-06-04T23:59:59+02:00',
+        },
+    }
+    const timezone = 'US'
     beforeEach(() => {
+        useNewStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: statsFilters,
+            userTimezone: timezone,
+            granularity: ReportingGranularity.Day,
+            isAnalyticsNewFilters: true,
+        })
+        useSelectedHelpCenterMock.mockReturnValue({
+            activeHelpCenters: [],
+            helpCenters: [],
+            isLoading: false,
+            selectedHelpCenter: {} as any,
+            setStatsFilters: noop,
+            sortedHelpCenters: [],
+            statsFilters,
+            helpCenterId: 123,
+            selectedHelpCenterDomain: helpCenterDomain,
+        })
         mockUseMetricPerDimension.mockReturnValue({
             isFetching: false,
             isError: false,
@@ -65,18 +92,6 @@ describe('<SearchTermsTable/>', () => {
             isFetching: false,
             isError: false,
         })
-    })
-
-    it('should render', () => {
-        renderComponent()
-        expect(
-            screen.getByText('Search terms with results')
-        ).toBeInTheDocument()
-    })
-
-    it('should render no data state', () => {
-        renderComponent()
-        expect(screen.getByText('No data available')).toBeInTheDocument()
     })
 
     it('should paginate to the next page', () => {
