@@ -1,7 +1,6 @@
 import {FilterKey, StaticFilter} from 'models/stat/types'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
-import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
-import {ReportConfig} from 'pages/stats/custom-reports/types'
+import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
 import ArticleViewsGraph from 'pages/stats/help-center/components/ArticleViewsGraph/ArticleViewsGraph'
 import {ArticleViewsTrendCard} from 'pages/stats/help-center/components/ArticleViewsTrendCard/ArticleViewsTrendCard'
 import NoSearchTable, {
@@ -52,7 +51,7 @@ export const HelpCenterReportConfig: ReportConfig<HelpCenterChart> = {
                 HelpCenterMetricConfig[HelpCenterMetric.ArticleViews].hint
                     .title,
             csvProducer: null,
-            icon: CHARTS_MODAL_ICONS.card,
+            chartType: ChartType.Card,
         },
         [HelpCenterChart.SearchesTrendCard]: {
             chartComponent: SearchesTrendCard,
@@ -62,7 +61,7 @@ export const HelpCenterReportConfig: ReportConfig<HelpCenterChart> = {
                 HelpCenterMetricConfig[HelpCenterMetric.SearchRequested].hint
                     .title,
             csvProducer: null,
-            icon: CHARTS_MODAL_ICONS.card,
+            chartType: ChartType.Card,
         },
         [HelpCenterChart.ArticleViewsGraph]: {
             chartComponent: ArticleViewsGraph,
@@ -71,35 +70,35 @@ export const HelpCenterReportConfig: ReportConfig<HelpCenterChart> = {
                 HelpCenterMetricConfig[HelpCenterMetric.ArticleViews].hint
                     .title,
             csvProducer: null,
-            icon: CHARTS_MODAL_ICONS.graph,
+            chartType: ChartType.Graph,
         },
         [HelpCenterChart.PerformanceByArticleTable]: {
             chartComponent: PerformanceByArticleChart,
             label: 'Performance by articles',
             description: '',
             csvProducer: null,
-            icon: CHARTS_MODAL_ICONS.graph,
+            chartType: ChartType.Graph,
         },
         [HelpCenterChart.SearchResultsDonut]: {
             chartComponent: SearchResultDonut,
             label: SEARCH_RESULTS_DONUT_TITLE,
             description: SEARCH_RESULTS_DONUT_TOOLTIP.title,
             csvProducer: null,
-            icon: CHARTS_MODAL_ICONS.graph,
+            chartType: ChartType.Graph,
         },
         [HelpCenterChart.SearchTermsTable]: {
             chartComponent: SearchTermsTableChart,
             label: 'Search terms with results',
             description: '',
             csvProducer: null,
-            icon: CHARTS_MODAL_ICONS.table,
+            chartType: ChartType.Table,
         },
         [HelpCenterChart.NoSearchTable]: {
             chartComponent: NoSearchTable,
             label: NO_SEARCH_TABLE_TITLE,
             description: '',
             csvProducer: null,
-            icon: CHARTS_MODAL_ICONS.table,
+            chartType: ChartType.Table,
         },
     },
 }
