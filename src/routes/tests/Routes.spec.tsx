@@ -726,6 +726,10 @@ describe('<Routes/>', () => {
                     from: '/app/automation/shopify/test-shop/ai-agent/actions',
                     to: '/app/ai-agent/shopify/test-shop/knowledge/actions',
                 },
+                {
+                    from: '/app/automation/shopify/test-shop/ai-agent/preview-mode',
+                    to: '/app/ai-agent/shopify/test-shop/settings/preview',
+                },
             ])('should redirect to $to when accessing $from', ({from, to}) => {
                 mockFlags({[FeatureFlagKey.ConvAiStandaloneMenu]: true})
 

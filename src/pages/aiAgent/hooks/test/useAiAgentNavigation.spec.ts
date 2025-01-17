@@ -256,53 +256,44 @@ describe('useAiAgentNavigation', () => {
         )
     })
 
-    it('should return /guidance path when ConvAiStandaloneMenu flag is false', () => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.ConvAiStandaloneMenu]: false,
-        })
-        const {result} = renderHook(() =>
-            useAiAgentNavigation({shopName: 'test'})
-        )
-        expect(result.current.routes.guidance).toEqual(
-            '/app/automation/shopify/test/ai-agent/guidance'
-        )
-    })
-
-    it('should return /knowledge/guidance path when ConvAiStandaloneMenu flag is true', () => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
+    describe('when ConvAiStandaloneMenu flag is true', () => {
+        beforeEach(() => {
+            useFlagsMock.mockReturnValue({
+                [FeatureFlagKey.ConvAiStandaloneMenu]: true,
+                [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
+            })
         })
 
-        const {result} = renderHook(() =>
-            useAiAgentNavigation({shopName: 'test'})
-        )
-        expect(result.current.routes.guidance).toEqual(
-            '/app/ai-agent/shopify/test/knowledge/guidance'
-        )
-    })
-
-    it('should return /actions path when ConvAiStandaloneMenu flag is false', () => {
-        useShowAutomateActionsMock.mockReturnValue(true)
-
-        const {result} = renderHook(() =>
-            useAiAgentNavigation({shopName: 'test'})
-        )
-        expect(result.current.routes.actions).toEqual(
-            '/app/automation/shopify/test/ai-agent/actions'
-        )
-    })
-
-    it('should return /knowledge/actions path when ConvAiStandaloneMenu flag is true', () => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
+        it('should return /knowledge/guidance path', () => {
+            const {result} = renderHook(() =>
+                useAiAgentNavigation({shopName: 'test'})
+            )
+            expect(result.current.routes.guidance).toEqual(
+                '/app/ai-agent/shopify/test/knowledge/guidance'
+            )
         })
-        useShowAutomateActionsMock.mockReturnValue(true)
 
-        const {result} = renderHook(() =>
-            useAiAgentNavigation({shopName: 'test'})
-        )
-        expect(result.current.routes.actions).toEqual(
-            '/app/ai-agent/shopify/test/knowledge/actions'
-        )
+        it('should return /knowledge/actions path', () => {
+            useShowAutomateActionsMock.mockReturnValue(true)
+
+            const {result} = renderHook(() =>
+                useAiAgentNavigation({shopName: 'test'})
+            )
+            expect(result.current.routes.actions).toEqual(
+                '/app/ai-agent/shopify/test/knowledge/actions'
+            )
+        })
+
+        it('should return /settings/preview path when user is a Gorgias user', () => {
+            window.USER_IMPERSONATED = true
+
+            const {result} = renderHook(() =>
+                useAiAgentNavigation({shopName: 'test'})
+            )
+
+            expect(result.current.routes.previewMode).toEqual(
+                '/app/ai-agent/shopify/test/settings/preview'
+            )
+        })
     })
 })

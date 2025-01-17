@@ -39,6 +39,10 @@ export const getAiAgentNavigationRoutes = (
         ? 'knowledge/actions'
         : 'actions'
 
+    const previewPath = isStandaloneMenuEnabled
+        ? 'settings/preview'
+        : 'preview-mode'
+
     return {
         automation: `/app/automation`,
         main: basePath,
@@ -67,7 +71,7 @@ export const getAiAgentNavigationRoutes = (
         actionEvents: (configurationId: string) =>
             `${basePath}/${actionsPath}/events/${configurationId}`,
         onboardingWizard: `${basePath}/new`,
-        previewMode: `${basePath}/preview-mode`,
+        previewMode: `${basePath}/${previewPath}`,
         optimize: `${basePath}/optimize`,
         optimizeIntent: (intentId: string) =>
             `${basePath}/optimize/${intentId}`,
@@ -144,16 +148,16 @@ const useNavigationItems = (
                             route: routes.settingsChannels,
                             title: CHANNELS,
                         },
-                    ],
+                        isGorgiasUser && {
+                            route: routes.previewMode,
+                            title: PREVIEW,
+                        },
+                    ].filter((x) => !!x) as NavigationItem[],
                 },
                 // TODO: Add "Sales" tab here
                 {
                     route: routes.test,
                     title: TEST,
-                },
-                isGorgiasUser && {
-                    route: routes.previewMode,
-                    title: PREVIEW,
                 },
             ].filter((x) => !!x) as NavigationItem[]
         }

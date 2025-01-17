@@ -885,6 +885,13 @@ function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
             )
         }
 
+        if (location.pathname.includes('/preview-mode')) {
+            newLocation.pathname = newLocation.pathname.replace(
+                '/preview-mode',
+                '/settings/preview'
+            )
+        }
+
         return <Redirect to={newLocation} />
     }
 
@@ -921,6 +928,18 @@ function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
                             component={AiAgentConfigurationContainer}
                         />
                     </AiAgentErrorBoundary>
+                    {isGorgiasUser && (
+                        <AiAgentErrorBoundary
+                            section="ai-agent-preview-mode"
+                            team={OBS_ADOPT_SENTRY_TEAM}
+                        >
+                            <Route
+                                path={`${path}/settings/preview`}
+                                exact
+                                component={AiAgentPreviewModeSettingsContainer}
+                            />
+                        </AiAgentErrorBoundary>
+                    )}
                     <AiAgentErrorBoundary section="ai-agent-configuration">
                         <Route
                             path={`${path}/settings`}
