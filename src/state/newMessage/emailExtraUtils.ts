@@ -408,7 +408,7 @@ export const updateEmailExtraOnUserInput = (
             emailExtraContent.getBlocksAsArray().slice(1)
         )
         if (
-            !prevEmailExtraContent.getFirstBlock().getLength() &&
+            !prevEmailExtraContent.getFirstBlock()?.getLength() &&
             emailExtraContent.getFirstBlock() !==
                 prevEmailExtraContent.getFirstBlock() &&
             prevEmailExtraTail.equals(emailExtraTail)
