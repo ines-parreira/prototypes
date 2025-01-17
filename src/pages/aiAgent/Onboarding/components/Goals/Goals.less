@@ -1,0 +1,50 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    // TODO: Move it to DS, when we have a final decision about designs
+    --accessory-magenta-1: #faeaff;
+    --accessory-magenta-3: #6f0c86;
+    --accessory-magenta-25: #c34ced;
+
+    .goalsContainer {
+        display: grid;
+        row-gap: @layout-spacing-s;
+    }
+
+    .goalContainer {
+        display: flex;
+    }
+
+    .goalName {
+        margin-bottom: 0;
+    }
+
+    .icon {
+        border-radius: 360px;
+        padding: @layout-spacing-xs;
+        margin-right: @layout-spacing-s;
+        background: var(--neutral-grey-2);
+    }
+
+    .selected {
+        color: var(--white);
+        background: linear-gradient(296deg, #fff 12.18%, #f5d4ff 81.98%);
+
+        .goalName,
+        .goalDescription {
+            color: var(--accessory-magenta-3);
+        }
+
+        .icon {
+            background-color: var(--accessory-magenta-3);
+            filter: none;
+        }
+
+        // TODO: Update DS once is finalized
+        .badge {
+            color: var(--accessory-magenta-3);
+            background-color: #faeaff;
+        }
+    }
+}

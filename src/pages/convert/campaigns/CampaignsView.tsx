@@ -14,9 +14,9 @@ import {
     CampaignListOptions as CampaignListOptionsParams,
 } from 'models/convert/campaign/types'
 import {IntegrationType} from 'models/integration/constants'
+
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
-
 import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
