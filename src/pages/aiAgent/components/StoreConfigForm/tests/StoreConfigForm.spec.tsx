@@ -944,6 +944,13 @@ describe('<StoreConfigForm />', () => {
             isPendingCreateOrUpdate: false,
         })
 
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            onboardingNotificationState: getOnboardingNotificationStateFixture({
+                onboardingState: AiAgentOnboardingState.FinishedSetup,
+            }),
+        })
+
         renderComponent()
 
         expect(
@@ -959,6 +966,30 @@ describe('<StoreConfigForm />', () => {
             onboardingState: AiAgentOnboardingState.Activated,
             firstActivationDatetime: expect.any(String),
         })
+    })
+
+    it('should not trigger cancelation call on activate AI agent notification and update onboarding state when onboardingNotificationState is undefined', () => {
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...storeConfiguration,
+                emailChannelDeactivatedDatetime: null,
+            },
+            isLoading: false,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: jest
+                .fn()
+                .mockRejectedValue(new Error('Test error')),
+            isPendingCreateOrUpdate: false,
+        })
+
+        renderComponent()
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+        ).not.toHaveBeenCalled()
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSave
+        ).not.toHaveBeenCalled()
     })
 
     it('should not trigger cancelation call on activate AI agent notification when AI agent is not active', () => {

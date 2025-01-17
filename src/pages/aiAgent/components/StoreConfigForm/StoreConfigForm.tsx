@@ -574,7 +574,12 @@ export const StoreConfigForm = ({
     } = useAiAgentOnboardingNotification({shopName})
 
     useEffect(() => {
-        if (isLoading || !isAiAgentOnboardingNotificationEnabled) return
+        if (
+            isLoading ||
+            !isAiAgentOnboardingNotificationEnabled ||
+            !onboardingNotificationState
+        )
+            return
 
         const isFullyOnboarded =
             onboardingNotificationState?.onboardingState ===
@@ -622,6 +627,7 @@ export const StoreConfigForm = ({
         storeConfiguration?.chatChannelDeactivatedDatetime,
         storeConfiguration?.emailChannelDeactivatedDatetime,
         storeConfiguration?.previewModeActivatedDatetime,
+        onboardingNotificationState,
     ])
 
     return (
