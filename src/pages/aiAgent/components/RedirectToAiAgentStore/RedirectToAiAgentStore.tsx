@@ -19,7 +19,7 @@ export const RedirectToAiAgentStore = () => {
     })
     const history = useHistory()
     if (firstStore) {
-        history.replace(aiAgentNavigation.routes.configuration())
+        history.replace(aiAgentNavigation.routes.main)
     }
 
     return (

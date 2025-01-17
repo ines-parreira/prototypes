@@ -27,7 +27,7 @@ describe('RedirectToAiAgentStore', () => {
         mockUseAppSelector.mockReturnValue([{name: 'Test Store'}])
         mockUseAiAgentNavigation.mockReturnValue({
             routes: {
-                configuration: jest.fn().mockReturnValue('/configuration'),
+                main: '/',
             },
         })
     })
@@ -35,7 +35,7 @@ describe('RedirectToAiAgentStore', () => {
     test('redirects to the configuration route if a store is found', () => {
         render(<RedirectToAiAgentStore />)
 
-        expect(mockHistoryReplace).toHaveBeenCalledWith('/configuration')
+        expect(mockHistoryReplace).toHaveBeenCalledWith('/')
     })
 
     test('renders the loading spinner if no store is found', () => {
