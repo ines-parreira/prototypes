@@ -106,6 +106,8 @@ const AiAgentPreviewModeSettingsView: React.FC<
         handleOnSave,
         isAiAgentOnboardingNotificationEnabled,
         handleOnSendOrCancelNotification,
+        handleOnEnablementPostReceivedNotification,
+        handleOnPerformActionPostReceivedNotification,
     } = useAiAgentOnboardingNotification({shopName})
 
     const handleActivatedAiAgent = async () => {
@@ -133,6 +135,11 @@ const AiAgentPreviewModeSettingsView: React.FC<
         }
 
         await handleOnSave(payload)
+
+        handleOnEnablementPostReceivedNotification()
+        handleOnPerformActionPostReceivedNotification(
+            AiAgentNotificationType.ActivateAiAgent
+        )
     }
 
     const onSubmit = async () => {

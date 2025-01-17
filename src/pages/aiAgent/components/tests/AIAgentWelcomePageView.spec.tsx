@@ -48,6 +48,8 @@ jest.mock('../../hooks/useAiAgentOnboardingNotification', () => ({
         onboardingNotificationState: undefined,
         handleOnSave: jest.fn(),
         handleOnSendOrCancelNotification: jest.fn(),
+        handleOnEnablementPostReceivedNotification: jest.fn(),
+        handleOnPerformActionPostReceivedNotification: jest.fn(),
         isAiAgentOnboardingNotificationEnabled: true,
     })),
 }))

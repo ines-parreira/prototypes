@@ -7,6 +7,8 @@ import {
     AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
 } from 'automate/notifications/constants'
 import {AiAgentNotificationType} from 'automate/notifications/types'
+import {getNotificationReceivedDatetime} from 'automate/notifications/utils'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -25,6 +27,9 @@ import {hasRole} from 'utils'
 
 import {useOnboardingNotificationState} from './useOnboardingNotificationState'
 import {useOnboardingNotificationStateMutation} from './useOnboardingNotificationStateMutation'
+
+export const NUMBER_OF_MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24
+const NUMBER_OF_DAYS_TO_TRACK = 14
 
 type Params = {
     shopName: string | undefined
@@ -137,13 +142,107 @@ export const useAiAgentOnboardingNotification = ({shopName}: Params) => {
                       notification_data: notificationData,
                   }
         )
+
+        if (!isCancel) {
+            logEvent(SegmentEvent.AiAgentOnboardingNotificationTriggered, {
+                type: aiAgentNotificationType,
+            })
+        }
     }
+
+    const handleOnEnablementPostReceivedNotification = useCallback(() => {
+        if (
+            !isAiAgentOnboardingNotificationEnabled ||
+            !shopName ||
+            !onboardingNotificationState
+        ) {
+            return
+        }
+
+        const receivedNotificationDatetimes = [
+            onboardingNotificationState?.meetAiAgentNotificationReceivedDatetime,
+            onboardingNotificationState?.startAiAgentSetupNotificationReceivedDatetime,
+            onboardingNotificationState?.finishAiAgentSetupNotificationReceivedDatetime,
+            onboardingNotificationState?.activateAiAgentNotificationReceivedDatetime,
+        ].filter((datetime: string | null): datetime is string =>
+            Boolean(datetime)
+        )
+
+        const latestReceivedNotificationDatetime =
+            receivedNotificationDatetimes.reduce((latest, current) => {
+                const latestDate = new Date(latest)
+                const currentDate = new Date(current)
+                return currentDate > latestDate ? current : latest
+            }, receivedNotificationDatetimes[0])
+
+        if (!latestReceivedNotificationDatetime) return
+
+        const receivedDatetime = new Date(latestReceivedNotificationDatetime)
+        const currentDatetime = new Date()
+
+        const daysDifference =
+            (currentDatetime.getTime() - receivedDatetime.getTime()) /
+            NUMBER_OF_MILLISECONDS_IN_A_DAY
+
+        if (daysDifference <= NUMBER_OF_DAYS_TO_TRACK) {
+            logEvent(
+                SegmentEvent.AiAgentEnablementPostReceivedOnboardingNotification
+            )
+        }
+    }, [
+        isAiAgentOnboardingNotificationEnabled,
+        onboardingNotificationState,
+        shopName,
+    ])
+
+    const handleOnPerformActionPostReceivedNotification = useCallback(
+        (type: AiAgentNotificationType) => {
+            if (
+                !isAiAgentOnboardingNotificationEnabled ||
+                !shopName ||
+                !onboardingNotificationState
+            ) {
+                return
+            }
+
+            const notificationReceivedDatetime =
+                getNotificationReceivedDatetime(
+                    type,
+                    onboardingNotificationState
+                )
+
+            if (!notificationReceivedDatetime) return
+
+            const receivedDatetime = new Date(notificationReceivedDatetime)
+            const currentDatetime = new Date()
+
+            const daysDifference =
+                (currentDatetime.getTime() - receivedDatetime.getTime()) /
+                NUMBER_OF_MILLISECONDS_IN_A_DAY
+
+            if (daysDifference <= NUMBER_OF_DAYS_TO_TRACK) {
+                logEvent(
+                    SegmentEvent.AiAgentActionPerformedPostReceivedOnboardingNotification,
+                    {
+                        type,
+                    }
+                )
+            }
+        },
+        [
+            isAiAgentOnboardingNotificationEnabled,
+            onboardingNotificationState,
+            shopName,
+        ]
+    )
 
     return {
         isAdmin,
         onboardingNotificationState,
         handleOnSave,
         handleOnSendOrCancelNotification,
+        handleOnEnablementPostReceivedNotification,
+        handleOnPerformActionPostReceivedNotification,
         isLoading: isLoadingCreateOrUpdate || isLoadingGet,
         isAiAgentOnboardingNotificationEnabled,
     }

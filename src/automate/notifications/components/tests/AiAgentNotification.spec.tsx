@@ -6,36 +6,62 @@ import {
     AiAgentNotificationPayload,
     AiAgentNotificationType,
 } from 'automate/notifications/types'
+import {getNotificationReceivedDatetimePayload} from 'automate/notifications/utils'
 import type {Notification} from 'common/notifications'
 
+import {logEvent, SegmentEvent} from 'common/segment'
+import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import {getLDClient} from 'utils/launchDarkly'
+
+import {assumeMock} from 'utils/testing'
 
 import AiAgentNotification from '../AiAgentNotification'
 
 const mockAiAgentTicketViewId = 123
+
+jest.mock(
+    'common/segment',
+    () =>
+        ({
+            ...jest.requireActual('common/segment'),
+            logEvent: jest.fn(),
+        }) as typeof import('common/segment')
+)
 
 jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
     useAccountStoreConfiguration: jest.fn(() => ({
         aiAgentTicketViewId: mockAiAgentTicketViewId,
     })),
 }))
-jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
-    useAiAgentOnboardingNotification: jest.fn(() => ({
-        isAdmin: true,
-        isLoading: false,
-        onboardingNotificationState: undefined,
-        handleOnSave: jest.fn(),
-        handleOnSendOrCancelNotification: jest.fn(),
-        isAiAgentOnboardingNotificationEnabled: true,
-    })),
-}))
+
+jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification')
+
+const mockUseAiAgentOnboardingNotification = assumeMock(
+    useAiAgentOnboardingNotification
+)
+
+const defaultUseAiAgentOnboardingNotification = {
+    isAdmin: true,
+    onboardingNotificationState: undefined,
+    handleOnSave: jest.fn(),
+    handleOnSendOrCancelNotification: jest.fn(),
+    handleOnEnablementPostReceivedNotification: jest.fn(),
+    handleOnPerformActionPostReceivedNotification: jest.fn(),
+    isLoading: false,
+    isAiAgentOnboardingNotificationEnabled: true,
+}
 
 describe('AiAgentNotification', () => {
+    const mockDatetime = '2024-11-04T13:07:00'
     beforeEach(() => {
         ldClientMock.allFlags.mockReturnValue({})
         let client = getLDClient()
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         client = ldClientMock
+        mockUseAiAgentOnboardingNotification.mockReturnValue(
+            defaultUseAiAgentOnboardingNotification
+        )
+        jest.useFakeTimers().setSystemTime(new Date(mockDatetime))
     })
 
     const basePayload = {
@@ -143,4 +169,75 @@ describe('AiAgentNotification', () => {
 
         expect(container).toBeEmptyDOMElement()
     })
+
+    it.each(notifications)(
+        'should save and log event when $type notification is received',
+        ({type}) => {
+            const notification: Notification<AiAgentNotificationPayload> = {
+                id: '1',
+                inserted_datetime: '2024-11-04T13:07:00',
+                read_datetime: null,
+                seen_datetime: null,
+                type: 'automate-setup-and-optimization',
+                payload: {
+                    ...basePayload,
+                    ai_agent_notification_type: type,
+                    ticket_id:
+                        type === AiAgentNotificationType.FirstAiAgentTicket
+                            ? '12345'
+                            : undefined,
+                },
+            }
+
+            render(<AiAgentNotification notification={notification} />)
+
+            expect(
+                defaultUseAiAgentOnboardingNotification.handleOnSave
+            ).toHaveBeenCalledWith(getNotificationReceivedDatetimePayload(type))
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.AiAgentOnboardingNotificationReceived,
+                {
+                    type,
+                }
+            )
+        }
+    )
+
+    it.each(notifications)(
+        'should log event when $type notification is clicked',
+        ({type, redirectTo}) => {
+            const notification: Notification<AiAgentNotificationPayload> = {
+                id: '1',
+                inserted_datetime: '2024-11-04T13:07:00',
+                read_datetime: null,
+                seen_datetime: null,
+                type: 'automate-setup-and-optimization',
+                payload: {
+                    ...basePayload,
+                    ai_agent_notification_type: type,
+                    ticket_id:
+                        type === AiAgentNotificationType.FirstAiAgentTicket
+                            ? '12345'
+                            : undefined,
+                },
+            }
+
+            const {container} = render(
+                <AiAgentNotification notification={notification} />
+            )
+
+            const linkElement = container.querySelector(`a[to="${redirectTo}"]`)
+            expect(linkElement).toBeInTheDocument()
+
+            fireEvent.click(linkElement as HTMLElement)
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.AiAgentOnboardingNotificationClicked,
+                {
+                    type,
+                }
+            )
+        }
+    )
 })

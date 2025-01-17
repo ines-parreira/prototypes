@@ -73,6 +73,8 @@ const defaultUseAiAgentOnboardingNotification = {
     onboardingNotificationState: undefined,
     handleOnSave: jest.fn(),
     handleOnSendOrCancelNotification: jest.fn(),
+    handleOnEnablementPostReceivedNotification: jest.fn(),
+    handleOnPerformActionPostReceivedNotification: jest.fn(),
     isLoading: false,
     isAiAgentOnboardingNotificationEnabled: true,
 }
@@ -248,7 +250,7 @@ describe('AiAgentPreviewModeSettingsView', () => {
         ).toBeInTheDocument()
     })
 
-    it('should trigger cancelation call on activate AI agent notification and update onboarding state when Preview mode is enabled', async () => {
+    it('should trigger cancelation call on activate AI agent notification, log notification segment event, and update onboarding state when Preview mode is enabled', async () => {
         renderComponent()
         fireEvent.click(screen.getByText('Enable Preview'))
         fireEvent.change(screen.getByLabelText('Set duration'), {
@@ -271,6 +273,14 @@ describe('AiAgentPreviewModeSettingsView', () => {
                 onboardingState: AiAgentOnboardingState.Activated,
                 firstActivationDatetime: expect.any(String),
             })
+
+            expect(
+                defaultUseAiAgentOnboardingNotification.handleOnEnablementPostReceivedNotification
+            ).toHaveBeenCalled()
+
+            expect(
+                defaultUseAiAgentOnboardingNotification.handleOnPerformActionPostReceivedNotification
+            ).toHaveBeenCalledWith(AiAgentNotificationType.ActivateAiAgent)
         })
     })
 

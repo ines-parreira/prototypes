@@ -219,6 +219,8 @@ const setupMocks = ({
         onboardingNotificationState: undefined,
         handleOnSave: jest.fn(),
         handleOnSendOrCancelNotification: jest.fn(),
+        handleOnEnablementPostReceivedNotification: jest.fn(),
+        handleOnPerformActionPostReceivedNotification: jest.fn(),
         isAiAgentOnboardingNotificationEnabled: true,
     })
 

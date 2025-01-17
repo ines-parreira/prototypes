@@ -286,6 +286,8 @@ describe('<StoreConfigForm />', () => {
         onboardingNotificationState: undefined,
         handleOnSave: jest.fn(),
         handleOnSendOrCancelNotification: jest.fn(),
+        handleOnEnablementPostReceivedNotification: jest.fn(),
+        handleOnPerformActionPostReceivedNotification: jest.fn(),
         isLoading: false,
         isAiAgentOnboardingNotificationEnabled: true,
     }
@@ -1071,6 +1073,39 @@ describe('<StoreConfigForm />', () => {
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnSave
         ).not.toHaveBeenCalled()
+    })
+
+    it('should log notification segment event when AI agent is activated after receiving notification', () => {
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...storeConfiguration,
+                emailChannelDeactivatedDatetime: null,
+            },
+            isLoading: false,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: jest
+                .fn()
+                .mockRejectedValue(new Error('Test error')),
+            isPendingCreateOrUpdate: false,
+        })
+
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            onboardingNotificationState: getOnboardingNotificationStateFixture({
+                activateAiAgentNotificationReceivedDatetime:
+                    '2024-07-30T12:33:02.750Z',
+            }),
+        })
+
+        renderComponent()
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnEnablementPostReceivedNotification
+        ).toHaveBeenCalled()
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnPerformActionPostReceivedNotification
+        ).toHaveBeenCalledWith(AiAgentNotificationType.ActivateAiAgent)
     })
 
     describe('AI Agent ticket view modal', () => {

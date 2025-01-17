@@ -75,6 +75,8 @@ export const ConnectedChannelsEmailView = () => {
         handleOnSave,
         isAiAgentOnboardingNotificationEnabled,
         handleOnSendOrCancelNotification,
+        handleOnEnablementPostReceivedNotification,
+        handleOnPerformActionPostReceivedNotification,
     } = useAiAgentOnboardingNotification({shopName})
 
     if (isLoading || isLoadingOnboardingNotificationState) {
@@ -145,6 +147,11 @@ export const ConnectedChannelsEmailView = () => {
         }
 
         await handleOnSave(payload)
+
+        handleOnEnablementPostReceivedNotification()
+        handleOnPerformActionPostReceivedNotification(
+            AiAgentNotificationType.ActivateAiAgent
+        )
     }
 
     const onToggle = async (value: boolean) => {

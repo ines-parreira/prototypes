@@ -19,6 +19,7 @@ import {
     AiAgentOnboardingWizardStep,
     AiAgentOnboardingWizardType,
 } from 'models/aiAgent/types'
+import {getOnboardingNotificationStateFixture} from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {notify} from 'state/notifications/actions'
@@ -91,6 +92,8 @@ const mockedUseAiAgentOnboardingNotification = {
     onboardingNotificationState: undefined,
     handleOnSave: jest.fn(),
     handleOnSendOrCancelNotification: jest.fn(),
+    handleOnEnablementPostReceivedNotification: jest.fn(),
+    handleOnPerformActionPostReceivedNotification: jest.fn(),
     isLoading: false,
     isAiAgentOnboardingNotificationEnabled: false,
 }
@@ -554,6 +557,27 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
                     AiAgentNotificationType.FinishAiAgentSetup,
                 isCancel: true,
             })
+        })
+    })
+
+    it('should log notification segment event when Finish is clicked after receiving finish setup notification', async () => {
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...mockedUseAiAgentOnboardingNotification,
+            isAiAgentOnboardingNotificationEnabled: true,
+            onboardingNotificationState: getOnboardingNotificationStateFixture({
+                finishAiAgentSetupNotificationReceivedDatetime:
+                    '2024-11-04T13:07:00',
+            }),
+        })
+
+        renderComponent({})
+
+        userEvent.click(screen.getByText('Finish'))
+
+        await waitFor(() => {
+            expect(
+                mockedUseAiAgentOnboardingNotification.handleOnPerformActionPostReceivedNotification
+            ).toHaveBeenCalledWith(AiAgentNotificationType.FinishAiAgentSetup)
         })
     })
 })

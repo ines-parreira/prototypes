@@ -568,6 +568,8 @@ export const StoreConfigForm = ({
         onboardingNotificationState,
         handleOnSave: handleOnSaveOnboardingNotificationState,
         handleOnSendOrCancelNotification,
+        handleOnEnablementPostReceivedNotification,
+        handleOnPerformActionPostReceivedNotification,
         isAiAgentOnboardingNotificationEnabled,
     } = useAiAgentOnboardingNotification({shopName})
 
@@ -602,10 +604,17 @@ export const StoreConfigForm = ({
             }
 
             void handleOnSaveOnboardingNotificationState(payload)
+
+            handleOnEnablementPostReceivedNotification()
+            handleOnPerformActionPostReceivedNotification(
+                AiAgentNotificationType.ActivateAiAgent
+            )
         }
     }, [
         handleOnSaveOnboardingNotificationState,
         handleOnSendOrCancelNotification,
+        handleOnEnablementPostReceivedNotification,
+        handleOnPerformActionPostReceivedNotification,
         isAiAgentOnboardingNotificationEnabled,
         isLoading,
         onboardingNotificationState?.firstActivationDatetime,

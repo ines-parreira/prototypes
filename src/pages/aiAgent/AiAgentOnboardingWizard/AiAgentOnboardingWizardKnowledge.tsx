@@ -43,8 +43,10 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
     const {
         handleOnSave,
         handleOnSendOrCancelNotification,
+        handleOnPerformActionPostReceivedNotification,
         isLoading: isLoadingOnboardingNotificationState,
         isAiAgentOnboardingNotificationEnabled,
+        onboardingNotificationState,
     } = useAiAgentOnboardingNotification({shopName})
 
     const [publicUrls, setPublicUrls] = useState<string[]>([])
@@ -153,6 +155,18 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
     }
 
     const handleOnFinishedSetup = useCallback(async () => {
+        const isFullyOnboarded =
+            onboardingNotificationState?.onboardingState ===
+            AiAgentOnboardingState.FullyOnboarded
+        const isActivated =
+            onboardingNotificationState?.onboardingState ===
+            AiAgentOnboardingState.Activated
+        const isFinishedSetup =
+            onboardingNotificationState?.onboardingState ===
+            AiAgentOnboardingState.FinishedSetup
+
+        if (isFullyOnboarded || isActivated || isFinishedSetup) return
+
         await handleOnSave({
             onboardingState: AiAgentOnboardingState.FinishedSetup,
         })
@@ -161,7 +175,16 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
             aiAgentNotificationType: AiAgentNotificationType.FinishAiAgentSetup,
             isCancel: true,
         })
-    }, [handleOnSave, handleOnSendOrCancelNotification])
+
+        handleOnPerformActionPostReceivedNotification(
+            AiAgentNotificationType.FinishAiAgentSetup
+        )
+    }, [
+        handleOnPerformActionPostReceivedNotification,
+        handleOnSave,
+        handleOnSendOrCancelNotification,
+        onboardingNotificationState?.onboardingState,
+    ])
 
     const handleWizardCompletion = () => {
         if (isAiAgentOnboardingNotificationEnabled) {

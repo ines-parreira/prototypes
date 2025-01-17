@@ -1,6 +1,7 @@
 import {useKnockClient} from '@knocklabs/react'
 import {useCallback, useMemo, useState} from 'react'
 
+import {AI_AGENT_SET_AND_OPTIMIZED_TYPE} from 'automate/notifications/constants'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {UserSettingType} from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -222,6 +223,13 @@ export default function useSettings() {
         ])
 
         logEvent(SegmentEvent.NotificationSettingsUpdated, settings)
+
+        if (
+            settings.events[AI_AGENT_SET_AND_OPTIMIZED_TYPE]?.channels
+                .in_app_feed === false
+        ) {
+            logEvent(SegmentEvent.AiAgentOnboardingNotificationDisabled)
+        }
     }, [
         allSettings,
         dispatch,

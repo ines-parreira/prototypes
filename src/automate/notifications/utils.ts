@@ -68,7 +68,7 @@ export const getNotificationParams = (
     }
 }
 
-export const getNotificationReceivedDatetime = (
+export const getNotificationReceivedDatetimePayload = (
     aiAgentNotificationType: AiAgentNotificationType
 ): Partial<OnboardingNotificationState> => {
     const receivedDatetime = new Date().toISOString()
@@ -121,5 +121,25 @@ export const isNotificationAlreadyReceived = (
             return !!onboardingNotificationState.firstAiAgentTicketNotificationReceivedDatetime
         default:
             return false
+    }
+}
+
+export const getNotificationReceivedDatetime = (
+    aiAgentNotificationType: AiAgentNotificationType,
+    onboardingNotificationState: OnboardingNotificationState
+) => {
+    switch (aiAgentNotificationType) {
+        case AiAgentNotificationType.StartAiAgentSetup:
+            return onboardingNotificationState.startAiAgentSetupNotificationReceivedDatetime
+        case AiAgentNotificationType.FinishAiAgentSetup:
+            return onboardingNotificationState.finishAiAgentSetupNotificationReceivedDatetime
+        case AiAgentNotificationType.ActivateAiAgent:
+            return onboardingNotificationState.activateAiAgentNotificationReceivedDatetime
+        case AiAgentNotificationType.MeetAiAgent:
+            return onboardingNotificationState.meetAiAgentNotificationReceivedDatetime
+        case AiAgentNotificationType.FirstAiAgentTicket:
+            return onboardingNotificationState.firstAiAgentTicketNotificationReceivedDatetime
+        default:
+            return null
     }
 }

@@ -63,6 +63,7 @@ export const AIAgentWelcomePageView = (props: Props) => {
         onboardingNotificationState,
         handleOnSave,
         handleOnSendOrCancelNotification,
+        handleOnPerformActionPostReceivedNotification,
         isAiAgentOnboardingNotificationEnabled,
     } = useAiAgentOnboardingNotification({shopName: props.shopName})
 
@@ -97,12 +98,22 @@ export const AIAgentWelcomePageView = (props: Props) => {
 
         if (isOnUpdateOnboardingWizard) return
 
+        handleOnSendOrCancelNotification({
+            aiAgentNotificationType: AiAgentNotificationType.StartAiAgentSetup,
+            isCancel: true,
+        })
+
         await handleOnSave({
             onboardingState: AiAgentOnboardingState.StartedSetup,
         })
+
+        handleOnPerformActionPostReceivedNotification(
+            AiAgentNotificationType.StartAiAgentSetup
+        )
     }, [
         handleOnSave,
         handleOnSendOrCancelNotification,
+        handleOnPerformActionPostReceivedNotification,
         isOnUpdateOnboardingWizard,
         onboardingNotificationState?.finishAiAgentSetupNotificationReceivedDatetime,
     ])
@@ -110,12 +121,6 @@ export const AIAgentWelcomePageView = (props: Props) => {
     const onOnboardingWizardClick = useCallback(() => {
         if (isAdmin) {
             void handleOnFinishSetupNotification()
-
-            handleOnSendOrCancelNotification({
-                aiAgentNotificationType:
-                    AiAgentNotificationType.StartAiAgentSetup,
-                isCancel: true,
-            })
         }
 
         logEvent(SegmentEvent.AiAgentWelcomePageCtaClicked, {
@@ -132,7 +137,6 @@ export const AIAgentWelcomePageView = (props: Props) => {
     }, [
         aiAgentNavigation.routes.onboardingWizard,
         handleOnFinishSetupNotification,
-        handleOnSendOrCancelNotification,
         history,
         isAdmin,
         isOnUpdateOnboardingWizard,
@@ -194,6 +198,16 @@ export const AIAgentWelcomePageView = (props: Props) => {
             isCancel: true,
         })
 
+        const isFirstVisit =
+            !onboardingNotificationState?.welcomePageVisitedDatetimes &&
+            !onboardingNotificationState?.welcomePageVisitedDatetimes?.length
+
+        if (isFirstVisit) {
+            handleOnPerformActionPostReceivedNotification(
+                AiAgentNotificationType.MeetAiAgent
+            )
+        }
+
         let payload: Partial<OnboardingNotificationState> = {}
         if (isOnUpdateOnboardingWizard) {
             payload = {
@@ -225,6 +239,7 @@ export const AIAgentWelcomePageView = (props: Props) => {
     }, [
         handleOnSave,
         handleOnSendOrCancelNotification,
+        handleOnPerformActionPostReceivedNotification,
         isOnUpdateOnboardingWizard,
         onboardingNotificationState,
     ])

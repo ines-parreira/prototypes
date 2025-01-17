@@ -3,6 +3,7 @@ import React, {useEffect} from 'react'
 import {Content, Subtitle} from 'common/notifications'
 import type {ContentProps, Notification} from 'common/notifications'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {useAccountStoreConfiguration} from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
 
 import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
@@ -11,7 +12,7 @@ import {AI_AGENT_ICON} from 'pages/common/components/SourceIcon'
 import {AiAgentNotificationPayload} from '../types'
 import {
     getNotificationParams,
-    getNotificationReceivedDatetime,
+    getNotificationReceivedDatetimePayload,
     isNotificationAlreadyReceived,
 } from '../utils'
 
@@ -45,11 +46,15 @@ export default function AiAgentNotification({notification, ...props}: Props) {
         )
 
         if (!isAlreadyReceived) {
-            const notificationReceivedDatetime =
-                getNotificationReceivedDatetime(
+            const notificationReceivedDatetimePayload =
+                getNotificationReceivedDatetimePayload(
                     payload.ai_agent_notification_type
                 )
-            void handleOnSave(notificationReceivedDatetime)
+            void handleOnSave(notificationReceivedDatetimePayload)
+
+            logEvent(SegmentEvent.AiAgentOnboardingNotificationReceived, {
+                type: payload.ai_agent_notification_type,
+            })
         }
     }, [handleOnSave, isLoading, onboardingNotificationState, payload])
 
@@ -62,12 +67,19 @@ export default function AiAgentNotification({notification, ...props}: Props) {
         return null
     }
 
+    const handleOnClick = () => {
+        logEvent(SegmentEvent.AiAgentOnboardingNotificationClicked, {
+            type: payload.ai_agent_notification_type,
+        })
+    }
+
     return (
         <Content
             {...props}
             icon={{type: AI_AGENT_ICON}}
             title={notificationParams.title}
             url={notificationParams.redirectTo}
+            onClick={handleOnClick}
         >
             <Subtitle>{notificationParams.subtitle}</Subtitle>
         </Content>

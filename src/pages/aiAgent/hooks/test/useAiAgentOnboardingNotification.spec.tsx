@@ -11,6 +11,7 @@ import {
     AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
 } from 'automate/notifications/constants'
 import {AiAgentNotificationType} from 'automate/notifications/types'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
 import {user} from 'fixtures/users'
@@ -24,9 +25,21 @@ import {RootState} from 'state/types'
 import {assumeMock} from 'utils/testing'
 
 import {getOnboardingNotificationStateFixture} from '../../fixtures/onboardingNotificationState.fixture'
-import {useAiAgentOnboardingNotification} from '../useAiAgentOnboardingNotification'
+import {
+    NUMBER_OF_MILLISECONDS_IN_A_DAY,
+    useAiAgentOnboardingNotification,
+} from '../useAiAgentOnboardingNotification'
 import {useOnboardingNotificationState} from '../useOnboardingNotificationState'
 import {useOnboardingNotificationStateMutation} from '../useOnboardingNotificationStateMutation'
+
+jest.mock(
+    'common/segment',
+    () =>
+        ({
+            ...jest.requireActual('common/segment'),
+            logEvent: jest.fn(),
+        }) as typeof import('common/segment')
+)
 
 jest.mock('services/notificationTracker/notificationTracker')
 jest.mock('../useOnboardingNotificationState')
@@ -260,6 +273,58 @@ describe('useAiAgentOnboardingNotification', () => {
         })
     })
 
+    it('should log notification segment event when handleOnSendOrCancelNotification is called', () => {
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        const notificationType = AiAgentNotificationType.FirstAiAgentTicket
+
+        act(() => {
+            result.current.handleOnSendOrCancelNotification({
+                aiAgentNotificationType: notificationType,
+            })
+        })
+
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentOnboardingNotificationTriggered,
+            {
+                type: notificationType,
+            }
+        )
+    })
+
+    it('should not log notification segment event if handleOnSendOrCancelNotification is called to cancel the call', () => {
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        const notificationType = AiAgentNotificationType.FirstAiAgentTicket
+
+        act(() => {
+            result.current.handleOnSendOrCancelNotification({
+                aiAgentNotificationType: notificationType,
+                isCancel: true,
+            })
+        })
+
+        expect(logEvent).not.toHaveBeenCalled()
+    })
+
     it('should not call createOnboardingNotificationState when shopName is not provided', async () => {
         const {result} = renderHook(
             () => useAiAgentOnboardingNotification({shopName: undefined}),
@@ -309,5 +374,232 @@ describe('useAiAgentOnboardingNotification', () => {
         })
 
         expect(mockUpsertOnboardingNotificationState).not.toHaveBeenCalled()
+    })
+
+    it('should log enablement post received notification event when handleOnEnablementPostReceivedNotification is called', () => {
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: {
+                ...mockedOnboardingNotificationState,
+                activateAiAgentNotificationReceivedDatetime: new Date(
+                    Date.now() - 7 * NUMBER_OF_MILLISECONDS_IN_A_DAY
+                ).toISOString(),
+            },
+            isLoading: false,
+        })
+
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        act(() => {
+            result.current.handleOnEnablementPostReceivedNotification()
+        })
+
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentEnablementPostReceivedOnboardingNotification
+        )
+    })
+
+    it('should not log enablement post received notification event if no recent notification received', () => {
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: mockedOnboardingNotificationState,
+            isLoading: false,
+        })
+
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        act(() => {
+            result.current.handleOnEnablementPostReceivedNotification()
+        })
+
+        expect(logEvent).not.toHaveBeenCalled()
+    })
+
+    it('should not log enablement post received notification event if notification received long time ago', () => {
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: {
+                ...mockedOnboardingNotificationState,
+                activateAiAgentNotificationReceivedDatetime: new Date(
+                    Date.now() - 20 * NUMBER_OF_MILLISECONDS_IN_A_DAY
+                ).toISOString(),
+            },
+            isLoading: false,
+        })
+
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        act(() => {
+            result.current.handleOnEnablementPostReceivedNotification()
+        })
+
+        expect(logEvent).not.toHaveBeenCalled()
+    })
+
+    it('should not log enablement post received notification event if no onboardingNotificationState in database', () => {
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: undefined,
+            isLoading: false,
+        })
+
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        act(() => {
+            result.current.handleOnEnablementPostReceivedNotification()
+        })
+
+        expect(logEvent).not.toHaveBeenCalled()
+    })
+
+    it('should log perform action post received notification event when handleOnPerformActionPostReceivedNotification is called', () => {
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: {
+                ...mockedOnboardingNotificationState,
+                finishAiAgentSetupNotificationReceivedDatetime: new Date(
+                    Date.now() - 7 * NUMBER_OF_MILLISECONDS_IN_A_DAY
+                ).toISOString(),
+            },
+            isLoading: false,
+        })
+
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        act(() => {
+            result.current.handleOnPerformActionPostReceivedNotification(
+                AiAgentNotificationType.FinishAiAgentSetup
+            )
+        })
+
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentActionPerformedPostReceivedOnboardingNotification,
+            {
+                type: AiAgentNotificationType.FinishAiAgentSetup,
+            }
+        )
+    })
+
+    it('should not log perform action post received notification event if no recent notification received', () => {
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: mockedOnboardingNotificationState,
+            isLoading: false,
+        })
+
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        act(() => {
+            result.current.handleOnPerformActionPostReceivedNotification(
+                AiAgentNotificationType.StartAiAgentSetup
+            )
+        })
+
+        expect(logEvent).not.toHaveBeenCalled()
+    })
+
+    it('should not log perform action post received notification event if notification received long time ago', () => {
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: {
+                ...mockedOnboardingNotificationState,
+                finishAiAgentSetupNotificationReceivedDatetime: new Date(
+                    Date.now() - 20 * NUMBER_OF_MILLISECONDS_IN_A_DAY
+                ).toISOString(),
+            },
+            isLoading: false,
+        })
+
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        act(() => {
+            result.current.handleOnPerformActionPostReceivedNotification(
+                AiAgentNotificationType.FinishAiAgentSetup
+            )
+        })
+
+        expect(logEvent).not.toHaveBeenCalled()
+    })
+
+    it('should not log perform action post received notification event if no onboardingNotificationState in database', () => {
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: undefined,
+            isLoading: false,
+        })
+
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        act(() => {
+            result.current.handleOnPerformActionPostReceivedNotification(
+                AiAgentNotificationType.FinishAiAgentSetup
+            )
+        })
+
+        expect(logEvent).not.toHaveBeenCalled()
     })
 })
