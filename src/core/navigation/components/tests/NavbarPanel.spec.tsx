@@ -22,7 +22,7 @@ const mockNavBarContextValues: NavBarContextType = {
     isNavBarVisible: true,
     onNavHover: jest.fn(),
     onNavLeave: jest.fn(),
-    onOverlayEnter: jest.fn(),
+    onOverlayHover: jest.fn(),
     onMenuToggle: jest.fn(),
 }
 
@@ -44,9 +44,6 @@ describe('NavbarPanel', () => {
         mockUseNavBar.mockReturnValue({
             ...mockNavBarContextValues,
             navBarDisplay: NavBarDisplayMode.Open,
-            onOverlayEnter: jest.fn(),
-            onNavHover: jest.fn(),
-            onNavLeave: jest.fn(),
         })
 
         const {container} = renderWithContext()
@@ -62,9 +59,6 @@ describe('NavbarPanel', () => {
             ...mockNavBarContextValues,
             navBarDisplay: NavBarDisplayMode.Hover,
             isNavHovered: true,
-            onOverlayEnter: jest.fn(),
-            onNavHover: jest.fn(),
-            onNavLeave: jest.fn(),
         })
 
         const {container} = renderWithContext()

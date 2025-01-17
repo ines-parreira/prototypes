@@ -29,11 +29,12 @@ export function NavBarProvider({children}: {children: ReactNode}) {
         setisNavHovered(false)
     }, [])
 
-    const onOverlayEnter = useCallback(() => {
+    const onOverlayHover = useCallback(() => {
+        onNavLeave()
         if (navBarDisplay === NavBarDisplayMode.Hover) {
             setNavBarDisplay(NavBarDisplayMode.Collapsed)
         }
-    }, [navBarDisplay])
+    }, [navBarDisplay, onNavLeave])
 
     const value = useMemo(
         () => ({
@@ -42,7 +43,7 @@ export function NavBarProvider({children}: {children: ReactNode}) {
             isNavHovered,
             onNavHover,
             onNavLeave,
-            onOverlayEnter,
+            onOverlayHover,
             onMenuToggle,
             isNavBarVisible: navBarDisplay !== NavBarDisplayMode.Collapsed,
         }),
@@ -52,7 +53,7 @@ export function NavBarProvider({children}: {children: ReactNode}) {
             isNavHovered,
             onNavHover,
             onNavLeave,
-            onOverlayEnter,
+            onOverlayHover,
             onMenuToggle,
         ]
     )

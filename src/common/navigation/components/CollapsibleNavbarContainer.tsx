@@ -10,7 +10,7 @@ export const CollapsibleNavbarContainer = forwardRef<
     HTMLDivElement,
     CollapsibleNavbarContainerProps
 >(function CollapsibleNavbarContainer({children, ...props}, ref) {
-    const {navBarDisplay, onOverlayEnter, onNavHover, onNavLeave} = useNavBar()
+    const {navBarDisplay, onOverlayHover, onNavHover} = useNavBar()
 
     return (
         <>
@@ -18,10 +18,8 @@ export const CollapsibleNavbarContainer = forwardRef<
                 data-name="navbar-overlay"
                 data-display={navBarDisplay}
                 className={css.overlay}
-                onMouseEnter={() => {
-                    onOverlayEnter()
-                    onNavLeave()
-                }}
+                onMouseOver={onOverlayHover}
+                onFocus={onOverlayHover}
             />
             <div
                 ref={ref}

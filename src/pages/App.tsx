@@ -6,6 +6,7 @@ import {Container} from 'reactstrap'
 import {useFlag} from 'common/flags'
 import {GlobalNavigation} from 'common/navigation'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {CollapsibleNavBarWrapper} from 'core/navigation/components/CollapsibleNavBarWrapper'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
@@ -76,7 +77,18 @@ const App = ({
     return (
         <div id="app-root" className={css.app}>
             {showGlobalNav && <GlobalNavigation />}
-            {Navbar && <Navbar />}
+
+            {Navbar ? (
+                <>
+                    {showGlobalNav ? (
+                        <CollapsibleNavBarWrapper>
+                            <Navbar />
+                        </CollapsibleNavBarWrapper>
+                    ) : (
+                        <Navbar />
+                    )}
+                </>
+            ) : null}
 
             <div
                 className={classnames(

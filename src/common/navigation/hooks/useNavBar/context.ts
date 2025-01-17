@@ -22,7 +22,7 @@ export type NavBarContextType = {
     isNavHovered: boolean
     onNavHover: () => void
     onNavLeave: () => void
-    onOverlayEnter: () => void
+    onOverlayHover: () => void
     onMenuToggle: () => void
     isNavBarVisible: boolean
 }

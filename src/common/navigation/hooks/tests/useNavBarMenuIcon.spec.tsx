@@ -13,7 +13,7 @@ const mockNavBarContextValues: NavBarContextType = {
     isNavHovered: false,
     onNavHover: jest.fn(),
     onNavLeave: jest.fn(),
-    onOverlayEnter: jest.fn(),
+    onOverlayHover: jest.fn(),
     onMenuToggle: jest.fn(),
 }
 

@@ -22,7 +22,7 @@ const mockNavBarContextValues: NavBarContextType = {
     isNavBarVisible: true,
     onNavHover: jest.fn(),
     onNavLeave: jest.fn(),
-    onOverlayEnter: jest.fn(),
+    onOverlayHover: jest.fn(),
     onMenuToggle: jest.fn(),
 }
 
@@ -41,14 +41,12 @@ describe('CollapsibleNavbarContainer', () => {
         )
 
     it('calls appropriate handlers on overlay mouse enter', () => {
-        const mockOnOverlayEnter = jest.fn()
-        const mockOnNavLeave = jest.fn()
+        const mockOnOverlayHover = jest.fn()
 
         mockUseNavBar.mockReturnValue({
             ...mockNavBarContextValues,
             navBarDisplay: NavBarDisplayMode.Collapsed,
-            onOverlayEnter: mockOnOverlayEnter,
-            onNavLeave: mockOnNavLeave,
+            onOverlayHover: mockOnOverlayHover,
         })
 
         const {container} = renderWithContext()
@@ -56,8 +54,7 @@ describe('CollapsibleNavbarContainer', () => {
 
         fireEvent.mouseEnter(overlay)
 
-        expect(mockOnOverlayEnter).toHaveBeenCalled()
-        expect(mockOnNavLeave).toHaveBeenCalled()
+        expect(mockOnOverlayHover).toHaveBeenCalled()
     })
 
     it('calls onNavHover when mouse enters collapsible container', () => {
