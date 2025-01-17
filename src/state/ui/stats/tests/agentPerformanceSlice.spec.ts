@@ -9,6 +9,7 @@ import {
     TicketMessagesMeasure,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {FilterKey} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
@@ -294,6 +295,54 @@ describe('agentPerformanceSlice', () => {
             expect(getFilteredAgents(state).length).toEqual(
                 agents.filter((agent) => !filteredAgents.includes(agent.id))
                     .length
+            )
+        })
+
+        it('should return agents filtered by Saved Filter', () => {
+            const filteredAgents = [1, 2]
+            const savedFilterAgents = [3, 4]
+            const cleanStatsFilters = {
+                period: {
+                    start_datetime: '1970-01-01T00:00:00+00:00',
+                    end_datetime: '1970-01-01T00:00:00+00:00',
+                },
+                agents: {
+                    values: filteredAgents,
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                },
+            }
+            const state = {
+                agents: fromJS({all: fromJS(agents)}),
+                ui: {
+                    stats: {
+                        statsTables: {
+                            [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                        },
+                        filters: {
+                            ...uiFiltersInitialState,
+                            cleanStatsFilters: cleanStatsFilters,
+                            appliedSavedFilterId: 123,
+                            savedFilterDraft: {
+                                id: 123,
+                                name: 'string',
+                                filter_group: [
+                                    {
+                                        member: FilterKey.Agents,
+                                        operator: LogicalOperatorEnum.ONE_OF,
+                                        values: savedFilterAgents.map(String),
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                },
+                stats: {
+                    filters: cleanStatsFilters,
+                },
+            } as RootState
+
+            expect(getFilteredAgents(state)).toEqual(
+                agents.filter((agent) => savedFilterAgents.includes(agent.id))
             )
         })
     })

@@ -41,6 +41,10 @@ import {
     TicketFieldsChart,
     TicketFieldsReportConfig,
 } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
+import {
+    VoiceAgentsChart,
+    VoiceAgentsReportConfig,
+} from 'pages/stats/voice/pages/VoiceAgentsReportConfig'
 
 export const MAX_CHECKED_CHARTS = 20
 
@@ -55,6 +59,14 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
             {
                 type: AgentsChart,
                 config: SupportPerformanceAgentsReportConfig,
+            },
+            {
+                type: BusiestTimesChart,
+                config: BusiestTimesReportConfig,
+            },
+            {
+                type: ChannelsChart,
+                config: ChannelsReportConfig,
             },
             {
                 type: ServiceLevelAgreementsChart,
@@ -89,20 +101,11 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
         ],
     },
     {
-        category: 'Busiest Times',
+        category: 'Voice',
         children: [
             {
-                type: BusiestTimesChart,
-                config: BusiestTimesReportConfig,
-            },
-        ],
-    },
-    {
-        category: 'Channel',
-        children: [
-            {
-                type: ChannelsChart,
-                config: ChannelsReportConfig,
+                type: VoiceAgentsChart,
+                config: VoiceAgentsReportConfig,
             },
         ],
     },

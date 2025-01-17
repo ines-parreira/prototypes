@@ -8,9 +8,14 @@ import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constant
 import {isMetricForAgent} from 'pages/stats/common/utils'
 import {agentIdFields} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
+import {statsFiltersWithLogicalOperatorsFromSavedFilters} from 'state/stats/utils'
 
 import {RootState} from 'state/types'
 import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
+import {
+    getIsSavedFilterApplied,
+    getSavedFilterDraft,
+} from 'state/ui/stats/filtersSlice'
 import {getCleanStatsFilters} from 'state/ui/stats/selectors'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import {getSortByName} from 'utils/getSortByName'
@@ -120,20 +125,31 @@ export const getHeatmapMode = createSelector(
 export const getFilteredAgents = createSelector(
     getHumanAndAutomationBotAgentsJS,
     getCleanStatsFilters,
-    (agents, filters) => {
+    getSavedFilterDraft,
+    getIsSavedFilterApplied,
+    (agents, filters, savedFilters, isSavedFilterApplied) => {
+        const effectiveFilters = isSavedFilterApplied
+            ? statsFiltersWithLogicalOperatorsFromSavedFilters(
+                  savedFilters?.filter_group
+              )
+            : filters
         if (
-            filters !== null &&
-            filters?.agents &&
-            filters.agents.values.length > 0
+            effectiveFilters !== null &&
+            effectiveFilters?.agents &&
+            effectiveFilters.agents.values.length > 0
         ) {
-            if (filters.agents.operator === LogicalOperatorEnum.NOT_ONE_OF) {
+            if (
+                effectiveFilters.agents.operator ===
+                LogicalOperatorEnum.NOT_ONE_OF
+            ) {
                 return agents.filter(
-                    (agent) => !filters.agents?.values.includes(agent.id)
+                    (agent) =>
+                        !effectiveFilters.agents?.values.includes(agent.id)
                 )
             }
             return _intersectionBy(
                 agents,
-                filters.agents.values.map((agentId: number) => ({
+                effectiveFilters.agents.values.map((agentId: number) => ({
                     id: agentId,
                 })),
                 'id'
