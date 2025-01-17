@@ -8,6 +8,7 @@ import {ulid} from 'ulidx'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
 import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
 import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
@@ -18,6 +19,7 @@ import UseCaseTemplateModal from '../UseCaseTemplateModal'
 jest.mock('models/workflows/queries')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 jest.mock('pages/aiAgent/actions/hooks/useUpsertAction')
+jest.mock('pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled')
 
 const queryClient = mockQueryClient()
 
@@ -26,6 +28,7 @@ const mockUseUpsertAction = jest.mocked(useUpsertAction)
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates
 )
+const mockUseGetIsActionStepEnabled = jest.mocked(useGetIsActionStepEnabled)
 
 const b = new WorkflowConfigurationBuilder({
     id: ulid(),
@@ -207,6 +210,9 @@ describe('<UseCaseTemplateModal />', () => {
             ],
             isInitialLoading: false,
         } as unknown as ReturnType<typeof useGetWorkflowConfigurationTemplates>)
+        mockUseGetIsActionStepEnabled.mockReturnValue(
+            jest.fn().mockReturnValue(true)
+        )
     })
 
     it('should render use case template modal', () => {
@@ -567,5 +573,31 @@ describe('<UseCaseTemplateModal />', () => {
                 ],
             })
         )
+    })
+
+    it('should render only enabled steps', () => {
+        const mockGetIsActionStepEnabled = jest
+            .fn()
+            .mockImplementation((internalId: string) => {
+                switch (internalId) {
+                    case 'someid1':
+                        return true
+                    case 'someid2':
+                        return false
+                }
+            })
+
+        mockUseGetIsActionStepEnabled.mockReturnValue(
+            mockGetIsActionStepEnabled
+        )
+
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <UseCaseTemplateModal onClose={jest.fn()} template={template} />
+            </QueryClientProvider>
+        )
+
+        expect(screen.getByText('Shopify')).toBeInTheDocument()
+        expect(screen.queryByText('Some app')).not.toBeInTheDocument()
     })
 })

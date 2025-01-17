@@ -13,6 +13,7 @@ import {StoreWorkflowsConfiguration} from 'pages/aiAgent/actions/types'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
+import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
 import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
 import ReusableLLMPromptCallNodeLabel from 'pages/automate/workflows/editor/visualBuilder/nodes/ReusableLLMPromptCallNodeLabel'
 import {useVisualBuilderGraphReducer} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
@@ -114,6 +115,8 @@ const UseCaseTemplateModal = ({template, onClose}: Props) => {
         triggers: ['reusable-llm-prompt'],
     })
 
+    const getIsActionStepEnabled = useGetIsActionStepEnabled()
+
     const variables = useMemo(
         () =>
             getWorkflowVariableListForNode(
@@ -174,6 +177,15 @@ const UseCaseTemplateModal = ({template, onClose}: Props) => {
                         </Label>
                         <div className={css.nodes}>
                             {templateNodes.map((templateNode, index) => {
+                                if (
+                                    !getIsActionStepEnabled(
+                                        templateNode.data
+                                            .configuration_internal_id
+                                    )
+                                ) {
+                                    return null
+                                }
+
                                 const step = steps.find(
                                     (step) =>
                                         step.id ===

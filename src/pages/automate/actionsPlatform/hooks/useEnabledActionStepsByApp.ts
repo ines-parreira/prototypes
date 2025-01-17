@@ -1,26 +1,18 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import _groupBy from 'lodash/groupBy'
 import {useMemo} from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-
 import {ActionTemplate} from '../types'
+import useGetIsActionStepEnabled from './useGetIsActionStepEnabled'
 
 const useEnabledActionStepsByApp = (steps: ActionTemplate[]) => {
-    const enabledSteps:
-        | ActionTemplate['internal_id'][]
-        | Record<never, never>
-        | undefined = useFlags()[FeatureFlagKey.ActionSteps]
+    const getIsActionStepEnabled = useGetIsActionStepEnabled()
 
     return useMemo(
         () =>
             _groupBy(
-                steps.filter((step) => {
-                    return !(
-                        Array.isArray(enabledSteps) &&
-                        !enabledSteps.includes(step.internal_id)
-                    )
-                }),
+                steps.filter((step) =>
+                    getIsActionStepEnabled(step.internal_id)
+                ),
                 (step) => {
                     switch (step.apps[0].type) {
                         case 'shopify':
@@ -31,7 +23,7 @@ const useEnabledActionStepsByApp = (steps: ActionTemplate[]) => {
                     }
                 }
             ),
-        [steps, enabledSteps]
+        [steps, getIsActionStepEnabled]
     )
 }
 

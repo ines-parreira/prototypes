@@ -4,6 +4,7 @@ import React, {useMemo} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
 import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
 import Button from 'pages/common/components/button/Button'
 import {TemplateCard} from 'pages/common/components/TemplateCard'
@@ -27,14 +28,30 @@ const ActionsUseCaseTemplatesCards = ({
     const {shopName} = useParams<{shopName: string}>()
     const {routes} = useAiAgentNavigation({shopName})
 
+    const getIsActionStepEnabled = useGetIsActionStepEnabled()
+
     const sortedTemplates = useMemo(
         () =>
             _orderBy(
-                templates.filter((template) => !!template.category),
+                templates.filter((template) => {
+                    if (!template.category) {
+                        return false
+                    }
+
+                    return template.steps.some((step) => {
+                        if (step.kind === 'reusable-llm-prompt-call') {
+                            return getIsActionStepEnabled(
+                                step.settings.configuration_internal_id
+                            )
+                        }
+
+                        return false
+                    })
+                }),
                 ['category', 'name'],
                 ['asc', 'asc']
             ),
-        [templates]
+        [templates, getIsActionStepEnabled]
     )
 
     return (
