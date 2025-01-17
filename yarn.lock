@@ -3322,6 +3322,14 @@
     "@gorgias/api-types" "^0.4.10"
     axios "^1.7.7"
 
+"@gorgias/api-client@^0.5.1":
+  version "0.5.1"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.5.1/4d7e40b8157a2072e89bec09e83b7314aae43c2d#4d7e40b8157a2072e89bec09e83b7314aae43c2d"
+  integrity sha512-yv91k2wci0x1P8OrV3s3Omb2Cl57DR6xpTh2g8kAORkQ00FbiOI7Qk/dyBIb/SDfgG7R0Cb3njBVSS1bpNdTEQ==
+  dependencies:
+    "@gorgias/api-types" "^0.5.1"
+    axios "^1.7.7"
+
 "@gorgias/api-queries@0.4.10":
   version "0.4.10"
   resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.4.10/418788bac5497d001d965cad1f809a90c001dda7#418788bac5497d001d965cad1f809a90c001dda7"
@@ -3330,24 +3338,37 @@
     "@gorgias/api-client" "^0.4.10"
     "@gorgias/api-types" "^0.4.10"
 
-"@gorgias/api-spec@^0.4.9":
-  version "0.4.9"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-spec/0.4.9/7b6c370478707e9924fd530ead85fa61af7d1781#7b6c370478707e9924fd530ead85fa61af7d1781"
-  integrity sha512-RSQV5/fo+lUQhbbIfTDOQP6vt53DhQvjYzLMzEAH5glyxlH0TUtP1WIpJCzdDW7JBL2MUXQ0byZ1NDXl0Y3tmA==
+"@gorgias/api-queries@0.5.1":
+  version "0.5.1"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.5.1/ad31ff2dfdeca6f18e1de66e5dca0d1bf4fa6f76#ad31ff2dfdeca6f18e1de66e5dca0d1bf4fa6f76"
+  integrity sha512-HOt0PBRl3YlmN/M3khCATGYkilo6EYCyCuwQClFBaTHMCQAAaj9fCY1TxEspq85ocfJGNqrPmAe3wjyF4QcfMA==
+  dependencies:
+    "@gorgias/api-client" "^0.5.1"
+    "@gorgias/api-types" "^0.5.1"
 
-"@gorgias/api-types@^0.4.10", "@gorgias/api-types@^0.4.9":
+"@gorgias/api-spec@^0.5.1":
+  version "0.5.1"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-spec/0.5.1/f9167abe1d42b10819588c2abbb156d15078206b#f9167abe1d42b10819588c2abbb156d15078206b"
+  integrity sha512-mSeHW2Y98TCMlu8FHuFK6dS1iKa+vefTauEjFKZc5EzW2XCJzjfY/t6WegVeXBKQNP/Qeqk9S9Jp5/VQmdT0DA==
+
+"@gorgias/api-types@^0.4.10":
   version "0.4.10"
   resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.4.10/d4e3e9252308392b2edecaf03dab8075d16ebd83#d4e3e9252308392b2edecaf03dab8075d16ebd83"
   integrity sha512-BJvZSP46Jzxy3mOaxV8qPmOxxv413+IQq3pX7gykNlFmJ5RfGk4jLC1yKkHDk5q42CD8esBeBfFA9Spag5HD6w==
 
-"@gorgias/api-validators@^0.4.9":
-  version "0.4.9"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-validators/0.4.9/4de738c7b6540878571a468727e008b7cb6edf69#4de738c7b6540878571a468727e008b7cb6edf69"
-  integrity sha512-WqveFoVN1bSyNPdmBvsJWt5La+7Q57+aq3JpkErt/XFya7Xq4ecRsohmBrxWiU7RCiNCjaF1busZOlma7BYxcA==
+"@gorgias/api-types@^0.5.1":
+  version "0.5.1"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.5.1/299f7f53d54b874225c19dcdf0efb73611bfaa6f#299f7f53d54b874225c19dcdf0efb73611bfaa6f"
+  integrity sha512-HuSwbDiEyvXh6GdXm2lL43EyV1Okgu0aFSBO4NGZ5BmUINjPdy7veB1gar7ljCJE/05LqVS/D1TZI26aAqLoXA==
+
+"@gorgias/api-validators@^0.5.1":
+  version "0.5.1"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-validators/0.5.1/73c5b3500837977b0add9a7d9a6a39772b7d5e67#73c5b3500837977b0add9a7d9a6a39772b7d5e67"
+  integrity sha512-wW9DVcLSsMDYRVCvPHpVco14gx0Waf3MV742J8M7EOjs8YwmqZiTahLCf8nVD/xn1HGr/2nRhMX4/IdpCveJOQ==
   dependencies:
     "@apideck/better-ajv-errors" "^0.3.6"
-    "@gorgias/api-spec" "^0.4.9"
-    "@gorgias/api-types" "^0.4.9"
+    "@gorgias/api-spec" "^0.5.1"
+    "@gorgias/api-types" "^0.5.1"
     ajv "^8.12.0"
     ajv-formats "^3.0.1"
     immer "^10.1"
@@ -3386,12 +3407,14 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/event-tracker-utils/1.0.1/25a551ebe4ce428f03e1157f60263b2ef049d5c7#25a551ebe4ce428f03e1157f60263b2ef049d5c7"
   integrity sha512-q3p9eb/ooIga/5tJCLryVIuRIaI+E2fjIJoJsUVTse8BwYW14pvcK/0G87fHAOEDezbTCFacm3KisxxgeTIarw==
 
-"@gorgias/merchant-ui-kit@^0.2.0":
-  version "0.2.0"
-  resolved "https://npm.pkg.github.com/download/@gorgias/merchant-ui-kit/0.2.0/28c04d81327692120d3b084a7545fc7c42808f3b#28c04d81327692120d3b084a7545fc7c42808f3b"
-  integrity sha512-0TwQdBxH3exOKRI1JEHxH2MkOm1MrQbMF8NqyDlrpJS1JiCOZGpS/HfklaMR4jBud7XG7soLReHyYFkaAEGlXw==
+"@gorgias/merchant-ui-kit@^0.5.2":
+  version "0.5.2"
+  resolved "https://npm.pkg.github.com/download/@gorgias/merchant-ui-kit/0.5.2/06083a7298348a6b7315d54c901ce9b9ca8284a9#06083a7298348a6b7315d54c901ce9b9ca8284a9"
+  integrity sha512-A3jse+XCa6CS9hJTsRG1KiwIC/8fEoK9b8J2IPqLRqwh7UpLOt6BEa9gzcRT7Y2rYsmOUsDxomEGH37C3RtwrA==
   dependencies:
     "@floating-ui/react" "^0.25.1"
+    "@gorgias/design-tokens" "^0.4.0"
+    classnames "^2.3.2"
     downshift "^9.0.6"
 
 "@gorgias/realtime@^0.4.6":
@@ -8428,6 +8451,11 @@ classnames@^2.2.3, classnames@^2.2.4, classnames@^2.2.5:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.1.tgz#dfcfa3891e306ec1dad105d0e88f4417b8535e8e"
   integrity sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
+
+classnames@^2.3.2:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.5.1.tgz#ba774c614be0f016da105c858e7159eae8e7687b"
+  integrity sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==
 
 clean-css@^5.2.2:
   version "5.3.2"

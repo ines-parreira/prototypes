@@ -22,7 +22,7 @@ exports[`<CreditShopifyBillingIntegration /> should render the form 1`] = `
           class="mb16"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
             for="shopify-credit-description"
           >
             Description
@@ -43,7 +43,7 @@ exports[`<CreditShopifyBillingIntegration /> should render the form 1`] = `
           class="creditAmount"
         >
           <label
-            class="Label--label--QAnfT"
+            class="_label_1b6x4_141"
             for="shopify-credit-amount"
           >
             Credit amount

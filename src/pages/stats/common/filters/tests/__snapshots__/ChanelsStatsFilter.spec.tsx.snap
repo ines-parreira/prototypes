@@ -40,7 +40,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="checkbox"
       >
         <label
-          class="Label--label--QAnfT label quickSelectionOption"
+          class="_label_1b6x4_141 label quickSelectionOption"
           for="checkbox-1"
         >
           <input
@@ -70,7 +70,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-2"
         >
           <input
@@ -91,7 +91,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-4"
         >
           <input
@@ -111,7 +111,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-6"
         >
           <input
@@ -131,7 +131,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-8"
         >
           <input
@@ -151,7 +151,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-10"
         >
           <input
@@ -171,7 +171,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-12"
         >
           <input
@@ -191,7 +191,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-14"
         >
           <input
@@ -211,7 +211,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-16"
         >
           <input
@@ -231,7 +231,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-18"
         >
           <input
@@ -251,7 +251,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-20"
         >
           <input
@@ -271,7 +271,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-22"
         >
           <input
@@ -291,7 +291,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-24"
         >
           <input
@@ -311,7 +311,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-26"
         >
           <input
@@ -331,7 +331,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-28"
         >
           <input
@@ -351,7 +351,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-30"
         >
           <input
@@ -371,7 +371,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-32"
         >
           <input
@@ -391,7 +391,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-34"
         >
           <input
@@ -411,7 +411,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-36"
         >
           <input
@@ -431,7 +431,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-38"
         >
           <input
@@ -451,7 +451,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-40"
         >
           <input
@@ -471,7 +471,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-42"
         >
           <input
@@ -491,7 +491,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="Label--label--QAnfT label labelItem"
+          class="_label_1b6x4_141 label labelItem"
           for="checkbox-44"
         >
           <input

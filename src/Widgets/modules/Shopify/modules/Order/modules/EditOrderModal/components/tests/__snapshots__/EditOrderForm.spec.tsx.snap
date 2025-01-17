@@ -31,7 +31,7 @@ exports[`<EditOrderForm/> should render 1`] = `
         class="mb-3"
       >
         <label
-          class="Label--label--QAnfT label"
+          class="_label_1b6x4_141 label"
           for="checkbox-1"
         >
           <input

@@ -70,7 +70,7 @@ export function isCustomFieldAIManagedType(
     )
 }
 
-export interface CustomFieldInput {
+export type CustomFieldInput = {
     object_type: CustomFieldObjectTypes
     label: string
     description?: string
@@ -81,7 +81,7 @@ export interface CustomFieldInput {
     definition: CustomFieldDefinition
 }
 
-export interface CustomField extends CustomFieldInput {
+export type CustomField = CustomFieldInput & {
     id: number
     priority: number
     created_datetime: string

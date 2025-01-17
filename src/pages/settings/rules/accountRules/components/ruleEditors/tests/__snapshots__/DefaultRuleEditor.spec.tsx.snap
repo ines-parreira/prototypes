@@ -229,7 +229,7 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
       <div>
         <label
           aria-checked="true"
-          class="Label--label--QAnfT label"
+          class="_label_1b6x4_141 label"
           for="toggle-button-4"
           role="switch"
         >

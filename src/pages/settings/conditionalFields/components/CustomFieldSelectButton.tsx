@@ -1,18 +1,35 @@
-import {SelectInput} from '@gorgias/merchant-ui-kit'
-import React, {useCallback, useMemo} from 'react'
+import {
+    SelectInput,
+    type SelectInputTriggerProps,
+} from '@gorgias/merchant-ui-kit'
+import React, {useMemo} from 'react'
 
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {
-    CustomField,
     CustomFieldObjectTypes,
     CustomFieldRequirementType,
     isCustomFieldAIManagedType,
 } from 'custom-fields/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Button from 'pages/common/components/button/Button'
 
-import css from './CustomFieldSelectButton.less'
+const SelectTrigger = ({
+    hasError: __hasError,
+    isOpen,
+    setRef,
+    value: __value,
+    ...buttonProps
+}: SelectInputTriggerProps) => (
+    <Button
+        {...buttonProps}
+        ref={setRef}
+        trailingIcon={isOpen ? 'arrow_drop_up' : 'arrow_drop_down'}
+    >
+        Add Ticket Field
+    </Button>
+)
 
-interface CustomFieldSelectButtonProps {
+type CustomFieldSelectButtonProps = {
     objectType: CustomFieldObjectTypes
     ignoreIds?: number[]
     onSelect: (customFieldId: number) => void
@@ -41,36 +58,16 @@ export default function CustomFieldSelectButton({
         object_type: objectType,
     })
 
-    const optionsMap = useMemo(
+    const options = useMemo(
         () =>
-            customFields.data?.data
+            (customFields.data?.data || [])
                 .filter(
                     ({managed_type}) =>
                         !isCustomFieldAIManagedType(managed_type)
                 )
-                .filter(({id}) => !ignoreIds?.includes(id))
-                .reduce(
-                    (ret, field) => {
-                        ret[String(field.id)] = field
-                        return ret
-                    },
-                    {} as {[id: string]: CustomField}
-                ),
+                .filter(({id}) => !ignoreIds?.includes(id)),
+
         [customFields.data?.data, ignoreIds]
-    )
-    const options = useMemo(
-        () => (optionsMap ? Object.keys(optionsMap) : []),
-        [optionsMap]
-    )
-    const optionMapper = useCallback(
-        (id: string) => {
-            const customField = optionsMap![id]
-            return {
-                value: customField?.label,
-                subtext: requirementTypeToString(customField?.requirement_type),
-            }
-        },
-        [optionsMap]
     )
 
     if (customFields.isLoading) {
@@ -86,12 +83,16 @@ export default function CustomFieldSelectButton({
     }
 
     return (
-        <div className={css.select}>
-            <SelectInput
-                onChange={(value) => onSelect?.(parseInt(value, 10))}
-                options={options}
-                optionMapper={optionMapper}
-            />
-        </div>
+        <SelectInput
+            onChange={(value) => {
+                onSelect(value.id)
+            }}
+            options={options}
+            optionMapper={(option) => ({
+                value: option?.label,
+                subtext: requirementTypeToString(option?.requirement_type),
+            })}
+            trigger={SelectTrigger}
+        />
     )
 }

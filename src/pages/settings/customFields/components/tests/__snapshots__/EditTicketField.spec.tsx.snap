@@ -90,7 +90,7 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
           class="formRow"
         >
           <label
-            class="Label--label--QAnfT formLabel"
+            class="_label_1b6x4_141 formLabel"
           >
             Status
           </label>
@@ -105,13 +105,13 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
           class="formRow"
         >
           <label
-            class="Label--label--QAnfT Label--isDisabled--cM4ye label"
+            class="_label_1b6x4_141 _isDisabled_1b6x4_151 label"
             for="input-text-7"
           >
             Name
             <abbr
               aria-label="required"
-              class="Label--abbr--Zx_yi"
+              class="_abbr_1b6x4_136"
               title="required"
             >
               *
@@ -143,7 +143,7 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
           class="formRow"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
             for="textarea-9"
           >
             Description
@@ -169,7 +169,7 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
           class="formRow"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
             for="checkbox-10"
           >
             <input
@@ -191,13 +191,13 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
           class="formRow"
         >
           <label
-            class="Label--label--QAnfT formLabel"
+            class="_label_1b6x4_141 formLabel"
             for="type"
           >
             Type
             <abbr
               aria-label="required"
-              class="Label--abbr--Zx_yi"
+              class="_abbr_1b6x4_136"
               title="required"
             >
               *
@@ -233,7 +233,7 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
           class="formRow"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
             for="input-text-11"
           >
             Placeholder
@@ -346,7 +346,7 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
           class="formRow"
         >
           <label
-            class="Label--label--QAnfT formLabel"
+            class="_label_1b6x4_141 formLabel"
           >
             Status
           </label>
@@ -361,13 +361,13 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
           class="formRow"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
             for="input-text-1"
           >
             Name
             <abbr
               aria-label="required"
-              class="Label--abbr--Zx_yi"
+              class="_abbr_1b6x4_136"
               title="required"
             >
               *
@@ -398,7 +398,7 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
           class="formRow"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
             for="textarea-3"
           >
             Description
@@ -424,7 +424,7 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
           class="formRow"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
             for="checkbox-4"
           >
             <input
@@ -446,13 +446,13 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
           class="formRow"
         >
           <label
-            class="Label--label--QAnfT formLabel"
+            class="_label_1b6x4_141 formLabel"
             for="type"
           >
             Type
             <abbr
               aria-label="required"
-              class="Label--abbr--Zx_yi"
+              class="_abbr_1b6x4_136"
               title="required"
             >
               *
@@ -488,7 +488,7 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
           class="formRow"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
             for="input-text-5"
           >
             Placeholder

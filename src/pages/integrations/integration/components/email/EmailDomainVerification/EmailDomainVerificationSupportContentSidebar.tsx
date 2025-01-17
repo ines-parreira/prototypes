@@ -7,22 +7,20 @@ import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 import SettingsSidebar from 'pages/settings/SettingsSidebar'
 
-import {
-    SupportContentDropdownOption,
-    supportContentDropdownOptions,
-} from './constants'
+import {supportContentDropdownOptions} from './constants'
 import css from './EmailDomainVerificationSupportContentSidebar.less'
 import SupportContentLearnMore from './SupportContentLearnMore'
 
 export default function EmailDomainVerificationSupportContentSidebar() {
-    const [selectedOption, setSelectedOption] =
-        useState<SupportContentDropdownOption>(supportContentDropdownOptions[0])
+    const [selectedOption, setSelectedOption] = useState(
+        supportContentDropdownOptions[0]
+    )
 
     return (
         <SettingsSidebar className={css.sidebar}>
             <div className={css.container}>
                 <div>
-                    <SelectInput<SupportContentDropdownOption>
+                    <SelectInput
                         label="Domain Verification Guide"
                         options={supportContentDropdownOptions}
                         selectedOption={selectedOption}

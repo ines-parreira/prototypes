@@ -1,15 +1,13 @@
 import {
     CreateCustomFieldCondition,
     CustomFieldCondition,
-    // ExpressionFieldSource,
-    // ExpressionFieldType,
-    // ExpressionOperator,
     UpdateCustomFieldCondition,
 } from '@gorgias/api-queries'
 import {
     validateCreateCustomFieldCondition,
     validateUpdateCustomFieldCondition,
 } from '@gorgias/api-validators'
+import {Label} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import {Form} from 'components/Form/Form'
@@ -24,6 +22,7 @@ import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
 import useSaveCondition from '../hooks/useSaveCondition'
 import css from './ConditionForm.less'
 import {DeletionPopover} from './DeletionPopover'
+import ThenField from './ThenField'
 
 type ConditionFormProps = {
     condition?: CustomFieldCondition
@@ -32,12 +31,13 @@ type ConditionFormProps = {
 export default function EditConditionForm({condition}: ConditionFormProps) {
     const {onSubmit, isSubmitting} = useSaveCondition(condition?.id)
 
-    const {
-        created_datetime: __discarded_created_datetime,
-        object_type: __discarded_object_type,
-        id: __discarded_id,
-        ...editValues
-    } = condition ?? {}
+    const editValues = {
+        name: condition?.name,
+        description: condition?.description || '',
+        expression: condition?.expression,
+        requirements: condition?.requirements,
+        deactivated_datetime: condition?.deactivated_datetime,
+    }
 
     const validator = createFormValidator(
         condition?.id
@@ -60,38 +60,46 @@ export default function EditConditionForm({condition}: ConditionFormProps) {
         <Form
             defaultValues={{
                 name: '',
+                description: '',
                 object_type: 'Ticket',
-                // uncomment to be able to submit a new condition
-                // requirements: [
-                //     {
-                //         field_id: 1,
-                //         type: ExpressionFieldType.Visible,
-                //     },
-                // ],
-                // expression: [
-                //     {
-                //         values: [''],
-                //         operator: ExpressionOperator.IsOneOf,
-                //         field: 1,
-                //         field_source: ExpressionFieldSource.Ticket,
-                //     },
-                // ],
+                expression: [],
+                requirements: [],
                 deactivated_datetime: null,
             }}
-            values={editValues}
+            values={{...editValues, description: editValues.description ?? ''}}
             onValidSubmit={handleFormSubmit}
             // onInvalidSubmit={handleInvalidSubmit}
             validator={validator}
         >
             <FormField
-                className={css.fieldSpacer}
+                className={css.mbS}
                 name="name"
                 label="Condition name"
                 isRequired
                 placeholder="Provide a name for condition. E.g: Contact Reason Conditions"
             />
             <FormField
-                className={css.fieldSpacer}
+                className={css.mbS}
+                name="description"
+                label="Condition description"
+                placeholder="Describe how the condition works. E.g: Display when contact reason includes quality and shipping"
+            />
+            <fieldset className={css.fieldset}>
+                <legend className={css.legend}>Condition requirements</legend>
+                <p className={css.mbM}>
+                    Configure Ticket Fields to appear for agents only when
+                    specific values are selected.
+                </p>
+                <Label className={css.mbS}>
+                    If the following criteria is met...
+                </Label>
+                <Label className={css.mbS}>
+                    Then display the following fields...
+                </Label>
+                <FormField name="requirements" field={ThenField} />
+            </fieldset>
+            <FormField
+                className={css.mbS}
                 field={ToggleInputField}
                 name="deactivated_datetime"
                 inputTransform={(value: string | null) => !value}

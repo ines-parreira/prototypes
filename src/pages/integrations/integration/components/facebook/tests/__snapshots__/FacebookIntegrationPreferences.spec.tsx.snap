@@ -84,7 +84,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
           <div>
             <label
               aria-checked="false"
-              class="Label--label--QAnfT label"
+              class="_label_1b6x4_141 label"
               for="toggle-button-17"
               role="switch"
             >
@@ -134,7 +134,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
               class="option"
             >
               <label
-                class="Label--label--QAnfT Label--isDisabled--cM4ye label"
+                class="_label_1b6x4_141 _isDisabled_1b6x4_151 label"
                 for="reply-shortly"
               >
                 <input
@@ -152,7 +152,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
               class="option"
             >
               <label
-                class="Label--label--QAnfT Label--isDisabled--cM4ye label"
+                class="_label_1b6x4_141 _isDisabled_1b6x4_151 label"
                 for="reply-in-minutes"
               >
                 <input
@@ -169,7 +169,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
               class="option"
             >
               <label
-                class="Label--label--QAnfT Label--isDisabled--cM4ye label"
+                class="_label_1b6x4_141 _isDisabled_1b6x4_151 label"
                 for="reply-in-hours"
               >
                 <input
@@ -186,7 +186,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
               class="option"
             >
               <label
-                class="Label--label--QAnfT Label--isDisabled--cM4ye label"
+                class="_label_1b6x4_141 _isDisabled_1b6x4_151 label"
                 for="reply-in-day"
               >
                 <input

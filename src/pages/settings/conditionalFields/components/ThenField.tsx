@@ -3,7 +3,7 @@ import {
     ExpressionFieldType,
 } from '@gorgias/api-types'
 import {produce} from 'immer'
-import React, {useCallback, useMemo} from 'react'
+import React, {forwardRef, useCallback, useMemo} from 'react'
 
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -22,11 +22,10 @@ interface ThenFieldProps {
     error?: string
 }
 
-export default function ThenField({
-    value: requirements,
-    onChange,
-    error,
-}: ThenFieldProps) {
+export default forwardRef(function ThenField(
+    {value: requirements, onChange, error}: ThenFieldProps,
+    __ref
+) {
     const fieldIds = useMemo(
         () => requirements.map((field) => field.field_id),
         [requirements]
@@ -117,4 +116,4 @@ export default function ThenField({
             </div>
         </>
     )
-}
+})

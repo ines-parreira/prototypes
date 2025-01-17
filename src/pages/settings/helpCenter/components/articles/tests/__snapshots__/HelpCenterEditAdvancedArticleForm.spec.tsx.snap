@@ -9,13 +9,13 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       class="mb16 titleInput"
     >
       <label
-        class="Label--label--QAnfT label"
+        class="_label_1b6x4_141 label"
         for="input-text-1"
       >
         Title
         <abbr
           aria-label="required"
-          class="Label--abbr--Zx_yi"
+          class="_abbr_1b6x4_136"
           title="required"
         >
           *
@@ -42,7 +42,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
         class="categorySelect"
       >
         <label
-          class="Label--label--QAnfT"
+          class="_label_1b6x4_141"
         >
           Category
         </label>
@@ -102,7 +102,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       </div>
       <div>
         <label
-          class="Label--label--QAnfT"
+          class="_label_1b6x4_141"
         >
           Visibility status
         </label>
@@ -265,7 +265,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       class="mb16"
     >
       <label
-        class="Label--label--QAnfT label"
+        class="_label_1b6x4_141 label"
         for="textarea-3"
       >
         Excerpt
@@ -318,7 +318,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       </div>
       <div>
         <label
-          class="Label--label--QAnfT label"
+          class="_label_1b6x4_141 label"
           for="checkbox-4"
         >
           <input
@@ -364,7 +364,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       </div>
       <div>
         <label
-          class="Label--label--QAnfT label"
+          class="_label_1b6x4_141 label"
           for="checkbox-5"
         >
           <input

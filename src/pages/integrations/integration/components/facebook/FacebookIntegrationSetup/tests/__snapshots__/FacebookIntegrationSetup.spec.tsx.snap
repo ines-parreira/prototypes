@@ -107,7 +107,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
               <div>
                 <label
                   aria-checked="false"
-                  class="Label--label--QAnfT label"
+                  class="_label_1b6x4_141 label"
                   for="toggle-button-101"
                   role="switch"
                 >
@@ -142,7 +142,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.messenger_enabled"
                     >
                       <input
@@ -158,7 +158,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.posts_enabled"
                     >
                       <input
@@ -174,7 +174,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.recommendations_enabled"
                     >
                       <input
@@ -190,7 +190,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.mentions_enabled"
                     >
                       <input
@@ -206,7 +206,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.instagram_comments_enabled"
                     >
                       <input
@@ -222,7 +222,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.instagram_mentions_enabled"
                     >
                       <input
@@ -244,7 +244,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                             class="mb-2"
                           >
                             <label
-                              class="Label--label--QAnfT label"
+                              class="_label_1b6x4_141 label"
                               for="1.instagram_direct_message_enabled"
                             >
                               <input
@@ -273,7 +273,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.instagram_ads_enabled"
                     >
                       <input
@@ -303,7 +303,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                       class="mb-2"
                     >
                       <label
-                        class="Label--label--QAnfT label"
+                        class="_label_1b6x4_141 label"
                         for="1.import_history_enabled"
                       >
                         <input
@@ -447,7 +447,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
               <div>
                 <label
                   aria-checked="false"
-                  class="Label--label--QAnfT label"
+                  class="_label_1b6x4_141 label"
                   for="toggle-button-121"
                   role="switch"
                 >
@@ -482,7 +482,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.messenger_enabled"
                     >
                       <input
@@ -498,7 +498,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.posts_enabled"
                     >
                       <input
@@ -514,7 +514,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.recommendations_enabled"
                     >
                       <input
@@ -530,7 +530,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.mentions_enabled"
                     >
                       <input
@@ -546,7 +546,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.instagram_comments_enabled"
                     >
                       <input
@@ -562,7 +562,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.instagram_mentions_enabled"
                     >
                       <input
@@ -584,7 +584,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                             class="mb-2"
                           >
                             <label
-                              class="Label--label--QAnfT Label--isDisabled--cM4ye label"
+                              class="_label_1b6x4_141 _isDisabled_1b6x4_151 label"
                               for="1.instagram_direct_message_enabled"
                             >
                               <input
@@ -623,7 +623,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.instagram_ads_enabled"
                     >
                       <input
@@ -653,7 +653,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                       class="mb-2"
                     >
                       <label
-                        class="Label--label--QAnfT label"
+                        class="_label_1b6x4_141 label"
                         for="1.import_history_enabled"
                       >
                         <input
@@ -797,7 +797,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
               <div>
                 <label
                   aria-checked="true"
-                  class="Label--label--QAnfT label"
+                  class="_label_1b6x4_141 label"
                   for="toggle-button-1"
                   role="switch"
                 >
@@ -832,7 +832,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.messenger_enabled"
                     >
                       <input
@@ -848,7 +848,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.posts_enabled"
                     >
                       <input
@@ -864,7 +864,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.recommendations_enabled"
                     >
                       <input
@@ -880,7 +880,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.mentions_enabled"
                     >
                       <input
@@ -896,7 +896,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.instagram_comments_enabled"
                     >
                       <input
@@ -912,7 +912,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.instagram_mentions_enabled"
                     >
                       <input
@@ -934,7 +934,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                             class="mb-2"
                           >
                             <label
-                              class="Label--label--QAnfT Label--isDisabled--cM4ye label"
+                              class="_label_1b6x4_141 _isDisabled_1b6x4_151 label"
                               for="1.instagram_direct_message_enabled"
                             >
                               <input
@@ -973,7 +973,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     class="mb-2"
                   >
                     <label
-                      class="Label--label--QAnfT label"
+                      class="_label_1b6x4_141 label"
                       for="1.instagram_ads_enabled"
                     >
                       <input
@@ -1003,7 +1003,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                       class="mb-2"
                     >
                       <label
-                        class="Label--label--QAnfT label"
+                        class="_label_1b6x4_141 label"
                         for="1.import_history_enabled"
                       >
                         <input

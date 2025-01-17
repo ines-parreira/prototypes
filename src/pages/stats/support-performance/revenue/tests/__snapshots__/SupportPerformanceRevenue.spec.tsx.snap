@@ -80,7 +80,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                   class="wrapperItem"
                 >
                   <label
-                    class="Label--label--QAnfT label labelItem"
+                    class="_label_1b6x4_141 label labelItem"
                     for="checkbox-1"
                   >
                     <input
@@ -144,7 +144,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                   class="checkbox"
                 >
                   <label
-                    class="Label--label--QAnfT label quickSelectionOption"
+                    class="_label_1b6x4_141 label quickSelectionOption"
                     for="checkbox-3"
                   >
                     <input
@@ -174,7 +174,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                   class="wrapperItem"
                 >
                   <label
-                    class="Label--label--QAnfT label labelItem"
+                    class="_label_1b6x4_141 label labelItem"
                     for="checkbox-4"
                   >
                     <input

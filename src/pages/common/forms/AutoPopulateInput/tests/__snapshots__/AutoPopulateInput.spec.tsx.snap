@@ -22,7 +22,7 @@ exports[`<AutoPopulateInput /> render() should render checked 1`] = `
   </div>
   <div>
     <label
-      class="Label--label--QAnfT label"
+      class="_label_1b6x4_141 label"
       for="checkbox-2"
     >
       <input
@@ -59,7 +59,7 @@ exports[`<AutoPopulateInput /> render() should render unchecked 1`] = `
   </div>
   <div>
     <label
-      class="Label--label--QAnfT label"
+      class="_label_1b6x4_141 label"
       for="checkbox-4"
     >
       <input

@@ -45,12 +45,12 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
           class="inputContainer"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
           >
             Test Radio Buttons
             <abbr
               aria-label="required"
-              class="Label--abbr--Zx_yi"
+              class="_abbr_1b6x4_136"
               title="required"
             >
               *
@@ -86,7 +86,7 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
         >
           <div>
             <label
-              class="Label--label--QAnfT label"
+              class="_label_1b6x4_141 label"
               for="164"
             >
               <input
@@ -98,7 +98,7 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
               Include Insurance?
               <abbr
                 aria-label="required"
-                class="Label--abbr--Zx_yi"
+                class="_abbr_1b6x4_136"
                 title="required"
               >
                 *
@@ -115,12 +115,12 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
           class="inputContainer"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
           >
             Colors
             <abbr
               aria-label="required"
-              class="Label--abbr--Zx_yi"
+              class="_abbr_1b6x4_136"
               title="required"
             >
               *
@@ -155,12 +155,12 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
           class="inputContainer"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
           >
             Rectangles
             <abbr
               aria-label="required"
-              class="Label--abbr--Zx_yi"
+              class="_abbr_1b6x4_136"
               title="required"
             >
               *
@@ -195,7 +195,7 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
           class="inputContainer"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
           >
             Just a drodown
           </label>
@@ -223,12 +223,12 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
           class="inputContainer"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
           >
             test5
             <abbr
               aria-label="required"
-              class="Label--abbr--Zx_yi"
+              class="_abbr_1b6x4_136"
               title="required"
             >
               *
@@ -337,12 +337,12 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
           class="inputContainer"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
           >
             Test Radio Buttons
             <abbr
               aria-label="required"
-              class="Label--abbr--Zx_yi"
+              class="_abbr_1b6x4_136"
               title="required"
             >
               *
@@ -375,7 +375,7 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
         >
           <div>
             <label
-              class="Label--label--QAnfT label"
+              class="_label_1b6x4_141 label"
               for="164"
             >
               <input
@@ -387,7 +387,7 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
               Include Insurance?
               <abbr
                 aria-label="required"
-                class="Label--abbr--Zx_yi"
+                class="_abbr_1b6x4_136"
                 title="required"
               >
                 *
@@ -404,12 +404,12 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
           class="inputContainer"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
           >
             Colors
             <abbr
               aria-label="required"
-              class="Label--abbr--Zx_yi"
+              class="_abbr_1b6x4_136"
               title="required"
             >
               *
@@ -441,12 +441,12 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
           class="inputContainer"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
           >
             Rectangles
             <abbr
               aria-label="required"
-              class="Label--abbr--Zx_yi"
+              class="_abbr_1b6x4_136"
               title="required"
             >
               *
@@ -478,7 +478,7 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
           class="inputContainer"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
           >
             Just a drodown
           </label>
@@ -508,12 +508,12 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
           class="inputContainer"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
           >
             test5
             <abbr
               aria-label="required"
-              class="Label--abbr--Zx_yi"
+              class="_abbr_1b6x4_136"
               title="required"
             >
               *
@@ -619,12 +619,12 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
           class="inputContainer"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
           >
             Test Radio Buttons
             <abbr
               aria-label="required"
-              class="Label--abbr--Zx_yi"
+              class="_abbr_1b6x4_136"
               title="required"
             >
               *
@@ -655,7 +655,7 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
         >
           <div>
             <label
-              class="Label--label--QAnfT label"
+              class="_label_1b6x4_141 label"
               for="164"
             >
               <input
@@ -667,7 +667,7 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
               Include Insurance?
               <abbr
                 aria-label="required"
-                class="Label--abbr--Zx_yi"
+                class="_abbr_1b6x4_136"
                 title="required"
               >
                 *
@@ -679,12 +679,12 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
           class="inputContainer"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
           >
             Colors
             <abbr
               aria-label="required"
-              class="Label--abbr--Zx_yi"
+              class="_abbr_1b6x4_136"
               title="required"
             >
               *
@@ -714,12 +714,12 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
           class="inputContainer"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
           >
             Rectangles
             <abbr
               aria-label="required"
-              class="Label--abbr--Zx_yi"
+              class="_abbr_1b6x4_136"
               title="required"
             >
               *
@@ -749,7 +749,7 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
           class="inputContainer"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
           >
             Just a drodown
           </label>
@@ -777,12 +777,12 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
           class="inputContainer"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
           >
             test5
             <abbr
               aria-label="required"
-              class="Label--abbr--Zx_yi"
+              class="_abbr_1b6x4_136"
               title="required"
             >
               *

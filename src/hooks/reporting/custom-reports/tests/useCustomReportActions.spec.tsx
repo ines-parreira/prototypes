@@ -72,7 +72,7 @@ const duplicateHandlerData = {
     type: customReport.type,
     emoji: customReport.emoji,
     children: customReport.children,
-    analytics_filter_id: customReport.analytics_filter_id,
+    analytics_filter_id: customReport.analytics_filter_id || 0,
 }
 
 const deleteHandlerData = {

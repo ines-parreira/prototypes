@@ -28,7 +28,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
         >
           <label
             aria-checked="false"
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
             for="toggle-button-1"
             role="switch"
           >
@@ -152,7 +152,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
             <label
               aria-checked="false"
               aria-label="Enable chat contact card"
-              class="Label--label--QAnfT Label--isDisabled--cM4ye label disabledLabel"
+              class="_label_1b6x4_141 _isDisabled_1b6x4_151 label disabledLabel"
               for="toggle-button-2"
               role="switch"
             >
@@ -179,7 +179,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
           </div>
           <div>
             <label
-              class="Label--label--QAnfT Label--isDisabled--cM4ye label"
+              class="_label_1b6x4_141 _isDisabled_1b6x4_151 label"
               for="textarea-3"
             >
               Card description
@@ -349,7 +349,7 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
         >
           <label
             aria-checked="false"
-            class="Label--label--QAnfT Label--isDisabled--cM4ye label disabledLabel"
+            class="_label_1b6x4_141 _isDisabled_1b6x4_151 label disabledLabel"
             for="toggle-button-4"
             role="switch"
           >
@@ -410,7 +410,7 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
             <label
               aria-checked="false"
               aria-label="Enable chat contact card"
-              class="Label--label--QAnfT Label--isDisabled--cM4ye label disabledLabel"
+              class="_label_1b6x4_141 _isDisabled_1b6x4_151 label disabledLabel"
               for="toggle-button-5"
               role="switch"
             >
@@ -437,7 +437,7 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
           </div>
           <div>
             <label
-              class="Label--label--QAnfT Label--isDisabled--cM4ye label"
+              class="_label_1b6x4_141 _isDisabled_1b6x4_151 label"
               for="textarea-6"
             >
               Card description

@@ -329,13 +329,13 @@ exports[`<BigCommerce/> Integration should render 1`] = `
               class="loadingIcon"
             >
               <svg
-                class="LoadingSpinner--spinner--a8Lrf LoadingSpinner--dark--7oiyy LoadingSpinner--small--Fokyx"
+                class="_spinner_93fxp_136 _dark_93fxp_159 _small_93fxp_178"
                 preserveAspectRatio="xMidYMid meet"
                 role="status"
                 viewBox="0 0 20 20"
               >
                 <circle
-                  class="LoadingSpinner--dot--tnzt_"
+                  class="_dot_93fxp_168"
                   cx="10"
                   cy="10"
                   fill="none"
@@ -343,7 +343,7 @@ exports[`<BigCommerce/> Integration should render 1`] = `
                   stroke-width="2"
                 />
                 <circle
-                  class="LoadingSpinner--circle--OnNzl"
+                  class="_circle_93fxp_174"
                   cx="10"
                   cy="10"
                   fill="none"
@@ -370,7 +370,7 @@ exports[`<BigCommerce/> Integration should render 1`] = `
         </div>
         <form>
           <label
-            class="Label--label--QAnfT Label--isDisabled--cM4ye mb-2"
+            class="_label_1b6x4_141 _isDisabled_1b6x4_151 mb-2"
             for="disabled-store-field"
           >
             Store domain

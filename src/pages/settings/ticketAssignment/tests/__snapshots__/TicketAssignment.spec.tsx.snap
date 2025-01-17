@@ -157,7 +157,7 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
           >
             <div>
               <label
-                class="Label--label--QAnfT label"
+                class="_label_1b6x4_141 label"
                 for="auto_assign_to_teams"
               >
                 <input
@@ -190,7 +190,7 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
             class="mb32 form-group"
           >
             <label
-              class="Label--label--QAnfT body-semibold limitsHeader"
+              class="_label_1b6x4_141 body-semibold limitsHeader"
             >
               Auto-assignment limits
               <i
@@ -341,7 +341,7 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
             </h3>
             <div>
               <label
-                class="Label--label--QAnfT label"
+                class="_label_1b6x4_141 label"
                 for="unassign_on_reply"
               >
                 <input
@@ -406,7 +406,7 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
         type="button"
       >
         <svg
-          class="LoadingSpinner--spinner--a8Lrf LoadingSpinner--gloom--BV3WA spinner"
+          class="_spinner_93fxp_136 _gloom_93fxp_162 spinner"
           height="22"
           preserveAspectRatio="xMidYMid meet"
           role="status"
@@ -414,7 +414,7 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
           width="22"
         >
           <circle
-            class="LoadingSpinner--dot--tnzt_"
+            class="_dot_93fxp_168"
             cx="10"
             cy="10"
             fill="none"
@@ -422,7 +422,7 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
             stroke-width="2"
           />
           <circle
-            class="LoadingSpinner--circle--OnNzl"
+            class="_circle_93fxp_174"
             cx="10"
             cy="10"
             fill="none"
@@ -541,7 +541,7 @@ exports[`<TicketAssignment/> should render the create team cta when no team exis
             </h3>
             <div>
               <label
-                class="Label--label--QAnfT label"
+                class="_label_1b6x4_141 label"
                 for="unassign_on_reply"
               >
                 <input
@@ -670,7 +670,7 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
           >
             <div>
               <label
-                class="Label--label--QAnfT label"
+                class="_label_1b6x4_141 label"
                 for="auto_assign_to_teams"
               >
                 <input
@@ -703,7 +703,7 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
             class="mb32 form-group"
           >
             <label
-              class="Label--label--QAnfT body-semibold limitsHeader"
+              class="_label_1b6x4_141 body-semibold limitsHeader"
             >
               Auto-assignment limits
               <i
@@ -854,7 +854,7 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
             </h3>
             <div>
               <label
-                class="Label--label--QAnfT label"
+                class="_label_1b6x4_141 label"
                 for="unassign_on_reply"
               >
                 <input

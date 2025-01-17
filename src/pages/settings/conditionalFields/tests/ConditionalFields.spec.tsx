@@ -99,10 +99,10 @@ describe('<CustomFields/>', () => {
         useListCustomFieldConditionsMock.mockReturnValue({
             data: axiosSuccessResponse(
                 apiListCursorPaginationResponse(
-                    Array.from(
-                        {length: MAX_CONDITIONS},
-                        () => customFieldCondition
-                    )
+                    Array.from({length: MAX_CONDITIONS}, (_, i) => ({
+                        ...customFieldCondition,
+                        id: i,
+                    }))
                 )
             ),
             isLoading: false,

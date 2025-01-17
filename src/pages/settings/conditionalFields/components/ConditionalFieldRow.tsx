@@ -13,10 +13,10 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import history from 'pages/history'
 
-import {DeletionPopover} from './components/DeletionPopover'
+import useCreateCustomFieldCondition from '../hooks/useCreateCustomFieldCondition'
+import useUpdateCustomFieldCondition from '../hooks/useUpdateCustomFieldCondition'
 import css from './ConditionalFieldRow.less'
-import useCreateCustomFieldCondition from './hooks/useCreateCustomFieldCondition'
-import useUpdateCustomFieldCondition from './hooks/useUpdateCustomFieldCondition'
+import {DeletionPopover} from './DeletionPopover'
 
 interface ConditionalFieldRowProps {
     condition: CustomFieldCondition

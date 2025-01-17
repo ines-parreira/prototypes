@@ -348,13 +348,13 @@ exports[`<Magento2/> Integration should render 1`] = `
               class="loadingIcon"
             >
               <svg
-                class="LoadingSpinner--spinner--a8Lrf LoadingSpinner--dark--7oiyy LoadingSpinner--small--Fokyx"
+                class="_spinner_93fxp_136 _dark_93fxp_159 _small_93fxp_178"
                 preserveAspectRatio="xMidYMid meet"
                 role="status"
                 viewBox="0 0 20 20"
               >
                 <circle
-                  class="LoadingSpinner--dot--tnzt_"
+                  class="_dot_93fxp_168"
                   cx="10"
                   cy="10"
                   fill="none"
@@ -362,7 +362,7 @@ exports[`<Magento2/> Integration should render 1`] = `
                   stroke-width="2"
                 />
                 <circle
-                  class="LoadingSpinner--circle--OnNzl"
+                  class="_circle_93fxp_174"
                   cx="10"
                   cy="10"
                   fill="none"
@@ -391,13 +391,13 @@ exports[`<Magento2/> Integration should render 1`] = `
           class=""
         >
           <label
-            class="Label--label--QAnfT mb-2"
+            class="_label_1b6x4_141 mb-2"
             for="store-field"
           >
             Store admin URL
             <abbr
               aria-label="required"
-              class="Label--abbr--Zx_yi"
+              class="_abbr_1b6x4_136"
               title="required"
             >
               *
@@ -634,12 +634,12 @@ exports[`<Magento2/> New should render 1`] = `
           Step 2
         </h2>
         <label
-          class="Label--label--QAnfT"
+          class="_label_1b6x4_141"
         >
           How do you want to connect this app?
           <abbr
             aria-label="required"
-            class="Label--abbr--Zx_yi"
+            class="_abbr_1b6x4_136"
             title="required"
           >
             *
@@ -657,7 +657,7 @@ exports[`<Magento2/> New should render 1`] = `
           >
             <div>
               <label
-                class="Label--label--QAnfT label"
+                class="_label_1b6x4_141 label"
                 for="oneStepConnect"
               >
                 <input
@@ -681,7 +681,7 @@ exports[`<Magento2/> New should render 1`] = `
           >
             <div>
               <label
-                class="Label--label--QAnfT label"
+                class="_label_1b6x4_141 label"
                 for="manualConnect"
               >
                 <input
@@ -699,13 +699,13 @@ exports[`<Magento2/> New should render 1`] = `
           class=""
         >
           <label
-            class="Label--label--QAnfT mb-2"
+            class="_label_1b6x4_141 mb-2"
             for="store-field"
           >
             Store admin URL
             <abbr
               aria-label="required"
-              class="Label--abbr--Zx_yi"
+              class="_abbr_1b6x4_136"
               title="required"
             >
               *

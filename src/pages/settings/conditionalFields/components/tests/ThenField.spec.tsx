@@ -49,6 +49,7 @@ const defaultProps = {
         {field_id: 3, type: ExpressionFieldType.Visible},
     ],
     onChange: jest.fn(),
+    ref: () => undefined,
 }
 
 describe('ThenField', () => {

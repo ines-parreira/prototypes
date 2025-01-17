@@ -264,7 +264,7 @@ exports[`<RuleFormEditor /> should render editor for creating rule 1`] = `
             <div>
               <label
                 aria-checked="true"
-                class="Label--label--QAnfT label"
+                class="_label_1b6x4_141 label"
                 for="toggle-button-11"
                 role="switch"
               >
@@ -624,7 +624,7 @@ exports[`<RuleFormEditor /> should render editor for rule 1`] = `
             <div>
               <label
                 aria-checked="true"
-                class="Label--label--QAnfT label"
+                class="_label_1b6x4_141 label"
                 for="toggle-button-5"
                 role="switch"
               >

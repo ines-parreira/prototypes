@@ -320,7 +320,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                 class="mb-3"
               >
                 <label
-                  class="Label--label--QAnfT label"
+                  class="_label_1b6x4_141 label"
                   for="checkbox-3"
                 >
                   <input
@@ -341,7 +341,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                 class="mb-3"
               >
                 <label
-                  class="Label--label--QAnfT label"
+                  class="_label_1b6x4_141 label"
                   for="notify-customer"
                 >
                   <input
@@ -366,7 +366,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                 class="form-group"
               >
                 <label
-                  class="Label--label--QAnfT"
+                  class="_label_1b6x4_141"
                   for="amount"
                 >
                   Refund with: Manual
@@ -437,7 +437,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                 class="form-group"
               >
                 <label
-                  class="Label--label--QAnfT"
+                  class="_label_1b6x4_141"
                   for="reason"
                 >
                   Reason for refund

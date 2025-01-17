@@ -8,13 +8,13 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
     class="mb-3"
   >
     <label
-      class="Label--label--QAnfT label"
+      class="_label_1b6x4_141 label"
       for="input-text-1"
     >
       Title
       <abbr
         aria-label="required"
-        class="Label--abbr--Zx_yi"
+        class="_abbr_1b6x4_136"
         title="required"
       >
         *
@@ -93,13 +93,13 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
     >
       <div>
         <label
-          class="Label--label--QAnfT label"
+          class="_label_1b6x4_141 label"
           for="input-text-3"
         >
           URL
           <abbr
             aria-label="required"
-            class="Label--abbr--Zx_yi"
+            class="_abbr_1b6x4_136"
             title="required"
           >
             *
@@ -201,7 +201,7 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
           class="option"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
             for="application/x-www-form-urlencoded"
           >
             <input
@@ -217,7 +217,7 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
           class="option"
         >
           <label
-            class="Label--label--QAnfT label"
+            class="_label_1b6x4_141 label"
             for="application/json"
           >
             <input

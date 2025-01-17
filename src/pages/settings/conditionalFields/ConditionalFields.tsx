@@ -26,7 +26,7 @@ import settingsCss from 'pages/settings/settings.less'
 
 import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
 
-import ConditionalFieldRow from './ConditionalFieldRow'
+import ConditionalFieldRow from './components/ConditionalFieldRow'
 import css from './ConditionalFields.less'
 
 export const MAX_CONDITIONS = 70

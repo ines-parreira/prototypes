@@ -270,7 +270,7 @@ exports[`<SmsIntegrationPreferences/> render() should submit a valid payload wit
             type="button"
           >
             <svg
-              class="LoadingSpinner--spinner--a8Lrf LoadingSpinner--gloom--BV3WA spinner"
+              class="_spinner_93fxp_136 _gloom_93fxp_162 spinner"
               height="22"
               preserveAspectRatio="xMidYMid meet"
               role="status"
@@ -278,7 +278,7 @@ exports[`<SmsIntegrationPreferences/> render() should submit a valid payload wit
               width="22"
             >
               <circle
-                class="LoadingSpinner--dot--tnzt_"
+                class="_dot_93fxp_168"
                 cx="10"
                 cy="10"
                 fill="none"
@@ -286,7 +286,7 @@ exports[`<SmsIntegrationPreferences/> render() should submit a valid payload wit
                 stroke-width="2"
               />
               <circle
-                class="LoadingSpinner--circle--OnNzl"
+                class="_circle_93fxp_174"
                 cx="10"
                 cy="10"
                 fill="none"

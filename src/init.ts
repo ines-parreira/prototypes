@@ -1,4 +1,4 @@
-import {setDefaultConfig} from '@gorgias/api-queries'
+import {setDefaultConfig} from '@gorgias/api-client'
 import {
     Chart,
     BarController,
