@@ -2,7 +2,9 @@ import React, {ReactNode} from 'react'
 
 import AlertBanners from 'AlertBanners'
 import {AppNode} from 'appNode'
+import {useFlag} from 'common/flags'
 import {NotificationsToasts} from 'common/notifications'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useApplyTheme} from 'core/theme'
 import useHasPhone from 'hooks/useHasPhone'
 import {AlertNotifications} from 'notifications'
@@ -29,6 +31,10 @@ type Props = {
 }
 
 export default function App({children}: Props) {
+    const hasGlobalNav = useFlag<boolean>(
+        FeatureFlagKey.GlobalNavigation,
+        false
+    )
     const hasPhone = useHasPhone()
 
     useApplyTheme()
@@ -40,7 +46,7 @@ export default function App({children}: Props) {
     useActivityTracker()
 
     return (
-        <AppNode>
+        <AppNode className={hasGlobalNav ? 'globalNav' : undefined}>
             <UIKitRootNodeProvider>
                 <SessionChangeDetection />
                 <NotificationsToasts />

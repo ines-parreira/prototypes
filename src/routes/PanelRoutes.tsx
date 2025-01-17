@@ -11,6 +11,8 @@ import {TicketInfobarPanel} from 'tickets/ticket-infobar'
 import {TicketsListPanel} from 'tickets/tickets-list'
 import {ViewPanel} from 'tickets/view'
 
+import css from './PanelRoutes.less'
+
 export const panelRoutesRegexps = [
     /^\/app\/?$/,
     /^\/app\/tickets\/?/,
@@ -30,7 +32,7 @@ export default function PanelRoutes() {
         <Panels size={width}>
             <GlobalNavigationPanel key="global-navigation" />
             <TicketsNavbarPanel key="navbar" />
-            <PanelGroup>
+            <PanelGroup className={css.contentGroup} subtractSize={18}>
                 <Switch>
                     <Route exact path="/app">
                         <ViewPanel key="view-panel" />

@@ -1,4 +1,4 @@
-import classnames from 'classnames'
+import cn from 'classnames'
 import _isEqual from 'lodash/isEqual'
 import React, {ComponentType, ReactNode, memo} from 'react'
 import {Container} from 'reactstrap'
@@ -59,7 +59,7 @@ const App = ({
     const Wrapper = containerPadding ? FullPage : Container
     const wrapperProps = containerPadding
         ? {noContainerWidthLimit}
-        : {fluid: true, className: classnames(css['main-content'])}
+        : {fluid: true, className: cn(css['main-content'])}
     const content = !!Content ? <Content /> : children
 
     const hasOpenedPanel = !!openedPanel
@@ -91,18 +91,15 @@ const App = ({
             ) : null}
 
             <div
-                className={classnames(
-                    'd-flex flex-grow-1 flex-column',
-                    css.container
-                )}
+                className={cn('d-flex flex-grow-1 flex-column', css.container)}
             >
                 <div
-                    className="d-flex flex-grow-1"
+                    className={cn('d-flex flex-grow-1', css.contentInfobar)}
                     style={{
                         overflow: 'hidden',
                     }}
                 >
-                    <div className={classnames('app-content', css.content)}>
+                    <div className={cn('app-content', css.content)}>
                         <div className="mobile-nav">
                             <IconButton
                                 className="mr-3"
@@ -138,7 +135,7 @@ const App = ({
             </div>
 
             <div
-                className={classnames(css.backdrop, {
+                className={cn(css.backdrop, {
                     [css.hidden]: !hasOpenedPanel,
                 })}
                 onClick={handleClosePanels}

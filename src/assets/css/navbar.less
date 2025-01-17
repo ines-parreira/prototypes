@@ -122,4 +122,32 @@
         font-size: 20px !important;
         margin-right: 8px !important;
     }
+
+    :global(.globalNav) :local {
+        .link {
+            height: 28px;
+            border: 1px solid transparent;
+
+            &:global:hover {
+                border-color: var(--navbar-link-hover-background-color);
+                background-color: var(--navbar-link-hover-background-color);
+                color: var(--navbar-link-hover-text);
+
+                :local .item-count {
+                    color: var(--navbar-link-hover-text);
+                }
+            }
+
+            &:global.active,
+            &:global:active {
+                border: 1px solid var(--navigation-selected);
+                background: var(--navigation-border);
+                color: var(--navigation-title-item);
+
+                :local .item-count {
+                    color: var(--navigation-title-item);
+                }
+            }
+        }
+    }
 }

@@ -1,8 +1,14 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 
+import {useFlag} from 'common/flags'
+import {assumeMock} from 'utils/testing'
+
 import {useSetBanners} from '../../hooks/useSetBanners'
 import App from '../App'
+
+jest.mock('common/flags', () => ({useFlag: jest.fn()}))
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock('common/notifications', () => ({
     NotificationsToasts: jest.fn(() => <div>toasts</div>),
@@ -60,11 +66,22 @@ jest.mock('../../hooks/useSharedLogic', () => jest.fn(() => undefined))
 jest.mock('../../hooks/useActivityTracker', () => jest.fn(() => undefined))
 
 describe('App component', () => {
+    beforeEach(() => {
+        useFlagMock.mockReturnValue(false)
+    })
+
     it('should render its children', () => {
         const child = '20-1RPZ'
         render(<App>{child}</App>)
 
         expect(screen.getByText(child)).toBeInTheDocument()
+    })
+
+    it('should apply the `globalNav` class to the AppNode', () => {
+        useFlagMock.mockReturnValue(true)
+        const {container} = render(<App>boop</App>)
+        const child = container.firstChild as HTMLElement
+        expect(child.classList.contains('globalNav')).toBe(true)
     })
 
     it('should use `useSetBanners` hook and render `AlertBanners`', () => {
