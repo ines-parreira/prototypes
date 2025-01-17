@@ -1,49 +1,59 @@
 import React, {useState} from 'react'
 
+import css from 'pages/common/components/SearchBar/SearchBar.less'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
-import css from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal.less'
 
-type Props = {
-    handleClearSearch: () => void
-    handleSearchValue: (value: string) => void
+export type SearchBarProps = {
+    value?: string
+    defaultValue?: string
+    onChange?: (value: string) => void
     placeholder?: string
+    label?: string
 }
 
 export const SearchBar = ({
-    handleClearSearch,
-    handleSearchValue,
+    value: controlledValue,
+    onChange,
+    defaultValue = '',
     placeholder,
-}: Props) => {
-    const [value, setValue] = useState<string>('')
+    label = 'Search',
+}: SearchBarProps) => {
+    const isControlled = typeof controlledValue !== 'undefined'
 
-    const onSearchValue = (value: string) => {
-        setValue(value)
+    const [internalValue, setInternalValue] = useState(defaultValue)
 
-        handleSearchValue(value)
-    }
+    const value = isControlled ? controlledValue : internalValue
 
-    const onClearSearch = () => {
-        setValue('')
+    const handleChange = (nextValue: string) => {
+        if (onChange) {
+            onChange(nextValue)
+        }
 
-        handleClearSearch()
+        if (!controlledValue) {
+            setInternalValue(nextValue)
+        }
     }
 
     return (
         <TextInput
             placeholder={placeholder}
-            className={css.searchBar}
-            onChange={onSearchValue}
-            aria-label="Search charts"
-            prefix={<IconInput icon="search" className={css.searchBarPrefix} />}
-            suffix={
-                <IconInput
-                    icon="close"
-                    className={css.searchBarSuffix}
-                    onClick={onClearSearch}
-                />
-            }
             value={value}
+            onChange={handleChange}
+            aria-label={label}
+            prefix={<IconInput icon="search" />}
+            suffix={
+                value && (
+                    <button
+                        className={css.clearButton}
+                        onClick={() => handleChange('')}
+                        type="button"
+                        title="Clear"
+                    >
+                        <IconInput icon="close" />
+                    </button>
+                )
+            }
         />
     )
 }

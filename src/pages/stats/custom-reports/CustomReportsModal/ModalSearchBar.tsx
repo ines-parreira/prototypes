@@ -59,23 +59,22 @@ export const getSearchConfig = (value: string): ReportsModalConfig | null => {
 }
 
 export const ModalSearchBar = ({setConfig, setSelectedReport}: Props) => {
-    const onSearchValue = (value: string) => {
-        const config = getSearchConfig(value)
-
-        setConfig(config)
-        setSelectedReport(_get(config, '0.children.0.config') || null)
-    }
-
-    const onClearSearch = () => {
-        setSelectedReport(null)
-        setConfig(REPORTS_MODAL_CONFIG)
+    const handleChange = (value: string) => {
+        if (value) {
+            const config = getSearchConfig(value)
+            setConfig(config)
+            setSelectedReport(_get(config, '0.children.0.config') || null)
+        } else {
+            setSelectedReport(null)
+            setConfig(REPORTS_MODAL_CONFIG)
+        }
     }
 
     return (
         <SearchBar
-            handleClearSearch={onClearSearch}
-            handleSearchValue={onSearchValue}
+            onChange={handleChange}
             placeholder={placeholder}
+            label="Search charts"
         />
     )
 }

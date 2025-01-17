@@ -1,15 +1,15 @@
 @import '~css/new/mixins';
 
 :local {
-    .searchBar {
-        margin: @layout-spacing-s 0 @layout-spacing-xs 0;
-        width: 410px;
-    }
-    .searchBarPrefix {
-        font-size: 15px;
-    }
-    .searchBarSuffix {
-        font-size: 10px;
-        cursor: pointer;
+    .clearButton {
+        --size: 24px;
+
+        border: 0;
+        background: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: var(--size);
+        width: var(--size);
     }
 }

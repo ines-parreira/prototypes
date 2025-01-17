@@ -59,8 +59,13 @@ describe('ModalSearchBar', () => {
         expect(setSelectedReport).toHaveBeenLastCalledWith(calledCharts)
     })
 
-    it('should clear all values on clear', () => {
+    it('should clear all values on clear', async () => {
         render(<ModalSearchBar {...props} />, {})
+
+        const value = 'Messages'
+
+        const inputElement = screen.getByRole('textbox')
+        await userEvent.type(inputElement, value)
 
         fireEvent.click(screen.getByText('close'))
 
