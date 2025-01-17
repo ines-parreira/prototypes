@@ -1,8 +1,8 @@
 import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import KPI from 'assets/img/KPI.svg'
 import IconInput from 'pages/common/forms/input/IconInput'
+import {KpiIcon} from 'pages/stats/common/icons/KpiIcon'
 import css from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon.less'
 import {ChartType} from 'pages/stats/custom-reports/types'
 
@@ -34,7 +34,9 @@ export const ChartIcon = ({icon, id}: Props) => {
         <>
             <Tooltip target={id}>{icon.tooltip}</Tooltip>
             {icon.name === 'KPI' ? (
-                <img id={id} src={KPI} alt="KPI" className={css.icon} />
+                <span id={id} className={css.icon}>
+                    <KpiIcon />
+                </span>
             ) : (
                 <IconInput id={id} icon={icon.name} className={css.icon} />
             )}
