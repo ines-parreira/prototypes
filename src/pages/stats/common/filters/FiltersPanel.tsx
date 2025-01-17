@@ -230,15 +230,26 @@ export const FiltersPanelComponent = ({
     }, [activeFilters.length, cleanStatsFilters, optionalFilters])
 
     useEffect(() => {
-        const newFilters = optionalFilters.filter(
-            (filter) =>
+        const newFilters = optionalFilters.filter((filter) => {
+            if (
                 filter !== FilterKey.CustomFields &&
                 filter !== FilterKey.Tags &&
-                filter !== FilterKey.Period &&
-                activeFilters.find(
-                    (activeFilter) => activeFilter.key === filter
-                ) === undefined
-        )
+                filter !== FilterKey.Period
+            ) {
+                return (
+                    activeFilters.find(
+                        (activeFilter) => activeFilter.key === filter
+                    ) === undefined
+                )
+            } else if (filter === FilterKey.Tags) {
+                return (
+                    activeFilters.filter(
+                        (activeFilter) => activeFilter.type === FilterKey.Tags
+                    ).length < 2
+                )
+            }
+            return false
+        })
 
         const updatedActiveFilters = activeFilters.map((filter) => {
             if (filter.type === FilterKey.CustomFields) {
