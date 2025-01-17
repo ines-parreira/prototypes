@@ -14,6 +14,7 @@ import {
 } from 'fixtures/productPrices'
 import {FilterKey} from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/helpers'
 import {AccuracyTrendCard} from 'pages/stats/support-performance/auto-qa/AccuracyTrendCard'
 import AutoQA, {
     AUTO_QA_OPTIONAL_FILTERS,
@@ -194,9 +195,7 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         })
         const extendedAutoQAFilters = [
             ...AUTO_QA_OPTIONAL_FILTERS,
-            FilterKey.ResolutionCompleteness,
-            FilterKey.CommunicationSkills,
-            FilterKey.LanguageProficiency,
+            ...AUTO_QA_FILTER_KEYS,
         ]
 
         renderWithStore(<AutoQA />, state)

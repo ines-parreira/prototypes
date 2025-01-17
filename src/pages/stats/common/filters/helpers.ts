@@ -147,16 +147,16 @@ export const toApiFormatted = (
 }
 
 const ticketFieldsTypes = [FilterKey.CustomFields]
-const qaFilterTypes = [
-    FilterKey.Score,
-    FilterKey.LanguageProficiency,
-    FilterKey.ResolutionCompleteness,
+export const AUTO_QA_FILTER_KEYS = [
     FilterKey.CommunicationSkills,
+    FilterKey.ResolutionCompleteness,
+    FilterKey.LanguageProficiency,
     FilterKey.Accuracy,
+    FilterKey.BrandVoice,
     FilterKey.Efficiency,
     FilterKey.InternalCompliance,
-    FilterKey.BrandVoice,
 ]
+const qaFilterTypes = [FilterKey.Score, ...AUTO_QA_FILTER_KEYS]
 
 type FilterOption = {
     value: string

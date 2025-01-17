@@ -4,6 +4,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {FilterKey} from 'models/stat/types'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/helpers'
 import {getHasAutomate} from 'state/billing/selectors'
 
 type UseOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters = (
@@ -20,20 +21,6 @@ export const useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters: UseO
         return [
             ...optionalFilters,
             ...(analyticsNewCSATFilter ? [FilterKey.Score] : []),
-            ...(autoQaFilters && hasAutomate
-                ? [
-                      FilterKey.CommunicationSkills,
-                      FilterKey.ResolutionCompleteness,
-                      FilterKey.LanguageProficiency,
-                  ]
-                : []),
-            ...(autoQaFilters
-                ? [
-                      FilterKey.Accuracy,
-                      FilterKey.BrandVoice,
-                      FilterKey.Efficiency,
-                      FilterKey.InternalCompliance,
-                  ]
-                : []),
+            ...(autoQaFilters && hasAutomate ? [...AUTO_QA_FILTER_KEYS] : []),
         ]
     }

@@ -30,6 +30,8 @@ import {RootState} from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
 import {assumeMock, mockStore, renderWithStore} from 'utils/testing'
 
+import {AUTO_QA_FILTER_KEYS} from '../helpers'
+
 jest.mock('state/billing/selectors', () => ({
     __esModule: true,
     getHasAutomate: jest.fn(),
@@ -89,16 +91,7 @@ describe('SavedFiltersPanel', () => {
                 [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
             },
             hasAutomate: true,
-            expectedFilters: [
-                ...SAVABLE_FILTERS,
-                FilterKey.CommunicationSkills,
-                FilterKey.ResolutionCompleteness,
-                FilterKey.LanguageProficiency,
-                FilterKey.Accuracy,
-                FilterKey.BrandVoice,
-                FilterKey.Efficiency,
-                FilterKey.InternalCompliance,
-            ],
+            expectedFilters: [...SAVABLE_FILTERS, ...AUTO_QA_FILTER_KEYS],
         },
         {
             flags: {
@@ -109,13 +102,7 @@ describe('SavedFiltersPanel', () => {
             expectedFilters: [
                 ...SAVABLE_FILTERS,
                 FilterKey.Score,
-                FilterKey.CommunicationSkills,
-                FilterKey.ResolutionCompleteness,
-                FilterKey.LanguageProficiency,
-                FilterKey.Accuracy,
-                FilterKey.BrandVoice,
-                FilterKey.Efficiency,
-                FilterKey.InternalCompliance,
+                ...AUTO_QA_FILTER_KEYS,
             ],
         },
 
@@ -125,14 +112,7 @@ describe('SavedFiltersPanel', () => {
                 [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
             },
             hasAutomate: false,
-            expectedFilters: [
-                ...SAVABLE_FILTERS,
-                FilterKey.Score,
-                FilterKey.Accuracy,
-                FilterKey.BrandVoice,
-                FilterKey.Efficiency,
-                FilterKey.InternalCompliance,
-            ],
+            expectedFilters: [...SAVABLE_FILTERS, FilterKey.Score],
         },
         {
             flags: {
@@ -141,6 +121,22 @@ describe('SavedFiltersPanel', () => {
             },
             hasAutomate: true,
             expectedFilters: [...SAVABLE_FILTERS, FilterKey.Score],
+        },
+        {
+            flags: {
+                [FeatureFlagKey.AutoQAFilters]: false,
+                [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
+            },
+            hasAutomate: false,
+            expectedFilters: [...SAVABLE_FILTERS, FilterKey.Score],
+        },
+        {
+            flags: {
+                [FeatureFlagKey.AutoQAFilters]: false,
+                [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
+            },
+            hasAutomate: false,
+            expectedFilters: [...SAVABLE_FILTERS],
         },
     ])(
         'should render FiltersPanel with expected filters',
