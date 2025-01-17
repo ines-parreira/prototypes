@@ -54,7 +54,7 @@ describe('AiAgentNavbarSectionBlock', () => {
         expect(screen.getByAltText('shopify logo')).toBeInTheDocument()
         expect(screen.getByText('Route 1')).toBeInTheDocument()
         expect(screen.getByText('Route 2')).toBeInTheDocument()
-        expect(screen.queryByText('Set Up')).not.toBeInTheDocument()
+        expect(screen.queryByText('Get Started')).not.toBeInTheDocument()
     })
 
     test('renders the component with non-onboarded state', () => {
@@ -69,7 +69,7 @@ describe('AiAgentNavbarSectionBlock', () => {
         )
 
         expect(screen.getByAltText('shopify logo')).toBeInTheDocument()
-        expect(screen.getByText('Set Up')).toBeInTheDocument()
+        expect(screen.getByText('Get Started')).toBeInTheDocument()
         expect(screen.queryByText('Route 1')).not.toBeInTheDocument()
         expect(screen.queryByText('Route 2')).not.toBeInTheDocument()
     })

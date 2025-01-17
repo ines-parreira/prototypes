@@ -74,7 +74,9 @@ export const AiAgentNavbarSectionBlock = ({
                     )}
                 >
                     <NavbarLink to={routes.main}>
-                        <span className={cssNavbar['item-name']}>Set Up</span>
+                        <span className={cssNavbar['item-name']}>
+                            Get Started
+                        </span>
                     </NavbarLink>
                 </div>
             )}

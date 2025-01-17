@@ -186,7 +186,7 @@ describe('<AiAgentNavbar />', () => {
             expect(queryByText('teststore1')).not.toBeInTheDocument()
         })
 
-        it('should render ai agent set up option', () => {
+        it('should render ai agent Get Started option', () => {
             useStoreConfigurationMock.mockReturnValue({
                 storeConfiguration: {
                     ...defaultStoreConfiguration,
@@ -225,7 +225,9 @@ describe('<AiAgentNavbar />', () => {
 
             expect(queryByText('teststore1')).toBeInTheDocument()
             expect(queryAllByText('Optimize').length).toBe(0)
-            expect(queryAllByText('Set Up').length).toBeGreaterThanOrEqual(1)
+            expect(queryAllByText('Get Started').length).toBeGreaterThanOrEqual(
+                1
+            )
         })
 
         it('should render no stores', () => {
