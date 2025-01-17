@@ -48,6 +48,7 @@ import {AiAgentNavbar} from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavba
 import {RedirectToAiAgentStore} from 'pages/aiAgent/components/RedirectToAiAgentStore/RedirectToAiAgentStore'
 import {Level2IntentsContainer} from 'pages/aiAgent/insights/Level2IntentsContainer/Level2IntentsContainer'
 import {OptimizeContainer} from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
+import {AiAgentOnboarding} from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
 import {AiAgentAccountConfigurationProvider} from 'pages/aiAgent/providers/AiAgentAccountConfigurationProvider'
 import {AiAgentErrorBoundary} from 'pages/aiAgent/providers/AiAgentErrorBoundary'
 import AiAgentStoreConfigurationProvider from 'pages/aiAgent/providers/AiAgentStoreConfigurationProvider'
@@ -1485,10 +1486,26 @@ function AutomationContent() {
     )
 }
 
-export function AiAgentBaseRoutes() {
+export function AiAgentBaseRoutes({match: {path}}: RouteComponentProps) {
     return (
         <HelpCenterApiClientProvider>
             <Switch>
+                <Route
+                    path={`${path}/onboarding`}
+                    exact
+                    component={withUserRoleRequired(
+                        AiAgentOnboarding,
+                        AGENT_ROLE
+                    )}
+                />
+                <Route
+                    path={`${path}/:shopType/:shopName/onboarding`}
+                    exact
+                    component={withUserRoleRequired(
+                        AiAgentOnboarding,
+                        AGENT_ROLE
+                    )}
+                />
                 <Route
                     render={() => (
                         <App content={AiAgentContent} navbar={AiAgentNavbar} />

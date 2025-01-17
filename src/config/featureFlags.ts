@@ -75,6 +75,7 @@ export enum FeatureFlagKey {
     ConvertContactForm = 'convert-contact-form',
     ConvertCampaignProritization = 'convert-campaign-prioritization',
     ConvAiStandaloneMenu = 'conv-ai-standalone-menu',
+    ConvAiOnboarding = 'conv-ai-onboarding',
     CustomerTimelineButton = 'customer-timeline-button',
     CustomerFields = 'customer-fields',
     CustomRecordingNotification = 'custom-recording-notification',
