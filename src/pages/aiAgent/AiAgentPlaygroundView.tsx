@@ -116,18 +116,19 @@ export const AiAgentPlaygroundView = ({shopName}: Props) => {
         if (
             isLoadingOnboardingNotificationState ||
             !isAiAgentOnboardingNotificationEnabled ||
-            !isAdmin
+            !isAdmin ||
+            !onboardingNotificationState
         )
             return
 
         const isFullyOnboarded =
-            onboardingNotificationState?.onboardingState ===
+            onboardingNotificationState.onboardingState ===
             AiAgentOnboardingState.FullyOnboarded
         const isActivated =
-            onboardingNotificationState?.onboardingState ===
+            onboardingNotificationState.onboardingState ===
             AiAgentOnboardingState.Activated
         const isActivateAiAgentNotificationAlreadyReceived =
-            !!onboardingNotificationState?.activateAiAgentNotificationReceivedDatetime
+            !!onboardingNotificationState.activateAiAgentNotificationReceivedDatetime
 
         if (
             isFullyOnboarded ||
@@ -137,8 +138,8 @@ export const AiAgentPlaygroundView = ({shopName}: Props) => {
             return
 
         if (
-            onboardingNotificationState?.testBeforeActivationDatetimes &&
-            onboardingNotificationState?.testBeforeActivationDatetimes.length >=
+            onboardingNotificationState.testBeforeActivationDatetimes &&
+            onboardingNotificationState.testBeforeActivationDatetimes.length >=
                 5
         ) {
             handleOnSendOrCancelNotification({
@@ -151,6 +152,7 @@ export const AiAgentPlaygroundView = ({shopName}: Props) => {
         isAdmin,
         isAiAgentOnboardingNotificationEnabled,
         isLoadingOnboardingNotificationState,
+        onboardingNotificationState,
         onboardingNotificationState?.activateAiAgentNotificationReceivedDatetime,
         onboardingNotificationState?.onboardingState,
         onboardingNotificationState?.testBeforeActivationDatetimes,

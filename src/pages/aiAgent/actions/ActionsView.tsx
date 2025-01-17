@@ -83,18 +83,19 @@ const ActionsView = () => {
         if (
             isLoadingOnboardingNotificationState ||
             !isAiAgentOnboardingNotificationEnabled ||
-            !isAdmin
+            !isAdmin ||
+            !onboardingNotificationState
         )
             return
 
         const isFullyOnboarded =
-            onboardingNotificationState?.onboardingState ===
+            onboardingNotificationState.onboardingState ===
             AiAgentOnboardingState.FullyOnboarded
         const isActivated =
-            onboardingNotificationState?.onboardingState ===
+            onboardingNotificationState.onboardingState ===
             AiAgentOnboardingState.Activated
         const isActivateAiAgentNotificationAlreadyReceived =
-            !!onboardingNotificationState?.activateAiAgentNotificationReceivedDatetime
+            !!onboardingNotificationState.activateAiAgentNotificationReceivedDatetime
 
         if (
             isFullyOnboarded ||
@@ -114,6 +115,7 @@ const ActionsView = () => {
         isAdmin,
         isAiAgentOnboardingNotificationEnabled,
         isLoadingOnboardingNotificationState,
+        onboardingNotificationState,
         onboardingNotificationState?.activateAiAgentNotificationReceivedDatetime,
         onboardingNotificationState?.onboardingState,
         storeWfConfigurations.length,

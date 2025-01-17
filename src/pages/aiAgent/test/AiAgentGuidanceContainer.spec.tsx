@@ -480,6 +480,11 @@ describe('<AiAgentGuidanceContainer />', () => {
                 isGuidancesAndAIGuidances: false,
                 guidanceArticles,
             })
+            mockUseAiAgentOnboardingNotification.mockReturnValue({
+                ...defaultUseAiAgentOnboardingNotification,
+                onboardingNotificationState:
+                    getOnboardingNotificationStateFixture(),
+            })
 
             renderComponent()
 
@@ -523,6 +528,23 @@ describe('<AiAgentGuidanceContainer />', () => {
                     getOnboardingNotificationStateFixture({
                         onboardingState: AiAgentOnboardingState.FullyOnboarded,
                     }),
+            })
+
+            renderComponent()
+
+            expect(
+                defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+            ).not.toHaveBeenCalled()
+        })
+
+        it('should not trigger activate AI agent notification when there is no onboardingNotificationState', () => {
+            const guidanceArticles = Array(3)
+                .fill(null)
+                .map((_, index) => getGuidanceArticleFixture(index))
+            mockedUseGuidanceAiSuggestions.mockReturnValue({
+                ...defaultGuidanceAiSuggestionsProps,
+                isGuidancesAndAIGuidances: false,
+                guidanceArticles,
             })
 
             renderComponent()

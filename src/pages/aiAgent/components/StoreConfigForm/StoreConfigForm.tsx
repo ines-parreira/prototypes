@@ -582,10 +582,10 @@ export const StoreConfigForm = ({
             return
 
         const isFullyOnboarded =
-            onboardingNotificationState?.onboardingState ===
+            onboardingNotificationState.onboardingState ===
             AiAgentOnboardingState.FullyOnboarded
         const isActivated =
-            onboardingNotificationState?.onboardingState ===
+            onboardingNotificationState.onboardingState ===
             AiAgentOnboardingState.Activated
 
         if (isFullyOnboarded || isActivated) return
@@ -604,7 +604,7 @@ export const StoreConfigForm = ({
             const payload: Partial<OnboardingNotificationState> = {
                 onboardingState: AiAgentOnboardingState.Activated,
                 firstActivationDatetime:
-                    onboardingNotificationState?.firstActivationDatetime ??
+                    onboardingNotificationState.firstActivationDatetime ??
                     new Date().toISOString(),
             }
 

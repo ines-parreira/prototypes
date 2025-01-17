@@ -121,6 +121,12 @@ describe('ActionsViewContainer', () => {
     })
 
     it('should trigger activate AI agent notification when there are at least 1 action created', () => {
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            onboardingNotificationState:
+                getOnboardingNotificationStateFixture(),
+        })
+
         renderComponent()
 
         expect(
@@ -128,6 +134,14 @@ describe('ActionsViewContainer', () => {
         ).toHaveBeenCalledWith({
             aiAgentNotificationType: AiAgentNotificationType.ActivateAiAgent,
         })
+    })
+
+    it('should not trigger activate AI agent notification when there are no onboardingNotificationState', () => {
+        renderComponent()
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+        ).not.toHaveBeenCalled()
     })
 
     it('should not trigger activate AI agent notification when there are no action created', () => {
