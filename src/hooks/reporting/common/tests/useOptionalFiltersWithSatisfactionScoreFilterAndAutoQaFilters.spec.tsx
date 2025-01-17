@@ -88,12 +88,7 @@ describe('useGetOptionalFilters', () => {
         expect(result.current).toEqual([FilterKey.Channels, FilterKey.Score])
     })
 
-    it('should return the optional filters with only auto QA dimensions if AutoQaManualDimensions is disabled', () => {
-        mockFlags({
-            [FeatureFlagKey.AutoQAFilters]: true,
-            [FeatureFlagKey.AutoQaManualDimensions]: false,
-        })
-
+    it('should return the optional filters if AutoQAFilters is disabled', () => {
         const {result} = renderHook(
             () =>
                 useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters([
@@ -108,18 +103,12 @@ describe('useGetOptionalFilters', () => {
             }
         )
 
-        expect(result.current).toEqual([
-            FilterKey.Channels,
-            FilterKey.CommunicationSkills,
-            FilterKey.ResolutionCompleteness,
-            FilterKey.LanguageProficiency,
-        ])
+        expect(result.current).toEqual([FilterKey.Channels])
     })
 
     it('should return the optional filters with manually scored dimensions', () => {
         mockFlags({
             [FeatureFlagKey.AutoQAFilters]: true,
-            [FeatureFlagKey.AutoQaManualDimensions]: true,
         })
 
         const {result} = renderHook(

@@ -41,8 +41,6 @@ export default function AutoQA() {
 
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-    const isManualAutoQaDimensions =
-        !!useFlags()[FeatureFlagKey.AutoQaManualDimensions]
     const autoQAOptionalFilters =
         useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
             AUTO_QA_OPTIONAL_FILTERS
@@ -95,33 +93,28 @@ export default function AutoQA() {
                     >
                         <ResolutionCompletenessTrendCard />
                     </DashboardGridCell>
-                    {isManualAutoQaDimensions && (
-                        <DashboardGridCell
-                            size={getGridCellSize(
-                                manualDimensionTrendCardColumnWidth
-                            )}
-                        >
-                            <AccuracyTrendCard />
-                        </DashboardGridCell>
-                    )}
-                    {isManualAutoQaDimensions && (
-                        <DashboardGridCell
-                            size={getGridCellSize(
-                                manualDimensionTrendCardColumnWidth
-                            )}
-                        >
-                            <InternalComplianceTrendCard />
-                        </DashboardGridCell>
-                    )}
-                    {isManualAutoQaDimensions && (
-                        <DashboardGridCell
-                            size={getGridCellSize(
-                                manualDimensionTrendCardColumnWidth
-                            )}
-                        >
-                            <EfficiencyTrendCard />
-                        </DashboardGridCell>
-                    )}
+
+                    <DashboardGridCell
+                        size={getGridCellSize(
+                            manualDimensionTrendCardColumnWidth
+                        )}
+                    >
+                        <AccuracyTrendCard />
+                    </DashboardGridCell>
+                    <DashboardGridCell
+                        size={getGridCellSize(
+                            manualDimensionTrendCardColumnWidth
+                        )}
+                    >
+                        <InternalComplianceTrendCard />
+                    </DashboardGridCell>
+                    <DashboardGridCell
+                        size={getGridCellSize(
+                            manualDimensionTrendCardColumnWidth
+                        )}
+                    >
+                        <EfficiencyTrendCard />
+                    </DashboardGridCell>
                     <DashboardGridCell
                         size={getGridCellSize(trendCardColumnWidth)}
                     >
@@ -132,15 +125,13 @@ export default function AutoQA() {
                     >
                         <LanguageProficiencyTrendCard />
                     </DashboardGridCell>
-                    {isManualAutoQaDimensions && (
-                        <DashboardGridCell
-                            size={getGridCellSize(
-                                manualDimensionTrendCardColumnWidth
-                            )}
-                        >
-                            <BrandVoiceTrendCard />
-                        </DashboardGridCell>
-                    )}
+                    <DashboardGridCell
+                        size={getGridCellSize(
+                            manualDimensionTrendCardColumnWidth
+                        )}
+                    >
+                        <BrandVoiceTrendCard />
+                    </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(12)}>
                         <ChartCard
                             title={AGENT_PERFORMANCE_SECTION_TITLE}

@@ -147,7 +147,6 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         CommunicationSkillsTrendCardMock.mockImplementation(() => <div />)
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
-            [FeatureFlagKey.AutoQaManualDimensions]: true,
         })
     })
 
@@ -168,19 +167,6 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         AUTO_QA_OPTIONAL_FILTERS.forEach((optionalFilter) => {
             expect(screen.getByText(optionalFilter)).toBeTruthy()
         })
-    })
-
-    it('should render without Manual Dimensions', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: true,
-            [FeatureFlagKey.AutoQaManualDimensions]: false,
-        })
-        renderWithStore(<AutoQA />, state)
-
-        expect(AccuracyTrendCardMock).not.toHaveBeenCalled()
-        expect(EfficiencyTrendCardMock).not.toHaveBeenCalled()
-        expect(InternalComplianceTrendCardMock).not.toHaveBeenCalled()
-        expect(BrandVoiceTrendCardMock).not.toHaveBeenCalled()
     })
 
     it('should render AutoQA page with optional filters and Score filter added', () => {

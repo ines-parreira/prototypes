@@ -43,15 +43,7 @@ export enum AutoQAAgentsTableColumn {
     BrandVoice = 'auto_qa_table_brand_voice',
 }
 
-export const AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER = [
-    AutoQAAgentsTableColumn.AgentName,
-    AutoQAAgentsTableColumn.ReviewedClosedTickets,
-    AutoQAAgentsTableColumn.ResolutionCompleteness,
-    AutoQAAgentsTableColumn.CommunicationSkills,
-    AutoQAAgentsTableColumn.LanguageProficiency,
-]
-
-export const AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS_ORDER = [
+export const AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER = [
     AutoQAAgentsTableColumn.AgentName,
     AutoQAAgentsTableColumn.ReviewedClosedTickets,
     AutoQAAgentsTableColumn.ResolutionCompleteness,

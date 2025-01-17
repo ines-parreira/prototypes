@@ -8,12 +8,6 @@ import React from 'react'
 import css from './config.less'
 import type {DimensionConfig} from './types'
 
-export const dimensionOrder: SupportedTicketQADimensionName[] = [
-    TicketQAScoreDimensionName.ResolutionCompleteness,
-    TicketQAScoreDimensionName.CommunicationSkills,
-    TicketQAScoreDimensionName.LanguageProficiency,
-]
-
 export const dimensionOrderOfManualDimensions: SupportedTicketQADimensionName[] =
     [
         TicketQAScoreDimensionName.ResolutionCompleteness,

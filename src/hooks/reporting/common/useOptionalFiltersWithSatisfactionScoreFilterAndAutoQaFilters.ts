@@ -16,8 +16,7 @@ export const useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters: UseO
         const analyticsNewCSATFilter =
             !!useFlags()[FeatureFlagKey.AnalyticsNewCSATFilter]
         const autoQaFilters = !!useFlags()[FeatureFlagKey.AutoQAFilters]
-        const autoQaManualDimensions =
-            !!useFlags()[FeatureFlagKey.AutoQaManualDimensions]
+
         return [
             ...optionalFilters,
             ...(analyticsNewCSATFilter ? [FilterKey.Score] : []),
@@ -28,7 +27,7 @@ export const useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters: UseO
                       FilterKey.LanguageProficiency,
                   ]
                 : []),
-            ...(autoQaFilters && autoQaManualDimensions
+            ...(autoQaFilters
                 ? [
                       FilterKey.Accuracy,
                       FilterKey.BrandVoice,

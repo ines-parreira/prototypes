@@ -15,6 +15,7 @@ export const FiltersPanelWithCustomFilters = (
         useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
             SAVABLE_FILTERS
         )
+
     return (
         <FiltersPanelComponent {...props} optionalFilters={optionalFilters} />
     )

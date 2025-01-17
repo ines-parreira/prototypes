@@ -1,14 +1,10 @@
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import {mockFlags} from 'jest-launchdarkly-mock'
-
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {agents} from 'fixtures/agents'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
@@ -19,7 +15,7 @@ import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/Ag
 import {AgentsTableSummaryCell} from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
 import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
 import {
-    AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS_ORDER,
+    AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER,
     AutoQAAgentsTableColumn,
     getColumnWidth,
     TableLabels,
@@ -110,9 +106,6 @@ describe('<AutoQAAgentsTable />', () => {
         AgentsCellContentMock.mockImplementation(cellMock)
         AgentsHeaderCellContentMock.mockImplementation(cellMock)
         AgentsTableSummaryCellMock.mockImplementation(cellMock)
-        mockFlags({
-            [FeatureFlagKey.AutoQaManualDimensions]: true,
-        })
     })
 
     it('should render the table title, table header and rows', () => {
@@ -122,8 +115,7 @@ describe('<AutoQAAgentsTable />', () => {
             </Provider>
         )
 
-        const tableColumns =
-            AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS_ORDER
+        const tableColumns = AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER
 
         expect(screen.getByRole('table')).toBeInTheDocument()
         tableColumns.forEach((column) => {

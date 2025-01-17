@@ -7,13 +7,9 @@ import {
 
 import {useCallback, useMemo, useRef, useState} from 'react'
 
-import {useFlag} from 'common/flags'
-import {FeatureFlagKey} from 'config/featureFlags'
-
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 
 import {
-    dimensionOrder,
     SupportedTicketQAScoreDimension,
     dimensionOrderOfManualDimensions,
 } from '../config'
@@ -22,17 +18,6 @@ import type {DimensionSummary} from '../types'
 import useSaveState from './useSaveState'
 
 export default function useAutoQA(ticketId: number) {
-    const isAutoQaManualDimensions = useFlag(
-        FeatureFlagKey.AutoQaManualDimensions,
-        false
-    )
-    const supportedDimensionsOrder = useMemo(
-        () =>
-            isAutoQaManualDimensions
-                ? dimensionOrderOfManualDimensions
-                : dimensionOrder,
-        [isAutoQaManualDimensions]
-    )
     const {data, isError, isLoading, refetch} =
         useListTicketQaScoreDimensions(ticketId)
     const {isLoading: isSaving, mutateAsync: upsertTicketQaScoreDimension} =
@@ -130,8 +115,8 @@ export default function useAutoQA(ticketId: number) {
 
     const dimensions: SupportedTicketQAScoreDimension[] = useMemo(
         () =>
-            // Ensure all supported dimensions are present in the map
-            supportedDimensionsOrder.map(
+            // Ensure all manually scored dimensions are present in the map
+            dimensionOrderOfManualDimensions.map(
                 (name) =>
                     (!dimensionsMap[name]
                         ? {name, value: null}
@@ -140,7 +125,7 @@ export default function useAutoQA(ticketId: number) {
                               ...values[name],
                           }) as SupportedTicketQAScoreDimension
             ),
-        [dimensionsMap, supportedDimensionsOrder, values]
+        [dimensionsMap, values]
     )
 
     useDebouncedEffect(

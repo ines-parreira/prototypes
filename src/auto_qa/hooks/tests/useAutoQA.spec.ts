@@ -5,18 +5,7 @@ import {
 } from '@gorgias/api-queries'
 import {act, renderHook} from '@testing-library/react-hooks'
 
-import {useFlag} from 'common/flags'
-import {FeatureFlagKey} from 'config/featureFlags'
-
 import useAutoQA from '../useAutoQA'
-
-jest.mock('common/flags', () => ({
-    useFlag: jest.fn(),
-}))
-const mockUseFlag = useFlag as jest.Mock
-const mockFlagSet = {
-    [FeatureFlagKey.AutoQaManualDimensions]: false,
-}
 
 jest.mock('@gorgias/api-queries', () => ({
     TicketQAScoreDimensionName: {
@@ -40,12 +29,6 @@ const refetchMock = jest.fn()
 describe('useAutoQA', () => {
     beforeEach(() => {
         jest.useRealTimers()
-
-        mockUseFlag.mockImplementation(
-            (featureFlag: keyof typeof mockFlagSet) => {
-                return mockFlagSet[featureFlag]
-            }
-        )
 
         useListTicketQaScoreDimensionsMock.mockReturnValue({
             data: {
@@ -82,6 +65,43 @@ describe('useAutoQA', () => {
                                 prediction: 4,
                                 explanation: 'Boopity-boop',
                             },
+                            {
+                                id: 4,
+                                ticket_id: 1,
+                                user_id: null,
+                                created_datetime: '2024-01-20T10:00:00Z',
+                                updated_datetime: '2024-01-21T10:00:00Z',
+                                name: TicketQAScoreDimensionName.Accuracy,
+                                prediction: 5,
+                                explanation: 'Boop-boop',
+                            },
+                            {
+                                id: 5,
+                                ticket_id: 1,
+                                user_id: null,
+                                created_datetime: '2024-01-20T10:00:00Z',
+                                updated_datetime: '2024-01-21T10:00:00Z',
+                                name: TicketQAScoreDimensionName.Efficiency,
+                                prediction: 3,
+                                explanation: 'Beepity-beep',
+                            },
+                            {
+                                id: 6,
+                                ticket_id: 1,
+                                user_id: null,
+                                created_datetime: '2024-01-20T10:00:00Z',
+                                name: TicketQAScoreDimensionName.InternalCompliance,
+                                prediction: 2,
+                                explanation: 'Boopity-beepity',
+                            },
+                            {
+                                id: 7,
+                                ticket_id: 1,
+                                user_id: null,
+                                name: TicketQAScoreDimensionName.BrandVoice,
+                                prediction: 4,
+                                explanation: 'Beep-boopity',
+                            },
                         ],
                     },
                 },
@@ -95,36 +115,7 @@ describe('useAutoQA', () => {
         })
     })
 
-    it('should return empty data without Manual Dimensions', () => {
-        useListTicketQaScoreDimensionsMock.mockReturnValue({
-            data: {
-                data: {},
-            },
-        })
-
-        const {result} = renderHook(() => useAutoQA(1))
-
-        const expectedResult = [
-            {
-                name: 'resolution_completeness',
-                value: null,
-            },
-            {
-                name: 'communication_skills',
-                value: null,
-            },
-            {
-                name: 'language_proficiency',
-                value: null,
-            },
-        ]
-
-        expect(result.current.dimensions).toEqual(expectedResult)
-    })
-
     it('should return empty data with Manual Dimensions', () => {
-        mockUseFlag.mockReturnValue(true)
-
         useListTicketQaScoreDimensionsMock.mockReturnValue({
             data: {
                 data: {},
@@ -135,81 +126,39 @@ describe('useAutoQA', () => {
 
         const expectedResult = [
             {
-                name: 'resolution_completeness',
+                name: TicketQAScoreDimensionName.ResolutionCompleteness,
                 value: null,
             },
             {
-                name: 'accuracy',
+                name: TicketQAScoreDimensionName.Accuracy,
                 value: null,
             },
             {
-                name: 'internal_compliance',
+                name: TicketQAScoreDimensionName.InternalCompliance,
                 value: null,
             },
             {
-                name: 'efficiency',
+                name: TicketQAScoreDimensionName.Efficiency,
                 value: null,
             },
             {
-                name: 'communication_skills',
+                name: TicketQAScoreDimensionName.CommunicationSkills,
                 value: null,
             },
             {
-                name: 'language_proficiency',
+                name: TicketQAScoreDimensionName.LanguageProficiency,
                 value: null,
             },
             {
-                name: 'brand_voice',
+                name: TicketQAScoreDimensionName.BrandVoice,
                 value: null,
             },
         ]
 
         expect(result.current.dimensions).toEqual(expectedResult)
-    })
-
-    it('should return the dimensions', () => {
-        const {result} = renderHook(() => useAutoQA(1))
-        expect(result.current.dimensions).toEqual([
-            expect.objectContaining({
-                name: TicketQAScoreDimensionName.ResolutionCompleteness,
-            }),
-            expect.objectContaining({
-                name: TicketQAScoreDimensionName.CommunicationSkills,
-            }),
-            expect.objectContaining({
-                name: TicketQAScoreDimensionName.LanguageProficiency,
-            }),
-        ])
-    })
-
-    it('should return the auto QA dimensions', () => {
-        const mockFlagSet = {
-            [FeatureFlagKey.AutoQaManualDimensions]: false,
-        }
-        mockUseFlag.mockImplementation(
-            (featureFlag: keyof typeof mockFlagSet) => {
-                return mockFlagSet[featureFlag]
-            }
-        )
-
-        const {result} = renderHook(() => useAutoQA(1))
-
-        expect(result.current.dimensions).toEqual([
-            expect.objectContaining({
-                name: TicketQAScoreDimensionName.ResolutionCompleteness,
-            }),
-            expect.objectContaining({
-                name: TicketQAScoreDimensionName.CommunicationSkills,
-            }),
-            expect.objectContaining({
-                name: TicketQAScoreDimensionName.LanguageProficiency,
-            }),
-        ])
     })
 
     it('should return the dimensions containing manually scored dimensions', () => {
-        mockUseFlag.mockReturnValue(true)
-
         const {result} = renderHook(() => useAutoQA(1))
 
         expect(result.current.dimensions).toEqual([
@@ -239,8 +188,21 @@ describe('useAutoQA', () => {
 
     it('should return an edited value if applicable', () => {
         const {result} = renderHook(() => useAutoQA(1))
+
         expect(result.current.dimensions).toEqual([
             expect.objectContaining({prediction: 0, explanation: 'Beep-boop'}),
+            expect.objectContaining({
+                prediction: 5,
+                explanation: 'Boop-boop',
+            }),
+            expect.objectContaining({
+                prediction: 2,
+                explanation: 'Boopity-beepity',
+            }),
+            expect.objectContaining({
+                prediction: 3,
+                explanation: 'Beepity-beep',
+            }),
             expect.objectContaining({
                 prediction: 4,
                 explanation: 'Beepity-boopity',
@@ -248,6 +210,10 @@ describe('useAutoQA', () => {
             expect.objectContaining({
                 prediction: 4,
                 explanation: 'Boopity-boop',
+            }),
+            expect.objectContaining({
+                prediction: 4,
+                explanation: 'Beep-boopity',
             }),
         ])
 
@@ -259,12 +225,28 @@ describe('useAutoQA', () => {
         expect(result.current.dimensions).toEqual([
             expect.objectContaining({prediction: 1, explanation: 'Yup'}),
             expect.objectContaining({
+                prediction: 5,
+                explanation: 'Boop-boop',
+            }),
+            expect.objectContaining({
+                prediction: 2,
+                explanation: 'Boopity-beepity',
+            }),
+            expect.objectContaining({
+                prediction: 3,
+                explanation: 'Beepity-beep',
+            }),
+            expect.objectContaining({
                 prediction: 4,
                 explanation: 'Beepity-boopity',
             }),
             expect.objectContaining({
                 prediction: 4,
                 explanation: 'Boopity-boop',
+            }),
+            expect.objectContaining({
+                prediction: 4,
+                explanation: 'Beep-boopity',
             }),
         ])
 
@@ -277,11 +259,27 @@ describe('useAutoQA', () => {
             expect.objectContaining({prediction: 1, explanation: 'Yup'}),
             expect.objectContaining({
                 prediction: 5,
+                explanation: 'Boop-boop',
+            }),
+            expect.objectContaining({
+                prediction: 2,
+                explanation: 'Boopity-beepity',
+            }),
+            expect.objectContaining({
+                prediction: 3,
+                explanation: 'Beepity-beep',
+            }),
+            expect.objectContaining({
+                prediction: 5,
                 explanation: 'Excellent',
             }),
             expect.objectContaining({
                 prediction: 4,
                 explanation: 'Boopity-boop',
+            }),
+            expect.objectContaining({
+                prediction: 4,
+                explanation: 'Beep-boopity',
             }),
         ])
     })
@@ -311,7 +309,7 @@ describe('useAutoQA', () => {
                     dimensions: [
                         {
                             explanation: 'Excellent',
-                            name: 'communication_skills',
+                            name: TicketQAScoreDimensionName.CommunicationSkills,
                             prediction: 5,
                         },
                     ],
@@ -354,7 +352,7 @@ describe('useAutoQA', () => {
                     dimensions: [
                         {
                             explanation: '',
-                            name: 'accuracy',
+                            name: TicketQAScoreDimensionName.Accuracy,
                             prediction: 1,
                         },
                     ],

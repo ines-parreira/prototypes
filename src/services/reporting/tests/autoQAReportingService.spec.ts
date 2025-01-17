@@ -8,8 +8,7 @@ import {
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import {
-    AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER,
-    AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS_ORDER,
+    AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER,
     AutoQAAgentsColumnConfig,
     AutoQAAgentsTableColumn,
     TableLabels,
@@ -71,7 +70,7 @@ describe('autoQAReportingService', () => {
 
         await saveReport(
             defaultData,
-            AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER,
+            AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER,
             period
         )
 
@@ -180,7 +179,7 @@ describe('autoQAReportingService', () => {
 
         await saveReport(
             data,
-            AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS_ORDER,
+            AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER,
             period
         )
 
