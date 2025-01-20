@@ -1,0 +1,64 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        width: 100%;
+        padding: @layout-spacing-s @layout-spacing-xs;
+        position: relative;
+        user-select: none;
+    }
+
+    .track {
+        width: 100%;
+        height: 12px;
+        position: relative;
+        border-radius: 360px;
+    }
+
+    .progress {
+        position: absolute;
+        height: 100%;
+        border-radius: 360px;
+    }
+
+    .handle {
+        position: absolute;
+        top: 9px;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        stroke-width: 2px;
+        stroke: #fff;
+        filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+        z-index: 10;
+    }
+
+    .stepMarksContainer {
+        position: absolute;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-top: @layout-spacing-s;
+    }
+
+    .stepMark {
+        width: 2px;
+        height: 8px;
+        border-radius: 30px;
+    }
+
+    .labelsContainer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: @layout-spacing-s;
+
+        .caption-allcaps();
+        line-height: 24px;
+    }
+
+    .tooltip {
+        :global(.tooltip-inner) {
+            background-color: var(--neutral-grey-6);
+        }
+    }
+}
