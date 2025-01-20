@@ -29,6 +29,8 @@ export const AVERAGE_WAIT_TIME_METRIC_HINT =
 
 export const CALL_ACTIVITY_TITLE = 'Activity'
 export const CALL_LIST_TITLE = 'List of calls'
+export const CALL_LIST_HINT =
+    'Table includes details of each call, along with a direct link to the ticket.'
 export const ALL_CALLS_FILTER_LABEL = 'All calls'
 export const INBOUND_CALLS_FILTER_LABEL = 'Inbound calls'
 export const MISSED_CALLS_FILTER_LABEL = 'Missed calls'

@@ -15,6 +15,7 @@ import {OverviewChart} from 'pages/stats/support-performance/overview/SupportPer
 import {TicketInsightsTagsChart} from 'pages/stats/ticket-insights/tags/TagsReportConfig'
 import {TicketFieldsChart} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 import {VoiceAgentsChart} from 'pages/stats/voice/pages/VoiceAgentsReportConfig'
+import {VoiceOverviewChart} from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
 
 type FilterSettings = {
     optional: OptionalFilter[]
@@ -118,6 +119,7 @@ export type AvailableChartIds =
     | typeof SatisfactionChart
     | typeof HelpCenterChart
     | typeof VoiceAgentsChart
+    | typeof VoiceOverviewChart
 
 export type ReportChildrenConfig = {
     type: AvailableChartIds

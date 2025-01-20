@@ -4,6 +4,7 @@ import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
 import {VoiceAgentsTableCard} from 'pages/stats/voice/components/VoiceAgentsTableCard'
 import {
     VOICE_AGENTS_PAGE_TITLE,
+    VOICE_CALL_ACTIVITY_HINT,
     VOICE_CALL_ACTIVITY_TITLE,
 } from 'pages/stats/voice/constants/voiceAgents'
 
@@ -32,8 +33,7 @@ export const VoiceAgentsReportConfig: ReportConfig<VoiceAgentsChart> = {
         [VoiceAgentsChart.VoiceAgentsTable]: {
             chartComponent: VoiceAgentsTableCard,
             label: VOICE_CALL_ACTIVITY_TITLE,
-            description:
-                'Table of active and inactive campaigns, overall status and performance',
+            description: VOICE_CALL_ACTIVITY_HINT,
             csvProducer: null,
             chartType: ChartType.Table,
         },

@@ -1,144 +1,62 @@
 import moment from 'moment/moment'
 
-import React, {useMemo, useState} from 'react'
+import React, {useMemo} from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
 import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {ProductType} from 'models/billing/types'
-import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
-import {FilterKey, FilterComponentKey} from 'models/stat/types'
+import {FilterKey} from 'models/stat/types'
 import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import ChartCard from 'pages/stats/ChartCard'
 import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
 import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import DEPRECATED_PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
-import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
-import VoiceCallDirectionFilter from 'pages/stats/voice/components/VoiceCallDirectionFilter/VoiceCallDirectionFilter'
-import VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
-import {VoiceCallTable} from 'pages/stats/voice/components/VoiceCallTable/VoiceCallTable'
-import VoiceCallVolumeMetric from 'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
+import {VoiceCallCallCallerExperiencAverageTalkTime} from 'pages/stats/voice/charts/VoiceCallCallerExperiencAverageTalkTime'
+import {VoiceCallCallerExperienceAverageWaitTimeChart} from 'pages/stats/voice/charts/VoiceCallCallerExperienceAverageWaitTimeChart'
+import {VoiceCallTableChart} from 'pages/stats/voice/charts/VoiceCallTableChart'
+import {VoiceCallVolumeMetricInboundCallsCountTrend} from 'pages/stats/voice/charts/VoiceCallVolumeMetricInboundCallsCountTrendChart'
+import {VoiceCallVolumeMetricMissedCallsCountTrendChart} from 'pages/stats/voice/charts/VoiceCallVolumeMetricMissedCallsCountTrendChart'
+import {VoiceCallVolumeMetricOutboundCallsCountTrend} from 'pages/stats/voice/charts/VoiceCallVolumeMetricOutboundCallsCountTrend'
+import {VoiceCallVolumeTotalCallCountTrendChart} from 'pages/stats/voice/charts/VoiceCallVolumeTotalCallCountTrendChart'
 import {VoiceOverviewDownloadDataButton} from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
 import {
-    AVERAGE_TALK_TIME_METRIC_HINT,
-    AVERAGE_TALK_TIME_METRIC_TITLE,
-    AVERAGE_WAIT_TIME_METRIC_HINT,
-    AVERAGE_WAIT_TIME_METRIC_TITLE,
     CALL_ACTIVITY_TITLE,
-    CALL_LIST_TITLE,
     CALL_VOLUME_METRICS_TITLE,
     CALLER_EXPERIENCE_METRICS_TITLE,
-    INBOUND_CALLS_METRIC_HINT,
-    INBOUND_CALLS_METRIC_TITLE,
     MIN_DATE_FOR_VOICE_STATS,
-    MISSED_CALLS_METRIC_HINT,
-    MISSED_CALLS_METRIC_TITLE,
-    OUTBOUND_CALLS_METRIC_HINT,
-    OUTBOUND_CALLS_METRIC_TITLE,
-    TOTAL_CALLS_METRIC_HINT,
-    TOTAL_CALLS_METRIC_TITLE,
     VOICE_OVERVIEW_PAGE_TITLE,
 } from 'pages/stats/voice/constants/voiceOverview'
 import {useNewVoiceStatsFilters} from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
-import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
-import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
-import {
-    VoiceCallAverageTimeMetric,
-    VoiceCallFilterOptions,
-} from 'pages/stats/voice/models/types'
-import {saveReport} from 'services/reporting/voiceOverviewReportingService'
+import {VoiceOverviewReportConfig} from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
+import VoicePaywall from 'pages/stats/voice/VoicePaywall'
+
 import {AccountFeature} from 'state/currentAccount/types'
 import {getPhoneIntegrations} from 'state/integrations/selectors'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import {VoiceMetric} from 'state/ui/stats/types'
-
-import VoicePaywall from '../VoicePaywall'
-
-export const VOICE_OVERVIEW_OPTIONAL_FILTERS: OptionalFilter[] = [
-    FilterComponentKey.PhoneIntegrations,
-    FilterKey.Tags,
-    FilterKey.Agents,
-]
 
 function VoiceOverview() {
-    const [tableFilterOption, setTableFilterOption] = useState(
-        VoiceCallFilterOptions.All
-    )
+    const {isAnalyticsNewFilters} = useNewVoiceStatsFilters()
     const voiceOverviewOptionalFilters =
         useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            VOICE_OVERVIEW_OPTIONAL_FILTERS
+            VoiceOverviewReportConfig.reportFilters.optional
         )
     const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
-    const {cleanStatsFilters, userTimezone, isAnalyticsNewFilters} =
-        useNewVoiceStatsFilters()
+
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
 
     const pageStatsFilters = useAppSelector(
         getPageStatsFiltersWithLogicalOperators
     )
     useCleanStatsFiltersWithLogicalOperators(pageStatsFilters)
-
-    const averageWaitTimeTrend = useVoiceCallAverageTimeTrend(
-        VoiceCallAverageTimeMetric.WaitTime,
-        cleanStatsFilters,
-        userTimezone
-    )
-    const averageTalkTimeTrend = useVoiceCallAverageTimeTrend(
-        VoiceCallAverageTimeMetric.TalkTime,
-        cleanStatsFilters,
-        userTimezone
-    )
-    const totalCallsCountTrend = useVoiceCallCountTrend(
-        cleanStatsFilters,
-        userTimezone
-    )
-    const outboundCallsCountTrend = useVoiceCallCountTrend(
-        cleanStatsFilters,
-        userTimezone,
-        VoiceCallSegment.outboundCalls
-    )
-    const inboundCallsCountTrend = useVoiceCallCountTrend(
-        cleanStatsFilters,
-        userTimezone,
-        VoiceCallSegment.inboundCalls
-    )
-    const missedCallsCountTrend = useVoiceCallCountTrend(
-        cleanStatsFilters,
-        userTimezone,
-        VoiceCallSegment.missedCalls
-    )
-
-    const exportableData = useMemo(() => {
-        return {
-            averageWaitTimeTrend,
-            averageTalkTimeTrend,
-            totalCallsCountTrend,
-            outboundCallsCountTrend,
-            inboundCallsCountTrend,
-            missedCallsCountTrend,
-        }
-    }, [
-        averageWaitTimeTrend,
-        averageTalkTimeTrend,
-        totalCallsCountTrend,
-        outboundCallsCountTrend,
-        inboundCallsCountTrend,
-        missedCallsCountTrend,
-    ])
-
-    const loadingDownload = useMemo(() => {
-        return Object.values(exportableData).some((metric) => metric.isFetching)
-    }, [exportableData])
 
     const voiceFilters = useMemo(
         () =>
@@ -187,18 +105,7 @@ function VoiceOverview() {
             titleExtra={
                 <>
                     {voiceFilters}
-                    <VoiceOverviewDownloadDataButton
-                        onClick={async () => {
-                            logEvent(SegmentEvent.StatDownloadClicked, {
-                                name: 'all-metrics',
-                            })
-                            await saveReport(
-                                exportableData,
-                                pageStatsFilters.period
-                            )
-                        }}
-                        disabled={loadingDownload}
-                    />
+                    <VoiceOverviewDownloadDataButton />
                 </>
             }
         >
@@ -206,7 +113,10 @@ function VoiceOverview() {
                 <DashboardSection>
                     <DashboardGridCell size={12} className="pb-0">
                         <FiltersPanelWrapper
-                            persistentFilters={[FilterKey.Period]}
+                            persistentFilters={
+                                VoiceOverviewReportConfig.reportFilters
+                                    .persistent
+                            }
                             optionalFilters={voiceOverviewOptionalFilters}
                             filterSettingsOverrides={{
                                 [FilterKey.Period]: {
@@ -222,86 +132,29 @@ function VoiceOverview() {
 
             <DashboardSection title={CALLER_EXPERIENCE_METRICS_TITLE}>
                 <DashboardGridCell size={6}>
-                    <VoiceCallCallerExperienceMetric
-                        isAnalyticsNewFilters={isAnalyticsNewFilters}
-                        title={AVERAGE_WAIT_TIME_METRIC_TITLE}
-                        hint={AVERAGE_WAIT_TIME_METRIC_HINT}
-                        statsFilters={cleanStatsFilters}
-                        metricTrend={averageWaitTimeTrend}
-                        metricData={{
-                            metricName: VoiceMetric.AverageWaitTime,
-                            title: AVERAGE_WAIT_TIME_METRIC_TITLE,
-                        }}
-                    />
+                    <VoiceCallCallerExperienceAverageWaitTimeChart />
                 </DashboardGridCell>
                 <DashboardGridCell size={6}>
-                    <VoiceCallCallerExperienceMetric
-                        isAnalyticsNewFilters={isAnalyticsNewFilters}
-                        title={AVERAGE_TALK_TIME_METRIC_TITLE}
-                        hint={AVERAGE_TALK_TIME_METRIC_HINT}
-                        statsFilters={cleanStatsFilters}
-                        metricTrend={averageTalkTimeTrend}
-                        metricData={{
-                            metricName: VoiceMetric.AverageTalkTime,
-                            title: AVERAGE_TALK_TIME_METRIC_TITLE,
-                        }}
-                    />
+                    <VoiceCallCallCallerExperiencAverageTalkTime />
                 </DashboardGridCell>
             </DashboardSection>
             <DashboardSection title={CALL_VOLUME_METRICS_TITLE}>
                 <DashboardGridCell size={3}>
-                    <VoiceCallVolumeMetric
-                        title={TOTAL_CALLS_METRIC_TITLE}
-                        hint={TOTAL_CALLS_METRIC_HINT}
-                        statsFilters={cleanStatsFilters}
-                        metricTrend={totalCallsCountTrend}
-                    />
+                    <VoiceCallVolumeTotalCallCountTrendChart />
                 </DashboardGridCell>
                 <DashboardGridCell size={3}>
-                    <VoiceCallVolumeMetric
-                        title={OUTBOUND_CALLS_METRIC_TITLE}
-                        hint={OUTBOUND_CALLS_METRIC_HINT}
-                        statsFilters={cleanStatsFilters}
-                        metricTrend={outboundCallsCountTrend}
-                    />
+                    <VoiceCallVolumeMetricOutboundCallsCountTrend />
                 </DashboardGridCell>
                 <DashboardGridCell size={3}>
-                    <VoiceCallVolumeMetric
-                        title={INBOUND_CALLS_METRIC_TITLE}
-                        hint={INBOUND_CALLS_METRIC_HINT}
-                        statsFilters={cleanStatsFilters}
-                        metricTrend={inboundCallsCountTrend}
-                    />
+                    <VoiceCallVolumeMetricInboundCallsCountTrend />
                 </DashboardGridCell>
                 <DashboardGridCell size={3}>
-                    <VoiceCallVolumeMetric
-                        title={MISSED_CALLS_METRIC_TITLE}
-                        hint={MISSED_CALLS_METRIC_HINT}
-                        statsFilters={cleanStatsFilters}
-                        metricTrend={missedCallsCountTrend}
-                        moreIsBetter={false}
-                    />
+                    <VoiceCallVolumeMetricMissedCallsCountTrendChart />
                 </DashboardGridCell>
             </DashboardSection>
             <DashboardSection title={CALL_ACTIVITY_TITLE}>
                 <DashboardGridCell>
-                    <ChartCard
-                        title={CALL_LIST_TITLE}
-                        noPadding
-                        titleExtra={
-                            <VoiceCallDirectionFilter
-                                onFilterSelect={(
-                                    option: VoiceCallFilterOptions
-                                ) => setTableFilterOption(option)}
-                            />
-                        }
-                    >
-                        <VoiceCallTable
-                            statsFilters={cleanStatsFilters}
-                            userTimezone={userTimezone}
-                            filterOption={tableFilterOption}
-                        />
-                    </ChartCard>
+                    <VoiceCallTableChart />
                 </DashboardGridCell>
             </DashboardSection>
             <AnalyticsFooter />

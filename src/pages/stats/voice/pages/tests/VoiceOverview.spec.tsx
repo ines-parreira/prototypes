@@ -1,7 +1,8 @@
 import {QueryClientProvider} from '@tanstack/react-query'
-import {render, fireEvent, waitFor} from '@testing-library/react'
+import {render, fireEvent} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -22,6 +23,7 @@ import {user} from 'fixtures/users'
 import {FilterKey, LegacyStatsFilters} from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import * as VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
+import {VoiceOverviewDownloadDataButton} from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
 import {
     ALL_CALLS_FILTER_LABEL,
     CALL_LIST_TITLE,
@@ -38,10 +40,8 @@ import {
 } from 'pages/stats/voice/constants/voiceOverview'
 import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
 import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
-import VoiceOverview, {
-    VOICE_OVERVIEW_OPTIONAL_FILTERS,
-} from 'pages/stats/voice/pages/VoiceOverview'
-import {saveReport} from 'services/reporting/voiceOverviewReportingService'
+import VoiceOverview from 'pages/stats/voice/pages/VoiceOverview'
+import {VOICE_OVERVIEW_OPTIONAL_FILTERS} from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
 import {AccountFeature} from 'state/currentAccount/types'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
@@ -56,11 +56,15 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('services/reporting/voiceOverviewReportingService')
 jest.mock('pages/stats/voice/hooks/useVoiceCallCountTrend')
 jest.mock('pages/stats/voice/hooks/useVoiceCallAverageTimeTrend')
-jest.mock('../../VoicePaywall', () => () => <div>VoicePaywall</div>)
-
+jest.mock('pages/stats/voice/VoicePaywall', () => () => <div>VoicePaywall</div>)
+jest.mock(
+    'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
+)
+const VoiceOverviewDownloadDataButtonMock = assumeMock(
+    VoiceOverviewDownloadDataButton
+)
 jest.mock(
     'pages/stats/common/filters/FiltersPanelWrapper',
     () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
@@ -80,7 +84,6 @@ assumeMock(useVoiceCallAverageTimeTrend).mockReturnValue({
     isFetching: false,
     isError: false,
 })
-const mockSaveReport = assumeMock(saveReport)
 const VoiceCallCallerExperienceMetricSpy = jest.spyOn(
     VoiceCallCallerExperienceMetric,
     'default'
@@ -88,6 +91,7 @@ const VoiceCallCallerExperienceMetricSpy = jest.spyOn(
 
 describe('VoiceOverview', () => {
     beforeEach(() => {
+        VoiceOverviewDownloadDataButtonMock.mockImplementation(() => <div />)
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFiltersVoice]: false,
             [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
@@ -160,7 +164,7 @@ describe('VoiceOverview', () => {
         expect(queryByText('1 tag')).toBeInTheDocument()
         expect(queryByText('1 agent')).toBeInTheDocument()
         expect(queryByText('Dec 11, 2023')).toBeInTheDocument()
-        expect(queryByText('Download data')).toBeInTheDocument()
+        expect(VoiceOverviewDownloadDataButtonMock).toHaveBeenCalled()
 
         // caller experience cards
         expect(queryByText(CALLER_EXPERIENCE_METRICS_TITLE)).toBeInTheDocument()
@@ -202,7 +206,7 @@ describe('VoiceOverview', () => {
         expect(queryByText('1 agent')).not.toBeInTheDocument()
         expect(queryByText('Dec 11, 2023')).not.toBeInTheDocument()
 
-        expect(queryByText('Download data')).toBeInTheDocument()
+        expect(VoiceOverviewDownloadDataButtonMock).toHaveBeenCalled()
         VOICE_OVERVIEW_OPTIONAL_FILTERS.forEach((filter) => {
             expect(getByText(filter)).toBeInTheDocument()
         })
@@ -243,11 +247,10 @@ describe('VoiceOverview', () => {
         })
     })
 
-    it('should trigger save report when clicking on download data', async () => {
-        const {getByRole} = renderVoiceOverview()
+    it('should render Download data button', () => {
+        renderVoiceOverview()
 
-        fireEvent.click(getByRole('button', {name: /Download data/i}))
-        await waitFor(() => expect(mockSaveReport).toHaveBeenCalled())
+        expect(VoiceOverviewDownloadDataButtonMock).toHaveBeenCalled()
     })
 
     it('should render paywall page', () => {

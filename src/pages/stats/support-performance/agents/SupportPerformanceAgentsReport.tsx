@@ -51,7 +51,10 @@ export default function SupportPerformanceAgentsReport() {
                             className="pb-0"
                         >
                             <FiltersPanelWrapper
-                                persistentFilters={[FilterKey.Period]}
+                                persistentFilters={
+                                    SupportPerformanceAgentsReportConfig
+                                        .reportFilters.persistent
+                                }
                                 optionalFilters={
                                     supportPerformanceAgentsOptionalFilters
                                 }

@@ -1,4 +1,4 @@
-import {FilterKey} from 'models/stat/types'
+import {FilterKey, StaticFilter} from 'models/stat/types'
 import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
 import {
     AGENT_PERFORMANCE_SECTION_TITLE,
@@ -8,6 +8,8 @@ import {TopClosedTicketsPerformers} from 'pages/stats/support-performance/agents
 import {TopCsatPerformers} from 'pages/stats/support-performance/agents/TopCsatPerformers'
 import {TopFirstResponseTimePerformers} from 'pages/stats/support-performance/agents/TopFirstResponseTimePerformers'
 import {TopResponseTimePerformers} from 'pages/stats/support-performance/agents/TopResponseTimePerformers'
+
+export const AGENT_PERSISTENT_FILTERS: StaticFilter[] = [FilterKey.Period]
 
 export const AGENTS_OPTIONAL_FILTERS = [
     FilterKey.Channels,
@@ -67,7 +69,7 @@ export const SupportPerformanceAgentsReportConfig: ReportConfig<AgentsChart> = {
         },
     },
     reportFilters: {
-        persistent: [FilterKey.Period],
+        persistent: AGENT_PERSISTENT_FILTERS,
         optional: AGENTS_OPTIONAL_FILTERS,
     },
 }

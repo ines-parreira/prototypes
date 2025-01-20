@@ -45,6 +45,10 @@ import {
     VoiceAgentsChart,
     VoiceAgentsReportConfig,
 } from 'pages/stats/voice/pages/VoiceAgentsReportConfig'
+import {
+    VoiceOverviewChart,
+    VoiceOverviewReportConfig,
+} from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
 
 export const MAX_CHECKED_CHARTS = 20
 
@@ -106,6 +110,15 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
             {
                 type: VoiceAgentsChart,
                 config: VoiceAgentsReportConfig,
+            },
+        ],
+    },
+    {
+        category: 'Voice',
+        children: [
+            {
+                type: VoiceOverviewChart,
+                config: VoiceOverviewReportConfig,
             },
         ],
     },
