@@ -1,0 +1,40 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .actionInfo {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        .title {
+            display: flex;
+            gap: @layout-spacing-xxs;
+            & > p {
+                .body-semibold();
+                margin: 0;
+            }
+            & > img {
+                height: 20px;
+                width: 20px;
+                object-fit: contain;
+            }
+        }
+        .status {
+            display: flex;
+            gap: @layout-spacing-xs;
+            & > p {
+                .body-semibold();
+                margin: 0;
+            }
+            & > div {
+                .caption-allcaps();
+            }
+        }
+    }
+    .appImageFiller {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+    }
+}

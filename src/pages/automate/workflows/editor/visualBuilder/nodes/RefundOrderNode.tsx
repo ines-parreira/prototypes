@@ -10,6 +10,7 @@ import {RefundOrderNodeType} from 'pages/automate/workflows/models/visualBuilder
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
+import {defaultNodeNames} from './constants'
 import VisualBuilderNode from './VisualBuilderNode'
 import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
@@ -31,7 +32,7 @@ const RefundOrderNode = memo(function RefundOrderNode({
             >
                 <VisualBuilderActionTag nodeType="refund_order" />
                 <VisualBuilderNodeContent>
-                    Refund order.
+                    {defaultNodeNames['refund-order']}
                 </VisualBuilderNodeContent>
                 <NodeDeleteIcon {...deleteProps} />
             </VisualBuilderNode>

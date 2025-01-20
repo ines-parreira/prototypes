@@ -10,6 +10,7 @@ import {ReplaceItemNodeType} from 'pages/automate/workflows/models/visualBuilder
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
+import {defaultNodeNames} from './constants'
 import VisualBuilderNode from './VisualBuilderNode'
 import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
@@ -35,7 +36,7 @@ const ReplaceItemNode = memo(function ReplaceItemNode({
             >
                 <VisualBuilderActionTag nodeType="replace_item" />
                 <VisualBuilderNodeContent>
-                    Replace item.
+                    {defaultNodeNames['replace-item']}
                 </VisualBuilderNodeContent>
                 <NodeDeleteIcon {...deleteProps} />
             </VisualBuilderNode>

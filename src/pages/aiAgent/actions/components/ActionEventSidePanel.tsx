@@ -1,13 +1,14 @@
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
-import React from 'react'
+import React, {useMemo} from 'react'
 
-import webhooksIcon from 'assets/img/icons/webhooks.svg'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import useKey from 'hooks/useKey'
+import Accordion from 'pages/common/components/accordion/Accordion'
 import IconButton from 'pages/common/components/button/IconButton'
 import {Drawer} from 'pages/common/components/Drawer'
+import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import {Components} from 'rest_api/workflows_api/client.generated'
 
-import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
 import {
     LlmTriggeredExecution,
     HTTPExecutionLogs,
@@ -15,12 +16,16 @@ import {
 } from '../types'
 import CollapsableVariables from './ActionEventsCollapsableVariables'
 import css from './ActionEventSidePanel.less'
+import ActionEventTitle from './ActionEventTitle'
+import ActionStepAccordionItem, {
+    ActionStepAccordionItemProps,
+} from './ActionStepAccordionItem'
 
 type Props = {
     actionConfiguration?: Components.Schemas.GetWfConfigurationResponseDto
     execution?: LlmTriggeredExecution
     httpExecutionLogs?: HTTPExecutionLogs
-    templateConfiguration?: TemplateConfiguration
+    templateConfigurations?: TemplateConfiguration[]
     isLoading: boolean
     isOpen: boolean
     onClose: () => void
@@ -31,11 +36,19 @@ export default function ActionEventSidePanel({
     actionConfiguration,
     execution,
     httpExecutionLogs,
-    templateConfiguration,
+    templateConfigurations,
     isLoading,
     onClose,
 }: Props) {
-    const appImageUrl = useGetAppImageUrl(templateConfiguration?.apps?.[0])
+    const templateConfiguration = useMemo(() => {
+        if (!actionConfiguration?.template_internal_id)
+            return actionConfiguration as TemplateConfiguration
+        return templateConfigurations?.find(
+            (template) =>
+                template.internal_id ===
+                actionConfiguration?.template_internal_id
+        )
+    }, [templateConfigurations, actionConfiguration])
 
     const isCustomAction = !actionConfiguration?.template_internal_id
 
@@ -44,9 +57,32 @@ export default function ActionEventSidePanel({
         Object.keys(execution?.state.objects?.order || {}).length > 0 ||
         Object.keys(execution?.state.custom_inputs || {}).length > 0
 
-    const failedSteps = Object.values(
-        execution?.state?.steps_state || {}
-    ).filter((step) => 'success' in step && !step.success)
+    const steps = useMemo(() => {
+        const arr: ActionStepAccordionItemProps['step'][] = []
+        if (!execution) return []
+
+        for (const [stepId, value] of Object.entries(
+            execution.state.steps_state ?? {}
+        )) {
+            arr.push({
+                ...value,
+                stepId,
+            } as ActionStepAccordionItemProps['step'])
+        }
+        return arr.filter((step) => step.kind !== 'end')
+    }, [execution])
+
+    useKey(
+        'Escape',
+        (event) => {
+            event.stopPropagation()
+            onClose()
+        },
+        undefined,
+        [onClose]
+    )
+
+    const closeButtonId = 'close-button'
 
     return (
         <Drawer
@@ -54,7 +90,6 @@ export default function ActionEventSidePanel({
             fullscreen={false}
             isLoading={isLoading}
             aria-label="Event details"
-            onBackdropClick={onClose}
             open={isOpen}
             portalRootId="app-root"
         >
@@ -62,45 +97,29 @@ export default function ActionEventSidePanel({
                 <p className={css.title}>Event details</p>
                 <Drawer.HeaderActions>
                     <IconButton
+                        id={closeButtonId}
                         fillStyle="ghost"
                         intent="secondary"
                         onClick={onClose}
                     >
                         keyboard_tab
                     </IconButton>
+                    <Tooltip placement="bottom-end" target={closeButtonId}>
+                        <div className={css.closeButtonTooltip}>
+                            <span>Close side panel</span>
+                            <ShortcutIcon type="dark">esc</ShortcutIcon>
+                        </div>
+                    </Tooltip>
                 </Drawer.HeaderActions>
             </Drawer.Header>
             <Drawer.Content className={css.drawerContent}>
-                <div className={css.actionInfo}>
-                    <div className={css.title}>
-                        {isCustomAction ? (
-                            <img src={webhooksIcon} alt={'webhooks'} />
-                        ) : (
-                            <>
-                                {appImageUrl ? (
-                                    <img
-                                        className={css.appImageFiller}
-                                        src={appImageUrl}
-                                        alt={
-                                            actionConfiguration?.apps?.[0].type
-                                        }
-                                    />
-                                ) : (
-                                    <div className={css.appImageFiller}></div>
-                                )}
-                            </>
-                        )}
-                        <p>{actionConfiguration?.name}</p>
-                    </div>
-                    <div className={css.status}>
-                        <p>Status</p>
-                        {execution?.success ? (
-                            <Badge type={ColorType.LightSuccess}>success</Badge>
-                        ) : (
-                            <Badge type={ColorType.LightError}>error</Badge>
-                        )}
-                    </div>
-                </div>
+                <ActionEventTitle
+                    isCustomAction={isCustomAction}
+                    title={actionConfiguration?.name}
+                    badgeText={execution?.success ? 'success' : 'error'}
+                    badgeSuccess={!!execution?.success}
+                    hideFiller
+                />
                 {hasVariables && (
                     <div className={css.variablesContainer}>
                         <p>Variables</p>
@@ -125,121 +144,26 @@ export default function ActionEventSidePanel({
                         </div>
                     </div>
                 )}
-
-                {failedSteps.map((step, i) => {
-                    if ('error' in step) {
-                        return (
-                            <div key={i} className={css.failedStepContainer}>
-                                <div className={css.title}>
-                                    <img src={webhooksIcon} alt={'webhooks'} />
-                                    <p>HTTP request</p>
-                                </div>
-                                <pre className={css.codeBlock}>
-                                    {JSON.stringify(step.error, null, 2)}
-                                </pre>
-                            </div>
-                        )
-                    }
-                })}
-
-                {httpExecutionLogs?.map((httpExecutionLog) => {
-                    const responseHeader = JSON.parse(
-                        httpExecutionLog.response_headers ?? '{}'
-                    ) as Record<string, string>
-                    const requestHeader = JSON.parse(
-                        httpExecutionLog.request_headers ?? '{}'
-                    ) as Record<string, string>
-                    return (
-                        <div
-                            key={httpExecutionLog.id}
-                            className={css.httpRequestContainer}
-                        >
-                            <div className={css.actionInfo}>
-                                <div className={css.title}>
-                                    <img src={webhooksIcon} alt={'webhooks'} />
-                                    <p>HTTP request</p>
-                                </div>
-                                <div className={css.status}>
-                                    <p>Status</p>
-                                    <Badge
-                                        type={
-                                            httpExecutionLog.response_status_code <
-                                            300
-                                                ? ColorType.LightSuccess
-                                                : ColorType.LightError
-                                        }
-                                    >
-                                        {httpExecutionLog.response_status_code}
-                                    </Badge>
-                                </div>
-                            </div>
-                            <div className={css.executionLogs}>
-                                <p>Request</p>
-                                <ol>
-                                    <li>
-                                        <p>Method: </p>
-                                        {httpExecutionLog.request_method}
-                                    </li>
-                                    <li>
-                                        <p>URL: </p>
-                                        {httpExecutionLog.request_url}
-                                    </li>
-                                    {Object.keys(requestHeader).length > 0 && (
-                                        <li>
-                                            <p>Headers</p>
-                                            <ol>
-                                                {Object.entries(
-                                                    requestHeader
-                                                ).map(([key, value]) => (
-                                                    <li key={key}>
-                                                        <p>{key}: </p>
-                                                        {value}
-                                                    </li>
-                                                ))}
-                                            </ol>
-                                        </li>
-                                    )}
-                                </ol>
-                                <div className={css.body}>
-                                    <p>Body</p>
-                                    <pre className={css.codeBlock}>
-                                        {httpExecutionLog.request_body || ''}
-                                    </pre>
-                                </div>
-                            </div>
-                            <div className={css.executionLogs}>
-                                <p>Response</p>
-                                <ol>
-                                    <li>
-                                        <p>Status Code: </p>
-                                        {httpExecutionLog.request_method}
-                                    </li>
-                                    {Object.keys(responseHeader).length > 0 && (
-                                        <li>
-                                            <p>Headers</p>
-                                            <ol>
-                                                {Object.entries(
-                                                    responseHeader
-                                                ).map(([key, value]) => (
-                                                    <li key={key}>
-                                                        <p>{key}: </p>
-                                                        {value}
-                                                    </li>
-                                                ))}
-                                            </ol>
-                                        </li>
-                                    )}
-                                </ol>
-                                <div className={css.body}>
-                                    <p>Body</p>
-                                    <pre className={css.codeBlock}>
-                                        {httpExecutionLog.response_body || ''}
-                                    </pre>
-                                </div>
-                            </div>
-                        </div>
-                    )
-                })}
+                <div className={css.actionStepsContainer}>
+                    <p>Action steps</p>
+                    <Accordion>
+                        {steps?.map((step) => {
+                            return (
+                                <ActionStepAccordionItem
+                                    key={step.at}
+                                    step={step}
+                                    httpExecutionLogs={httpExecutionLogs}
+                                    templateConfigurations={
+                                        templateConfigurations
+                                    }
+                                    parentTemplateConfiguration={
+                                        templateConfiguration
+                                    }
+                                />
+                            )
+                        })}
+                    </Accordion>
+                </div>
             </Drawer.Content>
         </Drawer>
     )

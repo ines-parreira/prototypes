@@ -10,6 +10,7 @@ import {ReshipForFreeNodeType} from 'pages/automate/workflows/models/visualBuild
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
+import {defaultNodeNames} from './constants'
 import VisualBuilderNode from './VisualBuilderNode'
 import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
@@ -31,7 +32,7 @@ const ReshipForFreeNode = memo(function ReshipForFreeNode({
             >
                 <VisualBuilderActionTag nodeType="reship_for_free" />
                 <VisualBuilderNodeContent>
-                    Reship for free.
+                    {defaultNodeNames['reship-for-free']}
                 </VisualBuilderNodeContent>
                 <NodeDeleteIcon {...deleteProps} />
             </VisualBuilderNode>

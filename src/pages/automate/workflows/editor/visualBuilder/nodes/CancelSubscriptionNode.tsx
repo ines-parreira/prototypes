@@ -10,6 +10,7 @@ import {CancelSubscriptionNodeType} from 'pages/automate/workflows/models/visual
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
+import {defaultNodeNames} from './constants'
 import VisualBuilderNode from './VisualBuilderNode'
 import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
@@ -35,7 +36,7 @@ const CancelSubscriptionNode = memo(function CancelSubscriptionNode({
             >
                 <VisualBuilderActionTag nodeType="cancel_subscription" />
                 <VisualBuilderNodeContent>
-                    Cancel active subscription.
+                    {defaultNodeNames['cancel-subscription']}
                 </VisualBuilderNodeContent>
                 <NodeDeleteIcon {...deleteProps} />
             </VisualBuilderNode>

@@ -389,10 +389,8 @@ export type WorkflowConfiguration = {
                             instructions: string
                             id: string
                         }
-                      | {
-                            kind: 'order-3pl'
-                            integration_id: number | string
-                        }
+                      | {kind: 'order-shipmonk'; integration_id: number}
+                      | {kind: 'order-3pl'; integration_id: number}
                   )[]
                   conditions?: ConditionsSchema | null
                   outputs: {

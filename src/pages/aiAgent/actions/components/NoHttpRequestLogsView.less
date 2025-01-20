@@ -1,0 +1,21 @@
+@import (reference) '~css/new/mixins';
+@import (reference) '~css/typography.less';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .bodyDefaultText {
+        font-weight: 600;
+    }
+
+    .errorText {
+        font-weight: 400;
+    }
+
+    .codeBlock {
+        border-radius: 4px;
+        min-height: @layout-spacing-m;
+        border: 1px solid var(--Neutral-Grey_3, #ddd);
+        background: var(--Neutral-Grey_1, #f9f9f9);
+        padding: calc(@layout-spacing-xs - 2px) @layout-spacing-xs;
+    }
+}

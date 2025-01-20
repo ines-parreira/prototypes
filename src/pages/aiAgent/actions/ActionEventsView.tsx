@@ -150,22 +150,9 @@ export default function ActionExecutionsView() {
     const {
         data: templateConfigurations,
         isInitialLoading: isTemplateConfigurationsLoading,
-    } = useGetWorkflowConfigurationTemplates(
-        {triggers: ['llm-prompt']},
-        {
-            enabled: !!actionConfiguration?.template_internal_id,
-        }
-    )
-
-    const templateConfiguration = useMemo(
-        () =>
-            templateConfigurations?.find(
-                (template) =>
-                    template.internal_id ===
-                    actionConfiguration?.template_internal_id
-            ),
-        [templateConfigurations, actionConfiguration]
-    )
+    } = useGetWorkflowConfigurationTemplates({
+        triggers: ['llm-prompt', 'reusable-llm-prompt'],
+    })
 
     useKey(
         'Escape',
@@ -200,8 +187,9 @@ export default function ActionExecutionsView() {
                 count={executionsData?.meta.pagination.total_pages}
                 onChange={(page) => dispatchFilter({page})}
             />
+
             <ActionEventSidePanel
-                templateConfiguration={templateConfiguration}
+                templateConfigurations={templateConfigurations}
                 actionConfiguration={actionConfiguration}
                 onClose={() => setSelectedExecutionId(null)}
                 isLoading={

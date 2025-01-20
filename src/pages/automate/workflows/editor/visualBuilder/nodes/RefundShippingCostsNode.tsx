@@ -10,6 +10,7 @@ import {RefundShippingCostsNodeType} from 'pages/automate/workflows/models/visua
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
+import {defaultNodeNames} from './constants'
 import VisualBuilderNode from './VisualBuilderNode'
 import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
@@ -31,7 +32,7 @@ const RefundShippingCostsNode = memo(function RefundShippingCostsNode({
             >
                 <VisualBuilderActionTag nodeType="refund_shipping_costs" />
                 <VisualBuilderNodeContent>
-                    Refund shipping costs.
+                    {defaultNodeNames['refund-shipping-costs']}
                 </VisualBuilderNodeContent>
                 <NodeDeleteIcon {...deleteProps} />
             </VisualBuilderNode>

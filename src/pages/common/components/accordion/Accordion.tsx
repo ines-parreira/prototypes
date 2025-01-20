@@ -53,7 +53,6 @@ const Accordion = <T extends string | string[] | null>({
             } else {
                 newExpandedItem = (expandedItem === itemId ? null : itemId) as T
             }
-
             if (!isControlled) {
                 setExpandedItem(newExpandedItem)
             }

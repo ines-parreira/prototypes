@@ -10,6 +10,7 @@ import {SkipChargeNodeType} from 'pages/automate/workflows/models/visualBuilderG
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
+import {defaultNodeNames} from './constants'
 import VisualBuilderNode from './VisualBuilderNode'
 import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
@@ -35,7 +36,7 @@ const SkipChargeNode = memo(function SkipChargeNode({
             >
                 <VisualBuilderActionTag nodeType="skip_charge" />
                 <VisualBuilderNodeContent>
-                    Skip next shipment of an ongoing subscription.
+                    {defaultNodeNames['skip-charge']}
                 </VisualBuilderNodeContent>
                 <NodeDeleteIcon {...deleteProps} />
             </VisualBuilderNode>

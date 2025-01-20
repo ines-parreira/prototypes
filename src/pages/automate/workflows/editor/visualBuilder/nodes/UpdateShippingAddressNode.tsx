@@ -10,6 +10,7 @@ import {UpdateShippingAddressNodeType} from 'pages/automate/workflows/models/vis
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
+import {defaultNodeNames} from './constants'
 import VisualBuilderNode from './VisualBuilderNode'
 import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
@@ -35,7 +36,7 @@ const UpdateShippingAddressNode = memo(function UpdateShippingAddressNode({
             >
                 <VisualBuilderActionTag nodeType="update_shipping_address" />
                 <VisualBuilderNodeContent>
-                    Edit order shipping address.
+                    {defaultNodeNames['update-shipping-address']}
                 </VisualBuilderNodeContent>
                 <NodeDeleteIcon {...deleteProps} />
             </VisualBuilderNode>

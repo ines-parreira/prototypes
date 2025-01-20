@@ -58,7 +58,7 @@ const Drawer = ({
     isLoading,
     onBackdropClick,
     transitionDurationMs = 300,
-    containerZIndices = [5, -1],
+    containerZIndices = [20, -1],
     className,
     ['data-testid']: dataTestId,
 }: Props): JSX.Element => {

@@ -10,6 +10,7 @@ import {RemoveItemNodeType} from 'pages/automate/workflows/models/visualBuilderG
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
+import {defaultNodeNames} from './constants'
 import VisualBuilderNode from './VisualBuilderNode'
 import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
@@ -35,7 +36,7 @@ const RemoveItemNode = memo(function RemoveItemNode({
             >
                 <VisualBuilderActionTag nodeType="remove_item" />
                 <VisualBuilderNodeContent>
-                    Remove item.
+                    {defaultNodeNames['remove-item']}
                 </VisualBuilderNodeContent>
                 <NodeDeleteIcon {...deleteProps} />
             </VisualBuilderNode>

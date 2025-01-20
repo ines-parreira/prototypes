@@ -87,7 +87,6 @@ const WorkflowVisualBuilder = ({
         },
         [dispatch]
     )
-
     // for big flows we disable some features to improve performance
     const isDegradedMode = visualBuilderGraph.nodes.length > 800
     const isMiniMapHidden = isMiniMapHiddenProp || isDegradedMode

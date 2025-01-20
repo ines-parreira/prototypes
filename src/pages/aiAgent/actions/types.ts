@@ -56,3 +56,12 @@ export type LlmTriggeredExecution =
         Components.Schemas.GetExecutionsPaginationResponseDto['data'][number]
 
 export type HTTPExecutionLogs = Components.Schemas.HttpRequestEventsResponseDto
+
+export type ActionStepItem = ValueOf<
+    NonNullable<LlmTriggeredExecution['state']['steps_state']>
+> & {
+    success?: boolean
+    stepId: string
+    steps_state?: LlmTriggeredExecution['state']['steps_state']
+    error?: Record<string, unknown>
+}

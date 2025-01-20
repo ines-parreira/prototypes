@@ -10,6 +10,7 @@ import {CreateDiscountCodeNodeType} from 'pages/automate/workflows/models/visual
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
+import {defaultNodeNames} from './constants'
 import VisualBuilderNode from './VisualBuilderNode'
 import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
@@ -29,7 +30,7 @@ const CreateDiscountCodeNode = memo(function CreateDiscountCodeNode({
             >
                 <VisualBuilderActionTag nodeType="create_discount_code" />
                 <VisualBuilderNodeContent>
-                    Create discount code.
+                    {defaultNodeNames['create-discount-code']}
                 </VisualBuilderNodeContent>
                 <NodeDeleteIcon {...deleteProps} />
             </VisualBuilderNode>

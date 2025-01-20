@@ -1,5 +1,8 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/new/mixins';
 @import (reference) '~css/typography';
+
+@drawer-width: 612px;
 
 :local {
     .codeBlock {
@@ -9,8 +12,21 @@
         background: var(--Neutral-Grey_1, #f9f9f9);
         padding: calc(@layout-spacing-xs - 2px) @layout-spacing-xs;
     }
-    .drawer {
-        background-color: var(--neutral-grey-0) !important;
+    .drawer[class*='drawer'] {
+        width: @drawer-width;
+        right: -@drawer-width;
+        background-color: var(--neutral-grey-0);
+        &:global.opened {
+            transform: translateX(-@drawer-width);
+        }
+        @media @mobiles {
+            width: 100%;
+            right: -100%;
+            &:global.opened {
+                transform: translateX(-100%);
+            }
+        }
+        z-index: 100;
 
         grid-template-areas:
             'header'
@@ -28,7 +44,7 @@
             background-color: var(--neutral-grey-0);
             display: flex;
             flex-direction: column;
-            gap: @layout-spacing-m;
+            gap: @layout-spacing-l;
             word-wrap: break-word;
 
             .actionInfo {
@@ -142,5 +158,24 @@
         .collapsed {
             transform: rotate(90deg);
         }
+    }
+
+    .actionStepsContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+        & > p {
+            margin: 0;
+            .body-semibold();
+        }
+        & > div {
+            gap: @layout-spacing-xs;
+        }
+    }
+
+    .closeButtonTooltip {
+        align-items: baseline;
+        display: flex;
+        gap: @layout-spacing-xs;
     }
 }

@@ -37,7 +37,6 @@ const ActionsPlatformEditTemplateView = ({template}: Props) => {
     const {data: steps = []} = useGetWorkflowConfigurationTemplates({
         triggers: ['reusable-llm-prompt'],
     })
-
     const [visualBuilderGraphDirty, dispatch] = useVisualBuilderGraphReducer(
         computeNodesPositions(
             transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(

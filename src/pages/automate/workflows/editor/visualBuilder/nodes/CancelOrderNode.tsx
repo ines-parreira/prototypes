@@ -10,6 +10,7 @@ import {CancelOrderNodeType} from 'pages/automate/workflows/models/visualBuilder
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
+import {defaultNodeNames} from './constants'
 import VisualBuilderNode from './VisualBuilderNode'
 import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
@@ -31,7 +32,7 @@ const CancelOrderNode = memo(function CancelOrderNode({
             >
                 <VisualBuilderActionTag nodeType="cancel_order" />
                 <VisualBuilderNodeContent>
-                    Cancel order.
+                    {defaultNodeNames['cancel-order']}
                 </VisualBuilderNodeContent>
                 <NodeDeleteIcon {...deleteProps} />
             </VisualBuilderNode>

@@ -90,6 +90,7 @@ describe('ActionEventsViewContainer', () => {
             data: [
                 {
                     id: '1',
+                    step_id: '1',
                     request_datetime: new Date().toISOString(),
                     request_method: 'GET',
                     request_url: 'http://example.com',
@@ -111,9 +112,16 @@ describe('ActionEventsViewContainer', () => {
                 success: true,
                 state: {
                     trigger: 'llm-prompt',
+                    steps_state: {
+                        '1': {
+                            kind: 'cancel-order',
+                            success: true,
+                            at: Date.now(),
+                        },
+                    },
                 },
             },
-        } as UseQueryResult<Paths.WfConfigurationControllerGetExecution.Responses.$200>)
+        } as unknown as UseQueryResult<Paths.WfConfigurationControllerGetExecution.Responses.$200>)
 
         useGetWorkflowConfigurationTemplatesMocked.mockReturnValue({
             isFetching: false,
@@ -385,6 +393,13 @@ describe('ActionEventsViewContainer', () => {
                     custom_inputs: {
                         variable: 'value 1',
                     },
+                    steps_state: {
+                        '1': {
+                            kind: 'cancel-order',
+                            success: true,
+                            at: Date.now(),
+                        },
+                    },
                 },
             },
         } as unknown as UseQueryResult<Paths.WfConfigurationControllerGetExecution.Responses.$200>)
@@ -449,7 +464,6 @@ describe('ActionEventsViewContainer', () => {
         expect(screen.getByLabelText('Event details')).toHaveClass('opened')
         expect(screen.getByText('Action configuration')).toBeInTheDocument()
 
-        expect(screen.getByText('success')).toBeInTheDocument()
         expect(screen.getByText(/customer name/)).toBeInTheDocument()
         expect(screen.queryByText(/order name/)).toBeInTheDocument()
         expect(screen.queryByText(/value 1/)).toBeInTheDocument()
