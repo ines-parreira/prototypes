@@ -18,7 +18,6 @@ import {IntegrationType} from 'models/integration/types'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {useGetOnboardingStatusMap} from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
 import useContactFormFlag from 'pages/convert/common/hooks/useContactFormFlag'
-import {useIsOverviewPageEnabled} from 'pages/convert/common/hooks/useIsOverviewPageEnabled'
 import {RootState} from 'state/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
@@ -26,9 +25,6 @@ import {assumeMock} from 'utils/testing'
 import ConvertNavbar from '../ConvertNavbar'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
-
-jest.mock('pages/convert/common/hooks/useIsOverviewPageEnabled')
-const useIsOverviewPageEnabledSpy = assumeMock(useIsOverviewPageEnabled)
 
 jest.mock('pages/common/hooks/useIsConvertSubscriber')
 
@@ -94,7 +90,6 @@ describe('<ConvertNavbar />', () => {
 
     describe('render()', () => {
         it('should render overview tab when ff is enabled', () => {
-            useIsOverviewPageEnabledSpy.mockReturnValue(true)
             const {queryByText} = render(
                 <Provider store={mockStore(defaultState)}>
                     <ThemeProvider>
@@ -105,20 +100,6 @@ describe('<ConvertNavbar />', () => {
             )
 
             expect(queryByText('Overview')).toBeInTheDocument()
-        })
-
-        it('should not render overview tab when ff is disabled', () => {
-            useIsOverviewPageEnabledSpy.mockReturnValue(false)
-            const {queryByText} = render(
-                <Provider store={mockStore(defaultState)}>
-                    <ThemeProvider>
-                        <ConvertNavbar />
-                    </ThemeProvider>
-                </Provider>,
-                {wrapper}
-            )
-
-            expect(queryByText('Overview')).not.toBeInTheDocument()
         })
 
         it('should render empty convert navbar when no integrations', () => {

@@ -5,31 +5,19 @@ import navbarCss from 'assets/css/navbar.less'
 import {ActiveContent, Navbar} from 'common/navigation'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 
-import {useIsOverviewPageEnabled} from '../../hooks/useIsOverviewPageEnabled'
 import css from './ConvertNavbar.less'
 import ConvertNavbarView from './ConvertNavbarView'
 
-const ConvertNavbar = () => {
-    const isOverviewPageEnabled = useIsOverviewPageEnabled()
+const ConvertNavbar = () => (
+    <Navbar activeContent={ActiveContent.Convert} title="Convert">
+        <div className={classNames(navbarCss['link-wrapper'], css.navbarItem)}>
+            <NavbarLink to="/app/convert/overview" exact>
+                <span>Overview</span>
+            </NavbarLink>
+        </div>
 
-    return (
-        <Navbar activeContent={ActiveContent.Convert} title="Convert">
-            {isOverviewPageEnabled && (
-                <div
-                    className={classNames(
-                        navbarCss['link-wrapper'],
-                        css.navbarItem
-                    )}
-                >
-                    <NavbarLink to="/app/convert/overview" exact>
-                        <span>Overview</span>
-                    </NavbarLink>
-                </div>
-            )}
-
-            <ConvertNavbarView />
-        </Navbar>
-    )
-}
+        <ConvertNavbarView />
+    </Navbar>
+)
 
 export default ConvertNavbar

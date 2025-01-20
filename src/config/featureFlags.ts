@@ -70,7 +70,6 @@ export enum FeatureFlagKey {
     ChatTranscript = 'chat-transcript',
     ContactFormAutoEmbed = 'contact-form-auto-embed',
     ContactFormNewEntrypointView = 'contact-form-new-entrypoint-view',
-    ConvertOverviewPage = 'convert-overview-page',
     ConvertPerformanceView = 'convert-performance-view',
     ConvertContactForm = 'convert-contact-form',
     ConvertCampaignProritization = 'convert-campaign-prioritization',

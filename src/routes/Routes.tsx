@@ -99,7 +99,6 @@ import {
 import ClickTrackingPaywallView from 'pages/convert/clickTracking/components/ClickTrackingPaywallView/ClickTrackingPaywallView'
 import ClickTrackingSettingsView from 'pages/convert/clickTracking/components/ClickTrackingSettingsView/ClickTrackingSettingsView'
 import ConvertNavbar from 'pages/convert/common/components/ConvertNavbar/ConvertNavbar'
-import ConvertRoute from 'pages/convert/common/components/ConvertRoute/ConvertRoute'
 import {
     CONVERT_ROUTING_CAMPAIGN_PARAM,
     CONVERT_ROUTING_PARAM,
@@ -1730,7 +1729,7 @@ export function ConvertContent() {
             />
 
             <Route path={`${path}`} exact>
-                <ConvertRoute />
+                <Redirect to="/app/convert/overview" />
             </Route>
             <Route>
                 <Redirect to={`${path}`} />
