@@ -2,9 +2,10 @@ import React, {ReactNode} from 'react'
 
 import AlertBanners from 'AlertBanners'
 import {AppNode} from 'appNode'
-import {useFlag} from 'common/flags'
+
+import {useShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import {NotificationsToasts} from 'common/notifications'
-import {FeatureFlagKey} from 'config/featureFlags'
+
 import {useApplyTheme} from 'core/theme'
 import useHasPhone from 'hooks/useHasPhone'
 import {AlertNotifications} from 'notifications'
@@ -31,10 +32,7 @@ type Props = {
 }
 
 export default function App({children}: Props) {
-    const hasGlobalNav = useFlag<boolean>(
-        FeatureFlagKey.GlobalNavigation,
-        false
-    )
+    const hasGlobalNav = useShowGlobalNavFeatureFlag()
     const hasPhone = useHasPhone()
 
     useApplyTheme()

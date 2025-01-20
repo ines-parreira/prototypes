@@ -2,6 +2,7 @@ import {Tooltip} from '@gorgias/merchant-ui-kit'
 import cn from 'classnames'
 import React, {useCallback} from 'react'
 
+import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useId from 'hooks/useId'
 
@@ -13,6 +14,7 @@ import useIsToggleEnabled from './useIsToggleEnabled'
 export default function Toggle() {
     const {isEnabled, setIsEnabled} = useSplitTicketView()
     const {isEnabled: isToggleEnabled} = useIsToggleEnabled()
+    const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
 
     const id = useId()
     const buttonId = 'toggle-button-' + id
@@ -27,10 +29,13 @@ export default function Toggle() {
     return (
         <>
             <button
-                className={cn(css.toggle, {
-                    [css.active]: isEnabled,
-                    [css.disabled]: !isToggleEnabled,
-                })}
+                className={cn(
+                    showGlobalNav ? css.showGlobalNavToggle : css.toggle,
+                    {
+                        [css.active]: isEnabled,
+                        [css.disabled]: !isToggleEnabled,
+                    }
+                )}
                 type="button"
                 onClick={handleClick}
                 id={buttonId}

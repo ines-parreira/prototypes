@@ -1,10 +1,9 @@
 import React, {useMemo} from 'react'
 import {useRouteMatch} from 'react-router-dom'
 
-import {useFlag} from 'common/flags'
 import {globalNavigationPanel} from 'common/navigation'
-import {FeatureFlagKey} from 'config/featureFlags'
-import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
+import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+
 import {PanelLayoutConfig} from 'pages/PanelLayout'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import DefaultViewFallback from 'split-ticket-view/components/DefaultViewFallback'
@@ -16,12 +15,7 @@ import {
 import {EmptyTicket} from 'ticket-page'
 
 export default function useSplitViewPage() {
-    const hasGlobalNav = useFlag<boolean>(
-        FeatureFlagKey.GlobalNavigation,
-        false
-    )
-    const isMobileResolution = useIsMobileResolution()
-    const showGlobalNav = hasGlobalNav && !isMobileResolution
+    const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
 
     const match = useRouteMatch<{viewId?: string}>('/app/views/:viewId?')
     const viewId = match?.params.viewId

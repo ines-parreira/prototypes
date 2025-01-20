@@ -28,6 +28,8 @@ import {getActiveView, getLastViewId} from 'state/views/selectors'
 import {slugify} from 'utils'
 import {systemViewIcons} from 'utils/views'
 
+import {ViewTableHeaderToggle} from './ViewTableHeaderToggle'
+
 type OwnProps = {
     isSearch: boolean
     isUpdate: boolean
@@ -154,6 +156,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                                 css.titleWrapper
                             )}
                         >
+                            <ViewTableHeaderToggle />
                             {isEditMode ? (
                                 (() => {
                                     const showEmojiPicker = !isSearch

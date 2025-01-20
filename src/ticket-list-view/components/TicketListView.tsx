@@ -16,11 +16,15 @@ import React, {
 import {CSSTransition, TransitionGroup} from 'react-transition-group'
 import {Components, Virtuoso, VirtuosoHandle} from 'react-virtuoso'
 
+import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import IconButton from 'pages/common/components/button/IconButton'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {useSplitTicketView} from 'split-ticket-view-toggle'
+import {
+    SplitTicketViewToggle,
+    useSplitTicketView,
+} from 'split-ticket-view-toggle'
 import {setViewActive, setViewEditMode} from 'state/views/actions'
 import {getViewCount, getViewPlainJS} from 'state/views/selectors'
 import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
@@ -72,7 +76,7 @@ export default function TicketListView({
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
     const viewCount = useAppSelector(getViewCount(viewId))
     const editViewRef = useRef(null)
-
+    const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const areViewFiltersInvalid = !!view?.deactivated_datetime
     const isViewNull = view === null
     const defaultSortOrder = `${view?.order_by || ''}:${view?.order_dir || ''}`
@@ -238,6 +242,7 @@ export default function TicketListView({
         <div className={css.wrapper}>
             <div className={css.titleWrapper}>
                 <div className={css.headerChild}>
+                    {showGlobalNav && <SplitTicketViewToggle />}
                     <ViewDecoration view={view} />
                     <span className={css.title}>{view?.name}</span>
                 </div>

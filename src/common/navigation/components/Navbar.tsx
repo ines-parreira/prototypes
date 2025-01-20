@@ -2,16 +2,16 @@ import cn from 'classnames'
 import React, {useRef} from 'react'
 import type {ReactNode, RefObject} from 'react'
 
-import {useFlag} from 'common/flags'
 import {NotificationsButton} from 'common/notifications'
-import {FeatureFlagKey} from 'config/featureFlags'
+
 import useAppSelector from 'hooks/useAppSelector'
-import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
+
 import HomePageLink from 'pages/common/components/HomePageLink'
 import SpotlightButton from 'pages/common/components/Spotlight/SpotlightButton'
 import {isOpenedPanel as getIsOpenedPanel} from 'state/layout/selectors'
 
 import useNavbarResize from '../hooks/useNavbarResize'
+import {useDesktopOnlyShowGlobalNavFeatureFlag} from '../hooks/useShowGlobalNavFeatureFlag'
 import MainNavigation, {ActiveContent} from './MainNavigation'
 import css from './Navbar.less'
 import UserMenuWithToggle from './UserMenuWithToggle'
@@ -40,12 +40,7 @@ export default function Navbar({
     const navbarRef = useRef<HTMLDivElement | null>(null)
     const {isResizing, width, onStartResize} = useNavbarResize(navbarRef)
 
-    const isMobileResolution = useIsMobileResolution()
-    const hasGlobalNav = useFlag<boolean>(
-        FeatureFlagKey.GlobalNavigation,
-        false
-    )
-    const showGlobalNav = hasGlobalNav && !isMobileResolution
+    const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
 
     return (
         <div

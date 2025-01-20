@@ -7,6 +7,7 @@ import {useHistory, useParams} from 'react-router-dom'
 import navbarCss from 'assets/css/navbar.less'
 
 import {ActiveContent, Navbar} from 'common/navigation'
+import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import {
     UserRole,
     UserSetting,
@@ -122,6 +123,7 @@ export function TicketNavbarContainer({
     disableResize = false,
 }: Props) {
     const history = useHistory()
+    const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const params = useParams<{viewId?: string}>()
     const {viewId} = useSearch<{viewId?: string}>()
     const [isSectionFormModalOpened, setSectionFormModalOpened] =
@@ -461,7 +463,7 @@ export function TicketNavbarContainer({
             }
             navbarContentRef={scrollableAreaRef}
             splitTicketViewToggle={
-                isTicketPath(window.location.pathname) ? (
+                isTicketPath(window.location.pathname) && !showGlobalNav ? (
                     <SplitTicketViewToggle />
                 ) : undefined
             }

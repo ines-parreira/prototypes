@@ -3,13 +3,11 @@ import _isEqual from 'lodash/isEqual'
 import React, {ComponentType, ReactNode, memo} from 'react'
 import {Container} from 'reactstrap'
 
-import {useFlag} from 'common/flags'
 import {GlobalNavigation} from 'common/navigation'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import {CollapsibleNavBarWrapper} from 'core/navigation/components/CollapsibleNavBarWrapper'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import FullPage from 'pages/common/components/FullPage'
@@ -46,12 +44,7 @@ const App = ({
     infobar: Infobar,
     children,
 }: Props) => {
-    const hasGlobalNav = useFlag<boolean>(
-        FeatureFlagKey.GlobalNavigation,
-        false
-    )
-    const isMobileResolution = useIsMobileResolution()
-    const showGlobalNav = hasGlobalNav && !isMobileResolution
+    const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const dispatch = useAppDispatch()
 
     const openedPanel = useAppSelector(getCurrentOpenedPanel)

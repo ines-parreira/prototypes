@@ -1,10 +1,10 @@
 import React, {useMemo} from 'react'
 
-import {useFlag} from 'common/flags'
 import {globalNavigationPanel} from 'common/navigation'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+
 import {MOBILE_BREAKPOINT} from 'hooks/useIsMobileResolution/constants'
-import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
+
 import App from 'pages/App'
 import {PanelLayoutConfig} from 'pages/PanelLayout'
 import TicketDetailContainer from 'pages/tickets/detail/TicketDetailContainer'
@@ -18,12 +18,7 @@ import {
 } from 'split-ticket-view/constants'
 
 export default function useTicketpage() {
-    const hasGlobalNav = useFlag<boolean>(
-        FeatureFlagKey.GlobalNavigation,
-        false
-    )
-    const isMobileResolution = useIsMobileResolution()
-    const showGlobalNav = hasGlobalNav && !isMobileResolution
+    const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
 
     const config = useMemo(
         (): PanelLayoutConfig[] => [

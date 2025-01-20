@@ -27,6 +27,29 @@
         }
     }
 
+    .showGlobalNavToggle {
+        width: 40px;
+        margin-left: -10px;
+        padding: 0;
+        border: 0;
+        background-color: var(--neutral-grey-6);
+        -webkit-mask-image: url(../assets/dock_to_right.svg);
+        mask-image: url(../assets/dock_to_right.svg);
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        text-indent: -999em;
+        mask-position: center;
+        -webkit-mask-position: center;
+
+        &:focus {
+            outline: 0;
+        }
+
+        @media @mobiles {
+            display: none;
+        }
+    }
+
     .disabled {
         cursor: not-allowed;
         background-color: var(--neutral-grey-5);
