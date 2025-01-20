@@ -1,6 +1,6 @@
 import React, {useState, useMemo, useEffect} from 'react'
 
-import {ShopifyIntegrationStep} from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep'
+import {ShopifyIntegrationStep} from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep'
 import {SkillsetStep} from 'pages/aiAgent/Onboarding/components/steps/SkillsetStep'
 import {useOnboardingContext} from 'pages/aiAgent/Onboarding/providers/OnboardingContext'
 import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'

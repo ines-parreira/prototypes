@@ -40,12 +40,16 @@ export const OnboardingBody: React.FC = ({children}) => {
     return <div className={css.onboardingBody}>{children}</div>
 }
 
-const LoadingPulserIcon: React.FC<{icon: string}> = ({icon}) => {
+const LoadingPulserIcon: React.FC<{icon: string | JSX.Element}> = ({icon}) => {
     return (
         <div className={css.loadingPulserIcon}>
             <div>
                 <div>
-                    <i className="material-icons">{icon}</i>
+                    {typeof icon === 'string' ? (
+                        <i className="material-icons">{icon}</i>
+                    ) : (
+                        icon
+                    )}
                 </div>
             </div>
         </div>
@@ -54,7 +58,7 @@ const LoadingPulserIcon: React.FC<{icon: string}> = ({icon}) => {
 
 export const OnboardingPreviewContainer: React.FC<{
     isLoading: boolean
-    icon: string
+    icon: string | JSX.Element
 }> = ({children, isLoading, icon}) => {
     return (
         <div className={css.onboardingPreviewContainerWrapper}>

@@ -17,6 +17,7 @@ type Props = {
     onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
     status?: ReactNode
     title: string
+    children?: ReactNode
 }
 
 const IntegrationCard: React.FC<Props> = ({
@@ -26,6 +27,7 @@ const IntegrationCard: React.FC<Props> = ({
     onClick,
     status,
     title,
+    children,
 }: Props) => {
     return (
         <Card>
@@ -40,6 +42,7 @@ const IntegrationCard: React.FC<Props> = ({
                 <div className={css.text}>
                     <div className={css.title}>{title}</div>
                     <div className={css.description}>{description}</div>
+                    <div>{children}</div>
                 </div>
             </CardContent>
 

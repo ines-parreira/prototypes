@@ -1,0 +1,25 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+        padding-top: @layout-spacing-s;
+    }
+
+    .link {
+        .caption-regular();
+        color: var(--main-primary) !important;
+        cursor: pointer;
+    }
+
+    .aiBanner {
+        background-color: #faeaff;
+        color: #6f0c86;
+        margin-bottom: @layout-spacing-s;
+        border: none;
+        border-radius: 8px;
+    }
+}

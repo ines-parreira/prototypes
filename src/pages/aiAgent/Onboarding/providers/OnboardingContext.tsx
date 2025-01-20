@@ -16,7 +16,7 @@ const getDefaultOnboardingWizardData = (): OnboardingContextData => ({
     shop_name: '',
 })
 
-const OnboardingContext = createContext<
+export const OnboardingContext = createContext<
     OnboardingContextData & OnboardingContextHandlers
 >(getDefaultOnboardingWizardData())
 
@@ -39,7 +39,7 @@ export const OnboardingContextProvider = ({
         React.useState<OnboardingContextData>(getDefaultOnboardingWizardData())
 
     const setOnboardingData = (data: Partial<OnboardingContextData>) => {
-        setOnboardingStateData((oldData) => ({...oldData, data}))
+        setOnboardingStateData((oldData) => ({...oldData, ...data}))
     }
 
     return (
