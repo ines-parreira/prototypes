@@ -3,6 +3,7 @@ import React from 'react'
 
 import Badge from 'gorgias-design-system/Badge/Badge'
 import {Card, CardContent} from 'pages/aiAgent/Onboarding/components/Card'
+import {AiAgentScopes} from 'pages/aiAgent/Onboarding/types'
 
 import css from './Goals.less'
 import {GoalData} from './types'
@@ -10,14 +11,14 @@ import {GoalData} from './types'
 type Props = {
     goal: GoalData
     isSelected: boolean
-    onSelect: (value: string | null) => void
+    onSelect: (scope: AiAgentScopes[]) => void
 }
 
 const Goal: React.FC<Props> = ({goal, isSelected, onSelect}) => {
     return (
         <Card
             className={cn({[css.selected]: isSelected})}
-            onClick={() => onSelect(isSelected ? null : goal.type)}
+            onClick={() => onSelect(goal.scope)}
         >
             <CardContent>
                 <div className={css.goalContainer}>

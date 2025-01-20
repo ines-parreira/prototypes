@@ -1,6 +1,8 @@
 import {Meta, StoryFn} from '@storybook/react'
 import React, {ComponentProps, useState} from 'react'
 
+import {AiAgentScopes} from 'pages/aiAgent/Onboarding/types'
+
 import Goals from './Goals'
 
 const storyConfig: Meta<typeof Goals> = {
@@ -9,7 +11,9 @@ const storyConfig: Meta<typeof Goals> = {
 }
 
 const Template: StoryFn<ComponentProps<typeof Goals>> = () => {
-    const [selected, setSelected] = useState<string | null>(null)
+    const [selected, setSelected] = useState<AiAgentScopes[]>([
+        AiAgentScopes.SUPPORT,
+    ])
     return <Goals value={selected} onSelect={setSelected} />
 }
 

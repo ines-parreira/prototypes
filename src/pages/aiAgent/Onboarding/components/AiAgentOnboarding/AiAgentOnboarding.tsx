@@ -12,7 +12,7 @@ import {
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
 import {OnboardingContextProvider} from 'pages/aiAgent/Onboarding/providers/OnboardingContext'
 
-export const AiAgentOnboarding: React.FC = () => {
+const Wrapped: React.FC = () => {
     const {shopName} = useParams<{
         shopName: string
     }>()
@@ -31,15 +31,21 @@ export const AiAgentOnboarding: React.FC = () => {
     }
 
     return (
+        <ConvAiOnboardingLayout>
+            <OnboardingHeader
+                onClose={function (): void {
+                    throw new Error('Function not implemented.')
+                }}
+            />
+            {render()}
+        </ConvAiOnboardingLayout>
+    )
+}
+
+export const AiAgentOnboarding = () => {
+    return (
         <OnboardingContextProvider>
-            <ConvAiOnboardingLayout>
-                <OnboardingHeader
-                    onClose={function (): void {
-                        throw new Error('Function not implemented.')
-                    }}
-                />
-                {render()}
-            </ConvAiOnboardingLayout>
+            <Wrapped />
         </OnboardingContextProvider>
     )
 }

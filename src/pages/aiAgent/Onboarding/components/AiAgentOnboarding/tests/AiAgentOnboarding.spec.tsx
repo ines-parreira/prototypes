@@ -18,6 +18,24 @@ import {AiAgentOnboarding} from '../AiAgentOnboarding'
 jest.mock('pages/common/hooks/useShopifyIntegrationAndScope')
 jest.mock('pages/settings/contactForm/hooks/useEmailIntegrations')
 
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview',
+    () => ({
+        __esModule: true,
+        default: ({children}: {children: React.ReactNode}) => (
+            <div>{children}</div>
+        ),
+    })
+)
+
+jest.mock(
+    'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation',
+    () => ({
+        __esModule: true,
+        default: () => <div>AI Agent Preview</div>,
+    })
+)
+
 const mockUseShopifyIntegrationAndScope =
     useShopifyIntegrationAndScope as jest.Mock
 const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock

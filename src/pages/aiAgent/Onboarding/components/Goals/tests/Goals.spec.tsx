@@ -1,11 +1,13 @@
 import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
+import {AiAgentScopes} from 'pages/aiAgent/Onboarding/types'
+
 import Goals from '../Goals'
 
 describe('<Goals />', () => {
     it('renders', () => {
-        render(<Goals value={null} onSelect={jest.fn()} />)
+        render(<Goals value={[AiAgentScopes.SALES]} onSelect={jest.fn()} />)
 
         expect(screen.getByText('Automate support with AI')).toBeInTheDocument()
         expect(
@@ -18,7 +20,9 @@ describe('<Goals />', () => {
 
     it('user can select a goal', () => {
         const onSelectMocked = jest.fn()
-        render(<Goals value={null} onSelect={onSelectMocked} />)
+        render(
+            <Goals value={[AiAgentScopes.SALES]} onSelect={onSelectMocked} />
+        )
 
         fireEvent.click(
             screen.getByText('Boost Sales with a Personal Shopping Assistant')

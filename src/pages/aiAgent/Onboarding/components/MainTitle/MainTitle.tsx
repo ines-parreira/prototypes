@@ -10,7 +10,7 @@ interface MainTitleProps {
 const MainTitle: React.FC<MainTitleProps> = ({titleBlack, titleMagenta}) => {
     return (
         <h1>
-            {titleBlack}
+            {titleBlack}{' '}
             <span className={css.titleMagenta}>{titleMagenta}</span>
         </h1>
     )
