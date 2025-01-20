@@ -125,10 +125,10 @@ export const useOnboarding = ({shopName}: {shopName: string}) => {
     const nextStep = () => {
         // TODO: We need to fire a request to update the server state
         if (currentStep < totalSteps - 1) {
-            setCurrentStep((prevStep) => prevStep + 1)
+            setCurrentStep((step) => step + 1)
             if (setOnboardingData) {
                 setOnboardingData({
-                    last_user_step: userSteps[currentStep].step,
+                    last_user_step: userSteps[currentStep + 1].step,
                 })
             }
         }
@@ -136,9 +136,11 @@ export const useOnboarding = ({shopName}: {shopName: string}) => {
 
     const prevStep = () => {
         if (currentStep > 0) {
-            setCurrentStep((prevStep) => prevStep - 1)
+            setCurrentStep((step) => step - 1)
             if (setOnboardingData) {
-                setOnboardingData({last_user_step: userSteps[currentStep].step})
+                setOnboardingData({
+                    last_user_step: userSteps[currentStep - 1].step,
+                })
             }
         }
     }

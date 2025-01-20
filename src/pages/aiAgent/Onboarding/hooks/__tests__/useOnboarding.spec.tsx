@@ -2,7 +2,7 @@ import {renderHook, act} from '@testing-library/react-hooks'
 import React, {ReactNode} from 'react'
 
 import * as ContextModule from 'pages/aiAgent/Onboarding/providers/OnboardingContext'
-import {AiAgentScopes} from 'pages/aiAgent/Onboarding/types'
+import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 
@@ -292,5 +292,52 @@ describe('useOnboarding', () => {
         )
 
         expect(result.current.totalSteps).toBe(5)
+    })
+
+    it('updates last_user_step on nextStep', () => {
+        const setOnboardingData = jest.fn()
+        jest.spyOn(ContextModule, 'useOnboardingContext').mockReturnValue({
+            scope: [AiAgentScopes.SUPPORT],
+            last_user_step: WizardStepEnum.SKILLSET,
+            setOnboardingData,
+        })
+
+        const {result} = renderHook(
+            () => useOnboarding({shopName: 'testShop'}),
+            {wrapper}
+        )
+
+        act(() => {
+            result.current.nextStep()
+        })
+
+        expect(setOnboardingData).toHaveBeenCalledWith({
+            last_user_step: WizardStepEnum.CHANNELS,
+        })
+    })
+
+    it('updates last_user_step on prevStep', () => {
+        const setOnboardingData = jest.fn()
+        jest.spyOn(ContextModule, 'useOnboardingContext').mockReturnValue({
+            scope: [AiAgentScopes.SUPPORT],
+            last_user_step: WizardStepEnum.SKILLSET,
+            setOnboardingData,
+        })
+
+        const {result} = renderHook(
+            () => useOnboarding({shopName: 'testShop'}),
+            {wrapper}
+        )
+
+        act(() => {
+            result.current.nextStep()
+        })
+        act(() => {
+            result.current.prevStep()
+        })
+
+        expect(setOnboardingData).toHaveBeenCalledWith({
+            last_user_step: WizardStepEnum.SKILLSET,
+        })
     })
 })
