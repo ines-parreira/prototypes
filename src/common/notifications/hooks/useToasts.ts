@@ -46,7 +46,9 @@ export default function useToasts() {
     const handleNotificationReceived = useCallback(
         (notification: Notification) => {
             const config = getNotificationConfig(notification)
-            let sound = eventSettings[config.workflow]?.sound
+            let sound = (
+                eventSettings[config.workflow] || eventSettings[config.type]
+            )?.sound
             if (sound === undefined) {
                 sound = defaultSound.sound
             }
