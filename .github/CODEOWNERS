@@ -50,12 +50,13 @@ src/state/ui/contactForm @gorgias/automations-help-center
 src/state/entities/contactForm @gorgias/automations-help-center
 src/models/contactForm @gorgias/automations-help-center
 
-# Convert scope @gorgias/revenue
+# Marketing suite scope @gorgias/revenue
 
 src/models/convert @gorgias/revenue
 src/pages/convert @gorgias/revenue
 src/pages/stats/convert @gorgias/revenue
 src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns @gorgias/revenue
+src/pages/aiAgent/Onboarding/ @gorgias/revenue
 
 # Chat widget scope @gorgias/automations-chat
 
