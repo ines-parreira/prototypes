@@ -29,7 +29,7 @@ const Circle = ({color, percentage}: CircleProps) => {
             strokeDasharray={circ}
             strokeDashoffset={percentage ? strokePct : 0}
             strokeLinecap="round"
-            shapeRendering="crispEdges"
+            shapeRendering="geometricPrecision"
         />
     )
 }
