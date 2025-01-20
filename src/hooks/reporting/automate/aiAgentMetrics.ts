@@ -57,6 +57,7 @@ export const useAiAgenTickets = (
     filters: StatsFilters,
     timezone: string,
     customField: CustomField | undefined,
+    operator: ReportingFilterOperator = ReportingFilterOperator.Contains,
     customFieldFilter?:
         | typeof CUSTOM_FIELD_AI_AGENT_HANDOVER
         | typeof CUSTOM_FIELD_AI_AGENT_CLOSE,
@@ -70,7 +71,7 @@ export const useAiAgenTickets = (
             customFieldFilter
                 ? {
                       member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-                      operator: ReportingFilterOperator.Contains,
+                      operator,
                       values: [customFieldFilter],
                   }
                 : undefined,

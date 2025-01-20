@@ -99,6 +99,7 @@ describe('aiAgentMetrics', () => {
                         filters,
                         timezone,
                         customField,
+                        ReportingFilterOperator.Contains,
                         CUSTOM_FIELD_AI_AGENT_HANDOVER,
                         sorting
                     ),

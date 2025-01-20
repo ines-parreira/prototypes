@@ -19,6 +19,7 @@ import {automationDatasetQueryFactory} from 'models/reporting/queryFactories/aut
 import {customerSatisfactionMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {customFieldsTicketTotalCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import {ReportingFilterOperator} from 'models/reporting/types'
 import {FilterKey, StatsFilters} from 'models/stat/types'
 import {IntentMetrics} from 'pages/aiAgent/insights/IntentTableWidget/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
@@ -37,10 +38,7 @@ import {
     getAiAgentCoverageRate,
     getAiAgentSuccessRate,
 } from './automateStatsCalculatedTrends'
-import {
-    CUSTOM_FIELD_AI_AGENT_CLOSE,
-    CUSTOM_FIELD_AI_AGENT_HANDOVER,
-} from './types'
+import {CUSTOM_FIELD_AI_AGENT_HANDOVER} from './types'
 import {useAIAgentUserId} from './useAIAgentUserId'
 
 // COVERAGE_RATE: #AI_AGENT_TICKETS / #TICKETS
@@ -203,6 +201,7 @@ export const useAutomationOpportunityPerIntent = (
         filters,
         timezone,
         customFieldOutcome,
+        ReportingFilterOperator.Contains,
         CUSTOM_FIELD_AI_AGENT_HANDOVER
     )
 
@@ -303,7 +302,8 @@ export const useSuccessRatePerIntent = (
         filters,
         timezone,
         customFieldOutcome,
-        CUSTOM_FIELD_AI_AGENT_CLOSE
+        ReportingFilterOperator.NotContains,
+        CUSTOM_FIELD_AI_AGENT_HANDOVER
     )
 
     const ticketsPerIntent = useAIAgentTicketsPerIntent(filters, timezone)
