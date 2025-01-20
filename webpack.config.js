@@ -285,7 +285,7 @@ module.exports = (env = {}) => {
                 'process.env.WEB_APP_RELEASE': JSON.stringify(WEB_APP_RELEASE),
             }),
             new NodePolyfillPlugin(),
-            !__PRODUCTION__ && new ReactRefreshWebpackPlugin(),
+            !__PRODUCTION__ && new ReactRefreshWebpackPlugin({overlay: false}),
             codecovWebpackPlugin({
                 enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
                 bundleName: 'helpdesk-web-app',
