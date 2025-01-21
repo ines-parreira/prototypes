@@ -44,6 +44,7 @@ import TicketStatus from './TicketDetails/TicketStatus'
 import TicketTags from './TicketDetails/TicketTags'
 import TicketTrash from './TicketDetails/TicketTrash'
 import css from './TicketHeader.less'
+import {TicketHeaderToggle} from './TicketHeaderToggle'
 import TicketNavigationArrowPagination from './TicketNavigation/TicketNavigationArrowPagination'
 
 type Props = {
@@ -258,6 +259,7 @@ const TicketHeader = ({
     return (
         <div className={classnames(css.component, className)} id="TicketHeader">
             <div className={css.title}>
+                <TicketHeaderToggle />
                 <EditableTitle
                     className={css.editableTitleWrapper}
                     inputClassName={css.editableTitle}
