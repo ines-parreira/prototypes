@@ -1,8 +1,8 @@
 import React from 'react'
 
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-
 import ChartCard from 'pages/stats/ChartCard'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import HelpCenterStatsTable, {
     TableCellType,
 } from 'pages/stats/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
@@ -51,11 +51,12 @@ const ITEMS_PER_PAGE = 20
 type Props = {
     helpCenterDomain: string
     helpCenterId: number
-}
+} & DashboardChartProps
 
 export const PerformanceByArticle = ({
     helpCenterDomain,
     helpCenterId,
+    chartId,
 }: Props) => {
     const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const [currentPage, setCurrentPage] = React.useState(1)
@@ -78,7 +79,11 @@ export const PerformanceByArticle = ({
     const count = Math.ceil(total / ITEMS_PER_PAGE)
 
     return (
-        <ChartCard title={'Performance by articles'} noPadding>
+        <ChartCard
+            title={'Performance by articles'}
+            noPadding
+            chartId={chartId}
+        >
             {!isLoading && data.length === 0 ? (
                 <NoDataAvailable
                     title="No data available"

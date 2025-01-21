@@ -4,6 +4,7 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {formatMetricValue} from 'pages/stats/common/utils'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import MetricCard from 'pages/stats/MetricCard'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import PerformanceTip from 'pages/stats/PerformanceTip'
@@ -21,7 +22,7 @@ export type OverviewCardProps = {
     endDate: string
     title: string
     tipContent: ReactNode
-}
+} & DashboardChartProps
 
 const OverviewCard = ({
     trendValue,
@@ -33,9 +34,11 @@ const OverviewCard = ({
     tipContent,
     startDate,
     endDate,
+    chartId,
 }: OverviewCardProps) => {
     return (
         <MetricCard
+            chartId={chartId}
             isLoading={isLoading}
             title={title}
             hint={{

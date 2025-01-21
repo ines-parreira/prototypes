@@ -1,17 +1,15 @@
 import {Scale} from 'chart.js'
-
 import moment from 'moment/moment'
-
 import React, {useMemo} from 'react'
 
 import {useArticleViewTimeSeries} from 'hooks/reporting/help-center/useArticleViewTimeSeries'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {ReportingGranularity} from 'models/reporting/types'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import {formatTimeSeriesData, SHORT_FORMAT} from 'pages/stats/common/utils'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {
     HelpCenterMetric,
     HelpCenterMetricConfig,
@@ -20,7 +18,7 @@ import {
 type ArticleViewsGraphComponentProps = {
     isLoading: boolean
     data?: TimeSeriesDataItem[][]
-}
+} & DashboardChartProps
 
 export const renderXTickLabel = function (
     this: Scale,
@@ -38,6 +36,7 @@ export const renderXTickLabel = function (
 
 export const ArticleViewsGraphComponent = ({
     isLoading,
+    chartId,
     data,
 }: ArticleViewsGraphComponentProps) => {
     const formattedDat = useMemo(
@@ -53,6 +52,7 @@ export const ArticleViewsGraphComponent = ({
     return (
         <ChartCard
             title={HelpCenterMetricConfig[HelpCenterMetric.ArticleViews].title}
+            chartId={chartId}
         >
             <LineChart
                 renderXTickLabel={renderXTickLabel}
@@ -64,7 +64,7 @@ export const ArticleViewsGraphComponent = ({
     )
 }
 
-const ArticleViewsGraph = () => {
+const ArticleViewsGraph = ({chartId}: DashboardChartProps) => {
     const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const articleViewTimeSeries = useArticleViewTimeSeries(
         cleanStatsFilters,
@@ -76,6 +76,7 @@ const ArticleViewsGraph = () => {
         <ArticleViewsGraphComponent
             data={articleViewTimeSeries.data}
             isLoading={articleViewTimeSeries.isFetching}
+            chartId={chartId}
         />
     )
 }

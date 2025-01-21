@@ -1,5 +1,6 @@
 import React from 'react'
 
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
 import {
     OverviewChartConfig,
@@ -7,11 +8,12 @@ import {
     PERFORMANCE_OVERVIEW_CHART_TYPE,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 
-export const MessagesSentGraph = () => {
+export const MessagesSentGraph = ({chartId}: DashboardChartProps) => {
     return (
         <OverviewChartCard
             {...OverviewChartConfig[OverviewMetric.MessagesSent]}
             chartType={PERFORMANCE_OVERVIEW_CHART_TYPE}
+            chartId={chartId}
         />
     )
 }

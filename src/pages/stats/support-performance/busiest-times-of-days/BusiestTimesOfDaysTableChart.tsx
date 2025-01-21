@@ -1,10 +1,10 @@
 import React, {useState} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-
 import ChartCard from 'pages/stats/ChartCard'
 import Legend from 'pages/stats/common/components/Legend'
 import {TableHeatmapSwitch} from 'pages/stats/common/components/Table/TableHeatmapSwitch'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import css from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays.less'
 import {BusiestTimesOfDaysTable} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
 import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
@@ -49,7 +49,9 @@ const busiestHoursHeatmapLegend = {
     shape: 'rectangle' as const,
 }
 
-export const BusiestTimesOfDaysTableChart = () => {
+export const BusiestTimesOfDaysTableChart = ({
+    chartId,
+}: DashboardChartProps) => {
     const selectedMetric = useAppSelector(getSelectedMetric)
     const [isHeatmapMode, setIsHeatmapMode] = useState(true)
     const toggleHandler = () => setIsHeatmapMode(!isHeatmapMode)
@@ -59,6 +61,7 @@ export const BusiestTimesOfDaysTableChart = () => {
             noPadding
             title={BUSIEST_TIME_OF_THE_WEEK_SECTION_LABEL}
             hint={{title: SectionTooltips[selectedMetric]}}
+            chartId={chartId}
             titleExtra={
                 <TableHeatmapSwitch
                     isHeatmapMode={isHeatmapMode}

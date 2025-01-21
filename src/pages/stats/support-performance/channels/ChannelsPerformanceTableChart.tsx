@@ -1,17 +1,21 @@
 import React from 'react'
 
 import ChartCard from 'pages/stats/ChartCard'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {ChannelsCardExtra} from 'pages/stats/support-performance/channels/ChannelsCardExtra'
 import {ChannelsTable} from 'pages/stats/support-performance/channels/ChannelsTable'
 
 export const CHANNEL_PERFORMANCE_TABLE_TITLE = 'Channel performance'
 
-export const ChannelsPerformanceTableChart = () => {
+export const ChannelsPerformanceTableChart = ({
+    chartId,
+}: DashboardChartProps) => {
     return (
         <ChartCard
             title={CHANNEL_PERFORMANCE_TABLE_TITLE}
             noPadding
             titleExtra={<ChannelsCardExtra />}
+            chartId={chartId}
         >
             <ChannelsTable />
         </ChartCard>

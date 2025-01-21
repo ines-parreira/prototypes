@@ -4,6 +4,7 @@ import React from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 import css from 'pages/stats/BreakdownTable.less'
 import ChartCard from 'pages/stats/ChartCard'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import {CustomFieldsTableHeatmapSwitch} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTableHeatmapSwitch'
 import {CustomFieldsTicketCountBreakdownTable} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
@@ -14,7 +15,9 @@ import {
 import {TicketInsightsValueModeSwitch} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsValueModeSwitch'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 
-export const CustomFieldsTicketCountBreakdownTableChart = () => {
+export const CustomFieldsTicketCountBreakdownTableChart = ({
+    chartId,
+}: DashboardChartProps) => {
     const {id, label} = useAppSelector(getSelectedCustomField)
 
     const {hint, title} =
@@ -28,6 +31,7 @@ export const CustomFieldsTicketCountBreakdownTableChart = () => {
             hint={hint}
             noPadding={true}
             className={css.limitedHeight}
+            chartId={chartId}
             titleExtra={
                 <div className={css.switches}>
                     <TicketInsightsValueModeSwitch />

@@ -1,12 +1,17 @@
 import React from 'react'
 
 import ChartCard from 'pages/stats/ChartCard'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {VoiceAgentsTable} from 'pages/stats/voice/components/VoiceAgentsTable/VoiceAgentsTable'
 import {VOICE_CALL_ACTIVITY_TITLE} from 'pages/stats/voice/constants/voiceAgents'
 
-export function VoiceAgentsTableCard() {
+export function VoiceAgentsTableCard({chartId}: DashboardChartProps) {
     return (
-        <ChartCard title={VOICE_CALL_ACTIVITY_TITLE} noPadding>
+        <ChartCard
+            title={VOICE_CALL_ACTIVITY_TITLE}
+            noPadding
+            chartId={chartId}
+        >
             <VoiceAgentsTable />
         </ChartCard>
     )

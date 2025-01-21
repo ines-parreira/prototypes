@@ -11,6 +11,7 @@ import {
     comparedPeriodString,
     formatMetricValue,
 } from 'pages/stats/common/utils'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import MetricCard from 'pages/stats/MetricCard'
 import {VoiceMetrics} from 'state/ui/stats/drillDownSlice'
@@ -23,7 +24,7 @@ type VoiceCallCallerExperienceMetricProps = {
     statsFilters: StatsFilters
     metricData: VoiceMetrics
     isAnalyticsNewFilters?: boolean
-}
+} & DashboardChartProps
 
 function VoiceCallCallerExperienceMetric({
     title,
@@ -32,6 +33,7 @@ function VoiceCallCallerExperienceMetric({
     metricTrend,
     metricData,
     isAnalyticsNewFilters = false,
+    chartId,
 }: VoiceCallCallerExperienceMetricProps) {
     const voiceCallsAverageTime = metricTrend.data?.value
     const previousPeriod = getAdvancedVoicePeriodFilters(
@@ -51,6 +53,7 @@ function VoiceCallCallerExperienceMetric({
                 title: hint,
             }}
             isLoading={metricTrend.isFetching}
+            chartId={chartId}
         >
             <BigNumberMetric
                 isLoading={metricTrend.isFetching}

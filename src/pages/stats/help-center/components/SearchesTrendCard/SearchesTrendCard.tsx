@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import OverviewCard from 'pages/stats/help-center/components/OverviewCard/OverviewCard'
 import {
     HelpCenterMetric,
@@ -8,7 +9,7 @@ import {
 } from 'pages/stats/help-center/HelpCenterMetricsConfig'
 import {useSearchRequestedTrend} from 'pages/stats/help-center/hooks/useSearchRequestedTrend'
 
-export const SearchesTrendCard = () => {
+export const SearchesTrendCard = ({chartId}: DashboardChartProps) => {
     const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const searchesMetricTrend = useSearchRequestedTrend(
         cleanStatsFilters,
@@ -20,6 +21,7 @@ export const SearchesTrendCard = () => {
 
     return (
         <OverviewCard
+            chartId={chartId}
             showTip={isTipVisible}
             isLoading={searchesMetricTrend.isFetching}
             hintTitle={

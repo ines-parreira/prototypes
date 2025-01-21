@@ -493,6 +493,9 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                     </i>
                   </div>
                 </div>
+                <div
+                  class="chartsActionMenu"
+                />
               </div>
               <div
                 class="wrapper"
@@ -530,6 +533,9 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                     </i>
                   </div>
                 </div>
+                <div
+                  class="chartsActionMenu"
+                />
               </div>
               <div
                 class="wrapper"
@@ -567,6 +573,9 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                     </i>
                   </div>
                 </div>
+                <div
+                  class="chartsActionMenu"
+                />
               </div>
               <div
                 class="wrapper chartWrapper"
@@ -1108,6 +1117,9 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                           </i>
                         </div>
                       </div>
+                      <div
+                        class="chartsActionMenu"
+                      />
                     </div>
                     <div
                       class="wrapper"
@@ -1145,6 +1157,9 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                           </i>
                         </div>
                       </div>
+                      <div
+                        class="chartsActionMenu"
+                      />
                     </div>
                     <div
                       class="wrapper"
@@ -1182,6 +1197,9 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                           </i>
                         </div>
                       </div>
+                      <div
+                        class="chartsActionMenu"
+                      />
                     </div>
                     <div
                       class="wrapper chartWrapper"
@@ -1827,6 +1845,9 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                         </i>
                       </div>
                     </div>
+                    <div
+                      class="chartsActionMenu"
+                    />
                   </div>
                   <div
                     class="wrapper"
@@ -1864,6 +1885,9 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                         </i>
                       </div>
                     </div>
+                    <div
+                      class="chartsActionMenu"
+                    />
                   </div>
                   <div
                     class="wrapper"
@@ -1901,6 +1925,9 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                         </i>
                       </div>
                     </div>
+                    <div
+                      class="chartsActionMenu"
+                    />
                   </div>
                   <div
                     class="wrapper chartWrapper"
@@ -2495,6 +2522,9 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                           </i>
                         </div>
                       </div>
+                      <div
+                        class="chartsActionMenu"
+                      />
                     </div>
                     <div
                       class="wrapper"
@@ -2532,6 +2562,9 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                           </i>
                         </div>
                       </div>
+                      <div
+                        class="chartsActionMenu"
+                      />
                     </div>
                     <div
                       class="wrapper"
@@ -2569,6 +2602,9 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                           </i>
                         </div>
                       </div>
+                      <div
+                        class="chartsActionMenu"
+                      />
                     </div>
                     <div
                       class="wrapper chartWrapper"
@@ -3214,6 +3250,9 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                         </i>
                       </div>
                     </div>
+                    <div
+                      class="chartsActionMenu"
+                    />
                   </div>
                   <div
                     class="wrapper"
@@ -3251,6 +3290,9 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                         </i>
                       </div>
                     </div>
+                    <div
+                      class="chartsActionMenu"
+                    />
                   </div>
                   <div
                     class="wrapper"
@@ -3288,6 +3330,9 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                         </i>
                       </div>
                     </div>
+                    <div
+                      class="chartsActionMenu"
+                    />
                   </div>
                   <div
                     class="wrapper chartWrapper"
@@ -3882,6 +3927,9 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                           </i>
                         </div>
                       </div>
+                      <div
+                        class="chartsActionMenu"
+                      />
                     </div>
                     <div
                       class="wrapper"
@@ -3919,6 +3967,9 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                           </i>
                         </div>
                       </div>
+                      <div
+                        class="chartsActionMenu"
+                      />
                     </div>
                     <div
                       class="wrapper"
@@ -3956,6 +4007,9 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                           </i>
                         </div>
                       </div>
+                      <div
+                        class="chartsActionMenu"
+                      />
                     </div>
                     <div
                       class="wrapper chartWrapper"
@@ -4601,6 +4655,9 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                         </i>
                       </div>
                     </div>
+                    <div
+                      class="chartsActionMenu"
+                    />
                   </div>
                   <div
                     class="wrapper"
@@ -4638,6 +4695,9 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                         </i>
                       </div>
                     </div>
+                    <div
+                      class="chartsActionMenu"
+                    />
                   </div>
                   <div
                     class="wrapper"
@@ -4675,6 +4735,9 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                         </i>
                       </div>
                     </div>
+                    <div
+                      class="chartsActionMenu"
+                    />
                   </div>
                   <div
                     class="wrapper chartWrapper"
@@ -5265,6 +5328,9 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                     </i>
                   </div>
                 </div>
+                <div
+                  class="chartsActionMenu"
+                />
               </div>
               <div
                 class="wrapper"
@@ -5302,6 +5368,9 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                     </i>
                   </div>
                 </div>
+                <div
+                  class="chartsActionMenu"
+                />
               </div>
               <div
                 class="wrapper"
@@ -5339,6 +5408,9 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                     </i>
                   </div>
                 </div>
+                <div
+                  class="chartsActionMenu"
+                />
               </div>
               <div
                 class="wrapper chartWrapper"
@@ -5859,6 +5931,9 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                     </i>
                   </div>
                 </div>
+                <div
+                  class="chartsActionMenu"
+                />
               </div>
               <div
                 class="wrapper"
@@ -5896,6 +5971,9 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                     </i>
                   </div>
                 </div>
+                <div
+                  class="chartsActionMenu"
+                />
               </div>
               <div
                 class="wrapper"
@@ -5933,6 +6011,9 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                     </i>
                   </div>
                 </div>
+                <div
+                  class="chartsActionMenu"
+                />
               </div>
               <div
                 class="wrapper chartWrapper"
@@ -6470,6 +6551,9 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                     </i>
                   </div>
                 </div>
+                <div
+                  class="chartsActionMenu"
+                />
               </div>
               <div
                 class="wrapper"
@@ -6507,6 +6591,9 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                     </i>
                   </div>
                 </div>
+                <div
+                  class="chartsActionMenu"
+                />
               </div>
               <div
                 class="wrapper"
@@ -6544,6 +6631,9 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                     </i>
                   </div>
                 </div>
+                <div
+                  class="chartsActionMenu"
+                />
               </div>
               <div
                 class="wrapper chartWrapper"
@@ -7081,6 +7171,9 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                     </i>
                   </div>
                 </div>
+                <div
+                  class="chartsActionMenu"
+                />
               </div>
               <div
                 class="wrapper"
@@ -7118,6 +7211,9 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                     </i>
                   </div>
                 </div>
+                <div
+                  class="chartsActionMenu"
+                />
               </div>
               <div
                 class="wrapper"
@@ -7155,6 +7251,9 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                     </i>
                   </div>
                 </div>
+                <div
+                  class="chartsActionMenu"
+                />
               </div>
               <div
                 class="wrapper chartWrapper"

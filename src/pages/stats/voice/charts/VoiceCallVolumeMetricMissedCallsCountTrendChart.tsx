@@ -1,6 +1,7 @@
 import React from 'react'
 
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import VoiceCallVolumeMetric from 'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
 import {
     MISSED_CALLS_METRIC_HINT,
@@ -9,7 +10,9 @@ import {
 import {useNewVoiceStatsFilters} from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
 import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 
-export const VoiceCallVolumeMetricMissedCallsCountTrendChart = () => {
+export const VoiceCallVolumeMetricMissedCallsCountTrendChart = ({
+    chartId,
+}: DashboardChartProps) => {
     const {cleanStatsFilters, userTimezone} = useNewVoiceStatsFilters()
     const missedCallsCountTrend = useVoiceCallCountTrend(
         cleanStatsFilters,
@@ -23,6 +26,7 @@ export const VoiceCallVolumeMetricMissedCallsCountTrendChart = () => {
             hint={MISSED_CALLS_METRIC_HINT}
             statsFilters={cleanStatsFilters}
             metricTrend={missedCallsCountTrend}
+            chartId={chartId}
             moreIsBetter={false}
         />
     )

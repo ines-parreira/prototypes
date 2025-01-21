@@ -4,6 +4,8 @@ import React, {ReactNode} from 'react'
 
 import css from 'pages/stats/ChartCard.less'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
+import {ChartsActionMenu} from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {TooltipData} from 'pages/stats/types'
 
 type Props = {
@@ -13,7 +15,7 @@ type Props = {
     title: ReactNode
     titleExtra?: ReactNode
     noPadding?: boolean
-}
+} & DashboardChartProps
 
 export default function ChartCard({
     children,
@@ -22,6 +24,7 @@ export default function ChartCard({
     title,
     titleExtra,
     noPadding = false,
+    chartId,
 }: Props) {
     return (
         <Card
@@ -39,8 +42,10 @@ export default function ChartCard({
                         />
                     )}
                 </div>
-
-                {titleExtra}
+                <div className={css.chartsActionMenu}>
+                    {titleExtra}
+                    {chartId && <ChartsActionMenu chartId={chartId} />}
+                </div>
             </div>
 
             {children}

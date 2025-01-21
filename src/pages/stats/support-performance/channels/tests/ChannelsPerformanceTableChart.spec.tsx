@@ -1,9 +1,7 @@
 import {render} from '@testing-library/react'
-
 import React from 'react'
 
 import {ChannelsCardExtra} from 'pages/stats/support-performance/channels/ChannelsCardExtra'
-
 import {ChannelsPerformanceTableChart} from 'pages/stats/support-performance/channels/ChannelsPerformanceTableChart'
 import {ChannelsTable} from 'pages/stats/support-performance/channels/ChannelsTable'
 import {assumeMock} from 'utils/testing'

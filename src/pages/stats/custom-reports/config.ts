@@ -111,11 +111,6 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
                 type: VoiceAgentsChart,
                 config: VoiceAgentsReportConfig,
             },
-        ],
-    },
-    {
-        category: 'Voice',
-        children: [
             {
                 type: VoiceOverviewChart,
                 config: VoiceOverviewReportConfig,

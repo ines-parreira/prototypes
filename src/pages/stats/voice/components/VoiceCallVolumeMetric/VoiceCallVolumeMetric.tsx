@@ -10,6 +10,7 @@ import {
     formatMetricValue,
     MetricTrendFormat,
 } from 'pages/stats/common/utils'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import MetricCard from 'pages/stats/MetricCard'
 import {getPreviousPeriod} from 'utils/reporting'
 
@@ -19,7 +20,8 @@ type VoiceCallVolumeMetricProps = {
     statsFilters: StatsFilters
     moreIsBetter?: boolean
     metricTrend: MetricTrend
-}
+} & DashboardChartProps
+
 const getTrendProps = (metricTrend: MetricTrend, moreIsBetter = true) => ({
     value: metricTrend.data?.value || 0,
     prevValue: metricTrend.data?.prevValue || 0,
@@ -35,6 +37,7 @@ function VoiceCallVolumeMetric({
     metricTrend,
     statsFilters,
     moreIsBetter = true,
+    chartId,
 }: VoiceCallVolumeMetricProps) {
     const voiceCallsCount = metricTrend.data?.value
     const previousPeriod = getPreviousPeriod(statsFilters.period)
@@ -42,6 +45,7 @@ function VoiceCallVolumeMetric({
     return (
         <MetricCard
             title={title}
+            chartId={chartId}
             hint={{
                 title: hint,
             }}

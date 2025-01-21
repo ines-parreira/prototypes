@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import OverviewCard from 'pages/stats/help-center/components/OverviewCard/OverviewCard'
 import {
     HelpCenterMetric,
@@ -9,7 +9,7 @@ import {
 } from 'pages/stats/help-center/HelpCenterMetricsConfig'
 import {useArticleViewsTrend} from 'pages/stats/help-center/hooks/useArticleViewsTrend'
 
-export const ArticleViewsTrendCard = () => {
+export const ArticleViewsTrendCard = ({chartId}: DashboardChartProps) => {
     // FIXME: revert it to true as soon as the documentation article links are ready
     const [isTipVisible] = useState(false)
 
@@ -22,6 +22,7 @@ export const ArticleViewsTrendCard = () => {
 
     return (
         <OverviewCard
+            chartId={chartId}
             showTip={isTipVisible}
             isLoading={articleViewMetricTrend.isFetching}
             hintTitle={

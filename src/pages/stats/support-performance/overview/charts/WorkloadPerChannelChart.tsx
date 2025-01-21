@@ -7,11 +7,12 @@ import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStat
 import IconButton from 'pages/common/components/button/IconButton'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import ChartCard from 'pages/stats/ChartCard'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import GaugeChart from 'pages/stats/GaugeChart'
 import {WORKLOAD_BY_CHANNEL_HINT} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {TOTAL_WORKLOAD_BY_CHANNEL_LABEL} from 'services/reporting/constants'
 
-export const WorkloadPerChannelChart = () => {
+export const WorkloadPerChannelChart = ({chartId}: DashboardChartProps) => {
     const isDeferredLoadingEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsDeferredLoadingExperiment]
 
@@ -46,6 +47,7 @@ export const WorkloadPerChannelChart = () => {
         <ChartCard
             title={TOTAL_WORKLOAD_BY_CHANNEL_LABEL}
             hint={WORKLOAD_BY_CHANNEL_HINT}
+            chartId={chartId}
             titleExtra={
                 isDeferredLoadingEnabled &&
                 !enabled && (

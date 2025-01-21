@@ -16,6 +16,7 @@ import {
     NOT_AVAILABLE_PLACEHOLDER,
     formatMetricValue,
 } from 'pages/stats/common/utils'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {
     DistributionCategoryCell,
     formatCategory,
@@ -207,7 +208,7 @@ const useSelectedCustomField = () => {
     return useAppSelector(getSelectedCustomField)
 }
 
-export const TicketDistributionChart = () => {
+export const TicketDistributionChart = ({chartId}: DashboardChartProps) => {
     const selectedCustomField = useSelectedCustomField()
 
     const {hint, title} =
@@ -216,7 +217,12 @@ export const TicketDistributionChart = () => {
         ]
 
     return (
-        <ChartCard title={title} hint={hint} className={css.card}>
+        <ChartCard
+            title={title}
+            hint={hint}
+            className={css.card}
+            chartId={chartId}
+        >
             {selectedCustomField.id == null ? (
                 <NoDataFallback />
             ) : (

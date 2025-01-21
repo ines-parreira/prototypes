@@ -1,7 +1,6 @@
 import React from 'react'
 
 import {useTagsDistribution} from 'hooks/reporting/support-performance/useTagsDistribution'
-
 import {useWidthBasedOnScreen} from 'hooks/useWidthBasedOnScreen'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -14,13 +13,12 @@ import {
     TREND_BADGE_FORMAT,
 } from 'pages/stats/common/components/TrendBadge'
 import {TrendIcon} from 'pages/stats/common/components/TrendIcon'
-
 import {
     NOT_AVAILABLE_PLACEHOLDER,
     formatMetricTrend,
     formatMetricValue,
 } from 'pages/stats/common/utils'
-
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {DistributionCategoryCell} from 'pages/stats/DistributionCategoryCell'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
@@ -28,11 +26,10 @@ import {
     TicketInsightsTagsMetric,
     TicketInsightsTagsMetricConfig,
 } from 'pages/stats/ticket-insights/tags/TagsMetricConfig'
-
 import css from 'pages/stats/ticket-insights/tags/TopUsedTagsChart.less'
 import {TagsMetric} from 'state/ui/stats/types'
 
-export const TopUsedTagsChart = () => {
+export const TopUsedTagsChart = ({chartId}: DashboardChartProps) => {
     const {isFetching, data} = useTagsDistribution()
 
     const getWidth = useWidthBasedOnScreen()
@@ -43,7 +40,12 @@ export const TopUsedTagsChart = () => {
         ]
 
     return (
-        <ChartCard title={title} hint={hint} className={css.card}>
+        <ChartCard
+            title={title}
+            hint={hint}
+            className={css.card}
+            chartId={chartId}
+        >
             {isFetching ? (
                 <TableWrapper className={css.table}>
                     <TableBody>

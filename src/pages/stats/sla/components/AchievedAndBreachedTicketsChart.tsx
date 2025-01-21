@@ -8,6 +8,7 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import ChartCard from 'pages/stats/ChartCard'
 import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
 import {formatLabeledTimeSeriesData} from 'pages/stats/common/utils'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 
 export const CHART_TITLE = 'Achieved and breached tickets'
 export const HINT =
@@ -29,7 +30,9 @@ export const CHART_FIELDS = [
     },
 ]
 
-export const AchievedAndBreachedTicketsChart = () => {
+export const AchievedAndBreachedTicketsChart = ({
+    chartId,
+}: DashboardChartProps) => {
     const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
 
     const {data, isLoading} = useSatisfiedOrBreachedTicketsTimeSeries(
@@ -47,7 +50,7 @@ export const AchievedAndBreachedTicketsChart = () => {
     return isLoading ? (
         <Skeleton />
     ) : (
-        <ChartCard title={CHART_TITLE} hint={{title: HINT}}>
+        <ChartCard title={CHART_TITLE} hint={{title: HINT}} chartId={chartId}>
             <BarChart
                 data={
                     data !== undefined

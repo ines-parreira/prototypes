@@ -9,6 +9,7 @@ import {
     MetricTrendFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import MetricCard from 'pages/stats/MetricCard'
 import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
@@ -37,8 +38,7 @@ export const TrendCard = ({
     tip?: ReactNode
     interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
     metricFormat?: MetricTrendFormat
-    chartId?: string
-}) => {
+} & DashboardChartProps) => {
     const {cleanStatsFilters, userTimezone, isAnalyticsNewFilters} =
         useNewStatsFilters()
 

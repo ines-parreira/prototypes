@@ -4,6 +4,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
 import {TrendCard} from 'pages/stats/common/components/TrendCard'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {
     OverviewMetric,
     OverviewMetricConfig,
@@ -17,7 +18,9 @@ import {
 } from 'state/currentAccount/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
 
-export const CustomerSatisfactionTrendCard = ({chartId}: {chartId: string}) => {
+export const CustomerSatisfactionTrendCard = ({
+    chartId,
+}: DashboardChartProps) => {
     const [areTipsVisible] = useLocalStorage(STATS_TIPS_VISIBILITY_KEY, true)
 
     const surveySettings = useAppSelector(getSurveysSettingsJS)

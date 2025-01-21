@@ -1,8 +1,6 @@
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
 import LD from 'launchdarkly-react-client-sdk'
-
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -22,7 +20,6 @@ import {LegacyStatsFilters} from 'models/stat/types'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import GaugeChart from 'pages/stats/GaugeChart'
 import {WorkloadPerChannelChart} from 'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart'
-
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'

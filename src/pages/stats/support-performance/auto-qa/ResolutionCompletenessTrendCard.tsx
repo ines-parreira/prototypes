@@ -1,11 +1,17 @@
 import React from 'react'
 
 import {TrendCard} from 'pages/stats/common/components/TrendCard'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
 import {AutoQAMetric} from 'state/ui/stats/types'
 
-export const ResolutionCompletenessTrendCard = () => {
+export const ResolutionCompletenessTrendCard = ({
+    chartId,
+}: DashboardChartProps) => {
     return (
-        <TrendCard {...TrendCardConfig[AutoQAMetric.ResolutionCompleteness]} />
+        <TrendCard
+            {...TrendCardConfig[AutoQAMetric.ResolutionCompleteness]}
+            chartId={chartId}
+        />
     )
 }

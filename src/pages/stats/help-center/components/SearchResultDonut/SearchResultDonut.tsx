@@ -1,9 +1,9 @@
 import React from 'react'
 
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-
 import ChartCard from 'pages/stats/ChartCard'
 import DonutChart from 'pages/stats/common/components/charts/DonutChart/DonutChart'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import css from 'pages/stats/help-center/components/SearchResultDonut/SearchResultDonut.less'
 import {
     SEARCH_RESULTS_DONUT_TITLE,
@@ -12,7 +12,7 @@ import {
 import {useSearchResultRange} from 'pages/stats/help-center/hooks/useSearchResultRange'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 
-const SearchResultDonut = () => {
+const SearchResultDonut = ({chartId}: DashboardChartProps) => {
     const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const {data, isLoading} = useSearchResultRange(
         cleanStatsFilters,
@@ -24,6 +24,7 @@ const SearchResultDonut = () => {
             title={SEARCH_RESULTS_DONUT_TITLE}
             className={css.card}
             hint={SEARCH_RESULTS_DONUT_TOOLTIP}
+            chartId={chartId}
         >
             {!isLoading && data.length === 0 ? (
                 <NoDataAvailable

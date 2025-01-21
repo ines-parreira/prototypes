@@ -5,6 +5,7 @@ import React, {ReactNode} from 'react'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
 import {ChartsActionMenu} from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import css from 'pages/stats/MetricCard.less'
 import {TooltipData} from 'pages/stats/types'
 
@@ -15,8 +16,7 @@ type Props = {
     isLoading?: boolean
     title: ReactNode
     tip?: ReactNode
-    chartId?: string
-}
+} & DashboardChartProps
 
 export default function MetricCard({
     children,

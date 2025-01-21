@@ -6,6 +6,7 @@ import css from 'pages/stats/BreakdownTable.less'
 import ChartCard from 'pages/stats/ChartCard'
 import {TableHeatmapSwitch} from 'pages/stats/common/components/Table/TableHeatmapSwitch'
 import {TableValueModeSwitch} from 'pages/stats/common/components/Table/TableValueModeSwitch'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {AllUsedTagsTable} from 'pages/stats/ticket-insights/tags/AllUsedTagsTable'
 import {
     TicketInsightsTagsMetric,
@@ -18,7 +19,7 @@ import {
     toggleValueMode,
 } from 'state/ui/stats/tagsReportSlice'
 
-export const AllUsedTagsTableChart = () => {
+export const AllUsedTagsTableChart = ({chartId}: DashboardChartProps) => {
     const dispatch = useAppDispatch()
     const valueMode = useAppSelector(getValueMode)
     const heatmapMode = useAppSelector(getHeatmapMode)
@@ -36,6 +37,7 @@ export const AllUsedTagsTableChart = () => {
             title={title}
             hint={hint}
             noPadding={true}
+            chartId={chartId}
             className={css.tagsTableWrapperHeight}
             titleExtra={
                 <div className={css.switches}>

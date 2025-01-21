@@ -4,6 +4,7 @@ import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 
 const content = 'Test'
 const chart = 'chart-id'
@@ -11,7 +12,7 @@ const chart = 'chart-id'
 const config = {
     charts: {
         [chart]: {
-            chartComponent: (props: {chartId: string}) => (
+            chartComponent: (props: DashboardChartProps) => (
                 <>
                     <div>{content}</div>
                     <div>{props?.chartId}</div>
