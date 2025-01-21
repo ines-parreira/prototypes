@@ -1,0 +1,23 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .pill {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        height: 32px;
+        padding: 0 @layout-spacing-s;
+        font-weight: 500;
+        border-radius: 4px;
+    }
+
+    .blue {
+        background-color: var(--main-primary);
+        color: var(--neutral-grey-0);
+    }
+
+    .grey {
+        background-color: var(--neutral-grey-2);
+        color: var(--neutral-grey-6);
+    }
+}

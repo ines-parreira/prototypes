@@ -1,8 +1,16 @@
-import {ExpressionFieldType} from '@gorgias/api-types'
+import {
+    ExpressionFieldType,
+    CustomFieldDefinition as ApiCustomFieldDefinition,
+} from '@gorgias/api-types'
 
 import {ApiPaginationParams} from 'models/api/types'
 
-import {AI_MANAGED_TYPES, MANAGED_TYPES, OBJECT_TYPES} from './constants'
+import {
+    AI_MANAGED_TYPES,
+    MANAGED_TYPES,
+    OBJECT_TYPES,
+    SUPPORTED_UI_DATA_TYPES,
+} from './constants'
 
 export type CustomFieldObjectTypes =
     (typeof OBJECT_TYPES)[keyof typeof OBJECT_TYPES]
@@ -121,3 +129,9 @@ export type CustomFieldConditionsEvaluationResults = Record<
     number,
     ExpressionFieldType | undefined
 >
+
+export type ExhaustiveUIDataType =
+    `${ApiCustomFieldDefinition['input_settings']['input_type']}_${ApiCustomFieldDefinition['data_type']}`
+
+export type SupportedUIDataType =
+    (typeof SUPPORTED_UI_DATA_TYPES)[keyof typeof SUPPORTED_UI_DATA_TYPES]

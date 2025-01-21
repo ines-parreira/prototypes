@@ -14,3 +14,13 @@ export type SearchResults = {
     path: string
     value: CustomFieldValue
 }[]
+
+export type CustomInputProps = {
+    id: string
+    value: string
+    placeholder: string
+    isDisabled: boolean
+    isOpen: boolean
+    onFocus: () => void
+    ref: (element: HTMLElement | null) => void
+}

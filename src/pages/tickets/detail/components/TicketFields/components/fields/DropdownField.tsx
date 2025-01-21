@@ -21,13 +21,11 @@ import {getTicket} from 'state/ticket/selectors'
 
 import css from './DropdownField.less'
 
-type Props = Pick<
-    MultiLevelSelectProps,
-    'id' | 'label' | 'choices' | 'isDisabled'
-> & {
-    fieldState?: CustomFieldState
-    isRequired?: boolean
-}
+type Props = Pick<MultiLevelSelectProps, 'choices' | 'isDisabled'> &
+    Required<Pick<MultiLevelSelectProps, 'id' | 'label'>> & {
+        fieldState?: CustomFieldState
+        isRequired?: boolean
+    }
 
 export const createInputId = (ticketId: string | number, id: string | number) =>
     `ticket-${ticketId}-custom-field-value-input-${id}`

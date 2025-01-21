@@ -39,6 +39,7 @@ import {useSearch} from './hooks/useSearch'
 import css from './MultiLevelSelect.less'
 import {SearchInput} from './search/SearchInput'
 import {SearchResult} from './search/SearchResult'
+import {CustomInputProps} from './types'
 
 function isMultiValueAllowed<T extends boolean | undefined>(
     allowMultiValues: T,
@@ -53,13 +54,14 @@ type InferCustomFieldValueType<AllowMultiValues extends boolean | undefined> =
 export type MultiLevelSelectProps<
     AllowMultiValues extends boolean | undefined = false,
 > = {
-    id: CustomFieldState['id']
-    label: string
+    id?: CustomFieldState['id']
+    label?: string
     placeholder?: string
     hasError?: boolean
     choices: CustomFieldValue[]
     showFullValue?: boolean
     autoWidth?: boolean
+    dropdownAutoWidth?: boolean
     inputId: string
     onFocus?: () => void
     isDisabled?: boolean
@@ -72,6 +74,7 @@ export type MultiLevelSelectProps<
     customDisplayValue?: (
         value: InferCustomFieldValueType<AllowMultiValues> | undefined
     ) => string
+    CustomInput?: React.ComponentType<CustomInputProps>
     placement?: Placement
 }
 
@@ -87,7 +90,9 @@ export default function MultiLevelSelect<
     choices,
     showFullValue = false,
     customDisplayValue,
+    CustomInput,
     autoWidth = false,
+    dropdownAutoWidth = false,
     inputId,
     onChange,
     onFocus,
@@ -230,22 +235,34 @@ export default function MultiLevelSelect<
                         {isValueEmpty ? placeholder : displayValue}
                     </span>
                 )}
-                <StealthInput
-                    id={inputId + '-input'}
-                    className={
-                        isPredictionCorrect && hiddenRef.current
-                            ? css.inputWithPredictionIcon
-                            : undefined
-                    }
-                    ref={inputRef}
-                    name={label}
-                    value={displayValue}
-                    isDisabled={isDisabled}
-                    placeholder={placeholder}
-                    isActive={false}
-                    onFocus={handleFocus}
-                    hasError={hasError}
-                />
+                {CustomInput ? (
+                    <CustomInput
+                        id={inputId + '-input'}
+                        value={displayValue}
+                        placeholder={placeholder}
+                        isDisabled={isDisabled}
+                        onFocus={handleFocus}
+                        isOpen={isActive}
+                        ref={inputRef}
+                    />
+                ) : (
+                    <StealthInput
+                        id={inputId + '-input'}
+                        className={
+                            isPredictionCorrect && hiddenRef.current
+                                ? css.inputWithPredictionIcon
+                                : undefined
+                        }
+                        ref={inputRef}
+                        name={label}
+                        value={displayValue}
+                        isDisabled={isDisabled}
+                        placeholder={placeholder}
+                        isActive={false}
+                        onFocus={handleFocus}
+                        hasError={hasError}
+                    />
+                )}
                 <span ref={hiddenRef} className={css.hiddenInputValue} />
                 {isPredictionCorrect && hiddenRef.current && (
                     <i
@@ -256,13 +273,15 @@ export default function MultiLevelSelect<
                     </i>
                 )}
             </span>
-            {!choices.length && <EmptyHelper target={containerRef} id={id} />}
+            {!choices.length && typeof id !== 'undefined' && (
+                <EmptyHelper target={containerRef} id={id} />
+            )}
             <Dropdown
                 isOpen={isActive}
                 onToggle={setActive}
                 target={containerRef}
                 ref={modalRef}
-                className={css.dropdown}
+                className={dropdownAutoWidth ? undefined : css.dropdown}
                 placement={placement}
             >
                 {currentPath.length > 0 && !isSearching && (

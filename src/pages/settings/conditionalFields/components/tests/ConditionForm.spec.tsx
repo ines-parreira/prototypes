@@ -19,6 +19,7 @@ import {assumeMock, getLastMockCall} from 'utils/testing'
 import useSaveCondition from '../../hooks/useSaveCondition'
 import ConditionForm from '../ConditionForm'
 import {DeletionPopover} from '../DeletionPopover'
+import {ExpressionField} from '../ExpressionField'
 import ThenField from '../ThenField'
 
 jest.mock('components/Form/Form', () => ({
@@ -125,7 +126,6 @@ describe('ConditionForm', () => {
         expect(FormFieldMock).toHaveBeenNthCalledWith(
             2,
             expect.objectContaining({
-                className: expect.any(String),
                 name: 'description',
                 placeholder:
                     'Describe how the condition works. E.g: Display when contact reason includes quality and shipping',
@@ -135,15 +135,22 @@ describe('ConditionForm', () => {
         expect(FormFieldMock).toHaveBeenNthCalledWith(
             3,
             expect.objectContaining({
-                field: ThenField,
-                name: 'requirements',
+                field: ExpressionField,
+                name: 'expression',
             }),
             {}
         )
         expect(FormFieldMock).toHaveBeenNthCalledWith(
             4,
             expect.objectContaining({
-                className: expect.any(String),
+                field: ThenField,
+                name: 'requirements',
+            }),
+            {}
+        )
+        expect(FormFieldMock).toHaveBeenNthCalledWith(
+            5,
+            expect.objectContaining({
                 field: ToggleInputField,
                 name: 'deactivated_datetime',
                 inputTransform: expect.any(Function),
@@ -153,16 +160,16 @@ describe('ConditionForm', () => {
         )
 
         expect(
-            FormFieldMock.mock.calls[3][0].inputTransform?.(null)
+            FormFieldMock.mock.calls[4][0].inputTransform?.(null)
         ).toBeTruthy()
         expect(
-            FormFieldMock.mock.calls[3][0].inputTransform?.('test')
+            FormFieldMock.mock.calls[4][0].inputTransform?.('test')
         ).toBeFalsy()
         expect(
-            FormFieldMock.mock.calls[3][0].outputTransform?.(true)
+            FormFieldMock.mock.calls[4][0].outputTransform?.(true)
         ).toBeNull()
         expect(
-            typeof FormFieldMock.mock.calls[3][0].outputTransform?.(false)
+            typeof FormFieldMock.mock.calls[4][0].outputTransform?.(false)
         ).toBe('string')
     })
 

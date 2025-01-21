@@ -20,17 +20,20 @@ type PropertyResolver = (
     property: any
 ) => any
 
-const isEmpty = (value: string | number | any[] | null) => {
+const isEmpty = (value: unknown) => {
     if (Array.isArray(value)) {
         return value.length === 0 // Return true if it's an empty array
     }
 
+    // TODO: We might want to find a way to reuse
+    // `isCustomFieldValueEmpty` exclusively for ticket fields
+    // here be cause check could easily diverge
     return value !== 0 && !value
 }
 
 const evaluateOperator = (
     operator: ExpressionOperator,
-    sourceValue: any,
+    sourceValue: unknown,
     values: any[]
 ): boolean => {
     switch (operator) {
@@ -59,7 +62,7 @@ const evaluateOperator = (
 export const evaluateCustomFieldsConditions = (
     conditions: CustomFieldCondition[],
     objectType: CustomFieldObjectTypes,
-    sourceObject: Record<string, any>
+    sourceObject: Record<string, unknown>
 ): CustomFieldConditionsEvaluationResults => {
     let resolveObjectProperty: PropertyResolver
     if (objectType === OBJECT_TYPES.TICKET) {

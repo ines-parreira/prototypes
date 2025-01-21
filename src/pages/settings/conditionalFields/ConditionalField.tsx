@@ -53,9 +53,7 @@ export default function ConditionalField() {
                 }
             />
             <div className={css.pageContainer}>
-                <div className={css.contentWrapper}>
-                    <ConditionForm condition={condition} />
-                </div>
+                <ConditionForm condition={condition} />
             </div>
         </div>
     )

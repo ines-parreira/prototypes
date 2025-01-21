@@ -17,11 +17,13 @@ import {createFormValidator} from 'components/Form/validation'
 import Button from 'pages/common/components/button/Button'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import history from 'pages/history'
+import settingsCss from 'pages/settings/settings.less'
 import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
 
 import useSaveCondition from '../hooks/useSaveCondition'
 import css from './ConditionForm.less'
 import {DeletionPopover} from './DeletionPopover'
+import {ExpressionField} from './ExpressionField'
 import ThenField from './ThenField'
 
 type ConditionFormProps = {
@@ -48,13 +50,8 @@ export default function EditConditionForm({condition}: ConditionFormProps) {
     const handleFormSubmit = (
         data: CreateCustomFieldCondition | UpdateCustomFieldCondition
     ) => {
-        // console.log('Submitting data', data)
         void onSubmit(data)
     }
-
-    // const handleInvalidSubmit = (errors: unknown) => {
-    //     console.log('Invalid submit', errors)
-    // }
 
     return (
         <Form
@@ -66,24 +63,29 @@ export default function EditConditionForm({condition}: ConditionFormProps) {
                 requirements: [],
                 deactivated_datetime: null,
             }}
-            values={{...editValues, description: editValues.description ?? ''}}
+            values={
+                condition?.id
+                    ? {...editValues, description: editValues.description ?? ''}
+                    : undefined
+            }
             onValidSubmit={handleFormSubmit}
-            // onInvalidSubmit={handleInvalidSubmit}
             validator={validator}
         >
-            <FormField
-                className={css.mbS}
-                name="name"
-                label="Condition name"
-                isRequired
-                placeholder="Provide a name for condition. E.g: Contact Reason Conditions"
-            />
-            <FormField
-                className={css.mbS}
-                name="description"
-                label="Condition description"
-                placeholder="Describe how the condition works. E.g: Display when contact reason includes quality and shipping"
-            />
+            <div className={settingsCss.contentWrapper}>
+                <FormField
+                    className={css.mbS}
+                    name="name"
+                    label="Condition name"
+                    isRequired
+                    placeholder="Provide a name for condition. E.g: Contact Reason Conditions"
+                />
+                <FormField
+                    className={css.mbS}
+                    name="description"
+                    label="Condition description"
+                    placeholder="Describe how the condition works. E.g: Display when contact reason includes quality and shipping"
+                />
+            </div>
             <fieldset className={css.fieldset}>
                 <legend className={css.legend}>Condition requirements</legend>
                 <p className={css.mbM}>
@@ -93,6 +95,11 @@ export default function EditConditionForm({condition}: ConditionFormProps) {
                 <Label className={css.mbS}>
                     If the following criteria is met...
                 </Label>
+                <FormField
+                    name="expression"
+                    field={ExpressionField}
+                    className={css.mbM}
+                />
                 <Label className={css.mbS}>
                     Then display the following fields...
                 </Label>

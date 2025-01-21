@@ -6,6 +6,7 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {OBJECT_TYPES, OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
+import {getUIDataType} from 'custom-fields/helpers/getUIDataType'
 import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {
     CustomField,
@@ -229,7 +230,10 @@ export default function FieldForm(props: FieldFormProps) {
                     Type
                 </Label>
                 <TypeSelectInput
-                    value={`${form.definition.input_settings.input_type}_${form.definition.data_type}`}
+                    value={getUIDataType(
+                        form.definition.data_type,
+                        form.definition.input_settings.input_type
+                    )}
                     onChange={(val) => {
                         const split = val.split('_')
                         const dataType = split.pop()

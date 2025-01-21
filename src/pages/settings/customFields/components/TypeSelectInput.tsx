@@ -1,6 +1,7 @@
 import React, {useRef, useState} from 'react'
 
-import {VALUE_TYPES} from 'custom-fields/constants'
+import {SUPPORTED_UI_DATA_TYPE_VALUES} from 'custom-fields/constants'
+import {ExhaustiveUIDataType, SupportedUIDataType} from 'custom-fields/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -10,14 +11,9 @@ import SelectInputBox, {
 
 import css from './TypeSelectInput.less'
 
-const TYPE_TO_LABEL: Record<string, string> = VALUE_TYPES.reduce(
-    (ret, type) => ({...ret, [type.value]: type.name}),
-    {}
-)
-
 interface TypeSelectInputProps {
-    value: string
-    onChange: (value: string) => void
+    value: ExhaustiveUIDataType
+    onChange: (value: SupportedUIDataType) => void
     isDisabled?: boolean
 }
 
@@ -32,7 +28,11 @@ export default function TypeSelectInput(props: TypeSelectInputProps) {
             ref={selectRef}
             floating={floatingSelectRef}
             onToggle={setIsSelectOpen}
-            label={TYPE_TO_LABEL[props.value]}
+            label={
+                SUPPORTED_UI_DATA_TYPE_VALUES[
+                    props.value as SupportedUIDataType
+                ]?.name
+            }
             isDisabled={props.isDisabled}
         >
             <SelectInputBoxContext.Consumer>
@@ -45,34 +45,36 @@ export default function TypeSelectInput(props: TypeSelectInputProps) {
                         value={props.value}
                     >
                         <DropdownBody>
-                            {VALUE_TYPES.map((type) => (
-                                <DropdownItem
-                                    key={type.value}
-                                    option={{
-                                        label: type.name,
-                                        value: type.value,
-                                    }}
-                                    onClick={props.onChange}
-                                    shouldCloseOnSelect
-                                    autoFocus
-                                >
-                                    <div className={css.option}>
-                                        <div className={css.icon}>
-                                            <i className="material-icons">
-                                                {type.icon}
-                                            </i>
+                            {Object.entries(SUPPORTED_UI_DATA_TYPE_VALUES).map(
+                                ([value, {icon, name, description}]) => (
+                                    <DropdownItem
+                                        key={value}
+                                        option={{
+                                            label: name,
+                                            value: value as SupportedUIDataType,
+                                        }}
+                                        onClick={props.onChange}
+                                        shouldCloseOnSelect
+                                        autoFocus
+                                    >
+                                        <div className={css.option}>
+                                            <div className={css.icon}>
+                                                <i className="material-icons">
+                                                    {icon}
+                                                </i>
+                                            </div>
+                                            <div>
+                                                <p className={css.name}>
+                                                    {name}
+                                                </p>
+                                                <p className={css.description}>
+                                                    {description}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className={css.name}>
-                                                {type.name}
-                                            </p>
-                                            <p className={css.description}>
-                                                {type.description}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </DropdownItem>
-                            ))}
+                                    </DropdownItem>
+                                )
+                            )}
                         </DropdownBody>
                     </Dropdown>
                 )}

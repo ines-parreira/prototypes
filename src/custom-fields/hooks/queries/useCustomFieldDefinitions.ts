@@ -14,7 +14,7 @@ export const useCustomFieldDefinitions = (params: ListParams) => {
         onError: () => {
             void dispatch(
                 notify({
-                    message: 'Failed to fetch ticket custom fields list',
+                    message: 'Failed to fetch custom fields list',
                     status: NotificationStatus.Error,
                 })
             )

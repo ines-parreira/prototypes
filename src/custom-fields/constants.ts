@@ -1,4 +1,9 @@
-import {CustomFieldManagedType, CustomFieldObjectTypes} from './types'
+import {
+    ExhaustiveUIDataType,
+    CustomFieldManagedType,
+    CustomFieldObjectTypes,
+    SupportedUIDataType,
+} from './types'
 
 export const OBJECT_TYPES = {
     TICKET: 'Ticket',
@@ -48,32 +53,42 @@ export const OBJECT_TYPE_SETTINGS: {
     },
 }
 
-export const VALUE_TYPES = [
+export const SUPPORTED_UI_DATA_TYPES = {
+    DROPDOWN_BOOLEAN: 'dropdown_boolean',
+    DROPDOWN_TEXT: 'dropdown_text',
+    INPUT_NUMBER: 'input_number_number',
+    INPUT_TEXT: 'input_text',
+} as const satisfies Record<string, ExhaustiveUIDataType>
+
+export const SUPPORTED_UI_DATA_TYPE_VALUES: Record<
+    SupportedUIDataType,
     {
-        value: 'dropdown_text',
-        icon: 'arrow_drop_down',
-        name: 'Dropdown',
-        description: 'Allow agents to select one option from a list',
-    },
-    {
-        value: 'input_number_number',
-        icon: 'tag',
-        name: 'Number',
-        description: 'Allow agents to add whole or decimal number',
-    },
-    {
-        value: 'input_text',
-        icon: 'title',
-        name: 'Text',
-        description: 'Allow agents to add descriptions, notes, or other text',
-    },
-    {
-        value: 'dropdown_boolean',
+        icon: string
+        name: string
+        description: string
+    }
+> = {
+    [SUPPORTED_UI_DATA_TYPES.DROPDOWN_BOOLEAN]: {
         icon: 'check_box',
         name: 'Yes/No',
         description: 'Allow agents to mark as one of two states',
     },
-]
+    [SUPPORTED_UI_DATA_TYPES.DROPDOWN_TEXT]: {
+        icon: 'arrow_drop_down',
+        name: 'Dropdown',
+        description: 'Allow agents to select one option from a list',
+    },
+    [SUPPORTED_UI_DATA_TYPES.INPUT_NUMBER]: {
+        icon: 'tag',
+        name: 'Number',
+        description: 'Allow agents to add whole or decimal number',
+    },
+    [SUPPORTED_UI_DATA_TYPES.INPUT_TEXT]: {
+        icon: 'title',
+        name: 'Text',
+        description: 'Allow agents to add descriptions, notes, or other text',
+    },
+}
 
 export const AI_MANAGED_TYPES = {
     AI_INTENT: 'ai_intent',
