@@ -18,6 +18,7 @@ import {
     fetchNewPhoneNumbers,
     fetchPhoneNumbers,
 } from 'models/phoneNumber/resources'
+import {useOnboardingIntegrationRedirection} from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 import {getHasAutomate, makeHasFeature} from 'state/billing/selectors'
@@ -131,6 +132,9 @@ export const IntegrationDetail = ({
         'migration',
     ].includes(integrationId)
 
+    const {redirectToOnboardingIfOnboarding} =
+        useOnboardingIntegrationRedirection()
+
     const isUpdate = useMemo(
         () => !!integrationId && isIntegrationId,
         [integrationId, isIntegrationId]
@@ -140,6 +144,8 @@ export const IntegrationDetail = ({
         () => getRedirectUri(integrationType),
         [getRedirectUri, integrationType]
     )
+
+    redirectToOnboardingIfOnboarding(integrationType, integrationId)
 
     const integration = useMemo(() => {
         // clear cached integration

@@ -10,6 +10,7 @@ import StatusBadge, {
     StatusEnum,
 } from 'pages/aiAgent/Onboarding/components/StatusBadge'
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
+import {useOnboardingIntegrationRedirection} from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
 import {useShopifyIntegrations} from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
 import {
     OnboardingBody,
@@ -37,6 +38,7 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
     onBackClick,
 }) => {
     const {setOnboardingData} = useOnboardingContext()
+    const {redirectToIntegration} = useOnboardingIntegrationRedirection()
     const shopifyIntegrations: StoreIntegration[] = useShopifyIntegrations()
     const [selectedId, setSelectedId] = useState<number | null>(
         shopifyIntegrations[0]?.id
@@ -67,7 +69,7 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
     }, [shopifyIntegrations])
 
     const redirectToShopify = () => {
-        window.open('https://apps.shopify.com/helpdesk', '_self')
+        redirectToIntegration('https://apps.shopify.com/helpdesk')
     }
 
     return (
