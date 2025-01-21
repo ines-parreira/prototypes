@@ -1,0 +1,117 @@
+import {FilterKey, StaticFilter} from 'models/stat/types'
+import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
+import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/agents/AgentsTableChart'
+import {AccuracyTrendCard} from 'pages/stats/support-performance/auto-qa/AccuracyTrendCard'
+import {
+    AUTO_QA_TITLE_TOOLTIP,
+    AutoQaAgentsTableChart,
+} from 'pages/stats/support-performance/auto-qa/AutoQaAgentsTableChart'
+import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
+import {BrandVoiceTrendCard} from 'pages/stats/support-performance/auto-qa/BrandVoiceTrendCard'
+import {CommunicationSkillsTrendCard} from 'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard'
+import {EfficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/EfficiencyTrendCard'
+import {InternalComplianceTrendCard} from 'pages/stats/support-performance/auto-qa/InternalComplianceTrendCard'
+import {LanguageProficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/LanguageProficiencyTrendCard'
+import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
+import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
+import {AutoQAMetric} from 'state/ui/stats/types'
+
+export enum AutoQAChart {
+    ReviewedClosedTickets = 'auto_qa_reviewed_closed_tickets_trend_chart',
+    ResolutionCompleteness = 'auto_qa_resolution_completeness_trend_chart',
+    CommunicationSkills = 'auto_qa_communication_skills_trend_chart',
+    LanguageProficiency = 'auto_qa_language_proficiency_trend_chart',
+    Accuracy = 'auto_qa_accuracy_trend_chart',
+    Efficiency = 'auto_qa_efficiency_trend_chart',
+    InternalCompliance = 'auto_qa_internal_compliance_trend_chart',
+    BrandVoice = 'auto_qa_brand_voice_trend_chart',
+    AgentsTable = 'auto_qa_agents_table_chart',
+}
+
+export const AUTO_QA_PAGE_TITLE = 'Auto QA'
+export const AUTO_QA_PERSISTENT_FILTERS: StaticFilter[] = [FilterKey.Period]
+export const AUTO_QA_OPTIONAL_FILTERS = [
+    FilterKey.Integrations,
+    FilterKey.Channels,
+    FilterKey.Agents,
+    FilterKey.Tags,
+    FilterKey.CustomFields,
+]
+export const AutoQAReportConfig: ReportConfig<AutoQAChart> = {
+    reportName: AUTO_QA_PAGE_TITLE,
+    reportPath: 'auto-qa',
+    charts: {
+        [AutoQAChart.ReviewedClosedTickets]: {
+            chartComponent: ReviewedClosedTicketsTrendCard,
+            label: TrendCardConfig[AutoQAMetric.ReviewedClosedTickets].title,
+            description:
+                TrendCardConfig[AutoQAMetric.ReviewedClosedTickets].hint.title,
+            csvProducer: null,
+            chartType: ChartType.Card,
+        },
+        [AutoQAChart.ResolutionCompleteness]: {
+            chartComponent: ResolutionCompletenessTrendCard,
+            label: TrendCardConfig[AutoQAMetric.ResolutionCompleteness].title,
+            description:
+                TrendCardConfig[AutoQAMetric.ResolutionCompleteness].hint.title,
+            csvProducer: null,
+            chartType: ChartType.Card,
+        },
+        [AutoQAChart.CommunicationSkills]: {
+            chartComponent: CommunicationSkillsTrendCard,
+            label: TrendCardConfig[AutoQAMetric.CommunicationSkills].title,
+            description:
+                TrendCardConfig[AutoQAMetric.CommunicationSkills].hint.title,
+            csvProducer: null,
+            chartType: ChartType.Card,
+        },
+        [AutoQAChart.LanguageProficiency]: {
+            chartComponent: LanguageProficiencyTrendCard,
+            label: TrendCardConfig[AutoQAMetric.LanguageProficiency].title,
+            description:
+                TrendCardConfig[AutoQAMetric.LanguageProficiency].hint.title,
+            csvProducer: null,
+            chartType: ChartType.Card,
+        },
+        [AutoQAChart.Accuracy]: {
+            chartComponent: AccuracyTrendCard,
+            label: TrendCardConfig[AutoQAMetric.Accuracy].title,
+            description: TrendCardConfig[AutoQAMetric.Accuracy].hint.title,
+            csvProducer: null,
+            chartType: ChartType.Card,
+        },
+        [AutoQAChart.Efficiency]: {
+            chartComponent: EfficiencyTrendCard,
+            label: TrendCardConfig[AutoQAMetric.Efficiency].title,
+            description: TrendCardConfig[AutoQAMetric.Efficiency].hint.title,
+            csvProducer: null,
+            chartType: ChartType.Card,
+        },
+        [AutoQAChart.InternalCompliance]: {
+            chartComponent: InternalComplianceTrendCard,
+            label: TrendCardConfig[AutoQAMetric.InternalCompliance].title,
+            description:
+                TrendCardConfig[AutoQAMetric.InternalCompliance].hint.title,
+            csvProducer: null,
+            chartType: ChartType.Card,
+        },
+        [AutoQAChart.BrandVoice]: {
+            chartComponent: BrandVoiceTrendCard,
+            label: TrendCardConfig[AutoQAMetric.BrandVoice].title,
+            description: TrendCardConfig[AutoQAMetric.BrandVoice].hint.title,
+            csvProducer: null,
+            chartType: ChartType.Card,
+        },
+        [AutoQAChart.AgentsTable]: {
+            chartComponent: AutoQaAgentsTableChart,
+            label: AGENT_PERFORMANCE_SECTION_TITLE,
+            description: AUTO_QA_TITLE_TOOLTIP,
+            csvProducer: null,
+            chartType: ChartType.Table,
+        },
+    },
+    reportFilters: {
+        optional: AUTO_QA_OPTIONAL_FILTERS,
+        persistent: AUTO_QA_PERSISTENT_FILTERS,
+    },
+}

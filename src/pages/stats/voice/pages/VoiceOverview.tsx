@@ -14,16 +14,10 @@ import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRE
 import DEPRECATED_PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
+import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
-import {VoiceCallCallCallerExperiencAverageTalkTime} from 'pages/stats/voice/charts/VoiceCallCallerExperiencAverageTalkTime'
-import {VoiceCallCallerExperienceAverageWaitTimeChart} from 'pages/stats/voice/charts/VoiceCallCallerExperienceAverageWaitTimeChart'
-import {VoiceCallTableChart} from 'pages/stats/voice/charts/VoiceCallTableChart'
-import {VoiceCallVolumeMetricInboundCallsCountTrend} from 'pages/stats/voice/charts/VoiceCallVolumeMetricInboundCallsCountTrendChart'
-import {VoiceCallVolumeMetricMissedCallsCountTrendChart} from 'pages/stats/voice/charts/VoiceCallVolumeMetricMissedCallsCountTrendChart'
-import {VoiceCallVolumeMetricOutboundCallsCountTrend} from 'pages/stats/voice/charts/VoiceCallVolumeMetricOutboundCallsCountTrend'
-import {VoiceCallVolumeTotalCallCountTrendChart} from 'pages/stats/voice/charts/VoiceCallVolumeTotalCallCountTrendChart'
 import {VoiceOverviewDownloadDataButton} from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
 import {
     CALL_ACTIVITY_TITLE,
@@ -33,7 +27,10 @@ import {
     VOICE_OVERVIEW_PAGE_TITLE,
 } from 'pages/stats/voice/constants/voiceOverview'
 import {useNewVoiceStatsFilters} from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
-import {VoiceOverviewReportConfig} from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
+import {
+    VoiceOverviewChart,
+    VoiceOverviewReportConfig,
+} from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
 import VoicePaywall from 'pages/stats/voice/VoicePaywall'
 
 import {AccountFeature} from 'state/currentAccount/types'
@@ -132,29 +129,69 @@ function VoiceOverview() {
 
             <DashboardSection title={CALLER_EXPERIENCE_METRICS_TITLE}>
                 <DashboardGridCell size={6}>
-                    <VoiceCallCallerExperienceAverageWaitTimeChart />
+                    <CustomReportComponent
+                        chart={
+                            VoiceOverviewChart.VoiceCallCallerExperienceAverageWaitTimeChart
+                        }
+                        config={VoiceOverviewReportConfig}
+                        activateActionsMenu
+                    />
                 </DashboardGridCell>
                 <DashboardGridCell size={6}>
-                    <VoiceCallCallCallerExperiencAverageTalkTime />
+                    <CustomReportComponent
+                        chart={
+                            VoiceOverviewChart.VoiceCallCallCallerExperienceAverageTalkTime
+                        }
+                        config={VoiceOverviewReportConfig}
+                        activateActionsMenu
+                    />
                 </DashboardGridCell>
             </DashboardSection>
             <DashboardSection title={CALL_VOLUME_METRICS_TITLE}>
                 <DashboardGridCell size={3}>
-                    <VoiceCallVolumeTotalCallCountTrendChart />
+                    <CustomReportComponent
+                        chart={
+                            VoiceOverviewChart.VoiceCallVolumeTotalCallCountTrendChart
+                        }
+                        config={VoiceOverviewReportConfig}
+                        activateActionsMenu
+                    />
                 </DashboardGridCell>
                 <DashboardGridCell size={3}>
-                    <VoiceCallVolumeMetricOutboundCallsCountTrend />
+                    <CustomReportComponent
+                        chart={
+                            VoiceOverviewChart.VoiceCallVolumeMetricOutboundCallsCountTrend
+                        }
+                        config={VoiceOverviewReportConfig}
+                        activateActionsMenu
+                    />
                 </DashboardGridCell>
                 <DashboardGridCell size={3}>
-                    <VoiceCallVolumeMetricInboundCallsCountTrend />
+                    <CustomReportComponent
+                        chart={
+                            VoiceOverviewChart.VoiceCallVolumeMetricInboundCallsCountTrend
+                        }
+                        config={VoiceOverviewReportConfig}
+                        activateActionsMenu
+                    />
                 </DashboardGridCell>
                 <DashboardGridCell size={3}>
-                    <VoiceCallVolumeMetricMissedCallsCountTrendChart />
+                    <CustomReportComponent
+                        chart={
+                            VoiceOverviewChart.VoiceCallVolumeMetricMissedCallsCountTrendChart
+                        }
+                        config={VoiceOverviewReportConfig}
+                        activateActionsMenu
+                    />
                 </DashboardGridCell>
             </DashboardSection>
             <DashboardSection title={CALL_ACTIVITY_TITLE}>
                 <DashboardGridCell>
-                    <VoiceCallTableChart />
+                    <CustomReportComponent
+                        chart={VoiceOverviewChart.VoiceCallTableChart}
+                        config={VoiceOverviewReportConfig}
+                        activateActionsMenu
+                    />
                 </DashboardGridCell>
             </DashboardSection>
             <AnalyticsFooter />

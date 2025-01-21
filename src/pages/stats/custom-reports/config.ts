@@ -22,6 +22,10 @@ import {
     SupportPerformanceAgentsReportConfig,
 } from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import {
+    AutoQAChart,
+    AutoQAReportConfig,
+} from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
+import {
     BusiestTimesChart,
     BusiestTimesReportConfig,
 } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
@@ -99,6 +103,10 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
         category: 'Quality management',
         children: [
             {
+                type: AutoQAChart,
+                config: AutoQAReportConfig,
+            },
+            {
                 type: SatisfactionChart,
                 config: SatisfactionReportConfig,
             },
@@ -108,12 +116,12 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
         category: 'Voice',
         children: [
             {
-                type: VoiceAgentsChart,
-                config: VoiceAgentsReportConfig,
-            },
-            {
                 type: VoiceOverviewChart,
                 config: VoiceOverviewReportConfig,
+            },
+            {
+                type: VoiceAgentsChart,
+                config: VoiceAgentsReportConfig,
             },
         ],
     },

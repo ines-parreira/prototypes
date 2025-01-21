@@ -1,6 +1,7 @@
 import {screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -16,13 +17,14 @@ import {FilterKey} from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/helpers'
 import {AccuracyTrendCard} from 'pages/stats/support-performance/auto-qa/AccuracyTrendCard'
-import AutoQA, {
-    AUTO_QA_OPTIONAL_FILTERS,
-    AUTO_QA_PAGE_TITLE,
-} from 'pages/stats/support-performance/auto-qa/AutoQA'
+import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
 import {AutoQAAgentPerformanceHeatmapSwitch} from 'pages/stats/support-performance/auto-qa/AutoQAAgentPerformanceHeatmapSwitch'
 import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
 import {AutoQADownloadDataButton} from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
+import {
+    AUTO_QA_OPTIONAL_FILTERS,
+    AUTO_QA_PAGE_TITLE,
+} from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
 import {BrandVoiceTrendCard} from 'pages/stats/support-performance/auto-qa/BrandVoiceTrendCard'
 import {CommunicationSkillsTrendCard} from 'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard'
 import {EfficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/EfficiencyTrendCard'

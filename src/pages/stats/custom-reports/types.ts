@@ -9,6 +9,7 @@ import {HelpCenterChart} from 'pages/stats/help-center/components/HelpCenterRepo
 import {SatisfactionChart} from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
 import {ServiceLevelAgreementsChart} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
 import {AgentsChart} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
+import {AutoQAChart} from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
 import {BusiestTimesChart} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
 import {ChannelsChart} from 'pages/stats/support-performance/channels/ChannelsReportConfig'
 import {OverviewChart} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
@@ -120,6 +121,7 @@ export type AvailableChartIds =
     | typeof ServiceLevelAgreementsChart
     | typeof TicketFieldsChart
     | typeof TicketInsightsTagsChart
+    | typeof AutoQAChart
     | typeof SatisfactionChart
     | typeof HelpCenterChart
     | typeof VoiceAgentsChart

@@ -1,4 +1,5 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -6,35 +7,18 @@ import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hoo
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import ChartCard from 'pages/stats/ChartCard'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
+import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
-import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/agents/AgentsTableChart'
-import {AccuracyTrendCard} from 'pages/stats/support-performance/auto-qa/AccuracyTrendCard'
-import {AutoQAAgentsCardExtra} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsCardExtra'
-import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
 import {AutoQADownloadDataButton} from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
-import {BrandVoiceTrendCard} from 'pages/stats/support-performance/auto-qa/BrandVoiceTrendCard'
-import {CommunicationSkillsTrendCard} from 'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard'
-import {EfficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/EfficiencyTrendCard'
-import {InternalComplianceTrendCard} from 'pages/stats/support-performance/auto-qa/InternalComplianceTrendCard'
-import {LanguageProficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/LanguageProficiencyTrendCard'
-import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
-import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
+import {
+    AUTO_QA_PAGE_TITLE,
+    AutoQAChart,
+    AutoQAReportConfig,
+} from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
-
-export const AUTO_QA_PAGE_TITLE = 'Auto QA'
-const AUTO_QA_TITLE_TOOLTIP =
-    "An agent receives the ticket's scores if they are the assigned agent at the end of the period"
-export const AUTO_QA_OPTIONAL_FILTERS = [
-    FilterKey.Integrations,
-    FilterKey.Channels,
-    FilterKey.Agents,
-    FilterKey.Tags,
-    FilterKey.CustomFields,
-]
 
 export default function AutoQA() {
     const getGridCellSize = useGridSize()
@@ -43,7 +27,7 @@ export default function AutoQA() {
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
     const autoQAOptionalFilters =
         useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            AUTO_QA_OPTIONAL_FILTERS
+            AutoQAReportConfig.reportFilters.optional
         )
 
     const trendCardColumnWidth = 3
@@ -76,7 +60,9 @@ export default function AutoQA() {
                                         },
                                     },
                                 }}
-                                persistentFilters={[FilterKey.Period]}
+                                persistentFilters={
+                                    AutoQAReportConfig.reportFilters.persistent
+                                }
                                 optionalFilters={autoQAOptionalFilters}
                             />
                         </DashboardGridCell>
@@ -86,12 +72,20 @@ export default function AutoQA() {
                     <DashboardGridCell
                         size={getGridCellSize(trendCardColumnWidth)}
                     >
-                        <ReviewedClosedTicketsTrendCard />
+                        <CustomReportComponent
+                            chart={AutoQAChart.ReviewedClosedTickets}
+                            config={AutoQAReportConfig}
+                            activateActionsMenu
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell
                         size={getGridCellSize(trendCardColumnWidth)}
                     >
-                        <ResolutionCompletenessTrendCard />
+                        <CustomReportComponent
+                            chart={AutoQAChart.ResolutionCompleteness}
+                            config={AutoQAReportConfig}
+                            activateActionsMenu
+                        />
                     </DashboardGridCell>
 
                     <DashboardGridCell
@@ -99,48 +93,69 @@ export default function AutoQA() {
                             manualDimensionTrendCardColumnWidth
                         )}
                     >
-                        <AccuracyTrendCard />
+                        <CustomReportComponent
+                            chart={AutoQAChart.Accuracy}
+                            config={AutoQAReportConfig}
+                            activateActionsMenu
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell
                         size={getGridCellSize(
                             manualDimensionTrendCardColumnWidth
                         )}
                     >
-                        <InternalComplianceTrendCard />
+                        <CustomReportComponent
+                            chart={AutoQAChart.InternalCompliance}
+                            config={AutoQAReportConfig}
+                            activateActionsMenu
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell
                         size={getGridCellSize(
                             manualDimensionTrendCardColumnWidth
                         )}
                     >
-                        <EfficiencyTrendCard />
+                        <CustomReportComponent
+                            chart={AutoQAChart.Efficiency}
+                            config={AutoQAReportConfig}
+                            activateActionsMenu
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell
                         size={getGridCellSize(trendCardColumnWidth)}
                     >
-                        <CommunicationSkillsTrendCard />
+                        <CustomReportComponent
+                            chart={AutoQAChart.CommunicationSkills}
+                            config={AutoQAReportConfig}
+                            activateActionsMenu
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell
                         size={getGridCellSize(trendCardColumnWidth)}
                     >
-                        <LanguageProficiencyTrendCard />
+                        <CustomReportComponent
+                            chart={AutoQAChart.LanguageProficiency}
+                            config={AutoQAReportConfig}
+                            activateActionsMenu
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell
                         size={getGridCellSize(
                             manualDimensionTrendCardColumnWidth
                         )}
                     >
-                        <BrandVoiceTrendCard />
+                        <CustomReportComponent
+                            chart={AutoQAChart.BrandVoice}
+                            config={AutoQAReportConfig}
+                            activateActionsMenu
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(12)}>
-                        <ChartCard
-                            title={AGENT_PERFORMANCE_SECTION_TITLE}
-                            hint={{title: AUTO_QA_TITLE_TOOLTIP}}
-                            titleExtra={<AutoQAAgentsCardExtra />}
-                            noPadding
-                        >
-                            <AutoQAAgentsTable />
-                        </ChartCard>
+                        <CustomReportComponent
+                            chart={AutoQAChart.AgentsTable}
+                            config={AutoQAReportConfig}
+                            activateActionsMenu
+                        />
                     </DashboardGridCell>
                 </DashboardSection>
                 <AnalyticsFooter />

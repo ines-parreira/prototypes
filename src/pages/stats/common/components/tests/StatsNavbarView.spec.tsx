@@ -2,6 +2,7 @@ import {useListAnalyticsCustomReports} from '@gorgias/api-queries'
 import {screen} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -20,7 +21,7 @@ import StatsNavbarView, {
     BUSIEST_TIMES_OF_DAYS_NAV_LABEL,
 } from 'pages/stats/common/components/StatsNavbarView'
 import {SERVICE_LEVEL_AGREEMENT_PAGE_TITLE} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
-import {AUTO_QA_PAGE_TITLE} from 'pages/stats/support-performance/auto-qa/AutoQA'
+import {AUTO_QA_PAGE_TITLE} from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock, renderWithRouterAndDnD} from 'utils/testing'
 
