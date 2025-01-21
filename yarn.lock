@@ -3383,22 +3383,22 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/design-tokens/0.4.0/07df81961cf78ee2e549aba4234546df0c60d4e7#07df81961cf78ee2e549aba4234546df0c60d4e7"
   integrity sha512-XGuTxKvgvr9/IfQxvhh1F9cjsWlZlpOjLEWBT/8f8hT2zPAQwUVKJ97Q5r0d8DUb8alBhC3rF0PYCIxPewo2MA==
 
-"@gorgias/event-tracker-api@*", "@gorgias/event-tracker-api@1.0.4":
-  version "1.0.4"
-  resolved "https://npm.pkg.github.com/download/@gorgias/event-tracker-api/1.0.4/d405fe97a9084b0b1a5ada748a9f5b613f5be7bd#d405fe97a9084b0b1a5ada748a9f5b613f5be7bd"
-  integrity sha512-G/Rvt0SSckZ8i+TsuxAW77fXEmMLkbDqfQBZ9G9ah1RAnZoVKP+l5mU2gxkwSaCzR7Bc/fRNouGmhwCoJQFuDw==
+"@gorgias/event-tracker-api@1.0.6", "@gorgias/event-tracker-api@^1.0.6":
+  version "1.0.6"
+  resolved "https://npm.pkg.github.com/download/@gorgias/event-tracker-api/1.0.6/18a3b33a449fea43d83c1509bec6d9b596479a60#18a3b33a449fea43d83c1509bec6d9b596479a60"
+  integrity sha512-U/5n4YrGTaFRPGj019SLrtItpamas0fzun2vQD7I1g7gitJnROri6tqI1t8c1Wk16QuubESSGBLaZ3vVeb5SuA==
   dependencies:
     "@gorgias/event-tracker-utils" "*"
-    axios ">=0.21.1 <=1.6.0"
+    axios ">=1.6.0 <=1.7.7"
     cloudevents "8.0.0"
     uuid ">=8.0.0 <=9.0.1"
 
-"@gorgias/event-tracker-browser@2.0.0":
-  version "2.0.0"
-  resolved "https://npm.pkg.github.com/download/@gorgias/event-tracker-browser/2.0.0/32f6f602f780f619bb6dde8b32dfb63a5ed8de23#32f6f602f780f619bb6dde8b32dfb63a5ed8de23"
-  integrity sha512-7eQCxXxa0jzFXDYOG4DDokla90hOXbUlnKniMn7gYlbsvNX75bGJR4vYoMKeQeZX1WcWxBnveiCR21gl+LwPIw==
+"@gorgias/event-tracker-browser@2.0.2":
+  version "2.0.2"
+  resolved "https://npm.pkg.github.com/download/@gorgias/event-tracker-browser/2.0.2/3cd5155c6c0ec157b7f8fac3bc573e3c95803dc8#3cd5155c6c0ec157b7f8fac3bc573e3c95803dc8"
+  integrity sha512-Tci/NyiKXDexao6+ip++Jj18UUeF/sOF750rQVlZEkkNdeU09SOdJMPCK5QBZCKK1xv3MWYNGGw+mjzHZFW3PQ==
   dependencies:
-    "@gorgias/event-tracker-api" "*"
+    "@gorgias/event-tracker-api" "^1.0.6"
     localforage "~1.10.0"
     localforage-getitems "~1.4.2"
 
@@ -7688,12 +7688,12 @@ axios-retry@^3.1.9:
     "@babel/runtime" "^7.15.4"
     is-retry-allowed "^2.2.0"
 
-"axios@>=0.21.1 <=1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.0.tgz#f1e5292f26b2fd5c2e66876adc5b06cdbd7d2102"
-  integrity sha512-EZ1DYihju9pwVB+jg67ogm+Tmqc6JmhamRN6I4Zt8DfZu5lbcQGw3ozH9lFejSJgs/ibaef3A9PMXPLeefFGJg==
+"axios@>=1.6.0 <=1.7.7", axios@^1.6.0, axios@^1.7.7:
+  version "1.7.7"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.7.7.tgz#2f554296f9892a72ac8d8e4c5b79c14a91d0a47f"
+  integrity sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==
   dependencies:
-    follow-redirects "^1.15.0"
+    follow-redirects "^1.15.6"
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
 
@@ -7703,15 +7703,6 @@ axios@^0.21.1:
   integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
   dependencies:
     follow-redirects "^1.14.0"
-
-axios@^1.6.0, axios@^1.7.7:
-  version "1.7.7"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.7.7.tgz#2f554296f9892a72ac8d8e4c5b79c14a91d0a47f"
-  integrity sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==
-  dependencies:
-    follow-redirects "^1.15.6"
-    form-data "^4.0.0"
-    proxy-from-env "^1.1.0"
 
 axobject-query@^2.2.0:
   version "2.2.0"
@@ -11053,7 +11044,7 @@ focus-trap@^7.5.3:
   dependencies:
     tabbable "^6.2.0"
 
-follow-redirects@^1.0.0, follow-redirects@^1.14.0, follow-redirects@^1.15.0:
+follow-redirects@^1.0.0, follow-redirects@^1.14.0:
   version "1.15.6"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.6.tgz#7f815c0cda4249c74ff09e95ef97c23b5fd0399b"
   integrity sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==
