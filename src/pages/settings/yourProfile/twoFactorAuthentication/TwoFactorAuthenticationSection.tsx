@@ -31,6 +31,10 @@ export default function TwoFactorAuthenticationSection() {
     const requireLogin = !isRecentLogin()
 
     const twoFAEnforcedDatetime = useAppSelector(getTwoFAEnforcedDatetime)
+    const isTimeInFuture = twoFAEnforcedDatetime
+        ? new Date(twoFAEnforcedDatetime).getTime() > new Date().getTime()
+        : false
+
     const is2FAEnforced = useAppSelector(is2FAEnforcedSelector)
     const has2FAEnabled = useAppSelector(has2FaEnabledSelector)
     const is2FARequired = useMemo(() => {
@@ -91,15 +95,23 @@ export default function TwoFactorAuthenticationSection() {
                             <>
                                 For security reasons, your admin requires you to
                                 set up two-factor authentication to access your
-                                account by{' '}
-                                <b>
-                                    <DatetimeLabel
-                                        dateTime={twoFAEnforcedDatetime!}
-                                        labelFormat={
-                                            DateAndTimeFormatting.LongDateWithYear
-                                        }
-                                    />
-                                </b>
+                                account
+                                {isTimeInFuture && (
+                                    <>
+                                        {' '}
+                                        by{' '}
+                                        <b>
+                                            <DatetimeLabel
+                                                dateTime={
+                                                    twoFAEnforcedDatetime!
+                                                }
+                                                labelFormat={
+                                                    DateAndTimeFormatting.LongDateWithYear
+                                                }
+                                            />
+                                        </b>
+                                    </>
+                                )}
                                 .
                             </>
                         ) : undefined

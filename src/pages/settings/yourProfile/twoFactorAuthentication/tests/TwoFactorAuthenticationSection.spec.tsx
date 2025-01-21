@@ -1,5 +1,6 @@
 import {fireEvent, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import moment from 'moment'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -117,7 +118,7 @@ describe('<TwoFactorAuthenticationSection />', () => {
             }
         )
 
-        it('should show the enforcement message', () => {
+        it('should show the enforcement message without the date', () => {
             const store = mockStore({
                 currentAccount: fromJS({
                     settings: [
@@ -144,8 +145,49 @@ describe('<TwoFactorAuthenticationSection />', () => {
                 }
             )
 
-            expect(getByTestId('banner-text').textContent).toContain(
+            expect(getByTestId('banner-text').textContent).not.toContain(
                 'by August 16, 2024.'
+            )
+            expect(getByTestId('banner-text').textContent).not.toContain(
+                'For security reasons, your admin requires you to set up two-factor authentication to access your account by.'
+            )
+        })
+
+        it('should show the enforcement message', () => {
+            const tomorrow = new Date(Date.now() + 86400000)
+
+            const store = mockStore({
+                currentAccount: fromJS({
+                    settings: [
+                        {
+                            type: AccountSettingType.Access,
+                            data: {
+                                two_fa_enforced_datetime: tomorrow
+                                    .toISOString()
+                                    .slice(0, 19),
+                            },
+                        },
+                    ],
+                }),
+                currentUser: fromJS({
+                    has_2fa_enabled: false,
+                }),
+            })
+
+            const {getByTestId} = renderWithRouter(
+                <Provider store={store}>
+                    <TwoFactorAuthenticationSection />
+                </Provider>,
+                {
+                    path: 'app/settings/password-2fa',
+                    route: 'app/settings/password-2fa?enforce_2fa_setup_modal=true',
+                }
+            )
+
+            const formattedDate = moment(tomorrow).format('MMMM D, YYYY')
+
+            expect(getByTestId('banner-text').textContent).toContain(
+                `by ${formattedDate}.`
             )
         })
     })
