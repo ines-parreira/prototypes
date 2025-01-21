@@ -8,11 +8,10 @@ import React, {memo, useEffect, useMemo, useState} from 'react'
 import useFlag from 'common/flags/hooks/useFlag'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {AI_MANAGED_TYPES, OBJECT_TYPES} from 'custom-fields/constants'
-import {evaluateCustomFieldsConditions} from 'custom-fields/helpers/evaluateCustomFieldsConditions'
 import {isFieldRequired} from 'custom-fields/helpers/isFieldRequired'
-import {useCustomFieldConditions} from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 
+import {useCustomFieldsConditionsEvaluationResults} from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
 import {CustomField} from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -64,18 +63,14 @@ function TicketFields() {
         archived: false,
         object_type: OBJECT_TYPES.TICKET,
     })
-    const {
-        customFieldConditions: ticketFieldConditions = [],
-        isLoading: ticketFieldConditionsLoading = false,
-    } = useCustomFieldConditions(
-        OBJECT_TYPES.TICKET,
-        conditionalFieldsSupported
-    )
 
-    const customFieldsEvaluatedConditions = evaluateCustomFieldsConditions(
-        ticketFieldConditions,
+    const {
+        evaluationResults: ticketFieldConditionsEvaluationResults,
+        conditionsLoading: ticketFieldConditionsLoading,
+    } = useCustomFieldsConditionsEvaluationResults(
         OBJECT_TYPES.TICKET,
-        ticketState
+        ticketState,
+        conditionalFieldsSupported
     )
 
     // Hide AI managed fields
@@ -148,13 +143,17 @@ function TicketFields() {
 
                     const isRequired = isFieldRequired(
                         fieldDefinition,
-                        customFieldsEvaluatedConditions[fieldDefinition.id]
+                        ticketFieldConditionsEvaluationResults[
+                            fieldDefinition.id
+                        ]
                     )
                     if (
                         !isRequired &&
                         !isFieldVisible(
                             fieldDefinition,
-                            customFieldsEvaluatedConditions[fieldDefinition.id]
+                            ticketFieldConditionsEvaluationResults[
+                                fieldDefinition.id
+                            ]
                         )
                     ) {
                         return null

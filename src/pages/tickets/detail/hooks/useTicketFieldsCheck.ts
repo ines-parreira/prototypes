@@ -1,13 +1,12 @@
 import {Macro} from '@gorgias/api-queries'
-import {useCallback, useMemo} from 'react'
+import {useCallback} from 'react'
 
 import useFlag from 'common/flags/hooks/useFlag'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {OBJECT_TYPES} from 'custom-fields/constants'
-import {evaluateCustomFieldsConditions} from 'custom-fields/helpers/evaluateCustomFieldsConditions'
-import {useCustomFieldConditions} from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import {useCustomFieldsConditionsEvaluationResults} from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -42,21 +41,12 @@ export function useTicketFieldsCheck(ticketId: number) {
         object_type: OBJECT_TYPES.TICKET,
     })
     const {
-        customFieldConditions: ticketFieldConditions,
-        isLoading: isTicketFieldConditionsLoading,
-    } = useCustomFieldConditions(
+        evaluationResults: ticketFieldConditionsEvaluationResults,
+        conditionsLoading: ticketFieldConditionsLoading,
+    } = useCustomFieldsConditionsEvaluationResults(
         OBJECT_TYPES.TICKET,
+        ticketState,
         conditionalFieldsSupported
-    )
-
-    const customFieldsEvaluatedConditions = useMemo(
-        () =>
-            evaluateCustomFieldsConditions(
-                ticketFieldConditions,
-                OBJECT_TYPES.TICKET,
-                ticketState
-            ),
-        [ticketFieldConditions, ticketState]
     )
 
     const checkTicketFieldErrors = useCallback(
@@ -73,14 +63,14 @@ export function useTicketFieldsCheck(ticketId: number) {
                         : fieldsState,
                 fieldDefinitions,
                 evaluatedConditions: conditionalFieldsSupported
-                    ? customFieldsEvaluatedConditions
+                    ? ticketFieldConditionsEvaluationResults
                     : {},
             })
 
             if (
                 !isTicketFieldDefinitionLoading &&
                 (!conditionalFieldsSupported ||
-                    !isTicketFieldConditionsLoading) &&
+                    !ticketFieldConditionsLoading) &&
                 invalidFields.length
             ) {
                 logEvent(
@@ -100,10 +90,10 @@ export function useTicketFieldsCheck(ticketId: number) {
             ticketId,
             fieldsState,
             fieldDefinitions,
-            customFieldsEvaluatedConditions,
+            ticketFieldConditionsEvaluationResults,
             appliedMacro,
             isTicketFieldDefinitionLoading,
-            isTicketFieldConditionsLoading,
+            ticketFieldConditionsLoading,
             dispatch,
             conditionalFieldsSupported,
         ]

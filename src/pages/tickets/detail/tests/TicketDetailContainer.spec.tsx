@@ -15,7 +15,7 @@ import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import useFlag from 'common/flags/hooks/useFlag'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {OBJECT_TYPES} from 'custom-fields/constants'
-import {useCustomFieldConditions} from 'custom-fields/hooks/queries/useCustomFieldConditions'
+import {useCustomFieldsConditionsEvaluationResults} from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
 import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
@@ -144,12 +144,15 @@ const mockUseGoToNextTicket = useGoToNextTicket as jest.Mock
 jest.mock('pages/tickets/detail/hooks/useTicketActivityTracking')
 const mockUseTicketActivityTracking = useTicketActivityTracking as jest.Mock
 
-jest.mock('custom-fields/hooks/queries/useCustomFieldConditions', () => ({
-    useCustomFieldConditions: jest.fn(() => ({
-        customFieldConditions: [],
-        isLoading: false,
-    })),
-}))
+jest.mock(
+    'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults',
+    () => ({
+        useCustomFieldsConditionsEvaluationResults: jest.fn(() => ({
+            evaluationResults: [],
+            conditionsLoading: false,
+        })),
+    })
+)
 
 jest.mock('@gorgias/realtime')
 const mockUseAgentActivity = useAgentActivity as jest.Mock
@@ -1458,8 +1461,11 @@ describe('TicketDetailContainer component', () => {
                 })
                 userEvent.click(getByTestId('TicketView-submit'))
 
-                expect(useCustomFieldConditions).toHaveBeenCalledWith(
+                expect(
+                    useCustomFieldsConditionsEvaluationResults
+                ).toHaveBeenCalledWith(
                     OBJECT_TYPES.TICKET,
+                    {tags: []},
                     conditionalFieldsEnabled
                 )
                 expect(triggerTicketFieldsErrors).toHaveBeenNthCalledWith(1, [

@@ -28,6 +28,7 @@ export default function triggerTicketFieldsRefreshAndInvalidation() {
             const customFieldConditionsQueryKey =
                 queryKeys.customFieldConditions.listCustomFieldConditions({
                     object_type: OBJECT_TYPES.TICKET,
+                    include_deactivated: false,
                 })
             await appQueryClient.invalidateQueries({
                 queryKey: customFieldConditionsQueryKey,

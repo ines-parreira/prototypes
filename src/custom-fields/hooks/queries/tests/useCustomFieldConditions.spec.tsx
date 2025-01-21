@@ -1,4 +1,4 @@
-import {useListCustomFieldConditions} from '@gorgias/api-queries'
+import {useListCustomFieldConditions, queryKeys} from '@gorgias/api-queries'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
@@ -7,12 +7,15 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {OBJECT_TYPES} from 'custom-fields/constants'
+import {
+    MAX_CONDITIONS,
+    STALE_TIME_MS,
+    useCustomFieldConditions,
+} from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import {customFieldCondition} from 'fixtures/customFieldCondition'
 import {NotificationStatus} from 'state/notifications/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
-
-import {useCustomFieldConditions} from '../useCustomFieldConditions'
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])()
@@ -34,7 +37,7 @@ describe('useCustomFieldConditions', () => {
         } as any)
 
         const {result} = renderHook(
-            () => useCustomFieldConditions(OBJECT_TYPES.TICKET),
+            () => useCustomFieldConditions({objectType: OBJECT_TYPES.TICKET}),
             {
                 wrapper: ({children}) => (
                     <QueryClientProvider client={queryClient}>
@@ -43,7 +46,25 @@ describe('useCustomFieldConditions', () => {
                 ),
             }
         )
-
+        expect(useListCustomFieldConditions).toHaveBeenCalledWith({
+            http: {
+                params: {
+                    object_type: OBJECT_TYPES.TICKET,
+                    order_by: 'sort_order:asc',
+                    limit: MAX_CONDITIONS,
+                    include_deactivated: true,
+                },
+            },
+            query: {
+                staleTime: STALE_TIME_MS,
+                queryKey:
+                    queryKeys.customFieldConditions.listCustomFieldConditions({
+                        object_type: OBJECT_TYPES.TICKET,
+                        include_deactivated: true,
+                    }),
+                enabled: true,
+            },
+        })
         expect(result.current.isLoading).toBe(true)
         expect(result.current.customFieldConditions).toEqual([])
     })
@@ -55,7 +76,7 @@ describe('useCustomFieldConditions', () => {
         } as any)
 
         const {result} = renderHook(
-            () => useCustomFieldConditions(OBJECT_TYPES.TICKET),
+            () => useCustomFieldConditions({objectType: OBJECT_TYPES.TICKET}),
             {
                 wrapper: ({children}) => (
                     <QueryClientProvider client={queryClient}>
@@ -64,6 +85,25 @@ describe('useCustomFieldConditions', () => {
                 ),
             }
         )
+        expect(useListCustomFieldConditions).toHaveBeenCalledWith({
+            http: {
+                params: {
+                    object_type: OBJECT_TYPES.TICKET,
+                    order_by: 'sort_order:asc',
+                    limit: MAX_CONDITIONS,
+                    include_deactivated: true,
+                },
+            },
+            query: {
+                staleTime: STALE_TIME_MS,
+                queryKey:
+                    queryKeys.customFieldConditions.listCustomFieldConditions({
+                        object_type: OBJECT_TYPES.TICKET,
+                        include_deactivated: true,
+                    }),
+                enabled: true,
+            },
+        })
 
         expect(result.current.isLoading).toBe(false)
         expect(result.current.customFieldConditions).toEqual([
@@ -74,12 +114,41 @@ describe('useCustomFieldConditions', () => {
     it('should dispatch error notification on error', () => {
         useListCustomFieldConditionsMock.mockReturnValue({isError: true} as any)
 
-        renderHook(() => useCustomFieldConditions(OBJECT_TYPES.TICKET), {
-            wrapper: ({children}) => (
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore}>{children}</Provider>
-                </QueryClientProvider>
-            ),
+        renderHook(
+            () =>
+                useCustomFieldConditions({
+                    objectType: OBJECT_TYPES.TICKET,
+                    includeDeactivated: false,
+                    enabled: true,
+                    invalidate: true,
+                }),
+            {
+                wrapper: ({children}) => (
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={mockStore}>{children}</Provider>
+                    </QueryClientProvider>
+                ),
+            }
+        )
+
+        expect(useListCustomFieldConditions).toHaveBeenCalledWith({
+            http: {
+                params: {
+                    object_type: OBJECT_TYPES.TICKET,
+                    order_by: 'sort_order:asc',
+                    limit: MAX_CONDITIONS,
+                    include_deactivated: false,
+                },
+            },
+            query: {
+                staleTime: 0,
+                queryKey:
+                    queryKeys.customFieldConditions.listCustomFieldConditions({
+                        object_type: OBJECT_TYPES.TICKET,
+                        include_deactivated: false,
+                    }),
+                enabled: true,
+            },
         })
 
         expect(mockStore.getActions()).toMatchObject([
