@@ -6,12 +6,18 @@ import css from './AIBanner.less'
 export type Props = {
     className?: string
     hasError?: boolean
+    fillStyle?: 'fill' | 'ghost'
 }
 
-const AIBanner: FC<Props> = ({children, className, hasError}) => {
+const AIBanner: FC<Props> = ({
+    children,
+    className,
+    hasError,
+    fillStyle = 'ghost',
+}) => {
     return (
         <div
-            className={classNames(css.container, className, {
+            className={classNames(css.container, className, css[fillStyle], {
                 [css.hasError]: hasError,
             })}
         >

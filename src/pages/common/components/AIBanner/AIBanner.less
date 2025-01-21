@@ -13,6 +13,7 @@
         .icon {
             font-size: 20px !important;
             color: var(--accessory-magenta-3);
+            align-self: center;
         }
 
         &.hasError {
@@ -21,6 +22,14 @@
             .icon {
                 color: var(--feedback-error);
             }
+        }
+
+        &.fill {
+            padding: @layout-spacing-s;
+            border-color: transparent;
+            background-color: var(--accessory-magenta-1);
+            color: var(--accessory-magenta-3);
+            border-radius: @layout-spacing-xs;
         }
     }
     .content {
