@@ -38,8 +38,7 @@ import {AUTOMATED_INTERACTION_TOOLTIP} from 'pages/automate/automate-metrics/Aut
 import {AUTOMATION_RATE_TOOLTIP} from 'pages/automate/automate-metrics/AutomationRateMetric'
 import {AGENT_COST_PER_TICKET} from 'pages/automate/automate-metrics/constants'
 import {TimeSavedByAgentsMetric} from 'pages/automate/automate-metrics/TimeSavedByAgentsMetric'
-import {useGetCostPerAutomatedInteraction} from 'pages/automate/common/hooks/useGetCostPerAutomatedInteraction'
-import {useGetCostPerBillableTicket} from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
+import {useMoneySavedPerInteractionWithAutomate} from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import css from 'pages/stats/AutomateOverview.less'
@@ -236,13 +235,9 @@ export default function AutomateOverviewContent({
         decreaseInResolutionTimeTrend,
     } = metrics
     const {isFetching: isTimeSeriesFetching} = timeseries
-    const costPerAutomatedInteraction = useGetCostPerAutomatedInteraction()
-    const costPerBillableTicket = useGetCostPerBillableTicket()
-
-    const costSavedPerInteraction =
-        costPerBillableTicket +
-        AGENT_COST_PER_TICKET -
-        costPerAutomatedInteraction
+    const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
+        AGENT_COST_PER_TICKET
+    )
 
     const greyArea = useMemo(
         () =>
