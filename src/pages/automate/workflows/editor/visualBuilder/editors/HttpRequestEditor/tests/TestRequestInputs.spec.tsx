@@ -32,12 +32,38 @@ const defaultProps = {
 }
 
 describe('TestRequestInputs Component', () => {
+    it('renders correctly for variables as well', () => {
+        render(
+            <TestRequestInputs
+                {...{...defaultProps, refreshTokenUrl: undefined}}
+            />
+        )
+        expect(
+            screen.getByText('Enter sample values to test request')
+        ).toBeInTheDocument()
+        defaultProps.inputs.forEach((input) => {
+            expect(screen.getByLabelText(input.name)).toBeInTheDocument()
+        })
+        expect(screen.getByText('Close')).toBeInTheDocument()
+        expect(screen.getByText('Continue')).toBeInTheDocument()
+    })
+    it('renders correctly', () => {
+        render(<TestRequestInputs {...{...defaultProps, inputs: []}} />)
+        expect(
+            screen.getByText('Enter refresh token to test request')
+        ).toBeInTheDocument()
+        expect(screen.getByLabelText('Refresh Token')).toBeInTheDocument()
+        expect(screen.getByText('Close')).toBeInTheDocument()
+        expect(screen.getByText('Continue')).toBeInTheDocument()
+    })
     it('renders correctly', () => {
         render(<TestRequestInputs {...defaultProps} />)
 
         // Check for ModalHeader
         expect(
-            screen.getByText('Enter refresh token to test request')
+            screen.getByText(
+                'Enter refresh token and sample values to test request'
+            )
         ).toBeInTheDocument()
 
         // Check for Refresh Token input

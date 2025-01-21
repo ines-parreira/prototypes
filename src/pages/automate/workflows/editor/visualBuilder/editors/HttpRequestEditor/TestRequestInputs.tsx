@@ -35,7 +35,11 @@ const TestRequestInputs = ({
 
     return (
         <>
-            <ModalHeader title="Enter refresh token to test request" />
+            <ModalHeader
+                title={`Enter ${refreshTokenUrl ? 'refresh token' : ''} 
+                    ${refreshTokenUrl && inputs.length ? 'and' : ''} 
+                    ${inputs.length ? 'sample values' : ''} to test request`}
+            />
             <ModalBody className={css.body}>
                 {refreshTokenUrl && (
                     <InputField
