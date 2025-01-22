@@ -1,8 +1,7 @@
-import {render, screen} from '@testing-library/react'
+import {render} from '@testing-library/react'
 import React from 'react'
 import {Redirect, Route, useRouteMatch} from 'react-router-dom'
 
-import {useFlag} from 'common/flags'
 import {PageSection} from 'config/pages'
 import {ADMIN_ROLE} from 'config/user'
 import {CustomFieldObjectTypes} from 'custom-fields/types'
@@ -22,9 +21,7 @@ jest.mock('react-router-dom', () => ({
     useRouteMatch: jest.fn(),
 }))
 jest.mock('pages/common/components/NoMatch', () => () => <div>404</div>)
-jest.mock('common/flags', () => ({
-    useFlag: jest.fn(),
-}))
+
 const ComponentToRender = () => <div>OK</div>
 jest.mock('../helpers/settingsRenderer', () => ({
     renderAppSettings: jest.fn(() => ComponentToRender),
@@ -32,23 +29,13 @@ jest.mock('../helpers/settingsRenderer', () => ({
 
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
 const mockedRoute = Route as jest.Mock
-const mockedUseFlag = assumeMock(useFlag)
 const mockedRenderAppSettings = assumeMock(renderAppSettings)
 
 describe('CustomFields', () => {
     beforeEach(() => {
-        mockedUseFlag.mockReturnValue(true)
         mockedUseRouteMatch.mockReturnValue({
             path: CUSTOM_FIELD_ROUTES['Ticket'],
         } as ReturnType<typeof useRouteMatch>)
-    })
-
-    it("should render the NoMatch component if the feature flag isn't enabled and objectType prop is customer-fields", () => {
-        mockedUseFlag.mockReturnValue(false)
-
-        render(<CustomFields objectType="Customer" />)
-
-        expect(screen.getByText('404')).toBeInTheDocument()
     })
 
     it('should call Redirect with correct props', () => {

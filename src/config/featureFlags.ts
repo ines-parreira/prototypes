@@ -76,7 +76,6 @@ export enum FeatureFlagKey {
     ConvAiStandaloneMenu = 'conv-ai-standalone-menu',
     ConvAiOnboarding = 'conv-ai-onboarding',
     CustomerTimelineButton = 'customer-timeline-button',
-    CustomerFields = 'customer-fields',
     CustomRecordingNotification = 'custom-recording-notification',
     DefaultEmailAddress = 'default-email-address',
     DontTriggerLoginsOnInactiveTabs = 'dont-trigger-logins-on-inactive-tabs',

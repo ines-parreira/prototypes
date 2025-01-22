@@ -4,9 +4,7 @@ import {fromJS, List, Map} from 'immutable'
 import React, {ReactNode} from 'react'
 
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import {OBJECT_TYPES} from 'custom-fields/constants'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -47,10 +45,6 @@ export const CustomerChannels = ({
     const currentUser = useAppSelector(getCurrentUser)
     const userIsAdmin = isAdmin(currentUser)
 
-    const isCustomerFieldsEnabled = useFlag(
-        FeatureFlagKey.CustomerFields,
-        false
-    )
     const customFields = useCustomFieldDefinitions({
         archived: false,
         object_type: OBJECT_TYPES.CUSTOMER,
@@ -188,7 +182,7 @@ export const CustomerChannels = ({
                     </p>
                 )}
 
-                {isCustomerFieldsEnabled && !customFields.data?.data.length && (
+                {!customFields.data?.data.length && (
                     <p className={css.customerChannel}>
                         <i
                             className={classnames(

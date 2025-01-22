@@ -7,7 +7,6 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useFlag} from 'common/flags'
 import * as segmentTracker from 'common/segment'
 import {UserRole, UserSettingType} from 'config/types/user'
 import {DateFormatType, TimeFormatType} from 'constants/datetime'
@@ -15,10 +14,13 @@ import {
     EMAIL_CUSTOMER_CHANNEL_TYPE,
     PHONE_CUSTOMER_CHANNEL_TYPE,
 } from 'constants/user'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import {customerFieldDefinitions} from 'fixtures/customField'
 import {CustomerChannel} from 'models/customerChannel/types'
 import {initialState} from 'state/twilio/voiceDevice'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 
+import {assumeMock} from '../../../../../../../utils/testing'
 import {CustomerChannels} from '../CustomerChannels'
 
 jest.mock(
@@ -30,12 +32,9 @@ jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/NewPhoneNumber',
     () => () => <div>Add phone number</div>
 )
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 
-jest.mock('common/flags', () => ({
-    useFlag: jest.fn(),
-}))
-const mockUseFlag = useFlag as jest.Mock
-
+const mockedUseCustomFieldDefinitions = assumeMock(useCustomFieldDefinitions)
 const logEventSpy = jest.spyOn(segmentTracker, 'logEvent')
 const {SegmentEvent} = segmentTracker
 
@@ -70,10 +69,11 @@ const defaultState = {
 
 describe('CustomerChannels component', () => {
     beforeEach(() => {
-        mockUseFlag.mockReturnValue(false)
-
         const mockDate = new Date('2019-01-26T12:34:56.000Z')
         global.Date.now = jest.fn(() => mockDate) as unknown as typeof Date.now
+        mockedUseCustomFieldDefinitions.mockReturnValue({
+            data: {data: customerFieldDefinitions},
+        } as any)
     })
 
     it(
@@ -402,7 +402,6 @@ describe('CustomerChannels component', () => {
         })
         expect(getByText(/Location: Paris, France/)).toBeInTheDocument()
         expect(getByText(/Local time:/)).toBeInTheDocument()
-        expect(screen.queryByText(/Customer Fields/)).not.toBeInTheDocument()
     })
 
     it('should display "Add phone number button', async () => {
@@ -426,9 +425,14 @@ describe('CustomerChannels component', () => {
 
     describe('Customer Fields', () => {
         beforeEach(() => {
-            mockUseFlag.mockReturnValue(true)
+            const mockDate = new Date('2019-01-26T12:34:56.000Z')
+            global.Date.now = jest.fn(
+                () => mockDate
+            ) as unknown as typeof Date.now
+            mockedUseCustomFieldDefinitions.mockReturnValue({
+                data: {data: []},
+            } as any)
         })
-
         it('should show an empty custom fields indicator at the bottom of the channels list', () => {
             renderWithQueryClientProvider(
                 <Provider store={mockStore(defaultState)}>

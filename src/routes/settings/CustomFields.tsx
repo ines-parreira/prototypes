@@ -2,14 +2,11 @@ import React from 'react'
 
 import {Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
 
-import {useFlag} from 'common/flags'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {PageSection} from 'config/pages'
 import {ADMIN_ROLE} from 'config/user'
 
 import {OBJECT_TYPES} from 'custom-fields/constants'
 import {CustomFieldObjectTypes} from 'custom-fields/types'
-import NoMatch from 'pages/common/components/NoMatch'
 import AddCustomField from 'pages/settings/customFields/AddCustomField'
 import CustomFieldsComponent from 'pages/settings/customFields/CustomFields'
 import EditCustomField from 'pages/settings/customFields/EditCustomField'
@@ -23,12 +20,6 @@ export function CustomFields({
 }) {
     const {path} = useRouteMatch()
     const isCustomerFields = objectType === OBJECT_TYPES.CUSTOMER
-    const isCustomerFieldsEnabled = useFlag(
-        FeatureFlagKey.CustomerFields,
-        false
-    )
-
-    if (isCustomerFields && !isCustomerFieldsEnabled) return <NoMatch />
 
     return (
         <Switch>

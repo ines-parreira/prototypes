@@ -80,7 +80,6 @@ export const NavbarConfig: Category[] = [
                 requiredRole: ADMIN_ROLE,
                 to: CUSTOM_FIELD_ROUTES[OBJECT_TYPES.CUSTOMER],
                 text: 'Customer Fields',
-                requiredFeatureFlags: [FeatureFlagKey.CustomerFields],
                 extra: (
                     <Badge type={ColorType.Blue} className={cssNavbar.badge}>
                         BETA

@@ -1,7 +1,5 @@
 import React from 'react'
 
-import {useFlag} from 'common/flags'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {OBJECT_TYPES} from 'custom-fields/constants'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {useCustomFieldValues} from 'custom-fields/hooks/queries/useCustomFieldValues'
@@ -11,10 +9,6 @@ import css from './CustomerFields.less'
 import {Heading} from './Heading'
 
 export default function CustomerFields({customerId}: {customerId: number}) {
-    const isCustomerFieldsEnabled = useFlag(
-        FeatureFlagKey.CustomerFields,
-        false
-    )
     const {
         data: definitionsData,
         isLoading: isDefinitionLoading,
@@ -36,12 +30,7 @@ export default function CustomerFields({customerId}: {customerId: number}) {
     const isLoading = isDefinitionLoading || isValueLoading
     const isError = isDefinitionError || isValueError
 
-    if (
-        !isCustomerFieldsEnabled ||
-        isLoading ||
-        isError ||
-        definitionsData?.data.length === 0
-    ) {
+    if (isLoading || isError || definitionsData?.data.length === 0) {
         return null
     }
 

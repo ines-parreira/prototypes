@@ -1,7 +1,6 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {useFlag} from 'common/flags'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {useCustomFieldValues} from 'custom-fields/hooks/queries/useCustomFieldValues'
 import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
@@ -11,7 +10,6 @@ import {assumeMock} from 'utils/testing'
 import CustomerField from '../CustomerField'
 import CustomerFields from '../CustomerFields'
 
-jest.mock('common/flags', () => ({useFlag: jest.fn()}))
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
     useCustomFieldDefinitions: jest.fn(),
 }))
@@ -25,7 +23,6 @@ jest.mock('../CustomerField', () => {
     return jest.fn(() => <div>CustomerField</div>)
 })
 
-const mockedUseFlag = assumeMock(useFlag)
 const mockedUseCustomFieldDefinitions = assumeMock(useCustomFieldDefinitions)
 const mockedUseCustomFieldValues = assumeMock(useCustomFieldValues)
 const mockedCustomerField = assumeMock(CustomerField)
@@ -43,7 +40,6 @@ const mockedValuesData = [
 
 describe('CustomerFields', () => {
     beforeEach(() => {
-        mockedUseFlag.mockReturnValue(true)
         mockedUseCustomFieldDefinitions.mockReturnValue({
             data: apiListCursorPaginationResponse([
                 customerInputFieldDefinition,
@@ -56,13 +52,6 @@ describe('CustomerFields', () => {
             isLoading: false,
             isError: false,
         } as unknown as ReturnType<typeof useCustomFieldValues>)
-    })
-
-    it('should return null if isCustomerFieldsEnabled is false', () => {
-        mockedUseFlag.mockReturnValue(false)
-        const {container} = render(<CustomerFields customerId={1} />)
-
-        expect(container.firstChild).toBeNull()
     })
 
     it("should return null if there's no custom field definitions", () => {
