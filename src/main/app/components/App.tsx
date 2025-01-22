@@ -3,7 +3,7 @@ import React, {ReactNode} from 'react'
 import AlertBanners from 'AlertBanners'
 import {AppNode} from 'appNode'
 
-import {useShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import {NotificationsToasts} from 'common/notifications'
 
 import {useApplyTheme} from 'core/theme'
@@ -32,7 +32,7 @@ type Props = {
 }
 
 export default function App({children}: Props) {
-    const hasGlobalNav = useShowGlobalNavFeatureFlag()
+    const hasGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const hasPhone = useHasPhone()
 
     useApplyTheme()

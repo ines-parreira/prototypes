@@ -3,6 +3,7 @@ import {Route, Switch, useRouteMatch} from 'react-router-dom'
 
 import {PanelGroup, Panels} from 'core/layout/panels'
 import {GlobalNavigationPanel} from 'core/navigation'
+import {useIsMobileResolution} from 'hooks/useIsMobileResolution'
 import useWindowSize from 'hooks/useWindowSize'
 import {useOnToggleUnread} from 'tickets/dtp'
 import {TicketsNavbarPanel} from 'tickets/navigation'
@@ -12,6 +13,7 @@ import {TicketInfobarPanel} from 'tickets/ticket-infobar'
 import {TicketsListPanel} from 'tickets/tickets-list'
 import {ViewPanel} from 'tickets/view'
 
+import {MobileRoutes} from './MobileRoutes'
 import css from './PanelRoutes.less'
 
 export const panelRoutesRegexps = [
@@ -24,9 +26,14 @@ export const panelRoutesRegexps = [
 export default function PanelRoutes() {
     const {width} = useWindowSize()
     const {onToggleUnread, registerOnToggleUnread} = useOnToggleUnread()
+    const isMobileResolution = useIsMobileResolution()
 
     const match = useRouteMatch<{viewId?: string}>('/app/views/:viewId?')
     const viewId = match?.params.viewId || 'default'
+
+    if (isMobileResolution) {
+        return <MobileRoutes />
+    }
 
     // The `key` props below are not really needed in most cases, but they are
     // needed in the case of the `TicketListPanel`, `TicketDetailPanel` and

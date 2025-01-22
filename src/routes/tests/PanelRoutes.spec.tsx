@@ -2,6 +2,7 @@ import {render, screen} from '@testing-library/react'
 import React from 'react'
 import {StaticRouter} from 'react-router-dom'
 
+import {useIsMobileResolution} from 'hooks/useIsMobileResolution'
 import useWindowSize from 'hooks/useWindowSize'
 import {assumeMock} from 'utils/testing'
 
@@ -10,6 +11,10 @@ import PanelRoutes from '../PanelRoutes'
 jest.mock('core/navigation', () => ({
     GlobalNavigationPanel: () => <div>GlobalNavigationPanel</div>,
 }))
+jest.mock('hooks/useIsMobileResolution', () => ({
+    useIsMobileResolution: jest.fn(),
+}))
+const useIsMobileResolutionMock = assumeMock(useIsMobileResolution)
 jest.mock('hooks/useWindowSize', () => jest.fn())
 const useWindowSizeMock = assumeMock(useWindowSize)
 jest.mock('tickets/navigation', () => ({
@@ -31,9 +36,24 @@ jest.mock('tickets/view', () => ({
     ViewPanel: () => <div>ViewPanel</div>,
 }))
 
+jest.mock('../MobileRoutes', () => ({
+    MobileRoutes: () => <div>MobileRoutes</div>,
+}))
+
 describe('PanelRoutes', () => {
     beforeEach(() => {
+        useIsMobileResolutionMock.mockReturnValue(false)
         useWindowSizeMock.mockReturnValue({width: 1000, height: 1000})
+    })
+
+    it('should render the mobile routes for mobile resolutions', () => {
+        useIsMobileResolutionMock.mockReturnValue(true)
+        render(
+            <StaticRouter location="/app">
+                <PanelRoutes />
+            </StaticRouter>
+        )
+        expect(screen.getByText('MobileRoutes')).toBeInTheDocument()
     })
 
     it('should render the global navigation', () => {
