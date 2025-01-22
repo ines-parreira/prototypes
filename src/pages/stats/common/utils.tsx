@@ -421,3 +421,10 @@ export const lastWeekDateRange = (startWeekDay: StartDayOfWeek) => {
     const end = moment().startOf(weekStartMomentActual).subtract(1, 'seconds')
     return {start, end}
 }
+
+export function move<T>(array: T[], srcIndex: number, targetIndex: number) {
+    const copy = [...array]
+    const [movedChart] = copy.splice(srcIndex, 1)
+    copy.splice(targetIndex, 0, movedChart)
+    return copy
+}

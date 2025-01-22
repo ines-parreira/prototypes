@@ -45,6 +45,7 @@ import {
     lastWeekDateRange,
     StartDayOfWeek,
     getDateRangePickerLabel,
+    move,
 } from 'pages/stats/common/utils'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 import {RootState} from 'state/types'
@@ -775,6 +776,28 @@ describe('stats components utils', () => {
                     filtersDraft
                 )
             ).toBeFalsy()
+        })
+    })
+
+    describe('move(array, srcIndex, targetIndex)', () => {
+        it('returns an array', () => {
+            const actual = move([], 0, 0)
+
+            expect(actual).toBeInstanceOf(Array)
+        })
+
+        it('returns a new array', () => {
+            const array = [1, 2, 3]
+            const actual = move(array, 0, 0)
+
+            expect(actual).not.toBe(array)
+        })
+
+        it('moves item from src index to target index', () => {
+            const array = [1, 2, 3]
+            const actual = move(array, 0, 1)
+
+            expect(actual).toEqual([2, 1, 3])
         })
     })
 })

@@ -1,4 +1,3 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
 import {CustomReportChart} from 'pages/stats/custom-reports/CustomReportChart'
@@ -11,7 +10,7 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import {assumeMock} from 'utils/testing'
+import {assumeMock, renderWithDnD} from 'utils/testing'
 
 jest.mock('pages/stats/custom-reports/CustomReportComponent', () => ({
     __esModule: true,
@@ -30,7 +29,9 @@ describe('CustomReportChart', () => {
             config_id: 'randomString',
         }
 
-        const {container} = render(<CustomReportChart schema={schema} />)
+        const {container} = renderWithDnD(
+            <CustomReportChart order={1} onMove={jest.fn()} schema={schema} />
+        )
 
         expect(container).toBeEmptyDOMElement()
     })
@@ -41,7 +42,9 @@ describe('CustomReportChart', () => {
             config_id: OverviewChart.CustomerSatisfactionTrendCard,
         }
 
-        render(<CustomReportChart schema={schema} />)
+        renderWithDnD(
+            <CustomReportChart order={1} onMove={jest.fn()} schema={schema} />
+        )
 
         expect(CustomReportComponentMock).toHaveBeenCalledWith(
             {

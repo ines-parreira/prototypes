@@ -3,14 +3,16 @@ import React from 'react'
 import {useGridSize} from 'hooks/useGridSize'
 import {getComponentConfig} from 'pages/stats/custom-reports/config'
 import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+import {DraggableGridCell} from 'pages/stats/custom-reports/DraggableGridCell'
 import {
     ChartType,
     CustomReportChartSchema,
     CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
 
 type Props = {
+    order: number
+    onMove: (srcIndex: number, targetIndex: number) => void
     schema: CustomReportChartSchema
     dashboard?: CustomReportSchema
 }
@@ -21,7 +23,12 @@ export const CHART_SIZE: Record<ChartType, number> = {
     [ChartType.Table]: 12,
 }
 
-export const CustomReportChart = ({schema, dashboard}: Props) => {
+export const CustomReportChart = ({
+    order,
+    onMove,
+    schema,
+    dashboard,
+}: Props) => {
     const getGridCellSize = useGridSize()
     const {reportConfig, chartConfig} = getComponentConfig(schema.config_id)
 
@@ -29,16 +36,15 @@ export const CustomReportChart = ({schema, dashboard}: Props) => {
         return null
     }
 
+    const size = getGridCellSize(CHART_SIZE[chartConfig.chartType])
+
     return (
-        <DashboardGridCell
-            size={getGridCellSize(CHART_SIZE[chartConfig.chartType])}
-            className="pb-0"
-        >
+        <DraggableGridCell size={size} order={order} onMove={onMove}>
             <CustomReportComponent
                 chart={schema.config_id}
                 config={reportConfig}
                 dashboard={dashboard}
             />
-        </DashboardGridCell>
+        </DraggableGridCell>
     )
 }

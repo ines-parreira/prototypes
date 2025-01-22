@@ -1,12 +1,12 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
+import {move} from 'pages/stats/common/utils'
 import {CustomReportChart} from 'pages/stats/custom-reports/CustomReportChart'
-import {CustomReportRow} from 'pages/stats/custom-reports/CustomReportRow'
-import {CustomReportSection} from 'pages/stats/custom-reports/CustomReportSection'
 import {
+    CustomReportChartSchema,
     CustomReportChild,
     CustomReportChildType,
     CustomReportSchema,
@@ -15,53 +15,44 @@ import {useFiltersFromDashboard} from 'pages/stats/custom-reports/useFiltersFrom
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 
+const extractCharts = (children: CustomReportChild[]) => {
+    const charts: CustomReportChartSchema[] = []
+
+    children.forEach((child) => {
+        switch (child.type) {
+            case CustomReportChildType.Chart:
+                charts.push(child)
+                break
+
+            case CustomReportChildType.Row:
+            case CustomReportChildType.Section:
+                charts.push(...extractCharts(child.children))
+                break
+        }
+    })
+
+    return charts
+}
+
 type Props = {
     customReport: CustomReportSchema
 }
-
-const renderCustomReportChild = (
-    child: CustomReportChild,
-    key: string,
-    dashboard: CustomReportSchema
-) => {
-    switch (child.type) {
-        case CustomReportChildType.Row:
-            return (
-                <CustomReportRow key={key}>
-                    {renderCustomReportChildWithKeys(dashboard, child.children)}
-                </CustomReportRow>
-            )
-        case CustomReportChildType.Section:
-            return (
-                <CustomReportSection schema={child} key={child.type}>
-                    {renderCustomReportChildWithKeys(dashboard, child.children)}
-                </CustomReportSection>
-            )
-        case CustomReportChildType.Chart: {
-            return (
-                <CustomReportChart
-                    schema={child}
-                    key={child.type}
-                    dashboard={dashboard}
-                />
-            )
-        }
-    }
-}
-
-const renderCustomReportChildWithKeys = (
-    dashboard: CustomReportSchema,
-    children: CustomReportChild[]
-) =>
-    children.map((child: CustomReportChild, index: number) =>
-        renderCustomReportChild(child, `${child.type}-${index}`, dashboard)
-    )
 
 export const CustomReport = ({customReport}: Props) => {
     const getGridCellSize = useGridSize()
 
     const {persistentFilters, optionalFilters} =
         useFiltersFromDashboard(customReport)
+
+    const [charts, setCharts] = useState(() => {
+        return extractCharts(customReport.children)
+    })
+
+    const moveChart = (srcIndex: number, targetIndex: number) => {
+        setCharts((charts) => {
+            return move(charts, srcIndex, targetIndex)
+        })
+    }
 
     return (
         <>
@@ -80,10 +71,19 @@ export const CustomReport = ({customReport}: Props) => {
                     />
                 </DashboardGridCell>
             </DashboardSection>
-            {renderCustomReportChildWithKeys(
-                customReport,
-                customReport.children
-            )}
+            <DashboardSection>
+                {charts.map((chart, index) => {
+                    return (
+                        <CustomReportChart
+                            key={chart.config_id}
+                            schema={chart}
+                            order={index}
+                            onMove={moveChart}
+                            dashboard={customReport}
+                        />
+                    )
+                })}
+            </DashboardSection>
         </>
     )
 }
