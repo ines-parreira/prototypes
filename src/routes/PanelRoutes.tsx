@@ -4,6 +4,7 @@ import {Route, Switch} from 'react-router-dom'
 import {PanelGroup, Panels} from 'core/layout/panels'
 import {GlobalNavigationPanel} from 'core/navigation'
 import useWindowSize from 'hooks/useWindowSize'
+import {useOnToggleUnread} from 'tickets/dtp'
 import {TicketsNavbarPanel} from 'tickets/navigation'
 import {TicketDetailPanel} from 'tickets/ticket-detail'
 import {TicketEmptyPanel} from 'tickets/ticket-empty'
@@ -22,6 +23,7 @@ export const panelRoutesRegexps = [
 
 export default function PanelRoutes() {
     const {width} = useWindowSize()
+    const {onToggleUnread, registerOnToggleUnread} = useOnToggleUnread()
 
     // The `key` props below are not really needed in most cases, but they are
     // needed in the case of the `TicketListPanel`, `TicketDetailPanel` and
@@ -58,8 +60,14 @@ export default function PanelRoutes() {
                         <TicketEmptyPanel key="ticket-empty-panel" />
                     </Route>
                     <Route exact path="/app/views/:viewId/:ticketId">
-                        <TicketsListPanel key="ticket-list-panel" />
-                        <TicketDetailPanel key="ticket-detail-panel" />
+                        <TicketsListPanel
+                            key="ticket-list-panel"
+                            registerOnToggleUnread={registerOnToggleUnread}
+                        />
+                        <TicketDetailPanel
+                            key="ticket-detail-panel"
+                            onToggleUnread={onToggleUnread}
+                        />
                         <TicketInfobarPanel key="infobar-panel" />
                     </Route>
                 </Switch>

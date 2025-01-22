@@ -1,7 +1,6 @@
-import {useEffect, useMemo, useState} from 'react'
+import {useEffect, useMemo, useRef, useState} from 'react'
 
 import useDebouncedValue from 'hooks/useDebouncedValue'
-import useEffectOnce from 'hooks/useEffectOnce'
 import useElementSize from 'hooks/useElementSize'
 import usePrevious from 'hooks/usePrevious'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
@@ -23,6 +22,7 @@ export default function useTickets(
     ticketId?: number,
     registerToggleUnread?: (toggleUnreadFn: OnToggleUnreadFn) => void
 ) {
+    const toggleUnreadRegisteredRef = useRef(false)
     const {
         hasMore,
         initialLoaded,
@@ -103,9 +103,12 @@ export default function useTickets(
         ticketId
     )
 
-    useEffectOnce(() => {
-        registerToggleUnread?.(toggleUnread)
-    })
+    useEffect(() => {
+        if (!registerToggleUnread || toggleUnreadRegisteredRef.current) return
+
+        registerToggleUnread(toggleUnread)
+        toggleUnreadRegisteredRef.current = true
+    }, [registerToggleUnread, toggleUnread])
 
     const tickets = partials.map((partial) => data[partial.id] || partial)
 

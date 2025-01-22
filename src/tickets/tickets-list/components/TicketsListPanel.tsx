@@ -4,6 +4,7 @@ import {useParams} from 'react-router-dom'
 import {Panel} from 'core/layout/panels'
 import {TicketListView} from 'ticket-list-view'
 import {useViewId} from 'tickets/core/hooks'
+import type {OnToggleUnreadFn} from 'tickets/dtp'
 
 const panelConfig = {
     defaultSize: 300,
@@ -11,7 +12,11 @@ const panelConfig = {
     maxSize: 450,
 }
 
-export default function TicketsListPanel() {
+type Props = {
+    registerOnToggleUnread?: (toggleUnreadFn: OnToggleUnreadFn) => void
+}
+
+export default function TicketsListPanel({registerOnToggleUnread}: Props) {
     const {ticketId: urlTicketId} = useParams<{ticketId?: string}>()
     const viewId = useViewId()
 
@@ -19,7 +24,11 @@ export default function TicketsListPanel() {
 
     return (
         <Panel name="ticket-list" config={panelConfig}>
-            <TicketListView activeTicketId={ticketId} viewId={viewId} />
+            <TicketListView
+                activeTicketId={ticketId}
+                registerToggleUnread={registerOnToggleUnread}
+                viewId={viewId}
+            />
         </Panel>
     )
 }

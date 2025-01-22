@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react'
+import React, {useMemo} from 'react'
 import {useRouteMatch} from 'react-router-dom'
 
 import {globalNavigationPanel} from 'common/navigation'
@@ -14,8 +14,7 @@ import {
     DEFAULT_TICKET_PANEL_WIDTH,
     LayoutKeys,
 } from 'split-ticket-view/constants'
-
-import type {OnToggleUnreadFn} from './types'
+import {useOnToggleUnread} from 'tickets/dtp'
 
 export default function useSplitTicketPage() {
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
@@ -26,15 +25,7 @@ export default function useSplitTicketPage() {
     }>('/app/views/:viewId/:ticketId')
     const viewId = match?.params.viewId
     const ticketId = match?.params.ticketId
-
-    const [onToggleUnread, setOnToggleUnread] = useState<OnToggleUnreadFn>()
-
-    const registerToggleUnread = useCallback(
-        (toggleUnreadFn: OnToggleUnreadFn) => {
-            setOnToggleUnread(() => toggleUnreadFn)
-        },
-        []
-    )
+    const {onToggleUnread, registerOnToggleUnread} = useOnToggleUnread()
 
     const config = useMemo(
         (): PanelLayoutConfig[] => [
@@ -50,7 +41,7 @@ export default function useSplitTicketPage() {
                     <DefaultViewFallback
                         ticketId={ticketId}
                         viewId={viewId}
-                        registerToggleUnread={registerToggleUnread}
+                        registerToggleUnread={registerOnToggleUnread}
                     />
                 ),
                 panelConfig: [
@@ -82,7 +73,13 @@ export default function useSplitTicketPage() {
                 ],
             },
         ],
-        [showGlobalNav, ticketId, viewId, onToggleUnread, registerToggleUnread]
+        [
+            showGlobalNav,
+            ticketId,
+            viewId,
+            onToggleUnread,
+            registerOnToggleUnread,
+        ]
     )
 
     return useMemo(() => ({config, layoutKey: LayoutKeys.TICKET}), [config])
