@@ -90,22 +90,22 @@ src/state/entities/macros @gorgias/agent-xp
 src/state/macro @gorgias/agent-xp
 src/pages/tickets/detail/components/ReplyArea/MacrosQuickReply @gorgias/agent-xp
 
-# Phone scope @gorgias/phone
+# Phone scope @gorgias/support-phone
 
-src/models/integration/types/phone.ts @gorgias/phone
-src/pages/common/components/PhoneIntegrationBar @gorgias/phone
-src/pages/common/components/VoiceCallAgentLabel @gorgias/phone
-src/pages/integrations/integration/components/voice @gorgias/phone
-src/pages/integrations/integration/components/phone @gorgias/phone
-src/pages/phoneNumbers @gorgias/phone
-src/pages/tickets/detail/components/PhoneEvent @gorgias/phone
-src/pages/common/forms/PhoneNumberInput @gorgias/phone
-src/fixtures/phoneNumber.ts @gorgias/phone
-src/hooks/integrations/phone @gorgias/phone
-src/pages/stats/voice @gorgias/phone
-src/pages/common/components/VoiceCallStatusLabel @gorgias/phone
-src/pages/common/components/VoiceCallCustomerLabel @gorgias/phone
-src/pages/tickets/detail/components/TicketVoiceCall @gorgias/phone
+src/models/integration/types/phone.ts @gorgias/support-phone
+src/pages/common/components/PhoneIntegrationBar @gorgias/support-phone
+src/pages/common/components/VoiceCallAgentLabel @gorgias/support-phone
+src/pages/integrations/integration/components/voice @gorgias/support-phone
+src/pages/integrations/integration/components/phone @gorgias/support-phone
+src/pages/phoneNumbers @gorgias/support-phone
+src/pages/tickets/detail/components/PhoneEvent @gorgias/support-phone
+src/pages/common/forms/PhoneNumberInput @gorgias/support-phone
+src/fixtures/phoneNumber.ts @gorgias/support-phone
+src/hooks/integrations/phone @gorgias/support-phone
+src/pages/stats/voice @gorgias/support-phone
+src/pages/common/components/VoiceCallStatusLabel @gorgias/support-phone
+src/pages/common/components/VoiceCallCustomerLabel @gorgias/support-phone
+src/pages/tickets/detail/components/TicketVoiceCall @gorgias/support-phone
 
 # Ecommerce & DevRel @gorgias/crm-devrel
 
