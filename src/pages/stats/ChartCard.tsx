@@ -25,6 +25,7 @@ export default function ChartCard({
     titleExtra,
     noPadding = false,
     chartId,
+    dashboard,
 }: Props) {
     return (
         <Card
@@ -44,7 +45,12 @@ export default function ChartCard({
                 </div>
                 <div className={css.chartsActionMenu}>
                     {titleExtra}
-                    {chartId && <ChartsActionMenu chartId={chartId} />}
+                    {chartId && (
+                        <ChartsActionMenu
+                            chartId={chartId}
+                            dashboard={dashboard}
+                        />
+                    )}
                 </div>
             </div>
 

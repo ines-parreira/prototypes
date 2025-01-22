@@ -56,6 +56,7 @@ type Props = {
 export const PerformanceByArticle = ({
     helpCenterDomain,
     helpCenterId,
+    dashboard,
     chartId,
 }: Props) => {
     const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
@@ -83,6 +84,7 @@ export const PerformanceByArticle = ({
             title={'Performance by articles'}
             noPadding
             chartId={chartId}
+            dashboard={dashboard}
         >
             {!isLoading && data.length === 0 ? (
                 <NoDataAvailable

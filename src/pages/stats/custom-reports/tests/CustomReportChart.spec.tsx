@@ -3,7 +3,6 @@ import React from 'react'
 
 import {CustomReportChart} from 'pages/stats/custom-reports/CustomReportChart'
 import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
-
 import {
     CustomReportChartSchema,
     CustomReportChildType,
@@ -46,7 +45,6 @@ describe('CustomReportChart', () => {
 
         expect(CustomReportComponentMock).toHaveBeenCalledWith(
             {
-                activateActionsMenu: false,
                 chart: schema.config_id,
                 config: SupportPerformanceOverviewReportConfig,
             },

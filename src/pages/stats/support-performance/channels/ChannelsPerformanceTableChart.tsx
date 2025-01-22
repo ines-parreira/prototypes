@@ -9,12 +9,14 @@ export const CHANNEL_PERFORMANCE_TABLE_TITLE = 'Channel performance'
 
 export const ChannelsPerformanceTableChart = ({
     chartId,
+    dashboard,
 }: DashboardChartProps) => {
     return (
         <ChartCard
             title={CHANNEL_PERFORMANCE_TABLE_TITLE}
             noPadding
             titleExtra={<ChannelsCardExtra />}
+            dashboard={dashboard}
             chartId={chartId}
         >
             <ChannelsTable />

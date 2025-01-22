@@ -77,28 +77,24 @@ export default function SupportPerformanceAgentsReport() {
                         <CustomReportComponent
                             chart={AgentsChart.TopCSATPerformers}
                             config={SupportPerformanceAgentsReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
                         <CustomReportComponent
                             chart={AgentsChart.TopFirstResponseTimePerformers}
                             config={SupportPerformanceAgentsReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
                         <CustomReportComponent
                             chart={AgentsChart.TopResponseTimePerformers}
                             config={SupportPerformanceAgentsReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
                         <CustomReportComponent
                             chart={AgentsChart.TopClosedTicketsPerformers}
                             config={SupportPerformanceAgentsReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                 </DashboardSection>
@@ -107,7 +103,6 @@ export default function SupportPerformanceAgentsReport() {
                         <CustomReportComponent
                             chart={AgentsChart.Table}
                             config={SupportPerformanceAgentsReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                 </DashboardSection>

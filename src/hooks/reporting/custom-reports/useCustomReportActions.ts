@@ -72,14 +72,14 @@ export const useCustomReportActions = () => {
                 },
                 {
                     onSuccess: () => {
+                        void queryClient.invalidateQueries({
+                            queryKey: listReportsQueryKey,
+                        })
+
                         handleMutationSuccess(
                             dispatch,
                             `${data.name} ${CUSTOM_REPORT_DUPLICATE_SUCCESS_MESSAGE}`
                         )
-
-                        void queryClient.invalidateQueries({
-                            queryKey: listReportsQueryKey,
-                        })
                     },
                     onError: () =>
                         handleMutationError(
@@ -100,14 +100,14 @@ export const useCustomReportActions = () => {
                 },
                 {
                     onSuccess: () => {
+                        void queryClient.invalidateQueries({
+                            queryKey: listReportsQueryKey,
+                        })
+
                         handleMutationSuccess(
                             dispatch,
                             `${data.name} ${CUSTOM_REPORT_DELETED_SUCCESS_MESSAGE}`
                         )
-
-                        void queryClient.invalidateQueries({
-                            queryKey: listReportsQueryKey,
-                        })
                     },
                     onError: () =>
                         handleMutationError(
@@ -129,7 +129,7 @@ export const useCustomReportActions = () => {
         }: {
             dashboard: CustomReportSchema | undefined
             chartIds: string[]
-            onClose: () => void
+            onClose?: () => void
             successMessage?: string
         }) => {
             if (dashboard) {
@@ -149,14 +149,6 @@ export const useCustomReportActions = () => {
                     },
                     {
                         onSuccess: () => {
-                            onClose()
-
-                            handleMutationSuccess(
-                                dispatch,
-                                successMessage ||
-                                    `Successfully saved ${chartIds.length} ${chartIds.length === 1 ? 'chart' : 'charts'} to ${dashboard.name}`
-                            )
-
                             void queryClient.invalidateQueries({
                                 queryKey: CUSTOM_REPORTS_QUERY_KEY,
                             })
@@ -164,6 +156,16 @@ export const useCustomReportActions = () => {
                             void queryClient.invalidateQueries({
                                 queryKey: listReportsQueryKey,
                             })
+
+                            handleMutationSuccess(
+                                dispatch,
+                                successMessage ||
+                                    `Successfully saved ${chartIds.length} ${chartIds.length === 1 ? 'chart' : 'charts'} to ${dashboard.name}`
+                            )
+
+                            if (onClose) {
+                                onClose()
+                            }
                         },
                         onError: () =>
                             handleMutationError(
@@ -214,11 +216,31 @@ export const useCustomReportActions = () => {
         return dashboards
     }, [listDashboardsQuery])
 
+    const removeChartFromDashboardHandler = useCallback(
+        ({
+            dashboard,
+            chartId,
+        }: {
+            dashboard: CustomReportSchema
+            chartId: string
+        }) => {
+            const childrenIds = getChildrenIds(dashboard.children)
+
+            updateDashboardHandler({
+                dashboard,
+                chartIds: childrenIds.filter((id) => id !== chartId),
+                successMessage: `Successfully removed chart from ${dashboard.name}`,
+            })
+        },
+        [updateDashboardHandler]
+    )
+
     return {
         duplicateReportHandler,
         deleteReportHandler,
         updateDashboardHandler,
         addChartToDashboardHandler,
         getDashboardsHandler,
+        removeChartFromDashboardHandler,
     }
 }

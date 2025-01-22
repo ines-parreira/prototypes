@@ -23,6 +23,7 @@ export default function MetricCard({
     className,
     hint,
     isLoading = false,
+    dashboard,
     chartId,
     title,
     tip,
@@ -34,7 +35,9 @@ export default function MetricCard({
                     {title}
                     {hint && <HintTooltip {...hint} />}
                 </div>
-                {chartId && <ChartsActionMenu chartId={chartId} />}
+                {chartId && (
+                    <ChartsActionMenu chartId={chartId} dashboard={dashboard} />
+                )}
             </div>
 
             {children}

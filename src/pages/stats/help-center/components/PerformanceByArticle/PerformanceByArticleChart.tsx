@@ -5,7 +5,10 @@ import {PerformanceByArticle} from 'pages/stats/help-center/components/Performan
 import {useSelectedHelpCenter} from 'pages/stats/help-center/hooks/useSelectedHelpCenter'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 
-export const PerformanceByArticleChart = ({chartId}: DashboardChartProps) => {
+export const PerformanceByArticleChart = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     const {selectedHelpCenterDomain: helpCenterDomain, helpCenterId} =
         useSelectedHelpCenter()
 
@@ -15,6 +18,7 @@ export const PerformanceByArticleChart = ({chartId}: DashboardChartProps) => {
                 <PerformanceByArticle
                     helpCenterDomain={helpCenterDomain}
                     helpCenterId={helpCenterId}
+                    dashboard={dashboard}
                     chartId={chartId}
                 />
             ) : (

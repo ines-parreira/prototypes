@@ -253,7 +253,10 @@ export const getChildrenOfTypeChart = (report: CustomReportSchema) => {
 }
 
 export const getChildrenIds = (
-    children: CustomReportChild[] | undefined
+    children:
+        | CustomReportChild[]
+        | AnalyticsCustomReportChildrenItem[]
+        | undefined
 ): string[] => {
     return children
         ? _flatten(

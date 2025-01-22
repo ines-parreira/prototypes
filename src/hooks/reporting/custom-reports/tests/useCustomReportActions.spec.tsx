@@ -536,6 +536,89 @@ describe('useCustomReportActions', () => {
         })
     })
 
+    describe('removeChartFromDashboardHandler', () => {
+        const firstChartId = '456'
+        const dashboard: CustomReportSchema = {
+            id: 1,
+            name: 'Test Report',
+            emoji: '📊',
+            children: [
+                {
+                    config_id: firstChartId,
+                    type: CustomReportChildType.Chart,
+                },
+                {
+                    config_id: '678',
+                    type: CustomReportChildType.Chart,
+                },
+            ],
+            analytics_filter_id: 123,
+        }
+        const data = {
+            chartId: firstChartId,
+            dashboard,
+        }
+
+        const expectedPayload = {
+            analytics_filter_id: dashboard.analytics_filter_id,
+            children: [
+                {
+                    children: [
+                        {
+                            config_id: '678',
+                            metadata: {},
+                            type: CustomReportChildType.Chart,
+                        },
+                    ],
+                    metadata: {},
+                    type: CustomReportChildType.Row,
+                },
+            ],
+            emoji: dashboard.emoji,
+            name: dashboard.name,
+            type: 'custom',
+        }
+
+        it('should remove chart from dashboard', () => {
+            const {result} = renderHook(() => useCustomReportActions(), {
+                wrapper: ({children}) => (
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                ),
+            })
+
+            result.current.removeChartFromDashboardHandler(data)
+
+            const [mutateArg, mutateOptions] = updateMutationMock.mock
+                .calls[0] as [
+                {id: number; data: CreateAnalyticsCustomReportBody},
+                {
+                    onSuccess?: () => void
+                    onError?: () => void
+                },
+            ]
+
+            if (mutateOptions.onSuccess) {
+                mutateOptions.onSuccess()
+            }
+
+            expect(mutateArg).toEqual({
+                id: customReport.id,
+                data: expectedPayload,
+            })
+
+            expect(invalidateQueriesMock).toHaveBeenCalledWith({
+                queryKey: invalidationKeys,
+            })
+
+            expect(notify).toHaveBeenCalledWith({
+                status: NotificationStatus.Success,
+                message: 'Successfully removed chart from Test Report',
+            })
+        })
+    })
+
     describe('getDashboardsHandler', () => {
         it('should return dashboards', () => {
             useListAnalyticsCustomReportsMock.mockReturnValue({

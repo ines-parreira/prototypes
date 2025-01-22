@@ -36,6 +36,7 @@ export const renderXTickLabel = function (
 
 export const ArticleViewsGraphComponent = ({
     isLoading,
+    dashboard,
     chartId,
     data,
 }: ArticleViewsGraphComponentProps) => {
@@ -52,6 +53,7 @@ export const ArticleViewsGraphComponent = ({
     return (
         <ChartCard
             title={HelpCenterMetricConfig[HelpCenterMetric.ArticleViews].title}
+            dashboard={dashboard}
             chartId={chartId}
         >
             <LineChart
@@ -64,7 +66,7 @@ export const ArticleViewsGraphComponent = ({
     )
 }
 
-const ArticleViewsGraph = ({chartId}: DashboardChartProps) => {
+const ArticleViewsGraph = ({chartId, dashboard}: DashboardChartProps) => {
     const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const articleViewTimeSeries = useArticleViewTimeSeries(
         cleanStatsFilters,
@@ -76,6 +78,7 @@ const ArticleViewsGraph = ({chartId}: DashboardChartProps) => {
         <ArticleViewsGraphComponent
             data={articleViewTimeSeries.data}
             isLoading={articleViewTimeSeries.isFetching}
+            dashboard={dashboard}
             chartId={chartId}
         />
     )

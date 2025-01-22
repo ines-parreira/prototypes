@@ -19,30 +19,43 @@ type Props = {
     customReport: CustomReportSchema
 }
 
-const renderCustomReportChild = (child: CustomReportChild, key: string) => {
+const renderCustomReportChild = (
+    child: CustomReportChild,
+    key: string,
+    dashboard: CustomReportSchema
+) => {
     switch (child.type) {
         case CustomReportChildType.Row:
             return (
                 <CustomReportRow key={key}>
-                    {child.children.map(renderCustomReportChildWithKeys)}
+                    {renderCustomReportChildWithKeys(dashboard, child.children)}
                 </CustomReportRow>
             )
         case CustomReportChildType.Section:
             return (
                 <CustomReportSection schema={child} key={child.type}>
-                    {child.children.map(renderCustomReportChildWithKeys)}
+                    {renderCustomReportChildWithKeys(dashboard, child.children)}
                 </CustomReportSection>
             )
         case CustomReportChildType.Chart: {
-            return <CustomReportChart schema={child} key={child.type} />
+            return (
+                <CustomReportChart
+                    schema={child}
+                    key={child.type}
+                    dashboard={dashboard}
+                />
+            )
         }
     }
 }
 
 const renderCustomReportChildWithKeys = (
-    child: CustomReportChild,
-    index: number
-) => renderCustomReportChild(child, `${child.type}-${index}`)
+    dashboard: CustomReportSchema,
+    children: CustomReportChild[]
+) =>
+    children.map((child: CustomReportChild, index: number) =>
+        renderCustomReportChild(child, `${child.type}-${index}`, dashboard)
+    )
 
 export const CustomReport = ({customReport}: Props) => {
     const getGridCellSize = useGridSize()
@@ -67,7 +80,10 @@ export const CustomReport = ({customReport}: Props) => {
                     />
                 </DashboardGridCell>
             </DashboardSection>
-            {customReport.children.map(renderCustomReportChildWithKeys)}
+            {renderCustomReportChildWithKeys(
+                customReport,
+                customReport.children
+            )}
         </>
     )
 }

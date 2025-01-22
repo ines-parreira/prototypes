@@ -88,7 +88,6 @@ export default function SupportPerformanceOverviewReport() {
                         <CustomReportComponent
                             chart={OverviewChart.CustomerSatisfactionTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
@@ -97,21 +96,18 @@ export default function SupportPerformanceOverviewReport() {
                                 OverviewChart.MedianFirstResponseTimeTrendCard
                             }
                             config={SupportPerformanceOverviewReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
                         <CustomReportComponent
                             chart={OverviewChart.MedianResolutionTimeTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
                         <CustomReportComponent
                             chart={OverviewChart.MessagesPerTicketTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                 </DashboardSection>
@@ -122,21 +118,18 @@ export default function SupportPerformanceOverviewReport() {
                             <CustomReportComponent
                                 chart={OverviewChart.TicketsCreatedTrendCard}
                                 config={SupportPerformanceOverviewReportConfig}
-                                activateActionsMenu
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={getGridCellSize(4)}>
                             <CustomReportComponent
                                 chart={OverviewChart.TicketsClosedTrendCard}
                                 config={SupportPerformanceOverviewReportConfig}
-                                activateActionsMenu
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={getGridCellSize(4)}>
                             <CustomReportComponent
                                 chart={OverviewChart.OpenTicketsTrendCard}
                                 config={SupportPerformanceOverviewReportConfig}
-                                activateActionsMenu
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={12}>
@@ -145,7 +138,6 @@ export default function SupportPerformanceOverviewReport() {
                                     OverviewChart.TicketsCreatedVsClosedChart
                                 }
                                 config={SupportPerformanceOverviewReportConfig}
-                                activateActionsMenu
                             />
                         </DashboardGridCell>
                     </>
@@ -153,7 +145,6 @@ export default function SupportPerformanceOverviewReport() {
                         <CustomReportComponent
                             chart={OverviewChart.WorkloadPerChannelChart}
                             config={SupportPerformanceOverviewReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                 </DashboardSection>
@@ -163,42 +154,36 @@ export default function SupportPerformanceOverviewReport() {
                         <CustomReportComponent
                             chart={OverviewChart.TicketsRepliedTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
                         <CustomReportComponent
                             chart={OverviewChart.MessagesSentTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
                         <CustomReportComponent
                             chart={OverviewChart.TicketHandleTimeTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
                         <CustomReportComponent
                             chart={OverviewChart.OneTouchTicketsTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(6)}>
                         <CustomReportComponent
                             chart={OverviewChart.TicketsRepliedGraph}
                             config={SupportPerformanceOverviewReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(6)}>
                         <CustomReportComponent
                             chart={OverviewChart.MessagesSentGraph}
                             config={SupportPerformanceOverviewReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                 </DashboardSection>

@@ -19,7 +19,10 @@ import {
     toggleValueMode,
 } from 'state/ui/stats/tagsReportSlice'
 
-export const AllUsedTagsTableChart = ({chartId}: DashboardChartProps) => {
+export const AllUsedTagsTableChart = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     const dispatch = useAppDispatch()
     const valueMode = useAppSelector(getValueMode)
     const heatmapMode = useAppSelector(getHeatmapMode)
@@ -38,6 +41,7 @@ export const AllUsedTagsTableChart = ({chartId}: DashboardChartProps) => {
             hint={hint}
             noPadding={true}
             chartId={chartId}
+            dashboard={dashboard}
             className={css.tagsTableWrapperHeight}
             titleExtra={
                 <div className={css.switches}>

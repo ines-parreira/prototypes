@@ -7,11 +7,15 @@ import {
     OverviewMetricConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 
-export const MessagesSentTrendCard = ({chartId}: DashboardChartProps) => {
+export const MessagesSentTrendCard = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     return (
         <TrendCard
             {...OverviewMetricConfig[OverviewMetric.MessagesSent]}
             drillDownMetric={OverviewMetric.MessagesSent}
+            dashboard={dashboard}
             chartId={chartId}
         />
     )

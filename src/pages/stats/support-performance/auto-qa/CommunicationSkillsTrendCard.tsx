@@ -7,10 +7,12 @@ import {AutoQAMetric} from 'state/ui/stats/types'
 
 export const CommunicationSkillsTrendCard = ({
     chartId,
+    dashboard,
 }: DashboardChartProps) => {
     return (
         <TrendCard
             {...TrendCardConfig[AutoQAMetric.CommunicationSkills]}
+            dashboard={dashboard}
             chartId={chartId}
         />
     )

@@ -5,10 +5,14 @@ import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
 import {AutoQAMetric} from 'state/ui/stats/types'
 
-export const InternalComplianceTrendCard = ({chartId}: DashboardChartProps) => {
+export const InternalComplianceTrendCard = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     return (
         <TrendCard
             {...TrendCardConfig[AutoQAMetric.InternalCompliance]}
+            dashboard={dashboard}
             chartId={chartId}
         />
     )

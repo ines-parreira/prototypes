@@ -33,6 +33,7 @@ function VoiceCallCallerExperienceMetric({
     metricTrend,
     metricData,
     isAnalyticsNewFilters = false,
+    dashboard,
     chartId,
 }: VoiceCallCallerExperienceMetricProps) {
     const voiceCallsAverageTime = metricTrend.data?.value
@@ -53,6 +54,7 @@ function VoiceCallCallerExperienceMetric({
                 title: hint,
             }}
             isLoading={metricTrend.isFetching}
+            dashboard={dashboard}
             chartId={chartId}
         >
             <BigNumberMetric

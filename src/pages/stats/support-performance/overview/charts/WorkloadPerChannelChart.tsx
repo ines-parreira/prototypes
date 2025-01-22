@@ -12,7 +12,10 @@ import GaugeChart from 'pages/stats/GaugeChart'
 import {WORKLOAD_BY_CHANNEL_HINT} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {TOTAL_WORKLOAD_BY_CHANNEL_LABEL} from 'services/reporting/constants'
 
-export const WorkloadPerChannelChart = ({chartId}: DashboardChartProps) => {
+export const WorkloadPerChannelChart = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     const isDeferredLoadingEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsDeferredLoadingExperiment]
 
@@ -47,6 +50,7 @@ export const WorkloadPerChannelChart = ({chartId}: DashboardChartProps) => {
         <ChartCard
             title={TOTAL_WORKLOAD_BY_CHANNEL_LABEL}
             hint={WORKLOAD_BY_CHANNEL_HINT}
+            dashboard={dashboard}
             chartId={chartId}
             titleExtra={
                 isDeferredLoadingEnabled &&

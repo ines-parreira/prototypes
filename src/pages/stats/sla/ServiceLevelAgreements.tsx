@@ -1,5 +1,4 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -81,7 +80,6 @@ export function ServiceLevelAgreements() {
                                     ServiceLevelAgreementsChart.AchievementRateTrend
                                 }
                                 config={ServiceLevelAgreementsReportConfig}
-                                activateActionsMenu
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={getGridCellSize(6)}>
@@ -90,7 +88,6 @@ export function ServiceLevelAgreements() {
                                     ServiceLevelAgreementsChart.BreachedTicketsRateTrend
                                 }
                                 config={ServiceLevelAgreementsReportConfig}
-                                activateActionsMenu
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={12}>
@@ -99,7 +96,6 @@ export function ServiceLevelAgreements() {
                                     ServiceLevelAgreementsChart.AchievedAndBreachedTicketsChart
                                 }
                                 config={ServiceLevelAgreementsReportConfig}
-                                activateActionsMenu
                             />
                         </DashboardGridCell>
                     </DashboardSection>

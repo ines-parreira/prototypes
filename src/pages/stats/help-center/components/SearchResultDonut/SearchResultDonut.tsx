@@ -12,7 +12,7 @@ import {
 import {useSearchResultRange} from 'pages/stats/help-center/hooks/useSearchResultRange'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 
-const SearchResultDonut = ({chartId}: DashboardChartProps) => {
+const SearchResultDonut = ({chartId, dashboard}: DashboardChartProps) => {
     const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const {data, isLoading} = useSearchResultRange(
         cleanStatsFilters,
@@ -24,6 +24,7 @@ const SearchResultDonut = ({chartId}: DashboardChartProps) => {
             title={SEARCH_RESULTS_DONUT_TITLE}
             className={css.card}
             hint={SEARCH_RESULTS_DONUT_TOOLTIP}
+            dashboard={dashboard}
             chartId={chartId}
         >
             {!isLoading && data.length === 0 ? (

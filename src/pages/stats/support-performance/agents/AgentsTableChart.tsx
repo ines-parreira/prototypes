@@ -7,12 +7,13 @@ import {AgentsTableWithDefaultState} from 'pages/stats/support-performance/agent
 
 export const AGENT_PERFORMANCE_SECTION_TITLE = 'Agent Performance'
 
-export const AgentsTableChart = ({chartId}: DashboardChartProps) => {
+export const AgentsTableChart = ({chartId, dashboard}: DashboardChartProps) => {
     return (
         <ChartCard
             title={AGENT_PERFORMANCE_SECTION_TITLE}
             titleExtra={<AgentsPerformanceCardExtra />}
             chartId={chartId}
+            dashboard={dashboard}
             noPadding
         >
             <AgentsTableWithDefaultState />

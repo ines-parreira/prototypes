@@ -6,12 +6,13 @@ import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComp
 import {
     ChartType,
     CustomReportChartSchema,
+    CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
-
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 
 type Props = {
     schema: CustomReportChartSchema
+    dashboard?: CustomReportSchema
 }
 
 export const CHART_SIZE: Record<ChartType, number> = {
@@ -20,7 +21,7 @@ export const CHART_SIZE: Record<ChartType, number> = {
     [ChartType.Table]: 12,
 }
 
-export const CustomReportChart = ({schema}: Props) => {
+export const CustomReportChart = ({schema, dashboard}: Props) => {
     const getGridCellSize = useGridSize()
     const {reportConfig, chartConfig} = getComponentConfig(schema.config_id)
 
@@ -36,7 +37,7 @@ export const CustomReportChart = ({schema}: Props) => {
             <CustomReportComponent
                 chart={schema.config_id}
                 config={reportConfig}
-                activateActionsMenu={false}
+                dashboard={dashboard}
             />
         </DashboardGridCell>
     )

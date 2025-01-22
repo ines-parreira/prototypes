@@ -8,11 +8,15 @@ import {
     PERFORMANCE_OVERVIEW_CHART_TYPE,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 
-export const TicketsRepliedGraph = ({chartId}: DashboardChartProps) => {
+export const TicketsRepliedGraph = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     return (
         <OverviewChartCard
             {...OverviewChartConfig[OverviewMetric.TicketsReplied]}
             chartType={PERFORMANCE_OVERVIEW_CHART_TYPE}
+            dashboard={dashboard}
             chartId={chartId}
         />
     )

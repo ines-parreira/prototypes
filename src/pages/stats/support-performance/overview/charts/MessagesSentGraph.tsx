@@ -8,11 +8,15 @@ import {
     PERFORMANCE_OVERVIEW_CHART_TYPE,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 
-export const MessagesSentGraph = ({chartId}: DashboardChartProps) => {
+export const MessagesSentGraph = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     return (
         <OverviewChartCard
             {...OverviewChartConfig[OverviewMetric.MessagesSent]}
             chartType={PERFORMANCE_OVERVIEW_CHART_TYPE}
+            dashboard={dashboard}
             chartId={chartId}
         />
     )

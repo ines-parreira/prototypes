@@ -9,7 +9,10 @@ import {
 } from 'pages/stats/help-center/HelpCenterMetricsConfig'
 import {useArticleViewsTrend} from 'pages/stats/help-center/hooks/useArticleViewsTrend'
 
-export const ArticleViewsTrendCard = ({chartId}: DashboardChartProps) => {
+export const ArticleViewsTrendCard = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     // FIXME: revert it to true as soon as the documentation article links are ready
     const [isTipVisible] = useState(false)
 
@@ -23,6 +26,7 @@ export const ArticleViewsTrendCard = ({chartId}: DashboardChartProps) => {
     return (
         <OverviewCard
             chartId={chartId}
+            dashboard={dashboard}
             showTip={isTipVisible}
             isLoading={articleViewMetricTrend.isFetching}
             hintTitle={

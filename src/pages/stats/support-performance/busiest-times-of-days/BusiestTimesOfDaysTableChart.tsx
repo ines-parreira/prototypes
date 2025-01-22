@@ -51,6 +51,7 @@ const busiestHoursHeatmapLegend = {
 
 export const BusiestTimesOfDaysTableChart = ({
     chartId,
+    dashboard,
 }: DashboardChartProps) => {
     const selectedMetric = useAppSelector(getSelectedMetric)
     const [isHeatmapMode, setIsHeatmapMode] = useState(true)
@@ -61,6 +62,7 @@ export const BusiestTimesOfDaysTableChart = ({
             noPadding
             title={BUSIEST_TIME_OF_THE_WEEK_SECTION_LABEL}
             hint={{title: SectionTooltips[selectedMetric]}}
+            dashboard={dashboard}
             chartId={chartId}
             titleExtra={
                 <TableHeatmapSwitch

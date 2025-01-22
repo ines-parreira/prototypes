@@ -35,10 +35,12 @@ const OverviewCard = ({
     startDate,
     endDate,
     chartId,
+    dashboard,
 }: OverviewCardProps) => {
     return (
         <MetricCard
             chartId={chartId}
+            dashboard={dashboard}
             isLoading={isLoading}
             title={title}
             hint={{

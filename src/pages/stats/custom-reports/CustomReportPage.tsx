@@ -6,6 +6,7 @@ import {useParams} from 'react-router-dom'
 import {useUpdateDashboard} from 'hooks/reporting/custom-reports/useUpdateDashboard'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {CreateCustomReport} from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
 import {CustomReport} from 'pages/stats/custom-reports/CustomReport'
 import {CustomReportActionButton} from 'pages/stats/custom-reports/CustomReportActionButton'
 import {CustomReportsModal} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
@@ -143,7 +144,11 @@ const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
                 }
             />
             <StatsPageContent>
-                <CustomReport customReport={dashboard} />
+                {dashboard.children.length ? (
+                    <CustomReport customReport={dashboard} />
+                ) : (
+                    <CreateCustomReport />
+                )}
                 <CustomReportsModal
                     isOpen={isOpen}
                     onCancel={closeModal}

@@ -12,6 +12,7 @@ import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountT
 
 export const VoiceCallVolumeMetricOutboundCallsCountTrend = ({
     chartId,
+    dashboard,
 }: DashboardChartProps) => {
     const {cleanStatsFilters, userTimezone} = useNewVoiceStatsFilters()
     const outboundCallsCountTrend = useVoiceCallCountTrend(
@@ -26,6 +27,7 @@ export const VoiceCallVolumeMetricOutboundCallsCountTrend = ({
             hint={OUTBOUND_CALLS_METRIC_HINT}
             statsFilters={cleanStatsFilters}
             metricTrend={outboundCallsCountTrend}
+            dashboard={dashboard}
             chartId={chartId}
         />
     )

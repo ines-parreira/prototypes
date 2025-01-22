@@ -208,7 +208,10 @@ const useSelectedCustomField = () => {
     return useAppSelector(getSelectedCustomField)
 }
 
-export const TicketDistributionChart = ({chartId}: DashboardChartProps) => {
+export const TicketDistributionChart = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     const selectedCustomField = useSelectedCustomField()
 
     const {hint, title} =
@@ -221,6 +224,7 @@ export const TicketDistributionChart = ({chartId}: DashboardChartProps) => {
             title={title}
             hint={hint}
             className={css.card}
+            dashboard={dashboard}
             chartId={chartId}
         >
             {selectedCustomField.id == null ? (

@@ -7,13 +7,17 @@ import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {TICKETS_CREATED_VS_CLOSED_HINT} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {CREATED_VS_CLOSED_TICKETS_LABEL} from 'services/reporting/constants'
 
-export const TicketsCreatedVsClosedChart = ({chartId}: DashboardChartProps) => {
+export const TicketsCreatedVsClosedChart = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     const {timeSeries, isLoading} = useCreatedVsClosedTicketsTimeSeries()
 
     return (
         <ChartCard
             title={CREATED_VS_CLOSED_TICKETS_LABEL}
             hint={TICKETS_CREATED_VS_CLOSED_HINT}
+            dashboard={dashboard}
             chartId={chartId}
         >
             <BarChart

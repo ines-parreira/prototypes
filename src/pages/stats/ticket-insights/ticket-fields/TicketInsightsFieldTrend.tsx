@@ -12,7 +12,10 @@ import {
 } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
 import css from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend.less'
 
-export function TicketInsightsFieldTrend({chartId}: DashboardChartProps) {
+export function TicketInsightsFieldTrend({
+    chartId,
+    dashboard,
+}: DashboardChartProps) {
     const {data, legendInfo, legendDatasetVisibility, granularity, isFetching} =
         useTicketsFieldTrend()
 
@@ -22,7 +25,12 @@ export function TicketInsightsFieldTrend({chartId}: DashboardChartProps) {
         ]
 
     return (
-        <ChartCard title={title} hint={hint} chartId={chartId}>
+        <ChartCard
+            title={title}
+            hint={hint}
+            chartId={chartId}
+            dashboard={dashboard}
+        >
             <LineChart
                 isLoading={isFetching}
                 customColors={LINES_COLORS}

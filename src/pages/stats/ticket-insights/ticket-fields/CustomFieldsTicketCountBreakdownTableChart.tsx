@@ -17,6 +17,7 @@ import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 
 export const CustomFieldsTicketCountBreakdownTableChart = ({
     chartId,
+    dashboard,
 }: DashboardChartProps) => {
     const {id, label} = useAppSelector(getSelectedCustomField)
 
@@ -31,6 +32,7 @@ export const CustomFieldsTicketCountBreakdownTableChart = ({
             hint={hint}
             noPadding={true}
             className={css.limitedHeight}
+            dashboard={dashboard}
             chartId={chartId}
             titleExtra={
                 <div className={css.switches}>

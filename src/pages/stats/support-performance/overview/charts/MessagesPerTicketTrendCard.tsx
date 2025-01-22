@@ -11,13 +11,17 @@ import {
 import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
 import {MetricName} from 'services/reporting/constants'
 
-export const MessagesPerTicketTrendCard = ({chartId}: DashboardChartProps) => {
+export const MessagesPerTicketTrendCard = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     const [areTipsVisible] = useLocalStorage(STATS_TIPS_VISIBILITY_KEY, true)
 
     return (
         <TrendCard
             {...OverviewMetricConfig[OverviewMetric.MessagesPerTicket]}
             chartId={chartId}
+            dashboard={dashboard}
             drillDownMetric={OverviewMetric.MessagesPerTicket}
             tip={
                 areTipsVisible && (

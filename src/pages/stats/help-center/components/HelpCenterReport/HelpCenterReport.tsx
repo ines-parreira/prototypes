@@ -1,14 +1,10 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-
 import moment from 'moment/moment'
-
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
-
 import {useHasAccessToAILibrary} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 import {useHelpCenterAIArticlesLibrary} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
@@ -146,14 +142,12 @@ export const HelpCenterReport = () => {
                         <CustomReportComponent
                             chart={HelpCenterChart.ArticleViewsGraph}
                             config={HelpCenterReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={12}>
                         <CustomReportComponent
                             chart={HelpCenterChart.PerformanceByArticleTable}
                             config={HelpCenterReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     {hasAccessToAILibrary && showAIBanner && (
@@ -170,21 +164,18 @@ export const HelpCenterReport = () => {
                         <CustomReportComponent
                             chart={HelpCenterChart.SearchResultsDonut}
                             config={HelpCenterReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={8}>
                         <CustomReportComponent
                             chart={HelpCenterChart.SearchTermsTable}
                             config={HelpCenterReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={4}>
                         <CustomReportComponent
                             chart={HelpCenterChart.NoSearchTable}
                             config={HelpCenterReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                 </DashboardSection>

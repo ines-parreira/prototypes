@@ -29,7 +29,7 @@ import {
 import css from 'pages/stats/ticket-insights/tags/TopUsedTagsChart.less'
 import {TagsMetric} from 'state/ui/stats/types'
 
-export const TopUsedTagsChart = ({chartId}: DashboardChartProps) => {
+export const TopUsedTagsChart = ({chartId, dashboard}: DashboardChartProps) => {
     const {isFetching, data} = useTagsDistribution()
 
     const getWidth = useWidthBasedOnScreen()
@@ -44,6 +44,7 @@ export const TopUsedTagsChart = ({chartId}: DashboardChartProps) => {
             title={title}
             hint={hint}
             className={css.card}
+            dashboard={dashboard}
             chartId={chartId}
         >
             {isFetching ? (

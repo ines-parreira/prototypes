@@ -1,5 +1,4 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -75,7 +74,6 @@ export default function AutoQA() {
                         <CustomReportComponent
                             chart={AutoQAChart.ReviewedClosedTickets}
                             config={AutoQAReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell
@@ -84,7 +82,6 @@ export default function AutoQA() {
                         <CustomReportComponent
                             chart={AutoQAChart.ResolutionCompleteness}
                             config={AutoQAReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
 
@@ -96,7 +93,6 @@ export default function AutoQA() {
                         <CustomReportComponent
                             chart={AutoQAChart.Accuracy}
                             config={AutoQAReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell
@@ -107,7 +103,6 @@ export default function AutoQA() {
                         <CustomReportComponent
                             chart={AutoQAChart.InternalCompliance}
                             config={AutoQAReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell
@@ -118,7 +113,6 @@ export default function AutoQA() {
                         <CustomReportComponent
                             chart={AutoQAChart.Efficiency}
                             config={AutoQAReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell
@@ -127,7 +121,6 @@ export default function AutoQA() {
                         <CustomReportComponent
                             chart={AutoQAChart.CommunicationSkills}
                             config={AutoQAReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell
@@ -136,7 +129,6 @@ export default function AutoQA() {
                         <CustomReportComponent
                             chart={AutoQAChart.LanguageProficiency}
                             config={AutoQAReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell
@@ -147,14 +139,12 @@ export default function AutoQA() {
                         <CustomReportComponent
                             chart={AutoQAChart.BrandVoice}
                             config={AutoQAReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(12)}>
                         <CustomReportComponent
                             chart={AutoQAChart.AgentsTable}
                             config={AutoQAReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                 </DashboardSection>

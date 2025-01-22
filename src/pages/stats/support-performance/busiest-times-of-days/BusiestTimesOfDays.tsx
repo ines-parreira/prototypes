@@ -81,7 +81,6 @@ export const BusiestTimesOfDays = () => {
                         <CustomReportComponent
                             chart={BusiestTimesChart.BusiestTimesTable}
                             config={BusiestTimesReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                 </DashboardSection>

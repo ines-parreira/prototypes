@@ -1,5 +1,4 @@
 import moment from 'moment/moment'
-
 import React, {useMemo} from 'react'
 
 import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
@@ -32,7 +31,6 @@ import {
     VoiceOverviewReportConfig,
 } from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
 import VoicePaywall from 'pages/stats/voice/VoicePaywall'
-
 import {AccountFeature} from 'state/currentAccount/types'
 import {getPhoneIntegrations} from 'state/integrations/selectors'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
@@ -134,7 +132,6 @@ function VoiceOverview() {
                             VoiceOverviewChart.VoiceCallCallerExperienceAverageWaitTimeChart
                         }
                         config={VoiceOverviewReportConfig}
-                        activateActionsMenu
                     />
                 </DashboardGridCell>
                 <DashboardGridCell size={6}>
@@ -143,7 +140,6 @@ function VoiceOverview() {
                             VoiceOverviewChart.VoiceCallCallCallerExperienceAverageTalkTime
                         }
                         config={VoiceOverviewReportConfig}
-                        activateActionsMenu
                     />
                 </DashboardGridCell>
             </DashboardSection>
@@ -154,7 +150,6 @@ function VoiceOverview() {
                             VoiceOverviewChart.VoiceCallVolumeTotalCallCountTrendChart
                         }
                         config={VoiceOverviewReportConfig}
-                        activateActionsMenu
                     />
                 </DashboardGridCell>
                 <DashboardGridCell size={3}>
@@ -163,7 +158,6 @@ function VoiceOverview() {
                             VoiceOverviewChart.VoiceCallVolumeMetricOutboundCallsCountTrend
                         }
                         config={VoiceOverviewReportConfig}
-                        activateActionsMenu
                     />
                 </DashboardGridCell>
                 <DashboardGridCell size={3}>
@@ -172,7 +166,6 @@ function VoiceOverview() {
                             VoiceOverviewChart.VoiceCallVolumeMetricInboundCallsCountTrend
                         }
                         config={VoiceOverviewReportConfig}
-                        activateActionsMenu
                     />
                 </DashboardGridCell>
                 <DashboardGridCell size={3}>
@@ -181,7 +174,6 @@ function VoiceOverview() {
                             VoiceOverviewChart.VoiceCallVolumeMetricMissedCallsCountTrendChart
                         }
                         config={VoiceOverviewReportConfig}
-                        activateActionsMenu
                     />
                 </DashboardGridCell>
             </DashboardSection>
@@ -190,7 +182,6 @@ function VoiceOverview() {
                     <CustomReportComponent
                         chart={VoiceOverviewChart.VoiceCallTableChart}
                         config={VoiceOverviewReportConfig}
-                        activateActionsMenu
                     />
                 </DashboardGridCell>
             </DashboardSection>

@@ -1,27 +1,36 @@
 import {act, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
 import React from 'react'
 
 import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import {
     ADD_TO_DASHBOARD,
     ChartsActionMenu,
+    REMOVE_FROM_DASHBOARD,
 } from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
 import {
     CustomReportChildType,
     CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
-
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/custom-reports/useCustomReportActions')
 const useCustomReportActionsMock = assumeMock(useCustomReportActions)
 
 const updateCustomReportMock = jest.fn()
+const removeChartFromDashboardMock = jest.fn()
+
+const dashboard: CustomReportSchema = {
+    id: 1,
+    name: 'Test Report',
+    emoji: '📊',
+    children: [],
+    analytics_filter_id: 123,
+}
 
 describe('<ChartsActionMenu />', () => {
     const chartId = 'someConfigId'
+
     const dashboardWithANestedChart: CustomReportSchema = {
         id: 3,
         name: 'Report 3',
@@ -62,6 +71,7 @@ describe('<ChartsActionMenu />', () => {
             duplicateReportHandler: jest.fn(),
             deleteReportHandler: jest.fn(),
             updateDashboardHandler: jest.fn(),
+            removeChartFromDashboardHandler: removeChartFromDashboardMock,
         })
     })
 
@@ -111,5 +121,21 @@ describe('<ChartsActionMenu />', () => {
         expect(
             screen.queryByText(dashboardWithANestedChart.name)
         ).not.toBeInTheDocument()
+    })
+
+    it('should render the action menu with the delete button if dashboardId is defined', () => {
+        render(<ChartsActionMenu chartId={chartId} dashboard={dashboard} />)
+
+        userEvent.click(screen.getByText('more_vert'))
+        const action = screen.getByText(REMOVE_FROM_DASHBOARD)
+
+        act(() => {
+            userEvent.click(action)
+        })
+
+        expect(removeChartFromDashboardMock).toHaveBeenCalledWith({
+            chartId,
+            dashboard,
+        })
     })
 })

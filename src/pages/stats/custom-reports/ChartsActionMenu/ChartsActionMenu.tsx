@@ -13,6 +13,7 @@ import {
 } from 'pages/stats/custom-reports/types'
 
 export const ADD_TO_DASHBOARD = 'Add to dashboard'
+export const REMOVE_FROM_DASHBOARD = 'Delete chart from dashboard'
 
 const ActionMenuItem = ({
     dashboard,
@@ -56,19 +57,28 @@ const containsChart = (dashboard: CustomReportSchema, chartId: string) => {
     return dashboard.children.reduce(childrenContainChart(chartId), false)
 }
 
-export const ChartsActionMenu = ({chartId}: {chartId: string}) => {
+export const ChartsActionMenu = ({
+    chartId,
+    dashboard,
+}: {
+    chartId: string
+    dashboard?: CustomReportSchema
+}) => {
     const toggleRef = useRef(null)
     const [showDropdown, setShowDropdown] = useState(false)
     const [showActions, setShowActions] = useState(false)
-    const {addChartToDashboardHandler, getDashboardsHandler} =
-        useCustomReportActions()
+    const {
+        addChartToDashboardHandler,
+        getDashboardsHandler,
+        removeChartFromDashboardHandler,
+    } = useCustomReportActions()
 
     const handleToggleDropdown = () => {
         setShowDropdown(!showDropdown)
         setShowActions(false)
     }
 
-    const dashboards = getDashboardsHandler().filter(
+    const filteredDashboards = getDashboardsHandler().filter(
         (dashboard) => !containsChart(dashboard, chartId)
     )
 
@@ -88,7 +98,7 @@ export const ChartsActionMenu = ({chartId}: {chartId: string}) => {
             >
                 <DropdownBody>
                     {showActions ? (
-                        dashboards.map((dashboard) => (
+                        filteredDashboards.map((dashboard) => (
                             <ActionMenuItem
                                 dashboard={dashboard}
                                 key={dashboard.id}
@@ -102,20 +112,48 @@ export const ChartsActionMenu = ({chartId}: {chartId: string}) => {
                             />
                         ))
                     ) : (
-                        <DropdownItem
-                            onClick={() => setShowActions(true)}
-                            className={css.dropdownItem}
-                            option={{
-                                label: ADD_TO_DASHBOARD,
-                                value: ADD_TO_DASHBOARD,
-                            }}
-                        >
-                            {ADD_TO_DASHBOARD}
-                            <IconInput
-                                className="material-icons"
-                                icon="chevron_right"
-                            />
-                        </DropdownItem>
+                        <>
+                            <DropdownItem
+                                onClick={() => setShowActions(true)}
+                                className={css.dropdownItem}
+                                option={{
+                                    label: ADD_TO_DASHBOARD,
+                                    value: ADD_TO_DASHBOARD,
+                                }}
+                            >
+                                <IconInput
+                                    icon="add"
+                                    className={css.dropdownLeftIcon}
+                                />
+                                {ADD_TO_DASHBOARD}
+
+                                <IconInput
+                                    className={css.chevronRightIcon}
+                                    icon="chevron_right"
+                                />
+                            </DropdownItem>
+                            {dashboard !== undefined && (
+                                <DropdownItem
+                                    onClick={() =>
+                                        removeChartFromDashboardHandler({
+                                            dashboard,
+                                            chartId,
+                                        })
+                                    }
+                                    className={css.dropdownItem}
+                                    option={{
+                                        label: REMOVE_FROM_DASHBOARD,
+                                        value: REMOVE_FROM_DASHBOARD,
+                                    }}
+                                >
+                                    <IconInput
+                                        icon="delete_outline"
+                                        className={css.dropdownLeftIcon}
+                                    />
+                                    {REMOVE_FROM_DASHBOARD}
+                                </DropdownItem>
+                            )}
+                        </>
                     )}
                 </DropdownBody>
             </Dropdown>

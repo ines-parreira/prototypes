@@ -6,6 +6,7 @@ import Shoutout, {
     SHOUTOUT_HEIGHT_PX,
 } from 'pages/common/components/Shoutout/Shoutout'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {ShoutoutConfig} from 'pages/stats/support-performance/agents/AgentsShoutOutsConfig'
 
 export const AGENTS_SHOUT_OUTS_TITLE = 'Top performers'
@@ -16,7 +17,9 @@ export default function AgentsShoutOut({
     metricName,
     measure,
     formatValue,
-}: ShoutoutConfig) {
+    chartId,
+    dashboard,
+}: ShoutoutConfig & DashboardChartProps) {
     const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const queryResult = useQuery(cleanStatsFilters, userTimezone, queryOrder)
 
@@ -33,6 +36,8 @@ export default function AgentsShoutOut({
             multiplePersonsLabel={(count) => `${count} agents`}
             metricName={metricName}
             value={data.metricValue}
+            dashboard={dashboard}
+            chartId={chartId}
         />
     )
 }

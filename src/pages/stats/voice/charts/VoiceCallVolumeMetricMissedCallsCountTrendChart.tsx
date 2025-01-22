@@ -12,6 +12,7 @@ import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountT
 
 export const VoiceCallVolumeMetricMissedCallsCountTrendChart = ({
     chartId,
+    dashboard,
 }: DashboardChartProps) => {
     const {cleanStatsFilters, userTimezone} = useNewVoiceStatsFilters()
     const missedCallsCountTrend = useVoiceCallCountTrend(
@@ -27,6 +28,7 @@ export const VoiceCallVolumeMetricMissedCallsCountTrendChart = ({
             statsFilters={cleanStatsFilters}
             metricTrend={missedCallsCountTrend}
             chartId={chartId}
+            dashboard={dashboard}
             moreIsBetter={false}
         />
     )

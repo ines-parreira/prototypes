@@ -96,10 +96,11 @@ type DataExportFetch =
 
 export type DashboardChartProps = {
     chartId?: string
+    dashboard?: CustomReportSchema
 }
 
 export type ChartConfig = {
-    chartComponent: ({chartId}: DashboardChartProps) => React.JSX.Element
+    chartComponent: (props: DashboardChartProps) => React.JSX.Element
     label: ReactNode
     csvProducer: DataExportFetch[] | null
     description: ReactNode

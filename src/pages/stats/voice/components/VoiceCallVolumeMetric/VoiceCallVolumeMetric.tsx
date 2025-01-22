@@ -37,6 +37,7 @@ function VoiceCallVolumeMetric({
     metricTrend,
     statsFilters,
     moreIsBetter = true,
+    dashboard,
     chartId,
 }: VoiceCallVolumeMetricProps) {
     const voiceCallsCount = metricTrend.data?.value
@@ -46,6 +47,7 @@ function VoiceCallVolumeMetric({
         <MetricCard
             title={title}
             chartId={chartId}
+            dashboard={dashboard}
             hint={{
                 title: hint,
             }}

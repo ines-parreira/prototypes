@@ -5,10 +5,14 @@ import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {SlaMetricConfig} from 'pages/stats/sla/SlaConfig'
 import {SlaMetric} from 'state/ui/stats/types'
 
-export const AchievementRateTrendCard = ({chartId}: DashboardChartProps) => {
+export const AchievementRateTrendCard = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     return (
         <TrendCard
             {...SlaMetricConfig[SlaMetric.AchievementRate]}
+            dashboard={dashboard}
             chartId={chartId}
         />
     )

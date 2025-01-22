@@ -28,7 +28,7 @@ const columns = [
 
 export const NO_SEARCH_TABLE_TITLE = 'No search results'
 
-const NoSearchTable = ({chartId}: DashboardChartProps) => {
+const NoSearchTable = ({chartId, dashboard}: DashboardChartProps) => {
     const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const [currentPage, setCurrentPage] = React.useState(1)
 
@@ -48,7 +48,12 @@ const NoSearchTable = ({chartId}: DashboardChartProps) => {
     const count = Math.ceil(total / ITEMS_PER_PAGE)
 
     return (
-        <ChartCard title={NO_SEARCH_TABLE_TITLE} noPadding chartId={chartId}>
+        <ChartCard
+            title={NO_SEARCH_TABLE_TITLE}
+            noPadding
+            chartId={chartId}
+            dashboard={dashboard}
+        >
             {!isLoading && data.length === 0 ? (
                 <NoDataAvailable
                     title="No data available"

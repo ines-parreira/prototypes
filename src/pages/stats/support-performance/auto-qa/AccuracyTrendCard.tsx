@@ -5,10 +5,14 @@ import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
 import {AutoQAMetric} from 'state/ui/stats/types'
 
-export const AccuracyTrendCard = ({chartId}: DashboardChartProps) => {
+export const AccuracyTrendCard = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     return (
         <TrendCard
             {...TrendCardConfig[AutoQAMetric.Accuracy]}
+            dashboard={dashboard}
             chartId={chartId}
         />
     )

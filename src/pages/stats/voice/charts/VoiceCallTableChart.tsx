@@ -8,7 +8,10 @@ import {CALL_LIST_TITLE} from 'pages/stats/voice/constants/voiceOverview'
 import {useNewVoiceStatsFilters} from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
 import {VoiceCallFilterOptions} from 'pages/stats/voice/models/types'
 
-export const VoiceCallTableChart = ({chartId}: DashboardChartProps) => {
+export const VoiceCallTableChart = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     const [tableFilterOption, setTableFilterOption] = useState(
         VoiceCallFilterOptions.All
     )
@@ -18,6 +21,7 @@ export const VoiceCallTableChart = ({chartId}: DashboardChartProps) => {
         <ChartCard
             title={CALL_LIST_TITLE}
             chartId={chartId}
+            dashboard={dashboard}
             noPadding
             titleExtra={
                 <VoiceCallDirectionFilter

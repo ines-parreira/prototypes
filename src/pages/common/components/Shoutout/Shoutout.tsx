@@ -3,8 +3,10 @@ import classNames from 'classnames'
 import isNil from 'lodash/isNil'
 import React, {Fragment, ReactNode, useMemo, useRef} from 'react'
 
-import Avatar from '../Avatar/Avatar'
+import {ChartsActionMenu} from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 
+import Avatar from '../Avatar/Avatar'
 import css from './Shoutout.less'
 
 type Props = {
@@ -36,7 +38,9 @@ export default function Shoutout({
     metricName,
     value,
     maxTooltipPersons = SHOUTOUT_MAX_PERSONS,
-}: Props) {
+    chartId,
+    dashboard,
+}: Props & DashboardChartProps) {
     const tooltipRef = useRef<HTMLElement>(null)
 
     const moreThanOnePerson = persons.length > 1
@@ -123,6 +127,12 @@ export default function Shoutout({
                                 )}
                             </Tooltip>
                         </>
+                    )}
+                    {chartId && (
+                        <ChartsActionMenu
+                            chartId={chartId}
+                            dashboard={dashboard}
+                        />
                     )}
                 </div>
                 <div className={css.metricRow}>

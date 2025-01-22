@@ -5,10 +5,14 @@ import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
 import {SatisfactionMetric} from 'state/ui/stats/types'
 
-export const SatisfactionScoreTrendCard = ({chartId}: DashboardChartProps) => {
+export const SatisfactionScoreTrendCard = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     return (
         <TrendCard
             {...SatisfactionMetricConfig[SatisfactionMetric.SatisfactionScore]}
+            dashboard={dashboard}
             chartId={chartId}
         />
     )

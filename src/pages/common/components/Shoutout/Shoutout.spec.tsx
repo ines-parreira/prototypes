@@ -3,11 +3,15 @@ import userEvent from '@testing-library/user-event'
 import React from 'react'
 
 import {personNames} from 'fixtures/personNames'
-
 import Shoutout, {
     SHOUTOUT_MAX_PERSONS,
     SHOUTOUT_NO_VALUE_PLACEHOLDER,
-} from './Shoutout'
+} from 'pages/common/components/Shoutout/Shoutout'
+import {ChartsActionMenu} from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
+import {assumeMock} from 'utils/testing'
+
+jest.mock('pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu')
+const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
 
 describe('<Shoutout />', () => {
     const commonProps = {
@@ -70,5 +74,27 @@ describe('<Shoutout />', () => {
         )
 
         expect(xMoreText).toBeInTheDocument()
+    })
+
+    it('should not render the action menu chartId is undefined', () => {
+        ChartsActionMenuMock.mockReturnValue(<div>ChartsActionMenu</div>)
+
+        render(<Shoutout {...commonProps} persons={manyPersonsList} />)
+
+        expect(screen.queryByText('ChartsActionMenu')).not.toBeInTheDocument()
+    })
+
+    it('should render the action menu chartId is defined', () => {
+        ChartsActionMenuMock.mockReturnValue(<div>ChartsActionMenu</div>)
+
+        render(
+            <Shoutout
+                {...commonProps}
+                persons={manyPersonsList}
+                chartId="123"
+            />
+        )
+
+        expect(screen.getByText('ChartsActionMenu')).toBeInTheDocument()
     })
 })

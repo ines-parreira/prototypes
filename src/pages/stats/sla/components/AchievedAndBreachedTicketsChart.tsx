@@ -32,6 +32,7 @@ export const CHART_FIELDS = [
 
 export const AchievedAndBreachedTicketsChart = ({
     chartId,
+    dashboard,
 }: DashboardChartProps) => {
     const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
 
@@ -50,7 +51,12 @@ export const AchievedAndBreachedTicketsChart = ({
     return isLoading ? (
         <Skeleton />
     ) : (
-        <ChartCard title={CHART_TITLE} hint={{title: HINT}} chartId={chartId}>
+        <ChartCard
+            title={CHART_TITLE}
+            hint={{title: HINT}}
+            chartId={chartId}
+            dashboard={dashboard}
+        >
             <BarChart
                 data={
                     data !== undefined

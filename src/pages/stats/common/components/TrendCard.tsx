@@ -26,6 +26,7 @@ export const TrendCard = ({
     interpretAs,
     metricFormat,
     chartId,
+    dashboard,
 }: {
     useTrend: MetricTrendHook
     hint: TooltipData
@@ -54,6 +55,7 @@ export const TrendCard = ({
             hint={hint}
             title={title}
             isLoading={trend.isFetching}
+            dashboard={dashboard}
             chartId={chartId}
             tip={tip}
         >

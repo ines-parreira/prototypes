@@ -9,10 +9,14 @@ import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAA
 export const AUTO_QA_TITLE_TOOLTIP =
     "An agent receives the ticket's scores if they are the assigned agent at the end of the period"
 
-export const AutoQaAgentsTableChart = ({chartId}: DashboardChartProps) => {
+export const AutoQaAgentsTableChart = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     return (
         <ChartCard
             chartId={chartId}
+            dashboard={dashboard}
             title={AGENT_PERFORMANCE_SECTION_TITLE}
             hint={{title: AUTO_QA_TITLE_TOOLTIP}}
             titleExtra={<AutoQAAgentsCardExtra />}

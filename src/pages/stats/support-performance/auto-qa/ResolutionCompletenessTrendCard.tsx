@@ -7,10 +7,12 @@ import {AutoQAMetric} from 'state/ui/stats/types'
 
 export const ResolutionCompletenessTrendCard = ({
     chartId,
+    dashboard,
 }: DashboardChartProps) => {
     return (
         <TrendCard
             {...TrendCardConfig[AutoQAMetric.ResolutionCompleteness]}
+            dashboard={dashboard}
             chartId={chartId}
         />
     )

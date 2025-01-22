@@ -63,7 +63,6 @@ export function Tags() {
                         <CustomReportComponent
                             chart={TicketInsightsTagsChart.TopUsedTagsChart}
                             config={TicketInsightsTagsReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell
@@ -73,7 +72,6 @@ export function Tags() {
                         <CustomReportComponent
                             chart={TicketInsightsTagsChart.TagsTrendChart}
                             config={TicketInsightsTagsReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell>
@@ -82,7 +80,6 @@ export function Tags() {
                                 TicketInsightsTagsChart.AllUsedTagsTableChart
                             }
                             config={TicketInsightsTagsReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                 </DashboardSection>

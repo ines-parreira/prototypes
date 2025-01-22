@@ -13,6 +13,7 @@ import {VoiceMetric} from 'state/ui/stats/types'
 
 export const VoiceCallCallerExperienceAverageWaitTimeChart = ({
     chartId,
+    dashboard,
 }: DashboardChartProps) => {
     const {cleanStatsFilters, userTimezone, isAnalyticsNewFilters} =
         useNewVoiceStatsFilters()
@@ -25,6 +26,7 @@ export const VoiceCallCallerExperienceAverageWaitTimeChart = ({
     return (
         <VoiceCallCallerExperienceMetric
             chartId={chartId}
+            dashboard={dashboard}
             isAnalyticsNewFilters={isAnalyticsNewFilters}
             title={AVERAGE_WAIT_TIME_METRIC_TITLE}
             hint={AVERAGE_WAIT_TIME_METRIC_HINT}

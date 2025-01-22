@@ -14,6 +14,7 @@ export const OverviewChartCard = ({
     hint,
     useTimeSeries,
     chartType,
+    dashboard,
     chartId,
 }: {
     title: string
@@ -30,7 +31,12 @@ export const OverviewChartCard = ({
     )
 
     return (
-        <ChartCard title={title} hint={hint} chartId={chartId}>
+        <ChartCard
+            title={title}
+            hint={hint}
+            chartId={chartId}
+            dashboard={dashboard}
+        >
             {chartType === 'bar' ? (
                 <BarChart
                     isLoading={!timeSeries.data}

@@ -7,11 +7,15 @@ import {
     OverviewMetricConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 
-export const OneTouchTicketsTrendCard = ({chartId}: DashboardChartProps) => {
+export const OneTouchTicketsTrendCard = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     return (
         <TrendCard
             {...OverviewMetricConfig[OverviewMetric.OneTouchTickets]}
             drillDownMetric={OverviewMetric.OneTouchTickets}
+            dashboard={dashboard}
             chartId={chartId}
         />
     )

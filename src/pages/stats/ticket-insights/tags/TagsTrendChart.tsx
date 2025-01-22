@@ -11,7 +11,7 @@ import {
     TicketInsightsTagsMetricConfig,
 } from 'pages/stats/ticket-insights/tags/TagsMetricConfig'
 
-export function TagsTrendChart({chartId}: DashboardChartProps) {
+export function TagsTrendChart({chartId, dashboard}: DashboardChartProps) {
     const {data, legendInfo, legendDatasetVisibility, granularity, isFetching} =
         useTagsTimeSeries()
 
@@ -19,7 +19,12 @@ export function TagsTrendChart({chartId}: DashboardChartProps) {
         TicketInsightsTagsMetricConfig[TicketInsightsTagsMetric.TagsTrendChart]
 
     return (
-        <ChartCard title={title} hint={hint} chartId={chartId}>
+        <ChartCard
+            title={title}
+            hint={hint}
+            chartId={chartId}
+            dashboard={dashboard}
+        >
             <LineChart
                 isLoading={isFetching}
                 customColors={LINES_COLORS}

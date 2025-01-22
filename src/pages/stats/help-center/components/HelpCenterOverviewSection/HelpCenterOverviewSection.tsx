@@ -32,14 +32,12 @@ const HelpCenterOverviewSection = () => {
                 <CustomReportComponent
                     chart={HelpCenterChart.ArticleViewsTrendCard}
                     config={HelpCenterReportConfig}
-                    activateActionsMenu
                 />
             </DashboardGridCell>
             <DashboardGridCell size={6}>
                 <CustomReportComponent
                     chart={HelpCenterChart.SearchesTrendCard}
                     config={HelpCenterReportConfig}
-                    activateActionsMenu
                 />
             </DashboardGridCell>
         </DashboardSection>

@@ -20,6 +20,7 @@ import {AccountFeature} from 'state/currentAccount/types'
 
 export const CustomerSatisfactionTrendCard = ({
     chartId,
+    dashboard,
 }: DashboardChartProps) => {
     const [areTipsVisible] = useLocalStorage(STATS_TIPS_VISIBILITY_KEY, true)
 
@@ -36,6 +37,7 @@ export const CustomerSatisfactionTrendCard = ({
         <TrendCard
             {...OverviewMetricConfig[OverviewMetric.CustomerSatisfaction]}
             drillDownMetric={OverviewMetric.CustomerSatisfaction}
+            dashboard={dashboard}
             chartId={chartId}
             tip={
                 areTipsVisible &&

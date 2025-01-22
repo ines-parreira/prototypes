@@ -13,6 +13,7 @@ import {MetricName} from 'services/reporting/constants'
 
 export const MedianResolutionTimeTrendCard = ({
     chartId,
+    dashboard,
 }: DashboardChartProps) => {
     const [areTipsVisible] = useLocalStorage(STATS_TIPS_VISIBILITY_KEY, true)
 
@@ -20,6 +21,7 @@ export const MedianResolutionTimeTrendCard = ({
         <TrendCard
             {...OverviewMetricConfig[OverviewMetric.MedianResolutionTime]}
             chartId={chartId}
+            dashboard={dashboard}
             drillDownMetric={OverviewMetric.MedianResolutionTime}
             tip={
                 areTipsVisible && (

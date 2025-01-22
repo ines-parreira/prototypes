@@ -67,7 +67,6 @@ export function ChannelsReport() {
                         <CustomReportComponent
                             chart={ChannelsChart.ChannelsPerformanceTable}
                             config={ChannelsReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                 </DashboardSection>

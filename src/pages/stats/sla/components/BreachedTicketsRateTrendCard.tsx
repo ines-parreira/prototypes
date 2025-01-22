@@ -7,10 +7,12 @@ import {SlaMetric} from 'state/ui/stats/types'
 
 export const BreachedTicketsRateTrendCard = ({
     chartId,
+    dashboard,
 }: DashboardChartProps) => {
     return (
         <TrendCard
             {...SlaMetricConfig[SlaMetric.BreachedTicketsRate]}
+            dashboard={dashboard}
             chartId={chartId}
         />
     )

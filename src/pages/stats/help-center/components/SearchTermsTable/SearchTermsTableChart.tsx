@@ -6,13 +6,17 @@ import {SearchTermsTable} from 'pages/stats/help-center/components/SearchTermsTa
 import {useSelectedHelpCenter} from 'pages/stats/help-center/hooks/useSelectedHelpCenter'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 
-export const SearchTermsTableChart = ({chartId}: DashboardChartProps) => {
+export const SearchTermsTableChart = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     const {selectedHelpCenterDomain: helpCenterDomain} = useSelectedHelpCenter()
     return (
         <ChartCard
             title="Search terms with results"
             noPadding
             chartId={chartId}
+            dashboard={dashboard}
         >
             {!helpCenterDomain ? (
                 <NoDataAvailable

@@ -1,5 +1,4 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -69,21 +68,18 @@ export default function SatisfactionReport() {
                         <CustomReportComponent
                             chart={SatisfactionChart.SatisfactionScoreTrendCard}
                             config={SatisfactionReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(4)}>
                         <CustomReportComponent
                             chart={SatisfactionChart.ResponseRateTrendCard}
                             config={SatisfactionReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(4)}>
                         <CustomReportComponent
                             chart={SatisfactionChart.SurveysSentTrendCard}
                             config={SatisfactionReportConfig}
-                            activateActionsMenu
                         />
                     </DashboardGridCell>
                 </DashboardSection>

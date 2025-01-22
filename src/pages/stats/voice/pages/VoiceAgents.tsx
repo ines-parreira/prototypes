@@ -125,7 +125,6 @@ function VoiceAgents() {
                     <CustomReportComponent
                         config={VoiceAgentsReportConfig}
                         chart={VoiceAgentsChart.VoiceAgentsTable}
-                        activateActionsMenu
                     />
                 </DashboardGridCell>
             </DashboardSection>

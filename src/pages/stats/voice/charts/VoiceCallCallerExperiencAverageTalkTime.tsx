@@ -13,6 +13,7 @@ import {VoiceMetric} from 'state/ui/stats/types'
 
 export const VoiceCallCallCallerExperiencAverageTalkTime = ({
     chartId,
+    dashboard,
 }: DashboardChartProps) => {
     const {cleanStatsFilters, userTimezone, isAnalyticsNewFilters} =
         useNewVoiceStatsFilters()
@@ -24,6 +25,7 @@ export const VoiceCallCallCallerExperiencAverageTalkTime = ({
     return (
         <VoiceCallCallerExperienceMetric
             chartId={chartId}
+            dashboard={dashboard}
             isAnalyticsNewFilters={isAnalyticsNewFilters}
             title={AVERAGE_TALK_TIME_METRIC_TITLE}
             hint={AVERAGE_TALK_TIME_METRIC_HINT}

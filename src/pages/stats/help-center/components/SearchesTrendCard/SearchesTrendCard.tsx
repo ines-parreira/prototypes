@@ -9,7 +9,10 @@ import {
 } from 'pages/stats/help-center/HelpCenterMetricsConfig'
 import {useSearchRequestedTrend} from 'pages/stats/help-center/hooks/useSearchRequestedTrend'
 
-export const SearchesTrendCard = ({chartId}: DashboardChartProps) => {
+export const SearchesTrendCard = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const searchesMetricTrend = useSearchRequestedTrend(
         cleanStatsFilters,
@@ -22,6 +25,7 @@ export const SearchesTrendCard = ({chartId}: DashboardChartProps) => {
     return (
         <OverviewCard
             chartId={chartId}
+            dashboard={dashboard}
             showTip={isTipVisible}
             isLoading={searchesMetricTrend.isFetching}
             hintTitle={

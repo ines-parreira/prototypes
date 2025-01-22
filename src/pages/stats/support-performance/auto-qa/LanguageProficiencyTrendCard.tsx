@@ -7,10 +7,12 @@ import {AutoQAMetric} from 'state/ui/stats/types'
 
 export const LanguageProficiencyTrendCard = ({
     chartId,
+    dashboard,
 }: DashboardChartProps) => {
     return (
         <TrendCard
             {...TrendCardConfig[AutoQAMetric.LanguageProficiency]}
+            dashboard={dashboard}
             chartId={chartId}
         />
     )
