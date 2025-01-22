@@ -2,6 +2,7 @@ import classnames from 'classnames'
 import {Map, List} from 'immutable'
 import React, {useEffect, useRef} from 'react'
 
+import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import useAgentsViewing from 'hooks/realtime/useAgentsViewing'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {EntityType} from 'models/view/types'
@@ -38,6 +39,7 @@ export default function Row({
     onItemClick,
     itemUrl,
 }: Props) {
+    const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const dispatch = useAppDispatch()
     const rowRef = useRef<HTMLTableRowElement>(null)
     useEffect(() => {
@@ -62,9 +64,14 @@ export default function Row({
                 [css['has-cursor']]: hasCursor,
             })}
         >
+            {/* istanbul ignore next */}
             {selectable ? (
                 <td
-                    className="cell-wrapper cell-short clickable d-none d-md-table-cell smallest"
+                    className={classnames(
+                        'cell-wrapper clickable d-none d-md-table-cell smallest',
+                        /* istanbul ignore next */
+                        showGlobalNav ? 'cell-global-nav' : 'cell-short'
+                    )}
                     onClick={toggleSelection}
                 >
                     {

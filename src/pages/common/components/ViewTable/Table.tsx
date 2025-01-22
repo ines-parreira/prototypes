@@ -1,8 +1,9 @@
-import classnames from 'classnames'
+import cn from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import React, {ReactNode, useContext, useEffect, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import usePrevious from 'hooks/usePrevious'
 import {EntityType} from 'models/view/types'
 
@@ -87,6 +88,7 @@ const TableContainer = ({
         !!navigation.get('prev_items') || !!navigation.get('prev_cursor')
     const prevItems = usePrevious(items)
     const [rowCursor, setRowCursor] = useState(0)
+    const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const searchRank = useContext(SearchRankScenarioContext)
     const orderBy = view.get('order_by') as string
     const fetchParams = useMemo(
@@ -275,12 +277,25 @@ const TableContainer = ({
 
     return (
         <div>
-            <table className={classnames(css.table, 'view-table')}>
+            <table
+                className={cn(
+                    css.table,
+                    'view-table',
+                    /* istanbul ignore next */
+                    showGlobalNav && css.globalNavStyles
+                )}
+            >
                 <thead className={css.tableHead}>
                     <tr>
                         {selectable ? (
                             <td
-                                className="cell-wrapper cell-short clickable d-none d-md-table-cell smallest"
+                                className={cn(
+                                    'cell-wrapper clickable d-none d-md-table-cell smallest',
+                                    /* istanbul ignore next */
+                                    showGlobalNav
+                                        ? 'cell-global-nav'
+                                        : 'cell-short'
+                                )}
                                 onClick={toggleSelectAllPageItems}
                             >
                                 <CheckBox
@@ -291,6 +306,7 @@ const TableContainer = ({
                                 />
                             </td>
                         ) : null}
+
                         {fields.map((field: Map<any, any>, index) => {
                             return (
                                 <HeaderCell

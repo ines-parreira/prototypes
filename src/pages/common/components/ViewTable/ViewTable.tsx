@@ -44,6 +44,8 @@ import {
     makeIsLoading,
 } from 'state/views/selectors'
 
+import {ViewTableHeaderContainer} from './ViewTableHeaderContainer'
+
 type OwnProps = {
     className?: string
     type: EntityType
@@ -371,14 +373,14 @@ export class ViewTableContainer extends Component<Props> {
 
         return (
             <div className={classnames(css.page, className)}>
-                <div className="container-padding">
+                <ViewTableHeaderContainer>
                     <Header
                         isSearch={isSearch}
                         isUpdate={isUpdate}
                         type={type}
                         viewButtons={this.props.viewButtons}
                     />
-                </div>
+                </ViewTableHeaderContainer>
                 {hasFilters && (activeView.get('editMode') || isSearch) && (
                     <>
                         <Separator />

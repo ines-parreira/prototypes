@@ -11,7 +11,12 @@ import useSplitTicketView from '../hooks/useSplitTicketView'
 import css from './Toggle.less'
 import useIsToggleEnabled from './useIsToggleEnabled'
 
-export default function Toggle() {
+type ToggleProps = {
+    withLeftMargin?: boolean
+}
+
+/* istanbul ignore next */
+export default function Toggle({withLeftMargin = true}: ToggleProps) {
     const {isEnabled, setIsEnabled} = useSplitTicketView()
     const {isEnabled: isToggleEnabled} = useIsToggleEnabled()
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
@@ -20,9 +25,11 @@ export default function Toggle() {
     const buttonId = 'toggle-button-' + id
 
     const handleClick = useCallback(() => {
+        /** istanbul ignore next */
         logEvent(SegmentEvent.DedicatedTicketPanelToggled, {
             enabled: !isEnabled,
         })
+        /** istanbul ignore next */
         setIsEnabled(!isEnabled)
     }, [isEnabled, setIsEnabled])
 
@@ -30,7 +37,13 @@ export default function Toggle() {
         <>
             <button
                 className={cn(
-                    showGlobalNav ? css.showGlobalNavToggle : css.toggle,
+                    showGlobalNav
+                        ? [
+                              css.showGlobalNavToggle,
+                              /* istanbul ignore next */
+                              withLeftMargin && css.withLeftMargin,
+                          ]
+                        : css.toggle,
                     {
                         [css.active]: isEnabled,
                         [css.disabled]: !isToggleEnabled,

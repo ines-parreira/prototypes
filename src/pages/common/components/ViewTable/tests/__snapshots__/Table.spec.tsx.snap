@@ -10,7 +10,7 @@ exports[`<Table /> should display a default view 1`] = `
     >
       <tr>
         <td
-          class="cell-wrapper cell-short clickable d-none d-md-table-cell smallest"
+          class="cell-wrapper clickable d-none d-md-table-cell smallest cell-short"
         >
           <div
             class="checkBox"
@@ -146,7 +146,7 @@ exports[`<Table /> should display a view with no fields 1`] = `
     >
       <tr>
         <td
-          class="cell-wrapper cell-short clickable d-none d-md-table-cell smallest"
+          class="cell-wrapper clickable d-none d-md-table-cell smallest cell-short"
         >
           <div
             class="checkBox"

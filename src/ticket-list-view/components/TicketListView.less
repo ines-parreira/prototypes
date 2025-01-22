@@ -1,5 +1,4 @@
 @import (reference) '~css/typography';
-@import '~@gorgias/design-tokens/dist/css/layout';
 
 :local {
     .wrapper {
@@ -13,7 +12,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: @layout-spacing-xs @layout-spacing-s;
+        padding: var(--layout-spacing-s);
     }
 
     .selection {
@@ -44,7 +43,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px 12px 12px @layout-spacing-s;
+        padding: var(--layout-spacing-xs);
         border-bottom: 1px solid var(--neutral-grey-2);
     }
 
@@ -56,7 +55,7 @@
 
     .buttons {
         flex-shrink: 0;
-        margin-left: @layout-spacing-xxs;
+        margin-left: var(--layout-spacing-xxs);
     }
 
     .title {

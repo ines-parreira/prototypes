@@ -259,7 +259,7 @@ const TicketHeader = ({
     return (
         <div className={classnames(css.component, className)} id="TicketHeader">
             <div className={css.title}>
-                <TicketHeaderToggle />
+                <TicketHeaderToggle withLeftMargin={false} />
                 <EditableTitle
                     className={css.editableTitleWrapper}
                     inputClassName={css.editableTitle}
