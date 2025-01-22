@@ -24,6 +24,7 @@ import {
     mapLanguagePickerToIntegrationLanguages,
     getGorgiasChatLanguageOptions,
     getHasShopifyScriptTagScopes,
+    GORGIAS_CHAT_WIDGET_PRIVACY_POLICY_DISCLAIMER_ENABLED_DEFAULT,
 } from 'config/integrations/gorgias_chat'
 import {Label as DesignSystemLabel} from 'gorgias-design-system/Input/Label'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -318,6 +319,8 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                     language,
                     preferences: {
                         live_chat_availability: liveChatAvailability,
+                        privacy_policy_disclaimer_enabled:
+                            GORGIAS_CHAT_WIDGET_PRIVACY_POLICY_DISCLAIMER_ENABLED_DEFAULT,
                         email_capture_enforcement:
                             GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
                         auto_responder: {

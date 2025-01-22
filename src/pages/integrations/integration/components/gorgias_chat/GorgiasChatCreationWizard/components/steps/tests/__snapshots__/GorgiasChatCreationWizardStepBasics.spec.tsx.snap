@@ -26,6 +26,7 @@ exports[`<GorgiasChatCreationWizardStepBasics /> should include languages when c
         "language": "en-US",
         "preferences": Immutable.Map {
           "live_chat_availability": "auto-based-on-agent-availability",
+          "privacy_policy_disclaimer_enabled": true,
           "email_capture_enforcement": "optional",
           "auto_responder": Immutable.Map {
             "enabled": true,
@@ -174,6 +175,7 @@ exports[`<GorgiasChatCreationWizardStepBasics /> submits form with default value
         "language": "en-US",
         "preferences": Immutable.Map {
           "live_chat_availability": "auto-based-on-agent-availability",
+          "privacy_policy_disclaimer_enabled": true,
           "email_capture_enforcement": "optional",
           "auto_responder": Immutable.Map {
             "enabled": true,
