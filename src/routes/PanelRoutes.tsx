@@ -1,5 +1,5 @@
 import React from 'react'
-import {Route, Switch} from 'react-router-dom'
+import {Route, Switch, useRouteMatch} from 'react-router-dom'
 
 import {PanelGroup, Panels} from 'core/layout/panels'
 import {GlobalNavigationPanel} from 'core/navigation'
@@ -24,6 +24,9 @@ export const panelRoutesRegexps = [
 export default function PanelRoutes() {
     const {width} = useWindowSize()
     const {onToggleUnread, registerOnToggleUnread} = useOnToggleUnread()
+
+    const match = useRouteMatch<{viewId?: string}>('/app/views/:viewId?')
+    const viewId = match?.params.viewId || 'default'
 
     // The `key` props below are not really needed in most cases, but they are
     // needed in the case of the `TicketListPanel`, `TicketDetailPanel` and
@@ -56,12 +59,12 @@ export default function PanelRoutes() {
                         <TicketInfobarPanel key="infobar-panel" />
                     </Route>
                     <Route exact path="/app/views/:viewId?">
-                        <TicketsListPanel key="ticket-list-panel" />
+                        <TicketsListPanel key={`ticket-list-panel-${viewId}`} />
                         <TicketEmptyPanel key="ticket-empty-panel" />
                     </Route>
                     <Route exact path="/app/views/:viewId/:ticketId">
                         <TicketsListPanel
-                            key="ticket-list-panel"
+                            key={`ticket-list-panel-${viewId}`}
                             registerOnToggleUnread={registerOnToggleUnread}
                         />
                         <TicketDetailPanel
