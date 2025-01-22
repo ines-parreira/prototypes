@@ -54,9 +54,10 @@ jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
 
 const invalidationKeys = ['someKey', 'otherKey']
-const customReport: AnalyticsCustomReport = {
+const customReport = {
     id: 1,
     name: 'Test Report',
+    emoji: '🐱',
     type: 'CUSTOM' as AnalyticsCustomReportType,
     analytics_filter_id: 123,
     account_id: 1,
@@ -72,7 +73,7 @@ const duplicateHandlerData = {
     type: customReport.type,
     emoji: customReport.emoji,
     children: customReport.children,
-    analytics_filter_id: customReport.analytics_filter_id || 0,
+    analytics_filter_id: customReport.analytics_filter_id,
 }
 
 const deleteHandlerData = {

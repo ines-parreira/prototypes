@@ -58,7 +58,7 @@ export type CustomReportChild =
 export type CustomReportSchema = {
     id: number
     name: string
-    analytics_filter_id: number | null | undefined
+    analytics_filter_id?: number | null
     children: CustomReportChild[]
     emoji: string | null | undefined
 }
