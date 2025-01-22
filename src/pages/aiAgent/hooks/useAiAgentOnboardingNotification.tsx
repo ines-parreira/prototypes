@@ -1,4 +1,5 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import hash from 'object-hash'
 
 import {useCallback} from 'react'
 
@@ -15,7 +16,10 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {OnboardingNotificationState} from 'models/aiAgent/types'
 import {NotificationEvent} from 'services/notificationTracker/constants'
-import {logNotificationEvent} from 'services/notificationTracker/notificationTracker'
+import {
+    getAdminRecipientIds,
+    logNotificationEvent,
+} from 'services/notificationTracker/notificationTracker'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
 import {getCurrentUser} from 'state/currentUser/selectors'
@@ -116,7 +120,9 @@ export const useAiAgentOnboardingNotification = ({shopName}: Params) => {
             return
         }
 
-        const idempotencyKey = `idempotency:${accountDomain}+${shopName}+${aiAgentNotificationType}`
+        const adminRecipientIdsList = getAdminRecipientIds() ?? []
+
+        const idempotencyKey = `idempotency:${accountDomain}+${shopName}+${aiAgentNotificationType}+${hash(adminRecipientIdsList)}`
         const cancellationKey = `cancel:${accountDomain}+${shopName}+${aiAgentNotificationType}`
         const notificationData = {
             ai_agent_notification_type: aiAgentNotificationType,

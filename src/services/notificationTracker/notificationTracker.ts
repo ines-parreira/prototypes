@@ -52,4 +52,16 @@ export const logNotificationEvent = (
     void logNotificationEventWithLD(...args)
 }
 
+export const getAdminRecipientIds = () => {
+    const adminIdsList = allAdmins?.map((admin) => ({
+        id: `${window.GORGIAS_STATE?.currentAccount?.id}.${admin.id}`,
+    }))
+
+    const sortedAdminIds = [...adminIdsList].sort((a, b) =>
+        a.id.localeCompare(b.id)
+    )
+
+    return sortedAdminIds
+}
+
 export default notificationTrackerInstance
