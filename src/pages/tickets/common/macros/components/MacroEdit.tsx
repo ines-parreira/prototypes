@@ -52,13 +52,14 @@ type Props = {
 } & ConnectedProps<typeof connector>
 
 export class MacroEdit extends Component<Props> {
-    _isTagAction = (action: Map<any, any>) =>
-        action.get('name') === MacroActionName.AddTags
+    // FIXME: Xuan-Thi see how to make this work without the endpoint returning an error
+    // _isTagAction = (action: Map<any, any>) =>
+    //     action.get('name') === MacroActionName.AddTags
 
-    UNSAFE_componentWillReceiveProps() {
-        if (!this.props.actions?.find(this._isTagAction))
-            this._addAction(MacroActionName.AddTags)
-    }
+    // UNSAFE_componentWillReceiveProps() {
+    //     if (!this.props.actions?.find(this._isTagAction))
+    //         this._addAction(MacroActionName.AddTags)
+    // }
 
     _extractText = () => {
         const action: Map<any, any> = this.props.actions?.find(
@@ -508,7 +509,6 @@ export class MacroEdit extends Component<Props> {
                             (action: Map<any, any>, index) =>
                                 action.set('idx', index) // Store the initial index for action updates
                         )
-                        .sort((a) => (this._isTagAction(a) ? -1 : 0)) // Put the tag action at the top
                         .map((action?: Map<any, any>) => {
                             return this.renderAction(action, action?.get('idx'))
                         })}

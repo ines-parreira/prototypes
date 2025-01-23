@@ -77,13 +77,15 @@ export function getErrorReason({
         ...Object.values(actions || {}).reduce<string[]>(
             (errors: string[], action) => {
                 Object.values(action).forEach((argumentsValue) => {
-                    argumentsValue.forEach((reason) => {
-                        errors.push(
-                            ...(typeof reason === 'string'
-                                ? [reason]
-                                : Object.values(reason))
-                        )
-                    })
+                    if (Array.isArray(argumentsValue)) {
+                        argumentsValue.forEach((reason) => {
+                            errors.push(
+                                ...(typeof reason === 'string'
+                                    ? [reason]
+                                    : Object.values(reason))
+                            )
+                        })
+                    }
                 })
                 return errors
             },
