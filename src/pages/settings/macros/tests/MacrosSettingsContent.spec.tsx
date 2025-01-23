@@ -23,6 +23,7 @@ import {notify} from 'state/notifications/actions'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
 
+import {useBulkArchiveMacros, useBulkUnarchiveMacros} from '../hooks'
 import {MacrosSettingsContent} from '../MacrosSettingsContent'
 
 const mockProperty = MacroSortableProperties.CreatedDatetime
@@ -95,6 +96,12 @@ const mockUseListMacros = assumeMock(useListMacros)
 const mockUseCreateMacro = assumeMock(useCreateMacro)
 const mockUseDeleteMacro = assumeMock(useDeleteMacro)
 
+jest.mock('../hooks')
+const useBulkArchiveMacrosMock = assumeMock(useBulkArchiveMacros)
+const useBulkUnarchiveMacrosMock = assumeMock(useBulkUnarchiveMacros)
+const mockMutateAsyncBulkArchive = jest.fn()
+const mockMutateAsyncBulkUnarchive = jest.fn()
+
 describe('<MacrosSettingsContent/>', () => {
     beforeEach(() => {
         useAppDispatchMock.mockReturnValue(jest.fn())
@@ -122,6 +129,12 @@ describe('<MacrosSettingsContent/>', () => {
         mockUseDeleteMacro.mockReturnValue({
             mutateAsync: mockMutateAsyncDelete,
         } as unknown as ReturnType<typeof useDeleteMacro>)
+        useBulkArchiveMacrosMock.mockReturnValue({
+            mutateAsync: mockMutateAsyncBulkArchive,
+        } as unknown as ReturnType<typeof useBulkArchiveMacros>)
+        useBulkUnarchiveMacrosMock.mockReturnValue({
+            mutateAsync: mockMutateAsyncBulkUnarchive,
+        } as unknown as ReturnType<typeof useBulkUnarchiveMacros>)
         mockUseFlag.mockImplementation(() => false)
         mockUseRouteMatch.mockReturnValue({
             url: '/app/settings/macros',

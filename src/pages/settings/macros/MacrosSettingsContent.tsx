@@ -155,6 +155,10 @@ export function MacrosSettingsContent() {
         )
     }
 
+    const onMacroArchiveOrUnarchived = (macroId: number) => {
+        setSelectedMacrosIds((ids) => ids.filter((id) => id !== macroId))
+    }
+
     const onSortOptionsChange = useCallback(
         (order_by: MacroSortableProperties, order_dir: OrderDirection) =>
             !listMacrosParams.search &&
@@ -263,6 +267,7 @@ export function MacrosSettingsContent() {
                     options={listMacrosParams}
                     onMacroDelete={onMacroDelete}
                     onMacroDuplicate={onMacroDuplicate}
+                    onMacroArchiveOrUnarchived={onMacroArchiveOrUnarchived}
                     selectedMacrosIds={selectedMacrosIds}
                     setSelectedMacrosIds={setSelectedMacrosIds}
                 />

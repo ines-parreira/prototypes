@@ -5,8 +5,14 @@ import {useRouteMatch} from 'react-router-dom'
 
 import {macros as macrosFixtures} from 'fixtures/macro'
 import {MacrosState} from 'state/entities/macros/types'
+import {assumeMock} from 'utils/testing'
 
+import {useBulkArchiveMacros, useBulkUnarchiveMacros} from '../hooks'
 import MoreActions from '../MoreActions'
+
+jest.mock('../hooks')
+const useBulkArchiveMacrosMock = assumeMock(useBulkArchiveMacros)
+const useBulkUnarchiveMacrosMock = assumeMock(useBulkUnarchiveMacros)
 
 jest.mock(
     'react-router-dom',
@@ -21,10 +27,20 @@ jest.mock(
         }) as Record<string, unknown>
 )
 const mockUseRouteMatch = useRouteMatch as jest.Mock
+const mockMutateAsyncBulkArchive = jest.fn()
+const mockMutateAsyncBulkUnarchive = jest.fn()
+
+jest.mock('state/notifications/actions')
 
 describe('<MoreActions />', () => {
     beforeEach(() => {
         mockUseRouteMatch.mockReturnValue(false)
+        useBulkArchiveMacrosMock.mockReturnValue({
+            mutateAsync: mockMutateAsyncBulkArchive,
+        } as unknown as ReturnType<typeof useBulkArchiveMacros>)
+        useBulkUnarchiveMacrosMock.mockReturnValue({
+            mutateAsync: mockMutateAsyncBulkUnarchive,
+        } as unknown as ReturnType<typeof useBulkUnarchiveMacros>)
     })
 
     const macrosState: MacrosState = macrosFixtures.reduce(
@@ -39,8 +55,9 @@ describe('<MoreActions />', () => {
         hasAgentPrivileges: false,
         macro: macrosFixtures[0],
         macros: macrosState,
-        handleMacroDelete: jest.fn(),
-        handleMacroDuplicate: jest.fn(),
+        onMacroDelete: jest.fn(),
+        onMacroDuplicate: jest.fn(),
+        onMacroArchiveOrUnarchived: jest.fn(),
     }
 
     it('should display disabled action buttons', () => {
@@ -58,6 +75,86 @@ describe('<MoreActions />', () => {
         screen.getByLabelText('Archive macro').click()
 
         expect(screen.getByLabelText('Archive macro')).toBeAriaEnabled()
+        expect(mockMutateAsyncBulkArchive).toHaveBeenCalledWith(
+            {
+                data: {ids: [props.macro.id]},
+            },
+            {onSettled: expect.any(Function)}
+        )
+        ;(
+            mockMutateAsyncBulkArchive.mock.calls[0] as {
+                onSettled: (arg: unknown) => void
+            }[]
+        )[1].onSettled({
+            data: {
+                data: {
+                    data: [{id: 1, status: 'archived'}],
+                },
+            },
+        })
+
+        expect(props.onMacroArchiveOrUnarchived).toHaveBeenCalledWith(1)
+    })
+
+    it('should handle errors when archive macro attempt failed', () => {
+        render(<MoreActions {...props} hasAgentPrivileges />)
+
+        screen.getByLabelText('Archive macro').click()
+
+        expect(screen.getByLabelText('Archive macro')).toBeAriaEnabled()
+        expect(mockMutateAsyncBulkArchive).toHaveBeenCalledWith(
+            {
+                data: {ids: [props.macro.id]},
+            },
+            {onSettled: expect.any(Function)}
+        )
+        const msg = 'error title'
+        ;(
+            mockMutateAsyncBulkArchive.mock.calls[0] as {
+                onSettled: (arg: unknown) => void
+            }[]
+        )[1].onSettled({
+            data: {
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            status: 'macro_used',
+                            error: {
+                                msg,
+                                data: {rules: ['rule using the macro']},
+                            },
+                        },
+                    ],
+                },
+            },
+        })
+        expect(props.onMacroArchiveOrUnarchived).not.toHaveBeenCalled()
+    })
+
+    it('should unarchive macro', () => {
+        mockUseRouteMatch.mockReturnValue(true)
+        render(<MoreActions {...props} hasAgentPrivileges />)
+
+        screen.getByLabelText('Unarchive macro').click()
+
+        expect(mockMutateAsyncBulkUnarchive).toHaveBeenCalledWith(
+            {
+                data: {ids: [props.macro.id]},
+            },
+            {
+                onSettled: expect.any(Function),
+            }
+        )
+        const mockCalls = (
+            mockMutateAsyncBulkUnarchive.mock.calls[0] as {
+                onSettled: () => void
+            }[]
+        )[1]
+
+        mockCalls.onSettled()
+
+        expect(props.onMacroArchiveOrUnarchived).toHaveBeenCalledWith(1)
     })
 
     it('should duplicate macro', () => {
@@ -66,7 +163,7 @@ describe('<MoreActions />', () => {
         screen.getByLabelText('More actions on macro').click()
         screen.getByText(/Make a copy/).click()
 
-        expect(props.handleMacroDuplicate).toHaveBeenCalled()
+        expect(props.onMacroDuplicate).toHaveBeenCalled()
     })
 
     it('should delete macro', () => {
@@ -79,15 +176,7 @@ describe('<MoreActions />', () => {
 
         screen.getByText(/Confirm/).click()
 
-        expect(props.handleMacroDelete).toHaveBeenCalled()
-        expect(props.handleMacroDelete).toHaveBeenCalled()
-    })
-
-    it('should display `unarchive` action', () => {
-        mockUseRouteMatch.mockReturnValue(true)
-        render(<MoreActions {...props} hasAgentPrivileges />)
-
-        expect(screen.getByLabelText('Unarchive macro')).toBeInTheDocument()
-        expect(screen.getByText('unarchive')).toBeInTheDocument()
+        expect(props.onMacroDelete).toHaveBeenCalled()
+        expect(props.onMacroDelete).toHaveBeenCalled()
     })
 })

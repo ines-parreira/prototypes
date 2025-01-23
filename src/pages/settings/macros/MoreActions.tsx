@@ -1,4 +1,4 @@
-import {Macro} from '@gorgias/api-queries'
+import {ArchiveMacroAsUser, Macro} from '@gorgias/api-queries'
 import classNames from 'classnames'
 import React, {useRef, useState} from 'react'
 import {useRouteMatch} from 'react-router-dom'
@@ -10,25 +10,60 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 
+import {useBulkArchiveMacros, useBulkUnarchiveMacros} from './hooks'
 import css from './MoreActions.less'
 
 type Props = {
-    handleMacroDelete: (macroId: number) => Promise<void>
-    handleMacroDuplicate: (macro: Macro) => Promise<void>
+    onMacroDelete: (macroId: number) => Promise<void>
+    onMacroDuplicate: (macro: Macro) => Promise<void>
+    onMacroArchiveOrUnarchived: (macroId: number) => void
     hasAgentPrivileges: boolean
     macro: Macro
 }
 
 export default function MoreActions({
-    handleMacroDelete,
-    handleMacroDuplicate,
+    onMacroDelete,
+    onMacroDuplicate,
+    onMacroArchiveOrUnarchived,
     hasAgentPrivileges,
     macro,
 }: Props) {
-    const handleMacroArchive = (__macro: Macro) => {}
+    const isArchiveTab = !!useRouteMatch('/app/settings/macros/archived')
+
+    const {mutateAsync: bulkArchiveMacros} = useBulkArchiveMacros()
+    const {mutateAsync: bulkUnarchiveMacros} = useBulkUnarchiveMacros()
+
+    const handleMacroArchiveOrUnarchive = async () => {
+        if (isArchiveTab) {
+            await bulkUnarchiveMacros(
+                {data: {ids: [macro.id!]}},
+                {
+                    onSettled: () => {
+                        onMacroArchiveOrUnarchived(macro.id!)
+                    },
+                }
+            )
+        } else {
+            await bulkArchiveMacros(
+                {data: {ids: [macro.id!]}},
+                {
+                    onSettled: (resp) => {
+                        const msg = resp?.data.data as unknown as {
+                            data?: ArchiveMacroAsUser[]
+                        }
+                        const error = msg?.data?.[0]?.error
+
+                        if (!error) {
+                            onMacroArchiveOrUnarchived(macro.id!)
+                        }
+                    },
+                }
+            )
+        }
+    }
+
     const ref = useRef<HTMLButtonElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-    const isArchiveTab = !!useRouteMatch('/app/settings/macros/archived')
 
     const archiveLabel = `${isArchiveTab ? 'Unarchive' : 'Archive'} macro`
 
@@ -38,7 +73,7 @@ export default function MoreActions({
                 fillStyle="ghost"
                 intent="secondary"
                 onClick={() => {
-                    void handleMacroArchive(macro)
+                    void handleMacroArchiveOrUnarchive()
                 }}
                 title={archiveLabel}
                 aria-label={archiveLabel}
@@ -58,7 +93,7 @@ export default function MoreActions({
                 }
                 id={`new-delete-button-${macro.id}`}
                 onConfirm={() => {
-                    void handleMacroDelete(macro.id!)
+                    void onMacroDelete(macro.id!)
                     setIsDropdownOpen(false)
                 }}
                 placement="left"
@@ -89,7 +124,7 @@ export default function MoreActions({
                             <DropdownBody>
                                 <DropdownItem
                                     className={css.dropdownItem}
-                                    onClick={() => handleMacroDuplicate(macro)}
+                                    onClick={() => onMacroDuplicate(macro)}
                                     option={{
                                         label: '',
                                         value: '',

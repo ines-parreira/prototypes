@@ -25,6 +25,7 @@ type Props = {
     macro: Macro
     onMacroDelete: (id: number) => Promise<void>
     onMacroDuplicate: (macro: Macro) => Promise<void>
+    onMacroArchiveOrUnarchived: (id: number) => void
     firstTagFilter?: ListMacrosTagsItem
     selectedMacrosIds: number[]
     setSelectedMacrosIds: Dispatch<SetStateAction<number[]>>
@@ -37,6 +38,7 @@ export function MacrosSettingsItem({
     macro,
     onMacroDelete,
     onMacroDuplicate,
+    onMacroArchiveOrUnarchived,
     firstTagFilter,
     selectedMacrosIds,
     setSelectedMacrosIds,
@@ -68,7 +70,7 @@ export function MacrosSettingsItem({
 
     const isChecked = !!macro.id && selectedMacrosIds.includes(macro.id)
 
-    const handleArchiveMacro = useCallback(
+    const handleMacroSelection = useCallback(
         () =>
             setSelectedMacrosIds(
                 isChecked
@@ -91,7 +93,7 @@ export function MacrosSettingsItem({
                         name={`${macro.id}`}
                         aria-label={`${macro.id}`}
                         isChecked={isChecked}
-                        onChange={handleArchiveMacro}
+                        onChange={handleMacroSelection}
                     />
                 )}
                 <Link to={to}>
@@ -133,8 +135,9 @@ export function MacrosSettingsItem({
                     <MoreActions
                         hasAgentPrivileges={hasAgentPrivileges}
                         macro={macro}
-                        handleMacroDuplicate={onMacroDuplicate}
-                        handleMacroDelete={onMacroDelete}
+                        onMacroDuplicate={onMacroDuplicate}
+                        onMacroDelete={onMacroDelete}
+                        onMacroArchiveOrUnarchived={onMacroArchiveOrUnarchived}
                     />
                 ) : (
                     <BodyCellContent>

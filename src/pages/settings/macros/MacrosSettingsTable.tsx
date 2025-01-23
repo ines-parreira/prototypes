@@ -20,6 +20,7 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import CheckBoxField from 'pages/common/forms/CheckBoxField'
 
+import {useBulkArchiveMacros, useBulkUnarchiveMacros} from './hooks'
 import {MacrosSettingsItem} from './MacrosSettingsItem'
 import css from './MacrosSettingsTable.less'
 
@@ -35,6 +36,7 @@ type Props = {
     ComponentProps<typeof MacrosSettingsItem>,
     | 'onMacroDelete'
     | 'onMacroDuplicate'
+    | 'onMacroArchiveOrUnarchived'
     | 'selectedMacrosIds'
     | 'setSelectedMacrosIds'
 >
@@ -45,18 +47,23 @@ export function MacrosSettingsTable({
     onSortOptionsChange,
     onMacroDelete,
     onMacroDuplicate,
+    onMacroArchiveOrUnarchived,
     options,
     selectedMacrosIds,
     setSelectedMacrosIds,
 }: Props) {
-    const isArchiveTab = useRouteMatch('/app/settings/macros/archived')
+    const isArchiveTab = !!useRouteMatch('/app/settings/macros/archived')
     const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives, false)
+
     const selectedMacrosLength = useMemo(
         () => selectedMacrosIds.length,
         [selectedMacrosIds]
     )
     const isAllSelected = useMemo(
-        () => !isLoading && selectedMacrosLength === macros?.length,
+        () =>
+            !isLoading &&
+            !!selectedMacrosLength &&
+            selectedMacrosLength === macros?.length,
         [isLoading, macros?.length, selectedMacrosLength]
     )
     const orderByValue = useMemo(
@@ -90,7 +97,20 @@ export function MacrosSettingsTable({
         )
     }
 
-    const onBulkArchive = () => {}
+    const {mutateAsync: bulkUnarchiveMacros} = useBulkUnarchiveMacros()
+    const {mutateAsync: bulkArchiveMacros} = useBulkArchiveMacros(macros)
+
+    const onBulkArchiveOrUnarchive = async () => {
+        try {
+            if (isArchiveTab) {
+                await bulkUnarchiveMacros({data: {ids: selectedMacrosIds}})
+            } else {
+                await bulkArchiveMacros({data: {ids: selectedMacrosIds}})
+            }
+        } finally {
+            setSelectedMacrosIds([])
+        }
+    }
 
     const checkboxAllLabel = useMemo(
         () =>
@@ -198,7 +218,7 @@ export function MacrosSettingsTable({
                                     intent="secondary"
                                     fillStyle="ghost"
                                     isDisabled={isDisabled}
-                                    onClick={onBulkArchive}
+                                    onClick={onBulkArchiveOrUnarchive}
                                     size="small"
                                 >
                                     <ButtonIconLabel
@@ -238,6 +258,9 @@ export function MacrosSettingsTable({
                                     macro={macro}
                                     onMacroDelete={onMacroDelete}
                                     onMacroDuplicate={onMacroDuplicate}
+                                    onMacroArchiveOrUnarchived={
+                                        onMacroArchiveOrUnarchived
+                                    }
                                     firstTagFilter={options.tags?.[0]}
                                     selectedMacrosIds={selectedMacrosIds}
                                     setSelectedMacrosIds={setSelectedMacrosIds}

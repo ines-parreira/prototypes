@@ -1,14 +1,18 @@
-import {act, render, screen} from '@testing-library/react'
+import {QueryClient, useQueryClient} from '@tanstack/react-query'
+import {act, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React, {ComponentProps} from 'react'
 import {useRouteMatch} from 'react-router-dom'
 
 import {useFlag} from 'common/flags'
 import {macros} from 'fixtures/macro'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {OrderDirection} from 'models/api/types'
 import {MacroSortableProperties} from 'models/macro/types'
+import {assumeMock} from 'utils/testing'
 
+import {useBulkArchiveMacros, useBulkUnarchiveMacros} from '../hooks'
 import {MacrosSettingsTable} from '../MacrosSettingsTable'
 
 jest.mock('@gorgias/merchant-ui-kit', () => {
@@ -31,6 +35,7 @@ jest.mock('reactstrap', () => {
 })
 jest.mock('hooks/useHasAgentPrivileges')
 jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
+jest.mock('pages/settings/macros/MoreActions', () => () => 'MoreActionsMock')
 
 const useHasAgentPrivilegesMock = useHasAgentPrivileges as jest.MockedFunction<
     typeof useHasAgentPrivileges
@@ -55,11 +60,43 @@ jest.mock('common/flags', () => ({
 }))
 const mockUseFlag = useFlag as jest.Mock
 
+jest.mock('../hooks')
+const useBulkArchiveMacrosMock = assumeMock(useBulkArchiveMacros)
+const useBulkUnarchiveMacrosMock = assumeMock(useBulkUnarchiveMacros)
+const mockMutateAsyncBulkArchive = jest.fn()
+const mockMutateAsyncBulkUnarchive = jest.fn()
+
+jest.mock('hooks/useAppDispatch', () => jest.fn())
+const useAppDispatchMock = assumeMock(useAppDispatch)
+
+jest.mock('@tanstack/react-query')
+const useQueryClientMock = assumeMock(useQueryClient)
+
+jest.mock('state/notifications/actions')
+
 describe('<MacrosSettingsTable />', () => {
+    const invalidateQueriesMock = jest.fn()
+    const dispatchMock = jest.fn()
+
     beforeEach(() => {
+        mockMutateAsyncBulkArchive.mockResolvedValue(null)
+        mockMutateAsyncBulkUnarchive.mockResolvedValue(null)
         useHasAgentPrivilegesMock.mockReturnValue(true)
         mockUseFlag.mockReturnValue(false)
         mockUseRouteMatch.mockReturnValue(false)
+        useAppDispatchMock.mockReturnValue(dispatchMock)
+        useBulkArchiveMacrosMock.mockReturnValue({
+            mutateAsync: mockMutateAsyncBulkArchive,
+        } as unknown as ReturnType<typeof useBulkArchiveMacros>)
+        useBulkUnarchiveMacrosMock.mockReturnValue({
+            mutateAsync: mockMutateAsyncBulkUnarchive,
+        } as unknown as ReturnType<typeof useBulkUnarchiveMacros>)
+        useQueryClientMock.mockImplementation(
+            () =>
+                ({
+                    invalidateQueries: invalidateQueriesMock,
+                }) as unknown as QueryClient
+        )
     })
 
     const macrosFixtures = [macros[0], macros[1]]
@@ -201,11 +238,69 @@ describe('<MacrosSettingsTable />', () => {
         )
     })
 
-    it('should display new UI for archivable macros', () => {
+    it('should bulk archive macros', async () => {
         mockUseFlag.mockReturnValue(true)
-        render(<MacrosSettingsTable {...minProps} />)
+        const selectedMacrosIds = [1, 2]
+        render(
+            <MacrosSettingsTable
+                {...minProps}
+                selectedMacrosIds={selectedMacrosIds}
+                macros={macrosFixtures}
+            />
+        )
 
-        expect(screen.getByText('Archive')).toBeInTheDocument()
+        screen.getByText('Archive').click()
+
+        expect(mockMutateAsyncBulkArchive).toHaveBeenCalledWith({
+            data: {ids: selectedMacrosIds},
+        })
+
+        await waitFor(() =>
+            expect(minProps.setSelectedMacrosIds).toHaveBeenCalledWith([])
+        )
+    })
+
+    it('should handle failure when bulk archiving macros', async () => {
+        mockUseFlag.mockReturnValue(true)
+        const selectedMacrosIds = [1, 2]
+        render(
+            <MacrosSettingsTable
+                {...minProps}
+                selectedMacrosIds={selectedMacrosIds}
+                macros={macrosFixtures}
+            />
+        )
+
+        screen.getByText('Archive').click()
+
+        expect(mockMutateAsyncBulkArchive).toHaveBeenCalledWith({
+            data: {ids: selectedMacrosIds},
+        })
+        await waitFor(() =>
+            expect(minProps.setSelectedMacrosIds).toHaveBeenCalledWith([])
+        )
+    })
+
+    it('should bulk unarchive macros', async () => {
+        mockUseFlag.mockReturnValue(true)
+        mockUseRouteMatch.mockReturnValue(true)
+        const selectedMacrosIds = [1, 2]
+        render(
+            <MacrosSettingsTable
+                {...minProps}
+                selectedMacrosIds={selectedMacrosIds}
+                macros={macrosFixtures}
+            />
+        )
+
+        screen.getByText('Unarchive').click()
+
+        expect(mockMutateAsyncBulkUnarchive).toHaveBeenCalledWith({
+            data: {ids: selectedMacrosIds},
+        })
+        await waitFor(() =>
+            expect(minProps.setSelectedMacrosIds).toHaveBeenCalledWith([])
+        )
     })
 
     it('should disable bulk archive button when loading', () => {
@@ -213,14 +308,6 @@ describe('<MacrosSettingsTable />', () => {
         render(<MacrosSettingsTable {...minProps} isLoading />)
 
         expect(screen.getByLabelText('Archive')).toBeAriaDisabled()
-    })
-
-    it('should disable bulk archive button when loading', () => {
-        mockUseFlag.mockReturnValue(true)
-        mockUseRouteMatch.mockReturnValue(true)
-        render(<MacrosSettingsTable {...minProps} />)
-
-        expect(screen.getByLabelText('Unarchive')).toBeInTheDocument()
     })
 
     it('should set checked state for the top checkbox properly', () => {

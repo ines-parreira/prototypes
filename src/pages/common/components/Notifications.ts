@@ -39,6 +39,7 @@ const theme: Theme = {
     }),
     notificationTitle: (notification) => ({
         ...wyboTheme.notificationTitle(notification),
+        color: 'var(--neutral-grey-6)',
         marginBottom: 4,
         fontWeight: 600,
         lineHeight: '20px',
