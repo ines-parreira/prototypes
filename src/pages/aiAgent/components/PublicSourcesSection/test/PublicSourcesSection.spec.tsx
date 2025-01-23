@@ -254,6 +254,24 @@ describe('<PublicSourcesSection />', () => {
         ).toBeInTheDocument()
     })
 
+    it('should show error message when URL has document extension', async () => {
+        const url = 'https://test-page.com/file.pdf'
+        renderComponent()
+
+        const addButton = screen.getByText('Add URL')
+        userEvent.click(addButton)
+
+        const input = screen
+            .getAllByLabelText('Public URL')
+            .pop() as HTMLInputElement
+        await userEvent.type(input, url)
+
+        expect(
+            screen.getByRole('button', {name: /Sync URL/})
+        ).toBeAriaDisabled()
+        expect(screen.getByText('URL cannot be a document')).toBeInTheDocument()
+    })
+
     it('should start loading when URL is syncing', async () => {
         renderComponent()
 

@@ -7,6 +7,7 @@ import InputField from 'pages/common/forms/input/InputField'
 
 import css from './PublicSourcesItem.less'
 import {SourceItem} from './types'
+import {DOCUMENT_EXTENSIONS} from './utils'
 
 const isUrlValid = (url?: string) => {
     if (!url) return false
@@ -27,7 +28,7 @@ const isUrlRoot = (url: string) => {
             !urlObj.search &&
             !urlObj.hash
         )
-    } catch (_) {
+    } catch {
         return false
     }
 }
@@ -44,6 +45,16 @@ const isUrlFromGorgiasHelpCenter = (
         const isCustomDomain = helpCenterCustomDomains.includes(hostname)
 
         return isGorgiasDomain || isCustomDomain
+    } catch {
+        return false
+    }
+}
+
+const isUrlWithDocumentExtension = (url: string): boolean => {
+    try {
+        const urlObj = new URL(url)
+        const extension = urlObj.pathname.split('.').pop()?.toLowerCase()
+        return extension !== undefined && DOCUMENT_EXTENSIONS.has(extension)
     } catch (_) {
         return false
     }
@@ -54,6 +65,7 @@ const getInputError = (
     isGorgiasHelpCenterUrl: boolean,
     isRootUrl: boolean,
     isDuplicate: boolean,
+    hasDocumentExtension: boolean,
     status: SourceItem['status']
 ) => {
     if (isInvalid) {
@@ -70,6 +82,10 @@ const getInputError = (
 
     if (isDuplicate) {
         return 'This URL has already been added'
+    }
+
+    if (hasDocumentExtension) {
+        return 'URL cannot be a document'
     }
 
     if (status === 'error') {
@@ -145,11 +161,14 @@ export const PublicSourcesItem = ({
             source.status !== 'done') ||
         isDuplicate
 
+    const hasDocumentExtension = isUrlWithDocumentExtension(value)
+
     const inputError = getInputError(
         !isValidUrl && isNotEmpty,
         isGorgiasHelpCenterUrl,
         isRootUrl,
         isDuplicate,
+        hasDocumentExtension,
         source.status
     )
 
