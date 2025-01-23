@@ -5,7 +5,7 @@ import Button from 'pages/common/components/button/Button'
 import ProgressTracker from 'pages/common/components/ProgressTracker/ProgressTracker'
 
 const storyConfig: Meta<typeof ProgressTracker> = {
-    title: 'General/ProgressTracker',
+    title: 'General/ProgressTracker/ProgressTracker',
     component: ProgressTracker,
     argTypes: {
         stepLabel: {

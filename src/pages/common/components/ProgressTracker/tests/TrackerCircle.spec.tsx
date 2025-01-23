@@ -40,6 +40,7 @@ describe('TrackerCircle', () => {
         const circles = document.querySelectorAll('circle')
         expect(circles[0]).toHaveAttribute('stroke', lightenedColor)
         expect(circles[1]).toHaveAttribute('stroke', color)
+        expect(circles[1]).toHaveAttribute('stroke-width', '4.8')
     })
 
     it('should handle percentage greater than 100', () => {
@@ -52,5 +53,17 @@ describe('TrackerCircle', () => {
         render(<TrackerCircle color={color} percentage={-10} />)
         const circles = document.querySelectorAll('circle')
         expect(circles[1]).toHaveAttribute('stroke-dashoffset', '0')
+    })
+
+    it('should set stroke-width when given', () => {
+        render(
+            <TrackerCircle
+                color={color}
+                percentage={percentage}
+                strokeWidth={12}
+            />
+        )
+        const circles = document.querySelectorAll('circle')
+        expect(circles[1]).toHaveAttribute('stroke-width', '12')
     })
 })
