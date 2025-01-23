@@ -41,9 +41,12 @@ describe('RedirectToAiAgentStore', () => {
     test('renders the loading spinner if no store is found', () => {
         mockUseAppSelector.mockReturnValueOnce([])
 
-        const {getByRole} = render(<RedirectToAiAgentStore />)
+        const {getByText} = render(<RedirectToAiAgentStore />)
 
         expect(mockHistoryReplace).not.toHaveBeenCalled()
-        expect(getByRole('status')).toBeInTheDocument()
+        const descriptionElement = getByText(
+            'Connect Shopify, Magento or BigCommerce stores to start using Automate!'
+        )
+        expect(descriptionElement).toBeInTheDocument()
     })
 })
