@@ -1,6 +1,7 @@
 import React, {useState, useMemo, useEffect} from 'react'
 
 import {KnowledgeStep} from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeStep'
+import {PersonalityStep} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersonalityStep'
 import {ShopifyIntegrationStep} from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep'
 import {SkillsetStep} from 'pages/aiAgent/Onboarding/components/steps/SkillsetStep/SkillsetStep'
 import {useOnboardingContext} from 'pages/aiAgent/Onboarding/providers/OnboardingContext'
@@ -84,7 +85,21 @@ export const useOnboarding = ({shopName}: {shopName: string}) => {
             [WizardStepEnum.SALES_PERSONALITY]: {
                 step: WizardStepEnum.SALES_PERSONALITY,
                 condition: scope.includes(AiAgentScopes.SALES),
-                render: () => <div>Sales Personality Step</div>,
+                render: (
+                    onNextClick: () => void,
+                    onBackClick: () => void,
+                    currentStep: number,
+                    totalSteps: number
+                ) => (
+                    <PersonalityStep
+                        {...{
+                            currentStep,
+                            totalSteps,
+                            onNextClick,
+                            onBackClick,
+                        }}
+                    />
+                ),
             },
             [WizardStepEnum.HANDOVER]: {
                 step: WizardStepEnum.HANDOVER,

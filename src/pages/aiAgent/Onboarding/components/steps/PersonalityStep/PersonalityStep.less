@@ -1,0 +1,82 @@
+@import (reference) '~css/typography.less';
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .title {
+        margin-bottom: @layout-spacing-l;
+    }
+
+    .card {
+        gap: 0;
+        padding: 0;
+        margin-bottom: @layout-spacing-s;
+        cursor: initial;
+
+        .cardSection {
+            padding: @layout-spacing-m;
+        }
+
+        .cardTitleWrapper {
+            display: flex;
+            align-items: center;
+            gap: @layout-spacing-xs;
+            margin-bottom: 18px;
+
+            .cardTitle {
+                font-size: 16px;
+            }
+        }
+
+        .cardDescriptionWrapper {
+            display: flex;
+            align-items: center;
+            gap: @layout-spacing-xs;
+        }
+
+        .cardSliderWrapper {
+            margin-bottom: @layout-spacing-s;
+        }
+
+        .separator {
+            width: 100%;
+        }
+    }
+
+    .percentageSection {
+        display: flex;
+        gap: @layout-spacing-s;
+
+        .cardTitle {
+            max-width: 274px;
+            flex-direction: column;
+            align-items: start;
+        }
+
+        .cardSubtitle {
+            font-size: 14px;
+            font-weight: @body-regular-font-weight;
+        }
+
+        .percentageInputWrapper {
+            flex-grow: 1;
+        }
+    }
+
+    .chatWrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 100%;
+        height: 100%;
+
+        .chatFooter {
+            position: absolute;
+            bottom: 0;
+            width: 400px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+    }
+}

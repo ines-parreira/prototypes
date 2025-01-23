@@ -67,6 +67,7 @@ const AiAgentChatConversation: FC<Props> = ({
                     />
                 ) : (
                     <CustomerInitialMessages
+                        key={index}
                         conversationColor={conversationColor}
                         messages={messages.map((message) => message.content)}
                         hideConversationTimestamp={true}
