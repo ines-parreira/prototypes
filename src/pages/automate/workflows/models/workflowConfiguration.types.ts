@@ -354,7 +354,7 @@ export type WorkflowConfiguration = {
     name: string
     initial_step_id: string | null
     updated_datetime?: string
-    advanced_datetime?: string
+    advanced_datetime?: string | null
     entrypoint?: {
         label: string
         label_tkey: string

@@ -196,6 +196,7 @@ describe('queries', () => {
                         request_datetime: '2021-09-01T00:00:00Z',
                         request_method: 'GET',
                         request_url: 'https://www.example.com',
+                        step_id: 'step-id',
                         response_status_code: 200,
                     },
                 ]
