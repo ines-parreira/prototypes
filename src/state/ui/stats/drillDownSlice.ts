@@ -226,7 +226,6 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     AutoQAMetric.ResolutionCompleteness,
     AIInsightsMetric.TicketCustomFieldsTicketCount,
     AIInsightsMetric.TicketDrillDownPerCoverageRate,
-    AIInsightsMetric.TicketDrillDownPerAutomatedInteractions,
     SatisfactionMetric.SatisfactionScore,
     SatisfactionMetric.ResponseRate,
     SatisfactionMetric.SurveysSent,
@@ -445,8 +444,6 @@ export const getDrillDownMetricColumn = (
             AIInsightsMetric.TicketCustomFieldsTicketCount ||
         metricData.metricName ===
             AIInsightsMetric.TicketDrillDownPerCoverageRate ||
-        metricData.metricName ===
-            AIInsightsMetric.TicketDrillDownPerAutomatedInteractions ||
         metricData.metricName ===
             AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction
     ) {

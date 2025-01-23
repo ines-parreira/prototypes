@@ -31,7 +31,6 @@ import {ticketsRepliedMetricPerTicketDrillDownQueryFactory} from 'models/reporti
 import {
     customFieldsTicketCountPerTicketDrillDownQueryFactory,
     coverageRateTicketDrillDownQueryFactory,
-    automatedInteractionsTicketDrillDownQueryFactory,
     aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {tagsTicketCountDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
@@ -326,20 +325,6 @@ export const getDrillDownQuery = (
                 sorting?: OrderDirection
             ) =>
                 coverageRateTicketDrillDownQueryFactory(
-                    statsFilters,
-                    timezone,
-                    String(metricName.customFieldId),
-                    metricName.customFieldValue,
-                    metricName.dateRange || statsFilters.period,
-                    sorting
-                )
-        case AIInsightsMetric.TicketDrillDownPerAutomatedInteractions:
-            return (
-                statsFilters: StatsFilters,
-                timezone: string,
-                sorting?: OrderDirection
-            ) =>
-                automatedInteractionsTicketDrillDownQueryFactory(
                     statsFilters,
                     timezone,
                     String(metricName.customFieldId),

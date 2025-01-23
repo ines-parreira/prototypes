@@ -7,7 +7,6 @@ import {
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
 import {
     aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
-    automatedInteractionsTicketDrillDownQueryFactory,
     coverageRateTicketDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {
@@ -253,69 +252,6 @@ describe('tagsTicketCount query factories', () => {
                     member: TicketMember.AssigneeUserId,
                     operator: ReportingFilterOperator.Equals,
                     values: [perAgentId],
-                },
-                {
-                    member: 'TicketEnriched.ticketCount',
-                    operator: 'measureFilter',
-                    values: [],
-                },
-            ])
-        })
-    })
-
-    describe('automatedInteractionsTicketDrillDownQueryFactory', () => {
-        it('should return a query with the correct base query structure for automatedInteractionsTicketDrillDownQueryFactory', () => {
-            const customFieldPeriod = {
-                start_datetime: periodStart,
-                end_datetime: periodEnd,
-            }
-            const query = automatedInteractionsTicketDrillDownQueryFactory(
-                statsFilters,
-                timezone,
-                customFieldId,
-                customFieldsValueStrings,
-                customFieldPeriod,
-                sorting
-            )
-
-            expect(query.filters).toEqual([
-                {
-                    member: 'TicketEnriched.isTrashed',
-                    operator: 'equals',
-                    values: ['0'],
-                },
-                {
-                    member: 'TicketEnriched.isSpam',
-                    operator: 'equals',
-                    values: ['0'],
-                },
-                {
-                    member: 'TicketEnriched.periodStart',
-                    operator: 'afterDate',
-                    values: ['2021-05-29T00:00:00.000'],
-                },
-                {
-                    member: 'TicketEnriched.periodEnd',
-                    operator: 'beforeDate',
-                    values: ['2021-06-04T23:59:59.000'],
-                },
-                {
-                    member: 'TicketEnriched.customField',
-                    operator: 'equals',
-                    values: ['1::1', '1::2'],
-                },
-                {
-                    member: 'TicketCustomFieldsEnriched.customFieldId',
-                    operator: 'equals',
-                    values: ['1'],
-                },
-                {
-                    member: 'TicketCustomFieldsEnriched.customFieldUpdatedDatetime',
-                    operator: 'inDateRange',
-                    values: [
-                        '2021-05-29T00:00:00.000',
-                        '2021-06-04T23:59:59.000',
-                    ],
                 },
                 {
                     member: 'TicketEnriched.ticketCount',

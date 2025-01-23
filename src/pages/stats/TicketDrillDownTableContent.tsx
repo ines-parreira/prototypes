@@ -134,8 +134,6 @@ export const TicketDrillDownTableContent = ({
         metricData.metricName ===
             AIInsightsMetric.TicketDrillDownPerCoverageRate ||
         metricData.metricName ===
-            AIInsightsMetric.TicketDrillDownPerAutomatedInteractions ||
-        metricData.metricName ===
             AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction
 
     const {data, isFetching} = useEnrichedDrillDownData(

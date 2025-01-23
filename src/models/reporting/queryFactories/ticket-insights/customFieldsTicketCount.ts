@@ -158,50 +158,6 @@ export const coverageRateTicketDrillDownQueryFactory = (
     }
 }
 
-// Automated interactions
-export const automatedInteractionsTicketDrillDownQueryFactory = (
-    filters: StatsFilters,
-    timezone: string,
-    customFieldId: string,
-    customFieldsValueStrings: string[] | null,
-    customFieldPeriod: StatsFilters['period'],
-    sorting?: OrderDirection
-): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
-    const baseQuery = customFieldsTicketCountQueryFactory(
-        injectDrillDownCustomFieldId(
-            filters,
-            Number(customFieldId),
-            customFieldsValueStrings
-        ),
-        timezone,
-        customFieldId,
-        sorting
-    )
-
-    return {
-        ...baseQuery,
-        measures: [],
-        filters: [
-            ...baseQuery.filters.filter(
-                (filter) =>
-                    filter.member !==
-                    TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime
-            ),
-            {
-                member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
-                operator: ReportingFilterOperator.InDateRange,
-                values: [
-                    formatReportingQueryDate(customFieldPeriod.start_datetime),
-                    formatReportingQueryDate(customFieldPeriod.end_datetime),
-                ],
-            },
-            TicketDrillDownFilter,
-        ].reduce(deduplicateCustomFields, []),
-        dimensions: [TicketDimension.TicketId],
-        limit: DRILLDOWN_QUERY_LIMIT,
-    }
-}
-
 export const aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,

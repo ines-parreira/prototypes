@@ -27,8 +27,6 @@ const getPerformanceTipType = (
     return 'neutral'
 }
 
-const AUTOMATED_OUTCOMS = ['Close::With message', 'Close::Without message']
-
 export const Level1IntentsPerformance = () => {
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
 
@@ -105,12 +103,6 @@ export const Level1IntentsPerformance = () => {
                             for you.
                         </PerformanceTip>
                     ),
-                    drillDownMetric:
-                        AIInsightsMetric.TicketDrillDownPerAutomatedInteractions,
-                    drillDownMetricAdditionalData: {
-                        customFieldId: outcomeCustomFieldId,
-                        customFieldValue: AUTOMATED_OUTCOMS,
-                    },
                 },
                 {
                     title: 'Success rate',
@@ -134,12 +126,6 @@ export const Level1IntentsPerformance = () => {
                             channels.
                         </PerformanceTip>
                     ),
-                    drillDownMetric:
-                        AIInsightsMetric.TicketDrillDownPerAutomatedInteractions,
-                    drillDownMetricAdditionalData: {
-                        customFieldId: outcomeCustomFieldId,
-                        customFieldValue: AUTOMATED_OUTCOMS,
-                    },
                 },
                 {
                     title: 'Customer satisfaction',

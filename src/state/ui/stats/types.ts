@@ -51,7 +51,6 @@ export enum TicketFieldsMetric {
 export enum AIInsightsMetric {
     TicketCustomFieldsTicketCount = 'ai_agent_insights_ticket_custom_fields_ticket_count',
     TicketDrillDownPerCoverageRate = 'ai_agent_insights_ticket_drill_down_per_coverage_rate',
-    TicketDrillDownPerAutomatedInteractions = 'ai_agent_insights_ticket_drill_down_per_automated_interactions',
     TicketDrillDownPerCustomerSatisfaction = 'ai_agent_insights_ticket_drill_down_per_customer_satisfaction',
 }
 
