@@ -1,5 +1,6 @@
 import React, {useState, useMemo, useEffect} from 'react'
 
+import {KnowledgeStep} from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeStep'
 import {ShopifyIntegrationStep} from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep'
 import {SkillsetStep} from 'pages/aiAgent/Onboarding/components/steps/SkillsetStep/SkillsetStep'
 import {useOnboardingContext} from 'pages/aiAgent/Onboarding/providers/OnboardingContext'
@@ -93,7 +94,21 @@ export const useOnboarding = ({shopName}: {shopName: string}) => {
             [WizardStepEnum.KNOWLEDGE]: {
                 step: WizardStepEnum.KNOWLEDGE,
                 condition: true,
-                render: () => <div>Knowledge Step</div>,
+                render: (
+                    onNextClick: () => void,
+                    onBackClick: () => void,
+                    currentStep: number,
+                    totalSteps: number
+                ) => (
+                    <KnowledgeStep
+                        {...{
+                            currentStep,
+                            totalSteps,
+                            onNextClick,
+                            onBackClick,
+                        }}
+                    />
+                ),
             },
         }),
         [integration, emailIntegrations, defaultIntegration, scope]

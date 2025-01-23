@@ -1,0 +1,25 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .line {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+
+        .icon {
+            max-width: 40px;
+            color: var(--neutral-grey-5);
+        }
+
+        .resource {
+            .heading-subsection-semibold();
+            margin-left: @layout-spacing-xs;
+            color: var(--neutral-grey-6);
+        }
+
+        .status {
+            margin-left: auto;
+        }
+    }
+}
