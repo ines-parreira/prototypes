@@ -1,0 +1,34 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .modal {
+        border-radius: 8px;
+        max-width: 504px;
+        box-shadow: 0px 2px 4px 0px rgba(22, 22, 22, 0.16);
+        border: 1px solid var(--neutral-grey-2);
+    }
+
+    .modalImage {
+        border-radius: 8px 8px 0 0;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .modalContent {
+        padding: @layout-spacing-l;
+    }
+
+    .buttonWrapper {
+        display: flex;
+        flex-direction: column;
+        margin-top: @layout-spacing-l;
+    }
+
+    .buttonSpaced {
+        margin-bottom: @layout-spacing-xs;
+    }
+}
