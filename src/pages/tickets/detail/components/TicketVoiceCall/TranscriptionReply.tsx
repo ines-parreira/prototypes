@@ -1,9 +1,7 @@
 import {VoiceCallRecordingTranscriptionSpeakersItem} from '@gorgias/api-queries'
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getFormattedDurationTranscriptionStart} from 'models/voiceCall/utils'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
@@ -26,8 +24,6 @@ export default function TranscriptionReply({
     transcript,
     speakerMapping,
 }: TranscriptionReplyProps) {
-    const showSpeakerLabelsInTranscription =
-        useFlags()[FeatureFlagKey.ShowSpeakerLabelsInTranscription]
     const currentSpeaker = speakerMapping[`${channel}-${speaker}`]
 
     const speakerIndex = currentSpeaker
@@ -48,17 +44,13 @@ export default function TranscriptionReply({
             {defaultSpeakerLabel}
         </span>
     )
-    const label = !!showSpeakerLabelsInTranscription ? (
-        agentId ? (
-            <VoiceCallAgentLabel agentId={agentId} />
-        ) : customerId ? (
-            <VoiceCallCustomerLabel
-                customerId={customerId}
-                phoneNumber={defaultSpeakerLabel}
-            />
-        ) : (
-            defaultLabel
-        )
+    const label = agentId ? (
+        <VoiceCallAgentLabel agentId={agentId} />
+    ) : customerId ? (
+        <VoiceCallCustomerLabel
+            customerId={customerId}
+            phoneNumber={defaultSpeakerLabel}
+        />
     ) : (
         defaultLabel
     )

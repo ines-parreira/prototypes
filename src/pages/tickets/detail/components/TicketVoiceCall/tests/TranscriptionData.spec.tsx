@@ -1,6 +1,5 @@
 import {useGetVoiceCallRecordingTranscription} from '@gorgias/api-queries'
 import {fireEvent, render} from '@testing-library/react'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import React from 'react'
 
 import {VoiceCallRecordingType} from 'models/voiceCall/types'
@@ -133,11 +132,6 @@ describe('TranscriptionData', () => {
         )
     }
 
-    beforeEach(() => {
-        resetLDMocks()
-        mockFlags({ShowSpeakerLabelsInTranscription: true})
-    })
-
     it('should render voicemail correctly', () => {
         mockUseGetVoiceCallRecordingTranscription.mockReturnValue({
             data: voicemailTranscription,
@@ -184,40 +178,6 @@ describe('TranscriptionData', () => {
         )
 
         expect(getByText('VoiceCallCustomerLabel 123')).toBeInTheDocument()
-        expect(getByText('00:01')).toBeInTheDocument()
-        expect(
-            getByText(voicemailTranscription.transcription[0].transcript)
-        ).toBeInTheDocument()
-        expect(queryByText('Show More')).not.toBeInTheDocument()
-        expect(queryByText('Show Less')).not.toBeInTheDocument()
-    })
-
-    it('should render voicemail correctly with customer label (FF off)', () => {
-        mockFlags({ShowSpeakerLabelsInTranscription: false})
-        const transcription = {
-            ...voicemailTranscription,
-            speakers: [
-                {
-                    channel: 0,
-                    speaker: 0,
-                    index_in_recording: 0,
-                    agent_id: null,
-                    customer_id: 123,
-                },
-            ],
-        }
-        mockUseGetVoiceCallRecordingTranscription.mockReturnValue({
-            data: transcription,
-            isLoading: false,
-            isError: false,
-            refetch: jest.fn(),
-        })
-
-        const {getByText, queryByText} = renderComponent(
-            VoiceCallRecordingType.Voicemail
-        )
-
-        expect(getByText('Speaker 1')).toBeInTheDocument()
         expect(getByText('00:01')).toBeInTheDocument()
         expect(
             getByText(voicemailTranscription.transcription[0].transcript)
@@ -341,49 +301,6 @@ describe('TranscriptionData', () => {
 
         expect(getAllByText('VoiceCallAgentLabel 1')).toHaveLength(4)
         expect(getAllByText('VoiceCallCustomerLabel 123')).toHaveLength(3)
-        expect(getByText('00:01')).toBeInTheDocument()
-        callRecordingTranscription.transcription
-            .slice(0, 7)
-            .forEach((transcript) => {
-                expect(getByText(transcript.transcript)).toBeInTheDocument()
-            })
-        expect(getByText('Show More')).toBeInTheDocument()
-    })
-
-    it('should render call recording correctly with speaker labels (FF off)', () => {
-        mockFlags({ShowSpeakerLabelsInTranscription: false})
-        const transcription = {
-            ...callRecordingTranscription,
-            speakers: [
-                {
-                    channel: 0,
-                    speaker: 0,
-                    index_in_recording: 0,
-                    agent_id: 1,
-                    customer_id: null,
-                },
-                {
-                    channel: 0,
-                    speaker: 1,
-                    index_in_recording: 1,
-                    agent_id: null,
-                    customer_id: 123,
-                },
-            ],
-        }
-        mockUseGetVoiceCallRecordingTranscription.mockReturnValue({
-            data: transcription,
-            isLoading: false,
-            isError: false,
-            refetch: jest.fn(),
-        })
-
-        const {getByText, getAllByText} = renderComponent(
-            VoiceCallRecordingType.Recording
-        )
-
-        expect(getAllByText('Speaker 1')).toHaveLength(4)
-        expect(getAllByText('Speaker 2')).toHaveLength(3)
         expect(getByText('00:01')).toBeInTheDocument()
         callRecordingTranscription.transcription
             .slice(0, 7)
