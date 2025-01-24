@@ -1,7 +1,7 @@
 import React from 'react'
 import {Route, Switch, useRouteMatch} from 'react-router-dom'
 
-import {PanelGroup, Panels} from 'core/layout/panels'
+import {Handle, PanelGroup, Panels} from 'core/layout/panels'
 import {GlobalNavigationPanel} from 'core/navigation'
 import {useIsMobileResolution} from 'hooks/useIsMobileResolution'
 import useWindowSize from 'hooks/useWindowSize'
@@ -44,6 +44,7 @@ export default function PanelRoutes() {
         <Panels size={width}>
             <GlobalNavigationPanel key="global-navigation" />
             <TicketsNavbarPanel key="navbar" />
+            <Handle />
             <PanelGroup className={css.contentGroup} subtractSize={18}>
                 <Switch>
                     <Route exact path="/app">
@@ -63,10 +64,12 @@ export default function PanelRoutes() {
                     </Route>
                     <Route exact path="/app/ticket/:ticketId">
                         <TicketDetailPanel key="ticket-detail-panel" />
+                        <Handle />
                         <TicketInfobarPanel key="infobar-panel" />
                     </Route>
                     <Route exact path="/app/views/:viewId?">
                         <TicketsListPanel key={`ticket-list-panel-${viewId}`} />
+                        <Handle />
                         <TicketEmptyPanel key="ticket-empty-panel" />
                     </Route>
                     <Route exact path="/app/views/:viewId/:ticketId">
@@ -74,10 +77,12 @@ export default function PanelRoutes() {
                             key={`ticket-list-panel-${viewId}`}
                             registerOnToggleUnread={registerOnToggleUnread}
                         />
+                        <Handle />
                         <TicketDetailPanel
                             key="ticket-detail-panel"
                             onToggleUnread={onToggleUnread}
                         />
+                        <Handle />
                         <TicketInfobarPanel key="infobar-panel" />
                     </Route>
                 </Switch>

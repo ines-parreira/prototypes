@@ -2,10 +2,10 @@ import {useCallback, useEffect, useMemo, useState} from 'react'
 
 import mutateSizes from '../helpers/mutateSizes'
 import sum from '../helpers/sum'
-import type {Panel, PanelConfig, PanelListener} from '../types'
+import type {HandleListener, Panel, PanelConfig, PanelListener} from '../types'
+import useChildOrder from './useChildOrder'
 import useDelta from './useDelta'
 import useDrag from './useDrag'
-import usePanelOrder from './usePanelOrder'
 import usePanelSizes from './usePanelSizes'
 import useResizers from './useResizers'
 import useSanitisedConfigs from './useSanitisedConfigs'
@@ -19,7 +19,9 @@ export default function useContextValue(
 
     const [subtractedSize, setSubtractedSize] = useState(0)
     const [panels, setPanels] = useState<Record<string, Panel>>({})
+    const [handles, setHandles] = useState<Record<string, HandleListener>>({})
     const names = useMemo(() => Object.keys(panels), [panels])
+    const ids = useMemo(() => Object.keys(handles), [handles])
     const configs = useMemo(
         () =>
             names.reduce(
@@ -28,7 +30,7 @@ export default function useContextValue(
             ),
         [names, panels]
     )
-    const listeners = useMemo(
+    const panelListeners = useMemo(
         () =>
             names.reduce(
                 (acc, name) => ({...acc, [name]: panels[name].listener}),
@@ -37,7 +39,7 @@ export default function useContextValue(
         [names, panels]
     )
 
-    const panelOrder = usePanelOrder(container, names)
+    const {handlesMap, panelOrder} = useChildOrder(container, names, ids)
     const sanitisedConfigs = useSanitisedConfigs(
         configs,
         savedSizes,
@@ -67,12 +69,27 @@ export default function useContextValue(
     }, [delta, drag, panelOrder, persistSizes, sanitisedConfigs, setSizes])
 
     useEffect(() => {
-        panelOrder.forEach((name) =>
-            listeners[name]({resizer: resizers[name], size: sizes[name]})
-        )
-    }, [listeners, panelOrder, resizers, sizes])
+        panelOrder.forEach((name) => {
+            panelListeners[name]({size: sizes[name]})
+            const handleId = handlesMap[name]
+            if (handleId) {
+                handles[handleId]?.({onResizeStart: resizers[name]})
+            }
+        })
+    }, [handles, handlesMap, panelListeners, panelOrder, resizers, sizes])
 
     const totalSize = sum(Object.values(sizes)) + subtractedSize
+
+    const addHandle = useCallback((id: string, listener: HandleListener) => {
+        setHandles((s) => ({...s, [id]: listener}))
+        return () => {
+            setHandles((s) => {
+                const newState = {...s}
+                delete newState[id]
+                return newState
+            })
+        }
+    }, [])
 
     const addPanel = useCallback(
         (name: string, config: PanelConfig, listener: PanelListener) => {
@@ -96,7 +113,7 @@ export default function useContextValue(
     }, [])
 
     return useMemo(
-        () => ({addPanel, subtractSize, totalSize}),
-        [addPanel, subtractSize, totalSize]
+        () => ({addHandle, addPanel, subtractSize, totalSize}),
+        [addHandle, addPanel, subtractSize, totalSize]
     )
 }

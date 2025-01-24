@@ -8,6 +8,7 @@ describe('useContextValue', () => {
     it('should return the panels api', () => {
         const {result} = renderHook(() => useContextValue(null, 1000))
         expect(result.current).toEqual({
+            addHandle: expect.any(Function),
             addPanel: expect.any(Function),
             subtractSize: expect.any(Function),
             totalSize: 0,

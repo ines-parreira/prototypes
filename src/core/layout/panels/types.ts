@@ -11,6 +11,12 @@ export type Drag = {
     sizes: Record<string, number>
 }
 
+export type HandleListener = (handleState: HandleState) => void
+
+export type HandleState = {
+    onResizeStart?: (e: MouseEvent) => void
+}
+
 export type Panel = {
     config: PanelConfig
     listener: PanelListener
@@ -25,6 +31,5 @@ export type PanelConfig = {
 export type PanelListener = (panelState: PanelState) => void
 
 export type PanelState = {
-    resizer?: (e: MouseEvent) => void
     size: number
 }

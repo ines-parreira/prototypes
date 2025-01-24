@@ -42,11 +42,8 @@ describe('usePanel', () => {
             (state: PanelState) => void,
         ][]
         act(() => {
-            listener({size: 100, resizer: jest.fn()})
+            listener({size: 100})
         })
-        expect(result.current).toEqual({
-            size: 100,
-            resizer: expect.any(Function),
-        })
+        expect(result.current).toEqual({size: 100})
     })
 })
