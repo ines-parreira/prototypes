@@ -5,7 +5,7 @@ import css from './PersonalityPreviewGroup.less'
 import {PersonalityPreviewItem} from './PersonalityPreviewItem'
 
 type Props = {
-    previewType: 'mixed' | 'sales' | 'support'
+    previewType?: 'mixed' | 'sales' | 'support'
     selectedPreviewIndex?: number
     onPreviewSelect: (preview: Preview, index: number) => void
     isLoading?: boolean
@@ -14,13 +14,17 @@ type Props = {
 export const PersonalityPreviewGroup: React.FC<Props> = ({
     selectedPreviewIndex,
     onPreviewSelect,
-    previewType,
+    previewType = 'mixed',
     isLoading,
 }) => {
     const previewsToDisplay = getPreviewsForPreviewType(previewType)
+    let ariaLoadingProps: Record<string, string> = {}
+    if (isLoading) {
+        ariaLoadingProps = {'aria-busy': 'true', 'aria-live': 'polite'}
+    }
 
     return (
-        <div className={css.container} role="radiogroup">
+        <div className={css.container} role="radiogroup" {...ariaLoadingProps}>
             {previewsToDisplay.map((preview, index) => {
                 return (
                     <PersonalityPreviewItem

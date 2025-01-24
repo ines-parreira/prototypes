@@ -195,7 +195,7 @@ describe('useOnboarding', () => {
             {wrapper}
         )
 
-        expect(result.current.totalSteps).toBe(7)
+        expect(result.current.totalSteps).toBe(8)
     })
 
     it('should have 7 steps when scope is SUPPORT without integrations', () => {

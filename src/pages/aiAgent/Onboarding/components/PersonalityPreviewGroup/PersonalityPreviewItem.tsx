@@ -34,6 +34,11 @@ export const PersonalityPreviewItem: React.FC<Props> = ({
     indexInGroup,
     isLoading,
 }) => {
+    let ariaLoadingProps: Record<string, string> = {}
+    if (isLoading) {
+        ariaLoadingProps = {'aria-busy': 'true', 'aria-live': 'polite'}
+    }
+
     return (
         <Card
             className={cn(
@@ -42,7 +47,6 @@ export const PersonalityPreviewItem: React.FC<Props> = ({
             )}
             role="radio"
             aria-checked={isSelected}
-            aria-busy={isLoading}
             onClick={onSelect}
             onKeyDown={(e) => {
                 if (e.key === ' ') {
@@ -51,6 +55,7 @@ export const PersonalityPreviewItem: React.FC<Props> = ({
                 }
             }}
             tabIndex={0}
+            {...ariaLoadingProps}
         >
             <CardContent className={css.content}>
                 {isLoading && (

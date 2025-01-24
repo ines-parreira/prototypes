@@ -86,7 +86,7 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
                 />
                 <Separator />
                 {connected && (
-                    <AIBanner className={css.aiBanner}>{bannerText}</AIBanner>
+                    <AIBanner fillStyle="fill">{bannerText}</AIBanner>
                 )}
                 <IntegrationCard
                     icon={<ShopifyIcon size="40px" />}

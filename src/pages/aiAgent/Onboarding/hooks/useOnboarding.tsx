@@ -2,6 +2,7 @@ import React, {useState, useMemo, useEffect} from 'react'
 
 import {ChannelsStep} from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
 import {KnowledgeStep} from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeStep'
+import {PersonalityPreviewStep} from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep'
 import {PersonalityStep} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersonalityStep'
 import {ShopifyIntegrationStep} from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep'
 import {SkillsetStep} from 'pages/aiAgent/Onboarding/components/steps/SkillsetStep/SkillsetStep'
@@ -92,10 +93,24 @@ export const useOnboarding = ({shopName}: {shopName: string}) => {
                     />
                 ),
             },
-            [WizardStepEnum.TONE_OF_VOICE]: {
-                step: WizardStepEnum.TONE_OF_VOICE,
-                condition: scope.includes(AiAgentScopes.SUPPORT),
-                render: () => <div>Tone of Voice Step</div>,
+            [WizardStepEnum.PERSONALITY_PREVIEW]: {
+                step: WizardStepEnum.PERSONALITY_PREVIEW,
+                condition: true,
+                render: (
+                    onNextClick: () => void,
+                    onBackClick: () => void,
+                    currentStep: number,
+                    totalSteps: number
+                ) => (
+                    <PersonalityPreviewStep
+                        {...{
+                            currentStep,
+                            totalSteps,
+                            onNextClick,
+                            onBackClick,
+                        }}
+                    />
+                ),
             },
             [WizardStepEnum.SALES_PERSONALITY]: {
                 step: WizardStepEnum.SALES_PERSONALITY,
