@@ -38,9 +38,9 @@ const ClickTrackingSettingsView = () => {
                         via helpdesk conversations. This feature can be used in
                         any channel with standard Gorgias branded links or you
                         can customize your links to match your store’s domain.
-                        Simply edit the DNS/custom domain settings in the
-                        “manage” section above and the links sent to shoppers
-                        will automatically reference your domain!
+                        Simply edit the DNS/custom domain settings below, and
+                        the links sent to shoppers will automatically reference
+                        your domain!
                     </p>
                     <ClickTrackingCustomDomain />
                     {hasManyIntegrations && (
