@@ -34,4 +34,21 @@ describe('toBeAriaDisabled', () => {
         const message = result.message()
         expect(message).toContain('Received element is not disabled:')
     })
+
+    it('should return true even if element is not element that can be disabled but parent is', () => {
+        const button = document.createElement('button')
+        const span = document.createElement('span')
+        button.appendChild(span)
+        button.setAttribute('aria-disabled', 'true')
+
+        const result = toBeAriaDisabled.call(context, span)
+
+        expect(result).toMatchObject({
+            pass: true,
+            message: expect.any(Function),
+        })
+
+        const message = result.message()
+        expect(message).toContain('Received element is disabled:')
+    })
 })

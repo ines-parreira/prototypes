@@ -64,7 +64,7 @@ exports[`OrderModal should render Create Order 1`] = `
                   >
                     <div>
                       <label
-                        class="_label_1b6x4_141 label"
+                        class="_label_e6rgs_141 label"
                         for="personal"
                       >
                         <input
@@ -96,7 +96,7 @@ exports[`OrderModal should render Create Order 1`] = `
                   >
                     <div>
                       <label
-                        class="_label_1b6x4_141 label"
+                        class="_label_e6rgs_141 label"
                         for="company"
                       >
                         <input
@@ -126,12 +126,12 @@ exports[`OrderModal should render Create Order 1`] = `
                 Billing
               </p>
               <label
-                class="_label_1b6x4_141 label"
+                class="_label_e6rgs_141 label"
               >
                 Currency
                 <abbr
                   aria-label="required"
-                  class="_abbr_1b6x4_136"
+                  class="_abbr_e6rgs_136"
                   title="required"
                 >
                   *
@@ -256,12 +256,12 @@ exports[`OrderModal should render Create Order 1`] = `
                 Address
               </p>
               <label
-                class="_label_1b6x4_141 label"
+                class="_label_e6rgs_141 label"
               >
                 Billing address
                 <abbr
                   aria-label="required"
-                  class="_abbr_1b6x4_136"
+                  class="_abbr_e6rgs_136"
                   title="required"
                 >
                   *
@@ -317,7 +317,7 @@ exports[`OrderModal should render Create Order 1`] = `
                 class="mt-3 mb-3"
               >
                 <label
-                  class="_label_1b6x4_141 label"
+                  class="_label_e6rgs_141 label"
                   for="checkbox-4"
                 >
                   <input
@@ -338,7 +338,7 @@ exports[`OrderModal should render Create Order 1`] = `
             </p>
             <div>
               <label
-                class="_label_1b6x4_141 label"
+                class="_label_e6rgs_141 label"
                 for="comment"
               >
                 Comment
@@ -359,7 +359,7 @@ exports[`OrderModal should render Create Order 1`] = `
             </div>
             <div>
               <label
-                class="_label_1b6x4_141 label"
+                class="_label_e6rgs_141 label"
                 for="note"
               >
                 Staff note
@@ -490,7 +490,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
                   >
                     <div>
                       <label
-                        class="_label_1b6x4_141 label"
+                        class="_label_e6rgs_141 label"
                         for="personal"
                       >
                         <input
@@ -522,7 +522,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
                   >
                     <div>
                       <label
-                        class="_label_1b6x4_141 label"
+                        class="_label_e6rgs_141 label"
                         for="company"
                       >
                         <input
@@ -552,12 +552,12 @@ exports[`OrderModal should render Duplicate Order 1`] = `
                 Billing
               </p>
               <label
-                class="_label_1b6x4_141 label"
+                class="_label_e6rgs_141 label"
               >
                 Currency
                 <abbr
                   aria-label="required"
-                  class="_abbr_1b6x4_136"
+                  class="_abbr_e6rgs_136"
                   title="required"
                 >
                   *
@@ -682,12 +682,12 @@ exports[`OrderModal should render Duplicate Order 1`] = `
                 Address
               </p>
               <label
-                class="_label_1b6x4_141 label"
+                class="_label_e6rgs_141 label"
               >
                 Billing address
                 <abbr
                   aria-label="required"
-                  class="_abbr_1b6x4_136"
+                  class="_abbr_e6rgs_136"
                   title="required"
                 >
                   *
@@ -743,7 +743,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
                 class="mt-3 mb-3"
               >
                 <label
-                  class="_label_1b6x4_141 _isDisabled_1b6x4_151 label"
+                  class="_label_e6rgs_141 _isDisabled_e6rgs_151 label"
                   for="checkbox-8"
                 >
                   <input
@@ -765,7 +765,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
             </p>
             <div>
               <label
-                class="_label_1b6x4_141 label"
+                class="_label_e6rgs_141 label"
                 for="comment"
               >
                 Comment
@@ -787,7 +787,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
             </div>
             <div>
               <label
-                class="_label_1b6x4_141 label"
+                class="_label_e6rgs_141 label"
                 for="note"
               >
                 Staff note

@@ -513,7 +513,7 @@ exports[`<OrderForm/> render() should render with zero quantity 1`] = `
               class="mb-3"
             >
               <label
-                class="_label_1b6x4_141 label"
+                class="_label_e6rgs_141 label"
                 for="checkbox-3"
               >
                 <input
@@ -535,7 +535,7 @@ exports[`<OrderForm/> render() should render with zero quantity 1`] = `
               class="mb-3"
             >
               <label
-                class="_label_1b6x4_141 label"
+                class="_label_e6rgs_141 label"
                 for="notify-customer"
               >
                 <input
@@ -559,7 +559,7 @@ exports[`<OrderForm/> render() should render with zero quantity 1`] = `
               class="form-group"
             >
               <label
-                class="_label_1b6x4_141"
+                class="_label_e6rgs_141"
                 for="amount"
               >
                 Refund with: Manual
@@ -630,7 +630,7 @@ exports[`<OrderForm/> render() should render with zero quantity 1`] = `
               class="form-group"
             >
               <label
-                class="_label_1b6x4_141"
+                class="_label_e6rgs_141"
                 for="reason"
               >
                 Reason for canceling this order
@@ -678,7 +678,7 @@ exports[`<OrderForm/> render() should render with zero quantity 1`] = `
               class="form-group"
             >
               <label
-                class="_label_1b6x4_141"
+                class="_label_e6rgs_141"
                 for="discrepancy-reason"
               >
                 Reason for custom refund amount

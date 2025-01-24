@@ -160,7 +160,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                     class="option"
                   >
                     <label
-                      class="_label_1b6x4_141 label"
+                      class="_label_e6rgs_141 label"
                       for="auto-based-on-agent-availability"
                     >
                       <input
@@ -182,7 +182,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                     class="option"
                   >
                     <label
-                      class="_label_1b6x4_141 label"
+                      class="_label_e6rgs_141 label"
                       for="always-live-during-business-hours"
                     >
                       <input
@@ -203,7 +203,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                     class="option"
                   >
                     <label
-                      class="_label_1b6x4_141 label"
+                      class="_label_e6rgs_141 label"
                       for="offline"
                     >
                       <input
@@ -260,7 +260,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                   <div>
                     <label
                       aria-checked="false"
-                      class="_label_1b6x4_141 label"
+                      class="_label_e6rgs_141 label"
                       for="toggle-button-174"
                       role="switch"
                     >
@@ -295,7 +295,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                   <label
                     aria-checked="false"
                     aria-label="Hide chat"
-                    class="_label_1b6x4_141 label"
+                    class="_label_e6rgs_141 label"
                     for="toggle-button-175"
                     role="switch"
                   >
@@ -341,7 +341,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 <div>
                   <label
                     aria-checked="false"
-                    class="_label_1b6x4_141 label"
+                    class="_label_e6rgs_141 label"
                     for="toggle-button-176"
                     role="switch"
                   >
@@ -386,7 +386,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 <div>
                   <label
                     aria-checked="false"
-                    class="_label_1b6x4_141 label"
+                    class="_label_e6rgs_141 label"
                     for="toggle-button-177"
                     role="switch"
                   >
@@ -430,7 +430,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 <div>
                   <label
                     aria-checked="true"
-                    class="_label_1b6x4_141 label"
+                    class="_label_e6rgs_141 label"
                     for="disable-email-capture-toggle"
                     role="switch"
                   >
@@ -459,7 +459,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                   class="option"
                 >
                   <label
-                    class="_label_1b6x4_141 label"
+                    class="_label_e6rgs_141 label"
                     for="optional"
                   >
                     <input
@@ -476,7 +476,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                   class="option"
                 >
                   <label
-                    class="_label_1b6x4_141 label"
+                    class="_label_e6rgs_141 label"
                     for="always-required"
                   >
                     <input
@@ -516,7 +516,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 <div>
                   <label
                     aria-checked="true"
-                    class="_label_1b6x4_141 label"
+                    class="_label_e6rgs_141 label"
                     for="auto-responder-toggle"
                     role="switch"
                   >
@@ -552,7 +552,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                     class="option"
                   >
                     <label
-                      class="_label_1b6x4_141 label"
+                      class="_label_e6rgs_141 label"
                       for="reply-dynamic"
                     >
                       <input
@@ -586,7 +586,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                     class="option"
                   >
                     <label
-                      class="_label_1b6x4_141 label"
+                      class="_label_e6rgs_141 label"
                       for="reply-in-minutes"
                     >
                       <input
@@ -602,7 +602,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                     class="option"
                   >
                     <label
-                      class="_label_1b6x4_141 label"
+                      class="_label_e6rgs_141 label"
                       for="reply-in-hours"
                     >
                       <input

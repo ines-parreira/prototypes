@@ -19,7 +19,7 @@ exports[`RefundMethodPickerSection snapshot renders refund methods & selected re
     >
       <div>
         <label
-          class="_label_1b6x4_141 label"
+          class="_label_e6rgs_141 label"
           for="option-0"
         >
           <input
@@ -46,7 +46,7 @@ exports[`RefundMethodPickerSection snapshot renders refund methods & selected re
     >
       <div>
         <label
-          class="_label_1b6x4_141 label"
+          class="_label_e6rgs_141 label"
           for="option-1"
         >
           <input
@@ -80,7 +80,7 @@ exports[`RefundMethodPickerSection snapshot renders refund methods & selected re
     >
       <div>
         <label
-          class="_label_1b6x4_141 label"
+          class="_label_e6rgs_141 label"
           for="option-2"
         >
           <input
@@ -116,13 +116,13 @@ exports[`RefundMethodPickerSection snapshot renders the initial disabled state 1
       class="spinnerWrapper"
     >
       <svg
-        class="_spinner_93fxp_136 _gloom_93fxp_162 _medium_93fxp_182 spinner"
+        class="_spinner_1an91_136 _gloom_1an91_162 _medium_1an91_182 spinner"
         preserveAspectRatio="xMidYMid meet"
         role="status"
         viewBox="0 0 20 20"
       >
         <circle
-          class="_dot_93fxp_168"
+          class="_dot_1an91_168"
           cx="10"
           cy="10"
           fill="none"
@@ -130,7 +130,7 @@ exports[`RefundMethodPickerSection snapshot renders the initial disabled state 1
           stroke-width="2"
         />
         <circle
-          class="_circle_93fxp_174"
+          class="_circle_1an91_174"
           cx="10"
           cy="10"
           fill="none"

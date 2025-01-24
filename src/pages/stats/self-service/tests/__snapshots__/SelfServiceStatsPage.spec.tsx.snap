@@ -79,7 +79,7 @@ exports[`<SelfServiceStatsPage /> should display the loader on loading 1`] = `
                     class="checkbox"
                   >
                     <label
-                      class="_label_1b6x4_141 label quickSelectionOption"
+                      class="_label_e6rgs_141 label quickSelectionOption"
                       for="checkbox-1"
                     >
                       <input
@@ -109,7 +109,7 @@ exports[`<SelfServiceStatsPage /> should display the loader on loading 1`] = `
                     class="wrapperItem"
                   >
                     <label
-                      class="_label_1b6x4_141 label labelItem"
+                      class="_label_e6rgs_141 label labelItem"
                       for="checkbox-2"
                     >
                       <input
@@ -347,7 +347,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                   class="checkbox"
                 >
                   <label
-                    class="_label_1b6x4_141 label quickSelectionOption"
+                    class="_label_e6rgs_141 label quickSelectionOption"
                     for="checkbox-4"
                   >
                     <input
@@ -377,7 +377,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                   class="wrapperItem"
                 >
                   <label
-                    class="_label_1b6x4_141 label labelItem"
+                    class="_label_e6rgs_141 label labelItem"
                     for="checkbox-5"
                   >
                     <input
@@ -1274,7 +1274,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
                   class="checkbox"
                 >
                   <label
-                    class="_label_1b6x4_141 label quickSelectionOption"
+                    class="_label_e6rgs_141 label quickSelectionOption"
                     for="checkbox-7"
                   >
                     <input
@@ -1304,7 +1304,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
                   class="wrapperItem"
                 >
                   <label
-                    class="_label_1b6x4_141 label labelItem"
+                    class="_label_e6rgs_141 label labelItem"
                     for="checkbox-8"
                   >
                     <input

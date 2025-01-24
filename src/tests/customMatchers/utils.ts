@@ -164,8 +164,5 @@ function isAncestorAriaDisabled(element: HTMLElement | null): boolean {
 }
 
 export function isElementOrAncestorAriaDisabled(element: HTMLElement) {
-    return (
-        canElementBeAriaDisabled(element) &&
-        (isElementAriaDisabled(element) || isAncestorAriaDisabled(element))
-    )
+    return isElementAriaDisabled(element) || isAncestorAriaDisabled(element)
 }

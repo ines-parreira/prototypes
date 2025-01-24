@@ -320,7 +320,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                 class="mb-3"
               >
                 <label
-                  class="_label_1b6x4_141 label"
+                  class="_label_e6rgs_141 label"
                   for="checkbox-3"
                 >
                   <input
@@ -341,7 +341,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                 class="mb-3"
               >
                 <label
-                  class="_label_1b6x4_141 label"
+                  class="_label_e6rgs_141 label"
                   for="notify-customer"
                 >
                   <input
@@ -366,7 +366,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                 class="form-group"
               >
                 <label
-                  class="_label_1b6x4_141"
+                  class="_label_e6rgs_141"
                   for="amount"
                 >
                   Refund with: Manual
@@ -437,7 +437,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                 class="form-group"
               >
                 <label
-                  class="_label_1b6x4_141"
+                  class="_label_e6rgs_141"
                   for="reason"
                 >
                   Reason for canceling this order

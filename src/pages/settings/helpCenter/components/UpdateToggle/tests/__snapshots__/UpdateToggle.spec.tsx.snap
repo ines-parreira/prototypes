@@ -7,7 +7,7 @@ exports[`<UpdateToggle /> should display the update toggle 1`] = `
   >
     <label
       aria-checked="true"
-      class="_label_1b6x4_141 label"
+      class="_label_e6rgs_141 label"
       for="toggle-button-1"
       role="switch"
     >

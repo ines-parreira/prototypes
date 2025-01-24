@@ -14,7 +14,7 @@ exports[`<RadioFieldSet /> render() should render a Radio field with label 1`] =
     class="option"
   >
     <label
-      class="_label_1b6x4_141 label"
+      class="_label_e6rgs_141 label"
       for="japanese"
     >
       <input
@@ -31,7 +31,7 @@ exports[`<RadioFieldSet /> render() should render a Radio field with label 1`] =
     class="option"
   >
     <label
-      class="_label_1b6x4_141 label"
+      class="_label_e6rgs_141 label"
       for="mexican"
     >
       <input
@@ -56,7 +56,7 @@ exports[`<RadioFieldSet /> render() should render a disabled RadioField 1`] = `
     class="option"
   >
     <label
-      class="_label_1b6x4_141 _isDisabled_1b6x4_151 label"
+      class="_label_e6rgs_141 _isDisabled_e6rgs_151 label"
       for="japanese"
     >
       <input
@@ -74,7 +74,7 @@ exports[`<RadioFieldSet /> render() should render a disabled RadioField 1`] = `
     class="option"
   >
     <label
-      class="_label_1b6x4_141 _isDisabled_1b6x4_151 label"
+      class="_label_e6rgs_141 _isDisabled_e6rgs_151 label"
       for="mexican"
     >
       <input
@@ -99,7 +99,7 @@ exports[`<RadioFieldSet /> render() should render an enabled Radio field 1`] = `
     class="option"
   >
     <label
-      class="_label_1b6x4_141 label"
+      class="_label_e6rgs_141 label"
       for="japanese"
     >
       <input
@@ -116,7 +116,7 @@ exports[`<RadioFieldSet /> render() should render an enabled Radio field 1`] = `
     class="option"
   >
     <label
-      class="_label_1b6x4_141 label"
+      class="_label_e6rgs_141 label"
       for="mexican"
     >
       <input
@@ -140,7 +140,7 @@ exports[`<RadioFieldSet /> render() should render captions under radio buttons 1
     class="option"
   >
     <label
-      class="_label_1b6x4_141 label"
+      class="_label_e6rgs_141 label"
       for="japanese"
     >
       <input
@@ -162,7 +162,7 @@ exports[`<RadioFieldSet /> render() should render captions under radio buttons 1
     class="option"
   >
     <label
-      class="_label_1b6x4_141 label"
+      class="_label_e6rgs_141 label"
       for="mexican"
     >
       <input

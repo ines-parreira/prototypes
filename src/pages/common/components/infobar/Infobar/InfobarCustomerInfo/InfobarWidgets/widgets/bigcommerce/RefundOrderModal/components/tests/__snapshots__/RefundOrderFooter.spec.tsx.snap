@@ -11,7 +11,7 @@ exports[`RefundOrderFooter snapshot renders the initial disabled state 1`] = `
       Other
     </p>
     <label
-      class="_label_1b6x4_141 label"
+      class="_label_e6rgs_141 label"
       for="refundReason"
     >
       Reason for refund
@@ -37,7 +37,7 @@ exports[`RefundOrderFooter snapshot renders the initial disabled state 1`] = `
       </div>
     </div>
     <label
-      class="_label_1b6x4_141 label smallSpacingMarginTop"
+      class="_label_e6rgs_141 label smallSpacingMarginTop"
       for="newOrderStatus"
     >
       New status
@@ -83,7 +83,7 @@ exports[`RefundOrderFooter snapshot renders the initial state 1`] = `
       Other
     </p>
     <label
-      class="_label_1b6x4_141 label"
+      class="_label_e6rgs_141 label"
       for="refundReason"
     >
       Reason for refund
@@ -108,7 +108,7 @@ exports[`RefundOrderFooter snapshot renders the initial state 1`] = `
       </div>
     </div>
     <label
-      class="_label_1b6x4_141 label smallSpacingMarginTop"
+      class="_label_e6rgs_141 label smallSpacingMarginTop"
       for="newOrderStatus"
     >
       New status

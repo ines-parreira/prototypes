@@ -54,7 +54,7 @@ exports[`<EditFieldForm/> should render correctly 1`] = `
     class="formRow"
   >
     <label
-      class="_label_1b6x4_141 formLabel"
+      class="_label_e6rgs_141 formLabel"
     >
       Status
     </label>
@@ -69,13 +69,13 @@ exports[`<EditFieldForm/> should render correctly 1`] = `
     class="formRow"
   >
     <label
-      class="_label_1b6x4_141 label"
+      class="_label_e6rgs_141 label"
       for="input-text-1"
     >
       Name
       <abbr
         aria-label="required"
-        class="_abbr_1b6x4_136"
+        class="_abbr_e6rgs_136"
         title="required"
       >
         *
@@ -106,7 +106,7 @@ exports[`<EditFieldForm/> should render correctly 1`] = `
     class="formRow"
   >
     <label
-      class="_label_1b6x4_141 label"
+      class="_label_e6rgs_141 label"
       for="textarea-3"
     >
       Description
@@ -132,7 +132,7 @@ exports[`<EditFieldForm/> should render correctly 1`] = `
     class="formRow"
   >
     <label
-      class="_label_1b6x4_141 label"
+      class="_label_e6rgs_141 label"
       for="checkbox-4"
     >
       <input
@@ -154,13 +154,13 @@ exports[`<EditFieldForm/> should render correctly 1`] = `
     class="formRow"
   >
     <label
-      class="_label_1b6x4_141 formLabel"
+      class="_label_e6rgs_141 formLabel"
       for="type"
     >
       Type
       <abbr
         aria-label="required"
-        class="_abbr_1b6x4_136"
+        class="_abbr_e6rgs_136"
         title="required"
       >
         *
@@ -196,7 +196,7 @@ exports[`<EditFieldForm/> should render correctly 1`] = `
     class="formRow"
   >
     <label
-      class="_label_1b6x4_141 label"
+      class="_label_e6rgs_141 label"
       for="input-text-5"
     >
       Placeholder

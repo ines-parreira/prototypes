@@ -16,7 +16,7 @@ exports[`<Table /> should display a default view 1`] = `
             class="checkBox"
           >
             <label
-              class="_label_1b6x4_141 label checkBoxLabel"
+              class="_label_e6rgs_141 label checkBoxLabel"
               for="checkbox-2"
             >
               <input
@@ -152,7 +152,7 @@ exports[`<Table /> should display a view with no fields 1`] = `
             class="checkBox"
           >
             <label
-              class="_label_1b6x4_141 label checkBoxLabel"
+              class="_label_e6rgs_141 label checkBoxLabel"
               for="checkbox-1"
             >
               <input
