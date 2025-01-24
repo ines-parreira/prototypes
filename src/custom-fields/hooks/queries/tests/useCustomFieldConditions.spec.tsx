@@ -114,7 +114,7 @@ describe('useCustomFieldConditions', () => {
     it('should dispatch error notification on error', () => {
         useListCustomFieldConditionsMock.mockReturnValue({isError: true} as any)
 
-        renderHook(
+        const {result} = renderHook(
             () =>
                 useCustomFieldConditions({
                     objectType: OBJECT_TYPES.TICKET,
@@ -159,5 +159,7 @@ describe('useCustomFieldConditions', () => {
                 },
             },
         ])
+
+        expect(result.current.isError).toBe(true)
     })
 })

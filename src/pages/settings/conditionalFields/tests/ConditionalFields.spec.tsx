@@ -1,14 +1,10 @@
-import {useListCustomFieldConditions} from '@gorgias/api-queries'
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {Link} from 'react-router-dom'
 
 import {SegmentEvent, logEvent} from 'common/segment'
-import {
-    apiListCursorPaginationResponse,
-    axiosSuccessResponse,
-} from 'fixtures/axiosResponse'
+import {useCustomFieldConditions} from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import {customFieldCondition} from 'fixtures/customFieldCondition'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
@@ -34,41 +30,23 @@ jest.mock(
             ),
         }) as Record<string, unknown>
 )
-jest.mock(
-    '@gorgias/api-queries',
-    () =>
-        ({
-            ...jest.requireActual('@gorgias/api-queries'),
-            useListCustomFieldConditions: jest.fn(),
-            useCreateCustomFieldCondition: jest
-                .fn()
-                .mockReturnValue({mutateAsync: jest.fn(), isLoading: false}),
-            useUpdateCustomFieldCondition: jest
-                .fn()
-                .mockReturnValue({mutateAsync: jest.fn(), isLoading: false}),
-            useDeleteCustomFieldCondition: jest
-                .fn()
-                .mockReturnValue({mutateAsync: jest.fn(), isLoading: false}),
-        }) as Record<string, unknown>
-)
-
+jest.mock('custom-fields/hooks/queries/useCustomFieldConditions')
 jest.mock('hooks/useDebouncedValue')
 
 const useDebouncedValueMock = assumeMock(useDebouncedValue)
 const mockedLogEvent = assumeMock(logEvent)
 const mockedLink = assumeMock(Link)
-const useListCustomFieldConditionsMock = assumeMock(
-    useListCustomFieldConditions
-)
+const useCustomFieldConditionsMock = assumeMock(useCustomFieldConditions)
 
 describe('<CustomFields/>', () => {
     beforeEach(() => {
         useDebouncedValueMock.mockReturnValue('')
 
-        useListCustomFieldConditionsMock.mockReturnValue({
-            data: axiosSuccessResponse(apiListCursorPaginationResponse([])),
+        useCustomFieldConditionsMock.mockReturnValue({
+            customFieldConditions: [],
             isLoading: false,
-        } as ReturnType<typeof useListCustomFieldConditions>)
+            isError: false,
+        })
     })
 
     it('should render get started', () => {
@@ -96,17 +74,17 @@ describe('<CustomFields/>', () => {
     })
 
     it('should disable the create button when max limit is reached and display an alert', () => {
-        useListCustomFieldConditionsMock.mockReturnValue({
-            data: axiosSuccessResponse(
-                apiListCursorPaginationResponse(
-                    Array.from({length: MAX_CONDITIONS}, (_, i) => ({
-                        ...customFieldCondition,
-                        id: i,
-                    }))
-                )
+        useCustomFieldConditionsMock.mockReturnValue({
+            customFieldConditions: Array.from(
+                {length: MAX_CONDITIONS},
+                (_, i) => ({
+                    ...customFieldCondition,
+                    id: i,
+                })
             ),
             isLoading: false,
-        } as ReturnType<typeof useListCustomFieldConditions>)
+            isError: false,
+        })
 
         renderWithStoreAndQueryClientProvider(<ConditionalFields />)
 
@@ -117,12 +95,11 @@ describe('<CustomFields/>', () => {
     })
 
     it('should render no results found', async () => {
-        useListCustomFieldConditionsMock.mockReturnValue({
-            data: axiosSuccessResponse(
-                apiListCursorPaginationResponse([customFieldCondition])
-            ),
+        useCustomFieldConditionsMock.mockReturnValue({
+            customFieldConditions: [customFieldCondition],
             isLoading: false,
-        } as ReturnType<typeof useListCustomFieldConditions>)
+            isError: false,
+        })
         useDebouncedValueMock.mockReturnValue('foo')
 
         render(<ConditionalFields />)
@@ -134,5 +111,24 @@ describe('<CustomFields/>', () => {
             expect(useDebouncedValue).toHaveBeenLastCalledWith('foo', 300)
         })
         expect(screen.getByText(/No results found./)).toBeInTheDocument()
+    })
+
+    it('should render an error message when the error is returned by useCustomFieldConditions hook', () => {
+        useCustomFieldConditionsMock.mockReturnValue({
+            customFieldConditions: [],
+            isLoading: false,
+            isError: true,
+        })
+
+        render(<ConditionalFields />)
+        const createConditionButton = screen.findAllByRole('button', {
+            name: 'Create Condition',
+        })
+        expect(createConditionButton).toMatchObject({})
+        expect(
+            screen.getByText(
+                'Unexpected error happened when trying to load existing conditions. Please try again later.'
+            )
+        ).toBeInTheDocument()
     })
 })

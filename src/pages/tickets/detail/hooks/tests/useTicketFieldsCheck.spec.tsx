@@ -276,6 +276,7 @@ describe('useTicketFieldsCheck', () => {
                     mockRequiredOnIntentAndOpenCustomFieldCondition,
                 ],
                 isLoading: false,
+                isError: false,
             })
 
             const {result} = renderHook(() => useTicketFieldsCheck(TICKET_ID))
@@ -318,6 +319,7 @@ describe('useTicketFieldsCheck', () => {
                 mockRequiredOnIntentAndOpenCustomFieldCondition,
             ],
             isLoading: false,
+            isError: false,
         })
         mockedGetAppliedMacro.mockImplementation(() =>
             mockMap({

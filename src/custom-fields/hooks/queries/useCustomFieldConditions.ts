@@ -27,6 +27,7 @@ export const useCustomFieldConditions = ({
 }: Params): {
     customFieldConditions: CustomFieldCondition[]
     isLoading: boolean
+    isError: boolean
 } => {
     const dispatch = useAppDispatch()
 
@@ -64,5 +65,5 @@ export const useCustomFieldConditions = ({
         )
     }
 
-    return {customFieldConditions, isLoading}
+    return {customFieldConditions, isLoading, isError}
 }
