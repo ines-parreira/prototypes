@@ -27,9 +27,16 @@
         &.fill {
             padding: @layout-spacing-s;
             border-color: transparent;
-            background-color: var(--accessory-magenta-1);
-            color: var(--accessory-magenta-3);
             border-radius: @layout-spacing-xs;
+
+            &.hasError {
+                background-color: var(--accessory-red-1);
+            }
+
+            &:not(.hasError) {
+                background-color: var(--accessory-magenta-1);
+                color: var(--accessory-magenta-3);
+            }
         }
     }
     .content {

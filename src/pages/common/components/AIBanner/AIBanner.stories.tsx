@@ -65,4 +65,11 @@ WithError.args = {
     hasError: true,
 }
 
+export const FillStyleFillWithError = Template.bind({})
+FillStyleFillWithError.args = {
+    fillStyle: 'fill',
+    className: '',
+    hasError: true,
+}
+
 export default storyConfig
