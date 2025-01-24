@@ -610,6 +610,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 .set('position', state.position)
                 .toJS()
 
+            // @ts-ignore ts(2322)
             actionToUse = actions.updateOrCreateIntegration
         }
 

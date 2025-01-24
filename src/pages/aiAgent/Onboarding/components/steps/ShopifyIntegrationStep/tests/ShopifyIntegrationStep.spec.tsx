@@ -59,7 +59,7 @@ describe('ShopifyIntegrationStep', () => {
         const integrations = [{id: 1, name: 'Test Store'}]
         renderComponent(integrations as StoreIntegration[])
         expect(mockSetOnboardingData).toHaveBeenCalledWith({
-            shop_name: 'Test Store',
+            shopName: 'Test Store',
         })
     })
 
@@ -110,7 +110,7 @@ describe('ShopifyIntegrationStep', () => {
         fireEvent.click(screen.getByText('Test Store 1'))
         fireEvent.click(screen.getByText('Test Store 2'))
         expect(mockSetOnboardingData).toHaveBeenCalledWith({
-            shop_name: 'Test Store 2',
+            shopName: 'Test Store 2',
         })
     })
 

@@ -31,7 +31,7 @@ describe('KnowledgeStep', () => {
             <OnboardingContext.Provider
                 value={
                     {
-                        shop_name: shopifyIntegration.meta.shop_name,
+                        shopName: shopifyIntegration.meta.shop_name,
                         setOnboardingData: jest.fn(),
                     } as any
                 }

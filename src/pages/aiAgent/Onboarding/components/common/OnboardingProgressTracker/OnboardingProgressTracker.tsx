@@ -11,10 +11,11 @@ type Props = {
     totalSteps: number
     onBackClick: () => void
     onNextClick: () => void
+    isLoading: boolean
 }
 
 const OnboardingProgressTracker = (props: Props) => {
-    const {step, totalSteps, onBackClick, onNextClick} = props
+    const {step, totalSteps, onBackClick, onNextClick, isLoading} = props
 
     const onBackBtnClick = () => {
         // TODO: set step in state here
@@ -45,6 +46,7 @@ const OnboardingProgressTracker = (props: Props) => {
                 intent="primary"
                 size="medium"
                 onClick={onNextBtnClick}
+                isLoading={isLoading}
             >
                 {nextBtnText}
             </Button>

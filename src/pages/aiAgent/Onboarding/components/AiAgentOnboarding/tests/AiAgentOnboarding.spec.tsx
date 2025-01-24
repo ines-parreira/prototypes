@@ -52,7 +52,7 @@ describe('AiAgentOnboarding', () => {
         })
         jest.spyOn(ContextModule, 'useOnboardingContext').mockReturnValue({
             scope: [AiAgentScopes.SALES, AiAgentScopes.SUPPORT],
-            last_user_step: WizardStepEnum.SKILLSET,
+            lastStep: WizardStepEnum.SKILLSET,
             setOnboardingData: jest.fn(),
         })
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
@@ -68,7 +68,7 @@ describe('AiAgentOnboarding', () => {
     it('displays loading state correctly', () => {
         jest.spyOn(ContextModule, 'useOnboardingContext').mockReturnValue({
             scope: [AiAgentScopes.SALES, AiAgentScopes.SUPPORT],
-            last_user_step: WizardStepEnum.SKILLSET,
+            lastStep: WizardStepEnum.SKILLSET,
             setOnboardingData: jest.fn(),
         })
         renderWithRouter(<AiAgentOnboarding />)

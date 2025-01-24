@@ -35,6 +35,7 @@ const templateParameters = {
 const defaultProps: ComponentProps<typeof OnboardingProgressTracker> = {
     step: 2,
     totalSteps: 4,
+    isLoading: false,
     // eslint-disable-next-line no-console
     onBackClick: () => console.log('Back clicked'),
     // eslint-disable-next-line no-console

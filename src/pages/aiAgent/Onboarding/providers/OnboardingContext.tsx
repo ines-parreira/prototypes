@@ -11,9 +11,9 @@ type OnboardingContextHandlers = {
 }
 
 const getDefaultOnboardingWizardData = (): OnboardingContextData => ({
-    last_user_step: WizardStepEnum.SKILLSET,
+    lastStep: WizardStepEnum.SKILLSET,
     scope: [AiAgentScopes.SUPPORT],
-    shop_name: '',
+    shopName: '',
 })
 
 export const OnboardingContext = createContext<
@@ -32,11 +32,15 @@ export const useOnboardingContext = () => {
 
 export const OnboardingContextProvider = ({
     children,
+    initialData,
 }: {
     children: ReactNode
+    initialData?: OnboardingContextData
 }) => {
     const [onboardingData, setOnboardingStateData] =
-        React.useState<OnboardingContextData>(getDefaultOnboardingWizardData())
+        React.useState<OnboardingContextData>(
+            initialData ?? getDefaultOnboardingWizardData()
+        )
 
     const setOnboardingData = (data: Partial<OnboardingContextData>) => {
         setOnboardingStateData((oldData) => ({...oldData, ...data}))

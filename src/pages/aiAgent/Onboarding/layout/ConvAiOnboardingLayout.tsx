@@ -86,7 +86,15 @@ export const OnboardingContentContainer: React.FC<{
     currentStep: number
     onNextClick: () => void
     onBackClick: () => void
-}> = ({children, totalSteps, currentStep, onNextClick, onBackClick}) => {
+    isLoading?: boolean
+}> = ({
+    children,
+    totalSteps,
+    currentStep,
+    onNextClick,
+    onBackClick,
+    isLoading,
+}) => {
     return (
         <div className={css.onboardingContentContainer}>
             <div>{children}</div>
@@ -96,6 +104,7 @@ export const OnboardingContentContainer: React.FC<{
                     totalSteps={totalSteps}
                     onBackClick={onBackClick}
                     onNextClick={onNextClick}
+                    isLoading={isLoading ?? false}
                 />
             </div>
         </div>

@@ -294,11 +294,11 @@ describe('useOnboarding', () => {
         expect(result.current.totalSteps).toBe(5)
     })
 
-    it('updates last_user_step on nextStep', () => {
+    it('updates lastStep on nextStep', () => {
         const setOnboardingData = jest.fn()
         jest.spyOn(ContextModule, 'useOnboardingContext').mockReturnValue({
             scope: [AiAgentScopes.SUPPORT],
-            last_user_step: WizardStepEnum.SKILLSET,
+            lastStep: WizardStepEnum.SKILLSET,
             setOnboardingData,
         })
 
@@ -312,15 +312,15 @@ describe('useOnboarding', () => {
         })
 
         expect(setOnboardingData).toHaveBeenCalledWith({
-            last_user_step: WizardStepEnum.CHANNELS,
+            lastStep: WizardStepEnum.CHANNELS,
         })
     })
 
-    it('updates last_user_step on prevStep', () => {
+    it('updates lastStep on prevStep', () => {
         const setOnboardingData = jest.fn()
         jest.spyOn(ContextModule, 'useOnboardingContext').mockReturnValue({
             scope: [AiAgentScopes.SUPPORT],
-            last_user_step: WizardStepEnum.SKILLSET,
+            lastStep: WizardStepEnum.SKILLSET,
             setOnboardingData,
         })
 
@@ -337,7 +337,7 @@ describe('useOnboarding', () => {
         })
 
         expect(setOnboardingData).toHaveBeenCalledWith({
-            last_user_step: WizardStepEnum.SKILLSET,
+            lastStep: WizardStepEnum.SKILLSET,
         })
     })
 })

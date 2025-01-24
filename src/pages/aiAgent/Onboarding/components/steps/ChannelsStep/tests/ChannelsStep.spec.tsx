@@ -1,0 +1,268 @@
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+
+import userEvent from '@testing-library/user-event'
+import {fromJS, Map} from 'immutable'
+import React from 'react'
+
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {chatIntegrationFixtures} from 'fixtures/chat'
+import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
+
+import {OnboardingContextProvider} from 'pages/aiAgent/Onboarding/providers/OnboardingContext'
+import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
+
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {RootState, StoreDispatch} from 'state/types'
+
+import {ChannelsStep} from '../ChannelsStep'
+
+const mockStore = configureMockStore<RootState, StoreDispatch>()
+
+const defaultState = {
+    currentAccount: fromJS(account),
+    billing: fromJS(billingState),
+    integrations: (fromJS(integrationsState) as Map<any, any>).mergeDeep({
+        integrations: [shopifyIntegration, ...chatIntegrationFixtures],
+    }),
+} as RootState
+
+const mockedDispatch = jest.fn()
+jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('state/integrations/actions')
+
+jest.mock('state/notifications/actions')
+
+describe('ChannelsStep', () => {
+    const defaultProps = {
+        currentStep: 1,
+        totalSteps: 3,
+        onNextClick: jest.fn(),
+        onBackClick: jest.fn(),
+    }
+
+    const defaultInitialData = {
+        lastStep: WizardStepEnum.CHANNELS,
+        scope: [AiAgentScopes.SUPPORT],
+        shopName: shopifyIntegration.meta.shop_name,
+    }
+
+    const renderWithProvider = (
+        state?: RootState,
+        props = defaultProps,
+        initialData = defaultInitialData
+    ) => {
+        return render(
+            <OnboardingContextProvider initialData={initialData}>
+                <Provider store={mockStore(state ?? defaultState)}>
+                    <ChannelsStep {...props} />
+                </Provider>
+            </OnboardingContextProvider>
+        )
+    }
+
+    it('renders the component with main title and cards', () => {
+        renderWithProvider()
+
+        // Components are rendered
+        expect(
+            screen.getByText(/Choose which channels to use with/)
+        ).toBeInTheDocument()
+
+        expect(
+            screen.getByText(
+                'Enable your AI Agent to respond to customers via email.'
+            )
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Enable your AI Agent to respond to customers via chat.'
+            )
+        ).toBeInTheDocument()
+    })
+
+    it('renders the dropdowns and allow next step', () => {
+        renderWithProvider()
+
+        // Setup email
+        const emailCheckbox = screen.getByLabelText('Email')
+        userEvent.click(emailCheckbox)
+        expect(emailCheckbox).toBeChecked()
+
+        expect(
+            screen.queryByText(/AI agent will respond to the following emails/)
+        ).toBeInTheDocument()
+
+        fireEvent.focus(screen.getByText('Select one or more email addresses'))
+        fireEvent.click(screen.getByText('support@acme.gorgias.io'))
+
+        // Setup chat
+        const chatCheckbox = screen.getByLabelText('Chat')
+        userEvent.click(chatCheckbox)
+        expect(chatCheckbox).toBeChecked()
+
+        expect(
+            screen.queryByText(
+                /AI Agent responds to tickets sent to the following Chats/
+            )
+        ).toBeInTheDocument()
+
+        fireEvent.focus(
+            screen.getByText('Select one or more chat integrations')
+        )
+        fireEvent.click(screen.getByText('New chat'))
+
+        // Click on next button
+        const nextButton = screen.getByText('Next')
+        userEvent.click(nextButton)
+        expect(defaultProps.onNextClick).toHaveBeenCalled()
+    })
+
+    it('handles error on no channel', () => {
+        renderWithProvider()
+
+        expect(screen.getByLabelText('Chat')).not.toBeChecked()
+        expect(screen.getByLabelText('Email')).not.toBeChecked()
+
+        // Click on next button
+        const nextButton = screen.getByText('Next')
+        userEvent.click(nextButton)
+        expect(defaultProps.onNextClick).not.toHaveBeenCalled()
+        expect(
+            screen.getByText('Please select at least one option to continue.')
+        ).toBeInTheDocument()
+    })
+
+    it('handles error on no selecting email', () => {
+        renderWithProvider()
+
+        // Setup email
+        const emailCheckbox = screen.getByLabelText('Email')
+        userEvent.click(emailCheckbox)
+        expect(emailCheckbox).toBeChecked()
+
+        // Click on next button
+        const nextButton = screen.getByText('Next')
+        userEvent.click(nextButton)
+        expect(defaultProps.onNextClick).not.toHaveBeenCalled()
+    })
+
+    it('handles error on no selecting chat', () => {
+        renderWithProvider()
+
+        // Setup chat
+        const chatCheckbox = screen.getByLabelText('Chat')
+        userEvent.click(chatCheckbox)
+        expect(chatCheckbox).toBeChecked()
+
+        // Click on next button
+        const nextButton = screen.getByText('Next')
+        userEvent.click(nextButton)
+        expect(defaultProps.onNextClick).not.toHaveBeenCalled()
+    })
+
+    it('renders the chat creation', () => {
+        mockedDispatch.mockImplementationOnce(() => Promise.resolve())
+
+        renderWithProvider({
+            ...defaultState,
+            integrations: (
+                fromJS(integrationsState) as Map<any, any>
+            ).mergeDeep({
+                integrations: [shopifyIntegration],
+            }),
+        })
+
+        // Setup chat
+        const chatCheckbox = screen.getByLabelText('Chat')
+        userEvent.click(chatCheckbox)
+        expect(chatCheckbox).toBeChecked()
+
+        expect(
+            screen.queryByText(/Personalize your Chat widget/)
+        ).toBeInTheDocument()
+
+        // Click on next button
+        const nextButton = screen.getByText('Next')
+        userEvent.click(nextButton)
+        expect(mockedDispatch).toHaveBeenCalled()
+    })
+
+    it('renders the chat creation error', async () => {
+        mockedDispatch.mockImplementationOnce(() =>
+            Promise.reject(new Error('Error message'))
+        )
+
+        renderWithProvider({
+            ...defaultState,
+            integrations: (
+                fromJS(integrationsState) as Map<any, any>
+            ).mergeDeep({
+                integrations: [shopifyIntegration],
+            }),
+        })
+
+        // Setup chat
+        const chatCheckbox = screen.getByLabelText('Chat')
+        userEvent.click(chatCheckbox)
+        expect(chatCheckbox).toBeChecked()
+
+        expect(
+            screen.queryByText(/Personalize your Chat widget/)
+        ).toBeInTheDocument()
+
+        // Click on next button
+        const nextButton = screen.getByText('Next')
+        userEvent.click(nextButton)
+
+        await waitFor(() => {
+            expect(notify).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: 'Could not create chat integration',
+                    status: NotificationStatus.Error,
+                })
+            )
+        })
+    })
+
+    it('handles no store', () => {
+        mockedDispatch.mockImplementationOnce(() => Promise.resolve())
+
+        renderWithProvider(
+            {
+                ...defaultState,
+                integrations: fromJS({integrations: []}) as Map<any, any>,
+            },
+            defaultProps,
+            {
+                ...defaultInitialData,
+                // @ts-ignore
+                shopName: undefined,
+            }
+        )
+
+        // Setup chat
+        const chatCheckbox = screen.getByLabelText('Chat')
+        userEvent.click(chatCheckbox)
+        expect(chatCheckbox).toBeChecked()
+
+        // Click on next button
+        const nextButton = screen.getByText('Next')
+        userEvent.click(nextButton)
+        expect(defaultProps.onNextClick).not.toHaveBeenCalled()
+    })
+
+    it('renders chat preview section', () => {
+        renderWithProvider()
+
+        expect(
+            screen.getByText(
+                'Hi, I’m after a long dress for everyday wear, something comfortable and cute.'
+            )
+        ).toBeInTheDocument()
+    })
+})

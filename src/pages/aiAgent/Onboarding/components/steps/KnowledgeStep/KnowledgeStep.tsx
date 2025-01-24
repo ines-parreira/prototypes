@@ -31,7 +31,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
     onNextClick,
     onBackClick,
 }) => {
-    const {shop_name: shopName} = useOnboardingContext()
+    const {shopName} = useOnboardingContext()
 
     /// This part is a temporary block to be removed once the actual data is available
     const shopifyIntegration: ShopifyIntegration = useAppSelector(

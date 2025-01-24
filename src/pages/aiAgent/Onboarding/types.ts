@@ -16,7 +16,11 @@ export enum AiAgentScopes {
 }
 
 export type OnboardingContextData = {
-    last_user_step: WizardStepEnum
+    lastStep: WizardStepEnum
     scope: AiAgentScopes[]
-    shop_name?: string
+    shopName?: string
+    emailChannelEnabled?: boolean
+    emailIntegrationIds?: number[]
+    chatChannelEnabled?: boolean
+    chatIntegrationIds?: number[]
 }

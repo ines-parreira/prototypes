@@ -498,7 +498,10 @@ export function createImportIntegration(integration: Map<any, any>) {
     }
 }
 
-export function createGorgiasChatIntegration(integration: Map<any, any>) {
+export function createGorgiasChatIntegration(
+    integration: Map<any, any>,
+    redirect: boolean = true
+) {
     return async (
         dispatch: StoreDispatch
     ): Promise<ReturnType<StoreDispatch>> => {
@@ -526,6 +529,7 @@ export function createGorgiasChatIntegration(integration: Map<any, any>) {
 
         let successBannerText
         // Try to install the chat to shopify store
+        const savedIntegrationId = savedIntegration.id || ''
         if (savedIntegration.meta.shop_integration_id) {
             try {
                 await client.put<Integration>(
@@ -561,28 +565,37 @@ export function createGorgiasChatIntegration(integration: Map<any, any>) {
                     type: constants.CREATE_INTEGRATION_SUCCESS,
                     resp: savedIntegration,
                 })
-                history.push(
-                    `/app/settings/channels/gorgias_chat/${
-                        savedIntegration.id || ''
-                    }/installation`
-                )
+
+                if (redirect) {
+                    history.push(
+                        `/app/settings/channels/gorgias_chat/${
+                            savedIntegrationId
+                        }/installation`
+                    )
+                }
 
                 return
             }
 
-            history.push(
-                `/app/settings/channels/gorgias_chat/${
-                    savedIntegration.id || ''
-                }/preferences`
-            )
+            if (redirect) {
+                history.push(
+                    `/app/settings/channels/gorgias_chat/${
+                        savedIntegrationId
+                    }/preferences`
+                )
+            }
+
             successBannerText =
                 'Integration successfully installed on your website'
         } else {
-            history.push(
-                `/app/settings/channels/gorgias_chat/${
-                    savedIntegration.id || ''
-                }/installation`
-            )
+            if (redirect) {
+                history.push(
+                    `/app/settings/channels/gorgias_chat/${
+                        savedIntegrationId
+                    }/installation`
+                )
+            }
+
             successBannerText = 'Integration successfully added'
         }
 

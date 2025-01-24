@@ -57,7 +57,7 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
 
     useEffect(() => {
         setOnboardingData &&
-            setOnboardingData({shop_name: selectedIntegration?.name})
+            setOnboardingData({shopName: selectedIntegration?.name})
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedIntegration])
 

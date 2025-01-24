@@ -1,5 +1,6 @@
 import React, {useState, useMemo, useEffect} from 'react'
 
+import {ChannelsStep} from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
 import {KnowledgeStep} from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeStep'
 import {PersonalityStep} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersonalityStep'
 import {ShopifyIntegrationStep} from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep'
@@ -25,7 +26,7 @@ export const useOnboarding = ({shopName}: {shopName: string}) => {
 
     const {integration} = useShopifyIntegrationAndScope(shopName)
     const {emailIntegrations, defaultIntegration} = useEmailIntegrations()
-    const {scope, last_user_step, setOnboardingData} = useOnboardingContext()
+    const {scope, lastStep, setOnboardingData} = useOnboardingContext()
 
     const stepsMap = useMemo(
         () => ({
@@ -75,7 +76,21 @@ export const useOnboarding = ({shopName}: {shopName: string}) => {
             [WizardStepEnum.CHANNELS]: {
                 step: WizardStepEnum.CHANNELS,
                 condition: true,
-                render: () => <div>Channels Step</div>,
+                render: (
+                    onNextClick: () => void,
+                    onBackClick: () => void,
+                    currentStep: number,
+                    totalSteps: number
+                ) => (
+                    <ChannelsStep
+                        {...{
+                            currentStep,
+                            totalSteps,
+                            onNextClick,
+                            onBackClick,
+                        }}
+                    />
+                ),
             },
             [WizardStepEnum.TONE_OF_VOICE]: {
                 step: WizardStepEnum.TONE_OF_VOICE,
@@ -137,8 +152,7 @@ export const useOnboarding = ({shopName}: {shopName: string}) => {
         /* Updates the necessary steps according to the scope */
         const auxUserSteps: OnboardingStep[] = []
         Object.values(stepsMap).forEach((step) => {
-            if (step.step === last_user_step)
-                setCurrentStep(auxUserSteps.length)
+            if (step.step === lastStep) setCurrentStep(auxUserSteps.length)
             if (step.condition) auxUserSteps.push(step)
         })
         setUserSteps(auxUserSteps)
@@ -158,7 +172,7 @@ export const useOnboarding = ({shopName}: {shopName: string}) => {
             setCurrentStep((step) => step + 1)
             if (setOnboardingData) {
                 setOnboardingData({
-                    last_user_step: userSteps[currentStep + 1].step,
+                    lastStep: userSteps[currentStep + 1].step,
                 })
             }
         }
@@ -169,7 +183,7 @@ export const useOnboarding = ({shopName}: {shopName: string}) => {
             setCurrentStep((step) => step - 1)
             if (setOnboardingData) {
                 setOnboardingData({
-                    last_user_step: userSteps[currentStep - 1].step,
+                    lastStep: userSteps[currentStep - 1].step,
                 })
             }
         }

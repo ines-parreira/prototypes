@@ -1,0 +1,29 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .label,
+    .checkbox,
+    .alert {
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .link {
+        .caption-regular();
+        color: var(--main-primary) !important;
+        cursor: pointer;
+        margin-top: @layout-spacing-s;
+    }
+
+    .previewContainer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        cursor: auto;
+    }
+}

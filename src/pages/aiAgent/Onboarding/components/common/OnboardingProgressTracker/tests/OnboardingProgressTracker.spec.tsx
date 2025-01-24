@@ -9,6 +9,7 @@ describe('OnboardingProgressTracker', () => {
         totalSteps: 3,
         onBackClick: jest.fn(),
         onNextClick: jest.fn(),
+        isLoading: false,
     }
 
     it('renders correctly with initial step', () => {
