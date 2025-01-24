@@ -1,16 +1,14 @@
-import {Macro, MacroAction} from '@gorgias/api-queries'
+import {Macro} from '@gorgias/api-queries'
 import classnames from 'classnames'
 import {fromJS, Map, List} from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
-import React, {FormEvent, useEffect, useRef, useState} from 'react'
+import React, {Component, createRef, FormEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {Container, Row, Col} from 'reactstrap'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {DEFAULT_ACTIONS} from 'config'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import {JobParams, JobType} from 'models/job/types'
 import {FetchMacrosOptions} from 'models/macro/types'
 import {MacroActionName} from 'models/macroAction/types'
@@ -24,6 +22,7 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import shortcutManager from 'services/shortcutManager/index'
 import {createMacro, updateMacro, deleteMacro} from 'state/macro/actions'
 import {createJob as createTicketJob} from 'state/tickets/actions'
+import {RootState} from 'state/types'
 import {createJob as createViewJob} from 'state/views/actions'
 import {makeGetViewCount} from 'state/views/selectors'
 
@@ -56,92 +55,100 @@ type Props = {
     selectionMode: boolean
     toggleCreateMacro?: (toggle?: boolean) => void
     updateMacros: (macro: Macro) => void
+} & ConnectedProps<typeof connector>
+
+type State = {
+    actions: List<any>
+    name: string
+    language: string | null
+    isModalOpen: boolean
 }
 
-const multipleActionsNames = [
-    MacroActionName.Http,
-    MacroActionName.SetCustomFieldValue,
-] // actions names that can be set multiple times in the same macro
+export class MacroModalContainer extends Component<Props, State> {
+    static defaultProps: Pick<Props, 'activeView'> = {
+        activeView: fromJS({}),
+    }
+    modalRef = createRef<HTMLDivElement>()
 
-const MacroModal = ({
-    activeView,
-    agents,
-    allViewItemsSelected,
-    areExternalActionsDisabled,
-    closeModal,
-    currentMacro,
-    fetchMacros,
-    firstLoad,
-    handleClickItem,
-    hasDataToLoad,
-    isCreatingMacro,
-    onComplete,
-    onSearch,
-    searchParams,
-    searchResults,
-    selectedItemsIds,
-    selectionMode,
-    toggleCreateMacro,
-    updateMacros,
-}: Props) => {
-    const dispatch = useAppDispatch()
+    multipleActionsNames = [
+        MacroActionName.Http,
+        MacroActionName.SetCustomFieldValue,
+    ] // actions names that can be set multiple times in the same macro
 
-    const modalRef = useRef<HTMLDivElement>(null)
-    const [actions, setActions] = useState<MacroAction[]>(
-        (currentMacro.get('actions') as List<any>)?.toJS() || []
-    )
-    const [name, setName] = useState<string>(currentMacro.get('name') || '')
-    const [language, setLanguage] = useState<string | null>(
-        currentMacro.get('language') || null
-    )
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    constructor(props: Props) {
+        super(props)
 
-    useEffect(() => {
-        setName(currentMacro.get('name'))
-        setActions(currentMacro.get('actions'))
-        setLanguage(currentMacro.get('language'))
-    }, [currentMacro])
+        this.state = {
+            actions: props.currentMacro.get('actions') || fromJS([]),
+            name: props.currentMacro.get('name') || '',
+            language: props.currentMacro.get('language') || null,
+            isModalOpen: false,
+        }
+    }
 
-    const getViewCount = useAppSelector(makeGetViewCount)
-    const currentViewCount = activeView.get('id')
-        ? getViewCount(activeView.get('id'))
-        : null
-
-    useEffectOnce(() => {
+    componentDidMount() {
         shortcutManager.bind('MacroModal')
         shortcutManager.pause(['MacroModal'])
+
         logEvent(SegmentEvent.ModalToggled, {
             open: true,
             name: 'macros',
         })
 
-        if (isCreatingMacro) {
-            handleAddNewMacro()
+        if (this.props.isCreatingMacro) {
+            this._addNewMacro()
         }
 
-        setIsModalOpen(true)
+        this.setState({isModalOpen: true})
+    }
 
-        return () => {
-            shortcutManager.unbind('MacroModal')
-            shortcutManager.unpause()
+    UNSAFE_componentWillReceiveProps(nextProps: Props) {
+        // if it is the first time we receive a macro, set its actions
+        if (
+            this.props.currentMacro.isEmpty() &&
+            !nextProps.currentMacro.isEmpty()
+        ) {
+            this._setName(nextProps.currentMacro.get('name'))
+            this._setActions(nextProps.currentMacro.get('actions'))
+            this._setLanguage(nextProps.currentMacro.get('language'))
         }
-    })
 
-    const launchApplyMacroJob = (jobPartialParams: Partial<JobParams>) => {
+        // if selected macro changes, initialize actions again
+        if (
+            !this.props.currentMacro.isEmpty() &&
+            !nextProps.currentMacro.isEmpty()
+        ) {
+            if (
+                nextProps.currentMacro.get('id') !==
+                this.props.currentMacro.get('id')
+            ) {
+                this._setName(nextProps.currentMacro.get('name'))
+                this._setActions(nextProps.currentMacro.get('actions'))
+                this._setLanguage(nextProps.currentMacro.get('language'))
+            }
+        }
+    }
+
+    componentWillUnmount() {
+        shortcutManager.unbind('MacroModal')
+        shortcutManager.unpause()
+    }
+
+    _launchApplyMacroJob = (jobPartialParams: Partial<JobParams>) => {
+        const {
+            activeView,
+            allViewItemsSelected,
+            createTicketJob,
+            createViewJob,
+            selectedItemsIds,
+            onComplete,
+        } = this.props
         const job = allViewItemsSelected
-            ? dispatch(
-                  createViewJob(
-                      activeView,
-                      JobType.ApplyMacro,
-                      jobPartialParams
-                  )
-              )
-            : dispatch(
-                  createTicketJob(
-                      selectedItemsIds,
-                      JobType.ApplyMacro,
-                      jobPartialParams
-                  )
+            ? createViewJob(activeView, JobType.ApplyMacro, jobPartialParams)
+            : createTicketJob(
+                  selectedItemsIds,
+                  JobType.ApplyMacro,
+                  jobPartialParams
               )
 
         void job
@@ -151,117 +158,133 @@ const MacroModal = ({
             .catch()
     }
 
-    const applyMacro = () => {
+    _applyMacro = () => {
+        const {closeModal, currentMacro} = this.props
+
         closeModal()
-        launchApplyMacroJob({
+        this._launchApplyMacroJob({
             macro_id: currentMacro.get('id'),
             apply_and_close: false,
         })
     }
 
-    const applyMacroAndClose = () => {
+    _applyMacroAndClose = () => {
+        const {closeModal, currentMacro} = this.props
+
         closeModal()
-        launchApplyMacroJob({
+        this._launchApplyMacroJob({
             macro_id: currentMacro.get('id'),
             apply_and_close: true,
         })
     }
 
-    const handleAddNewMacro = () => {
+    _addNewMacro = () => {
+        const {toggleCreateMacro} = this.props
         if (!toggleCreateMacro) return
 
         toggleCreateMacro(true)
-        setName(currentMacro.get('name'))
-        setActions(currentMacro.get('actions'))
-        setLanguage(currentMacro.get('language'))
+        this._setName(this.props.currentMacro.get('name'))
+        this._setActions(this.props.currentMacro.get('actions'))
+        this._setLanguage(this.props.currentMacro.get('language'))
     }
 
-    const filterActions = (actions: MacroAction[]) =>
+    filterActions = (actions: List<any>) =>
         actions.filter(
-            (action) =>
-                action.name !== MacroActionName.AddTags ||
-                !!(action.arguments.tags as string | null)
+            (action: Map<any, any>) =>
+                (action.get('name') as string) !== MacroActionName.AddTags ||
+                !!(action.getIn(['arguments', 'tags']) as string | null)
         )
 
-    const handleCreateMacro = async (e: FormEvent) => {
+    _createMacro = (e: FormEvent) => {
+        const {createMacro} = this.props
         e.preventDefault()
         e.stopPropagation()
-        const newMacro = currentMacro
-            .set('actions', filterActions(actions))
-            .set('name', name)
-            .set('language', language === '' ? null : language)
-
-        const resp = await dispatch(createMacro(newMacro))
-        if (
-            resp?.id &&
-            (resp as unknown as UpsertNotificationAction)?.payload?.status !==
-                'error'
-        ) {
-            onSearch({search: newMacro.get('name')})
-            handleClickItem(resp.id)
-        }
-    }
-
-    const handleUpdateMacro = async (e: FormEvent) => {
-        e.preventDefault()
-        e.stopPropagation()
-
-        const updatedMacro = currentMacro
-            .set('actions', filterActions(actions))
-            .set('name', name)
-            .set('language', language === '' ? null : language)
-
-        const newMacro = await dispatch(updateMacro(updatedMacro))
-        const macros = searchResults
-        macros.some(((macro: Map<any, any>) => {
-            if (macro.get('id') === newMacro.id) {
-                if (macro.get('name') !== newMacro.name) {
-                    // if the name changed, reload macro list
-                    void fetchMacros(
-                        {
-                            search: newMacro.name,
-                        },
-                        false
-                    )
-                } else {
-                    updateMacros(newMacro)
-                }
-                return true
+        const newMacro = this.props.currentMacro
+            .set('actions', this.filterActions(this.state.actions))
+            .set('name', this.state.name)
+            .set(
+                'language',
+                this.state.language === '' ? null : this.state.language
+            )
+        return createMacro(newMacro).then((resp) => {
+            if (
+                resp?.id &&
+                (resp as unknown as UpsertNotificationAction)?.payload
+                    ?.status !== 'error'
+            ) {
+                this.props.onSearch({search: newMacro.get('name')})
+                this.props.handleClickItem(resp.id)
             }
-        }) as any)
+        })
     }
 
-    const handleDuplicateMacro = async (e: FormEvent) => {
+    _updateMacro = (e: FormEvent) => {
+        const {fetchMacros, updateMacro} = this.props
+        e.preventDefault()
+        e.stopPropagation()
+        const updatedMacro = this.props.currentMacro
+            .set('actions', this.filterActions(this.state.actions))
+            .set('name', this.state.name)
+            .set(
+                'language',
+                this.state.language === '' ? null : this.state.language
+            )
+        return updateMacro(updatedMacro).then((newMacro) => {
+            const macros = this.props.searchResults
+            macros.some(((macro: Map<any, any>) => {
+                if (macro.get('id') === newMacro.id) {
+                    if (macro.get('name') !== newMacro.name) {
+                        // if the name changed, reload macro list
+                        void fetchMacros(
+                            {
+                                search: newMacro.name,
+                            },
+                            false
+                        )
+                    } else {
+                        this.props.updateMacros(newMacro)
+                    }
+                    return true
+                }
+            }) as any)
+        })
+    }
+
+    _duplicateMacro = (e: FormEvent) => {
         e.preventDefault()
         e.stopPropagation()
 
+        const {createMacro, currentMacro} = this.props
         const duplicateMacro = currentMacro
             .delete('id')
             .set('name', `(Copy) ${currentMacro.get('name', '') as string}`)
 
-        const res = await dispatch(createMacro(duplicateMacro))
-        // once the macro is created - search it in the list
-        onSearch({search: res.name || ''})
+        return createMacro(duplicateMacro).then((res) => {
+            // once the macro is created - search it in the list
+            this.props.onSearch({search: res.name || ''})
+        })
     }
 
-    const handleDiscardChanges = (e: FormEvent) => {
+    _discardChanges = (e: FormEvent) => {
         e.preventDefault()
         e.stopPropagation()
-        setActions(currentMacro.get('actions'))
+        this._setActions(this.props.currentMacro.get('actions'))
     }
 
-    const handleDeleteMacro = async () => {
-        const macroId = currentMacro.get('id', '')
-        await dispatch(deleteMacro(macroId))
-        void fetchMacros(
-            {
-                search: searchParams.search,
-            },
-            false
-        )
+    _deleteMacro = () => {
+        const {fetchMacros, deleteMacro} = this.props
+        const macroId = this.props.currentMacro.get('id', '')
+        return deleteMacro(macroId).then(() => {
+            void fetchMacros(
+                {
+                    search: this.props.searchParams.search,
+                },
+                false
+            )
+        })
     }
 
-    const updateActions = (actions?: List<any> | null) => {
+    _setActions = (actions?: List<any> | null) => {
         // filter actions that exist in configuration
         const filteredActions = actions?.filter((action: Map<any, any>) =>
             DEFAULT_ACTIONS.includes(action.get('name'))
@@ -273,7 +296,7 @@ const MacroModal = ({
                 filteredActions ? filteredActions.toJS() : {},
                 (first: Record<string, unknown>, second) => {
                     if (
-                        multipleActionsNames.includes(
+                        this.multipleActionsNames.includes(
                             first.name as MacroActionName
                         )
                     ) {
@@ -285,182 +308,237 @@ const MacroModal = ({
             )
         )
 
-        setActions(uniqActions)
+        this.setState({actions: uniqActions})
     }
-    const noResults = searchResults.isEmpty() && !isCreatingMacro
 
-    const selectedCount = allViewItemsSelected
-        ? currentViewCount
-        : selectedItemsIds.size
+    _setName = (name: string) => this.setState({name})
+    _setLanguage = (language: string | null) => this.setState({language})
 
-    return (
-        <Modal
-            isOpen={isModalOpen}
-            onClose={closeModal}
-            className={css.component}
-            size="huge"
-            ref={modalRef}
-        >
-            <ModalHeader title={selectionMode ? 'Macros' : 'Manage Macros'} />
-            <ModalBody className={css.body}>
-                <Container fluid>
-                    <Row>
-                        <Col
-                            xs="3"
-                            className={classnames(css.list, css.content)}
-                        >
-                            <MacroModalList
-                                currentMacro={currentMacro}
-                                searchResults={searchResults}
-                                searchParams={searchParams}
-                                fetchMacros={fetchMacros}
-                                areExternalActionsDisabled={
-                                    areExternalActionsDisabled
-                                }
-                                handleClickItem={handleClickItem}
-                                onSearch={onSearch}
-                                hasDataToLoad={hasDataToLoad}
-                            />
-                        </Col>
-                        <Col xs="9" className={css.content}>
-                            {firstLoad ? (
-                                <Loader minHeight="0" />
-                            ) : noResults ? (
-                                <MacroNoResults
-                                    searchParams={searchParams}
-                                    newAction={handleAddNewMacro}
-                                />
-                            ) : selectionMode ? (
-                                <MacroPreview currentMacro={currentMacro} />
-                            ) : (
-                                <MacroEdit
-                                    className="mt-3 mb-3"
+    render() {
+        const {
+            searchParams,
+            searchResults,
+            areExternalActionsDisabled,
+            closeModal,
+            onSearch,
+            currentMacro,
+            isCreatingMacro,
+            handleClickItem,
+            firstLoad,
+            activeView,
+            getViewCount,
+            hasDataToLoad,
+            allViewItemsSelected,
+            selectedItemsIds,
+            selectionMode,
+        } = this.props
+
+        const noResults = searchResults.isEmpty() && !isCreatingMacro
+
+        const selectedCount = allViewItemsSelected
+            ? getViewCount(activeView.get('id'))
+            : selectedItemsIds.size
+
+        return (
+            <Modal
+                isOpen={this.state.isModalOpen}
+                onClose={closeModal}
+                className={css.component}
+                size="huge"
+                ref={this.modalRef}
+            >
+                <ModalHeader
+                    title={selectionMode ? 'Macros' : 'Manage Macros'}
+                />
+                <ModalBody className={css.body}>
+                    <Container fluid>
+                        <Row>
+                            <Col
+                                xs="3"
+                                className={classnames(css.list, css.content)}
+                            >
+                                <MacroModalList
                                     currentMacro={currentMacro}
-                                    agents={agents}
-                                    name={name}
-                                    language={language}
-                                    actions={fromJS(actions)}
-                                    setActions={updateActions}
-                                    setName={setName}
-                                    setLanguage={setLanguage}
-                                    container={modalRef}
+                                    searchResults={searchResults}
+                                    searchParams={searchParams}
+                                    fetchMacros={this.props.fetchMacros}
+                                    areExternalActionsDisabled={
+                                        areExternalActionsDisabled
+                                    }
+                                    handleClickItem={handleClickItem}
+                                    onSearch={onSearch}
+                                    hasDataToLoad={hasDataToLoad}
                                 />
-                            )}
-                        </Col>
-                    </Row>
-                </Container>
-            </ModalBody>
-            <ModalFooter className={css.footer}>
-                <Container fluid>
-                    <Row>
-                        <Col xs="3" className={classnames(css.primaryAction)}>
-                            {!selectionMode && (
-                                <Button
-                                    intent="secondary"
-                                    onClick={handleAddNewMacro}
-                                    leadingIcon="add"
-                                >
-                                    Create macro
-                                </Button>
-                            )}
-                        </Col>
-                        <Col xs="9">
-                            {!noResults &&
-                                !firstLoad &&
-                                (selectionMode ? (
-                                    <div className="d-inline-block float-right">
-                                        <Button onClick={applyMacroAndClose}>
-                                            Apply macro and close{' '}
-                                            {selectedCount} tickets
-                                        </Button>
-                                        <Button
-                                            className="ml-3"
-                                            intent="secondary"
-                                            onClick={applyMacro}
-                                        >
-                                            Apply macro to {selectedCount}{' '}
-                                            tickets
-                                        </Button>
-                                    </div>
+                            </Col>
+                            <Col xs="9" className={css.content}>
+                                {firstLoad ? (
+                                    <Loader minHeight="0" />
+                                ) : noResults ? (
+                                    <MacroNoResults
+                                        searchParams={this.props.searchParams}
+                                        newAction={this._addNewMacro}
+                                    />
+                                ) : selectionMode ? (
+                                    <MacroPreview currentMacro={currentMacro} />
                                 ) : (
-                                    <div>
-                                        <div className="d-inline-block">
-                                            {!isCreatingMacro && (
-                                                <ConfirmButton
-                                                    intent="destructive"
-                                                    onConfirm={
-                                                        handleDeleteMacro
-                                                    }
-                                                    confirmationContent={`Do you really want to delete the macro ${
-                                                        currentMacro.get(
-                                                            'name'
-                                                        ) ?? ''
-                                                    }?`}
-                                                    leadingIcon="delete"
-                                                >
-                                                    Delete macro
-                                                </ConfirmButton>
-                                            )}
-                                        </div>
-                                        {isCreatingMacro ? (
-                                            <form
-                                                id="macro_form"
-                                                className="d-inline-block float-right"
-                                                onSubmit={handleCreateMacro}
+                                    <MacroEdit
+                                        className="mt-3 mb-3"
+                                        currentMacro={currentMacro}
+                                        agents={this.props.agents}
+                                        name={this.state.name}
+                                        language={this.state.language}
+                                        actions={this.state.actions}
+                                        setActions={this._setActions}
+                                        setName={this._setName}
+                                        setLanguage={this._setLanguage}
+                                        container={this.modalRef}
+                                    />
+                                )}
+                            </Col>
+                        </Row>
+                    </Container>
+                </ModalBody>
+                <ModalFooter className={css.footer}>
+                    <Container fluid>
+                        <Row>
+                            <Col
+                                xs="3"
+                                className={classnames(css.primaryAction)}
+                            >
+                                {!selectionMode && (
+                                    <Button
+                                        intent="secondary"
+                                        onClick={this._addNewMacro}
+                                        leadingIcon="add"
+                                    >
+                                        Create macro
+                                    </Button>
+                                )}
+                            </Col>
+                            <Col xs="9">
+                                {!noResults &&
+                                    !firstLoad &&
+                                    (selectionMode ? (
+                                        <div className="d-inline-block float-right">
+                                            <Button
+                                                onClick={
+                                                    this._applyMacroAndClose
+                                                }
                                             >
-                                                <Button type="submit">
-                                                    Save new macro
-                                                </Button>
-                                            </form>
-                                        ) : (
-                                            <div className="float-right">
-                                                <form
-                                                    id="discard_macro_form"
-                                                    className="d-inline-block mr-1"
-                                                    onSubmit={
-                                                        handleDiscardChanges
-                                                    }
-                                                >
-                                                    <Button
-                                                        type="submit"
-                                                        intent="secondary"
+                                                Apply macro and close{' '}
+                                                {selectedCount} tickets
+                                            </Button>
+                                            <Button
+                                                className="ml-3"
+                                                intent="secondary"
+                                                onClick={this._applyMacro}
+                                            >
+                                                Apply macro to {selectedCount}{' '}
+                                                tickets
+                                            </Button>
+                                        </div>
+                                    ) : (
+                                        <div>
+                                            <div className="d-inline-block">
+                                                {!isCreatingMacro && (
+                                                    <ConfirmButton
+                                                        intent="destructive"
+                                                        onConfirm={
+                                                            this._deleteMacro
+                                                        }
+                                                        confirmationContent={`Do you really want to delete the macro ${
+                                                            this.props.currentMacro.get(
+                                                                'name',
+                                                                ''
+                                                            ) as string
+                                                        }?`}
+                                                        leadingIcon="delete"
                                                     >
-                                                        Discard Changes
-                                                    </Button>
-                                                </form>
+                                                        Delete macro
+                                                    </ConfirmButton>
+                                                )}
+                                            </div>
+                                            {isCreatingMacro ? (
                                                 <form
-                                                    id="duplicate_macro_form"
-                                                    className="d-inline-block mr-1"
-                                                    onSubmit={
-                                                        handleDuplicateMacro
+                                                    id="macro_form"
+                                                    className="d-inline-block float-right"
+                                                    onSubmit={(e) =>
+                                                        this._createMacro(e)
                                                     }
-                                                >
-                                                    <Button
-                                                        type="submit"
-                                                        intent="secondary"
-                                                    >
-                                                        Duplicate
-                                                    </Button>
-                                                </form>
-                                                <form
-                                                    id="update_macro_form"
-                                                    className="d-inline-block"
-                                                    onSubmit={handleUpdateMacro}
                                                 >
                                                     <Button type="submit">
-                                                        Update
+                                                        Save new macro
                                                     </Button>
                                                 </form>
-                                            </div>
-                                        )}
-                                    </div>
-                                ))}
-                        </Col>
-                    </Row>
-                </Container>
-            </ModalFooter>
-        </Modal>
-    )
+                                            ) : (
+                                                <div className="float-right">
+                                                    <form
+                                                        id="discard_macro_form"
+                                                        className="d-inline-block mr-1"
+                                                        onSubmit={(e) =>
+                                                            this._discardChanges(
+                                                                e
+                                                            )
+                                                        }
+                                                    >
+                                                        <Button
+                                                            type="submit"
+                                                            intent="secondary"
+                                                        >
+                                                            Discard Changes
+                                                        </Button>
+                                                    </form>
+                                                    <form
+                                                        id="duplicate_macro_form"
+                                                        className="d-inline-block mr-1"
+                                                        onSubmit={(e) =>
+                                                            this._duplicateMacro(
+                                                                e
+                                                            )
+                                                        }
+                                                    >
+                                                        <Button
+                                                            type="submit"
+                                                            intent="secondary"
+                                                        >
+                                                            Duplicate
+                                                        </Button>
+                                                    </form>
+                                                    <form
+                                                        id="update_macro_form"
+                                                        className="d-inline-block"
+                                                        onSubmit={(e) =>
+                                                            this._updateMacro(e)
+                                                        }
+                                                    >
+                                                        <Button type="submit">
+                                                            Update
+                                                        </Button>
+                                                    </form>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                            </Col>
+                        </Row>
+                    </Container>
+                </ModalFooter>
+            </Modal>
+        )
+    }
 }
 
-export default MacroModal
+const connector = connect(
+    (state: RootState) => ({
+        getViewCount: makeGetViewCount(state),
+    }),
+    {
+        createTicketJob,
+        createViewJob,
+        createMacro,
+        updateMacro,
+        deleteMacro,
+    }
+)
+
+export default connector(MacroModalContainer)

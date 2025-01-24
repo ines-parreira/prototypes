@@ -1,0 +1,148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MacroModal /> should render MacroModal 1`] = `
+<div>
+  <div>
+    Manage Macros
+    ModalHeaderMock
+  </div>
+  <div>
+    <div
+      class="container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="list content col-3"
+        >
+          <div>
+            MacroModalListMock
+          </div>
+        </div>
+        <div
+          class="content col-9"
+        >
+          <div>
+            MacroEditMock
+          </div>
+        </div>
+      </div>
+    </div>
+    ModalBodyMock
+  </div>
+  <div
+    class="wrapper footer"
+  >
+    <div
+      class="container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="primaryAction col-3"
+        >
+          <button
+            aria-disabled="false"
+            class="wrapper fill secondary medium"
+            type="button"
+          >
+            <i
+              aria-hidden="true"
+              class="material-icons icon medium"
+            >
+              add
+            </i>
+            <span
+              class="content"
+            >
+              Create macro
+            </span>
+          </button>
+        </div>
+        <div
+          class="col-9"
+        >
+          <div>
+            <div
+              class="d-inline-block"
+            >
+              <button
+                aria-disabled="false"
+                class="wrapper fill destructive medium"
+                id="confirm-42"
+                type="button"
+              >
+                <i
+                  aria-hidden="true"
+                  class="material-icons icon medium"
+                >
+                  delete
+                </i>
+                <span
+                  class="content"
+                >
+                  Delete macro
+                </span>
+              </button>
+            </div>
+            <div
+              class="float-right"
+            >
+              <form
+                class="d-inline-block mr-1"
+                id="discard_macro_form"
+              >
+                <button
+                  aria-disabled="false"
+                  class="wrapper fill secondary medium"
+                  type="submit"
+                >
+                  <span
+                    class="content"
+                  >
+                    Discard Changes
+                  </span>
+                </button>
+              </form>
+              <form
+                class="d-inline-block mr-1"
+                id="duplicate_macro_form"
+              >
+                <button
+                  aria-disabled="false"
+                  class="wrapper fill secondary medium"
+                  type="submit"
+                >
+                  <span
+                    class="content"
+                  >
+                    Duplicate
+                  </span>
+                </button>
+              </form>
+              <form
+                class="d-inline-block"
+                id="update_macro_form"
+              >
+                <button
+                  aria-disabled="false"
+                  class="wrapper fill primary medium"
+                  type="submit"
+                >
+                  <span
+                    class="content"
+                  >
+                    Update
+                  </span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

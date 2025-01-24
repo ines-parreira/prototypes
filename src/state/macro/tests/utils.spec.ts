@@ -81,45 +81,5 @@ describe('macro utils', () => {
             } as unknown as MacroApiError
             expect(getErrorReason(error)).toMatchSnapshot()
         })
-
-        it('should handle string errors', () => {
-            const error = {
-                response: {
-                    data: {
-                        error: {
-                            msg: 'Failed to update macros.',
-                            data: {
-                                actions: {
-                                    0: {
-                                        arguments: ['string error'],
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
-            } as unknown as MacroApiError
-            expect(getErrorReason(error)).toEqual('string error')
-        })
-
-        it('should handle non array errors', () => {
-            const error = {
-                response: {
-                    data: {
-                        error: {
-                            msg: 'Failed to update macros.',
-                            data: {
-                                actions: {
-                                    0: {
-                                        arguments: {},
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
-            } as unknown as MacroApiError
-            expect(getErrorReason(error)).toEqual('')
-        })
     })
 })

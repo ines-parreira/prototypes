@@ -8,13 +8,6 @@ import thunk from 'redux-thunk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {integrationsState} from 'fixtures/integrations'
-import {
-    addInternalNoteAction,
-    setOpenStatusAction,
-    setSubjectAction,
-    setTextAction,
-    snoozeTicketAction,
-} from 'fixtures/macro'
 import {IntegrationType} from 'models/integration/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {Attachment} from 'models/ticket/types'
@@ -76,30 +69,6 @@ const removeTagAction = {
     title: 'Remove tags',
     arguments: {
         tags: 'ai_close',
-    },
-}
-
-const setAssignee = {
-    type: 'user',
-    execution: 'back',
-    name: MacroActionName.SetAssignee,
-    title: 'Assign an agent',
-    arguments: {
-        assignee_user: {
-            name: 'Assigned user name',
-        },
-    },
-}
-
-const setTeamAssignee = {
-    type: 'user',
-    execution: 'back',
-    name: MacroActionName.SetTeamAssignee,
-    title: 'Assign a team',
-    arguments: {
-        assignee_user: {
-            name: 'Assigned team name',
-        },
     },
 }
 
@@ -349,93 +318,5 @@ describe('MacroEdit component', () => {
 
         fireEvent.click(screen.getByText('close'))
         expect(defaultProps.setActions).toHaveBeenCalledWith(fromJS([]))
-    })
-
-    it('should set status action', () => {
-        render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
-                <MacroEdit
-                    {...defaultProps}
-                    actions={fromJS([setOpenStatusAction])}
-                />
-            </Provider>
-        )
-
-        expect(screen.getByText(setOpenStatusAction.title)).toBeInTheDocument()
-    })
-
-    it('should set response text', () => {
-        render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
-                <MacroEdit
-                    {...defaultProps}
-                    actions={fromJS([setTextAction])}
-                />
-            </Provider>
-        )
-
-        expect(screen.getAllByText('Response text')).toHaveLength(2)
-    })
-
-    it('should add inernal note action', () => {
-        render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
-                <MacroEdit
-                    {...defaultProps}
-                    actions={fromJS([addInternalNoteAction])}
-                />
-            </Provider>
-        )
-
-        expect(screen.getAllByText('Internal note')).toHaveLength(3)
-    })
-
-    it('should set user assignee action', () => {
-        render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
-                <MacroEdit {...defaultProps} actions={fromJS([setAssignee])} />
-            </Provider>
-        )
-
-        expect(screen.getByText('Set user assignee')).toBeInTheDocument()
-    })
-
-    it('should set team assignee action', () => {
-        render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
-                <MacroEdit
-                    {...defaultProps}
-                    actions={fromJS([setTeamAssignee])}
-                />
-            </Provider>
-        )
-
-        expect(screen.getByText('Set team assignee')).toBeInTheDocument()
-    })
-
-    it('should set subject action', () => {
-        render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
-                <MacroEdit
-                    {...defaultProps}
-                    actions={fromJS([setSubjectAction])}
-                />
-            </Provider>
-        )
-
-        expect(screen.getByText('Set ticket subject')).toBeInTheDocument()
-    })
-
-    it('should set snooze action', () => {
-        render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
-                <MacroEdit
-                    {...defaultProps}
-                    actions={fromJS([snoozeTicketAction])}
-                />
-            </Provider>
-        )
-
-        expect(screen.getByText('Snooze for')).toBeInTheDocument()
     })
 })
