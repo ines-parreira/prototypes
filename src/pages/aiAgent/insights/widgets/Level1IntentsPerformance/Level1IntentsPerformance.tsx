@@ -52,7 +52,7 @@ export const Level1IntentsPerformance = () => {
                 {
                     title: 'Coverage rate',
                     hint: {
-                        title: 'Percentage of email tickets that AI Agent attempted to respond to.',
+                        title: 'Percentage of tickets that AI Agent attempted to respond to.',
                     },
                     trend: aiAgentMetrics.coverageTrend,
                     interpretAs: 'more-is-better',
