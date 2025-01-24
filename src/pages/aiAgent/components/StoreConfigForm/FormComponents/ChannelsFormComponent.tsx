@@ -1,9 +1,11 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import React from 'react'
+import React, {Fragment} from 'react'
+import {Link} from 'react-router-dom'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 
 import useAppSelector from 'hooks/useAppSelector'
+import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import {getHasAutomate} from 'state/billing/selectors'
 
@@ -56,6 +58,8 @@ export const ChannelsFormComponent = ({
     const hasAutomate = useAppSelector(getHasAutomate)
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
+    const {routes} = useAiAgentNavigation({shopName})
+
     return (
         <>
             {isAiAgentChatEnabled && (
@@ -89,13 +93,20 @@ export const ChannelsFormComponent = ({
                     />
                 </ConfigurationSection>
             )}
-            <section>
-                <h2
-                    className={css.sectionHeader}
-                    data-candu-id="ai-agent-configuration-email-settings"
-                >
-                    Email settings
-                </h2>
+            <ConfigurationSection
+                title="Email settings"
+                subtitle={
+                    <Fragment>
+                        When enabled, AI Agent will also handle tickets created
+                        via{' '}
+                        <Link to={routes.automationOrderManagement}>
+                            {'Order Management'}
+                        </Link>{' '}
+                        and <Link to={routes.automationFlows}>{'Flows'}</Link>
+                    </Fragment>
+                }
+                data-candu-id="ai-agent-configuration-email-settings"
+            >
                 <SettingsBanner
                     type={SettingsBannerType.Email}
                     deactivatedDatetime={emailChannelDeactivatedDatetime}
@@ -123,7 +134,7 @@ export const ChannelsFormComponent = ({
                     updateValue={updateValue}
                     signature={signature}
                 />
-            </section>
+            </ConfigurationSection>
         </>
     )
 }

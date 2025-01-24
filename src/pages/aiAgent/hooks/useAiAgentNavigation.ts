@@ -29,6 +29,7 @@ export const getAiAgentNavigationRoutes = (
     flags: LDFlagSet
 ) => {
     const basePath = getAiAgentBasePath(shopName, flags)
+    const automationBasePath = '/app/automation'
     const isStandaloneMenuEnabled = flags[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const guidancePath = isStandaloneMenuEnabled
@@ -44,7 +45,9 @@ export const getAiAgentNavigationRoutes = (
         : 'preview-mode'
 
     return {
-        automation: `/app/automation`,
+        automation: `${automationBasePath}`,
+        automationOrderManagement: `${automationBasePath}/shopify/${shopName}/order-management`,
+        automationFlows: `${automationBasePath}/shopify/${shopName}/flows`,
         main: basePath,
         settings: `${basePath}/settings`,
         test: `${basePath}/test`,

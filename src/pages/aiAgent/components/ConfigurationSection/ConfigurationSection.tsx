@@ -6,7 +6,7 @@ import css from './ConfigurationSection.less'
 
 type Props = {
     title: string
-    subtitle?: string
+    subtitle?: React.ReactNode
     isRequired?: boolean
     children: React.ReactNode
     isBeta?: boolean
