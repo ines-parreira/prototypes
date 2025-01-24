@@ -109,6 +109,7 @@ export enum FeatureFlagKey {
     NewDomainVerification = 'new-domain-verification',
     NewSenderSelect = 'new-sender-select',
     NewSatisfactionReport = 'new-satisfaction-report',
+    NewVoicePreferencesForm = 'new-voice-preferences-form',
     NotificationsTicketAssigned = 'notifications-ticket-assigned',
     ObservabilityAIArticles = 'observability-ai-articles',
     ObservabilityArticleTemplates = 'observability-article-templates',

@@ -1,55 +1,53 @@
-import {fireEvent, render, RenderResult} from '@testing-library/react'
+import {VoiceMessageType} from '@gorgias/api-queries'
+import {render, RenderResult} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
+import {useFormContext} from 'react-hook-form'
 
+import FormField from 'components/Form/FormField'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {PhoneRingingBehaviour, VoiceMessageType} from 'models/integration/types'
-
 import {assumeMock} from 'utils/testing'
 
 import VoiceIntegrationPreferencesCallRecordings from '../VoiceIntegrationPreferencesCallRecordings'
 import VoiceMessageField from '../VoiceMessageField'
 
+jest.mock('components/Form/FormField')
+const FormFieldMock = assumeMock(FormField)
+
 jest.mock('pages/integrations/integration/components/voice/VoiceMessageField')
 
 const VoiceMessageFieldMock = assumeMock(VoiceMessageField)
 
+const watchMock = jest.fn()
+const mockUseFormContextReturnValue = {
+    watch: watchMock,
+    formState: {defaultValues: {}},
+} as unknown as ReturnType<typeof useFormContext>
+
+jest.mock('react-hook-form')
+const useFormContextMock = assumeMock(useFormContext)
+
 describe('<VoiceIntegrationPreferencesCallRecordings />', () => {
-    const handleChange = jest.fn()
-
-    const defaultPreferences = {
-        ringing_behaviour: PhoneRingingBehaviour.RoundRobin,
-        record_inbound_calls: true,
-        record_outbound_calls: true,
-        voicemail_outside_business_hours: true,
-    }
-
     beforeEach(() => {
         mockFlags({
             [FeatureFlagKey.CustomRecordingNotification]: true,
         })
         VoiceMessageFieldMock.mockReturnValue(<div>VoiceMessageField</div>)
+        watchMock.mockReturnValue([false, false] as [boolean, boolean])
+        useFormContextMock.mockReturnValue(mockUseFormContextReturnValue)
+        FormFieldMock.mockImplementation(({label, children}: any) => (
+            <div>{label ?? children}</div>
+        ))
     })
 
-    const renderComponent = (preferences = {}): RenderResult => {
-        return render(
-            <VoiceIntegrationPreferencesCallRecordings
-                preferences={{
-                    ...defaultPreferences,
-                    ...preferences,
-                }}
-                onPreferencesChange={handleChange}
-                recordingNotification={{
-                    voice_message_type: VoiceMessageType.TextToSpeech,
-                    text_to_speech_content: 'test',
-                }}
-                onRecordingNotificationChange={jest.fn()}
-            />
-        )
+    const renderComponent = (): RenderResult => {
+        return render(<VoiceIntegrationPreferencesCallRecordings />)
     }
 
     it('should render call recording preferences', () => {
-        const {getByText, getAllByLabelText} = renderComponent()
+        watchMock.mockReturnValue([true, true] as [boolean, boolean])
+
+        const {getByText, getAllByText} = renderComponent()
 
         expect(getByText('Call Recording')).toBeInTheDocument()
         expect(
@@ -58,30 +56,8 @@ describe('<VoiceIntegrationPreferencesCallRecordings />', () => {
         expect(getByText('Inbound calls')).toBeInTheDocument()
         expect(getByText('Outbound calls')).toBeInTheDocument()
 
-        const callToggles = getAllByLabelText('Start recording automatically')
-        expect(callToggles[0]).toBeChecked()
-        expect(callToggles[1]).toBeChecked()
-    })
-
-    it('should render enabled transcription preferences', () => {
-        const {getAllByLabelText} = renderComponent({
-            record_inbound_calls: false,
-            record_outbound_calls: false,
-        })
-
-        const callToggles = getAllByLabelText('Start recording automatically')
-        expect(callToggles[0]).not.toBeChecked()
-        expect(callToggles[1]).not.toBeChecked()
-    })
-
-    it('should render handle preferences changes', () => {
-        const {getAllByLabelText} = renderComponent()
-
-        const callToggles = getAllByLabelText('Start recording automatically')
-        fireEvent.click(callToggles[0])
-        fireEvent.click(callToggles[1])
-
-        expect(handleChange.mock.calls).toHaveLength(2)
+        const callToggles = getAllByText('Start recording automatically')
+        expect(callToggles).toHaveLength(2)
     })
 
     describe('recording notification settings', () => {
@@ -90,10 +66,7 @@ describe('<VoiceIntegrationPreferencesCallRecordings />', () => {
                 [FeatureFlagKey.CustomRecordingNotification]: false,
             })
 
-            const {queryByText} = renderComponent({
-                record_inbound_calls: true,
-                record_outbound_calls: true,
-            })
+            const {queryByText} = renderComponent()
 
             expect(
                 queryByText('Call recording notifications')
@@ -102,30 +75,79 @@ describe('<VoiceIntegrationPreferencesCallRecordings />', () => {
         })
 
         it('should render recording notification settings', () => {
-            const {getByText} = renderComponent({
-                record_inbound_calls: true,
-                record_outbound_calls: true,
-            })
+            const {getByText} = renderComponent()
 
             expect(
                 getByText('Call recording notifications')
             ).toBeInTheDocument()
-            expect(getByText('VoiceMessageField')).toBeInTheDocument()
         })
 
         it('should disable recording notification settings when both call recording settings are disabled', () => {
-            const {getByText} = renderComponent({
-                record_inbound_calls: false,
-                record_outbound_calls: false,
-            })
+            const {getByText} = renderComponent()
 
             expect(
                 getByText('Call recording notifications')
             ).toBeInTheDocument()
-            expect(VoiceMessageFieldMock).toHaveBeenCalledWith(
-                expect.objectContaining({isDisabled: true}),
+            expect(FormFieldMock).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    name: 'meta.recording_notification',
+                    isDisabled: true,
+                }),
                 {}
             )
+        })
+    })
+
+    describe('validation', () => {
+        describe('recording notification validation', () => {
+            const getValidateObj = () => {
+                const recordingNotificationFormFieldCall =
+                    FormFieldMock.mock.calls.find(
+                        (call) => call[0].name === 'meta.recording_notification'
+                    )
+
+                return (
+                    recordingNotificationFormFieldCall?.[0]?.validation as {
+                        validate: Record<
+                            'textToSpeech' | 'voiceRecording',
+                            (value: any) => string | undefined
+                        >
+                    }
+                )?.validate
+            }
+
+            it('should consider recording notification settings as valid when recording is disabled', () => {
+                renderComponent()
+
+                const validate = getValidateObj()
+
+                expect(validate.textToSpeech('')).toBeUndefined()
+                expect(validate.voiceRecording('')).toBeUndefined()
+            })
+
+            it('should consider recording notification settings as invalid when content is missing', () => {
+                watchMock.mockReturnValue([false, true] as [boolean, boolean])
+                renderComponent()
+                const validate = getValidateObj()
+
+                expect(
+                    validate.textToSpeech({
+                        voice_message_type: VoiceMessageType.TextToSpeech,
+                    })
+                ).toBe('Text to speech content is required')
+            })
+
+            it('should consider recording notification settings as invalid when voice recording is missing', () => {
+                watchMock.mockReturnValue([false, true] as [boolean, boolean])
+                renderComponent()
+                const validate = getValidateObj()
+
+                expect(
+                    validate.voiceRecording({
+                        voice_message_type: VoiceMessageType.VoiceRecording,
+                    })
+                ).toBe('Voice recording is required')
+            })
         })
     })
 })

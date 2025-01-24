@@ -3,6 +3,18 @@ import React from 'react'
 
 import EmojiTextInput from '../EmojiTextInput'
 
+jest.mock('../../input/TextInput', () =>
+    jest.fn(() => (
+        <div>
+            <p>TextInput</p>
+            <input />
+        </div>
+    ))
+)
+jest.mock('pages/common/components/ViewTable/EmojiSelect/EmojiSelect', () =>
+    jest.fn(() => <div>EmojiSelect</div>)
+)
+
 describe('<EmojiTextInput/>', () => {
     let onChange: jest.MockedFunction<any>
     let onEmojiChange: jest.MockedFunction<any>
@@ -14,7 +26,7 @@ describe('<EmojiTextInput/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const {container} = render(
+            const {getByText} = render(
                 <EmojiTextInput
                     id="foo"
                     emoji="🍔"
@@ -26,7 +38,25 @@ describe('<EmojiTextInput/>', () => {
                 />
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(getByText('TextInput')).toBeInTheDocument()
+            expect(getByText('EmojiSelect')).toBeInTheDocument()
+        })
+
+        it('should render error', () => {
+            const {getByText} = render(
+                <EmojiTextInput
+                    id="foo"
+                    emoji="🍔"
+                    value="Foo"
+                    placeholder="Placeholder..."
+                    required
+                    error="Error"
+                    onChange={onChange}
+                    onEmojiChange={onEmojiChange}
+                />
+            )
+
+            expect(getByText('Error')).toBeInTheDocument()
         })
     })
 })

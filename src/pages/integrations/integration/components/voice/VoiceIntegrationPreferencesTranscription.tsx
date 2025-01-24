@@ -2,28 +2,14 @@ import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
+import FormField from 'components/Form/FormField'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {PhoneIntegrationPreferences} from 'models/integration/types'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import settingsCss from 'pages/settings/settings.less'
 
 import css from './VoiceIntegrationPreferences.less'
 
-type Props = {
-    preferences: PhoneIntegrationPreferences
-    onPreferencesChange: (
-        preferences: Partial<PhoneIntegrationPreferences>
-    ) => void
-}
-
-export default function VoiceIntegrationPreferencesTranscription({
-    preferences,
-    onPreferencesChange,
-}: Props): JSX.Element {
-    const defaultTranscribePreferences = {
-        voicemails: false,
-        recordings: false,
-    }
+export default function VoiceIntegrationPreferencesTranscription(): JSX.Element {
     return (
         <div className={css.transcriptionFormSection}>
             <div>
@@ -50,36 +36,18 @@ export default function VoiceIntegrationPreferencesTranscription({
                     </p>
                 )}
             </div>
-            <ToggleInput
-                isToggled={preferences.transcribe?.recordings ?? false}
-                onClick={(value) =>
-                    onPreferencesChange({
-                        ...preferences,
-                        transcribe: {
-                            ...(preferences.transcribe ??
-                                defaultTranscribePreferences),
-                            recordings: value,
-                        },
-                    })
-                }
+            <FormField
+                name="meta.preferences.transcribe.recordings"
+                field={ToggleInputField}
             >
                 Call recording transcription
-            </ToggleInput>
-            <ToggleInput
-                isToggled={preferences.transcribe?.voicemails ?? false}
-                onClick={(value) =>
-                    onPreferencesChange({
-                        ...preferences,
-                        transcribe: {
-                            ...(preferences.transcribe ??
-                                defaultTranscribePreferences),
-                            voicemails: value,
-                        },
-                    })
-                }
+            </FormField>
+            <FormField
+                name="meta.preferences.transcribe.voicemails"
+                field={ToggleInputField}
             >
                 Voicemail transcription
-            </ToggleInput>
+            </FormField>
         </div>
     )
 }

@@ -1,6 +1,7 @@
-import React, {useCallback} from 'react'
+import React, {ReactNode, useCallback} from 'react'
 
 import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
+import Caption from 'pages/common/forms/Caption/Caption'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 
@@ -14,6 +15,7 @@ type Props = {
     required?: boolean
     onEmojiChange: (emoji: string | null) => void
     onChange: (value: string) => void
+    error?: string | ReactNode
 }
 
 /**
@@ -25,9 +27,12 @@ export default function EmojiTextInput({
     value,
     placeholder,
     required = false,
+    error,
     onEmojiChange,
     onChange,
 }: Props): JSX.Element {
+    const captionId = `${id}-caption`
+
     const onEmojiSelect = useCallback(
         (emoji: string) => {
             onEmojiChange(emoji)
@@ -62,8 +67,14 @@ export default function EmojiTextInput({
                     isRequired={required}
                     value={value}
                     onChange={onInputChange}
+                    hasError={!!error}
                 />
             </InputGroup>
+            {!!error && (
+                <Caption id={captionId} error={error}>
+                    {error}
+                </Caption>
+            )}
         </div>
     )
 }

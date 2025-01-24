@@ -1,71 +1,39 @@
-import {
-    render,
-    fireEvent,
-    RenderResult,
-    cleanup,
-    screen,
-} from '@testing-library/react'
-import {act} from '@testing-library/react-hooks'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
+import {render, RenderResult, screen} from '@testing-library/react'
 import React from 'react'
 
-import {PhoneRingingBehaviour} from 'models/integration/types'
+import FormField from 'components/Form/FormField'
 
+import {assumeMock} from 'utils/testing'
+
+jest.mock('components/Form/FormField')
+const FormFieldMock = assumeMock(FormField)
+
+import {
+    RING_TIME_MAX_VALUE,
+    RING_TIME_MIN_VALUE,
+    RING_TIME_VALIDATION_ERROR,
+    WAIT_TIME_MAX_VALUE,
+    WAIT_TIME_MIN_VALUE,
+    WAIT_TIME_VALIDATION_ERROR,
+} from '../constants'
 import VoiceIntegrationPreferencesInboundCalls from '../VoiceIntegrationPreferencesInboundCalls'
 
 jest.mock('models/team/queries', () => ({
     useListTeams: jest.fn(),
 }))
 
-jest.mock(
-    '../VoiceIntegrationPreferencesTeamSelect',
-    () =>
-        ({onChange}: {onChange: (e: any) => void}) => (
-            <input
-                onChange={(e) => {
-                    onChange(e.target.value)
-                }}
-                data-testid="team-select"
-            />
-        )
-)
-
 describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
-    const handleChange = jest.fn()
-
-    const props = {
-        isIvr: false,
-        preferences: {
-            ringing_behaviour: PhoneRingingBehaviour.RoundRobin,
-            ring_time: 30,
-        },
-        onPreferencesChange: jest.fn(),
-        phoneTeamId: 1,
-        onPhoneTeamIdChange: jest.fn(),
-        integrationPreferences: {
-            ringing_behaviour: PhoneRingingBehaviour.RoundRobin,
-            ring_time: 30,
-        },
-    }
-
     const renderComponent = (props: any = {}): RenderResult => {
-        return render(
-            <VoiceIntegrationPreferencesInboundCalls
-                onChange={handleChange}
-                {...props}
-            />
-        )
+        return render(<VoiceIntegrationPreferencesInboundCalls {...props} />)
     }
 
-    afterEach(() => {
-        resetLDMocks()
-        cleanup()
+    beforeEach(() => {
+        FormFieldMock.mockImplementation(({label}: any) => <div>{label}</div>)
     })
 
     it('should display team select, ringing behaviour, recording section and ring/wait time when it is not IVR', () => {
-        renderComponent(props)
+        renderComponent()
 
-        expect(screen.getByTestId('team-select')).toBeInTheDocument()
         expect(screen.getByText('Set ringing behaviour')).toBeInTheDocument()
         expect(screen.getByText('Ring time per agent')).toBeInTheDocument()
         expect(screen.getByText('Max wait time')).toBeInTheDocument()
@@ -77,9 +45,8 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
     })
 
     it('should not display team select, ringing behaviour, recording section and ring/wait time when it is not IVR', () => {
-        renderComponent({...props, isIvr: true})
+        renderComponent({isIvr: true})
 
-        expect(screen.queryByTestId('team-select')).toBeNull()
         expect(screen.queryByText('Set ringing behaviour')).toBeNull()
         expect(screen.queryByText('Start recording automatically')).toBeNull()
         expect(screen.queryByText('Ring Time')).toBeNull()
@@ -91,126 +58,54 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
         ).toBeNull()
     })
 
-    it('should call onPreferencesChange when ringing behaviour is changed', () => {
-        renderComponent(props)
+    describe('validation', () => {
+        const getValidationProp = (fieldName: string) => {
+            const recordingNotificationFormFieldCall =
+                FormFieldMock.mock.calls.find(
+                    (call) => call[0].name === fieldName
+                )
 
-        fireEvent.click(screen.getByText('Broadcast ringing'))
-
-        expect(props.onPreferencesChange).toHaveBeenCalledWith({
-            ringing_behaviour: PhoneRingingBehaviour.Broadcast,
-        })
-    })
-
-    it('should call onPhoneTeamIdChange when team is changed', () => {
-        renderComponent(props)
-
-        act(() => {
-            fireEvent.change(screen.getByTestId('team-select'), {
-                target: {value: 2},
-            })
-        })
-
-        expect(props.onPhoneTeamIdChange).toHaveBeenCalledWith('2')
-    })
-
-    it('should not display recording setting when transcriptions FF is on', () => {
-        mockFlags({RecordingTranscriptions: true})
-
-        renderComponent(props)
-
-        expect(screen.queryByText('Start recording automatically')).toBeNull()
-    })
-
-    it.each([
-        {ringTimeInput: '40', ringTimeValue: 40},
-        {ringTimeInput: '', ringTimeValue: Number.NaN},
-    ])(
-        'should call onPreferencesChange when ring time is changed',
-        ({ringTimeInput, ringTimeValue}) => {
-            renderComponent(props)
-
-            fireEvent.input(screen.getByLabelText(/Ring time per agent/i), {
-                target: {value: ringTimeInput},
-            })
-
-            expect(props.onPreferencesChange).toHaveBeenCalledWith({
-                ring_time: ringTimeValue,
-            })
+            return recordingNotificationFormFieldCall?.[0]?.validation
         }
-    )
 
-    it('should show ring time-related errors', () => {
-        renderComponent({
-            ...props,
-            errors: {
-                ring_time:
-                    'Ring time must be between 10 and 600 seconds (10 minutes).',
-            },
-        })
+        it('should set correct validation for ring time', () => {
+            renderComponent()
 
-        expect(
-            screen.getByText(
-                'Ring time must be between 10 and 600 seconds (10 minutes).'
+            const validationProp = getValidationProp(
+                'meta.preferences.ring_time'
             )
-        ).toBeInTheDocument()
-    })
 
-    it.each([
-        {waitTimeInput: '45', waitTimeValue: 45},
-        {waitTimeInput: '', waitTimeValue: Number.NaN},
-    ])(
-        'should call onPreferencesChange when wait time is changed',
-        ({waitTimeInput, waitTimeValue}) => {
-            renderComponent(props)
-
-            fireEvent.input(screen.getByLabelText(/Max wait time/i), {
-                target: {value: waitTimeInput},
+            expect(validationProp).toEqual({
+                required: RING_TIME_VALIDATION_ERROR,
+                min: {
+                    value: RING_TIME_MIN_VALUE,
+                    message: RING_TIME_VALIDATION_ERROR,
+                },
+                max: {
+                    value: RING_TIME_MAX_VALUE,
+                    message: RING_TIME_VALIDATION_ERROR,
+                },
             })
+        })
 
-            expect(props.onPreferencesChange).toHaveBeenCalledWith({
-                wait_time: {enabled: true, value: waitTimeValue},
+        it('should set correct validation for wait time', () => {
+            renderComponent()
+
+            const validationProp = getValidationProp(
+                'meta.preferences.wait_time.value'
+            )
+
+            expect(validationProp).toEqual({
+                required: WAIT_TIME_VALIDATION_ERROR,
+                min: {
+                    value: WAIT_TIME_MIN_VALUE,
+                    message: WAIT_TIME_VALIDATION_ERROR,
+                },
+                max: {
+                    value: WAIT_TIME_MAX_VALUE,
+                    message: WAIT_TIME_VALIDATION_ERROR,
+                },
             })
-        }
-    )
-
-    it('should call onPreferencesChange when wait time is disabled', () => {
-        renderComponent(props)
-
-        fireEvent.click(
-            screen.getByText(
-                'Hold calls in queue until an agent becomes available'
-            )
-        )
-
-        expect(props.onPreferencesChange).toHaveBeenCalledWith({
-            wait_time: {enabled: false, value: 120},
         })
-    })
-
-    it('should show wait time-related errors', () => {
-        renderComponent({
-            ...props,
-            errors: {
-                wait_time:
-                    'Wait time must be between 10 and 3600 seconds (1 hour).',
-            },
-        })
-
-        expect(
-            screen.getByText(
-                'Wait time must be between 10 and 3600 seconds (1 hour).'
-            )
-        ).toBeInTheDocument()
-    })
-
-    it('should correctly set the default values for wait time', () => {
-        renderComponent(props)
-
-        expect(screen.getByLabelText(/Max wait time/i)).toBeEnabled()
-        expect(
-            screen.getByLabelText(
-                'Hold calls in queue until an agent becomes available'
-            )
-        ).toBeChecked()
     })
 })

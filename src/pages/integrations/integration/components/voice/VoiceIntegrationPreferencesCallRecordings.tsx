@@ -1,36 +1,34 @@
+import {VoiceMessage, VoiceMessageType} from '@gorgias/api-queries'
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
+import {useFormContext} from 'react-hook-form'
 import {Label} from 'reactstrap'
 
+import FormField from 'components/Form/FormField'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {
-    PhoneIntegrationPreferences,
-    VoiceMessage,
-} from 'models/integration/types'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import settingsCss from 'pages/settings/settings.less'
 
+import {FormValues} from './useVoicePreferencesForm'
 import css from './VoiceIntegrationPreferences.less'
 import VoiceMessageField from './VoiceMessageField'
 
-type Props = {
-    preferences: PhoneIntegrationPreferences
-    onPreferencesChange: (
-        preferences: Partial<PhoneIntegrationPreferences>
-    ) => void
-    recordingNotification: VoiceMessage
-    onRecordingNotificationChange: (message: VoiceMessage) => void
-}
-
-export default function VoiceIntegrationPreferencesCallRecordings({
-    preferences,
-    onPreferencesChange,
-    recordingNotification,
-    onRecordingNotificationChange,
-}: Props): JSX.Element {
+export default function VoiceIntegrationPreferencesCallRecordings(): JSX.Element {
     const showCustomRecordingNotificationSection: boolean | undefined =
         useFlags()[FeatureFlagKey.CustomRecordingNotification]
+
+    const {
+        watch,
+        formState: {defaultValues},
+    } = useFormContext<FormValues>()
+    const [isRecordingInboundCalls, isRecordingOutboundCalls] = watch([
+        'meta.preferences.record_inbound_calls',
+        'meta.preferences.record_outbound_calls',
+    ])
+
+    const isCustomRecordingNotificationDisabled =
+        !isRecordingInboundCalls && !isRecordingOutboundCalls
 
     return (
         <div className={css.callRecordingFormSection}>
@@ -47,46 +45,66 @@ export default function VoiceIntegrationPreferencesCallRecordings({
             </div>
             <div>
                 <Label className="control-label">Inbound calls</Label>
-                <ToggleInput
-                    isToggled={preferences.record_inbound_calls}
-                    onClick={(value) =>
-                        onPreferencesChange({
-                            ...preferences,
-                            record_inbound_calls: value,
-                        })
-                    }
+                <FormField
+                    field={ToggleInputField}
+                    name="meta.preferences.record_inbound_calls"
                 >
                     Start recording automatically
-                </ToggleInput>
+                </FormField>
             </div>
             <div>
                 <Label className="control-label">Outbound calls</Label>
-                <ToggleInput
-                    isToggled={preferences.record_outbound_calls}
-                    onClick={(value) =>
-                        onPreferencesChange({
-                            ...preferences,
-                            record_outbound_calls: value,
-                        })
-                    }
+                <FormField
+                    field={ToggleInputField}
+                    name="meta.preferences.record_outbound_calls"
                 >
                     Start recording automatically
-                </ToggleInput>
+                </FormField>
             </div>
             {showCustomRecordingNotificationSection && (
                 <div>
                     <Label className="control-label">
                         Call recording notifications
                     </Label>
-                    <VoiceMessageField
-                        value={recordingNotification}
-                        onChange={onRecordingNotificationChange}
+                    <FormField
+                        field={VoiceMessageField}
+                        name="meta.recording_notification"
                         allowNone
                         horizontal={true}
-                        isDisabled={
-                            !preferences.record_inbound_calls &&
-                            !preferences.record_outbound_calls
-                        }
+                        isDisabled={isCustomRecordingNotificationDisabled}
+                        validation={{
+                            validate: {
+                                textToSpeech: (value: VoiceMessage) => {
+                                    if (isCustomRecordingNotificationDisabled) {
+                                        return undefined
+                                    }
+
+                                    if (
+                                        value?.voice_message_type ===
+                                            VoiceMessageType.TextToSpeech &&
+                                        !value?.text_to_speech_content
+                                    ) {
+                                        return 'Text to speech content is required'
+                                    }
+                                },
+                                voiceRecording: (value: VoiceMessage) => {
+                                    if (isCustomRecordingNotificationDisabled) {
+                                        return undefined
+                                    }
+
+                                    if (
+                                        value?.voice_message_type ===
+                                            VoiceMessageType.VoiceRecording &&
+                                        !value.new_voice_recording_file &&
+                                        !defaultValues?.meta
+                                            ?.recording_notification
+                                            ?.voice_recording_file_path
+                                    ) {
+                                        return 'Voice recording is required'
+                                    }
+                                },
+                            },
+                        }}
                     />
                 </div>
             )}
