@@ -34,6 +34,7 @@ import NavigatedSuccessModal, {
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
 import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
+import Caption from 'pages/common/forms/Caption/Caption'
 import RichField from 'pages/common/forms/RichField/RichField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
@@ -1493,6 +1494,13 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                     }
                                                 />
                                             )}
+                                        <Caption>
+                                            Gorgias is not responsible for
+                                            ensuring compliance with applicable
+                                            privacy laws. It is your
+                                            responsibility to implement privacy
+                                            policies.
+                                        </Caption>
                                     </div>
                                 )}
                                 {!chatTranscriptEnabled ? (
