@@ -1,6 +1,6 @@
 :local {
     .backdrop {
-        position: fixed;
+        position: absolute;
         z-index: 1000;
         top: 0;
         left: 0;
@@ -10,11 +10,11 @@
 
     .container {
         overflow: hidden;
-        position: fixed;
+        position: absolute;
         z-index: 1001;
-        top: var(--layout-spacing-s);
-        left: 64px;
-        bottom: var(--layout-spacing-s);
+        top: var(--layout-spacing-xs);
+        left: calc(48px + var(--layout-spacing-xs));
+        bottom: var(--layout-spacing-xs);
         width: 402px;
         border-radius: 10px;
         box-shadow:

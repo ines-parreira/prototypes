@@ -11,12 +11,8 @@ import useSplitTicketView from '../hooks/useSplitTicketView'
 import css from './Toggle.less'
 import useIsToggleEnabled from './useIsToggleEnabled'
 
-type ToggleProps = {
-    withLeftMargin?: boolean
-}
-
 /* istanbul ignore next */
-export default function Toggle({withLeftMargin = true}: ToggleProps) {
+export default function Toggle() {
     const {isEnabled, setIsEnabled} = useSplitTicketView()
     const {isEnabled: isToggleEnabled} = useIsToggleEnabled()
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
@@ -37,13 +33,7 @@ export default function Toggle({withLeftMargin = true}: ToggleProps) {
         <>
             <button
                 className={cn(
-                    showGlobalNav
-                        ? [
-                              css.showGlobalNavToggle,
-                              /* istanbul ignore next */
-                              withLeftMargin && css.withLeftMargin,
-                          ]
-                        : css.toggle,
+                    showGlobalNav ? css.showGlobalNavToggle : css.toggle,
                     {
                         [css.active]: isEnabled,
                         [css.disabled]: !isToggleEnabled,

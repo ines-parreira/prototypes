@@ -63,8 +63,6 @@ jest.mock('../ClientProvider', () => ({children}: {children: ReactNode}) => (
     </div>
 ))
 
-jest.mock('../Overlay', () => () => <div>Overlay</div>)
-
 describe('Provider', () => {
     beforeEach(() => {
         getCurrentAccountIdMock.mockReturnValue(2)
@@ -93,10 +91,5 @@ describe('Provider', () => {
     it('should render the ClientProvider', () => {
         const {getByText} = render(<Provider>Boop</Provider>)
         expect(getByText('ClientProvider')).toBeInTheDocument()
-    })
-
-    it('should render the Overlay', () => {
-        const {getByText} = render(<Provider>Boop</Provider>)
-        expect(getByText('Overlay')).toBeInTheDocument()
     })
 })

@@ -44,7 +44,7 @@ export default function PanelRoutes() {
         <Panels size={width}>
             <GlobalNavigationPanel key="global-navigation" />
             <TicketsNavbarPanel key="navbar" />
-            <Handle />
+            <Handle className={css.navbarHandle} />
             <PanelGroup className={css.contentGroup} subtractSize={18}>
                 <Switch>
                     <Route exact path="/app">

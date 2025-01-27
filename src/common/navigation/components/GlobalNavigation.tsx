@@ -84,6 +84,7 @@ export default function GlobalNavigation() {
                             <Item
                                 icon="auto_awesome"
                                 isActive={activeItem === 'ai-agent'}
+                                tooltip={<span>AI Agent</span>}
                                 url="/app/ai-agent"
                             />
                         )}

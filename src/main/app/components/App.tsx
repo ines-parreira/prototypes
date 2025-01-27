@@ -4,8 +4,7 @@ import AlertBanners from 'AlertBanners'
 import {AppNode} from 'appNode'
 
 import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
-import {NotificationsToasts} from 'common/notifications'
-
+import {NotificationsOverlay, NotificationsToasts} from 'common/notifications'
 import {useApplyTheme} from 'core/theme'
 import useHasPhone from 'hooks/useHasPhone'
 import {AlertNotifications} from 'notifications'
@@ -25,6 +24,7 @@ import useAppShortcuts from '../hooks/useAppShortcuts'
 import usePollingManager from '../hooks/usePollingManager'
 import {useSetBanners} from '../hooks/useSetBanners'
 import useSharedLogic from '../hooks/useSharedLogic'
+import css from './App.less'
 import UIKitRootNodeProvider from './UIKitRootNodeProvider'
 
 type Props = {
@@ -56,7 +56,10 @@ export default function App({children}: Props) {
                 <ScriptTagMigrationBanner />
                 <ScriptTagMigrationModal />
                 <Spotlight />
-                {children}
+                <div className={css.content}>
+                    <NotificationsOverlay />
+                    {children}
+                </div>
                 <KeyboardHelp />
                 {hasPhone && <PhoneIntegrationBar />}
                 <OutOfRecoveryCodesModal />

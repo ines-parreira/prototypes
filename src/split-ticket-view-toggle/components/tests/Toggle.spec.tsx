@@ -28,18 +28,10 @@ describe('Toggle', () => {
         )
     }
 
-    it('applies left margin class when withLeftMargin prop is true', () => {
-        renderWithProvider(<Toggle withLeftMargin={true} />)
+    it('should render the component', () => {
+        renderWithProvider(<Toggle />)
 
         const button = screen.getByRole('button')
-
-        expect(button.className).toContain('withLeftMargin')
-    })
-
-    it('does not apply left margin class when withLeftMargin prop is false', () => {
-        renderWithProvider(<Toggle withLeftMargin={false} />)
-
-        const button = screen.getByRole('button')
-        expect(button.className).not.toContain('withLeftMargin')
+        expect(button).toBeInTheDocument()
     })
 })

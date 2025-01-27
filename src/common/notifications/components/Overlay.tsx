@@ -1,13 +1,9 @@
 import React from 'react'
 import {CSSTransition} from 'react-transition-group'
 
+import useNotificationsOverlay from '../hooks/useNotificationsOverlay'
 import Feed from './Feed'
 import css from './Overlay.less'
-
-type Props = {
-    isVisible?: boolean
-    onClose: () => void
-}
 
 const transitionClassNames = {
     appear: css.enter,
@@ -18,10 +14,11 @@ const transitionClassNames = {
     exitActive: css.exitActive,
 }
 
-export default function Overlay({isVisible = false, onClose}: Props) {
+export default function Overlay() {
+    const [isVisible, onToggle] = useNotificationsOverlay()
     return (
         <>
-            {isVisible && <div className={css.backdrop} onClick={onClose} />}
+            {isVisible && <div className={css.backdrop} onClick={onToggle} />}
             <CSSTransition
                 appear
                 mountOnEnter
@@ -31,7 +28,7 @@ export default function Overlay({isVisible = false, onClose}: Props) {
                 timeout={200}
             >
                 <div className={css.container}>
-                    <Feed onClose={onClose} />
+                    <Feed onClose={onToggle} />
                 </div>
             </CSSTransition>
         </>

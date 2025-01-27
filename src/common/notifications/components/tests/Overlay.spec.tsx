@@ -1,30 +1,33 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 
+import {assumeMock} from 'utils/testing'
+
+import useNotificationsOverlay from '../../hooks/useNotificationsOverlay'
 import Overlay from '../Overlay'
 import css from '../Overlay.less'
 
+jest.mock('../../hooks/useNotificationsOverlay', () => jest.fn())
+const useNotificationsOverlayMock = assumeMock(useNotificationsOverlay)
 jest.mock('../Feed', () => () => <div>Feed</div>)
 
 describe('Overlay', () => {
-    let onClose: jest.Mock
+    let onToggle: jest.Mock
 
     beforeEach(() => {
-        onClose = jest.fn()
+        onToggle = jest.fn()
+        useNotificationsOverlayMock.mockReturnValue([false, onToggle])
     })
 
     it('should render nothing if the overlay is not visible', () => {
-        const {container} = render(<Overlay onClose={onClose} />)
+        const {container} = render(<Overlay />)
         expect(container).toBeEmptyDOMElement()
     })
 
-    it('should render the backdrop if the overlay is visible', () => {
-        const {container} = render(<Overlay isVisible onClose={onClose} />)
+    it('should render the backdrop and feed if the overlay is visible', () => {
+        useNotificationsOverlayMock.mockReturnValue([true, onToggle])
+        const {container} = render(<Overlay />)
         expect(container.firstChild).toHaveClass(css.backdrop)
-    })
-
-    it('should render the feed if the overlay is visible', () => {
-        render(<Overlay isVisible onClose={onClose} />)
         expect(screen.getByText('Feed')).toBeInTheDocument()
     })
 })
