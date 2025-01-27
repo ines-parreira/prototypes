@@ -16,7 +16,10 @@ interface RequirementTypeInputProps {
 export default function RequirementTypeInput(props: RequirementTypeInputProps) {
     return (
         <div className={props.className}>
-            <Label className="mb-2">Field visibility</Label>
+            <div className={css.visibilityHeader}>
+                <Label>Field visibility</Label>
+                <Badge type={ColorType.Blue}>BETA</Badge>
+            </div>
             <p className="mb-2">
                 Configure fields to always appear, or only when specific
                 conditions are met. See conditional visibility of Optional or
@@ -57,7 +60,6 @@ export default function RequirementTypeInput(props: RequirementTypeInputProps) {
                     label="Conditionally visible"
                     caption={
                         <>
-                            <Badge type={ColorType.Blue}>BETA</Badge>
                             <p className="mt-1 mb-0">
                                 Display to agents only when conditions are met.
                                 <br />
