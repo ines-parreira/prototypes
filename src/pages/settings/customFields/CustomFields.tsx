@@ -72,7 +72,7 @@ export default function CustomFields({
         archived: true,
         object_type: objectType,
         cursor: archivedCursor,
-        search: debouncedSearch,
+        search: debouncedSearch || undefined,
     })
 
     const customFields = activeTab === 'active' ? activeFields : archivedFields
