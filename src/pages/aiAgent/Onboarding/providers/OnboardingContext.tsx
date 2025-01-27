@@ -1,14 +1,28 @@
 import React, {createContext, useContext, ReactNode} from 'react'
 
 import {
+    useGetOnboardingSettings,
+    GetOnboardingSetting,
+} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingSettings'
+import {
     AiAgentScopes,
     OnboardingContextData,
     WizardStepEnum,
 } from 'pages/aiAgent/Onboarding/types'
 
 type OnboardingContextHandlers = {
-    setOnboardingData?: (data: Partial<OnboardingContextData>) => void
+    getOnboardingData: () => GetOnboardingSetting
+    setOnboardingData: (data: Partial<OnboardingContextData>) => void
 }
+// Prevent to have undefined handlers
+const getDefaultHandlers = (): OnboardingContextHandlers => ({
+    getOnboardingData: () => {
+        throw new Error('Function not implemented.')
+    },
+    setOnboardingData: () => {
+        throw new Error('Function not implemented.')
+    },
+})
 
 const getDefaultOnboardingWizardData = (): OnboardingContextData => ({
     lastStep: WizardStepEnum.SKILLSET,
@@ -18,7 +32,10 @@ const getDefaultOnboardingWizardData = (): OnboardingContextData => ({
 
 export const OnboardingContext = createContext<
     OnboardingContextData & OnboardingContextHandlers
->(getDefaultOnboardingWizardData())
+>({
+    ...getDefaultOnboardingWizardData(),
+    ...getDefaultHandlers(),
+})
 
 export const useOnboardingContext = () => {
     const context = useContext(OnboardingContext)
@@ -48,7 +65,11 @@ export const OnboardingContextProvider = ({
 
     return (
         <OnboardingContext.Provider
-            value={{...onboardingData, setOnboardingData}}
+            value={{
+                ...onboardingData,
+                setOnboardingData,
+                getOnboardingData: useGetOnboardingSettings,
+            }}
         >
             {children}
         </OnboardingContext.Provider>

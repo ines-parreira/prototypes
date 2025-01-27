@@ -54,6 +54,7 @@ describe('AiAgentOnboarding', () => {
             scope: [AiAgentScopes.SALES, AiAgentScopes.SUPPORT],
             lastStep: WizardStepEnum.SKILLSET,
             setOnboardingData: jest.fn(),
+            getOnboardingData: jest.fn(),
         })
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.ConvAiOnboarding]: true,
@@ -70,6 +71,7 @@ describe('AiAgentOnboarding', () => {
             scope: [AiAgentScopes.SALES, AiAgentScopes.SUPPORT],
             lastStep: WizardStepEnum.SKILLSET,
             setOnboardingData: jest.fn(),
+            getOnboardingData: jest.fn(),
         })
         renderWithRouter(<AiAgentOnboarding />)
         expect(screen.getByAltText('Gorgias')).toBeInTheDocument()

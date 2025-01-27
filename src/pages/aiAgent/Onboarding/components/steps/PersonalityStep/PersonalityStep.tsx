@@ -1,6 +1,6 @@
 import {Label} from '@gorgias/merchant-ui-kit'
 import cn from 'classnames'
-import React, {useReducer} from 'react'
+import React, {useCallback, useEffect, useReducer} from 'react'
 
 import sparkles from 'assets/img/icons/auto_awesome.svg'
 
@@ -14,27 +14,21 @@ import {
     OnboardingContentContainer,
     OnboardingPreviewContainer,
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
+import {useOnboardingContext} from 'pages/aiAgent/Onboarding/providers/OnboardingContext'
 import {
     agentChatConversationSettings,
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding/settings'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import IconInput from 'pages/common/forms/input/IconInput'
 import InputField from 'pages/common/forms/input/InputField'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 
-import {
-    DiscountStrategy,
-    DiscountStrategyLabels,
-    DiscountStrategySteps,
-} from './DiscountStrategy'
+import {DiscountStrategyLabels, DiscountStrategySteps} from './DiscountStrategy'
 import css from './PersonalityStep.less'
 import {reducer} from './PersonalityStepReducer'
-import {
-    PersuasionLevel,
-    PersuasionLevelLabels,
-    PersuasionLevelSteps,
-} from './PersuasionLevel'
+import {PersuasionLevelLabels, PersuasionLevelSteps} from './PersuasionLevel'
 
 export const PersonalityStep: React.FC<StepProps> = ({
     currentStep,
@@ -42,32 +36,50 @@ export const PersonalityStep: React.FC<StepProps> = ({
     onNextClick,
     onBackClick,
 }) => {
-    // TODO: replace with an API call
-    const {persuasionLevel, discountStrategy, maxDiscountPercentage} = {
-        persuasionLevel: PersuasionLevel.Moderate,
-        discountStrategy: DiscountStrategy.Balanced,
-        maxDiscountPercentage: 8,
-    }
-
+    const {setOnboardingData, getOnboardingData} = useOnboardingContext()
+    const {isLoading, data} = getOnboardingData()
     const [state, dispatch] = useReducer(reducer, {
-        persuasionLevel: {
-            value: persuasionLevel,
-        },
-        discountStrategy: {
-            value: discountStrategy,
-        },
-        maxDiscountPercentage: {
-            value: maxDiscountPercentage,
-            disabled: discountStrategy === DiscountStrategy.NoDiscount,
-        },
+        isLoading,
     })
+
+    useEffect(() => {
+        if (!isLoading && data && state.isLoading) {
+            dispatch({type: 'DATA_FETCHED', data})
+        }
+    }, [isLoading, data, state.isLoading])
+
+    const onNextClickWithValidation = useCallback(() => {
+        const persuasionLevelValid =
+            !state.persuasionLevel?.error && !!state.persuasionLevel?.value
+        const discountStrategyValue =
+            !state.discountStrategy?.error && !!state.discountStrategy?.value
+        const maxDiscountPercentage =
+            !state.maxDiscountPercentage?.error &&
+            // We must compare with undefined because maxDiscountPercentage can be 0
+            !!state.maxDiscountPercentage?.value !== undefined
+
+        if (
+            !persuasionLevelValid ||
+            !discountStrategyValue ||
+            !maxDiscountPercentage
+        ) {
+            return
+        }
+
+        setOnboardingData({
+            persuasionLevel: state.persuasionLevel?.value,
+            discountStrategy: state.discountStrategy?.value,
+            maxDiscountPercentage: state.maxDiscountPercentage?.value,
+        })
+        onNextClick()
+    }, [setOnboardingData, state, onNextClick])
 
     return (
         <OnboardingBody>
             <OnboardingContentContainer
                 currentStep={currentStep}
                 totalSteps={totalSteps}
-                onNextClick={onNextClick}
+                onNextClick={onNextClickWithValidation}
                 onBackClick={onBackClick}
             >
                 <div className={css.title}>
@@ -89,27 +101,35 @@ export const PersonalityStep: React.FC<StepProps> = ({
                                 customers.
                             </IconTooltip>
                         </div>
-                        <div className={css.sliderWrapper}>
-                            <OnboardingSteppedSlider
-                                steps={PersuasionLevelSteps}
-                                stepKey={state.persuasionLevel.value}
-                                onChange={(value: string) =>
-                                    dispatch({
-                                        type: 'UPDATE_PERSUASION_LEVEL',
-                                        value,
-                                    })
-                                }
-                            />
+                        <div className={css.cardSliderWrapper}>
+                            {!state.persuasionLevel ? (
+                                <Skeleton height={50} />
+                            ) : (
+                                <OnboardingSteppedSlider
+                                    steps={PersuasionLevelSteps}
+                                    stepKey={state.persuasionLevel.value}
+                                    onChange={(value: string) =>
+                                        dispatch({
+                                            type: 'UPDATE_PERSUASION_LEVEL',
+                                            value,
+                                        })
+                                    }
+                                />
+                            )}
                         </div>
                         <div className={css.cardDescriptionWrapper}>
                             <img src={sparkles} alt="Sparkles" />
-                            <div>
-                                {
-                                    PersuasionLevelLabels[
-                                        state.persuasionLevel.value
-                                    ]?.description
-                                }
-                            </div>
+                            {!state.persuasionLevel ? (
+                                <Skeleton />
+                            ) : (
+                                <div>
+                                    {
+                                        PersuasionLevelLabels[
+                                            state.persuasionLevel.value
+                                        ]?.description
+                                    }
+                                </div>
+                            )}
                         </div>
                     </section>
                 </Card>
@@ -126,26 +146,34 @@ export const PersonalityStep: React.FC<StepProps> = ({
                             </IconTooltip>
                         </div>
                         <div className={css.cardSliderWrapper}>
-                            <OnboardingSteppedSlider
-                                steps={DiscountStrategySteps}
-                                stepKey={state.discountStrategy.value}
-                                onChange={(value: string) =>
-                                    dispatch({
-                                        type: 'UPDATE_DISCOUNT_STRATEGY',
-                                        value,
-                                    })
-                                }
-                            />
+                            {!state.discountStrategy ? (
+                                <Skeleton height={50} />
+                            ) : (
+                                <OnboardingSteppedSlider
+                                    steps={DiscountStrategySteps}
+                                    stepKey={state.discountStrategy.value}
+                                    onChange={(value: string) =>
+                                        dispatch({
+                                            type: 'UPDATE_DISCOUNT_STRATEGY',
+                                            value,
+                                        })
+                                    }
+                                />
+                            )}
                         </div>
                         <div className={css.cardDescriptionWrapper}>
                             <img src={sparkles} alt="Sparkles" />
-                            <div>
-                                {
-                                    DiscountStrategyLabels[
-                                        state.discountStrategy.value
-                                    ]?.description
-                                }
-                            </div>
+                            {!state.discountStrategy ? (
+                                <Skeleton />
+                            ) : (
+                                <div>
+                                    {
+                                        DiscountStrategyLabels[
+                                            state.discountStrategy.value
+                                        ]?.description
+                                    }
+                                </div>
+                            )}
                         </div>
                     </section>
                     <hr className={css.separator} />
@@ -161,27 +189,35 @@ export const PersonalityStep: React.FC<StepProps> = ({
                                 Set the maximum offer for first-time customers
                             </p>
                         </Label>
-                        <InputField
-                            type="number"
-                            min={1}
-                            max={100}
-                            id="percentage-discount"
-                            className={css.percentageInputWrapper}
-                            value={state.maxDiscountPercentage.value}
-                            onChange={(value: string) =>
-                                dispatch({
-                                    type: 'UPDATE_MAX_DISCOUNT_PERCENTAGE',
-                                    value,
-                                })
-                            }
-                            suffix={<IconInput icon="percent" />}
-                            error={state.maxDiscountPercentage.error}
-                            isDisabled={state.maxDiscountPercentage.disabled}
-                        />
+                        {!state.maxDiscountPercentage ? (
+                            <div className={css.percentageInputWrapper}>
+                                <Skeleton height={30} />
+                            </div>
+                        ) : (
+                            <InputField
+                                type="number"
+                                min={1}
+                                max={100}
+                                id="percentage-discount"
+                                className={css.percentageInputWrapper}
+                                value={state.maxDiscountPercentage.value}
+                                onChange={(value: string) =>
+                                    dispatch({
+                                        type: 'UPDATE_MAX_DISCOUNT_PERCENTAGE',
+                                        value,
+                                    })
+                                }
+                                suffix={<IconInput icon="percent" />}
+                                error={state.maxDiscountPercentage.error}
+                                isDisabled={
+                                    state.maxDiscountPercentage.disabled
+                                }
+                            />
+                        )}
                     </section>
                 </Card>
             </OnboardingContentContainer>
-            <OnboardingPreviewContainer isLoading={false} icon={''}>
+            <OnboardingPreviewContainer isLoading={state.isLoading} icon={''}>
                 <div className={css.chatWrapper}>
                     <ChatIntegrationPreview {...chatPreviewSettings}>
                         <AiAgentChatConversation

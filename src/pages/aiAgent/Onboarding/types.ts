@@ -1,3 +1,6 @@
+import {DiscountStrategy} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import {PersuasionLevel} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+
 export enum WizardStepEnum {
     SKILLSET = 'skillset',
     EMAIL_INTEGRATION = 'email integration',
@@ -23,4 +26,7 @@ export type OnboardingContextData = {
     emailIntegrationIds?: number[]
     chatChannelEnabled?: boolean
     chatIntegrationIds?: number[]
+    persuasionLevel?: PersuasionLevel
+    discountStrategy?: DiscountStrategy
+    maxDiscountPercentage?: number
 }

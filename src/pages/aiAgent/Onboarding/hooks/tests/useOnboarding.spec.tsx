@@ -300,6 +300,7 @@ describe('useOnboarding', () => {
             scope: [AiAgentScopes.SUPPORT],
             lastStep: WizardStepEnum.SKILLSET,
             setOnboardingData,
+            getOnboardingData: jest.fn(),
         })
 
         const {result} = renderHook(
@@ -322,6 +323,7 @@ describe('useOnboarding', () => {
             scope: [AiAgentScopes.SUPPORT],
             lastStep: WizardStepEnum.SKILLSET,
             setOnboardingData,
+            getOnboardingData: jest.fn(),
         })
 
         const {result} = renderHook(

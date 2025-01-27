@@ -1,23 +1,34 @@
 import {DiscountStrategy} from './DiscountStrategy'
 import {PersuasionLevel} from './PersuasionLevel'
 
-export type ACTION_TYPE = {
-    type:
-        | 'UPDATE_PERSUASION_LEVEL'
-        | 'UPDATE_DISCOUNT_STRATEGY'
-        | 'UPDATE_MAX_DISCOUNT_PERCENTAGE'
-    value: string
-}
+type ACTIONS =
+    | {
+          type:
+              | 'UPDATE_PERSUASION_LEVEL'
+              | 'UPDATE_DISCOUNT_STRATEGY'
+              | 'UPDATE_MAX_DISCOUNT_PERCENTAGE'
+          value: string
+      }
+    | {
+          type: 'DATA_FETCHED'
+          data: {
+              persuasionLevel: string
+              discountStrategy: string
+              maxDiscountPercentage: number
+          }
+      }
+
 export type State = {
-    persuasionLevel: {
+    isLoading: boolean
+    persuasionLevel?: {
         value: PersuasionLevel
         error?: string
     }
-    discountStrategy: {
+    discountStrategy?: {
         value: DiscountStrategy
         error?: string
     }
-    maxDiscountPercentage: {
+    maxDiscountPercentage?: {
         value: number
         disabled: boolean
         error?: string
@@ -41,14 +52,16 @@ const onUpdateDiscountStrategy = (state: State, value: string): State => {
     const maxDiscountPercentage: State['maxDiscountPercentage'] =
         discountStrategy === DiscountStrategy.NoDiscount
             ? {
+                  ...state.maxDiscountPercentage,
                   value: 0,
                   error: undefined,
                   disabled: true,
               }
             : {
-                  ...state.maxDiscountPercentage,
+                  ...state.maxDiscountPercentage!,
                   disabled: false,
               }
+
     return {
         ...state,
         discountStrategy: {
@@ -75,19 +88,55 @@ const onUpdateMaxDiscountPercentage = (
         maxDiscountPercentage: {
             ...state.maxDiscountPercentage,
             value: value,
+            disabled:
+                state.discountStrategy?.value === DiscountStrategy.NoDiscount,
             error: isInvalid ? 'Must be a number between 1 and 100' : undefined,
         },
     }
 }
 
-export const reducer = (state: State, {type, value}: ACTION_TYPE) => {
-    switch (type) {
+const onDataFetched = (
+    state: State,
+    {
+        persuasionLevel,
+        discountStrategy,
+        maxDiscountPercentage,
+    }: {
+        persuasionLevel: string
+        discountStrategy: string
+        maxDiscountPercentage: number
+    }
+): State => {
+    return {
+        ...state,
+        isLoading: false,
+        persuasionLevel: {
+            value: PersuasionLevel[
+                persuasionLevel as keyof typeof PersuasionLevel
+            ],
+        },
+        discountStrategy: {
+            value: DiscountStrategy[
+                discountStrategy as keyof typeof DiscountStrategy
+            ],
+        },
+        maxDiscountPercentage: {
+            value: maxDiscountPercentage,
+            disabled: discountStrategy === DiscountStrategy.NoDiscount,
+        },
+    }
+}
+
+export const reducer = (state: State, action: ACTIONS) => {
+    switch (action.type) {
+        case 'DATA_FETCHED':
+            return onDataFetched(state, action.data)
         case 'UPDATE_PERSUASION_LEVEL':
-            return onUpdatePersuasionLevel(state, value)
+            return onUpdatePersuasionLevel(state, action.value)
         case 'UPDATE_DISCOUNT_STRATEGY':
-            return onUpdateDiscountStrategy(state, value)
+            return onUpdateDiscountStrategy(state, action.value)
         case 'UPDATE_MAX_DISCOUNT_PERCENTAGE':
-            return onUpdateMaxDiscountPercentage(state, value)
+            return onUpdateMaxDiscountPercentage(state, action.value)
         default:
             throw new Error()
     }
