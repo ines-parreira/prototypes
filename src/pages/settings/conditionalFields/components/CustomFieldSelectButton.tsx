@@ -1,3 +1,4 @@
+import {CustomFieldRequirementType} from '@gorgias/api-queries'
 import {
     SelectInput,
     type SelectInputTriggerProps,
@@ -6,8 +7,8 @@ import React, {useMemo} from 'react'
 
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {
+    CustomField,
     CustomFieldObjectTypes,
-    CustomFieldRequirementType,
     isCustomFieldAIManagedType,
 } from 'custom-fields/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
@@ -32,7 +33,7 @@ const SelectTrigger = ({
 type CustomFieldSelectButtonProps = {
     objectType: CustomFieldObjectTypes
     ignoreIds?: number[]
-    onSelect: (customFieldId: number) => void
+    onSelect: (customField: CustomField) => void
     className?: string
 }
 
@@ -53,27 +54,28 @@ export default function CustomFieldSelectButton({
     ignoreIds,
     onSelect,
 }: CustomFieldSelectButtonProps) {
-    const customFields = useCustomFieldDefinitions(
-        {
-            archived: false,
-            object_type: objectType,
-        },
-        {refetchOnWindowFocus: 'always'}
-    )
+    const {data: {data: customFields = []} = {}, isLoading} =
+        useCustomFieldDefinitions(
+            {
+                archived: false,
+                object_type: objectType,
+            },
+            {refetchOnWindowFocus: 'always'}
+        )
 
     const options = useMemo(
         () =>
-            (customFields.data?.data || [])
+            customFields
                 .filter(
                     ({managed_type}) =>
                         !isCustomFieldAIManagedType(managed_type)
                 )
                 .filter(({id}) => !ignoreIds?.includes(id)),
 
-        [customFields.data?.data, ignoreIds]
+        [customFields, ignoreIds]
     )
 
-    if (customFields.isLoading) {
+    if (isLoading) {
         return null
     }
 
@@ -87,14 +89,13 @@ export default function CustomFieldSelectButton({
 
     return (
         <SelectInput
-            onChange={(value) => {
-                onSelect(value.id)
-            }}
+            onChange={onSelect}
             options={options}
             optionMapper={(option) => ({
                 value: option?.label,
                 subtext: requirementTypeToString(option?.requirement_type),
             })}
+            selectedOption={null as any}
             trigger={SelectTrigger}
         />
     )

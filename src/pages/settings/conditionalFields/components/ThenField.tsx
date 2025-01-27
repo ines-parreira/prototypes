@@ -1,10 +1,12 @@
+import {CustomFieldRequirementType} from '@gorgias/api-queries'
 import {
     CustomFieldConditionField,
     ExpressionFieldType,
 } from '@gorgias/api-types'
 import {produce} from 'immer'
-import React, {forwardRef, useCallback, useMemo} from 'react'
+import React, {forwardRef, useCallback, useMemo, useState} from 'react'
 
+import {CustomField} from 'custom-fields/types'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
@@ -12,6 +14,7 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 import Caption from 'pages/common/forms/Caption/Caption'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 
+import ConfirmCustomFieldRequirementTypeChangeModal from './ConfirmCustomFieldRequirementTypeChangeModal'
 import CustomFieldSelectButton from './CustomFieldSelectButton'
 import css from './ThenField.less'
 import ThenFieldRow from './ThenFieldRow'
@@ -26,17 +29,22 @@ export default forwardRef(function ThenField(
     {value: requirements, onChange, error}: ThenFieldProps,
     __ref
 ) {
+    const [
+        nonConditionalFieldRequestedForAddition,
+        setNonConditionalFieldRequestedForAddition,
+    ] = useState<Maybe<CustomField>>(null)
+
     const fieldIds = useMemo(
         () => requirements.map((field) => field.field_id),
         [requirements]
     )
 
     const handleAddField = useCallback(
-        (field_id: number) => {
+        (customField: CustomField) => {
             onChange(
                 produce(requirements, (draft) => {
                     draft.push({
-                        field_id,
+                        field_id: customField.id,
                         type: 'visible',
                     })
                 })
@@ -111,9 +119,33 @@ export default forwardRef(function ThenField(
                 <CustomFieldSelectButton
                     objectType="Ticket"
                     ignoreIds={fieldIds}
-                    onSelect={handleAddField}
+                    onSelect={(customField: CustomField) => {
+                        if (
+                            customField.requirement_type !==
+                            CustomFieldRequirementType.Conditional
+                        ) {
+                            setNonConditionalFieldRequestedForAddition(
+                                customField
+                            )
+                        } else {
+                            handleAddField(customField)
+                        }
+                    }}
                 />
             </div>
+            {!!nonConditionalFieldRequestedForAddition && (
+                <ConfirmCustomFieldRequirementTypeChangeModal
+                    isOpen={!!nonConditionalFieldRequestedForAddition}
+                    onCancel={() => {
+                        setNonConditionalFieldRequestedForAddition(null)
+                    }}
+                    onConfirmationSuccess={(customField: CustomField) => {
+                        handleAddField(customField)
+                        setNonConditionalFieldRequestedForAddition(null)
+                    }}
+                    customField={nonConditionalFieldRequestedForAddition}
+                />
+            )}
         </>
     )
 })

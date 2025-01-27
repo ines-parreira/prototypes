@@ -1,0 +1,23 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .footer {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        > div:first-child {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+        }
+    }
+    .proceedButtons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: @layout-spacing-xs;
+    }
+}

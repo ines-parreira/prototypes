@@ -1,10 +1,12 @@
+import {CustomFieldRequirementType} from '@gorgias/api-queries'
 import {ExpressionFieldType} from '@gorgias/api-types'
 import {UseQueryResult} from '@tanstack/react-query'
-import {fireEvent, screen} from '@testing-library/react'
+import {fireEvent, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
 import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import {useUpdateCustomFieldDefinition} from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
 import {CustomField} from 'custom-fields/types'
 import {
     ticketInputFieldDefinition,
@@ -23,11 +25,40 @@ const useCustomFieldDefinitionMock = assumeMock(useCustomFieldDefinition)
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 
+jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldDefinition')
+const useUpdateCustomFieldDefinitionMock = assumeMock(
+    useUpdateCustomFieldDefinition
+)
+
 const customFields: Record<number, CustomField> = {
-    1: {...ticketInputFieldDefinition, id: 1, label: 'Custom field #1'},
-    2: {...ticketNumberFieldDefinition, id: 2, label: 'Custom field #2'},
-    3: {...ticketDropdownFieldDefinition, id: 3, label: 'Custom field #3'},
-    4: {...ticketBooleanFieldDefinition, id: 4, label: 'Custom field #4'},
+    1: {
+        ...ticketInputFieldDefinition,
+        id: 1,
+        label: 'Custom field #1',
+        requirement_type: CustomFieldRequirementType.Conditional,
+        required: false,
+    },
+    2: {
+        ...ticketNumberFieldDefinition,
+        id: 2,
+        label: 'Custom field #2',
+        requirement_type: CustomFieldRequirementType.Conditional,
+        required: false,
+    },
+    3: {
+        ...ticketDropdownFieldDefinition,
+        id: 3,
+        label: 'Custom field #3',
+        requirement_type: CustomFieldRequirementType.Conditional,
+        required: false,
+    },
+    4: {
+        ...ticketBooleanFieldDefinition,
+        id: 4,
+        label: 'Custom field #4',
+        requirement_type: CustomFieldRequirementType.Conditional,
+        required: false,
+    },
 }
 
 useCustomFieldDefinitionMock.mockImplementation(
@@ -158,5 +189,97 @@ describe('ThenField', () => {
             {field_id: 1, type: ExpressionFieldType.Visible},
             {field_id: 3, type: ExpressionFieldType.Visible},
         ])
+    })
+
+    describe('requirement type change modal', () => {
+        const nonConditionalField = {
+            ...ticketInputFieldDefinition,
+            id: 4,
+            label: 'Custom field #4',
+            requirement_type: CustomFieldRequirementType.Required,
+        }
+        const fields: Record<number, CustomField> = {
+            1: customFields[1],
+            [nonConditionalField.id]: nonConditionalField,
+        }
+        const props = {
+            ...defaultProps,
+            onChange: jest.fn(),
+            value: [{field_id: 1, type: ExpressionFieldType.Visible}],
+        }
+
+        beforeEach(() => {
+            useCustomFieldDefinitionMock.mockImplementation(
+                (id: number) =>
+                    ({
+                        data: fields[id],
+                        isLoading: false,
+                    }) as UseQueryResult<CustomField, unknown>
+            )
+
+            useCustomFieldDefinitionsMock.mockReturnValue({
+                data: {data: Object.values(fields)},
+                isLoading: false,
+            } as any)
+
+            useUpdateCustomFieldDefinitionMock.mockReturnValue({
+                mutateAsync: jest.fn(),
+                isLoading: false,
+            } as any)
+        })
+
+        it('should display the modal when the selected field has not a conditional requirement type', async () => {
+            renderWithStoreAndQueryClientProvider(<ThenField {...props} />)
+
+            fireEvent.click(screen.getByRole('combobox'))
+            fireEvent.click(screen.getByText('Custom field #4'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Update field visibility?')
+                ).toBeInTheDocument()
+            })
+            expect(props.onChange).not.toHaveBeenCalled()
+        })
+
+        it('should cancel the modal', async () => {
+            renderWithStoreAndQueryClientProvider(<ThenField {...props} />)
+            fireEvent.click(screen.getByRole('combobox'))
+            fireEvent.click(screen.getByText('Custom field #4'))
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Update field visibility?')
+                ).toBeInTheDocument()
+            })
+
+            fireEvent.click(screen.getByRole('button', {name: 'Cancel'}))
+
+            expect(props.onChange).not.toHaveBeenCalled()
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('Update field visibility?')
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should confirm the changes and close the modal', async () => {
+            renderWithStoreAndQueryClientProvider(<ThenField {...props} />)
+            fireEvent.click(screen.getByRole('combobox'))
+            fireEvent.click(screen.getByText('Custom field #4'))
+            fireEvent.click(screen.getByRole('button', {name: 'Confirm'}))
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('Update field visibility?')
+                ).not.toBeInTheDocument()
+                expect(props.onChange).toHaveBeenCalledWith([
+                    ...props.value,
+                    {
+                        field_id: nonConditionalField.id,
+                        type: ExpressionFieldType.Visible,
+                    },
+                ])
+            })
+        })
     })
 })

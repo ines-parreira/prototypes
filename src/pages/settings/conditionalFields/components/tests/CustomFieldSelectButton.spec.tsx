@@ -38,11 +38,6 @@ const customFields: CustomField[] = [
     },
 ]
 
-useCustomFieldDefinitionsMock.mockReturnValue({
-    data: {data: customFields},
-    isLoading: false,
-} as any)
-
 const defaultProps = {
     objectType: 'Ticket' as CustomFieldObjectTypes,
     ignoreIds: [],
@@ -50,6 +45,23 @@ const defaultProps = {
 }
 
 describe('CustomFieldSelectButton', () => {
+    beforeEach(() => {
+        useCustomFieldDefinitionsMock.mockReturnValue({
+            data: {data: customFields},
+            isLoading: false,
+        } as any)
+    })
+    it('should render nothing while the data is loading', () => {
+        useCustomFieldDefinitionsMock.mockReturnValue({
+            isLoading: true,
+        } as any)
+        renderWithStoreAndQueryClientProvider(
+            <CustomFieldSelectButton {...defaultProps} />
+        )
+        expect(screen.queryByText('Add Ticket field')).not.toBeInTheDocument()
+        expect(screen.queryByRole('combobox')).not.toBeInTheDocument()
+    })
+
     it('should render only the button by default', () => {
         renderWithStoreAndQueryClientProvider(
             <CustomFieldSelectButton {...defaultProps} />
@@ -100,6 +112,6 @@ describe('CustomFieldSelectButton', () => {
         fireEvent.click(screen.getByRole('combobox'))
         fireEvent.click(screen.getByText('Custom field #2'))
 
-        expect(onSelect).toHaveBeenCalledWith(customFields[1].id)
+        expect(onSelect).toHaveBeenCalledWith(customFields[1])
     })
 })
