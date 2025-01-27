@@ -4,6 +4,7 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import {defaultEnrichmentFields} from 'hooks/reporting/useDrillDownData'
 import {
+    fetchMetricPerDimension,
     QueryReturnType,
     useMetricPerDimension,
     useMetricPerDimensionWithBreakdown,
@@ -24,6 +25,7 @@ import {
     TicketMessagesMeasure,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {
+    fetchPostReporting,
     useEnrichedPostReporting,
     usePostReporting,
 } from 'models/reporting/queries'
@@ -36,6 +38,7 @@ import {assumeMock} from 'utils/testing'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
+const fetchPostReportingMock = assumeMock(fetchPostReporting)
 jest.mock('models/reporting/resources')
 const useEnrichedPostReportingMock = assumeMock(useEnrichedPostReporting)
 const postEnrichedReportingMock = assumeMock(postEnrichedReporting)
@@ -43,7 +46,7 @@ const postEnrichedReportingMock = assumeMock(postEnrichedReporting)
 jest.mock('hooks/reporting/withEnrichment')
 const withEnrichmentMock = assumeMock(withEnrichment)
 
-describe('useMetricPerDimension', () => {
+describe('MetricPerDimension', () => {
     const query: ReportingQuery<TicketCubeWithJoins> =
         medianFirstResponseTimeMetricPerAgentQueryFactory(
             {
@@ -73,80 +76,140 @@ describe('useMetricPerDimension', () => {
             data: data,
         } as unknown as UseQueryResult<QueryReturnType<TicketMessagesCube>>
 
-    it('should usePostReporting with query and select', () => {
-        usePostReportingMock.mockReturnValue(mockedResponse)
+    describe('useMetricPerDimension', () => {
+        it('should usePostReporting with query and select', () => {
+            usePostReportingMock.mockReturnValue(mockedResponse)
 
-        const {result} = renderHook(() =>
-            useMetricPerDimension(query, String(agentId))
-        )
+            const {result} = renderHook(() =>
+                useMetricPerDimension(query, String(agentId))
+            )
 
-        expect(result.current).toEqual({
-            isFetching: mockedResponse.isFetching,
-            isError: mockedResponse.isError,
-            data: {
-                value: metricValue,
-                allData: mockedResponse.data,
-                decile: null,
-            },
+            expect(result.current).toEqual({
+                isFetching: mockedResponse.isFetching,
+                isError: mockedResponse.isError,
+                data: {
+                    value: metricValue,
+                    allData: mockedResponse.data,
+                    decile: null,
+                },
+            })
+        })
+
+        it('should return null when data not available for entity id', () => {
+            const agentId = 'notInResponse'
+            usePostReportingMock.mockReturnValue(mockedResponse)
+
+            const {result} = renderHook(() =>
+                useMetricPerDimension(query, agentId)
+            )
+
+            expect(result.current?.data?.value).toBeNull()
+        })
+
+        it('should return null when called without entity', () => {
+            usePostReportingMock.mockReturnValue(mockedResponse)
+
+            const {result} = renderHook(() => useMetricPerDimension(query))
+
+            expect(result.current?.data?.value).toBeNull()
+        })
+
+        it('should return null when no data in response', () => {
+            const agentIdNotInResponse = 'notInResponse'
+            usePostReportingMock.mockReturnValue({
+                ...mockedResponse,
+                data: undefined,
+            })
+
+            const {result} = renderHook(() =>
+                useMetricPerDimension(query, agentIdNotInResponse)
+            )
+
+            expect(result.current?.data).toBeNull()
+        })
+
+        it('should use the select function', () => {
+            const mockedClientResponse = {
+                data: {
+                    data: mockedResponse.data,
+                },
+            } as any
+            usePostReportingMock.mockImplementation(
+                jest
+                    .fn()
+                    .mockImplementation(
+                        (
+                            query,
+                            {select}: {select: (data: unknown) => unknown}
+                        ) => ({
+                            ...mockedResponse,
+                            data: select(mockedClientResponse),
+                        })
+                    )
+            )
+
+            const {result} = renderHook(() =>
+                useMetricPerDimension(query, String(agentId))
+            )
+
+            expect(result.current?.data?.allData).toEqual(mockedResponse.data)
         })
     })
 
-    it('should return null when data not available for entity id', () => {
-        const agentId = 'notInResponse'
-        usePostReportingMock.mockReturnValue(mockedResponse)
+    describe('fetchMetricPerDimension', () => {
+        it('should fetchPostReporting with query and select', async () => {
+            fetchPostReportingMock.mockResolvedValue({
+                data: mockedResponse,
+            } as unknown as ReturnType<typeof fetchPostReporting>)
 
-        const {result} = renderHook(() => useMetricPerDimension(query, agentId))
+            const result = await fetchMetricPerDimension(query, String(agentId))
 
-        expect(result.current?.data?.value).toBeNull()
-    })
-
-    it('should return null when called without entity', () => {
-        usePostReportingMock.mockReturnValue(mockedResponse)
-
-        const {result} = renderHook(() => useMetricPerDimension(query))
-
-        expect(result.current?.data?.value).toBeNull()
-    })
-
-    it('should return null when no data in response', () => {
-        const agentIdNotInResponse = 'notInResponse'
-        usePostReportingMock.mockReturnValue({
-            ...mockedResponse,
-            data: undefined,
+            expect(result).toEqual({
+                isFetching: mockedResponse.isFetching,
+                isError: mockedResponse.isError,
+                data: {
+                    value: metricValue,
+                    allData: mockedResponse.data,
+                    decile: null,
+                },
+            })
         })
 
-        const {result} = renderHook(() =>
-            useMetricPerDimension(query, agentIdNotInResponse)
-        )
+        it('should return null when data not available for entity id', async () => {
+            const agentId = 'notInResponse'
+            fetchPostReportingMock.mockResolvedValue({
+                data: mockedResponse,
+            } as unknown as ReturnType<typeof fetchPostReporting>)
 
-        expect(result.current?.data).toBeNull()
-    })
+            const result = await fetchMetricPerDimension(query, agentId)
 
-    it('should use the select function', () => {
-        const mockedClientResponse = {
-            data: {
-                data: mockedResponse.data,
-            },
-        } as any
-        usePostReportingMock.mockImplementation(
-            jest
-                .fn()
-                .mockImplementation(
-                    (
-                        query,
-                        {select}: {select: (data: unknown) => unknown}
-                    ) => ({
-                        ...mockedResponse,
-                        data: select(mockedClientResponse),
-                    })
-                )
-        )
+            expect(result?.data?.value).toBeNull()
+        })
 
-        const {result} = renderHook(() =>
-            useMetricPerDimension(query, String(agentId))
-        )
+        it('should return null when called without entity', async () => {
+            fetchPostReportingMock.mockResolvedValue({
+                data: mockedResponse,
+            } as unknown as ReturnType<typeof fetchPostReporting>)
 
-        expect(result.current?.data?.allData).toEqual(mockedResponse.data)
+            const result = await fetchMetricPerDimension(query)
+
+            expect(result?.data?.value).toBeNull()
+        })
+
+        it('should return null when no data in response', async () => {
+            const agentIdNotInResponse = 'notInResponse'
+            fetchPostReportingMock.mockRejectedValue({
+                ...mockedResponse,
+                data: {data: undefined},
+            } as unknown as ReturnType<typeof fetchPostReporting>)
+
+            const result = await fetchMetricPerDimension(
+                query,
+                agentIdNotInResponse
+            )
+
+            expect(result?.data).toBeNull()
+        })
     })
 })
 

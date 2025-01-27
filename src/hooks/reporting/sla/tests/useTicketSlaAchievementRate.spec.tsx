@@ -6,10 +6,12 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {
+    fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
     useSatisfiedOrBreachedTicketsInPolicyPerStatus,
     useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
 } from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsInPolicyPerStatus'
 import {
+    fetchTicketSlaAchievementRateTrend,
     useTicketSlaAchievementRate,
     useTicketSlaAchievementRateTrend,
 } from 'hooks/reporting/sla/useTicketSlaAchievementRate'
@@ -27,6 +29,9 @@ const useSatisfiedOrBreachedTicketsInPolicyPerStatusMock = assumeMock(
 )
 const useSatisfiedOrBreachedTicketsInPolicyPerStatusTrendMock = assumeMock(
     useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend
+)
+const fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrendMock = assumeMock(
+    fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrend
 )
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
 const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
@@ -120,25 +125,6 @@ describe('useTicketSlaAchievementRate', () => {
 })
 
 describe('useTicketSlaAchievementRate with AnalyticsNewFilters', () => {
-    const startDate = '2021-05-01T00:00:00+02:00'
-    const endDate = '2021-05-04T23:59:59+02:00'
-    const filters = {
-        period: {
-            start_datetime: startDate,
-            end_datetime: endDate,
-        },
-    }
-    const userTimezone = 'UTC'
-
-    beforeEach(() => {
-        useNewStatsFiltersMock.mockReturnValue({
-            cleanStatsFilters: filters,
-            userTimezone,
-            granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: true,
-        })
-    })
-
     it.each([
         [10, 30, calculatePercentage(10, 10 + 30)],
         [null, 30, calculatePercentage(0, 30)],
@@ -207,126 +193,118 @@ describe('useTicketSlaAchievementRate with AnalyticsNewFilters', () => {
     })
 })
 
-const startDate = '2021-05-01T00:00:00+02:00'
-const endDate = '2021-05-04T23:59:59+02:00'
-const filters = {
-    period: {
-        start_datetime: startDate,
-        end_datetime: endDate,
-    },
-}
-const userTimezone = 'UTC'
+describe('TicketSlaAchievementRate', () => {
+    const startDate = '2021-05-01T00:00:00+02:00'
+    const endDate = '2021-05-04T23:59:59+02:00'
+    const filters = {
+        period: {
+            start_datetime: startDate,
+            end_datetime: endDate,
+        },
+    }
+    const userTimezone = 'UTC'
 
-describe('useTicketSlaAchievementRateTrend', () => {
-    beforeEach(() => {
-        useNewStatsFiltersMock.mockReturnValue({
-            cleanStatsFilters: filters,
-            userTimezone,
-            granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: false,
-        })
-    })
+    describe('useTicketSlaAchievementRateTrend', () => {
+        it('should calculate achievement rate', () => {
+            const satisfiedTickets = 10
+            const breachedTickets = 30
+            const prevSatisfiedTickets = 5
+            const prevBreachedTickets = 15
+            useSatisfiedOrBreachedTicketsInPolicyPerStatusTrendMock.mockReturnValueOnce(
+                {
+                    data: {
+                        value: satisfiedTickets,
+                        prevValue: prevSatisfiedTickets,
+                    },
+                    isFetching: false,
+                    isError: false,
+                }
+            )
 
-    it('should calculate achievement rate', () => {
-        const satisfiedTickets = 10
-        const breachedTickets = 30
-        const prevSatisfiedTickets = 5
-        const prevBreachedTickets = 15
-        useSatisfiedOrBreachedTicketsInPolicyPerStatusTrendMock.mockReturnValueOnce(
-            {
+            useSatisfiedOrBreachedTicketsInPolicyPerStatusTrendMock.mockReturnValueOnce(
+                {
+                    data: {
+                        value: breachedTickets,
+                        prevValue: prevBreachedTickets,
+                    },
+                    isFetching: false,
+                    isError: false,
+                }
+            )
+
+            const {result} = renderHook(
+                () => useTicketSlaAchievementRateTrend(filters, userTimezone),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore({})}> {children} </Provider>
+                    ),
+                }
+            )
+
+            expect(result.current).toEqual({
                 data: {
-                    value: satisfiedTickets,
-                    prevValue: prevSatisfiedTickets,
+                    value: calculatePercentage(
+                        satisfiedTickets,
+                        satisfiedTickets + breachedTickets
+                    ),
+                    prevValue: calculatePercentage(
+                        prevSatisfiedTickets,
+                        prevSatisfiedTickets + prevBreachedTickets
+                    ),
                 },
                 isFetching: false,
                 isError: false,
-            }
-        )
-
-        useSatisfiedOrBreachedTicketsInPolicyPerStatusTrendMock.mockReturnValueOnce(
-            {
-                data: {value: breachedTickets, prevValue: prevBreachedTickets},
-                isFetching: false,
-                isError: false,
-            }
-        )
-
-        const {result} = renderHook(() => useTicketSlaAchievementRateTrend(), {
-            wrapper: ({children}) => (
-                <Provider store={mockStore({})}> {children} </Provider>
-            ),
-        })
-
-        expect(result.current).toEqual({
-            data: {
-                value: calculatePercentage(
-                    satisfiedTickets,
-                    satisfiedTickets + breachedTickets
-                ),
-                prevValue: calculatePercentage(
-                    prevSatisfiedTickets,
-                    prevSatisfiedTickets + prevBreachedTickets
-                ),
-            },
-            isFetching: false,
-            isError: false,
-        })
-    })
-})
-
-describe('useTicketSlaAchievementRateTrend with AnalyticsNewFilters', () => {
-    beforeEach(() => {
-        useNewStatsFiltersMock.mockReturnValue({
-            cleanStatsFilters: filters,
-            userTimezone,
-            granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: true,
+            })
         })
     })
 
-    it('should calculate achievement rate', () => {
-        const satisfiedTickets = 10
-        const breachedTickets = 30
-        const prevSatisfiedTickets = 5
-        const prevBreachedTickets = 15
-        useSatisfiedOrBreachedTicketsInPolicyPerStatusTrendMock.mockReturnValueOnce(
-            {
+    describe('fetchTicketSlaAchievementRateTrend', () => {
+        it('should calculate achievement rate', async () => {
+            const satisfiedTickets = 10
+            const breachedTickets = 30
+            const prevSatisfiedTickets = 5
+            const prevBreachedTickets = 15
+            fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrendMock.mockResolvedValueOnce(
+                {
+                    data: {
+                        value: satisfiedTickets,
+                        prevValue: prevSatisfiedTickets,
+                    },
+                    isFetching: false,
+                    isError: false,
+                }
+            )
+
+            fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrendMock.mockResolvedValueOnce(
+                {
+                    data: {
+                        value: breachedTickets,
+                        prevValue: prevBreachedTickets,
+                    },
+                    isFetching: false,
+                    isError: false,
+                }
+            )
+
+            const result = await fetchTicketSlaAchievementRateTrend(
+                filters,
+                userTimezone
+            )
+
+            expect(result).toEqual({
                 data: {
-                    value: satisfiedTickets,
-                    prevValue: prevSatisfiedTickets,
+                    value: calculatePercentage(
+                        satisfiedTickets,
+                        satisfiedTickets + breachedTickets
+                    ),
+                    prevValue: calculatePercentage(
+                        prevSatisfiedTickets,
+                        prevSatisfiedTickets + prevBreachedTickets
+                    ),
                 },
                 isFetching: false,
                 isError: false,
-            }
-        )
-
-        useSatisfiedOrBreachedTicketsInPolicyPerStatusTrendMock.mockReturnValueOnce(
-            {
-                data: {value: breachedTickets, prevValue: prevBreachedTickets},
-                isFetching: false,
-                isError: false,
-            }
-        )
-
-        const {result} = renderHook(() => useTicketSlaAchievementRateTrend(), {
-            wrapper: ({children}) => (
-                <Provider store={mockStore({})}> {children} </Provider>
-            ),
-        })
-
-        expect(result.current).toEqual({
-            data: {
-                value: calculatePercentage(
-                    satisfiedTickets,
-                    satisfiedTickets + breachedTickets
-                ),
-                prevValue: calculatePercentage(
-                    prevSatisfiedTickets,
-                    prevSatisfiedTickets + prevBreachedTickets
-                ),
-            },
-            isFetching: false,
-            isError: false,
+            })
         })
     })
 })

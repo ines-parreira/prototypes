@@ -5,14 +5,17 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsInPolicyPerStatus'
 import {
+    fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
+    useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
+} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsInPolicyPerStatus'
+import {
+    fetchBreachedSlaTicketsTrend,
+    fetchSatisfiedSlaTicketsTrend,
     useBreachedSlaTicketsTrend,
     useSatisfiedSlaTicketsTrend,
 } from 'hooks/reporting/sla/useSLAsTicketsTrends'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
-import {ReportingGranularity} from 'models/reporting/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
 
@@ -22,130 +25,76 @@ jest.mock('hooks/reporting/sla/useSatisfiedOrBreachedTicketsInPolicyPerStatus')
 const useTicketsInPolicyPerStatusTrendMock = assumeMock(
     useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend
 )
+const fetchTicketsInPolicyPerStatusTrendMock = assumeMock(
+    fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrend
+)
 
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+describe('SLAsTicketsTrends', () => {
+    const startDate = '2021-05-01T00:00:00+02:00'
+    const endDate = '2021-05-04T23:59:59+02:00'
+    const filters = {
+        period: {
+            start_datetime: startDate,
+            end_datetime: endDate,
+        },
+    }
+    const userTimezone = 'UTC'
 
-const startDate = '2021-05-01T00:00:00+02:00'
-const endDate = '2021-05-04T23:59:59+02:00'
-const filters = {
-    period: {
-        start_datetime: startDate,
-        end_datetime: endDate,
-    },
-}
-const userTimezone = 'UTC'
+    describe('useSLAsTicketsTrends', () => {
+        it.each([
+            {
+                hook: useBreachedSlaTicketsTrend,
+                expectedTicketStatus: TicketSLAStatus.Breached,
+            },
+            {
+                hook: useSatisfiedSlaTicketsTrend,
+                expectedTicketStatus: TicketSLAStatus.Satisfied,
+            },
+        ])(
+            'should call $hook.name with correct ticket status $expectedTicketStatus',
+            ({hook, expectedTicketStatus}) => {
+                renderHook(() => hook(filters, userTimezone), {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore({})}>{children}</Provider>
+                    ),
+                })
 
-describe('useSLAsTicketsTrends', () => {
-    beforeEach(() => {
-        useNewStatsFiltersMock.mockReturnValue({
-            cleanStatsFilters: filters,
-            userTimezone,
-            granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: true,
-        })
+                expect(
+                    useTicketsInPolicyPerStatusTrendMock
+                ).toHaveBeenCalledWith(
+                    filters,
+                    userTimezone,
+                    undefined,
+                    expectedTicketStatus
+                )
+            }
+        )
     })
 
-    it.each([
-        {
-            hook: useBreachedSlaTicketsTrend,
-            expectedTicketStatus: TicketSLAStatus.Breached,
-        },
-        {
-            hook: useSatisfiedSlaTicketsTrend,
-            expectedTicketStatus: TicketSLAStatus.Satisfied,
-        },
-    ])(
-        'should call $hook.name with correct ticket status $expectedTicketStatus',
-        ({hook, expectedTicketStatus}) => {
-            renderHook(() => hook(), {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore({})}>{children}</Provider>
-                ),
-            })
+    describe('fetchSLAsTicketsTrends', () => {
+        it.each([
+            {
+                fetch: fetchBreachedSlaTicketsTrend,
+                expectedTicketStatus: TicketSLAStatus.Breached,
+            },
+            {
+                fetch: fetchSatisfiedSlaTicketsTrend,
+                expectedTicketStatus: TicketSLAStatus.Satisfied,
+            },
+        ])(
+            'should call $hook.name with correct ticket status $expectedTicketStatus',
+            async ({fetch, expectedTicketStatus}) => {
+                await fetch(filters, userTimezone)
 
-            expect(useTicketsInPolicyPerStatusTrendMock).toHaveBeenCalledWith(
-                filters,
-                userTimezone,
-                undefined,
-                expectedTicketStatus
-            )
-        }
-    )
-})
-
-describe('useSLAsTicketsTrends with isAnalyticsNewFilters', () => {
-    beforeEach(() => {
-        useNewStatsFiltersMock.mockReturnValue({
-            cleanStatsFilters: filters,
-            userTimezone,
-            granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: true,
-        })
+                expect(
+                    fetchTicketsInPolicyPerStatusTrendMock
+                ).toHaveBeenCalledWith(
+                    filters,
+                    userTimezone,
+                    undefined,
+                    expectedTicketStatus
+                )
+            }
+        )
     })
-
-    it.each([
-        {
-            hook: useBreachedSlaTicketsTrend,
-            expectedTicketStatus: TicketSLAStatus.Breached,
-        },
-        {
-            hook: useSatisfiedSlaTicketsTrend,
-            expectedTicketStatus: TicketSLAStatus.Satisfied,
-        },
-    ])(
-        'should call $hook.name with correct ticket status $expectedTicketStatus',
-        ({hook, expectedTicketStatus}) => {
-            renderHook(() => hook(), {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore({})}>{children}</Provider>
-                ),
-            })
-
-            expect(useTicketsInPolicyPerStatusTrendMock).toHaveBeenCalledWith(
-                filters,
-                userTimezone,
-                undefined,
-                expectedTicketStatus
-            )
-        }
-    )
-})
-
-describe('useSLAsTicketsTrends with isAnalyticsNewFilters', () => {
-    beforeEach(() => {
-        useNewStatsFiltersMock.mockReturnValue({
-            cleanStatsFilters: filters,
-            userTimezone,
-            granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: true,
-        })
-    })
-
-    it.each([
-        {
-            hook: useBreachedSlaTicketsTrend,
-            expectedTicketStatus: TicketSLAStatus.Breached,
-        },
-        {
-            hook: useSatisfiedSlaTicketsTrend,
-            expectedTicketStatus: TicketSLAStatus.Satisfied,
-        },
-    ])(
-        'should call $hook.name with correct ticket status $expectedTicketStatus',
-        ({hook, expectedTicketStatus}) => {
-            renderHook(() => hook(), {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore({})}>{children}</Provider>
-                ),
-            })
-
-            expect(useTicketsInPolicyPerStatusTrendMock).toHaveBeenCalledWith(
-                filters,
-                userTimezone,
-                undefined,
-                expectedTicketStatus
-            )
-        }
-    )
 })

@@ -22,6 +22,12 @@ export type TimeSeriesFetch = (
     granularity: ReportingGranularity
 ) => Promise<TimeSeriesDataItem[][]>
 
+export type TimeSeriesPerDimensionFetch = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity
+) => Promise<TimeSeriesPerDimension>
+
 export type TimeSeriesDataItem = {
     dateTime: string
     value: number
@@ -95,7 +101,7 @@ export function useTimeSeries<TCube extends Cubes>(
     })
 }
 
-export function fetchTimeSeries<TCube extends Cubes>(
+export async function fetchTimeSeries<TCube extends Cubes>(
     query: TimeSeriesQuery<TCube>
 ) {
     return fetchPostReporting<
@@ -117,6 +123,18 @@ export function useTimeSeriesPerDimension<TCube extends Cubes>(
         select: (res) => selectPerDimension<TCube>(query)(res.data.data),
         enabled,
     })
+}
+
+export async function fetchTimeSeriesPerDimension<TCube extends Cubes>(
+    query: TimeSeriesQuery<TCube>
+) {
+    return fetchPostReporting<
+        Record<string, string>[],
+        Record<string, TimeSeriesDataItem[][]>,
+        TCube
+    >([query], {}).then((res) =>
+        selectPerDimension<TCube>(query)(res.data.data)
+    )
 }
 
 export const getMomentGranularityFromReportingGranularity = (

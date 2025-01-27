@@ -2,13 +2,19 @@ import {useMemo} from 'react'
 
 import {useDistributionTrendReportData} from 'hooks/reporting/common/useDistributionTrendReportData'
 
-import {useTimeSeriesReportData} from 'hooks/reporting/common/useTimeSeriesReportData'
+import {
+    useTimeSeriesPerDimensionReportData,
+    useTimeSeriesReportData,
+} from 'hooks/reporting/common/useTimeSeriesReportData'
 import {useTrendReportData} from 'hooks/reporting/common/useTrendReportData'
 import {MetricPerDimensionFetch} from 'hooks/reporting/distributions'
 import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {MetricTrendFetch} from 'hooks/reporting/useMetricTrend'
-import {TimeSeriesFetch} from 'hooks/reporting/useTimeSeries'
+import {
+    TimeSeriesFetch,
+    TimeSeriesPerDimensionFetch,
+} from 'hooks/reporting/useTimeSeries'
 import {
     ChartConfig,
     CustomReportChild,
@@ -16,7 +22,9 @@ import {
     CustomReportSchema,
     DataExportFormat,
 } from 'pages/stats/custom-reports/types'
+import {ServiceLevelAgreementsReportConfig} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
 import {SupportPerformanceOverviewReportConfig} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import {createTimeSeriesPerDimensionReport} from 'services/reporting/SLAsReportingService'
 
 import {
     createTimeSeriesReport,
@@ -25,10 +33,17 @@ import {
 
 const chartsLookupTable: Record<string, ChartConfig | undefined> = {
     ...SupportPerformanceOverviewReportConfig.charts,
+    ...ServiceLevelAgreementsReportConfig.charts,
 }
 
 type Queries = {
     timeSeries: {fetchTimeSeries: TimeSeriesFetch; title: string}[]
+    timeSeriesPerDimension: {
+        fetchTimeSeries: TimeSeriesPerDimensionFetch
+        title: string
+        headers: string[]
+        dimensions: string[]
+    }[]
     trends: {fetchTrend: MetricTrendFetch; title: string}[]
     distributions:
         | {
@@ -51,13 +66,21 @@ const reduceReport = (acc: Queries, child: CustomReportChild): Queries => {
             if (producer.type === DataExportFormat.Trend) {
                 acc.trends.push({
                     fetchTrend: producer.fetch,
-                    title: String(config.label),
+                    title: producer.title ?? String(config.label),
                 })
             }
             if (producer.type === DataExportFormat.TimeSeries) {
                 acc.timeSeries.push({
                     fetchTimeSeries: producer.fetch,
-                    title: producer.label ?? String(config.label),
+                    title: producer.title ?? String(config.label),
+                })
+            }
+            if (producer.type === DataExportFormat.TimeSeriesPerDimension) {
+                acc.timeSeriesPerDimension.push({
+                    fetchTimeSeries: producer.fetch,
+                    title: producer.title,
+                    headers: producer.headers,
+                    dimensions: producer.dimensions,
                 })
             }
             if (producer.type === DataExportFormat.Distribution) {
@@ -82,6 +105,7 @@ const getQueryGroupsFromCustomReport = (
 ): Queries => {
     return customReport.children.reduce<Queries>(reduceReport, {
         timeSeries: [],
+        timeSeriesPerDimension: [],
         trends: [],
         distributions: undefined,
     })
@@ -119,6 +143,17 @@ export const useCustomReportData = (customReport: CustomReportSchema) => {
         `${getCsvFileNameWithDates(cleanStatsFilters.period, `${customReport.name} - ${TIME_SERIES_FILE_SUFFIX}`)}`
     )
 
+    const timeSeriesPerDimension = useTimeSeriesPerDimensionReportData(
+        cleanStatsFilters,
+        userTimezone,
+        granularity,
+        queryGroups.timeSeriesPerDimension
+    )
+    const timeSeriesPerDimensionReports = createTimeSeriesPerDimensionReport(
+        timeSeriesPerDimension.data,
+        cleanStatsFilters.period
+    )
+
     const distributions = useDistributionTrendReportData(
         cleanStatsFilters,
         userTimezone,
@@ -130,10 +165,10 @@ export const useCustomReportData = (customReport: CustomReportSchema) => {
     )
 
     const loading = useMemo(() => {
-        return [trends, timeSeries, distributions].some(
+        return [trends, timeSeries, distributions, timeSeriesPerDimension].some(
             (metric) => metric.isFetching
         )
-    }, [distributions, timeSeries, trends])
+    }, [distributions, timeSeries, timeSeriesPerDimension, trends])
 
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
@@ -144,9 +179,15 @@ export const useCustomReportData = (customReport: CustomReportSchema) => {
         () => ({
             ...trendsReport.files,
             ...timeSeriesReport.files,
+            ...timeSeriesPerDimensionReports.files,
             ...distributionsReport.files,
         }),
-        [distributionsReport.files, timeSeriesReport.files, trendsReport.files]
+        [
+            distributionsReport.files,
+            timeSeriesPerDimensionReports.files,
+            timeSeriesReport.files,
+            trendsReport.files,
+        ]
     )
 
     return {files, fileName, isLoading: loading}

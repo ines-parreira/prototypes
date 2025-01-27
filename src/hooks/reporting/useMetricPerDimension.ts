@@ -1,3 +1,5 @@
+import {UseQueryResult} from '@tanstack/react-query'
+
 import {
     TicketCustomFieldsTicketCountData,
     withBreakdown,
@@ -9,16 +11,19 @@ import {
     MergedRecord,
     withEnrichment,
 } from 'hooks/reporting/withEnrichment'
+import {OrderDirection} from 'models/api/types'
 import {DrillDownReportingQuery} from 'models/job/types'
 import {Cubes} from 'models/reporting/cubes'
 import {TicketCustomFieldsCube} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
+    fetchPostReporting,
     useEnrichedPostReporting,
     UseEnrichedPostReportingQueryData,
     usePostReporting,
 } from 'models/reporting/queries'
 import {postEnrichedReporting, postReporting} from 'models/reporting/resources'
 import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
 import {WithChildren} from 'pages/common/components/table/TableBodyRowExpandable'
 
 type Requested = {
@@ -38,6 +43,13 @@ export type MetricWithDecile<TCube extends Cubes = Cubes> = Requested & {
         allData: QueryReturnType<TCube>
     } | null
 }
+
+export type MetricWithDecileFetch = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+    agentAssigneeId?: string
+) => Promise<MetricWithDecile>
 
 export type MetricPerDimensionTrend<TCube extends Cubes = Cubes> = Requested & {
     data: {
@@ -95,6 +107,35 @@ const selectMetric =
             data
         )
 
+const formatMetricPerDimension = <TCube extends Cubes>(
+    metricData: QueryReturnType<TCube>,
+    query: ReportingQuery<TCube>,
+    dimensionId?: string
+) => ({
+    ...(dimensionId
+        ? selectMetric(query, dimensionId)(metricData)
+        : {value: null, decile: null}),
+    allData: metricData,
+})
+
+const formatMetricPerDimensionResponse = <TCube extends Cubes>(
+    metricData: UseQueryResult<QueryReturnType<TCube>, unknown>,
+    query: ReportingQuery<TCube>,
+    dimensionId?: string
+) => ({
+    isFetching: metricData.isFetching,
+    isError: metricData.isError,
+    data:
+        metricData.data !== undefined
+            ? formatMetricPerDimension(metricData.data, query, dimensionId)
+            : null,
+})
+
+const queryWithDeciles =
+    <TCube extends Cubes>(query: ReportingQuery<TCube>) =>
+    () =>
+        postReporting<QueryReturnType<TCube>>([query]).then(withDeciles)
+
 export function useMetricPerDimension<TCube extends Cubes>(
     query: ReportingQuery<TCube>,
     dimensionId?: string,
@@ -104,25 +145,34 @@ export function useMetricPerDimension<TCube extends Cubes>(
         QueryReturnType<TCube>,
         QueryReturnType<TCube>
     >([query], {
-        enabled,
         select: (data) => data.data.data,
-        queryFn: () =>
-            postReporting<QueryReturnType<TCube>>([query]).then(withDeciles),
+        queryFn: queryWithDeciles(query),
+        enabled,
     })
 
-    return {
-        isFetching: metricData.isFetching,
-        isError: metricData.isError,
-        data:
-            metricData.data !== undefined
-                ? {
-                      ...(dimensionId
-                          ? selectMetric(query, dimensionId)(metricData.data)
-                          : {value: null, decile: null}),
-                      allData: metricData?.data,
-                  }
-                : null,
-    }
+    return formatMetricPerDimensionResponse(metricData, query, dimensionId)
+}
+
+export const fetchMetricPerDimension = async <TCube extends Cubes>(
+    query: ReportingQuery<TCube>,
+    dimensionId?: string
+): Promise<MetricWithDecile<TCube>> => {
+    return fetchPostReporting<QueryReturnType<TCube>, QueryReturnType<TCube>>(
+        [query],
+        {
+            queryFn: queryWithDeciles(query),
+        }
+    )
+        .then((res) => ({
+            data: formatMetricPerDimension(res.data.data, query, dimensionId),
+            isFetching: false,
+            isError: false,
+        }))
+        .catch(() => ({
+            data: null,
+            isFetching: false,
+            isError: true,
+        }))
 }
 
 export function useMetricPerDimensionWithBreakdown(

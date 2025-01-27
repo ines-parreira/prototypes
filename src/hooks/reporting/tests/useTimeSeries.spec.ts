@@ -3,6 +3,7 @@ import {AxiosResponse} from 'axios'
 
 import {
     fetchTimeSeries,
+    fetchTimeSeriesPerDimension,
     useTimeSeries,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
@@ -222,7 +223,7 @@ describe('useTimeSeries', () => {
     })
 })
 
-describe('useTimeSeriesPerDimension', () => {
+describe('TimeSeriesPerDimension', () => {
     const customFieldId = '1'
     const ticketField = 'customTag'
     const ticketFieldL2_1 = 'subTag'
@@ -269,79 +270,154 @@ describe('useTimeSeriesPerDimension', () => {
         query: defaultQuery,
     }
 
-    it('should return separate time series per dimension value', () => {
-        renderHook(() =>
-            useTimeSeriesPerDimension({
+    describe('useTimeSeriesPerDimension', () => {
+        it('should return separate time series per dimension value', () => {
+            renderHook(() =>
+                useTimeSeriesPerDimension({
+                    ...defaultQuery,
+                })
+            )
+            const select = usePostReportingMock.mock.calls[0][1]?.select
+
+            expect(
+                select?.({
+                    data: defaultResult,
+                } as unknown as AxiosResponse<
+                    ReportingResponse<typeof defaultData>
+                >)
+            ).toEqual({
+                [`${ticketField}${TAG_SEPARATOR}${ticketFieldL2_1}`]: [
+                    [
+                        {
+                            dateTime: '2022-01-02T00:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 65,
+                        },
+                        {
+                            dateTime: '2022-01-02T01:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T02:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T03:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T04:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                    ],
+                ],
+                [`${ticketField}${TAG_SEPARATOR}${ticketFieldL2_2}`]: [
+                    [
+                        {
+                            dateTime: '2022-01-02T00:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T01:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T02:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T03:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T04:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 139,
+                        },
+                    ],
+                ],
+            })
+        })
+    })
+
+    describe('fetchTimeSeriesPerDimension', () => {
+        it('should return separate time series per dimension value', async () => {
+            fetchPostReportingMock.mockResolvedValue({
+                data: defaultResult,
+            } as unknown as ReturnType<typeof fetchPostReporting>)
+
+            const result = await fetchTimeSeriesPerDimension({
                 ...defaultQuery,
             })
-        )
-        const select = usePostReportingMock.mock.calls[0][1]?.select
 
-        expect(
-            select?.({
-                data: defaultResult,
-            } as unknown as AxiosResponse<
-                ReportingResponse<typeof defaultData>
-            >)
-        ).toEqual({
-            [`${ticketField}${TAG_SEPARATOR}${ticketFieldL2_1}`]: [
-                [
-                    {
-                        dateTime: '2022-01-02T00:00:00.000',
-                        label: VALUE_FIELD,
-                        value: 65,
-                    },
-                    {
-                        dateTime: '2022-01-02T01:00:00.000',
-                        label: VALUE_FIELD,
-                        value: 0,
-                    },
-                    {
-                        dateTime: '2022-01-02T02:00:00.000',
-                        label: VALUE_FIELD,
-                        value: 0,
-                    },
-                    {
-                        dateTime: '2022-01-02T03:00:00.000',
-                        label: VALUE_FIELD,
-                        value: 0,
-                    },
-                    {
-                        dateTime: '2022-01-02T04:00:00.000',
-                        label: VALUE_FIELD,
-                        value: 0,
-                    },
+            expect(result).toEqual({
+                [`${ticketField}${TAG_SEPARATOR}${ticketFieldL2_1}`]: [
+                    [
+                        {
+                            dateTime: '2022-01-02T00:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 65,
+                        },
+                        {
+                            dateTime: '2022-01-02T01:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T02:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T03:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T04:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                    ],
                 ],
-            ],
-            [`${ticketField}${TAG_SEPARATOR}${ticketFieldL2_2}`]: [
-                [
-                    {
-                        dateTime: '2022-01-02T00:00:00.000',
-                        label: VALUE_FIELD,
-                        value: 0,
-                    },
-                    {
-                        dateTime: '2022-01-02T01:00:00.000',
-                        label: VALUE_FIELD,
-                        value: 0,
-                    },
-                    {
-                        dateTime: '2022-01-02T02:00:00.000',
-                        label: VALUE_FIELD,
-                        value: 0,
-                    },
-                    {
-                        dateTime: '2022-01-02T03:00:00.000',
-                        label: VALUE_FIELD,
-                        value: 0,
-                    },
-                    {
-                        dateTime: '2022-01-02T04:00:00.000',
-                        label: VALUE_FIELD,
-                        value: 139,
-                    },
+                [`${ticketField}${TAG_SEPARATOR}${ticketFieldL2_2}`]: [
+                    [
+                        {
+                            dateTime: '2022-01-02T00:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T01:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T02:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T03:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2022-01-02T04:00:00.000',
+                            label: VALUE_FIELD,
+                            value: 139,
+                        },
+                    ],
                 ],
-            ],
+            })
         })
     })
 })

@@ -2,7 +2,10 @@ import {ReactNode} from 'react'
 
 import {MetricPerDimensionFetch} from 'hooks/reporting/distributions'
 import {MetricTrendFetch} from 'hooks/reporting/useMetricTrend'
-import {TimeSeriesFetch} from 'hooks/reporting/useTimeSeries'
+import {
+    TimeSeriesFetch,
+    TimeSeriesPerDimensionFetch,
+} from 'hooks/reporting/useTimeSeries'
 import {StaticFilter} from 'models/stat/types'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
 import {HelpCenterChart} from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
@@ -73,6 +76,7 @@ export type DashboardInput = {
 export enum DataExportFormat {
     Trend = 'trend',
     TimeSeries = 'time-series',
+    TimeSeriesPerDimension = 'time-series-per-dimension',
     Distribution = 'distribution',
 }
 
@@ -86,13 +90,20 @@ export type DistributionDataExportFetch = {
 }
 
 type DataExportFetch =
-    | {type: DataExportFormat.Trend; fetch: MetricTrendFetch}
+    | {type: DataExportFormat.Trend; fetch: MetricTrendFetch; title?: string}
     | {
           type: DataExportFormat.TimeSeries
           fetch: TimeSeriesFetch
-          label?: string
+          title?: string
       }
     | DistributionDataExportFetch
+    | {
+          type: DataExportFormat.TimeSeriesPerDimension
+          fetch: TimeSeriesPerDimensionFetch
+          title: string
+          headers: string[]
+          dimensions: string[]
+      }
 
 export type DashboardChartProps = {
     chartId?: string

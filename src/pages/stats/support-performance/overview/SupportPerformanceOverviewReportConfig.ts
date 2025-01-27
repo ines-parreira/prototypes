@@ -205,7 +205,7 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                         fetch: OverviewChartConfig[
                             OverviewMetric.TicketsCreated
                         ].fetchTimeSeries,
-                        label: OverviewChartConfig[
+                        title: OverviewChartConfig[
                             OverviewMetric.TicketsCreated
                         ].title,
                     },
@@ -213,7 +213,7 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                         type: DataExportFormat.TimeSeries,
                         fetch: OverviewChartConfig[OverviewMetric.TicketsClosed]
                             .fetchTimeSeries,
-                        label: OverviewChartConfig[OverviewMetric.TicketsClosed]
+                        title: OverviewChartConfig[OverviewMetric.TicketsClosed]
                             .title,
                     },
                 ],

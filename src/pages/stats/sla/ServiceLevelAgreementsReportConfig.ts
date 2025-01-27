@@ -1,5 +1,17 @@
+import {SLA_TREND_FILENAME} from 'hooks/reporting/sla/useDownloadSLAsData'
+import {fetchSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
+import {
+    fetchBreachedSlaTicketsTrend,
+    fetchSatisfiedSlaTicketsTrend,
+} from 'hooks/reporting/sla/useSLAsTicketsTrends'
+import {fetchTicketSlaAchievementRateTrend} from 'hooks/reporting/sla/useTicketSlaAchievementRate'
+import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
 import {FilterKey, StaticFilter} from 'models/stat/types'
-import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
+import {
+    ChartType,
+    DataExportFormat,
+    ReportConfig,
+} from 'pages/stats/custom-reports/types'
 import {
     AchievedAndBreachedTicketsChart,
     CHART_TITLE,
@@ -8,6 +20,13 @@ import {
 import {AchievementRateTrendCard} from 'pages/stats/sla/components/AchievementRateTrendCard'
 import {BreachedTicketsRateTrendCard} from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
 import {SlaMetricConfig} from 'pages/stats/sla/SlaConfig'
+import {
+    ACHIEVED_SLA_LABEL,
+    ACHIEVEMENT_RATE_LABEL,
+    BREACHED_SLA_LABEL,
+    DATES_WITHIN_PERIOD_LABEL,
+    TICKETS_WITH_BREACHED_SLAS_LABEL,
+} from 'services/reporting/constants'
 import {SlaMetric} from 'state/ui/stats/types'
 
 export const SERVICE_LEVEL_AGREEMENT_PAGE_TITLE = 'SLAs'
@@ -46,7 +65,18 @@ export const ServiceLevelAgreementsReportConfig: ReportConfig<ServiceLevelAgreem
                 label: SlaMetricConfig[SlaMetric.AchievementRate].title,
                 description:
                     SlaMetricConfig[SlaMetric.AchievementRate].hint.title,
-                csvProducer: null,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchTicketSlaAchievementRateTrend,
+                        title: ACHIEVEMENT_RATE_LABEL,
+                    },
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchBreachedSlaTicketsTrend,
+                        title: TICKETS_WITH_BREACHED_SLAS_LABEL,
+                    },
+                ],
                 chartType: ChartType.Card,
             },
             [ServiceLevelAgreementsChart.BreachedTicketsRateTrend]: {
@@ -54,14 +84,40 @@ export const ServiceLevelAgreementsReportConfig: ReportConfig<ServiceLevelAgreem
                 label: SlaMetricConfig[SlaMetric.BreachedTicketsRate].title,
                 description:
                     SlaMetricConfig[SlaMetric.BreachedTicketsRate].hint.title,
-                csvProducer: null,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchBreachedSlaTicketsTrend,
+                        title: BREACHED_SLA_LABEL,
+                    },
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchSatisfiedSlaTicketsTrend,
+                        title: ACHIEVED_SLA_LABEL,
+                    },
+                ],
                 chartType: ChartType.Card,
             },
             [ServiceLevelAgreementsChart.AchievedAndBreachedTicketsChart]: {
                 chartComponent: AchievedAndBreachedTicketsChart,
                 label: CHART_TITLE,
                 description: HINT,
-                csvProducer: null,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.TimeSeriesPerDimension,
+                        fetch: fetchSatisfiedOrBreachedTicketsTimeSeries,
+                        title: SLA_TREND_FILENAME,
+                        headers: [
+                            DATES_WITHIN_PERIOD_LABEL,
+                            BREACHED_SLA_LABEL,
+                            ACHIEVED_SLA_LABEL,
+                        ],
+                        dimensions: [
+                            TicketSLAStatus.Breached,
+                            TicketSLAStatus.Satisfied,
+                        ],
+                    },
+                ],
                 chartType: ChartType.Graph,
             },
         },

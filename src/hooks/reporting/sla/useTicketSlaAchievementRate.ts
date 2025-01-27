@@ -1,11 +1,13 @@
 import {Metric} from 'hooks/reporting/metrics'
 import {
+    fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
     useSatisfiedOrBreachedTicketsInPolicyPerStatus,
     useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
 } from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsInPolicyPerStatus'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
+import {StatsFilters} from 'models/stat/types'
 
 import {calculatePercentage} from 'utils/reporting'
 
@@ -49,9 +51,10 @@ export const useTicketSlaAchievementRate = (): Metric => {
     }
 }
 
-export const useTicketSlaAchievementRateTrend = (): MetricTrend => {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
-
+export const useTicketSlaAchievementRateTrend = (
+    cleanStatsFilters: StatsFilters,
+    userTimezone: string
+): MetricTrend => {
     const satisfiedSlaTicketsTrend =
         useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
             cleanStatsFilters,
@@ -61,6 +64,48 @@ export const useTicketSlaAchievementRateTrend = (): MetricTrend => {
         )
     const breachedSlaTicketsTrend =
         useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
+            cleanStatsFilters,
+            userTimezone,
+            undefined,
+            TicketSLAStatus.Breached
+        )
+
+    const slaAchievementRate = getSlaAchievementRate(
+        satisfiedSlaTicketsTrend.data?.value,
+        breachedSlaTicketsTrend.data?.value
+    )
+
+    const slaAchievementRatePreviousPeriod = getSlaAchievementRate(
+        satisfiedSlaTicketsTrend.data?.prevValue,
+        breachedSlaTicketsTrend.data?.prevValue
+    )
+
+    return {
+        isFetching:
+            satisfiedSlaTicketsTrend.isFetching ||
+            breachedSlaTicketsTrend.isFetching,
+        isError:
+            satisfiedSlaTicketsTrend.isError || breachedSlaTicketsTrend.isError,
+        data: {
+            value: slaAchievementRate,
+            prevValue: slaAchievementRatePreviousPeriod,
+        },
+    }
+}
+
+export const fetchTicketSlaAchievementRateTrend = async (
+    cleanStatsFilters: StatsFilters,
+    userTimezone: string
+): Promise<MetricTrend> => {
+    const satisfiedSlaTicketsTrend =
+        await fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
+            cleanStatsFilters,
+            userTimezone,
+            undefined,
+            TicketSLAStatus.Satisfied
+        )
+    const breachedSlaTicketsTrend =
+        await fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
             cleanStatsFilters,
             userTimezone,
             undefined,

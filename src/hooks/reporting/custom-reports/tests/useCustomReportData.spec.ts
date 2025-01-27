@@ -4,7 +4,10 @@ import moment from 'moment/moment'
 
 import {useDistributionTrendReportData} from 'hooks/reporting/common/useDistributionTrendReportData'
 
-import {useTimeSeriesReportData} from 'hooks/reporting/common/useTimeSeriesReportData'
+import {
+    useTimeSeriesPerDimensionReportData,
+    useTimeSeriesReportData,
+} from 'hooks/reporting/common/useTimeSeriesReportData'
 import {useTrendReportData} from 'hooks/reporting/common/useTrendReportData'
 import {useCustomReportData} from 'hooks/reporting/custom-reports/useCustomReportData'
 import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
@@ -17,6 +20,7 @@ import {
     CustomReportRowSchema,
     CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
+import {ServiceLevelAgreementsChart} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
 import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
@@ -36,6 +40,9 @@ jest.mock('hooks/reporting/common/useDistributionTrendReportData')
 const useDistributionTrendReportDataMock = assumeMock(
     useDistributionTrendReportData
 )
+const useTimeSeriesPerDimensionReportDataMock = assumeMock(
+    useTimeSeriesPerDimensionReportData
+)
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
 const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
@@ -52,6 +59,12 @@ describe('useDownloadCustomReportData', () => {
         type: CustomReportChildType.Chart,
         config_id: timeSeriesChartId,
     }
+    const timeSeriesPerDimensionChartId =
+        ServiceLevelAgreementsChart.AchievedAndBreachedTicketsChart
+    const timeSeriesPerDimensionChart: CustomReportChartSchema = {
+        type: CustomReportChildType.Chart,
+        config_id: timeSeriesPerDimensionChartId,
+    }
     const distributionChartId = OverviewChart.WorkloadPerChannelChart
     const distributionChart: CustomReportChartSchema = {
         type: CustomReportChildType.Chart,
@@ -67,6 +80,7 @@ describe('useDownloadCustomReportData', () => {
         children: [
             trendChart,
             timeSeriesChart,
+            timeSeriesPerDimensionChart,
             distributionChart,
             unknownChart,
         ],
@@ -96,6 +110,10 @@ describe('useDownloadCustomReportData', () => {
         })
         useTrendReportDataMock.mockReturnValue({data: [], isFetching: false})
         useTimeSeriesReportDataMock.mockReturnValue({
+            data: [],
+            isFetching: false,
+        })
+        useTimeSeriesPerDimensionReportDataMock.mockReturnValue({
             data: [],
             isFetching: false,
         })
