@@ -122,7 +122,7 @@ export const useAiAgentOnboardingNotification = ({shopName}: Params) => {
 
         const adminRecipientIdsList = getAdminRecipientIds() ?? []
 
-        const idempotencyKey = `idempotency:${accountDomain}+${shopName}+${aiAgentNotificationType}+${hash(adminRecipientIdsList)}`
+        const idempotencyKey = `idempotent:${accountDomain}+${shopName}+${aiAgentNotificationType}+${hash(adminRecipientIdsList)}`
         const cancellationKey = `cancel:${accountDomain}+${shopName}+${aiAgentNotificationType}`
         const notificationData = {
             ai_agent_notification_type: aiAgentNotificationType,

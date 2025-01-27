@@ -264,7 +264,7 @@ describe('useAiAgentOnboardingNotification', () => {
             notification_workflow: AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
             notification_type: AI_AGENT_SET_AND_OPTIMIZED_TYPE,
             idempotency_key: expect.stringContaining(
-                `idempotency:${ACCOUNT_DOMAIN}+${SHOP_NAME}+${notificationType}`
+                `idempotent:${ACCOUNT_DOMAIN}+${SHOP_NAME}+${notificationType}`
             ),
             notification_data: {
                 ai_agent_notification_type: notificationType,

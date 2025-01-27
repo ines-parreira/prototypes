@@ -21,15 +21,25 @@ const notificationTrackerInstance = EventTracker.initialize({
     reportError: reportSentryError,
 })
 
-const allAdmins = window.GORGIAS_STATE?.agents?.all.filter(
-    (agent) => agent.role.name === UserRole.Admin
-)
+export const getAdminRecipientIds = () => {
+    const allAdmins = window.GORGIAS_STATE?.agents?.all.filter(
+        (agent) => agent.role.name === UserRole.Admin
+    )
+
+    const adminIdsList = allAdmins?.map((admin) => ({
+        id: `${window.GORGIAS_STATE?.currentAccount?.id}.${admin.id}`,
+    }))
+
+    const sortedAdminIds = [...(adminIdsList || [])].sort((a, b) =>
+        a.id.localeCompare(b.id)
+    )
+
+    return sortedAdminIds
+}
 
 notificationTrackerInstance.createUserContext({
     account_id: window.GORGIAS_STATE?.currentAccount?.id,
-    recipient_ids: allAdmins?.map((admin) => ({
-        id: `${window.GORGIAS_STATE?.currentAccount?.id}.${admin.id}`,
-    })),
+    recipient_ids: getAdminRecipientIds(),
 })
 
 // after feature flags are removed, these helper functions can be removed
@@ -50,18 +60,6 @@ export const logNotificationEvent = (
     ...args: Parameters<typeof notificationTrackerInstance.logEvent>
 ) => {
     void logNotificationEventWithLD(...args)
-}
-
-export const getAdminRecipientIds = () => {
-    const adminIdsList = allAdmins?.map((admin) => ({
-        id: `${window.GORGIAS_STATE?.currentAccount?.id}.${admin.id}`,
-    }))
-
-    const sortedAdminIds = [...adminIdsList].sort((a, b) =>
-        a.id.localeCompare(b.id)
-    )
-
-    return sortedAdminIds
 }
 
 export default notificationTrackerInstance
