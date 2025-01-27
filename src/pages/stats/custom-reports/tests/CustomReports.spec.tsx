@@ -101,7 +101,7 @@ describe('CustomReports', () => {
 
         const searchInput = screen.getByRole('textbox', {name: 'Search charts'})
         fireEvent.change(searchInput, {
-            target: {value: 'Customer satisfaction'},
+            target: {value: 'Average CAST'},
         })
 
         const firstCheckbox = screen.getAllByRole('checkbox')[0]
@@ -137,7 +137,7 @@ describe('CustomReports', () => {
 
         const searchInput = screen.getByRole('textbox', {name: 'Search charts'})
         fireEvent.change(searchInput, {
-            target: {value: 'Customer satisfaction'},
+            target: {value: 'Average CAST'},
         })
 
         const firstCheckbox = screen.getAllByRole('checkbox')[0]
@@ -172,7 +172,7 @@ describe('CustomReports', () => {
 
         const searchInput = screen.getByRole('textbox', {name: 'Search charts'})
         fireEvent.change(searchInput, {
-            target: {value: 'Customer satisfaction'},
+            target: {value: 'Average CAST'},
         })
 
         const firstCheckbox = screen.getAllByRole('checkbox')[0]
