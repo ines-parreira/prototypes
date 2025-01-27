@@ -3430,10 +3430,10 @@
     pubnub "^8.4.0"
     pubnub-react "^3.0.2"
 
-"@gorgias/static-analysis@0.2.0":
-  version "0.2.0"
-  resolved "https://npm.pkg.github.com/download/@gorgias/static-analysis/0.2.0/ddaf4ebc80c3b3595686f92ba54a78d570771fe1#ddaf4ebc80c3b3595686f92ba54a78d570771fe1"
-  integrity sha512-nOg+agqRin9au+al3oIziHMjHnb2Rpn7SBMzxzryPtJxH9Y+9RQ/aQwC0ZRmo6ceznBoZ0SCn0Pv1RzPpAN3qQ==
+"@gorgias/static-analysis@0.3.0":
+  version "0.3.0"
+  resolved "https://npm.pkg.github.com/download/@gorgias/static-analysis/0.3.0/d9975fc1db154cbd1074fd8d2f3a0e53832f5bb3#d9975fc1db154cbd1074fd8d2f3a0e53832f5bb3"
+  integrity sha512-oV93vVb5qRWIvYWiGi/5XuMxcGxnURyKIjRgcPFhOYnH8mJpaCtTxgJk+1svQkdwz9zJlC7roarwV986qYvsXg==
   dependencies:
     "@babel/parser" "^7.26.3"
     "@babel/traverse" "^7.26.4"
