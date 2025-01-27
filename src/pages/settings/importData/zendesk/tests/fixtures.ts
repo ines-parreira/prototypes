@@ -38,6 +38,24 @@ export const pendingImport = {
     type: IntegrationType.Zendesk,
 } as ZendeskIntegration
 
+export const rateLimitedImport = {
+    id: 2,
+    name: 'gorgias-us',
+    created_datetime: '2020-09-26T18:19:41',
+    updated_datetime: '2020-10-27T18:19:41',
+    meta: {
+        status: ImportStatus.RateLimitExceededBackoff,
+        sync_tickets: {
+            count: 100,
+        },
+        account_stats: {
+            tickets_count: 1000,
+        },
+        display_import_stats: true,
+    },
+    type: IntegrationType.Zendesk,
+} as ZendeskIntegration
+
 export const failedImport = {
     id: 3,
     name: 'gorgias-eu',

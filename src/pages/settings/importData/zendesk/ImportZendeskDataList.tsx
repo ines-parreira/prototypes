@@ -50,7 +50,10 @@ export const ImportZendeskDataList = (
                     <i className="material-icons">chevron_right</i>
                 </span>
             )
-        } else if (importStatus === ImportStatus.Pending) {
+        } else if (
+            importStatus === ImportStatus.Pending ||
+            importStatus === ImportStatus.RateLimitExceededBackoff
+        ) {
             const displayImportStats = integrationMeta.display_import_stats
             const accountTicketsCount =
                 integrationMeta.account_stats.tickets_count

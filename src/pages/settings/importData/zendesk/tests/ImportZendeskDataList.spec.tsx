@@ -18,7 +18,12 @@ import {ZendeskIntegration} from '../../../../../models/integration/types'
 import history from '../../../../history'
 import {ImportZendeskDataList} from '../ImportZendeskDataList'
 
-import {failedImport, pendingImport, successImport} from './fixtures'
+import {
+    failedImport,
+    pendingImport,
+    rateLimitedImport,
+    successImport,
+} from './fixtures'
 
 interface DefaultProps {
     img: string
@@ -101,6 +106,18 @@ describe('<ImportZendeskDataList/>', () => {
             const {getByText, getByRole} = renderComponent({
                 ...defaultProps,
                 zendeskImports: [pendingImport],
+            })
+            expect(getByText('Progress 10%')).toBeDefined()
+            expect(getByText(pendingImport.name)).toBeDefined()
+            expect(getByRole('progressbar').getAttribute('style')).toEqual(
+                'width: 10%;'
+            )
+        })
+
+        it('should render a pending import for rate limit back off', () => {
+            const {getByText, getByRole} = renderComponent({
+                ...defaultProps,
+                zendeskImports: [rateLimitedImport],
             })
             expect(getByText('Progress 10%')).toBeDefined()
             expect(getByText(pendingImport.name)).toBeDefined()

@@ -11,7 +11,10 @@ interface ImportStatusAlertProps {
 
 const ImportStatusAlert = ({integrationMeta}: ImportStatusAlertProps) => {
     const importStatus = integrationMeta.status
-    if (importStatus === ImportStatus.Pending) {
+    if (
+        importStatus === ImportStatus.Pending ||
+        importStatus === ImportStatus.RateLimitExceededBackoff
+    ) {
         return (
             <Alert icon={<i className="material-icons md-spin">refresh</i>}>
                 <span>Importing your Zendesk data</span>
