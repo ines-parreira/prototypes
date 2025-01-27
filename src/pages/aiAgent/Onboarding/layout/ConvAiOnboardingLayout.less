@@ -42,8 +42,8 @@
         background: linear-gradient(165.76deg, #eeeeee 30.85%, #c34ced 145.54%);
         height: 100%;
         width: 100%;
-        align-items: center;
-        justify-items: center;
+        place-items: center;
+        flex-direction: column;
     }
 
     .onboardingHeader {
@@ -61,6 +61,14 @@
         display: flex;
         justify-content: inherit;
         align-items: inherit;
+        // negate the caption margin
+        margin-bottom: -@layout-spacing-m;
+    }
+
+    .caption {
+        margin-bottom: @layout-spacing-m;
+        width: 50%;
+        text-align: center;
     }
 
     .progressTrackerContainer {

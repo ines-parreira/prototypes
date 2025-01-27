@@ -1,6 +1,7 @@
 import {Meta, StoryFn} from '@storybook/react'
 import React, {ComponentProps, useState} from 'react'
 
+import {getPreviewsForPreviewType, PreviewId} from './constants'
 import {PersonalityPreviewGroup} from './PersonalityPreviewGroup'
 
 const storyConfig: Meta<typeof PersonalityPreviewGroup> = {
@@ -11,14 +12,14 @@ const storyConfig: Meta<typeof PersonalityPreviewGroup> = {
 const Template: StoryFn<ComponentProps<typeof PersonalityPreviewGroup>> = (
     args
 ) => {
-    const [selectedPreviewIndex, setSelectedPreviewIndex] = useState<
-        number | undefined
-    >(args.selectedPreviewIndex)
+    const [selectedPreviewId, setSelectedPreviewId] = useState<
+        PreviewId | undefined
+    >(args.selectedPreviewId)
     return (
         <PersonalityPreviewGroup
             {...args}
-            selectedPreviewIndex={selectedPreviewIndex}
-            onPreviewSelect={(_, index) => setSelectedPreviewIndex(index)}
+            selectedPreviewId={selectedPreviewId}
+            onPreviewSelect={({id}) => setSelectedPreviewId(id)}
         />
     )
 }
@@ -28,10 +29,10 @@ Default.args = {
     previewType: 'mixed',
 }
 
-export const FirstSelected = Template.bind({})
-FirstSelected.args = {
+export const SecondSelected = Template.bind({})
+SecondSelected.args = {
     previewType: 'mixed',
-    selectedPreviewIndex: 0,
+    selectedPreviewId: getPreviewsForPreviewType('mixed')[1].id,
 }
 
 export const Sales = Template.bind({})

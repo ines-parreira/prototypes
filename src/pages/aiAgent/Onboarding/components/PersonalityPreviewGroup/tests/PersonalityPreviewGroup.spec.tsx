@@ -1,7 +1,12 @@
 import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {mixedPreviews, salesPreviews, supportPreviews} from '../constants'
+import {
+    getFirstPreviewForPreviewType,
+    mixedPreviews,
+    salesPreviews,
+    supportPreviews,
+} from '../constants'
 import {PersonalityPreviewGroup} from '../PersonalityPreviewGroup'
 
 describe.each([
@@ -43,7 +48,7 @@ describe.each([
 
         previews.forEach((preview, index) => {
             fireEvent.click(screen.getAllByRole('radio')[index])
-            expect(onPreviewSelect).toHaveBeenCalledWith(preview, index)
+            expect(onPreviewSelect).toHaveBeenCalledWith(preview)
         })
     })
 
@@ -53,7 +58,9 @@ describe.each([
                 <PersonalityPreviewGroup
                     previewType={previewType as any}
                     onPreviewSelect={jest.fn()}
-                    selectedPreviewIndex={0}
+                    selectedPreviewId={
+                        getFirstPreviewForPreviewType(previewType as any).id
+                    }
                 />
             </div>
         )
@@ -82,7 +89,6 @@ describe.each([
                 <PersonalityPreviewGroup
                     previewType={previewType as any}
                     onPreviewSelect={jest.fn()}
-                    selectedPreviewIndex={0}
                     isLoading={true}
                 />
             </div>

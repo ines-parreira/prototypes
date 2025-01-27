@@ -1,18 +1,18 @@
 import React from 'react'
 
-import {getPreviewsForPreviewType, Preview} from './constants'
+import {getPreviewsForPreviewType, Preview, PreviewId} from './constants'
 import css from './PersonalityPreviewGroup.less'
 import {PersonalityPreviewItem} from './PersonalityPreviewItem'
 
 type Props = {
     previewType?: 'mixed' | 'sales' | 'support'
-    selectedPreviewIndex?: number
-    onPreviewSelect: (preview: Preview, index: number) => void
+    selectedPreviewId?: PreviewId
+    onPreviewSelect: (preview: Preview) => void
     isLoading?: boolean
 }
 
 export const PersonalityPreviewGroup: React.FC<Props> = ({
-    selectedPreviewIndex,
+    selectedPreviewId,
     onPreviewSelect,
     previewType = 'mixed',
     isLoading,
@@ -33,11 +33,9 @@ export const PersonalityPreviewGroup: React.FC<Props> = ({
                         title={preview.title}
                         caption={preview.caption}
                         isSelected={
-                            !isLoading && selectedPreviewIndex === index
+                            !isLoading && selectedPreviewId === preview.id
                         }
-                        onSelect={() =>
-                            !isLoading && onPreviewSelect(preview, index)
-                        }
+                        onSelect={() => !isLoading && onPreviewSelect(preview)}
                         isLoading={isLoading}
                     />
                 )

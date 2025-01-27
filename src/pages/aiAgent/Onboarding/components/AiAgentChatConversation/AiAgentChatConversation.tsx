@@ -10,7 +10,7 @@ import CustomerInitialMessages from 'pages/integrations/integration/components/g
 
 import css from './AiAgentChatConversation.less'
 
-type ConversationMessage = {
+export type ConversationMessage = {
     content: string
     isHtml: boolean
     fromAgent: boolean

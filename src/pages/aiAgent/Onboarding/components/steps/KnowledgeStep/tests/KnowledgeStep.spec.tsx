@@ -71,13 +71,4 @@ describe('KnowledgeStep', () => {
 
         expect(screen.getByText('Help center example')).toBeInTheDocument()
     })
-
-    it('renders preview section', () => {
-        renderWithProvider()
-
-        expect(screen.getByText('Preview')).toBeInTheDocument()
-        expect(
-            screen.getByText("Hi, I'm Gorgias. How can I help you today?")
-        ).toBeInTheDocument()
-    })
 })

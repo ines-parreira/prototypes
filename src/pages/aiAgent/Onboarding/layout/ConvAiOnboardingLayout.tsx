@@ -59,22 +59,22 @@ const LoadingPulserIcon: React.FC<{icon: string | JSX.Element}> = ({icon}) => {
 export const OnboardingPreviewContainer: React.FC<{
     isLoading: boolean
     icon: string | JSX.Element
-}> = ({children, isLoading, icon}) => {
+    caption?: string
+}> = ({children, isLoading, icon, caption}) => {
     return (
         <div className={css.onboardingPreviewContainerWrapper}>
             <div className={css.onboardingPreviewContainer}>
-                <div
-                    className={css.ghostContainer}
-                    style={{display: isLoading ? 'flex' : 'none'}}
-                >
-                    <LoadingPulserIcon icon={icon} />
-                </div>
-                <div
-                    style={{display: isLoading ? 'none' : 'flex'}}
-                    className={css.ghostContainer}
-                >
-                    {children}
-                </div>
+                {isLoading && (
+                    <div className={css.ghostContainer}>
+                        <LoadingPulserIcon icon={icon} />
+                    </div>
+                )}
+                {!isLoading && (
+                    <>
+                        <div className={css.ghostContainer}>{children}</div>
+                        <div className={css.caption}>{caption}</div>
+                    </>
+                )}
             </div>
         </div>
     )
