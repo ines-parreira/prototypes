@@ -68,6 +68,10 @@ export default function AiAgentNotification({notification, ...props}: Props) {
     }
 
     const handleOnClick = () => {
+        if (props.onClick) {
+            props.onClick()
+        }
+
         logEvent(SegmentEvent.AiAgentOnboardingNotificationClicked, {
             type: payload.ai_agent_notification_type,
         })
