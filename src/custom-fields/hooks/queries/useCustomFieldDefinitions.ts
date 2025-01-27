@@ -1,4 +1,9 @@
-import {useGetCustomFieldDefinitions} from 'custom-fields/hooks/queries/queries'
+import {UseQueryOptions} from '@tanstack/react-query'
+
+import {
+    useGetCustomFieldDefinitions,
+    UseGetCustomFieldDefinitions,
+} from 'custom-fields/hooks/queries/queries'
 import {ListParams} from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
@@ -6,7 +11,14 @@ import {NotificationStatus} from 'state/notifications/types'
 
 export const STALE_TIME_MS = 60 * 60 * 1000 // 1 hour
 
-export const useCustomFieldDefinitions = (params: ListParams) => {
+export const useCustomFieldDefinitions = (
+    params: ListParams,
+    overrides: UseQueryOptions<
+        UseGetCustomFieldDefinitions,
+        unknown,
+        UseGetCustomFieldDefinitions['data']
+    > = {}
+) => {
     const dispatch = useAppDispatch()
     return useGetCustomFieldDefinitions(params, {
         staleTime: STALE_TIME_MS,
@@ -19,5 +31,6 @@ export const useCustomFieldDefinitions = (params: ListParams) => {
                 })
             )
         },
+        ...overrides,
     })
 }

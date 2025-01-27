@@ -53,10 +53,13 @@ export default function CustomFieldSelectButton({
     ignoreIds,
     onSelect,
 }: CustomFieldSelectButtonProps) {
-    const customFields = useCustomFieldDefinitions({
-        archived: false,
-        object_type: objectType,
-    })
+    const customFields = useCustomFieldDefinitions(
+        {
+            archived: false,
+            object_type: objectType,
+        },
+        {refetchOnWindowFocus: 'always'}
+    )
 
     const options = useMemo(
         () =>
