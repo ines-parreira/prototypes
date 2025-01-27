@@ -1,6 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
+import * as channelsService from 'services/channels'
 import {NotificationStatus} from 'state/notifications/types'
 
 import {canAddAttachments, canReply} from '../ticket'
@@ -201,12 +202,19 @@ describe('Business', () => {
 
         describe('canReply()', () => {
             it('should allow giving an explicit reason', () => {
+                const replyOptions = new Map<string, any>()
+
+                replyOptions.set(
+                    'reason',
+                    'reply blocked for an explicit reason'
+                )
+
                 expect(
                     canReply(
                         undefined,
                         TicketMessageSourceType.Email,
                         0,
-                        'reply blocked for an explicit reason'
+                        replyOptions
                     )
                 ).toEqual({
                     message: 'reply blocked for an explicit reason',
@@ -323,6 +331,28 @@ describe('Business', () => {
                         'When using Whatsapp message, you can either send a text message, ' +
                         'or an image attachment, but not both at the same time. ' +
                         'If you want to write a message, remove the attachment first.',
+                    status: NotificationStatus.Warning,
+                })
+            })
+
+            it('should not allow reply when integration is not available', () => {
+                jest.spyOn(channelsService, 'isNewChannel').mockReturnValue(
+                    true
+                )
+
+                expect(
+                    canReply(
+                        undefined,
+                        'tiktok-shop' as TicketMessageSourceType,
+                        0
+                    )
+                ).toEqual({
+                    message: (
+                        <>
+                            You cannot answer to this ticket on this channel
+                            because the associated integration does not exist.
+                        </>
+                    ),
                     status: NotificationStatus.Warning,
                 })
             })

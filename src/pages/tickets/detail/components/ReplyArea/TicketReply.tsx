@@ -19,7 +19,7 @@ import css from './TicketReply.less'
 import TicketReplyActions from './TicketReplyActions'
 import TicketReplyEditor from './TicketReplyEditor'
 
-type Props = {
+type TicketReplyProps = {
     replyAreaHeader?: ReactNode
     appliedMacro?: Map<any, any>
     applyMacro: (macro: Map<any, any>) => void
@@ -39,7 +39,7 @@ export function TicketReply({
     richAreaRef,
     shouldDisplayQuickReply,
     ticket,
-}: Props) {
+}: TicketReplyProps) {
     const dispatch = useAppDispatch()
     const newMessageAttachments = useAppSelector(getNewMessageAttachments)
     const newMessageType = useAppSelector(getNewMessageType)
@@ -48,7 +48,7 @@ export function TicketReply({
         selectedSender,
         newMessageType,
         newMessageAttachments.size,
-        ticket.getIn(['reply_options', newMessageType, 'reason'])
+        ticket.getIn(['reply_options', newMessageType])
     )
 
     const className = classNames(css.component, passedClassName, {
@@ -87,13 +87,13 @@ export function TicketReply({
                 deleteAttachment={handleDeletion}
                 className="p-2 d-flex flex-wrap"
             />
-            {appliedMacro ? (
+            {appliedMacro && (
                 <TicketReplyActions
                     ticketId={ticket.get('id')}
                     appliedMacro={appliedMacro}
                     onDelete={handleActionDeletion}
                 />
-            ) : null}
+            )}
         </div>
     )
 }

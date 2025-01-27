@@ -4,6 +4,8 @@ import {Link} from 'react-router-dom'
 import {Sender} from 'hooks/useOutboundChannels'
 import {getReconnectUrl} from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/utils'
 
+import {isNewChannel} from 'services/channels'
+
 import {NotificationStatus} from '../state/notifications/types'
 
 import {humanize} from './format'
@@ -14,11 +16,25 @@ export function canReply(
     sender: Maybe<Sender>,
     messageType: TicketMessageSourceType,
     attachmentCount: number,
-    explicitReason?: Maybe<string>
+    replyOptions?: Maybe<Map<string, any>>
 ): Maybe<{message: ReactNode; status: NotificationStatus.Warning}> {
+    const explicitReason = replyOptions?.get('reason')
+
     if (!!explicitReason) {
         return {
             message: explicitReason,
+            status: NotificationStatus.Warning,
+        }
+    }
+
+    if (!replyOptions && isNewChannel(messageType)) {
+        return {
+            message: (
+                <>
+                    You cannot answer to this ticket on this channel because the
+                    associated integration does not exist.
+                </>
+            ),
             status: NotificationStatus.Warning,
         }
     }
