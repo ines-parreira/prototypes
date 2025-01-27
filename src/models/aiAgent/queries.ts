@@ -3,8 +3,6 @@ import {UseQueryOptions, useMutation, useQuery} from '@tanstack/react-query'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import * as CloudFunctionConfig from 'models/aiAgent/resources/cloud-function-configuration'
-import * as KubernetesConfig from 'models/aiAgent/resources/configuration'
 import {
     createOnboardingNotificationState,
     createStoreConfiguration,
@@ -37,11 +35,6 @@ import {
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
 export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
 
-// Factory function to select the appropriate manager
-function getConfigManager(useKubernetes: boolean) {
-    return useKubernetes ? KubernetesConfig : CloudFunctionConfig
-}
-
 export const accountConfigurationKeys = {
     all: () => ['aiAgentAccountConfigurations'] as const,
     details: () => [...accountConfigurationKeys.all(), 'detail'] as const,
@@ -55,13 +48,6 @@ export const useGetAccountConfiguration = (
         Awaited<ReturnType<typeof getAccountConfiguration>>
     >
 ) => {
-    const useKubernetesConfigManager =
-        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
-
-    const {getAccountConfiguration} = getConfigManager(
-        useKubernetesConfigManager
-    )
-
     return useQuery({
         queryKey: accountConfigurationKeys.detail(accountDomain),
         queryFn: () => getAccountConfiguration(accountDomain),
@@ -74,13 +60,6 @@ export const useGetAccountConfiguration = (
 export const useUpsertAccountConfigurationPure = (
     overrides?: MutationOverrides<typeof upsertAccountConfiguration>
 ) => {
-    const useKubernetesConfigManager =
-        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
-
-    const {upsertAccountConfiguration} = getConfigManager(
-        useKubernetesConfigManager
-    )
-
     return useMutation({
         mutationFn: (params) => upsertAccountConfiguration(...params),
         ...overrides,
@@ -103,11 +82,6 @@ export const useGetStoreConfigurationPure = (
         Awaited<ReturnType<typeof getStoreConfiguration>>
     >
 ) => {
-    const useKubernetesConfigManager =
-        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
-
-    const {getStoreConfiguration} = getConfigManager(useKubernetesConfigManager)
-
     return useQuery({
         queryKey: storeConfigurationKeys.detail(params),
         queryFn: () => getStoreConfiguration(params),
@@ -121,13 +95,6 @@ export const useGetStoreConfigurationPure = (
 export const useCreateStoreConfigurationPure = (
     overrides?: MutationOverrides<typeof createStoreConfiguration>
 ) => {
-    const useKubernetesConfigManager =
-        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
-
-    const {createStoreConfiguration} = getConfigManager(
-        useKubernetesConfigManager
-    )
-
     return useMutation({
         mutationFn: (params) => createStoreConfiguration(...params),
         ...overrides,
@@ -137,13 +104,6 @@ export const useCreateStoreConfigurationPure = (
 export const useUpsertStoreConfigurationPure = (
     overrides?: MutationOverrides<typeof upsertStoreConfiguration>
 ) => {
-    const useKubernetesConfigManager =
-        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
-
-    const {upsertStoreConfiguration} = getConfigManager(
-        useKubernetesConfigManager
-    )
-
     return useMutation({
         mutationFn: (params) => upsertStoreConfiguration(...params),
         ...overrides,
@@ -153,13 +113,6 @@ export const useUpsertStoreConfigurationPure = (
 export const useCreateStoreSnippetHelpCenter = (
     overrides?: MutationOverrides<typeof createStoreSnippetHelpCenter>
 ) => {
-    const useKubernetesConfigManager =
-        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
-
-    const {createStoreSnippetHelpCenter} = getConfigManager(
-        useKubernetesConfigManager
-    )
-
     return useMutation({
         mutationFn: (params) => createStoreSnippetHelpCenter(...params),
         ...overrides,
@@ -259,13 +212,6 @@ export const useGetWelcomePageAcknowledged = (
         Awaited<ReturnType<typeof getWelcomePageAcknowledged>>
     >
 ) => {
-    const useKubernetesConfigManager =
-        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
-
-    const {getWelcomePageAcknowledged} = getConfigManager(
-        useKubernetesConfigManager
-    )
-
     return useQuery({
         queryKey: getWelcomePageAcknowledgedKey(storeName),
         queryFn: () => getWelcomePageAcknowledged(accountDomain, storeName),
@@ -276,13 +222,6 @@ export const useGetWelcomePageAcknowledged = (
 export const useCreateWelcomePageAcknowledged = (
     overrides?: MutationOverrides<typeof createWelcomePageAcknowledged>
 ) => {
-    const useKubernetesConfigManager =
-        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
-
-    const {createWelcomePageAcknowledged} = getConfigManager(
-        useKubernetesConfigManager
-    )
-
     return useMutation({
         mutationFn: ([accountDomain, storeName]) =>
             createWelcomePageAcknowledged(accountDomain, storeName),
@@ -317,13 +256,6 @@ export const useGetOnboardingNotificationState = (
         Awaited<ReturnType<typeof getOnboardingNotificationState>>
     >
 ) => {
-    const useKubernetesConfigManager =
-        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
-
-    const {getOnboardingNotificationState} = getConfigManager(
-        useKubernetesConfigManager
-    )
-
     return useQuery({
         queryKey: onboardingNotificationStateKeys.detail(params),
         queryFn: () =>
@@ -344,12 +276,6 @@ export const useGetOrCreateOnboardingNotificationState = (
         Awaited<ReturnType<typeof getOnboardingNotificationState>>
     >
 ) => {
-    const useKubernetesConfigManager =
-        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
-
-    const {getOnboardingNotificationState, createOnboardingNotificationState} =
-        getConfigManager(useKubernetesConfigManager)
-
     const {accountDomain, storeName} = params
 
     return useQuery({
@@ -384,13 +310,6 @@ export const useGetOrCreateOnboardingNotificationState = (
 export const useCreateOnboardingNotificationState = (
     overrides?: MutationOverrides<typeof createOnboardingNotificationState>
 ) => {
-    const useKubernetesConfigManager =
-        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
-
-    const {createOnboardingNotificationState} = getConfigManager(
-        useKubernetesConfigManager
-    )
-
     return useMutation({
         mutationFn: (params) => createOnboardingNotificationState(...params),
         ...overrides,
@@ -400,13 +319,6 @@ export const useCreateOnboardingNotificationState = (
 export const useUpsertOnboardingNotificationState = (
     overrides?: MutationOverrides<typeof upsertOnboardingNotificationState>
 ) => {
-    const useKubernetesConfigManager =
-        useFlags()[FeatureFlagKey.AiAgentKubernetesConfigManager]
-
-    const {upsertOnboardingNotificationState} = getConfigManager(
-        useKubernetesConfigManager
-    )
-
     return useMutation({
         mutationFn: (params) => upsertOnboardingNotificationState(...params),
         ...overrides,
