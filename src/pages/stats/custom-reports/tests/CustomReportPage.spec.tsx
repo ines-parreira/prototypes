@@ -336,7 +336,7 @@ describe('CustomReportPage', () => {
 
         const searchInput = screen.getByRole('textbox', {name: 'Search charts'})
         fireEvent.change(searchInput, {
-            target: {value: 'Average CAST'},
+            target: {value: 'Average CSAT'},
         })
 
         const firstCheckbox = screen.getAllByRole('checkbox')[0]
