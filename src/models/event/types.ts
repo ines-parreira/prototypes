@@ -75,6 +75,10 @@ export type TicketSplitEventData = {
     }
 }
 
+export type TicketSatisfactionSurveySkippedData = {
+    reasons: string[]
+}
+
 export type EventData =
     | TicketTagsAddedEventData
     | TicketTagsRemovedEventData
@@ -89,6 +93,7 @@ export type EventData =
     | TicketEventPrivateReplyData
     | TicketCreatedEventData
     | TicketSplitEventData
+    | TicketSatisfactionSurveySkippedData
 
 export enum EventType {
     AccountCreated = 'account-created',
@@ -130,6 +135,7 @@ export enum EventType {
     TicketMessageSummaryCreated = 'ticket-message-summary-created',
     TicketMessageUpdated = 'ticket-message-updated',
     TicketReopened = 'ticket-reopened',
+    TicketSatisfactionSurveySkipped = 'ticket-satisfaction-survey-skipped',
     TicketSelfUnsnoozed = 'ticket-self-unsnoozed',
     TicketSnoozed = 'ticket-snoozed',
     TicketSubjectUpdated = 'ticket-subject-updated',
@@ -220,6 +226,7 @@ export const TICKET_EVENT_TYPES = Object.freeze({
         'TicketMessageCreated',
         'TicketMessageSummaryCreated',
         'TicketReopened',
+        'TicketSatisfactionSurveySkipped',
         'TicketSelfUnsnoozed',
         'TicketSnoozed',
         'TicketSubjectUpdated',

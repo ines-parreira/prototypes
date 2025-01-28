@@ -1,4 +1,4 @@
-import {render} from '@testing-library/react'
+import {render, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
 
@@ -115,6 +115,15 @@ describe('<AuditLogEvent/>', () => {
                 [
                     TICKET_EVENT_TYPES.RuleSuggestionSuggested,
                     {slug: 'rule_suggestion'},
+                ],
+                [TICKET_EVENT_TYPES.TicketExcludedFromCSAT, null],
+                [
+                    TICKET_EVENT_TYPES.TicketSatisfactionSurveySkipped,
+                    {
+                        reasons: [
+                            'The customer does not have an email address associated to them.',
+                        ],
+                    },
                 ],
             ])('with event type %s', (eventType, eventData) => {
                 const event = getEvent(eventType, eventData)
@@ -400,6 +409,60 @@ describe('<AuditLogEvent/>', () => {
                 )
                 expect(getByText(email)).toBeInTheDocument()
             })
+
+            it('when details are shown', () => {
+                const event = {
+                    ...getEvent(
+                        TICKET_EVENT_TYPES.TicketSatisfactionSurveySkipped,
+                        {
+                            reasons: [
+                                'The ticket conversation is shorter than the minimum requirement of 250 characters.',
+                                'The ticket lacks the required minimum interaction: at least one message from the customer and one from an agent.',
+                            ],
+                        }
+                    ),
+                    user_id: 3,
+                }
+                const {getByText, getByTitle} = render(
+                    <AuditLogEventContainer
+                        {...minProps}
+                        event={fromJS(event)}
+                        isLast={false}
+                    />
+                )
+                fireEvent.click(getByTitle('More details'))
+
+                expect(getByText(email)).toBeInTheDocument()
+                expect(
+                    getByText(
+                        /The ticket conversation is shorter than the minimum requirement of 250 characters./
+                    )
+                ).toBeInTheDocument()
+                expect(
+                    getByText(
+                        /The ticket lacks the required minimum interaction: at least one message from the customer and one from an agent./
+                    )
+                ).toBeInTheDocument()
+            })
+
+            it.each<EventData | null>([{reasons: []}, {}, null])(
+                'with event type ticket-satisfaction-survey-skipped and data %s',
+                (data) => {
+                    const event = getEvent(
+                        TICKET_EVENT_TYPES.TicketSatisfactionSurveySkipped,
+                        data
+                    )
+                    const {container} = render(
+                        <AuditLogEventContainer
+                            {...minProps}
+                            event={fromJS(event)}
+                            isLast={false}
+                        />
+                    )
+
+                    expect(container.firstChild).toMatchSnapshot()
+                }
+            )
         })
 
         describe('should not render', () => {

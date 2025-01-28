@@ -8,6 +8,8 @@ import {connect, ConnectedProps} from 'react-redux'
 
 import {Link} from 'react-router-dom'
 
+import {Card, CardBody} from 'reactstrap'
+
 import {eventNameToLabel} from 'config/rules'
 import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from 'models/event/constants'
 import {
@@ -31,6 +33,7 @@ import {getTeams} from 'state/teams/selectors'
 import {getEvents} from 'state/ticket/selectors'
 import {RootState} from 'state/types'
 
+import IconButton from '../../../common/components/button/IconButton'
 import css from './Event.less'
 
 type Props = {
@@ -38,6 +41,10 @@ type Props = {
     isLast: boolean
     setHighlightedElements: (highlightedElements: HighlightedElements) => void
 } & ConnectedProps<typeof connector>
+
+type State = {
+    showDetails: boolean
+}
 
 export type HighlightedElements = {
     first: number
@@ -117,7 +124,7 @@ const RuleActionName = ({
     )
 }
 
-export class AuditLogEventContainer extends Component<Props> {
+export class AuditLogEventContainer extends Component<Props, State> {
     static defaultProps = {
         isLast: false,
     }
@@ -147,6 +154,11 @@ export class AuditLogEventContainer extends Component<Props> {
         [CONTENTFUL_EVENT_TYPES.TicketSubjectUpdated]: ['mode'],
         [CONTENTFUL_EVENT_TYPES.TicketExcludedFromAutoMerge]: ['close'],
         [CONTENTFUL_EVENT_TYPES.TicketExcludedFromCSAT]: ['close'],
+        [CONTENTFUL_EVENT_TYPES.TicketSatisfactionSurveySkipped]: ['star'],
+    }
+
+    state: State = {
+        showDetails: false,
     }
 
     _CONTENT_RENDERERS: Partial<Record<TicketEventType, () => ReactNode>> = {
@@ -220,6 +232,31 @@ export class AuditLogEventContainer extends Component<Props> {
         [CONTENTFUL_EVENT_TYPES.TicketExcludedFromCSAT]: () => (
             <ActionName>Excluded from CSAT</ActionName>
         ),
+        [CONTENTFUL_EVENT_TYPES.TicketSatisfactionSurveySkipped]: () =>
+            this._renderTicketSatisfactionSurveySkipped(),
+    }
+
+    _DETAILS_RENDERERS: Partial<Record<TicketEventType, () => ReactNode>> = {
+        [CONTENTFUL_EVENT_TYPES.TicketSatisfactionSurveySkipped]: () =>
+            this._renderTicketSatisfactionSurveySkippedDetails(),
+    }
+
+    _getExpandDetailsButton(): ReactNode {
+        return (
+            <IconButton
+                fillStyle="ghost"
+                intent="secondary"
+                className={css.arrow}
+                onClick={() =>
+                    this.setState({
+                        showDetails: !this.state.showDetails,
+                    })
+                }
+                title="More details"
+            >
+                {this.state.showDetails ? 'expand_less' : 'expand_more'}
+            </IconButton>
+        )
     }
 
     _getIcon() {
@@ -243,6 +280,14 @@ export class AuditLogEventContainer extends Component<Props> {
         const contentRenderer = this._CONTENT_RENDERERS[type]
 
         return contentRenderer ? contentRenderer() : null
+    }
+
+    _getDetails() {
+        const {event} = this.props
+        const type = event.get('type') as TicketEventType
+        const detailsRenderer = this._DETAILS_RENDERERS[type]
+
+        return detailsRenderer ? detailsRenderer() : null
     }
 
     _renderRuleExecutedEvent() {
@@ -579,6 +624,57 @@ export class AuditLogEventContainer extends Component<Props> {
         return <div className={css.failedActions}>{failures}</div>
     }
 
+    _getTicketSatisfactionSurveySkippedReasons(): List<string> {
+        const {event} = this.props
+        const data: Map<any, any> | null = event.get('data')
+        if (!data) {
+            return List<string>()
+        }
+        const reasons: List<string> | null = data.get('reasons')
+        if (!reasons) {
+            return List<string>()
+        }
+        return reasons
+    }
+
+    _renderTicketSatisfactionSurveySkipped() {
+        const expandButton =
+            this._getTicketSatisfactionSurveySkippedReasons().isEmpty()
+                ? null
+                : this._getExpandDetailsButton()
+        return (
+            <>
+                <ActionName>Ticket not eligible for CSAT</ActionName>
+                {expandButton}
+            </>
+        )
+    }
+
+    _renderTicketSatisfactionSurveySkippedDetails() {
+        const {event} = this.props
+        const data: Map<any, any> = event.get('data')
+        if (!data) {
+            return null
+        }
+        const reasons: List<string> =
+            this._getTicketSatisfactionSurveySkippedReasons()
+        if (reasons.isEmpty()) {
+            return null
+        }
+        return (
+            <>
+                <span>
+                    <b>Missing requirements:</b>
+                </span>
+                <ul>
+                    {reasons.map((reason, index) => (
+                        <li key={index}>{reason}</li>
+                    ))}
+                </ul>
+            </>
+        )
+    }
+
     render() {
         const {event, isLast, users, events} = this.props
         const type = event.get('type') as TicketEventType
@@ -598,6 +694,8 @@ export class AuditLogEventContainer extends Component<Props> {
         ) as Map<any, any>
 
         const isSystemEvent = !event.get('user_id')
+
+        const details = this._getDetails()
 
         return (
             <div
@@ -641,6 +739,15 @@ export class AuditLogEventContainer extends Component<Props> {
                 {isRuleExecuted &&
                     !isSuggestion &&
                     this._renderFailedRuleActions()}
+                {details && (
+                    <Card
+                        className={classnames(css.details, {
+                            'd-none': !this.state.showDetails,
+                        })}
+                    >
+                        <CardBody>{details}</CardBody>
+                    </Card>
+                )}
             </div>
         )
     }

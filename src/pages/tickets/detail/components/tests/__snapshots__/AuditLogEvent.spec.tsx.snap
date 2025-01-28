@@ -520,6 +520,58 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-created 
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-customer-updated 1`] = `null`;
 
+exports[`<AuditLogEvent/> render() should render with event type ticket-excluded-from-csat 1`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <i
+          class="material-icons"
+        >
+          close
+        </i>
+      </div>
+      <span
+        class="actionName"
+      >
+        Excluded from CSAT
+      </span>
+      <span
+        class="filler"
+      >
+        by
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          aria-label="User 1 icon"
+          class="material-icons md-2"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
+    </div>
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<AuditLogEvent/> render() should render with event type ticket-marked-spam 1`] = `
 <div
   class="component"
@@ -713,6 +765,248 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-reopened
         class="actionName"
       >
         Reopened
+      </span>
+      <span
+        class="filler"
+      >
+        by
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          aria-label="User 1 icon"
+          class="material-icons md-2"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
+    </div>
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-satisfaction-survey-skipped 1`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <i
+          class="material-icons"
+        >
+          star
+        </i>
+      </div>
+      <span
+        class="actionName"
+      >
+        Ticket not eligible for CSAT
+      </span>
+      <button
+        aria-disabled="false"
+        class="wrapper arrow wrapper ghost ghost secondary medium"
+        title="More details"
+        type="button"
+      >
+        <span
+          class="content"
+        >
+          <i
+            class="material-icons icon"
+          >
+            expand_more
+          </i>
+        </span>
+      </button>
+      <span
+        class="filler"
+      >
+        by
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          aria-label="User 1 icon"
+          class="material-icons md-2"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
+    </div>
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
+  </div>
+  <div
+    class="details d-none card"
+  >
+    <div
+      class="card-body"
+    >
+      <span>
+        <b>
+          Missing requirements:
+        </b>
+      </span>
+      <ul>
+        <li>
+          The customer does not have an email address associated to them.
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-satisfaction-survey-skipped and data { reasons: [] } 1`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <i
+          class="material-icons"
+        >
+          star
+        </i>
+      </div>
+      <span
+        class="actionName"
+      >
+        Ticket not eligible for CSAT
+      </span>
+      <span
+        class="filler"
+      >
+        by
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          aria-label="User 1 icon"
+          class="material-icons md-2"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
+    </div>
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-satisfaction-survey-skipped and data {} 1`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <i
+          class="material-icons"
+        >
+          star
+        </i>
+      </div>
+      <span
+        class="actionName"
+      >
+        Ticket not eligible for CSAT
+      </span>
+      <span
+        class="filler"
+      >
+        by
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          aria-label="User 1 icon"
+          class="material-icons md-2"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
+    </div>
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-satisfaction-survey-skipped and data null 1`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <i
+          class="material-icons"
+        >
+          star
+        </i>
+      </div>
+      <span
+        class="actionName"
+      >
+        Ticket not eligible for CSAT
       </span>
       <span
         class="filler"
