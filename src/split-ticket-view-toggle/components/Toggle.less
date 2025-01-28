@@ -26,14 +26,50 @@
         @media @mobiles {
             display: none;
         }
+
+        &.disabled {
+            cursor: not-allowed;
+            background-color: var(--neutral-grey-5);
+        }
+
+        &.active {
+            -webkit-mask-image: url(../assets/dock_to_right_active.svg);
+            mask-image: url(../assets/dock_to_right_active.svg);
+        }
     }
 
     .showGlobalNavToggle {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: transparent;
+        border: 0;
+        flex-shrink: 0;
+        border-radius: 4px;
+        transition: background-color 0.2s ease-in-out;
+
+        &:focus {
+            outline: 0;
+        }
+
+        &:disabled {
+            cursor: not-allowed;
+        }
+
+        &:hover {
+            background-color: var(--neutral-grey-2);
+        }
+
+        @media @mobiles {
+            display: none;
+        }
+    }
+
+    .mask {
         width: 20px;
         height: 20px;
-        margin-left: 6px;
-        margin-right: 6px;
-        border: 0;
         background-color: var(--neutral-grey-6);
         -webkit-mask-image: url(../assets/dock_to_right.svg);
         mask-image: url(../assets/dock_to_right.svg);
@@ -42,25 +78,15 @@
         text-indent: -999em;
         mask-position: center;
         -webkit-mask-position: center;
-        flex-shrink: 0;
 
-        &:focus {
-            outline: 0;
+        &.disabled {
+            background-color: var(--neutral-grey-5);
         }
 
-        @media @mobiles {
-            display: none;
+        &.active {
+            -webkit-mask-image: url(../assets/dock_to_right_active.svg);
+            mask-image: url(../assets/dock_to_right_active.svg);
         }
-    }
-
-    .disabled {
-        cursor: not-allowed;
-        background-color: var(--neutral-grey-5);
-    }
-
-    .active {
-        -webkit-mask-image: url(../assets/dock_to_right_active.svg);
-        mask-image: url(../assets/dock_to_right_active.svg);
     }
 
     .tooltip {

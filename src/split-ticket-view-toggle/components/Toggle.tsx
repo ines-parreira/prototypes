@@ -44,9 +44,30 @@ export default function Toggle() {
                 id={buttonId}
                 disabled={!isToggleEnabled}
                 data-candu-id="dtp-toggle"
+                aria-describedby={
+                    showGlobalNav && isEnabled
+                        ? 'Use full width view'
+                        : 'Use split ticket view'
+                }
             >
-                {isEnabled ? 'Use full width view' : 'Use split ticket view'}
+                {showGlobalNav ? (
+                    <div className={cn(css.mask, {[css.active]: isEnabled})} />
+                ) : (
+                    <span>
+                        {isEnabled
+                            ? 'Use full width view'
+                            : 'Use split ticket view'}
+                    </span>
+                )}
             </button>
+            {showGlobalNav && isToggleEnabled && (
+                <Tooltip target={buttonId} placement="right">
+                    {isEnabled
+                        ? 'Use full width view'
+                        : 'Use split ticket view'}
+                </Tooltip>
+            )}
+
             {!isToggleEnabled && (
                 <Tooltip
                     target={buttonId}
