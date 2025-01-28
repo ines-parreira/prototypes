@@ -1,4 +1,4 @@
-import {ExpressionOperator} from '@gorgias/api-queries'
+import {ExpressionFieldSource, ExpressionOperator} from '@gorgias/api-queries'
 
 import {SUPPORTED_UI_DATA_TYPES} from 'custom-fields/constants'
 import {SupportedUIDataType} from 'custom-fields/types'
@@ -33,4 +33,11 @@ export const EXPRESSION_OPERATORS_LABELS: Record<ExpressionOperator, string> = {
     [ExpressionOperator.LessOrEqualTo]: 'is less or equal to',
     [ExpressionOperator.IsOneOf]: 'is one of',
     [ExpressionOperator.IsNotOneOf]: 'is not one of',
+}
+
+export const DEFAULT_EXPRESSION_RULE = {
+    field_source: ExpressionFieldSource.TicketCustomFields,
+    field: 0,
+    operator: ExpressionOperator.Is,
+    values: [],
 }

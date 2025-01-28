@@ -24,7 +24,7 @@ function definitionToString(definition: CustomFieldDefinition): string {
     return 'Text'
 }
 
-interface ThenFieldRowProps {
+type ThenFieldRowProps = {
     fieldId: number
     requirement: ExpressionFieldType
     onChange: (value: ExpressionFieldType) => void

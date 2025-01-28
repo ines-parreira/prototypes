@@ -1,8 +1,4 @@
 import {CustomFieldCondition} from '@gorgias/api-queries'
-import {
-    validateCreateCustomFieldCondition,
-    validateUpdateCustomFieldCondition,
-} from '@gorgias/api-validators'
 import {render, screen, fireEvent} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 
@@ -10,12 +6,12 @@ import '@testing-library/jest-dom/extend-expect'
 import {Form} from 'components/Form/Form'
 import FormField from 'components/Form/FormField'
 import FormSubmitButton from 'components/Form/FormSubmitButton'
-import {createFormValidator} from 'components/Form/validation'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import history from 'pages/history'
 import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
 import {assumeMock, getLastMockCall} from 'utils/testing'
 
+import {DEFAULT_EXPRESSION_RULE} from '../../constants'
 import useSaveCondition from '../../hooks/useSaveCondition'
 import ConditionForm from '../ConditionForm'
 import {DeletionPopover} from '../DeletionPopover'
@@ -30,18 +26,17 @@ jest.mock('components/Form/FormSubmitButton', () => jest.fn(() => <button />))
 jest.mock('pages/common/forms/ToggleInputField', () =>
     jest.fn(() => <input type="checkbox" />)
 )
-jest.mock('components/Form/validation', () => ({
-    createFormValidator: jest.fn(),
-}))
 jest.mock('../../hooks/useSaveCondition', () => jest.fn())
 jest.mock('../DeletionPopover', () => ({
     DeletionPopover: jest.fn(),
+}))
+jest.mock('../ExpressionField', () => ({
+    ExpressionField: jest.fn(() => <div />),
 }))
 jest.spyOn(history, 'push')
 
 const DeletionPopoverMock = assumeMock(DeletionPopover)
 const useSaveConditionMock = assumeMock(useSaveCondition)
-const createFormValidatorMock = assumeMock(createFormValidator)
 const FormMock = assumeMock(Form)
 const FormFieldMock = assumeMock(FormField)
 
@@ -49,10 +44,8 @@ describe('ConditionForm', () => {
     const onDisplayConfirmationMock = jest.fn()
     const onSubmitMock = jest.fn()
     const isSubmitting = false
-    const validatorMock = jest.fn()
 
     beforeEach(() => {
-        createFormValidatorMock.mockReturnValue(validatorMock)
         DeletionPopoverMock.mockImplementation(
             ({children}: ComponentProps<typeof DeletionPopover>) => (
                 <div>
@@ -74,37 +67,37 @@ describe('ConditionForm', () => {
         condition: {
             id: 1,
             name: 'Test Condition',
+            description: null,
             deactivated_datetime: null,
         } as CustomFieldCondition,
     }
 
-    it("should call createFormValidator with expected param according to condition's id", () => {
-        const {rerender} = render(<ConditionForm {...defaultProps} />)
-        expect(createFormValidatorMock).toHaveBeenCalledWith(
-            validateUpdateCustomFieldCondition
-        )
-
-        rerender(<ConditionForm />)
-        expect(createFormValidatorMock).toHaveBeenCalledWith(
-            validateCreateCustomFieldCondition
-        )
-    })
-
     it('should call Form with proper props', () => {
-        render(<ConditionForm {...defaultProps} />)
+        const {rerender} = render(<ConditionForm {...defaultProps} />)
         expect(FormMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 children: expect.any(Array),
                 defaultValues: expect.objectContaining({
                     name: '',
+                    description: '',
                     object_type: 'Ticket',
                     deactivated_datetime: null,
+                    requirements: [],
+                    expression: [DEFAULT_EXPRESSION_RULE],
                 }),
                 values: expect.objectContaining({
                     name: 'Test Condition',
+                    description: '',
                     deactivated_datetime: null,
                 }),
-                validator: validatorMock,
+            }),
+            {}
+        )
+
+        rerender(<ConditionForm />)
+        expect(FormMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                values: undefined,
             }),
             {}
         )
@@ -135,21 +128,14 @@ describe('ConditionForm', () => {
         expect(FormFieldMock).toHaveBeenNthCalledWith(
             3,
             expect.objectContaining({
-                field: ExpressionField,
-                name: 'expression',
+                field: ThenField,
+                name: 'requirements',
+                isRequired: true,
             }),
             {}
         )
         expect(FormFieldMock).toHaveBeenNthCalledWith(
             4,
-            expect.objectContaining({
-                field: ThenField,
-                name: 'requirements',
-            }),
-            {}
-        )
-        expect(FormFieldMock).toHaveBeenNthCalledWith(
-            5,
             expect.objectContaining({
                 field: ToggleInputField,
                 name: 'deactivated_datetime',
@@ -160,17 +146,22 @@ describe('ConditionForm', () => {
         )
 
         expect(
-            FormFieldMock.mock.calls[4][0].inputTransform?.(null)
+            FormFieldMock.mock.calls[3][0].inputTransform?.(null)
         ).toBeTruthy()
         expect(
-            FormFieldMock.mock.calls[4][0].inputTransform?.('test')
+            FormFieldMock.mock.calls[3][0].inputTransform?.('test')
         ).toBeFalsy()
         expect(
-            FormFieldMock.mock.calls[4][0].outputTransform?.(true)
+            FormFieldMock.mock.calls[3][0].outputTransform?.(true)
         ).toBeNull()
         expect(
-            typeof FormFieldMock.mock.calls[4][0].outputTransform?.(false)
+            typeof FormFieldMock.mock.calls[3][0].outputTransform?.(false)
         ).toBe('string')
+    })
+
+    it('should call ExpressionField', () => {
+        render(<ConditionForm />)
+        expect(ExpressionField).toHaveBeenCalled()
     })
 
     it('should call onSubmit of valid submit and pass it form data', () => {

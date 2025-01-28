@@ -19,7 +19,7 @@ import CustomFieldSelectButton from './CustomFieldSelectButton'
 import css from './ThenField.less'
 import ThenFieldRow from './ThenFieldRow'
 
-interface ThenFieldProps {
+type ThenFieldProps = {
     value: CustomFieldConditionField[]
     onChange: (value: CustomFieldConditionField[]) => void
     error?: string

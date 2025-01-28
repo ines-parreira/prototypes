@@ -1,83 +1,55 @@
-import {
-    ExpressionOperator,
-    ExpressionFieldSource,
-    CustomFieldConditionExpression,
-} from '@gorgias/api-queries'
-import React, {forwardRef} from 'react'
+import React from 'react'
+import {useFieldArray, useFormState} from 'react-hook-form'
 
 import {OBJECT_TYPES} from 'custom-fields/constants'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import Button from 'pages/common/components/button/Button'
 import Caption from 'pages/common/forms/Caption/Caption'
 
+import {DEFAULT_EXPRESSION_RULE} from '../../constants'
+import {AddButton} from './AddButton'
 import css from './ExpressionField.less'
 import {ExpressionRow} from './ExpressionRow'
 
-interface ExpressionFieldProps {
-    value: CustomFieldConditionExpression[]
-    onChange: (value: CustomFieldConditionExpression[]) => void
-    error?: string
+type ExpressionFieldProps = {
     className?: string
 }
 
-export const ExpressionField = forwardRef(function ExpressionField(
-    {value: expressions, onChange, error, className}: ExpressionFieldProps,
-    __ref
-) {
-    const [isAdding, setIsAdding] = React.useState(false)
+export const ExpressionField = function ExpressionField({
+    className,
+}: ExpressionFieldProps) {
+    const {errors} = useFormState({name: 'expression'})
     const {data} = useCustomFieldDefinitions({
         archived: false,
         object_type: OBJECT_TYPES.TICKET,
     })
-
-    const withAdditionExpressions = isAdding
-        ? [
-              ...expressions,
-              {
-                  field_source: ExpressionFieldSource.TicketCustomFields,
-                  field: '',
-                  operator: ExpressionOperator.IsOneOf,
-                  values: [],
-              },
-          ]
-        : expressions
-
+    const {
+        fields,
+        remove: handleRemove,
+        append: handleAdd,
+    } = useFieldArray({
+        rules: {
+            required: 'You need to provide at least one requirement',
+        },
+        name: 'expression',
+    })
     const customFieldDefinitions = data?.data ?? []
 
     return (
         <div className={className}>
             <div className={css.mbS}>
-                {withAdditionExpressions.map((expression, index) => (
+                {fields.map((field, index) => (
                     <ExpressionRow
-                        key={index}
+                        key={field.id}
                         index={index}
-                        expressions={expressions}
-                        expression={expression}
-                        onChange={onChange}
                         customFieldDefinitions={customFieldDefinitions}
-                        customFieldDefinition={customFieldDefinitions.find(
-                            (definition) => definition.id === expression.field
-                        )}
-                        removePlaceholderRowIfNeeded={() =>
-                            isAdding &&
-                            index === withAdditionExpressions.length - 1 &&
-                            setIsAdding(false)
-                        }
+                        onRemove={handleRemove}
                     />
                 ))}
             </div>
-            <Button
-                type="button"
-                intent="secondary"
-                onClick={() => {
-                    setIsAdding(true)
-                }}
-                isDisabled={isAdding}
-                trailingIcon="add"
-            >
-                Add requirements
-            </Button>
-            {error && <Caption error={error} />}
+            <AddButton onClick={() => handleAdd(DEFAULT_EXPRESSION_RULE)} />
+            {errors?.expression?.root?.message && (
+                <Caption error={errors.expression.root.message} />
+            )}
         </div>
     )
-})
+}

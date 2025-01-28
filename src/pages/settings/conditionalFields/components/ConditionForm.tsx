@@ -3,23 +3,19 @@ import {
     CustomFieldCondition,
     UpdateCustomFieldCondition,
 } from '@gorgias/api-queries'
-import {
-    validateCreateCustomFieldCondition,
-    validateUpdateCustomFieldCondition,
-} from '@gorgias/api-validators'
 import {Label} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import {Form} from 'components/Form/Form'
 import FormField from 'components/Form/FormField'
 import FormSubmitButton from 'components/Form/FormSubmitButton'
-import {createFormValidator} from 'components/Form/validation'
 import Button from 'pages/common/components/button/Button'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
 
+import {DEFAULT_EXPRESSION_RULE} from '../constants'
 import useSaveCondition from '../hooks/useSaveCondition'
 import css from './ConditionForm.less'
 import {DeletionPopover} from './DeletionPopover'
@@ -41,12 +37,6 @@ export default function EditConditionForm({condition}: ConditionFormProps) {
         deactivated_datetime: condition?.deactivated_datetime,
     }
 
-    const validator = createFormValidator(
-        condition?.id
-            ? validateUpdateCustomFieldCondition
-            : validateCreateCustomFieldCondition
-    )
-
     const handleFormSubmit = (
         data: CreateCustomFieldCondition | UpdateCustomFieldCondition
     ) => {
@@ -59,7 +49,7 @@ export default function EditConditionForm({condition}: ConditionFormProps) {
                 name: '',
                 description: '',
                 object_type: 'Ticket',
-                expression: [],
+                expression: [DEFAULT_EXPRESSION_RULE],
                 requirements: [],
                 deactivated_datetime: null,
             }}
@@ -69,7 +59,6 @@ export default function EditConditionForm({condition}: ConditionFormProps) {
                     : undefined
             }
             onValidSubmit={handleFormSubmit}
-            validator={validator}
         >
             <div className={settingsCss.contentWrapper}>
                 <FormField
@@ -95,15 +84,11 @@ export default function EditConditionForm({condition}: ConditionFormProps) {
                 <Label className={css.mbS}>
                     If the following criteria is met...
                 </Label>
-                <FormField
-                    name="expression"
-                    field={ExpressionField}
-                    className={css.mbM}
-                />
+                <ExpressionField className={css.mbM} />
                 <Label className={css.mbS}>
                     Then display the following fields...
                 </Label>
-                <FormField name="requirements" field={ThenField} />
+                <FormField name="requirements" field={ThenField} isRequired />
             </fieldset>
             <FormField
                 className={css.mbS}

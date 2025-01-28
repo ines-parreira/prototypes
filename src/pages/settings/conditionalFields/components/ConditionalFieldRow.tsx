@@ -18,7 +18,7 @@ import useUpdateCustomFieldCondition from '../hooks/useUpdateCustomFieldConditio
 import css from './ConditionalFieldRow.less'
 import {DeletionPopover} from './DeletionPopover'
 
-interface ConditionalFieldRowProps {
+type ConditionalFieldRowProps = {
     condition: CustomFieldCondition
     canDuplicate?: boolean
 }
