@@ -41,7 +41,7 @@ export default function ActionEventsHeader({
     ])
     const [startDateFilter, setStartDate] = useState(initialStartDate)
     const [endDateFilter, setEndDateFilter] = useState(initialEndDate)
-
+    const [isPeriodFilterSet, setIsPeriodFilterSet] = useState(false)
     useEffectOnce(() => {
         dispatch(
             setStatsFilters({
@@ -51,12 +51,16 @@ export default function ActionEventsHeader({
                 },
             })
         )
+        setIsPeriodFilterSet(true)
     })
 
     useEffect(() => {
-        setEndDateFilter(new Date(pageStatsFilters.period.end_datetime))
-        setStartDate(new Date(pageStatsFilters.period.start_datetime))
+        if (isPeriodFilterSet) {
+            setEndDateFilter(new Date(pageStatsFilters.period.end_datetime))
+            setStartDate(new Date(pageStatsFilters.period.start_datetime))
+        }
     }, [
+        isPeriodFilterSet,
         pageStatsFilters.period.end_datetime,
         pageStatsFilters.period.start_datetime,
     ])
