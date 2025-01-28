@@ -115,15 +115,15 @@ export const Level1IntentsPerformance = () => {
                     metricFormat: 'decimal-to-percent',
                     tip: (
                         <PerformanceTip showBenchmark={false}>
-                            Set up all{' '}
+                            Review your existing{' '}
                             <a
                                 target="blank"
-                                href="https://link.gorgias.com/aut"
+                                href={aiAgentNavigation.routes.guidance}
                             >
-                                Automate features
+                                knowledge
                             </a>{' '}
-                            to improve your automation rate across all of your
-                            channels.
+                            and add missing one to improve your success rate of
+                            AI Agent.
                         </PerformanceTip>
                     ),
                 },
