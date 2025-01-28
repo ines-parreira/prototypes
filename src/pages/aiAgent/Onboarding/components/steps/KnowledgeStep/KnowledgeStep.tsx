@@ -3,6 +3,7 @@ import React from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 import {ShopifyIntegration} from 'models/integration/types'
 import {Card, CardContent} from 'pages/aiAgent/Onboarding/components/Card'
+import KnowledgePreview from 'pages/aiAgent/Onboarding/components/KnowledgePreview/KnowledgePreview'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
 import {
     KnowledgeSourceType,
@@ -22,6 +23,7 @@ import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import {Separator} from 'pages/common/components/Separator/Separator'
 import {getShopifyIntegrationByShopName} from 'state/integrations/selectors'
 
+import GorgiasIcon from './icons/GorgiasIcon'
 import {KnowledgeResourceLine} from './KnowledgeResourceLine'
 import css from './KnowledgeStep.less'
 
@@ -95,13 +97,11 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                     </CardContent>
                 </Card>
             </OnboardingContentContainer>
-            <OnboardingPreviewContainer isLoading={true} icon={''}>
-                <div>
-                    <h2>Preview</h2>
-                    <div>
-                        <p>Hi, I'm Gorgias. How can I help you today?</p>
-                    </div>
-                </div>
+            <OnboardingPreviewContainer
+                isLoading={false}
+                icon={<GorgiasIcon size="40%" />}
+            >
+                <KnowledgePreview />
             </OnboardingPreviewContainer>
         </OnboardingBody>
     )

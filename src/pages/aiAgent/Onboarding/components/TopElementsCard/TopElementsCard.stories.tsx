@@ -1,18 +1,18 @@
 import type {Meta, StoryObj} from '@storybook/react'
 
-import TopLocationsCard from './TopLocationsCard'
+import TopElementsCard from './TopElementsCard'
 
-const storyConfig: Meta<typeof TopLocationsCard> = {
-    title: 'AI Agent/Onboarding/TopLocationsCard/TopLocationsCard',
-    component: TopLocationsCard,
+const storyConfig: Meta<typeof TopElementsCard> = {
+    title: 'AI Agent/Onboarding/TopElementsCard/TopElementsCard',
+    component: TopElementsCard,
 }
 
-type Story = StoryObj<typeof TopLocationsCard>
+type Story = StoryObj<typeof TopElementsCard>
 
 export const Default: Story = {
     args: {
-        title: 'Top Locations',
-        locations: [
+        title: 'Top Elements',
+        topElements: [
             {
                 id: '1',
                 title: 'New York',

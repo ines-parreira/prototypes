@@ -1,9 +1,9 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import TopLocationsCard from '../TopLocationsCard'
+import TopElementsCard from '../TopElementsCard'
 
-const locations = [
+const elements = [
     {
         id: '1',
         title: 'New York',
@@ -26,11 +26,11 @@ const locations = [
     },
 ]
 
-describe('TopLocationsCard', () => {
+describe('TopElementsCard', () => {
     it('renders', () => {
-        render(<TopLocationsCard title="Top Locations" locations={locations} />)
+        render(<TopElementsCard title="Top Elements" topElements={elements} />)
 
-        expect(screen.getByText('Top Locations')).toBeInTheDocument()
+        expect(screen.getByText('Top Elements')).toBeInTheDocument()
         expect(screen.getAllByText('New York').length).toBe(4)
     })
 })

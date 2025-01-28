@@ -1,4 +1,4 @@
-import React, {useState, useMemo, useEffect} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 
 import {ChannelsStep} from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
 import {KnowledgeStep} from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeStep'

@@ -1,8 +1,10 @@
-import {render, screen} from '@testing-library/react'
+import {QueryClientProvider} from '@tanstack/react-query'
+import {act, render, screen, waitFor} from '@testing-library/react'
 
 import {fromJS} from 'immutable'
 import React from 'react'
 
+import {appQueryClient} from 'api/queryClient'
 import {shopifyIntegration} from 'fixtures/integrations'
 import * as hooks from 'hooks/useAppSelector'
 
@@ -19,6 +21,8 @@ jest.mock(
 jest.spyOn(hooks, 'default').mockReturnValue(fromJS(shopifyIntegration))
 
 describe('KnowledgeStep', () => {
+    jest.useFakeTimers()
+
     const defaultProps = {
         currentStep: 1,
         totalSteps: 3,
@@ -28,16 +32,18 @@ describe('KnowledgeStep', () => {
 
     const renderWithProvider = (props = defaultProps) => {
         return render(
-            <OnboardingContext.Provider
-                value={
-                    {
-                        shopName: shopifyIntegration.meta.shop_name,
-                        setOnboardingData: jest.fn(),
-                    } as any
-                }
-            >
-                <KnowledgeStep {...props} />
-            </OnboardingContext.Provider>
+            <QueryClientProvider client={appQueryClient}>
+                <OnboardingContext.Provider
+                    value={
+                        {
+                            shopName: shopifyIntegration.meta.shop_name,
+                            setOnboardingData: jest.fn(),
+                        } as any
+                    }
+                >
+                    <KnowledgeStep {...props} />
+                </OnboardingContext.Provider>
+            </QueryClientProvider>
         )
     }
 
@@ -70,5 +76,14 @@ describe('KnowledgeStep', () => {
         renderWithProvider()
 
         expect(screen.getByText('Help center example')).toBeInTheDocument()
+    })
+
+    it('renders preview section', async () => {
+        renderWithProvider()
+        act(() => jest.runAllTimers())
+
+        await waitFor(() =>
+            expect(screen.getAllByText('Top Locations').length).toBe(2)
+        )
     })
 })

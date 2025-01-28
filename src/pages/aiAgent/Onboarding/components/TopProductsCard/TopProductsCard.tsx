@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React from 'react'
 
 import {
@@ -12,13 +13,14 @@ import css from './TopProductsCard.less'
 import {Product} from './types'
 
 type Props = {
+    className?: string
     title: string
     products: Product[]
 }
 
-const TopProductsCard = ({title, products}: Props) => {
+const TopProductsCard = ({className, title, products}: Props) => {
     return (
-        <Card className={css.topProductsContainer}>
+        <Card className={cn(css.topProductsContainer, className)}>
             <CardHeader>
                 <CardTitle>{title}</CardTitle>
             </CardHeader>

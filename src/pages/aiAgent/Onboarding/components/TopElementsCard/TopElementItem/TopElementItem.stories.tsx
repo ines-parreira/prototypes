@@ -1,17 +1,17 @@
 import type {Meta, StoryObj} from '@storybook/react'
 
-import TopLocationItem from './TopLocationItem'
+import TopElementsItem from './TopElementItem'
 
-const storyConfig: Meta<typeof TopLocationItem> = {
-    title: 'AI Agent/Onboarding/TopLocationsCard/TopLocationItem',
-    component: TopLocationItem,
+const storyConfig: Meta<typeof TopElementsItem> = {
+    title: 'AI Agent/Onboarding/TopElementsCard/TopElementsItem',
+    component: TopElementsItem,
 }
 
-type Story = StoryObj<typeof TopLocationItem>
+type Story = StoryObj<typeof TopElementsItem>
 
 export const Default: Story = {
     args: {
-        location: {
+        topElement: {
             id: '1',
             title: 'New York',
             percentage: 100,
@@ -21,7 +21,7 @@ export const Default: Story = {
 
 export const PercentageZero: Story = {
     args: {
-        location: {
+        topElement: {
             id: '1',
             title: 'New York',
             percentage: 0,
