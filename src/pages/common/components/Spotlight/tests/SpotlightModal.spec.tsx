@@ -284,15 +284,6 @@ describe('<SpotlightModal/>', () => {
         beforeEach(() => {
             searchTicketsWithHighlightsMock.mockClear()
         })
-        it('should not navigate to advanced search on Federated Search', () => {
-            const {queryByText} = renderWithRouter(
-                <WrappedSpotlightModal {...minProps} />
-            )
-
-            const advancedSearchButton = queryByText('Advanced Search')
-
-            expect(advancedSearchButton).not.toBeInTheDocument()
-        })
 
         it('should not navigate to advanced search on calls tab', () => {
             mockCurrentAccountHasProduct.mockReturnValue((() => true) as any)
@@ -315,6 +306,20 @@ describe('<SpotlightModal/>', () => {
 
             const ticketsTab = getTicketsTab()
             ticketsTab?.focus()
+            const advancedSearchButton = screen.getByText('Advanced Search')
+            userEvent.click(advancedSearchButton)
+
+            expect(history.push).toHaveBeenCalledWith({
+                pathname: TICKETS_ADVANCED_SEARCH_PATH,
+            })
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.GlobalSearchAdvancedButtonClick
+            )
+        })
+
+        it('should navigate to tickets advanced search on Federated Search', () => {
+            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+
             const advancedSearchButton = screen.getByText('Advanced Search')
             userEvent.click(advancedSearchButton)
 

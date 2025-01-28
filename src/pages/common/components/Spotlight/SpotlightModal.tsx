@@ -90,16 +90,18 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         showCallsTab,
     } = search
 
-    const hasAdvancedSearch =
-        searchItemsType !== ViewType.All &&
-        searchItemsType !== ViewType.CallList
+    const hasAdvancedSearch = searchItemsType !== ViewType.CallList
 
     const goToAdvancedSearch = useCallback(() => {
         onCloseModal()
 
         if (hasAdvancedSearch) {
+            const searchPathKey =
+                searchItemsType === ViewType.All
+                    ? ViewType.TicketList
+                    : searchItemsType
             const advancedSearchPathname =
-                viewToAdvancedSearchPath[searchItemsType]
+                viewToAdvancedSearchPath[searchPathKey]
 
             history.push({
                 pathname: advancedSearchPathname,
