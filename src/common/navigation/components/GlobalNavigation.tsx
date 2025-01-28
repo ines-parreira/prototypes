@@ -53,6 +53,10 @@ export default function GlobalNavigation() {
                         icon={navBarMenuIcon}
                         onClick={onMenuToggle}
                         tooltip={<NavBarButtonTooltip />}
+                        tooltipDelay={{
+                            show: 1500,
+                            hide: 0,
+                        }}
                     />
                     <Item
                         icon="home"

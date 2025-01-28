@@ -14,6 +14,10 @@ type CommonGlobalNavigationItemProps = {
     icon: string
     isActive?: boolean
     tooltip?: ReactNode
+    tooltipDelay?: {
+        show: number
+        hide: number
+    }
 }
 
 type GlobalNavigationItemLinkProps = CommonGlobalNavigationItemProps & {
@@ -33,6 +37,7 @@ export default function GlobalNavigationItem({
     icon,
     isActive,
     tooltip,
+    tooltipDelay,
     ...props
 }: GlobalNavigationItemProps) {
     const id = useId()
@@ -53,7 +58,10 @@ export default function GlobalNavigationItem({
                     {children}
                 </Link>
                 {tooltip && (
-                    <GlobalNavigationItemTooltip targetId={scopedId}>
+                    <GlobalNavigationItemTooltip
+                        targetId={scopedId}
+                        delay={tooltipDelay}
+                    >
                         {tooltip}
                     </GlobalNavigationItemTooltip>
                 )}
@@ -87,6 +95,10 @@ export default function GlobalNavigationItem({
 type GlobalNavigationItemTooltipProps = {
     children: ReactNode
     targetId: string
+    delay?: {
+        show: number
+        hide: number
+    }
 }
 
 const tooltipDelay = {
@@ -97,12 +109,13 @@ const tooltipDelay = {
 function GlobalNavigationItemTooltip({
     children,
     targetId,
+    delay,
 }: GlobalNavigationItemTooltipProps) {
     return (
         <Tooltip
             target={targetId}
             boundariesElement="viewport"
-            delay={tooltipDelay}
+            delay={delay ?? tooltipDelay}
             offset="0, 8"
             placement="right"
         >
