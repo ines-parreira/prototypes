@@ -1,7 +1,9 @@
-import {fireEvent, render, waitFor} from '@testing-library/react'
+import {fireEvent, render, waitFor, act} from '@testing-library/react'
 import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {SpotlightContext} from 'providers/ui/SpotlightContext'
+
 import * as platform from 'utils/platform'
 
 import {GlobalNavigationSpotlight} from '../GlobalNavigationSpotlight'
@@ -42,5 +44,60 @@ describe('<GlobalNavigationSpotlight />', () => {
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.GlobalSearchOpenButtonClick
         )
+    })
+
+    it('should show tooltip on focus when spotlight is closed', () => {
+        const {getByRole} = render(
+            <SpotlightContext.Provider
+                value={{isOpen: false, setIsOpen: jest.fn()}}
+            >
+                <GlobalNavigationSpotlight />
+            </SpotlightContext.Provider>
+        )
+        const button = getByRole('button')
+
+        fireEvent.focus(button)
+        expect(getByRole('tooltip')).toBeInTheDocument()
+    })
+
+    it('should not show tooltip on focus when spotlight is open', () => {
+        const {getByRole, queryByRole} = render(
+            <SpotlightContext.Provider
+                value={{isOpen: true, setIsOpen: jest.fn()}}
+            >
+                <GlobalNavigationSpotlight />
+            </SpotlightContext.Provider>
+        )
+        const button = getByRole('button')
+
+        fireEvent.focus(button)
+        expect(queryByRole('tooltip')).not.toBeInTheDocument()
+    })
+
+    it('should restore default tooltip triggers after spotlight closes', () => {
+        jest.useFakeTimers()
+        const setIsOpen = jest.fn()
+        const {getByRole, rerender} = render(
+            <SpotlightContext.Provider value={{isOpen: true, setIsOpen}}>
+                <GlobalNavigationSpotlight />
+            </SpotlightContext.Provider>
+        )
+
+        // Re-render with spotlight closed
+        rerender(
+            <SpotlightContext.Provider value={{isOpen: false, setIsOpen}}>
+                <GlobalNavigationSpotlight />
+            </SpotlightContext.Provider>
+        )
+
+        act(() => {
+            jest.advanceTimersByTime(500)
+        })
+
+        const button = getByRole('button')
+        fireEvent.focus(button)
+        expect(getByRole('tooltip')).toBeInTheDocument()
+
+        jest.useRealTimers()
     })
 })

@@ -9,6 +9,8 @@ import useId from 'hooks/useId'
 
 import css from './GlobalNavigationItem.less'
 
+export type GlobalNavigationItemTooltipTrigger = ('hover' | 'focus')[]
+
 type CommonGlobalNavigationItemProps = {
     children?: ReactNode
     icon: string
@@ -18,6 +20,7 @@ type CommonGlobalNavigationItemProps = {
         show: number
         hide: number
     }
+    tooltipTrigger?: GlobalNavigationItemTooltipTrigger
 }
 
 type GlobalNavigationItemLinkProps = CommonGlobalNavigationItemProps & {
@@ -38,6 +41,7 @@ export default function GlobalNavigationItem({
     isActive,
     tooltip,
     tooltipDelay,
+    tooltipTrigger = ['hover', 'focus'],
     ...props
 }: GlobalNavigationItemProps) {
     const id = useId()
@@ -61,6 +65,7 @@ export default function GlobalNavigationItem({
                     <GlobalNavigationItemTooltip
                         targetId={scopedId}
                         delay={tooltipDelay}
+                        trigger={tooltipTrigger}
                     >
                         {tooltip}
                     </GlobalNavigationItemTooltip>
@@ -84,7 +89,11 @@ export default function GlobalNavigationItem({
                 {children}
             </button>
             {tooltip && (
-                <GlobalNavigationItemTooltip targetId={scopedId}>
+                <GlobalNavigationItemTooltip
+                    targetId={scopedId}
+                    delay={tooltipDelay}
+                    trigger={tooltipTrigger}
+                >
                     {tooltip}
                 </GlobalNavigationItemTooltip>
             )}
@@ -99,6 +108,7 @@ type GlobalNavigationItemTooltipProps = {
         show: number
         hide: number
     }
+    trigger?: GlobalNavigationItemTooltipTrigger
 }
 
 const tooltipDelay = {
@@ -110,14 +120,19 @@ function GlobalNavigationItemTooltip({
     children,
     targetId,
     delay,
+    trigger,
 }: GlobalNavigationItemTooltipProps) {
     return (
         <Tooltip
+            // Required to force the tooltip to correctly account for changes in
+            // its trigger props array. This is a reactstrap issue.
+            key={`${targetId}-${trigger?.join(',')}`}
             target={targetId}
             boundariesElement="viewport"
             delay={delay ?? tooltipDelay}
             offset="0, 8"
             placement="right"
+            trigger={trigger}
         >
             <div className={navbarCss.tooltipContent}>{children}</div>
         </Tooltip>
