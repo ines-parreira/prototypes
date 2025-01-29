@@ -2,18 +2,12 @@ import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
-import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
+import {DownloadDataButton} from 'pages/stats/support-performance/components/DownloadDataButton'
 
-import {formatDates} from 'pages/stats/utils'
-import {saveReport} from 'services/reporting/ticketFieldsReportingService'
+import {useCustomFieldsReportData} from 'services/reporting/ticketFieldsReportingService'
 import {getCustomFieldsOrder} from 'state/ui/stats/ticketInsightsSlice'
-import {getFilterDateRange} from 'utils/reporting'
-
-const DOWNLOAD_BUTTON_TITLE = 'Download Ticket Fields Data'
+import {saveZippedFiles} from 'utils/file'
 
 export const DownloadTicketFieldsDataButton = ({
     selectedCustomFieldId,
@@ -22,39 +16,25 @@ export const DownloadTicketFieldsDataButton = ({
 }) => {
     const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
     const order = useAppSelector(getCustomFieldsOrder)
-    const dateTimes = getPeriodDateTimes(
-        getFilterDateRange(cleanStatsFilters.period),
-        granularity
+
+    const {files, fileName, isLoading} = useCustomFieldsReportData(
+        cleanStatsFilters,
+        userTimezone,
+        granularity,
+        order,
+        String(selectedCustomFieldId)
     )
-    const {data: timeSeriesData, isLoading} =
-        useCustomFieldsTicketCountTimeSeries(
-            cleanStatsFilters,
-            userTimezone,
-            granularity,
-            String(selectedCustomFieldId)
-        )
 
     return (
-        <Button
-            intent="secondary"
-            fillStyle="ghost"
+        <DownloadDataButton
             onClick={async () => {
                 logEvent(SegmentEvent.StatDownloadClicked, {
                     name: 'all-metrics',
                 })
 
-                await saveReport(
-                    timeSeriesData,
-                    dateTimes.map((item) => formatDates(granularity, item)),
-                    cleanStatsFilters.period,
-                    order.direction
-                )
+                await saveZippedFiles(files, fileName)
             }}
-            title={DOWNLOAD_BUTTON_TITLE}
-            isDisabled={isLoading}
-            leadingIcon="file_download"
-        >
-            {DOWNLOAD_DATA_BUTTON_LABEL}
-        </Button>
+            disabled={isLoading}
+        />
     )
 }

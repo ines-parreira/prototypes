@@ -3,6 +3,7 @@ import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
 import {useDistributionTrendReportData} from 'hooks/reporting/common/useDistributionTrendReportData'
+import {useTables} from 'hooks/reporting/common/useTableReportData'
 
 import {
     useTimeSeriesPerDimensionReportData,
@@ -25,6 +26,7 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import {TicketFieldsChart} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 import {
     createTimeSeriesReport,
     createTrendReport,
@@ -43,6 +45,8 @@ const useDistributionTrendReportDataMock = assumeMock(
 const useTimeSeriesPerDimensionReportDataMock = assumeMock(
     useTimeSeriesPerDimensionReportData
 )
+jest.mock('hooks/reporting/common/useTableReportData')
+const useTablesMock = assumeMock(useTables)
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
 const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
@@ -70,6 +74,11 @@ describe('useDownloadCustomReportData', () => {
         type: CustomReportChildType.Chart,
         config_id: distributionChartId,
     }
+    const tableChartId = TicketFieldsChart.TicketDistributionTable
+    const tableChart: CustomReportChartSchema = {
+        type: CustomReportChildType.Chart,
+        config_id: tableChartId,
+    }
     const unknownChartId = 'someChartId'
     const unknownChart: CustomReportChartSchema = {
         type: CustomReportChildType.Chart,
@@ -82,6 +91,7 @@ describe('useDownloadCustomReportData', () => {
             timeSeriesChart,
             timeSeriesPerDimensionChart,
             distributionChart,
+            tableChart,
             unknownChart,
         ],
     }
@@ -119,6 +129,10 @@ describe('useDownloadCustomReportData', () => {
         })
         useDistributionTrendReportDataMock.mockReturnValue({
             data: [],
+            isFetching: false,
+        })
+        useTablesMock.mockReturnValue({
+            files: {},
             isFetching: false,
         })
     })

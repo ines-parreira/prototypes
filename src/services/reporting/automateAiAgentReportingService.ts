@@ -11,7 +11,7 @@ import {
 } from 'services/reporting/agentsPerformanceReportingService'
 import {getPerformanceFeatureData} from 'services/reporting/automateOverviewReportingService'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
-import {getData as getTicketInsightsData} from 'services/reporting/ticketFieldsReportingService'
+import {formatData as getTicketInsightsData} from 'services/reporting/ticketFieldsReportingService'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import {createCsv, saveZippedFiles} from 'utils/file'
 

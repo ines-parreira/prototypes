@@ -3,6 +3,7 @@ import {renderHook} from '@testing-library/react-hooks'
 import {TicketChannel} from 'business/types/ticket'
 
 import {
+    fetchCustomFieldsTicketCountTimeSeries,
     fetchMessagesSentTimeSeries,
     fetchTicketsClosedTimeSeries,
     fetchTicketsCreatedTimeSeries,
@@ -19,6 +20,7 @@ import {
 } from 'hooks/reporting/timeSeries'
 import {
     fetchTimeSeries,
+    fetchTimeSeriesPerDimension,
     useTimeSeries,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
@@ -41,6 +43,7 @@ jest.mock('hooks/reporting/useTimeSeries')
 const useTimeSeriesMock = assumeMock(useTimeSeries)
 const fetchTimeSeriesMock = assumeMock(fetchTimeSeries)
 const useTimeSeriesPerDimensionMock = assumeMock(useTimeSeriesPerDimension)
+const fetchTimeSeriesPerDimensionMock = assumeMock(fetchTimeSeriesPerDimension)
 
 describe('time series', () => {
     const periodStart = '2021-05-29T00:00:00.000'
@@ -195,6 +198,36 @@ describe('time series', () => {
                     customFieldId
                 ),
                 true
+            )
+        })
+
+        it('should render expected query', () => {
+            const customFieldId = '1'
+            renderHook(
+                ({statsFilters, timezone, granularity, customFieldId}) =>
+                    fetchCustomFieldsTicketCountTimeSeries(
+                        statsFilters,
+                        timezone,
+                        granularity,
+                        customFieldId
+                    ),
+                {
+                    initialProps: {
+                        statsFilters,
+                        timezone,
+                        granularity,
+                        customFieldId,
+                    },
+                }
+            )
+
+            expect(fetchTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
+                customFieldsTicketCountTimeSeriesQueryFactory(
+                    statsFilters,
+                    timezone,
+                    granularity,
+                    customFieldId
+                )
             )
         })
     })

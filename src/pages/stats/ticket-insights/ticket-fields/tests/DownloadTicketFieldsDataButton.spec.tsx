@@ -1,4 +1,3 @@
-import {UseQueryResult} from '@tanstack/react-query'
 import {render, screen, fireEvent, act} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
@@ -6,15 +5,12 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {OrderDirection} from 'models/api/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 
 import {DownloadTicketFieldsDataButton} from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
-import {formatDates} from 'pages/stats/utils'
-import {saveReport} from 'services/reporting/ticketFieldsReportingService'
+import {useCustomFieldsReportData} from 'services/reporting/ticketFieldsReportingService'
 import {initialState} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
@@ -22,19 +18,19 @@ import {
     ticketInsightsSlice,
     getCustomFieldsOrder,
 } from 'state/ui/stats/ticketInsightsSlice'
+import {saveZippedFiles} from 'utils/file'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('services/reporting/ticketFieldsReportingService')
-jest.mock('hooks/reporting/timeSeries')
-const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
-    useCustomFieldsTicketCountTimeSeries
-)
+const useCustomFieldsReportDataMock = assumeMock(useCustomFieldsReportData)
+
 jest.mock('state/ui/stats/ticketInsightsSlice')
 const getCustomFieldOrderMock = assumeMock(getCustomFieldsOrder)
 
-const saveReportMock = assumeMock(saveReport)
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
+jest.mock('utils/file')
+const saveZippedFilesMock = assumeMock(saveZippedFiles)
 
 const mockStore = configureMockStore([thunk])
 
@@ -43,14 +39,16 @@ describe('DownloadTicketFieldsDataButton', () => {
         start_datetime: '2021-02-03T00:00:00.000Z',
         end_datetime: '2021-02-03T23:59:59.999Z',
     }
+    const userTimezone = 'UTC'
     const selectedCustomFieldId = 2
     const granularity = ReportingGranularity.Day
+    const statsFilters = {
+        period,
+    }
     const defaultState = {
         stats: {
             ...initialState,
-            filters: {
-                period,
-            },
+            filters: statsFilters,
         },
         ui: {
             [ticketInsightsSlice.name]: {
@@ -60,7 +58,6 @@ describe('DownloadTicketFieldsDataButton', () => {
                 filters: uiFiltersInitialState,
             },
         },
-        period,
     } as unknown as RootState
 
     const store = mockStore(defaultState)
@@ -69,23 +66,14 @@ describe('DownloadTicketFieldsDataButton', () => {
         direction: OrderDirection.Desc,
         column: 'label' as const,
     }
-    const dateTimes = ['2021-02-03T00:00:00.000Z']
-    const data: Record<string, TimeSeriesDataItem[][]> = {
-        'Level1::Level2': [
-            [
-                {
-                    dateTime: '2021-02-03T00:00:00.000Z',
-                    value: 10,
-                },
-            ],
-        ],
-    }
+    const fileName = 'someFileName'
 
     beforeEach(() => {
-        useCustomFieldsTicketCountTimeSeriesMock.mockReturnValue({
-            data,
+        useCustomFieldsReportDataMock.mockReturnValue({
+            files: {},
+            fileName,
             isLoading: false,
-        } as UseQueryResult<Record<string, TimeSeriesDataItem[][]>>)
+        })
 
         getCustomFieldOrderMock.mockReturnValue(defaultOrder)
     })
@@ -102,7 +90,7 @@ describe('DownloadTicketFieldsDataButton', () => {
         expect(screen.getByRole('button')).toBeInTheDocument()
     })
 
-    it('should call saveReport on click', () => {
+    it('should call saveZippedFiles on click', () => {
         render(
             <Provider store={store}>
                 <DownloadTicketFieldsDataButton
@@ -112,19 +100,22 @@ describe('DownloadTicketFieldsDataButton', () => {
         )
         fireEvent.click(screen.getByRole('button'))
 
-        expect(saveReportMock).toHaveBeenCalledWith(
-            data,
-            dateTimes.map((date) => formatDates(granularity, date)),
-            period,
-            OrderDirection.Desc
+        expect(useCustomFieldsReportDataMock).toHaveBeenCalledWith(
+            statsFilters,
+            userTimezone,
+            granularity,
+            defaultOrder,
+            String(selectedCustomFieldId)
         )
+        expect(saveZippedFilesMock).toHaveBeenCalledWith({}, fileName)
     })
 
     it('should be disabled', () => {
-        useCustomFieldsTicketCountTimeSeriesMock.mockReturnValue({
-            data,
+        useCustomFieldsReportDataMock.mockReturnValue({
+            files: {},
+            fileName,
             isLoading: true,
-        } as any)
+        })
         render(
             <Provider store={store}>
                 <DownloadTicketFieldsDataButton
@@ -154,6 +145,6 @@ describe('DownloadTicketFieldsDataButton', () => {
                 name: 'all-metrics',
             })
         )
-        expect(saveReportMock).toHaveBeenCalled()
+        expect(useCustomFieldsReportDataMock).toHaveBeenCalled()
     })
 })

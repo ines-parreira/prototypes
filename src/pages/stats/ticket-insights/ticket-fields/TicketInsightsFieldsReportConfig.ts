@@ -1,5 +1,9 @@
 import {FilterComponentKey, FilterKey, StaticFilter} from 'models/stat/types'
-import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
+import {
+    ChartType,
+    DataExportFormat,
+    ReportConfig,
+} from 'pages/stats/custom-reports/types'
 import {CustomFieldsTicketCountBreakdownTableChart} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
 import {TicketDistributionChart} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
 import {
@@ -7,6 +11,7 @@ import {
     TicketInsightsFieldsMetricConfig,
 } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
 import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
+import {fetchCustomFieldsReportData} from 'services/reporting/ticketFieldsReportingService'
 
 export const TICKET_INSIGHTS_PAGE_TITLE = 'Ticket Fields'
 
@@ -47,7 +52,12 @@ export const TicketFieldsReportConfig: ReportConfig<TicketFieldsChart> = {
                 TicketInsightsFieldsMetricConfig[
                     TicketInsightsFieldsMetric.TicketDistribution
                 ].hint.title,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Table,
+                    fetch: fetchCustomFieldsReportData,
+                },
+            ],
             chartType: ChartType.Graph,
         },
         [TicketFieldsChart.TicketInsightsFieldTrend]: {
@@ -59,7 +69,12 @@ export const TicketFieldsReportConfig: ReportConfig<TicketFieldsChart> = {
                 TicketInsightsFieldsMetricConfig[
                     TicketInsightsFieldsMetric.TicketInsightsFieldTrend
                 ].hint.title,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Table,
+                    fetch: fetchCustomFieldsReportData,
+                },
+            ],
             chartType: ChartType.Graph,
         },
         [TicketFieldsChart.CustomFieldsTicketCountBreakdownTableChart]: {
@@ -71,7 +86,12 @@ export const TicketFieldsReportConfig: ReportConfig<TicketFieldsChart> = {
                 TicketInsightsFieldsMetricConfig[
                     TicketInsightsFieldsMetric.CustomFieldsTicketCountBreakdown
                 ].hint.title,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Table,
+                    fetch: fetchCustomFieldsReportData,
+                },
+            ],
             chartType: ChartType.Table,
         },
     },

@@ -1,22 +1,50 @@
 import _flatten from 'lodash/flatten'
+
 import _orderBy from 'lodash/orderBy'
-import moment from 'moment/moment'
 
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
+import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import {
+    fetchCustomFieldsTicketCountTimeSeries,
+    useCustomFieldsTicketCountTimeSeries,
+} from 'hooks/reporting/timeSeries'
+import {
+    getPeriodDateTimes,
+    TimeSeriesDataItem,
+} from 'hooks/reporting/useTimeSeries'
+
 import {OrderDirection} from 'models/api/types'
-import {Period} from 'models/stat/types'
-import {createCsv, saveZippedFiles} from 'utils/file'
+import {ReportingGranularity} from 'models/reporting/types'
+import {Period, StatsFilters} from 'models/stat/types'
+import {ReportFetch} from 'pages/stats/custom-reports/types'
+import {formatDates} from 'pages/stats/utils'
+import {TicketInsightsOrder} from 'state/ui/stats/ticketInsightsSlice'
+import {createCsv} from 'utils/file'
+import {getFilterDateRange} from 'utils/reporting'
 
-import {DATE_TIME_FORMAT} from './constants'
-
+export const TICKET_FIELDS_DOWNLOAD_FILE_NAME = 'ticket-fields'
+export const LEVEL_LABELS = [
+    'level 1',
+    'level 2',
+    'level 3',
+    'level 4',
+    'level 5',
+]
 const MAX_LEVEL_DEPTH = 5
 
-export const getData = (
+const getFormattedDateTimes = (
+    period: Period,
+    granularity: ReportingGranularity
+) =>
+    getPeriodDateTimes(getFilterDateRange(period), granularity).map((item) =>
+        formatDates(granularity, item)
+    )
+
+export const formatData = (
     data: Record<string, TimeSeriesDataItem[][]> | undefined,
     dateTimes: string[],
     order?: OrderDirection
 ) => [
-    ['level 1', 'level 2', 'level 3', 'level 4', 'level 5', ...dateTimes],
+    [...LEVEL_LABELS, ...dateTimes],
     ..._orderBy(
         Object.entries(data || {}).map(([key, timeSeries]) => {
             const levels = String(key).split('::')
@@ -35,24 +63,82 @@ export const getData = (
     ),
 ]
 
-export const saveReport = async (
-    data: Record<string, TimeSeriesDataItem[][]> | undefined,
-    dateTimes: string[],
-    period?: Period,
-    order?: OrderDirection
+export const useCustomFieldsReportData = (
+    statsFilters: StatsFilters,
+    userTimezone: string,
+    granularity: ReportingGranularity,
+    customFieldsOrder: TicketInsightsOrder,
+    selectedCustomFieldId: string
 ) => {
-    const ticketFieldsData = getData(data, dateTimes, order)
+    const {data: timeSeriesData, isLoading} =
+        useCustomFieldsTicketCountTimeSeries(
+            statsFilters,
+            userTimezone,
+            granularity,
+            String(selectedCustomFieldId)
+        )
+    const dateTimes = getFormattedDateTimes(statsFilters.period, granularity)
 
-    const export_datetime = moment().format(DATE_TIME_FORMAT)
-    const startDate = moment(period?.start_datetime).format(DATE_TIME_FORMAT)
-    const endDate = moment(period?.end_datetime).format(DATE_TIME_FORMAT)
-    const periodPrefix = `${startDate}_${endDate}`
-
-    return saveZippedFiles(
-        {
-            [`${periodPrefix}-ticket-fields-${export_datetime}.csv`]:
-                createCsv(ticketFieldsData),
-        },
-        `${periodPrefix}-ticket-fields-${export_datetime}`
+    const ticketFieldsData = formatData(
+        timeSeriesData,
+        dateTimes,
+        customFieldsOrder.direction
     )
+    const fileName = getCsvFileNameWithDates(
+        statsFilters.period,
+        TICKET_FIELDS_DOWNLOAD_FILE_NAME
+    )
+
+    return {
+        files: {
+            [fileName]: createCsv(ticketFieldsData),
+        },
+        fileName,
+        isLoading,
+    }
+}
+
+export const fetchCustomFieldsReportData: ReportFetch = async (
+    statsFilters: StatsFilters,
+    userTimezone: string,
+    granularity: ReportingGranularity,
+    context: {
+        customFieldsOrder: TicketInsightsOrder
+        selectedCustomFieldId: string | null
+    }
+): Promise<{
+    isLoading: boolean
+    fileName: string
+    files: Record<string, string>
+}> => {
+    const dateTimes = getFormattedDateTimes(statsFilters.period, granularity)
+    const fileName = getCsvFileNameWithDates(
+        statsFilters.period,
+        TICKET_FIELDS_DOWNLOAD_FILE_NAME
+    )
+
+    if (context.selectedCustomFieldId === null) {
+        return Promise.resolve({isLoading: false, fileName, files: {}})
+    }
+
+    return fetchCustomFieldsTicketCountTimeSeries(
+        statsFilters,
+        userTimezone,
+        granularity,
+        context.selectedCustomFieldId
+    )
+        .then((result) => ({
+            isLoading: false,
+            fileName,
+            files: {
+                [fileName]: createCsv(
+                    formatData(
+                        result,
+                        dateTimes,
+                        context.customFieldsOrder.direction
+                    )
+                ),
+            },
+        }))
+        .catch(() => ({isLoading: false, fileName, files: {}}))
 }

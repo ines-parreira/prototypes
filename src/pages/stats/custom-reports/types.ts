@@ -6,7 +6,8 @@ import {
     TimeSeriesFetch,
     TimeSeriesPerDimensionFetch,
 } from 'hooks/reporting/useTimeSeries'
-import {StaticFilter} from 'models/stat/types'
+import {ReportingGranularity} from 'models/reporting/types'
+import {StaticFilter, StatsFilters} from 'models/stat/types'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
 import {HelpCenterChart} from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
 import {SatisfactionChart} from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
@@ -20,6 +21,7 @@ import {TicketInsightsTagsChart} from 'pages/stats/ticket-insights/tags/TagsRepo
 import {TicketFieldsChart} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 import {VoiceAgentsChart} from 'pages/stats/voice/pages/VoiceAgentsReportConfig'
 import {VoiceOverviewChart} from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
+import {TicketInsightsOrder} from 'state/ui/stats/ticketInsightsSlice'
 
 type FilterSettings = {
     optional: OptionalFilter[]
@@ -78,6 +80,7 @@ export enum DataExportFormat {
     TimeSeries = 'time-series',
     TimeSeriesPerDimension = 'time-series-per-dimension',
     Distribution = 'distribution',
+    Table = 'table',
 }
 
 export type DistributionDataExportFetch = {
@@ -89,8 +92,23 @@ export type DistributionDataExportFetch = {
     }
 }
 
+export type ReportFetch = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    context: {
+        customFieldsOrder: TicketInsightsOrder
+        selectedCustomFieldId: string | null
+    }
+) => Promise<{
+    isLoading: boolean
+    fileName: string
+    files: Record<string, string>
+}>
+
 type DataExportFetch =
     | {type: DataExportFormat.Trend; fetch: MetricTrendFetch; title?: string}
+    | {type: DataExportFormat.Table; fetch: ReportFetch}
     | {
           type: DataExportFormat.TimeSeries
           fetch: TimeSeriesFetch

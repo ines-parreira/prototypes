@@ -7,7 +7,7 @@ import {getData as getPerformanceData} from 'services/reporting/agentsPerformanc
 import {saveReport} from 'services/reporting/automateAiAgentReportingService'
 import {getPerformanceFeatureData} from 'services/reporting/automateOverviewReportingService'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
-import {getData as getTicketInsightsData} from 'services/reporting/ticketFieldsReportingService'
+import {formatData as getTicketInsightsData} from 'services/reporting/ticketFieldsReportingService'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import {saveZippedFiles} from 'utils/file'
 import {assumeMock} from 'utils/testing'
@@ -24,7 +24,7 @@ jest.mock('services/reporting/agentsPerformanceReportingService', () => ({
 const getPerformanceDataMock = assumeMock(getPerformanceData)
 
 jest.mock('services/reporting/ticketFieldsReportingService', () => ({
-    getData: jest.fn(() => 'ticket-insights-data'),
+    formatData: jest.fn(() => 'ticket-insights-data'),
 }))
 const getTicketInsightsDataMock = assumeMock(getTicketInsightsData)
 

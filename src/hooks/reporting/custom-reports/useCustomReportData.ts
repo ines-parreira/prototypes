@@ -2,6 +2,7 @@ import {useMemo} from 'react'
 
 import {useDistributionTrendReportData} from 'hooks/reporting/common/useDistributionTrendReportData'
 
+import {useTables} from 'hooks/reporting/common/useTableReportData'
 import {
     useTimeSeriesPerDimensionReportData,
     useTimeSeriesReportData,
@@ -21,9 +22,11 @@ import {
     CustomReportChildType,
     CustomReportSchema,
     DataExportFormat,
+    ReportFetch,
 } from 'pages/stats/custom-reports/types'
 import {ServiceLevelAgreementsReportConfig} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
 import {SupportPerformanceOverviewReportConfig} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import {TicketFieldsReportConfig} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 import {createTimeSeriesPerDimensionReport} from 'services/reporting/SLAsReportingService'
 
 import {
@@ -34,6 +37,7 @@ import {
 const chartsLookupTable: Record<string, ChartConfig | undefined> = {
     ...SupportPerformanceOverviewReportConfig.charts,
     ...ServiceLevelAgreementsReportConfig.charts,
+    ...TicketFieldsReportConfig.charts,
 }
 
 type Queries = {
@@ -45,6 +49,7 @@ type Queries = {
         dimensions: string[]
     }[]
     trends: {fetchTrend: MetricTrendFetch; title: string}[]
+    tables: {fetchTable: ReportFetch; title: string}[]
     distributions:
         | {
               fetchCurrentDistribution: MetricPerDimensionFetch
@@ -89,6 +94,12 @@ const reduceReport = (acc: Queries, child: CustomReportChild): Queries => {
                     title: String(config.label),
                 }
             }
+            if (producer.type === DataExportFormat.Table) {
+                acc.tables.push({
+                    fetchTable: producer.fetch,
+                    title: String(config.label),
+                })
+            }
         })
     }
     if (
@@ -108,6 +119,7 @@ const getQueryGroupsFromCustomReport = (
         timeSeriesPerDimension: [],
         trends: [],
         distributions: undefined,
+        tables: [],
     })
 }
 
@@ -163,12 +175,21 @@ export const useCustomReportData = (customReport: CustomReportSchema) => {
         distributions.data,
         `${getCsvFileNameWithDates(cleanStatsFilters.period, `${queryGroups.distributions?.title} - ${DISTRIBUTIONS_FILE_SUFFIX}`)}`
     )
-
+    const tables = useTables(
+        cleanStatsFilters,
+        userTimezone,
+        granularity,
+        queryGroups.tables
+    )
     const loading = useMemo(() => {
-        return [trends, timeSeries, distributions, timeSeriesPerDimension].some(
-            (metric) => metric.isFetching
-        )
-    }, [distributions, timeSeries, timeSeriesPerDimension, trends])
+        return [
+            trends,
+            timeSeries,
+            distributions,
+            timeSeriesPerDimension,
+            tables,
+        ].some((metric) => metric.isFetching)
+    }, [distributions, tables, timeSeries, timeSeriesPerDimension, trends])
 
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
@@ -181,12 +202,14 @@ export const useCustomReportData = (customReport: CustomReportSchema) => {
             ...timeSeriesReport.files,
             ...timeSeriesPerDimensionReports.files,
             ...distributionsReport.files,
+            ...tables.files,
         }),
         [
             distributionsReport.files,
             timeSeriesPerDimensionReports.files,
             timeSeriesReport.files,
             trendsReport.files,
+            tables.files,
         ]
     )
 

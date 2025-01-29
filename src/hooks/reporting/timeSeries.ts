@@ -1,5 +1,6 @@
 import {
     fetchTimeSeries,
+    fetchTimeSeriesPerDimension,
     useTimeSeries,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
@@ -113,6 +114,23 @@ export const useCustomFieldsTicketCountTimeSeries = (
         enabled
     )
 }
+
+export const fetchCustomFieldsTicketCountTimeSeries = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    customFieldId: string,
+    sorting?: OrderDirection
+) =>
+    fetchTimeSeriesPerDimension(
+        customFieldsTicketCountTimeSeriesQueryFactory(
+            filters,
+            timezone,
+            granularity,
+            customFieldId,
+            sorting
+        )
+    )
 
 export const useTagsTicketCountTimeSeries = getTimeSeriesPerDimensionHook(
     tagsTicketCountTimeSeriesFactory
