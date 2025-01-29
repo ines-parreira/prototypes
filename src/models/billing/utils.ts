@@ -80,11 +80,11 @@ export function getFormattedAmount(amountInCents: number) {
     return amountInCents / 100
 }
 
-export const getCheapestPrice = (plans?: Plan[], interval?: PlanInterval) =>
+export const getCheapestPrice = (plans?: Plan[], cadence?: PlanInterval) =>
     !!plans
         ? _minBy(
               plans.filter(
-                  (plan) => plan.interval === interval && plan.amount !== 0
+                  (plan) => plan.cadence === cadence && plan.amount !== 0
               ),
               (plan) => plan.amount
           )

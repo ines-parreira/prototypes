@@ -20,11 +20,6 @@ export const SELECTED_PRODUCTS_SESSION_STORAGE_KEY =
 export const ACTIVATE_PAYMENT_WITH_SHOPIFY_URL =
     '/integrations/shopify/billing/activate/'
 
-export const INTERVAL = {
-    Month: 'month',
-    Year: 'year',
-}
-
 export const PRICING_DETAILS_URL = 'https://www.gorgias.com/pricing'
 
 export const DATE_FORMAT = 'LL'

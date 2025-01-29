@@ -18,7 +18,6 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
 import {
     ENTERPRISE_PRICE_ID,
-    INTERVAL,
     PRODUCT_INFO,
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
 } from '../../constants'
@@ -75,7 +74,7 @@ const ProductPlanSelection = ({
 
     const isStarterHelpdeskPlanDisabled = useCallback(
         (plan) => {
-            if (isStarterTier(plan) && interval === INTERVAL.Year) {
+            if (isStarterTier(plan) && interval === PlanInterval.Year) {
                 return {
                     isDisabled: true,
                     tooltipText:

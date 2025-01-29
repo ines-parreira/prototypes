@@ -22,12 +22,12 @@ describe('CounterText', () => {
 
     it('should render the regular price text', async () => {
         const type = ProductType.Automation
-        const interval = PlanInterval.Year
+        const cadence = PlanInterval.Year
 
         const props = {
             plan: basicMonthlyAutomationPlan,
             type: type,
-            interval: interval,
+            interval: cadence,
         }
 
         const {getByText} = render(<CounterText {...props} />)
@@ -36,7 +36,7 @@ describe('CounterText', () => {
             expect(
                 getByText(PRODUCT_INFO[type].counter, {exact: false})
             ).toBeInTheDocument()
-            expect(getByText(interval, {exact: false})).toBeInTheDocument()
+            expect(getByText(cadence, {exact: false})).toBeInTheDocument()
         })
     })
 })

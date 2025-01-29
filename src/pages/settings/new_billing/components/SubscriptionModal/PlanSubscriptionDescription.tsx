@@ -47,7 +47,7 @@ const PlanSubscriptionDescription = ({
     const isPaymentEnabled = !!useIsPaymentEnabled()
     const [isTermsChecked, setIsTermsChecked] = useState(false)
     const filteredPlans = useMemo(
-        () => availablePlans.filter((plan) => plan.interval === interval),
+        () => availablePlans.filter((plan) => plan.cadence === interval),
         [availablePlans, interval]
     )
 

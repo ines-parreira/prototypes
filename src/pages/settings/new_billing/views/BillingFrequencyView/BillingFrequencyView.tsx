@@ -75,7 +75,7 @@ const BillingFrequencyView = ({
                     ...prev[ProductType.Helpdesk],
                     plan: getCorrespondingPlanAtInterval({
                         availablePlans: helpdeskAvailablePlans,
-                        interval,
+                        interval: interval,
                         currentPlan: currentHelpdeskPlan,
                     }),
                 },
@@ -83,7 +83,7 @@ const BillingFrequencyView = ({
                     ...prev[ProductType.Automation],
                     plan: getCorrespondingPlanAtInterval({
                         availablePlans: automateAvailablePlans,
-                        interval,
+                        interval: interval,
                         currentPlan: currentAutomatePlan,
                     }),
                 },
@@ -91,7 +91,7 @@ const BillingFrequencyView = ({
                     ...prev[ProductType.Voice],
                     plan: getCorrespondingPlanAtInterval({
                         availablePlans: voiceAvailablePlans ?? [],
-                        interval,
+                        interval: interval,
                         currentPlan: currentVoicePlan,
                     }),
                 },
@@ -99,7 +99,7 @@ const BillingFrequencyView = ({
                     ...prev[ProductType.SMS],
                     plan: getCorrespondingPlanAtInterval({
                         availablePlans: smsAvailablePlans ?? [],
-                        interval,
+                        interval: interval,
                         currentPlan: currentSmsPlan,
                     }),
                 },
@@ -107,7 +107,7 @@ const BillingFrequencyView = ({
                     ...prev[ProductType.Convert],
                     plan: getCorrespondingPlanAtInterval({
                         availablePlans: convertAvailablePlans ?? [],
-                        interval,
+                        interval: interval,
                         currentPlan: currentConvertPlan,
                     }),
                 },

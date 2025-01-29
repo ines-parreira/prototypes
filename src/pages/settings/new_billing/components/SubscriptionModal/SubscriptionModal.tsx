@@ -65,7 +65,7 @@ const SubscriptionModal = ({
     const currentPriceIds = useCurrentPriceIds()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
-    const interval = useAppSelector(getCurrentHelpdeskInterval)
+    const cadence = useAppSelector(getCurrentHelpdeskInterval)
     const appNode = useAppNode()
 
     const from: string = currentUser.get('email')
@@ -139,7 +139,7 @@ const SubscriptionModal = ({
                         isEnterprisePlan={isEnterprisePlan}
                         availablePlans={availablePlans}
                         tagline={tagline}
-                        interval={interval}
+                        interval={cadence}
                         selectedPlan={selectedPlan}
                         setSelectedPlan={setSelectedPlan}
                         setIsSubscriptionEnabled={setIsSubscriptionEnabled}

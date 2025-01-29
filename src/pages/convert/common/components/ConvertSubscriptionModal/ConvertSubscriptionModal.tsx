@@ -40,7 +40,7 @@ const ConvertSubscriptionModal = ({
 
     const defaultConvertPlan = useMemo((): ConvertPlan | undefined => {
         const convertInitialIndex = getDefaultConvertPlanIndex(
-            currentHelpdeskPlan?.interval,
+            currentHelpdeskPlan?.cadence,
             convertAvailablePlans,
             currentHelpdeskPlan?.name
         )

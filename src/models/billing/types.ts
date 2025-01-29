@@ -51,7 +51,6 @@ type BasePlan = {
     custom: boolean
     extra_ticket_cost: number
     internal_id: string
-    interval: PlanInterval
     cadence: PlanInterval
     name: string
     product_id: string

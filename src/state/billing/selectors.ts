@@ -240,7 +240,7 @@ export const getCurrentHelpdeskPlanName = createSelector(
 
 export const getCurrentHelpdeskInterval = createSelector(
     getCurrentHelpdeskPlan,
-    (currentHelpdeskPlan) => currentHelpdeskPlan?.interval
+    (currentHelpdeskPlan) => currentHelpdeskPlan?.cadence
 )
 
 export const getIsCurrentHelpdeskLegacy = createSelector(

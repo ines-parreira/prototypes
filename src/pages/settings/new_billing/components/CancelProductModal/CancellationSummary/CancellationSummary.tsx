@@ -21,7 +21,7 @@ const CancellationSummary = ({
     cancellingProducts,
     periodEnd,
 }: CancellationSummaryProps) => {
-    const interval = subscriptionProducts[ProductType.Helpdesk].interval
+    const cadence = subscriptionProducts[ProductType.Helpdesk].cadence
 
     const [summaryItems, summaryTotal] = useMemo(() => {
         let total = 0
@@ -43,7 +43,7 @@ const CancellationSummary = ({
                         productType === ProductType.Helpdesk
                             ? `${plan.name} - `
                             : null,
-                    interval: plan.interval,
+                    interval: plan.cadence,
                     quotaAmount: plan.num_quota_tickets || 0,
                     counter: PRODUCT_INFO[productType].counter,
                     amount: getPlanPriceFormatted(plan),
@@ -67,7 +67,7 @@ const CancellationSummary = ({
             <SummaryBody
                 items={summaryItems}
                 total={summaryTotal}
-                interval={interval}
+                interval={cadence}
             />
         </div>
     )

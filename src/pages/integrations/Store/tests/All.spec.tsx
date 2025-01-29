@@ -68,7 +68,7 @@ const prices = [
     {
         price_id: INTEGRATIONS_PRICE_ID,
         integrations: 150,
-        interval: PlanInterval.Month,
+        cadence: PlanInterval.Month,
         amount: 100,
         name: 'FeatureName',
         features: {

@@ -17,11 +17,11 @@ describe('getDefaultConvertPlanIndex', () => {
         [convertAvailablePlans, PlanInterval.Year, 'Starter', 6],
         [convertAvailablePlans, PlanInterval.Year, 'Advanced', -1],
     ])(
-        'should return the correct default convert price index',
-        (availablePlans, interval, helpdeskPlanName, expectedValue) => {
+        "should return the correct default convert price index ( '%s',  '%s')",
+        (availablePlans, cadence, helpdeskPlanName, expectedValue) => {
             expect(
                 getDefaultConvertPlanIndex(
-                    interval,
+                    cadence,
                     availablePlans,
                     helpdeskPlanName
                 )

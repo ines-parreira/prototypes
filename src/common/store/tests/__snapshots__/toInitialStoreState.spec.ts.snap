@@ -52,7 +52,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
         "type": "helpdesk",
         "prices": Immutable.List [
           Immutable.Map {
-            "interval": "month",
             "num_quota_tickets": 300,
             "public": true,
             "product_id": "prod_LsH6kV35G6zKWo",
@@ -156,7 +155,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "integrations": 150,
           },
           Immutable.Map {
-            "interval": "year",
             "num_quota_tickets": 3600,
             "public": true,
             "product_id": "prod_LsH6kV35G6zKWo",
@@ -165,7 +163,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "currency": "usd",
             "custom": false,
             "extra_ticket_cost": 0.4,
-            "cadence": "month",
+            "cadence": "year",
             "price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
             "amount": 60000,
             "features": Immutable.Map {
@@ -260,7 +258,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "integrations": 150,
           },
           Immutable.Map {
-            "interval": "month",
             "num_quota_tickets": 2000,
             "public": true,
             "product_id": "prod_LsH6kV35G6zKWo",
@@ -364,7 +361,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "integrations": 150,
           },
           Immutable.Map {
-            "interval": "year",
             "num_quota_tickets": 24000,
             "public": true,
             "product_id": "prod_LsH6kV35G6zKWo",
@@ -373,7 +369,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "currency": "usd",
             "custom": false,
             "extra_ticket_cost": 0.36,
-            "cadence": "month",
+            "cadence": "year",
             "price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
             "amount": 360000,
             "features": Immutable.Map {
@@ -468,7 +464,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "integrations": 150,
           },
           Immutable.Map {
-            "interval": "month",
             "num_quota_tickets": 5000,
             "public": true,
             "product_id": "prod_LsH6kV35G6zKWo",
@@ -572,7 +567,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "integrations": 150,
           },
           Immutable.Map {
-            "interval": "year",
             "num_quota_tickets": 60000,
             "public": true,
             "product_id": "prod_LsH6kV35G6zKWo",
@@ -581,7 +575,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "currency": "usd",
             "custom": false,
             "extra_ticket_cost": 0.36,
-            "cadence": "month",
+            "cadence": "year",
             "price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
             "amount": 900000,
             "features": Immutable.Map {
@@ -682,7 +676,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
         "type": "automation",
         "prices": Immutable.List [
           Immutable.Map {
-            "interval": "month",
             "num_quota_tickets": 30,
             "public": true,
             "product_id": "prod_LsHD5xmSqoFBBs",
@@ -717,7 +710,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "internal_id": "aut-addon-basic-full-price-monthly-usd-4",
           },
           Immutable.Map {
-            "interval": "year",
             "num_quota_tickets": 360,
             "public": true,
             "product_id": "prod_LsHD5xmSqoFBBs",
@@ -752,7 +744,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "internal_id": "aut-addon-basic-full-price-yearly-usd-4",
           },
           Immutable.Map {
-            "interval": "month",
             "num_quota_tickets": 190,
             "public": true,
             "product_id": "prod_LsHD5xmSqoFBBs",
@@ -787,7 +778,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "internal_id": "aut-addon-pro-full-price-monthly-usd-4",
           },
           Immutable.Map {
-            "interval": "year",
             "num_quota_tickets": 2280,
             "public": true,
             "product_id": "prod_LsHD5xmSqoFBBs",
@@ -822,7 +812,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "internal_id": "aut-addon-pro-full-price-yearly-usd-4",
           },
           Immutable.Map {
-            "interval": "month",
             "num_quota_tickets": 530,
             "public": true,
             "product_id": "prod_LsHD5xmSqoFBBs",
@@ -857,7 +846,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "internal_id": "aut-addon-advanced-full-price-monthly-usd-4",
           },
           Immutable.Map {
-            "interval": "year",
             "num_quota_tickets": 6360,
             "public": true,
             "product_id": "prod_LsHD5xmSqoFBBs",
@@ -898,7 +886,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
         "type": "sms",
         "prices": Immutable.List [
           Immutable.Map {
-            "interval": "month",
             "num_quota_tickets": 150,
             "public": true,
             "product_id": "prod_MT8Fzk7vmcT73m",
@@ -913,7 +900,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "internal_id": "sms-addon-03-monthly-usd-4",
           },
           Immutable.Map {
-            "interval": "month",
             "num_quota_tickets": 15000,
             "public": true,
             "product_id": "prod_MT8Fzk7vmcT73m",
@@ -928,7 +914,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "internal_id": "sms-addon-12-monthly-usd-4",
           },
           Immutable.Map {
-            "interval": "month",
             "num_quota_tickets": 300,
             "public": true,
             "product_id": "prod_MT8Fzk7vmcT73m",
@@ -943,7 +928,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "internal_id": "sms-01-flat-yearly-usd-5",
           },
           Immutable.Map {
-            "interval": "month",
             "num_quota_tickets": 0,
             "public": true,
             "product_id": "prod_MT8Fzk7vmcT73m",
@@ -964,7 +948,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
         "type": "voice",
         "prices": Immutable.List [
           Immutable.Map {
-            "interval": "month",
             "num_quota_tickets": 250,
             "public": true,
             "product_id": "prod_MT6fyh00TCFRGZ",
@@ -979,7 +962,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "internal_id": "voc-addon-04-monthly-usd-4",
           },
           Immutable.Map {
-            "interval": "month",
             "num_quota_tickets": 7500,
             "public": true,
             "product_id": "prod_MT6fyh00TCFRGZ",
@@ -994,7 +976,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "internal_id": "voc-addon-10-monthly-usd-4",
           },
           Immutable.Map {
-            "interval": "month",
             "num_quota_tickets": 300,
             "public": true,
             "product_id": "prod_MT6fyh00TCFRGZ",
@@ -1009,7 +990,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "internal_id": "voice-01-flat-yearly-usd-5",
           },
           Immutable.Map {
-            "interval": "month",
             "num_quota_tickets": 0,
             "public": true,
             "product_id": "prod_MT6fyh00TCFRGZ",
@@ -1031,7 +1011,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
         "prices": Immutable.List [
           Immutable.Map {
             "tier": 0,
-            "interval": "month",
             "num_quota_tickets": 0,
             "public": true,
             "product_id": "prod_Mwy3exdalDFouZ",
@@ -1047,7 +1026,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
           },
           Immutable.Map {
             "tier": 1,
-            "interval": "month",
             "num_quota_tickets": 50,
             "public": true,
             "product_id": "prod_Mwy3exdalDFouZ",
@@ -1063,7 +1041,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
           },
           Immutable.Map {
             "tier": 2,
-            "interval": "month",
             "num_quota_tickets": 500,
             "public": true,
             "product_id": "prod_Mwy3exdalDFouZ",
@@ -1079,7 +1056,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
           },
           Immutable.Map {
             "tier": 3,
-            "interval": "month",
             "num_quota_tickets": 2000,
             "public": true,
             "product_id": "prod_Mwy3exdalDFouZ",
@@ -1095,7 +1071,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
           },
           Immutable.Map {
             "tier": 4,
-            "interval": "month",
             "num_quota_tickets": 2000,
             "public": true,
             "product_id": "prod_Mwy3exdalDFouZ",
@@ -1111,7 +1086,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
           },
           Immutable.Map {
             "tier": 5,
-            "interval": "month",
             "num_quota_tickets": 3000,
             "public": true,
             "product_id": "prod_Mwy3exdalDFouZ",
@@ -1127,7 +1101,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
           },
           Immutable.Map {
             "tier": 1,
-            "interval": "year",
             "num_quota_tickets": 600,
             "public": true,
             "product_id": "prod_Mwy3exdalDFouZ",
@@ -1136,7 +1109,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "currency": "usd",
             "custom": false,
             "extra_ticket_cost": 0,
-            "cadence": "month",
+            "cadence": "year",
             "price_id": "price_2NmZrmH2GG3UYmlxBGfOOSL1",
             "amount": 36000,
             "internal_id": "convert-01-yearly-usd-6",

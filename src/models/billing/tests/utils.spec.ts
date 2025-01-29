@@ -66,7 +66,7 @@ describe('getFormattedAmount', () => {
 describe('getCheapestPrice', () => {
     it('returns cheapest non-null amount amongst prices', () => {
         expect(
-            getCheapestPrice(smsProduct.prices, smsProduct.prices[0].interval)
+            getCheapestPrice(smsProduct.prices, smsProduct.prices[0].cadence)
         ).toEqual(smsProduct.prices[0])
     })
 })

@@ -9,7 +9,7 @@ import {AlertBannerTypes} from 'AlertBanners'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {ProductType} from 'models/billing/types'
+import {PlanInterval, ProductType} from 'models/billing/types'
 import {isLegacyAutomate} from 'models/billing/utils'
 import useMeetAiAgentNotifications from 'pages/aiAgent/hooks/useMeetAiAgentNotification'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
@@ -43,7 +43,6 @@ import {
     BILLING_PAYMENT_FREQUENCY_PATH,
     BILLING_PROCESS_PATH,
     DATE_FORMAT,
-    INTERVAL,
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
     PRODUCT_INFO,
 } from '../../constants'
@@ -73,7 +72,7 @@ const UsageAndPlansView = ({
     const history = useHistory()
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
-    const interval = useAppSelector(getCurrentHelpdeskInterval)
+    const cadence = useAppSelector(getCurrentHelpdeskInterval)
     const currentVoicePlan = useAppSelector(getCurrentVoicePlan)
     const currentSmsPlan = useAppSelector(getCurrentSmsPlan)
     const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
@@ -81,7 +80,8 @@ const UsageAndPlansView = ({
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const convertStatus = useGetConvertStatus()
 
-    const isIntervalMonthly = interval === INTERVAL.Month
+    const isCurrentPlanMonthly = cadence === PlanInterval.Month
+    const isCurrentPlanYearly = cadence === PlanInterval.Year
     const isSubscribedToHelpdeskStarter =
         currentHelpdeskPlan?.name === 'Starter'
     const isSubscribedToVoiceOrSMS = !!currentVoicePlan || !!currentSmsPlan
@@ -241,7 +241,8 @@ const UsageAndPlansView = ({
                 <div className={css.generalInfoItem}>
                     <span>
                         Billed{' '}
-                        {isIntervalMonthly || isCurrentSubscriptionCanceled ? (
+                        {isCurrentPlanMonthly ||
+                        isCurrentSubscriptionCanceled ? (
                             <>monthly</>
                         ) : (
                             <>yearly</>
@@ -266,7 +267,7 @@ const UsageAndPlansView = ({
                             </Tooltip>
                         </div>
                     ) : isSubscribedToVoiceOrSMS &&
-                      interval === INTERVAL.Month &&
+                      isCurrentPlanMonthly &&
                       !isVettedForPhone ? (
                         <div>
                             <span
@@ -313,7 +314,7 @@ const UsageAndPlansView = ({
                                 a non-legacy plan
                             </Tooltip>
                         </div>
-                    ) : !!scheduledToCancelAt || interval === INTERVAL.Year ? (
+                    ) : !!scheduledToCancelAt || isCurrentPlanYearly ? (
                         // downgrading from yearly to monthly is not possible
                         <span
                             className={css.disabledText}

@@ -97,7 +97,7 @@ export const useBillingPlans = ({
         [currentUsage]
     )
 
-    const interval =
+    const cadence =
         useAppSelector(getCurrentHelpdeskInterval) ?? PlanInterval.Month
 
     // Helpdesk
@@ -107,7 +107,7 @@ export const useBillingPlans = ({
     ).filter(
         (plan) =>
             plan.num_quota_tickets &&
-            (filterByInterval ? plan.interval === interval : true)
+            (filterByInterval ? plan.cadence === cadence : true)
     )
     const helpdeskAvailablePlansPriceIds = useMemo(
         () => helpdeskAvailablePlans.map((plan) => plan.price_id),
@@ -130,7 +130,7 @@ export const useBillingPlans = ({
             currentAutomatePlan && !currentAutomatePlan.num_quota_tickets
         return (
             plan &&
-            (filterByInterval ? plan.interval === interval : true) &&
+            (filterByInterval ? plan.cadence === cadence : true) &&
             (isCurrentPlanLegacy ? true : !!plan.num_quota_tickets)
         )
     })
@@ -146,7 +146,7 @@ export const useBillingPlans = ({
     // Voice
     const currentVoicePlan = useAppSelector(getCurrentVoicePlan)
     const voiceAvailablePlans = useAppSelector(getAvailableVoicePlans).filter(
-        (plan) => (filterByInterval ? plan.interval === interval : true)
+        (plan) => (filterByInterval ? plan.cadence === cadence : true)
     )
 
     const voiceInitialIndex =
@@ -155,7 +155,7 @@ export const useBillingPlans = ({
     // SMS
     const currentSmsPlan = useAppSelector(getCurrentSmsPlan)
     const smsAvailablePlans = useAppSelector(getAvailableSmsPlans).filter(
-        (plan) => (filterByInterval ? plan.interval === interval : true)
+        (plan) => (filterByInterval ? plan.cadence === cadence : true)
     )
     const isPhoneSelfServeEnabled =
         useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe]
@@ -168,9 +168,9 @@ export const useBillingPlans = ({
     const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
     const convertAvailablePlans = useAppSelector(
         getAvailableConvertPlans
-    ).filter((plan) => (filterByInterval ? plan.interval === interval : true))
+    ).filter((plan) => (filterByInterval ? plan.cadence === cadence : true))
     const convertInitialIndex = getDefaultConvertPlanIndex(
-        interval,
+        cadence,
         convertAvailablePlans,
         currentHelpdeskPlan?.name
     )
@@ -340,8 +340,8 @@ export const useBillingPlans = ({
     )
 
     const isPlanCadenceChanged = useMemo(
-        () => interval !== selectedPlans[ProductType.Helpdesk].plan?.interval,
-        [interval, selectedPlans]
+        () => cadence !== selectedPlans[ProductType.Helpdesk].plan?.cadence,
+        [cadence, selectedPlans]
     )
 
     const handleAutoUpgradeChange = useCallback(async () => {
@@ -536,7 +536,7 @@ export const useBillingPlans = ({
                     onClick: () => {
                         history.push('/app/automation')
                     },
-                    interval,
+                    interval: cadence,
                     isFreeTrial,
                 })
 
@@ -563,7 +563,7 @@ export const useBillingPlans = ({
                     onClick: () => {
                         history.push('/app/convert')
                     },
-                    interval,
+                    interval: cadence,
                     isFreeTrial,
                 })
 
@@ -631,7 +631,7 @@ export const useBillingPlans = ({
         isVettedForPhone,
         isPhoneSelfServeEnabled,
         history,
-        interval,
+        cadence,
         domain,
         anyProductChanged,
         dispatch,
@@ -728,7 +728,7 @@ export const useBillingPlans = ({
         convertInitialIndex,
         selectedPlans,
         setSelectedPlans,
-        interval,
+        interval: cadence,
         isEnterpriseHelpdeskPlanSelected,
         isSubscriptionCanceled,
         isSubscriptionUpdating,

@@ -40,7 +40,7 @@ export const getCheapestPriceNameForFeature = (
     plans: (HelpdeskPlan | AutomatePlan)[]
 ) => {
     return plans
-        .filter((plan) => plan.interval === PlanInterval.Month)
+        .filter((plan) => plan.cadence === PlanInterval.Month)
         .find(
             (plan) =>
                 (

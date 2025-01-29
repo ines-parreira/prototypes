@@ -64,13 +64,13 @@ describe('setAutomationNotification', () => {
         const newPlan = basicMonthlyAutomationPlan
 
         const periodEnd = '2023-06-30'
-        const interval = PlanInterval.Month
+        const cadence = PlanInterval.Month
 
         const notification = setAutomationNotification({
             oldPlan: oldPlan,
             newPlan: newPlan,
             periodEnd,
-            interval,
+            interval: cadence,
             onClick,
             isFreeTrial: false,
         })
@@ -90,12 +90,12 @@ describe('setAutomationNotification', () => {
             name: 'New Automate Plan',
         }
         const periodEnd = '2023-06-30'
-        const interval = PlanInterval.Month
+        const cadence = PlanInterval.Month
 
         const notification = setAutomationNotification({
             oldPlan: oldPlan,
             newPlan: newPlan,
-            interval,
+            interval: cadence,
             periodEnd,
             onClick,
             isFreeTrial: false,
@@ -116,13 +116,13 @@ describe('setAutomationNotification', () => {
             name: 'New Automate Plan',
         }
         const periodEnd = '2023-06-30'
-        const interval = PlanInterval.Month
+        const cadence = PlanInterval.Month
 
         const notification = setAutomationNotification({
             oldPlan: oldPlan,
             newPlan: newPlan,
             periodEnd,
-            interval,
+            interval: cadence,
             onClick,
             isFreeTrial: false,
         })

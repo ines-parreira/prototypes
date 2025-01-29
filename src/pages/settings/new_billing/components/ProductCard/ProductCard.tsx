@@ -47,7 +47,7 @@ const ProductCard = ({
     autoUpgradeEnabled = false,
 }: ProductCardProps) => {
     const cheapestPlanByProduct = useAppSelector(getCheapestProductPrices)
-    const interval = useAppSelector(getCurrentHelpdeskInterval)
+    const cadence = useAppSelector(getCurrentHelpdeskInterval)
     const history = useHistory()
 
     const {className, canduOverageStatus} = useMemo(() => {
@@ -92,7 +92,7 @@ const ProductCard = ({
         return (
             <>
                 {type === ProductType.Helpdesk && <>{plan.name} - </>}
-                <b>{getPlanPriceFormatted(plan)}</b>/{plan.interval}
+                <b>{getPlanPriceFormatted(plan)}</b>/{plan.cadence}
             </>
         )
     }, [plan, type])
@@ -100,13 +100,13 @@ const ProductCard = ({
     const subscribeContainer = useMemo(() => {
         return (
             <div className={css.subscribeContainer}>
-                {interval && (
+                {cadence && (
                     <div>
                         Starting at{' '}
                         <b>
                             {getPlanPriceFormatted(cheapestPlanByProduct[type])}
                         </b>
-                        /{interval}
+                        /{cadence}
                     </div>
                 )}
                 {isDisabled && disabledTooltip && (
@@ -142,7 +142,7 @@ const ProductCard = ({
     }, [
         cheapestPlanByProduct,
         type,
-        interval,
+        cadence,
         history,
         isDisabled,
         disabledTooltip,

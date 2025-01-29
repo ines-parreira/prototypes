@@ -111,11 +111,11 @@ const AutomateSubscriptionModal = ({
     const history = useHistory()
     const hasAutomate = useAppSelector(getHasAutomate)
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
-    const interval = useAppSelector(getCurrentHelpdeskInterval)
+    const cadence = useAppSelector(getCurrentHelpdeskInterval)
     const isTrialingSubscription = useAppSelector(isTrialing)
     const helpdeskAvailablePlans = useAppSelector(getAvailableHelpdeskPlans)
     const helpdeskAvailablePlansPriceIds = helpdeskAvailablePlans
-        .filter((plan) => plan.interval === interval)
+        .filter((plan) => plan.cadence === cadence)
         .map((plan) => plan.price_id)
 
     const currentAccount = useAppSelector(getCurrentAccountState)
@@ -165,7 +165,7 @@ const AutomateSubscriptionModal = ({
 
     const automateAvailablePlans = useAppSelector(
         getAvailableAutomatePlans
-    ).filter((plan) => plan.num_quota_tickets && plan.interval === interval)
+    ).filter((plan) => plan.num_quota_tickets && plan.cadence === cadence)
     const helpdeskOptionIndex = Math.max(
         helpdeskAvailablePlansPriceIds.indexOf(
             currentHelpdeskPlan?.price_id || ''
@@ -242,7 +242,7 @@ const AutomateSubscriptionModal = ({
                         header={header}
                         isTrialingSubscription={isTrialingSubscription}
                         isEnterprisePlan={isEnterprisePlan}
-                        interval={interval}
+                        interval={cadence}
                         selectedPlan={selectedPlan}
                         setSelectedPlan={setSelectedPlan}
                         setIsSubscriptionEnabled={setIsSubscriptionEnabled}

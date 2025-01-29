@@ -9,19 +9,19 @@ const convertPlansMapping: Record<string, string> = {
 }
 
 export const getDefaultConvertPlanIndex = (
-    interval?: PlanInterval,
+    cadence?: PlanInterval,
     convertAvailablePlans?: ConvertPlan[],
     helpdeskPlanName?: string
 ): number => {
     let convertInitialIndex =
         convertAvailablePlans?.findIndex(
-            (plan) => !!plan.amount && plan.interval === interval
+            (plan) => !!plan.amount && plan.cadence === cadence
         ) ?? 0
 
     if (helpdeskPlanName && !!convertPlansMapping[helpdeskPlanName]) {
         const mappedIndex = convertAvailablePlans?.findIndex(
             (plan) =>
-                plan.interval === interval &&
+                plan.cadence === cadence &&
                 plan.internal_id.startsWith(
                     convertPlansMapping[helpdeskPlanName]
                 )

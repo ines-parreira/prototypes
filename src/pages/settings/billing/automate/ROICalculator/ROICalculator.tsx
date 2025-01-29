@@ -209,7 +209,7 @@ const ROICalculator = () => {
         setNumberOfTickets(numberOfTickets)
 
         const availableAutomateMonthlyPlans = availableAutomatePlans.filter(
-            (plan) => plan.interval === PlanInterval.Month
+            (plan) => plan.cadence === PlanInterval.Month
         )
 
         const automateSubscriptionPrice = getAutomateSubscriptionPrice(

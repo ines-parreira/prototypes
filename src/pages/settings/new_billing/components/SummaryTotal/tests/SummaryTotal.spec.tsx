@@ -38,7 +38,7 @@ const selectedPlans: SelectedPlans = {
 const totalProductAmount =
     basicMonthlyHelpdeskPlan.amount + basicMonthlyAutomationPlan.amount
 const totalProductAmountDifferent = totalProductAmount + 10000
-const interval = PlanInterval.Month
+const cadence = PlanInterval.Month
 const currency = 'USD'
 
 const mockedServer = new MockAdapter(client)
@@ -55,7 +55,7 @@ describe('SummaryTotal without coupons', () => {
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
-                interval={interval}
+                interval={cadence}
                 currency={currency}
             />
         )
@@ -68,7 +68,7 @@ describe('SummaryTotal without coupons', () => {
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmountDifferent}
-                interval={interval}
+                interval={cadence}
                 currency={currency}
             />
         )
@@ -104,7 +104,7 @@ describe('SummaryTotal with coupons', () => {
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
-                interval={interval}
+                interval={cadence}
                 currency={currency}
             />
         )
@@ -136,7 +136,7 @@ describe('SummaryTotal with coupons', () => {
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
-                interval={interval}
+                interval={cadence}
                 currency={currency}
             />
         )
@@ -179,7 +179,7 @@ describe('SummaryTotal with coupons', () => {
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
-                interval={interval}
+                interval={cadence}
                 currency={currency}
             />
         )
@@ -200,7 +200,7 @@ describe('SummaryTotal with coupons', () => {
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
-                interval={interval}
+                interval={cadence}
                 currency={currency}
             />
         )
@@ -223,7 +223,7 @@ describe('SummaryTotal with coupons', () => {
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
-                interval={interval}
+                interval={cadence}
                 currency={currency}
             />
         )

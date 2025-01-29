@@ -40,7 +40,7 @@ const PaymentInformationView = ({
     currentSmsPlan,
     isCurrentSubscriptionCanceled,
 }: PaymentInformationViewProps) => {
-    const interval =
+    const cadence =
         useAppSelector(getCurrentHelpdeskInterval) ?? PlanInterval.Month
     const isSubscribedToHelpdeskStarter =
         currentHelpdeskPlan?.name === 'Starter'
@@ -55,7 +55,7 @@ const PaymentInformationView = ({
     const changeFrequency = useMemo(() => {
         let toolTipContent
 
-        if (interval === PlanInterval.Month) {
+        if (cadence === PlanInterval.Month) {
             if (isSubscribedToHelpdeskStarter) {
                 toolTipContent =
                     'To change billing frequency, upgrade your Helpdesk plan to Basic or higher'
@@ -130,7 +130,7 @@ const PaymentInformationView = ({
             </>
         )
     }, [
-        interval,
+        cadence,
         isSubscribedToHelpdeskStarter,
         isAAOLegacy,
         isSubscribedToVoiceOrSms,
@@ -148,7 +148,7 @@ const PaymentInformationView = ({
             </Section>
             <Section icon="history" title="Billing frequency">
                 <Description>
-                    All plans are billed <strong>{interval}ly</strong>
+                    All plans are billed <strong>{cadence}ly</strong>
                 </Description>
                 {changeFrequency}
             </Section>
