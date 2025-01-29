@@ -139,7 +139,10 @@ export default class TicketUpdatesManager {
 
         // if the latest timestamp is not known yet (since this comes from the data
         // request), we just skip this polling attempt
-        if (!this.latestDatetime) return
+        // additionally, ES can only return up to 300 results at a time, after this
+        // the splicing we do up ahead becomes unreliable, so we want to pause updates
+        // whenever the index > 299 as well.
+        if (!this.latestDatetime || this.latestIndex > 299) return
 
         this.loading = true
 
