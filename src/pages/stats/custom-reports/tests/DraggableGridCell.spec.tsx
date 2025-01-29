@@ -4,11 +4,21 @@ import {
     createDragItem,
     createMoveHandler,
 } from 'pages/stats/custom-reports/DraggableGridCell'
+import {CustomReportChildType} from 'pages/stats/custom-reports/types'
 
 describe('createMoveHandler(node, target, handleMove)', () => {
+    const createDummyDragItem = (configId: string = '1', size: number = 2) =>
+        createDragItem({
+            size,
+            schema: {
+                config_id: configId,
+                type: CustomReportChildType.Chart,
+            },
+        })
+
     it('returns a function', () => {
         const node = document.createElement('div')
-        const item = createDragItem({order: 1, size: 2})
+        const item = createDummyDragItem()
         const onMove = jest.fn()
 
         const actual = createMoveHandler(node, item, onMove)
@@ -17,8 +27,8 @@ describe('createMoveHandler(node, target, handleMove)', () => {
     })
 
     it('does nothing if node is null', () => {
-        const targetItem = createDragItem({order: 1, size: 2})
-        const srcItem = createDragItem({order: 2, size: 2})
+        const targetItem = createDummyDragItem('1')
+        const srcItem = createDummyDragItem('2')
         const monitor = {
             getClientOffset: () => ({x: 0, y: 0}),
         } as DropTargetMonitor
@@ -31,9 +41,9 @@ describe('createMoveHandler(node, target, handleMove)', () => {
         expect(onMove).not.toHaveBeenCalled()
     })
 
-    it('does nothing if dragIndex equals hoverIndex', () => {
+    it('does nothing if hovering over itself', () => {
         const node = document.createElement('div')
-        const item = createDragItem({order: 1, size: 2})
+        const item = createDummyDragItem('1', 2)
         const monitor = {
             getClientOffset: () => ({x: 0, y: 0}),
         } as DropTargetMonitor
@@ -58,8 +68,11 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 }) as DOMRect
         )
 
-        const targetItem = createDragItem({order: 1, size: 2})
-        const srcItem = createDragItem({order: 2, size: 2})
+        const targetId = '1'
+        const srcId = '2'
+
+        const targetItem = createDummyDragItem(targetId, 2)
+        const srcItem = createDummyDragItem(srcId, 2)
         const monitor = {
             getClientOffset: () => ({x: 40, y: 0}),
         } as DropTargetMonitor
@@ -69,10 +82,10 @@ describe('createMoveHandler(node, target, handleMove)', () => {
 
         handleMove(srcItem, monitor)
 
-        expect(onMove).toHaveBeenCalledWith(2, 1)
+        expect(onMove).toHaveBeenCalledWith(srcId, targetId, 'before')
     })
 
-    it('calls onMove if hovering over a card and moving it forward within the movement threshold on the Y-axis', () => {
+    it('calls onMove if hovering over a card and moving it upwards within the movement threshold on the Y-axis', () => {
         const node = document.createElement('div')
         node.getBoundingClientRect = jest.fn(
             () =>
@@ -84,8 +97,11 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 }) as DOMRect
         )
 
-        const targetItem = createDragItem({order: 1, size: 2})
-        const srcItem = createDragItem({order: 2, size: 2})
+        const targetId = '1'
+        const srcId = '2'
+
+        const targetItem = createDummyDragItem(targetId, 2)
+        const srcItem = createDummyDragItem(srcId, 2)
         const monitor = {
             getClientOffset: () => ({x: 0, y: 40}),
         } as DropTargetMonitor
@@ -95,7 +111,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
 
         handleMove(srcItem, monitor)
 
-        expect(onMove).toHaveBeenCalledWith(2, 1)
+        expect(onMove).toHaveBeenCalledWith(srcId, targetId, 'before')
     })
 
     it('calls onMove if hovering over a card and moving it backward within the movement threshold on the X-axis', () => {
@@ -110,8 +126,11 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 }) as DOMRect
         )
 
-        const targetItem = createDragItem({order: 2, size: 2})
-        const srcItem = createDragItem({order: 1, size: 2})
+        const targetId = '1'
+        const srcId = '2'
+
+        const targetItem = createDummyDragItem(targetId, 2)
+        const srcItem = createDummyDragItem(srcId, 2)
         const monitor = {
             getClientOffset: () => ({x: 60, y: 0}),
         } as DropTargetMonitor
@@ -121,10 +140,10 @@ describe('createMoveHandler(node, target, handleMove)', () => {
 
         handleMove(srcItem, monitor)
 
-        expect(onMove).toHaveBeenCalledWith(1, 2)
+        expect(onMove).toHaveBeenCalledWith(srcId, targetId, 'after')
     })
 
-    it('calls onMove if hovering over a card and moving it backward within the movement threshold on the Y-axis', () => {
+    it('calls onMove if hovering over a card and moving it downwards within the movement threshold on the Y-axis', () => {
         const node = document.createElement('div')
         node.getBoundingClientRect = jest.fn(
             () =>
@@ -136,10 +155,13 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 }) as DOMRect
         )
 
-        const targetItem = createDragItem({order: 2, size: 2})
-        const srcItem = createDragItem({order: 1, size: 2})
+        const targetId = '1'
+        const srcId = '2'
+
+        const targetItem = createDummyDragItem(targetId, 2)
+        const srcItem = createDummyDragItem(srcId, 2)
         const monitor = {
-            getClientOffset: () => ({x: 0, y: 60}),
+            getClientOffset: () => ({x: 0, y: 80}),
         } as DropTargetMonitor
         const onMove = jest.fn()
 
@@ -147,7 +169,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
 
         handleMove(srcItem, monitor)
 
-        expect(onMove).toHaveBeenCalledWith(1, 2)
+        expect(onMove).toHaveBeenCalledWith(srcId, targetId, 'after')
     })
 
     it('calls onMove if hovering over a big card and moving it forward within the vertical threshold', () => {
@@ -162,8 +184,11 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 }) as DOMRect
         )
 
-        const targetItem = createDragItem({order: 1, size: 12}) // Big card
-        const srcItem = createDragItem({order: 2, size: 2})
+        const targetId = '1'
+        const srcId = '2'
+
+        const targetItem = createDummyDragItem(targetId, 12) // Big card
+        const srcItem = createDummyDragItem(srcId, 2)
         const monitor = {
             getClientOffset: () => ({x: 0, y: 20}), // Over half vertically
         } as DropTargetMonitor
@@ -173,7 +198,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
 
         handleMove(srcItem, monitor)
 
-        expect(onMove).toHaveBeenCalledWith(2, 1)
+        expect(onMove).toHaveBeenCalledWith(srcId, targetId, 'before')
     })
 
     it('calls onMove if hovering over a big card and moving it backward within the vertical threshold', () => {
@@ -188,8 +213,11 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 }) as DOMRect
         )
 
-        const targetItem = createDragItem({order: 2, size: 12}) // Big card
-        const srcItem = createDragItem({order: 1, size: 2})
+        const targetId = '1'
+        const srcId = '2'
+
+        const targetItem = createDummyDragItem(targetId, 12) // Big card
+        const srcItem = createDummyDragItem(srcId, 2)
         const monitor = {
             getClientOffset: () => ({x: 0, y: 80}), // Over half vertically
         } as DropTargetMonitor
@@ -199,7 +227,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
 
         handleMove(srcItem, monitor)
 
-        expect(onMove).toHaveBeenCalledWith(1, 2)
+        expect(onMove).toHaveBeenCalledWith(srcId, targetId, 'after')
     })
 
     it('does not call onMove if not past the hover threshold', () => {
@@ -214,10 +242,10 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 }) as DOMRect
         )
 
-        const targetItem = createDragItem({order: 1, size: 2})
-        const srcItem = createDragItem({order: 2, size: 2})
+        const targetItem = createDummyDragItem('1', 2)
+        const srcItem = createDummyDragItem('2', 2)
         const monitor = {
-            getClientOffset: () => ({x: 60, y: 60}), // Not past the threshold
+            getClientOffset: () => ({x: 50, y: 50}), // Not past the threshold
         } as DropTargetMonitor
         const onMove = jest.fn()
 
@@ -226,31 +254,5 @@ describe('createMoveHandler(node, target, handleMove)', () => {
         handleMove(srcItem, monitor)
 
         expect(onMove).not.toHaveBeenCalled()
-    })
-
-    it('updates the dragged item order after move', () => {
-        const node = document.createElement('div')
-        node.getBoundingClientRect = jest.fn(
-            () =>
-                ({
-                    left: 0,
-                    right: 100,
-                    top: 0,
-                    bottom: 100,
-                }) as DOMRect
-        )
-
-        const targetItem = createDragItem({order: 1, size: 2})
-        const srcItem = createDragItem({order: 2, size: 2})
-        const monitor = {
-            getClientOffset: () => ({x: 40, y: 40}),
-        } as DropTargetMonitor
-        const onMove = jest.fn()
-
-        const handleMove = createMoveHandler(node, targetItem, onMove)
-
-        handleMove(srcItem, monitor)
-
-        expect(srcItem.order).toBe(1)
     })
 })

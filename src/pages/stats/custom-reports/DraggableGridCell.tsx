@@ -3,37 +3,33 @@ import React, {useRef} from 'react'
 import {useDrag, useDrop, DropTargetMonitor} from 'react-dnd'
 
 import css from 'pages/stats/custom-reports/DraggableGridCell.less'
+import {CustomReportChartSchema} from 'pages/stats/custom-reports/types'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 
 export const createDragItem = ({
-    order,
     size,
+    schema,
 }: {
-    order: number
     size: number
+    schema: CustomReportChartSchema
 }) => ({
-    order,
+    ...schema,
     size,
-    type: 'ChartType.Card',
 })
 
 type DragItem = ReturnType<typeof createDragItem>
 
 export const createMoveHandler =
-    (
-        node: HTMLElement | null,
-        target: DragItem,
-        handleMove: (srcIndex: number, targetIndex: number) => void
-    ) =>
+    (node: HTMLElement | null, target: DragItem, handleMove: MoveHandler) =>
     (item: DragItem, monitor: DropTargetMonitor) => {
         if (!node) return
 
-        const dragIndex = item.order
+        const dragItem = item
+        const hoverItem = target
 
-        const hoverIndex = target.order
         const hoverSize = target.size
 
-        if (dragIndex === hoverIndex) return
+        if (dragItem.config_id === hoverItem.config_id) return
 
         const hoverRect = node.getBoundingClientRect()
 
@@ -45,46 +41,56 @@ export const createMoveHandler =
         const hoverClientX = clientOffset.x - hoverRect.left
         const hoverClientY = clientOffset.y - hoverRect.top
 
-        let shouldMove = false
+        let position: 'before' | 'after' | null = null
 
         if (hoverSize === 12) {
-            // If hovering over a "big boi", only consider vertical (Y-axis) movement
-            shouldMove =
-                (dragIndex < hoverIndex && hoverClientY >= hoverMiddleY) ||
-                (dragIndex > hoverIndex && hoverClientY <= hoverMiddleY)
+            if (hoverClientY > hoverMiddleY) {
+                position = 'after'
+            } else if (hoverClientY < hoverMiddleY) {
+                position = 'before'
+            }
         } else {
-            // Default behavior: consider both axes for smaller cards
-            shouldMove =
-                (dragIndex < hoverIndex &&
-                    (hoverClientX >= hoverMiddleX ||
-                        hoverClientY >= hoverMiddleY)) ||
-                (dragIndex > hoverIndex &&
-                    (hoverClientX <= hoverMiddleX ||
-                        hoverClientY <= hoverMiddleY))
+            if (hoverClientX > hoverMiddleX || hoverClientY > hoverMiddleY) {
+                position = 'after'
+            } else if (
+                hoverClientX < hoverMiddleX ||
+                hoverClientY < hoverMiddleY
+            ) {
+                position = 'before'
+            }
         }
 
-        if (shouldMove) {
-            handleMove(dragIndex, hoverIndex)
-            item.order = hoverIndex
+        if (position) {
+            handleMove(dragItem.config_id, hoverItem.config_id, position)
         }
     }
 
-type DraggableGridCellProps = {
+export type MoveHandler = (
+    srcId: string,
+    targetId: string,
+    position: 'after' | 'before'
+) => void
+
+export type DropHandler = () => void
+
+export type DraggableGridCellProps = {
     children: React.ReactNode
     size: number
-    order: number
-    onMove: (srcIndex: number, targetIndex: number) => void
+    schema: CustomReportChartSchema
+    onMove: MoveHandler
+    onDrop: DropHandler
 }
 
 export const DraggableGridCell = ({
     children,
     size,
-    order,
+    schema,
+    onDrop,
     onMove,
 }: DraggableGridCellProps) => {
     const nodeRef = useRef<HTMLDivElement>(null)
 
-    const item = createDragItem({order, size})
+    const item = createDragItem({size, schema})
 
     const [{isDragging}, dragRef] = useDrag({
         item,
@@ -94,6 +100,7 @@ export const DraggableGridCell = ({
     const [, dropRef] = useDrop<typeof item, void, void>({
         accept: item.type,
         hover: createMoveHandler(nodeRef.current, item, onMove),
+        drop: onDrop,
     })
 
     dragRef(dropRef(nodeRef))

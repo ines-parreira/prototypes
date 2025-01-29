@@ -4,6 +4,7 @@ import React, {useCallback, useState} from 'react'
 import {useParams} from 'react-router-dom'
 
 import {useUpdateDashboard} from 'hooks/reporting/custom-reports/useUpdateDashboard'
+import {useUpdateDashboardCache} from 'hooks/reporting/custom-reports/useUpdateDashboardCache'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {CreateCustomReport} from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
@@ -81,6 +82,8 @@ const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
 
     const {updateDashboard, isLoading} = useUpdateDashboard(dashboard.id)
 
+    const updateDashboardCache = useUpdateDashboardCache(dashboard.id)
+
     const handleUpdateCharts = async (
         charts: CustomReportChild[],
         size: number
@@ -124,6 +127,21 @@ const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
         }
     }
 
+    const handleMoveCharts = (dashboard: CustomReportSchema) => {
+        updateDashboardCache(dashboard)
+    }
+
+    const handleMoveChartsEnd = async () => {
+        try {
+            await updateDashboard(dashboard)
+        } catch (error) {
+            void notify({
+                status: NotificationStatus.Error,
+                message: getErrorMessage(error),
+            })
+        }
+    }
+
     return (
         <StatsPageWrapper>
             <StatsPageHeader
@@ -146,7 +164,11 @@ const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
             />
             <StatsPageContent>
                 {dashboard.children.length ? (
-                    <CustomReport customReport={dashboard} />
+                    <CustomReport
+                        customReport={dashboard}
+                        onChartMove={handleMoveCharts}
+                        onChartMoveEnd={handleMoveChartsEnd}
+                    />
                 ) : (
                     <CreateCustomReport />
                 )}

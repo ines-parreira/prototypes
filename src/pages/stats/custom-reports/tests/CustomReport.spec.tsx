@@ -13,6 +13,7 @@ import {
     CustomReportSectionSchema,
 } from 'pages/stats/custom-reports/types'
 import {useFiltersFromDashboard} from 'pages/stats/custom-reports/useFiltersFromDashboard'
+import {updateChartPosition} from 'pages/stats/custom-reports/utils'
 import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
@@ -39,14 +40,18 @@ describe('CustomReport', () => {
         children: [],
         type: CustomReportChildType.Section,
     }
-    const chart: CustomReportChartSchema = {
+    const chart1: CustomReportChartSchema = {
         type: CustomReportChildType.Chart,
         config_id: OverviewMetric.TicketsCreated,
+    }
+    const chart2: CustomReportChartSchema = {
+        type: CustomReportChildType.Chart,
+        config_id: OverviewMetric.TicketsClosed,
     }
 
     const row: CustomReportRowSchema = {
         type: CustomReportChildType.Row,
-        children: [chart],
+        children: [chart1, chart2],
     }
     const customReport: CustomReportSchema = {
         id: 2,
@@ -74,10 +79,66 @@ describe('CustomReport', () => {
     })
 
     it('renders correctly', () => {
-        renderWithStore(<CustomReport customReport={customReport} />, {})
+        renderWithStore(
+            <CustomReport
+                onChartMove={jest.fn()}
+                onChartMoveEnd={jest.fn()}
+                customReport={customReport}
+            />,
+            {}
+        )
 
         expect(CustomReportChartMock).toHaveBeenCalled()
 
         expect(useFiltersFromDashboardMock).toHaveBeenCalledWith(customReport)
+    })
+
+    it('calls onChartMove with correct parameters when moving chart', () => {
+        const onChartMove = jest.fn()
+
+        renderWithStore(
+            <CustomReport
+                onChartMove={onChartMove}
+                onChartMoveEnd={jest.fn()}
+                customReport={customReport}
+            />,
+            {}
+        )
+
+        const chartProps = CustomReportChartMock.mock.calls[0][0]
+
+        const srcId = chart1.config_id
+        const targetId = chart2.config_id
+
+        ;(
+            chartProps.onMove as (
+                srcId: string,
+                targetId: string,
+                position: 'after' | 'before'
+            ) => void
+        )(srcId, targetId, 'after')
+
+        expect(onChartMove).toHaveBeenCalledWith(
+            updateChartPosition(customReport, srcId, targetId, 'after')
+        )
+    })
+
+    it('calls onChartMoveEnd when chart is dropped', () => {
+        const onChartMoveEnd = jest.fn()
+
+        renderWithStore(
+            <CustomReport
+                onChartMove={jest.fn()}
+                onChartMoveEnd={onChartMoveEnd}
+                customReport={customReport}
+            />,
+            {}
+        )
+
+        const chartProps = CustomReportChartMock.mock.calls[0][0]
+
+        ;(chartProps.onDrop as () => void)()
+
+        expect(onChartMoveEnd).toHaveBeenCalled()
     })
 })

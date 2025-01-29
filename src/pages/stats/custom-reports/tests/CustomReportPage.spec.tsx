@@ -13,8 +13,10 @@ import {useParams} from 'react-router-dom'
 import {AGENT_ROLE, BASIC_AGENT_ROLE} from 'config/user'
 import {user} from 'fixtures/users'
 import {useUpdateDashboard} from 'hooks/reporting/custom-reports/useUpdateDashboard'
+import {useUpdateDashboardCache} from 'hooks/reporting/custom-reports/useUpdateDashboardCache'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {FiltersPanelWrapper} from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import {CREATE_REPORT_DESCRIPTION} from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
 import {CustomReport} from 'pages/stats/custom-reports/CustomReport'
 import {CustomReportActionButton} from 'pages/stats/custom-reports/CustomReportActionButton'
 import {
@@ -22,7 +24,10 @@ import {
     CUSTOM_REPORT_SCHEMA_ERROR,
     CustomReportPage,
 } from 'pages/stats/custom-reports/CustomReportPage'
-import {CustomReportSchema} from 'pages/stats/custom-reports/types'
+import {
+    CustomReportChildType,
+    CustomReportSchema,
+} from 'pages/stats/custom-reports/types'
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -39,6 +44,9 @@ jest.mock('state/notifications/actions')
 
 jest.mock('hooks/reporting/custom-reports/useUpdateDashboard')
 const useUpdateDashboardMock = assumeMock(useUpdateDashboard)
+
+jest.mock('hooks/reporting/custom-reports/useUpdateDashboardCache')
+const useUpdateDashboardCacheMock = assumeMock(useUpdateDashboardCache)
 
 jest.mock('@gorgias/api-queries')
 const useGetAnalyticsCustomReportMock = assumeMock(useGetAnalyticsCustomReport)
@@ -70,12 +78,22 @@ describe('CustomReportPage', () => {
         analytics_filter_id: 1,
         name: dashboardName,
         emoji: null,
-        children: [],
+        children: [
+            {
+                type: CustomReportChildType.Chart,
+                config_id: 'config_id',
+            },
+        ],
     }
 
     const updateDashboardMock = jest.fn()
 
     const dispatchMock = jest.fn()
+
+    const updateDashboardCacheMock = jest.fn()
+
+    const MOVE_CHART_BUTTON = 'chart move'
+    const MOVE_CHART_END_BUTTON = 'chart move end'
 
     beforeEach(() => {
         mockUseParams.mockReturnValue({
@@ -84,7 +102,16 @@ describe('CustomReportPage', () => {
 
         FiltersPanelWrapperMock.mockReturnValue(<div />)
 
-        CustomReportMock.mockReturnValue(<div />)
+        CustomReportMock.mockImplementation(({onChartMove, onChartMoveEnd}) => (
+            <div>
+                <button onClick={() => onChartMove(customReport)}>
+                    {MOVE_CHART_BUTTON}
+                </button>
+                <button onClick={() => onChartMoveEnd()}>
+                    {MOVE_CHART_END_BUTTON}
+                </button>
+            </div>
+        ))
 
         DrillDownModalMock.mockReturnValue(<div />)
 
@@ -104,7 +131,20 @@ describe('CustomReportPage', () => {
             isLoading: false,
         })
 
+        useUpdateDashboardCacheMock.mockReturnValue(updateDashboardCacheMock)
+
         useAppDispatchMock.mockReturnValue(dispatchMock)
+    })
+
+    it('should render fallback when no charts are present', () => {
+        useGetAnalyticsCustomReportMock.mockReturnValue({
+            data: {data: {...customReport, children: []}},
+            isLoading: false,
+        } as any)
+
+        renderWithStore(<CustomReportPage />, defaultState)
+
+        expect(screen.getByText(CREATE_REPORT_DESCRIPTION)).toBeInTheDocument()
     })
 
     it('should render actions button', () => {
@@ -237,7 +277,7 @@ describe('CustomReportPage', () => {
         const firstCheckbox = screen.getAllByRole('checkbox')[0]
         fireEvent.click(firstCheckbox)
 
-        const saveButton = screen.getByText('Add Charts (1)')
+        const saveButton = screen.getByText('Add Charts (2)')
         fireEvent.click(saveButton)
 
         await waitFor(() => {
@@ -264,7 +304,7 @@ describe('CustomReportPage', () => {
         const firstCheckbox = screen.getAllByRole('checkbox')[0]
         fireEvent.click(firstCheckbox)
 
-        const saveButton = screen.getByText('Add Charts (1)')
+        const saveButton = screen.getByText('Add Charts (2)')
         fireEvent.click(saveButton)
 
         await waitForElementToBeRemoved(() =>
@@ -276,7 +316,7 @@ describe('CustomReportPage', () => {
 
             expect(notify).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    message: `Successfully saved 1 chart to ${dashboardName}`,
+                    message: `Successfully saved 2 charts to ${dashboardName}`,
                     status: NotificationStatus.Success,
                 })
             )
@@ -305,7 +345,7 @@ describe('CustomReportPage', () => {
         const secondCheckbox = screen.getAllByRole('checkbox')[1]
         fireEvent.click(secondCheckbox)
 
-        const saveButton = screen.getByText('Add Charts (2)')
+        const saveButton = screen.getByText('Add Charts (3)')
         fireEvent.click(saveButton)
 
         await waitForElementToBeRemoved(() =>
@@ -317,7 +357,7 @@ describe('CustomReportPage', () => {
 
             expect(notify).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    message: `Successfully saved 2 charts to ${dashboardName}`,
+                    message: `Successfully saved 3 charts to ${dashboardName}`,
                     status: NotificationStatus.Success,
                 })
             )
@@ -342,12 +382,56 @@ describe('CustomReportPage', () => {
         const firstCheckbox = screen.getAllByRole('checkbox')[0]
         fireEvent.click(firstCheckbox)
 
-        const saveButton = screen.getByText('Add Charts (1)')
+        const saveButton = screen.getByText('Add Charts (2)')
         fireEvent.click(saveButton)
 
         await waitFor(() => {
             expect(dispatchMock).toHaveBeenCalledTimes(1)
 
+            expect(notify).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: errorMessage,
+                    status: NotificationStatus.Error,
+                })
+            )
+        })
+    })
+
+    it('should update dashboard cache when charts are moved', () => {
+        renderWithStore(<CustomReportPage />, defaultState)
+
+        const chartMoveButton = screen.getByRole('button', {
+            name: MOVE_CHART_BUTTON,
+        })
+        fireEvent.click(chartMoveButton)
+
+        expect(updateDashboardCacheMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should update dashboard when charts are moved', () => {
+        renderWithStore(<CustomReportPage />, defaultState)
+
+        const chartMoveButton = screen.getByRole('button', {
+            name: MOVE_CHART_END_BUTTON,
+        })
+        fireEvent.click(chartMoveButton)
+
+        expect(updateDashboardMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should notify on update dashboard error', async () => {
+        const errorMessage = 'Bad Request'
+        updateDashboardMock.mockRejectedValue(new Error(errorMessage))
+
+        renderWithStore(<CustomReportPage />, defaultState)
+
+        const chartMoveButton = screen.getByRole('button', {
+            name: MOVE_CHART_END_BUTTON,
+        })
+
+        fireEvent.click(chartMoveButton)
+
+        await waitFor(() => {
             expect(notify).toHaveBeenCalledWith(
                 expect.objectContaining({
                     message: errorMessage,

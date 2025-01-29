@@ -30,7 +30,11 @@ describe('CustomReportChart', () => {
         }
 
         const {container} = renderWithDnD(
-            <CustomReportChart order={1} onMove={jest.fn()} schema={schema} />
+            <CustomReportChart
+                onMove={jest.fn()}
+                onDrop={jest.fn()}
+                schema={schema}
+            />
         )
 
         expect(container).toBeEmptyDOMElement()
@@ -43,7 +47,11 @@ describe('CustomReportChart', () => {
         }
 
         renderWithDnD(
-            <CustomReportChart order={1} onMove={jest.fn()} schema={schema} />
+            <CustomReportChart
+                onMove={jest.fn()}
+                onDrop={jest.fn()}
+                schema={schema}
+            />
         )
 
         expect(CustomReportComponentMock).toHaveBeenCalledWith(

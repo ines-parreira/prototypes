@@ -17,6 +17,7 @@ import {getSearchConfig} from 'pages/stats/custom-reports/CustomReportsModal/Mod
 import {
     ChartConfig,
     ChartType,
+    CustomReportChartSchema,
     CustomReportChild,
     CustomReportChildType,
     CustomReportSchema,
@@ -30,6 +31,7 @@ import {
     getErrorMessage,
     getGroupChartsIntoRows,
     getNumberOfSelections,
+    updateChartPosition,
 } from 'pages/stats/custom-reports/utils'
 import {
     OverviewMetric,
@@ -910,5 +912,210 @@ describe('getChildrenIds', () => {
         const actual = getChildrenIds(children)
 
         expect(actual).toEqual([])
+    })
+})
+
+describe('updateChartPosition', () => {
+    const chartToMove: CustomReportChartSchema = {
+        type: CustomReportChildType.Chart,
+        config_id: 'chartToMoveId',
+    }
+    const targetChart: CustomReportChartSchema = {
+        type: CustomReportChildType.Chart,
+        config_id: 'targetChartId',
+    }
+    const dashboard: CustomReportSchema = {
+        id: 123,
+        name: 'someName',
+        emoji: null,
+        children: [
+            {
+                type: CustomReportChildType.Row,
+                children: [
+                    chartToMove,
+                    {
+                        type: CustomReportChildType.Chart,
+                        config_id: 'someOtherChart',
+                    },
+                ],
+            },
+            {
+                type: CustomReportChildType.Section,
+                children: [
+                    {
+                        type: CustomReportChildType.Chart,
+                        config_id: 'someBeforeTargetChart',
+                    },
+                    targetChart,
+                    {
+                        type: CustomReportChildType.Chart,
+                        config_id: 'someAfterTargetChart',
+                    },
+                ],
+            },
+        ],
+    }
+
+    it('should move chart in Dashboard structure and place it after target element', () => {
+        const updatedDashboard = updateChartPosition(
+            dashboard,
+            chartToMove.config_id,
+            targetChart.config_id,
+            'after'
+        )
+
+        expect(updatedDashboard).toEqual({
+            id: 123,
+            name: 'someName',
+            emoji: null,
+            children: [
+                {
+                    type: CustomReportChildType.Row,
+                    children: [
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: 'someOtherChart',
+                        },
+                    ],
+                },
+                {
+                    type: CustomReportChildType.Section,
+                    children: [
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: 'someBeforeTargetChart',
+                        },
+                        targetChart,
+                        chartToMove,
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: 'someAfterTargetChart',
+                        },
+                    ],
+                },
+            ],
+        })
+    })
+
+    it('should move chart in Dashboard structure and place it before target element', () => {
+        const updatedDashboard = updateChartPosition(
+            dashboard,
+            chartToMove.config_id,
+            targetChart.config_id,
+            'before'
+        )
+
+        expect(updatedDashboard).toEqual({
+            id: 123,
+            name: 'someName',
+            emoji: null,
+            children: [
+                {
+                    type: CustomReportChildType.Row,
+                    children: [
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: 'someOtherChart',
+                        },
+                    ],
+                },
+                {
+                    type: CustomReportChildType.Section,
+                    children: [
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: 'someBeforeTargetChart',
+                        },
+                        chartToMove,
+                        targetChart,
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: 'someAfterTargetChart',
+                        },
+                    ],
+                },
+            ],
+        })
+    })
+
+    it('should leave Report unchanged if chart to move does not exist', () => {
+        const updatedDashboard = updateChartPosition(
+            dashboard,
+            'nonExistentChartId',
+            targetChart.config_id,
+            'before'
+        )
+
+        expect(updatedDashboard).toEqual({
+            id: 123,
+            name: 'someName',
+            emoji: null,
+            children: [
+                {
+                    type: CustomReportChildType.Row,
+                    children: [
+                        chartToMove,
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: 'someOtherChart',
+                        },
+                    ],
+                },
+                {
+                    type: CustomReportChildType.Section,
+                    children: [
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: 'someBeforeTargetChart',
+                        },
+                        targetChart,
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: 'someAfterTargetChart',
+                        },
+                    ],
+                },
+            ],
+        })
+    })
+
+    it('should only remove the chart if target chart does not exist', () => {
+        const updatedDashboard = updateChartPosition(
+            dashboard,
+            chartToMove.config_id,
+            'nonExistentTargetChart',
+            'before'
+        )
+
+        expect(updatedDashboard).toEqual({
+            id: 123,
+            name: 'someName',
+            emoji: null,
+            children: [
+                {
+                    type: CustomReportChildType.Row,
+                    children: [
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: 'someOtherChart',
+                        },
+                    ],
+                },
+                {
+                    type: CustomReportChildType.Section,
+                    children: [
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: 'someBeforeTargetChart',
+                        },
+                        targetChart,
+                        {
+                            type: CustomReportChildType.Chart,
+                            config_id: 'someAfterTargetChart',
+                        },
+                    ],
+                },
+            ],
+        })
     })
 })

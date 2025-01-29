@@ -272,3 +272,124 @@ export const getChildrenIds = (
           )
         : []
 }
+
+const deepClone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T
+
+const removeChartById = <T extends CustomReportChild>(
+    children: T[],
+    chartId: string
+): T[] => {
+    const newChildren: T[] = []
+
+    children.forEach((child) => {
+        if (child.type === CustomReportChildType.Chart) {
+            if (child.config_id !== chartId) {
+                newChildren.push(child)
+            }
+        } else if (child.type === CustomReportChildType.Row) {
+            newChildren.push({
+                ...child,
+                children: removeChartById(child.children, chartId),
+            })
+        } else if (child.type === CustomReportChildType.Section) {
+            newChildren.push({
+                ...child,
+                children: removeChartById(child.children, chartId),
+            })
+        }
+    })
+
+    return newChildren
+}
+
+const findChartById = (
+    children: CustomReportChild[],
+    chartId: string
+): CustomReportChartSchema | undefined => {
+    let chart: CustomReportChartSchema | undefined
+
+    children.forEach((child) => {
+        if (child.type === CustomReportChildType.Chart) {
+            if (child.config_id === chartId) {
+                chart = child
+            }
+        } else {
+            const localChart = findChartById(child.children, chartId)
+            if (localChart) {
+                chart = localChart
+            }
+        }
+    })
+
+    return chart
+}
+
+const findChartIndexById = (children: CustomReportChild[], chartId: string) => {
+    return children.findIndex((child) => {
+        return (
+            child.type === CustomReportChildType.Chart &&
+            child.config_id === chartId
+        )
+    })
+}
+
+const insertChart = <T extends CustomReportChild>(
+    children: T[],
+    targetChartId: string,
+    chart: CustomReportChartSchema,
+    position: 'before' | 'after'
+): T[] => {
+    const foundIndex = findChartIndexById(children, targetChartId)
+
+    if (foundIndex > -1) {
+        const targetIndex = position === 'before' ? foundIndex : foundIndex + 1
+
+        children.splice(targetIndex, 0, chart as T)
+        return [...children]
+    }
+
+    return children.map((child) => {
+        if (child.type !== CustomReportChildType.Chart) {
+            return {
+                ...child,
+                children: insertChart(
+                    child.children,
+                    targetChartId,
+                    chart,
+                    position
+                ),
+            }
+        }
+
+        return child
+    })
+}
+
+export const updateChartPosition = (
+    dashboard: CustomReportSchema,
+    subjectChartId: string,
+    targetChartId: string,
+    position: 'before' | 'after'
+) => {
+    const dashboardCopy = deepClone(dashboard)
+    const chart = findChartById(dashboardCopy.children, subjectChartId)
+
+    if (!chart) return dashboard
+
+    const childrenWithoutChart = removeChartById(
+        dashboardCopy.children,
+        subjectChartId
+    )
+
+    const childrenWithChart = insertChart(
+        childrenWithoutChart,
+        targetChartId,
+        chart,
+        position
+    )
+
+    return {
+        ...dashboardCopy,
+        children: childrenWithChart,
+    }
+}
