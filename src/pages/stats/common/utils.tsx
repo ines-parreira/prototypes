@@ -210,11 +210,12 @@ export type MetricValueFormat =
 const metricToDecimal = (
     value: number,
     formatOptions?: Intl.NumberFormatOptions
-) =>
-    value.toLocaleString(DEFAULT_LOCALE, {
+) => {
+    return value.toLocaleString(DEFAULT_LOCALE, {
         maximumFractionDigits: 2,
         ...formatOptions,
     })
+}
 
 const metricToInteger = (value: number) =>
     value.toLocaleString(DEFAULT_LOCALE, {
@@ -224,7 +225,8 @@ const metricToInteger = (value: number) =>
 export const formatMetricValue = (
     value: number | null | undefined,
     format: MetricValueFormat = 'decimal',
-    notAvailableText: string = NOT_AVAILABLE_TEXT
+    notAvailableText: string = NOT_AVAILABLE_TEXT,
+    additionalFormatOptions?: Intl.NumberFormatOptions
 ) => {
     if (value === null || value === undefined) {
         return notAvailableText
@@ -235,11 +237,11 @@ export const formatMetricValue = (
     }
 
     if (format === 'decimal-to-percent') {
-        return `${metricToDecimal(value * 100)}%`
+        return `${metricToDecimal(value * 100, additionalFormatOptions)}%`
     }
 
     if (format === 'percent') {
-        return `${metricToDecimal(value)}%`
+        return `${metricToDecimal(value, additionalFormatOptions)}%`
     }
 
     if (format === 'percent-refined') {
@@ -252,7 +254,7 @@ export const formatMetricValue = (
         return metricToInteger(Math.ceil(value))
     }
 
-    return metricToDecimal(value)
+    return metricToDecimal(value, additionalFormatOptions)
 }
 
 export type MetricTrendFormat =

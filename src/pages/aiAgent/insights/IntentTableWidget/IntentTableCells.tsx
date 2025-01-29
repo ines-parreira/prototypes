@@ -76,7 +76,8 @@ export const IntentDefaultCellContent = ({
                     {formatMetricValue(
                         intent[column] as number,
                         IntentsColumnsConfig[column]?.format,
-                        IntentsColumnsConfig[column]?.notAvailableText
+                        IntentsColumnsConfig[column]?.notAvailableText,
+                        {minimumFractionDigits: 2}
                     )}
                 </span>{' '}
                 {IntentRowConfig[column]?.hint && (
@@ -126,7 +127,8 @@ export const IntentAutomationOpportunitiesCellContent = ({
     const formattedMetricValue = formatMetricValue(
         value,
         IntentsColumnsConfig[column]?.format,
-        IntentsColumnsConfig[column]?.notAvailableText
+        IntentsColumnsConfig[column]?.notAvailableText,
+        {minimumFractionDigits: 2}
     )
 
     const values = useMemo(

@@ -68,7 +68,7 @@ describe('IntentTableCells', () => {
                     column={IntentTableColumn.Tickets}
                 />
             )
-            expect(screen.getByText('200')).toBeInTheDocument()
+            expect(screen.getByText('200.00')).toBeInTheDocument()
         })
     })
 
@@ -104,7 +104,7 @@ describe('IntentTableCells', () => {
                     allIntents={mockAllIntents}
                 />
             )
-            expect(screen.getByText('+50%')).toBeInTheDocument()
+            expect(screen.getByText('+50.00%')).toBeInTheDocument()
         })
     })
 
