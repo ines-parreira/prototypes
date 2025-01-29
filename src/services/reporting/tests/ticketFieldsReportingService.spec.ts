@@ -13,6 +13,7 @@ import {
 } from 'hooks/reporting/useTimeSeries'
 import {OrderDirection} from 'models/api/types'
 import {ReportingGranularity} from 'models/reporting/types'
+import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
 import {formatDates} from 'pages/stats/utils'
 import {
     fetchCustomFieldsReportData,
@@ -161,6 +162,7 @@ describe('ticketFieldsReportingService', () => {
                 userTimezone,
                 granularity,
                 {
+                    selectedBTODMetric: BusiestTimeOfDaysMetrics.TicketsCreated,
                     customFieldsOrder,
                     selectedCustomFieldId: String(selectedCustomFieldId),
                 }
@@ -182,6 +184,7 @@ describe('ticketFieldsReportingService', () => {
                 userTimezone,
                 granularity,
                 {
+                    selectedBTODMetric: BusiestTimeOfDaysMetrics.TicketsCreated,
                     customFieldsOrder,
                     selectedCustomFieldId: String(selectedCustomFieldId),
                 }
@@ -200,6 +203,7 @@ describe('ticketFieldsReportingService', () => {
                 userTimezone,
                 granularity,
                 {
+                    selectedBTODMetric: BusiestTimeOfDaysMetrics.TicketsCreated,
                     customFieldsOrder,
                     selectedCustomFieldId: null,
                 }
@@ -220,6 +224,7 @@ describe('ticketFieldsReportingService', () => {
                 userTimezone,
                 granularity,
                 {
+                    selectedBTODMetric: BusiestTimeOfDaysMetrics.TicketsCreated,
                     customFieldsOrder,
                     selectedCustomFieldId: String(selectedCustomFieldId),
                 }

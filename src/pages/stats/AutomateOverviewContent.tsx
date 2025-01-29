@@ -66,7 +66,7 @@ import {AutomatedInteractionByFeatures} from 'pages/stats/types'
 import {saveReport} from 'services/reporting/automateOverviewReportingService'
 
 export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
-
+const DOWNLOAD_AUTOMATE_DATA_BUTTON_TITLE = 'Download data'
 const BILLING_PIPE_LINE_DATE = 'June 20, 2023'
 
 export function getGreyAreaHint(showGreyArea: GreyArea | null) {
@@ -315,6 +315,7 @@ export default function AutomateOverviewContent({
                                 )
                             }}
                             disabled={false}
+                            title={DOWNLOAD_AUTOMATE_DATA_BUTTON_TITLE}
                         />
                     </>
                 }

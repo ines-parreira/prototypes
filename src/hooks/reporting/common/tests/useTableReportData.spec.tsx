@@ -13,6 +13,10 @@ import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {
+    busiestTimesSlice,
+    initialState as busiestTimesSliceInitialState,
+} from 'state/ui/stats/busiestTimesSlice'
+import {
     initialState,
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
@@ -37,6 +41,7 @@ describe('useTable hooks', () => {
                         isLoading: false,
                     },
                 },
+                [busiestTimesSlice.name]: busiestTimesSliceInitialState,
             },
         },
     } as RootState
@@ -86,6 +91,7 @@ describe('useTable hooks', () => {
                 ui: {
                     stats: {
                         [ticketInsightsSlice.name]: initialState,
+                        [busiestTimesSlice.name]: busiestTimesSliceInitialState,
                     },
                 },
             } as RootState

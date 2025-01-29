@@ -15,6 +15,7 @@ import {ServiceLevelAgreementsChart} from 'pages/stats/sla/ServiceLevelAgreement
 import {AgentsChart} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import {AutoQAChart} from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
 import {BusiestTimesChart} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
+import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
 import {ChannelsChart} from 'pages/stats/support-performance/channels/ChannelsReportConfig'
 import {OverviewChart} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import {TicketInsightsTagsChart} from 'pages/stats/ticket-insights/tags/TagsReportConfig'
@@ -97,6 +98,7 @@ export type ReportFetch = (
     timezone: string,
     granularity: ReportingGranularity,
     context: {
+        selectedBTODMetric: BusiestTimeOfDaysMetrics
         customFieldsOrder: TicketInsightsOrder
         selectedCustomFieldId: string | null
     }

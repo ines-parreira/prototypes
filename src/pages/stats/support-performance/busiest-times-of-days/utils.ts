@@ -1,12 +1,20 @@
 import moment, {Moment} from 'moment-timezone'
 
 import {
+    fetchMessagesSentTimeSeries,
+    fetchTicketsClosedTimeSeries,
+    fetchTicketsCreatedTimeSeries,
+    fetchTicketsRepliedTimeSeries,
     useMessagesSentTimeSeries,
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import {TimeSeriesDataItem, TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
+import {
+    TimeSeriesDataItem,
+    TimeSeriesFetch,
+    TimeSeriesHook,
+} from 'hooks/reporting/useTimeSeries'
 import {
     BusiestTimeOfDaysMetrics,
     DayOfWeek,
@@ -315,6 +323,21 @@ export const getMetricQuery = (
             return useTicketsClosedTimeSeries
         case BusiestTimeOfDaysMetrics.TicketsCreated:
             return useTicketsCreatedTimeSeries
+    }
+}
+
+export const getMetricFetch = (
+    metric: BusiestTimeOfDaysMetrics
+): TimeSeriesFetch => {
+    switch (metric) {
+        case BusiestTimeOfDaysMetrics.MessagesSent:
+            return fetchMessagesSentTimeSeries
+        case BusiestTimeOfDaysMetrics.TicketsReplied:
+            return fetchTicketsRepliedTimeSeries
+        case BusiestTimeOfDaysMetrics.TicketsClosed:
+            return fetchTicketsClosedTimeSeries
+        case BusiestTimeOfDaysMetrics.TicketsCreated:
+            return fetchTicketsCreatedTimeSeries
     }
 }
 

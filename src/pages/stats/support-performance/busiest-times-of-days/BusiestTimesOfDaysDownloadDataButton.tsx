@@ -2,10 +2,9 @@ import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
-import Button from 'pages/common/components/button/Button'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
-import {useAggregatedBusiestTimesOfDayData} from 'pages/stats/support-performance/busiest-times-of-days/useAggregatedBusiestTimesOfDayData'
-import {saveReport} from 'services/reporting/busiestTimesOfDaysReportingService'
+import {DownloadDataButton} from 'pages/stats/support-performance/components/DownloadDataButton'
+import {useAggregatedBusiestTimesOfDayReportData} from 'services/reporting/busiestTimesOfDaysReportingService'
+import {saveZippedFiles} from 'utils/file'
 
 const DOWNLOAD_BUTTON_TITLE = 'Download Busiest Times of Days Data'
 
@@ -14,24 +13,19 @@ export const BusiestTimesOfDaysDownloadDataButton = ({
 }: {
     useMetricQuery: TimeSeriesHook
 }) => {
-    const {btodData, isLoading, period} =
-        useAggregatedBusiestTimesOfDayData(useMetricQuery)
+    const {files, fileName, isLoading} =
+        useAggregatedBusiestTimesOfDayReportData(useMetricQuery)
 
     return (
-        <Button
-            intent="secondary"
-            fillStyle="ghost"
+        <DownloadDataButton
             onClick={async () => {
                 logEvent(SegmentEvent.StatDownloadClicked, {
                     name: 'all-metrics',
                 })
-                await saveReport(btodData, period)
+                await saveZippedFiles(files, fileName)
             }}
-            isDisabled={isLoading}
+            disabled={isLoading}
             title={DOWNLOAD_BUTTON_TITLE}
-            leadingIcon="file_download"
-        >
-            {DOWNLOAD_DATA_BUTTON_LABEL}
-        </Button>
+        />
     )
 }

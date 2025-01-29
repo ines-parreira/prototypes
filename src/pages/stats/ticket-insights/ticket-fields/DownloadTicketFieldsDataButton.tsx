@@ -9,6 +9,8 @@ import {useCustomFieldsReportData} from 'services/reporting/ticketFieldsReportin
 import {getCustomFieldsOrder} from 'state/ui/stats/ticketInsightsSlice'
 import {saveZippedFiles} from 'utils/file'
 
+const TICKET_FIELDS_DOWNLOAD_TITLE = 'Download Ticket Field data'
+
 export const DownloadTicketFieldsDataButton = ({
     selectedCustomFieldId,
 }: {
@@ -35,6 +37,7 @@ export const DownloadTicketFieldsDataButton = ({
                 await saveZippedFiles(files, fileName)
             }}
             disabled={isLoading}
+            title={TICKET_FIELDS_DOWNLOAD_TITLE}
         />
     )
 }

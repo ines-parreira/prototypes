@@ -1,17 +1,22 @@
-import moment from 'moment/moment'
+import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
+import {ReportingGranularity} from 'models/reporting/types'
 
-import {Period} from 'models/stat/types'
+import {Period, StatsFilters} from 'models/stat/types'
 import {
+    BusiestTimeOfDaysMetrics,
     DayOfWeek,
     HOUR_COLUMN,
 } from 'pages/stats/support-performance/busiest-times-of-days/types'
+import {useAggregatedBusiestTimesOfDayData} from 'pages/stats/support-performance/busiest-times-of-days/useAggregatedBusiestTimesOfDayData'
 import {
     BTODData,
     get24Hours,
+    getAggregatedBusiestTimesOfDayData,
+    getMetricFetch,
     hourFromHourIndex,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
-import {DATE_TIME_FORMAT} from 'services/reporting/constants'
-import {createCsv, saveZippedFiles} from 'utils/file'
+import {createCsv} from 'utils/file'
 
 const turnIntoArray = (data: BTODData): unknown[][] => {
     const daysOfWeek: DayOfWeek[] = Object.values(DayOfWeek)
@@ -26,21 +31,51 @@ const turnIntoArray = (data: BTODData): unknown[][] => {
     return [[...columnLabels], ...resultData]
 }
 
-const BTOD_REPORT_FILENAME = 'busiest-times-of-days'
+export const BTOD_REPORT_FILENAME = 'busiest-times-of-days'
 
-export const saveReport = async (data: BTODData, period?: Period) => {
+export const createReport = (data: BTODData, period: Period) => {
     const btodData = turnIntoArray(data)
+    const fileName = getCsvFileNameWithDates(period, BTOD_REPORT_FILENAME)
 
-    const export_datetime = moment().format(DATE_TIME_FORMAT)
-    const startDate = moment(period?.start_datetime).format(DATE_TIME_FORMAT)
-    const endDate = moment(period?.end_datetime).format(DATE_TIME_FORMAT)
-    const periodPrefix = `${startDate}_${endDate}`
-
-    return saveZippedFiles(
-        {
-            [`${periodPrefix}-${BTOD_REPORT_FILENAME}-${export_datetime}.csv`]:
-                createCsv(btodData),
+    return {
+        files: {
+            [fileName]: createCsv(btodData),
         },
-        `${periodPrefix}-${BTOD_REPORT_FILENAME}-${export_datetime}`
-    )
+        fileName,
+    }
+}
+
+export const useAggregatedBusiestTimesOfDayReportData = (
+    useMetricQuery: TimeSeriesHook
+) => {
+    const {btodData, period, isLoading} =
+        useAggregatedBusiestTimesOfDayData(useMetricQuery)
+
+    return {...createReport(btodData, period), isLoading}
+}
+
+export const fetchAggregatedBusiestTimesOfDayReportData = async (
+    statsFilters: StatsFilters,
+    timezone: string,
+    _: ReportingGranularity,
+    context: {
+        selectedBTODMetric: BusiestTimeOfDaysMetrics
+    }
+) => {
+    const fetchQuery = getMetricFetch(context.selectedBTODMetric)
+
+    return fetchQuery(statsFilters, timezone, ReportingGranularity.Hour)
+        .then((result) => ({
+            ...createReport(
+                getAggregatedBusiestTimesOfDayData(result, timezone).btodData,
+                statsFilters.period
+            ),
+            isLoading: false,
+        }))
+        .catch(() => ({
+            files: {},
+            fileName: '',
+            isLoading: false,
+            isError: true,
+        }))
 }

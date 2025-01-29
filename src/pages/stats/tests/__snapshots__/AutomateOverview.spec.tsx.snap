@@ -53,7 +53,7 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
             <button
               aria-disabled="false"
               class="wrapper ghost secondary medium"
-              title="Download Performance Overview Data"
+              title="Download data"
               type="button"
             >
               <i
@@ -677,7 +677,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   <button
                     aria-disabled="false"
                     class="wrapper ghost secondary medium"
-                    title="Download Performance Overview Data"
+                    title="Download data"
                     type="button"
                   >
                     <i
@@ -1405,7 +1405,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 <button
                   aria-disabled="false"
                   class="wrapper ghost secondary medium"
-                  title="Download Performance Overview Data"
+                  title="Download data"
                   type="button"
                 >
                   <i
@@ -2082,7 +2082,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   <button
                     aria-disabled="false"
                     class="wrapper ghost secondary medium"
-                    title="Download Performance Overview Data"
+                    title="Download data"
                     type="button"
                   >
                     <i
@@ -2810,7 +2810,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 <button
                   aria-disabled="false"
                   class="wrapper ghost secondary medium"
-                  title="Download Performance Overview Data"
+                  title="Download data"
                   type="button"
                 >
                   <i
@@ -3487,7 +3487,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   <button
                     aria-disabled="false"
                     class="wrapper ghost secondary medium"
-                    title="Download Performance Overview Data"
+                    title="Download data"
                     type="button"
                   >
                     <i
@@ -4215,7 +4215,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 <button
                   aria-disabled="false"
                   class="wrapper ghost secondary medium"
-                  title="Download Performance Overview Data"
+                  title="Download data"
                   type="button"
                 >
                   <i
@@ -4888,7 +4888,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             <button
               aria-disabled="false"
               class="wrapper ghost secondary medium"
-              title="Download Performance Overview Data"
+              title="Download data"
               type="button"
             >
               <i
@@ -5491,7 +5491,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             <button
               aria-disabled="false"
               class="wrapper ghost secondary medium"
-              title="Download Performance Overview Data"
+              title="Download data"
               type="button"
             >
               <i
@@ -6111,7 +6111,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             <button
               aria-disabled="false"
               class="wrapper ghost secondary medium"
-              title="Download Performance Overview Data"
+              title="Download data"
               type="button"
             >
               <i
@@ -6731,7 +6731,7 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
             <button
               aria-disabled="false"
               class="wrapper ghost secondary medium"
-              title="Download Performance Overview Data"
+              title="Download data"
               type="button"
             >
               <i

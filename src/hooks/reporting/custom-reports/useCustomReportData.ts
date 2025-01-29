@@ -25,6 +25,7 @@ import {
     ReportFetch,
 } from 'pages/stats/custom-reports/types'
 import {ServiceLevelAgreementsReportConfig} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
+import {BusiestTimesReportConfig} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
 import {SupportPerformanceOverviewReportConfig} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import {TicketFieldsReportConfig} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 import {createTimeSeriesPerDimensionReport} from 'services/reporting/SLAsReportingService'
@@ -38,6 +39,7 @@ const chartsLookupTable: Record<string, ChartConfig | undefined> = {
     ...SupportPerformanceOverviewReportConfig.charts,
     ...ServiceLevelAgreementsReportConfig.charts,
     ...TicketFieldsReportConfig.charts,
+    ...BusiestTimesReportConfig.charts,
 }
 
 type Queries = {

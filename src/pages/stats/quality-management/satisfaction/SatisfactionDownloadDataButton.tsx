@@ -6,6 +6,8 @@ import {useSatisfactionMetrics} from 'hooks/reporting/quality-management/satisfa
 import {DownloadDataButton} from 'pages/stats/support-performance/components/DownloadDataButton'
 import {saveReport} from 'services/reporting/satisfactionReportingService'
 
+const DOWNLOAD_SATISFACTION_DATA_BUTTON_TITLE = 'Download Satisfaction data'
+
 export const SatisfactionDownloadDataButton = () => {
     const {reportData, isLoading, period} = useSatisfactionMetrics()
 
@@ -18,6 +20,7 @@ export const SatisfactionDownloadDataButton = () => {
                 await saveReport(reportData, period)
             }}
             disabled={isLoading}
+            title={DOWNLOAD_SATISFACTION_DATA_BUTTON_TITLE}
         />
     )
 }

@@ -6,7 +6,13 @@ import {DownloadDataButton} from 'pages/stats/support-performance/components/Dow
 
 describe('DownloadOverviewData', () => {
     it('should be disabled', () => {
-        render(<DownloadDataButton onClick={jest.fn()} disabled={true} />)
+        render(
+            <DownloadDataButton
+                onClick={jest.fn()}
+                disabled={true}
+                title="some title"
+            />
+        )
         const button = screen.getByRole('button')
 
         expect(button).toBeAriaDisabled()
@@ -15,7 +21,13 @@ describe('DownloadOverviewData', () => {
     it('should call onClick', () => {
         const onClickSpy = jest.fn()
 
-        render(<DownloadDataButton onClick={onClickSpy} disabled={false} />)
+        render(
+            <DownloadDataButton
+                onClick={onClickSpy}
+                disabled={false}
+                title={'some title'}
+            />
+        )
         const button = screen.getByRole('button')
         userEvent.click(button)
 

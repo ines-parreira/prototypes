@@ -9,6 +9,8 @@ import {DownloadDataButton} from 'pages/stats/support-performance/components/Dow
 
 import {saveZippedFiles} from 'utils/file'
 
+const DOWNLOAD_BUTTON_TITLE = 'Download Performance Overview Data'
+
 export const DownloadOverviewData = () => {
     const isDeferredLoadingEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsDeferredLoadingExperiment]
@@ -51,6 +53,7 @@ export const DownloadOverviewData = () => {
                 setWaitForTheReportData(true)
             }}
             disabled={isLoading}
+            title={DOWNLOAD_BUTTON_TITLE}
         />
     )
 }

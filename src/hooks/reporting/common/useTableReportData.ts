@@ -5,6 +5,7 @@ import {ReportingGranularity} from 'models/reporting/types'
 
 import {StatsFilters} from 'models/stat/types'
 import {ReportFetch} from 'pages/stats/custom-reports/types'
+import {getSelectedMetric} from 'state/ui/stats/busiestTimesSlice'
 import {
     getCustomFieldsOrder,
     getSelectedCustomField,
@@ -26,6 +27,7 @@ export const useTables = (
     const customFieldsOrder = useAppSelector(getCustomFieldsOrder)
     const selectedCustomField = useAppSelector(getSelectedCustomField)
 
+    const selectedBTODMetric = useAppSelector(getSelectedMetric)
     const context = useMemo(
         () => ({
             customFieldsOrder,
@@ -33,8 +35,9 @@ export const useTables = (
                 selectedCustomField.id !== null
                     ? String(selectedCustomField.id)
                     : null,
+            selectedBTODMetric,
         }),
-        [customFieldsOrder, selectedCustomField]
+        [customFieldsOrder, selectedCustomField, selectedBTODMetric]
     )
 
     useEffect(() => {

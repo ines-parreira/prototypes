@@ -1,6 +1,11 @@
 import {FilterComponentKey, FilterKey} from 'models/stat/types'
-import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
+import {
+    ChartType,
+    DataExportFormat,
+    ReportConfig,
+} from 'pages/stats/custom-reports/types'
 import {BusiestTimesOfDaysTableChart} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTableChart'
+import {fetchAggregatedBusiestTimesOfDayReportData} from 'services/reporting/busiestTimesOfDaysReportingService'
 
 export const BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS = [
     FilterKey.Channels,
@@ -23,7 +28,12 @@ export const BusiestTimesReportConfig: ReportConfig<BusiestTimesChart> = {
         [BusiestTimesChart.BusiestTimesTable]: {
             chartComponent: BusiestTimesOfDaysTableChart,
             label: 'Busiest times',
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Table,
+                    fetch: fetchAggregatedBusiestTimesOfDayReportData,
+                },
+            ],
             description:
                 'Selected metric broken down per hour per day of the week',
             chartType: ChartType.Table,
