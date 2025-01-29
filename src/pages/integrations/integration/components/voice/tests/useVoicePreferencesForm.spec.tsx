@@ -233,8 +233,11 @@ describe('getDefaultValues', () => {
             name: 'name',
             meta: {
                 preferences: {
+                    record_inbound_calls: false,
+                    record_outbound_calls: false,
                     ring_time: RING_TIME_DEFAULT_VALUE,
                     transcribe: DEFAULT_TRANSCRIBE_PREFERENCES,
+                    voicemail_outside_business_hours: false,
                     wait_time: DEFAULT_WAIT_TIME_PREFERENCES,
                 },
                 recording_notification: DEFAULT_RECORDING_NOTIFICATION,
@@ -247,8 +250,11 @@ describe('getDefaultValues', () => {
             name: 'name',
             meta: {
                 preferences: {
+                    record_inbound_calls: true,
+                    record_outbound_calls: true,
                     ring_time: 10,
                     transcribe: {voicemails: true, recordings: false},
+                    voicemail_outside_business_hours: true,
                     wait_time: {enabled: true, value: 20},
                 },
                 recording_notification: {
@@ -262,12 +268,17 @@ describe('getDefaultValues', () => {
             name: 'name',
             meta: {
                 preferences: {
+                    record_inbound_calls: true,
+                    record_outbound_calls: true,
                     ring_time: 10,
                     transcribe: {voicemails: true, recordings: false},
+                    voicemail_outside_business_hours: true,
                     wait_time: {enabled: true, value: 20},
                 },
                 recording_notification: {
                     voice_message_type: VoiceMessageType.TextToSpeech,
+                    text_to_speech_content:
+                        DEFAULT_RECORDING_NOTIFICATION.text_to_speech_content,
                 },
             },
         })

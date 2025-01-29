@@ -2,7 +2,7 @@ import {
     UpdatePhoneIntegrationSettings,
     useUpdatePhoneSettings,
 } from '@gorgias/api-queries'
-import {isEqual} from 'lodash'
+import {isEqual, merge} from 'lodash'
 import {useEffect} from 'react'
 
 import {useFormContext} from 'react-hook-form'
@@ -109,25 +109,19 @@ export function useFormSubmit(integration: PhoneIntegration) {
 }
 
 export const getDefaultValues = (integration: PhoneIntegration): FormValues => {
-    return {
-        name: integration.name,
+    const defaultValues = {
         meta: {
-            ...integration.meta,
             preferences: {
-                ...integration.meta.preferences,
-                ring_time:
-                    integration.meta.preferences.ring_time ??
-                    RING_TIME_DEFAULT_VALUE,
-                transcribe:
-                    integration.meta.preferences.transcribe ??
-                    DEFAULT_TRANSCRIBE_PREFERENCES,
-                wait_time:
-                    integration.meta.preferences.wait_time ??
-                    DEFAULT_WAIT_TIME_PREFERENCES,
+                record_inbound_calls: false,
+                record_outbound_calls: false,
+                ring_time: RING_TIME_DEFAULT_VALUE,
+                transcribe: DEFAULT_TRANSCRIBE_PREFERENCES,
+                voicemail_outside_business_hours: false,
+                wait_time: DEFAULT_WAIT_TIME_PREFERENCES,
             },
-            recording_notification:
-                integration.meta.recording_notification ??
-                DEFAULT_RECORDING_NOTIFICATION,
+            recording_notification: DEFAULT_RECORDING_NOTIFICATION,
         },
     }
+
+    return merge(defaultValues, integration)
 }
