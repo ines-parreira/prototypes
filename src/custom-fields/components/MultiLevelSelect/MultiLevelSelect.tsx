@@ -168,7 +168,7 @@ export default function MultiLevelSelect<
 
     const handleChange = useCallback(
         (newValue: CustomFieldValue) => {
-            setActive(false)
+            if (!allowMultiValues) setActive(false)
             isMultiValueAllowed(allowMultiValues, value)
                 ? onChange(
                       (!newValue

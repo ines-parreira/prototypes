@@ -32,7 +32,14 @@ describe('<MultiLevelSelect />', () => {
         label: 'dropdown',
         value: 's1::ss2::c2',
         hasError: false,
-        choices: ['s1::a1', 's1::ss2::c1', 's1::ss2::c2', 's1::ss3', 's2'],
+        choices: [
+            's1::a1',
+            's1::ss2::c1',
+            's1::ss2::c2',
+            's1::ss3',
+            's2',
+            's3',
+        ],
         inputId: 'test-input-id',
         isRequired: true,
         onChange: jest.fn(),
@@ -136,7 +143,7 @@ describe('<MultiLevelSelect />', () => {
         )
     })
 
-    it('should call onChange with correct params and when multiple values are selected', () => {
+    it('should call onChange with correct params when multiple values are selected, and keep textbox open', () => {
         render(
             <MultiLevelSelect
                 {...initialProps}
@@ -149,6 +156,11 @@ describe('<MultiLevelSelect />', () => {
         userEvent.click(screen.getByText('s2'))
         expect(initialProps.onChange).toHaveBeenCalledWith([
             's2',
+            's1::ss2::c2',
+        ])
+        userEvent.click(screen.getByText('s3'))
+        expect(initialProps.onChange).toHaveBeenCalledWith([
+            's3',
             's1::ss2::c2',
         ])
     })
