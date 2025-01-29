@@ -102,6 +102,7 @@ export default function CustomFieldSelectButton({
             selectedOption={null as any}
             trigger={SelectTrigger}
             isDisabled={isDisabled}
+            dropdownMaxWidth={320}
         />
     )
 }
