@@ -7,6 +7,7 @@ import {
     CreateAnalyticsCustomReportBody,
     useListAnalyticsCustomReports,
     useUpdateAnalyticsCustomReport,
+    getListAnalyticsCustomReportsQueryOptions,
 } from '@gorgias/api-queries'
 import {
     QueryClientProvider,
@@ -23,9 +24,12 @@ import {
     CUSTOM_REPORT_DELETED_SUCCESS_MESSAGE,
     CUSTOM_REPORT_DELETED_ERROR_MESSAGE,
     CUSTOM_REPORT_EDITED_ERROR_MESSAGE,
+    SUCCESSFULLY_CREATED,
 } from 'hooks/reporting/custom-reports/useCustomReportActions'
 import {CustomReportChildType} from 'models/stat/types'
 import {CustomReportSchema} from 'pages/stats/custom-reports/types'
+import {getErrorMessage} from 'pages/stats/custom-reports/utils'
+import {OverviewChart} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
@@ -45,7 +49,10 @@ const useListAnalyticsCustomReportsMock = assumeMock(
 const useUpdateAnalyticsCustomReportMock = assumeMock(
     useUpdateAnalyticsCustomReport
 )
-
+jest.mock('@gorgias/api-queries')
+const getListAnalyticsCustomReportsQueryOptionsMock = assumeMock(
+    getListAnalyticsCustomReportsQueryOptions
+)
 const mockedDispatch = jest.fn()
 const onCloseMock = jest.fn()
 
@@ -54,12 +61,14 @@ jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
 
 const invalidationKeys = ['someKey', 'otherKey']
-const customReport = {
+const createInvalidateKey = ['dashboard_key']
+
+const customReport: AnalyticsCustomReport = {
     id: 1,
     name: 'Test Report',
     emoji: '🐱',
     type: 'CUSTOM' as AnalyticsCustomReportType,
-    analytics_filter_id: 123,
+    analytics_filter_id: undefined,
     account_id: 1,
     created_by: 1,
     updated_by: 1,
@@ -74,7 +83,7 @@ const duplicateHandlerData = {
     emoji: customReport.emoji,
     children: customReport.children,
     analytics_filter_id: customReport.analytics_filter_id,
-}
+} as CreateAnalyticsCustomReportBody
 
 const deleteHandlerData = {
     id: customReport.id,
@@ -148,6 +157,10 @@ describe('useCustomReportActions', () => {
             ...baseMutationResult,
             mutate: updateMutationMock,
         } as any)
+
+        getListAnalyticsCustomReportsQueryOptionsMock.mockReturnValue({
+            queryKey: createInvalidateKey,
+        })
     })
 
     const invalidateQueriesMock = jest.spyOn(queryClient, 'invalidateQueries')
@@ -379,7 +392,7 @@ describe('useCustomReportActions', () => {
 
             expect(notify).toHaveBeenCalledWith({
                 status: NotificationStatus.Success,
-                message: `Successfully saved 1 chart to ${customReport.name}`,
+                message: `Successfully added 1 chart to ${customReport.name}`,
             })
         })
 
@@ -411,7 +424,7 @@ describe('useCustomReportActions', () => {
 
             expect(notify).toHaveBeenCalledWith({
                 status: NotificationStatus.Success,
-                message: `Successfully saved 2 charts to ${customReport.name}`,
+                message: `Successfully added 2 charts to ${customReport.name}`,
             })
         })
 
@@ -670,6 +683,114 @@ describe('useCustomReportActions', () => {
                     name: 'Test Report',
                 },
             ])
+        })
+    })
+
+    describe('createDashboardHandler', () => {
+        const onSuccessMock = jest.fn()
+        const chartId = OverviewChart.MedianResolutionTimeTrendCard
+        const dashboard = {
+            id: 1,
+            name: 'Test Report 2',
+            analytics_filter_id: null,
+            children: [],
+            emoji: '',
+        }
+        const createHandlerData = {
+            dashboard: dashboard as CustomReportSchema,
+            chartIds: [chartId],
+            onSuccess: onSuccessMock,
+        }
+
+        it('should call createDashboard action with correct params', () => {
+            const {result} = renderHook(() => useCustomReportActions(), {
+                wrapper: ({children}) => (
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                ),
+            })
+
+            result.current.createDashboardHandler(createHandlerData)
+
+            const [mutateArg, mutateOptions] = createMutateMock.mock
+                .calls[0] as [
+                {data: CreateAnalyticsCustomReportBody},
+                {
+                    onSuccess: () => void
+                    onError: () => void
+                },
+            ]
+
+            expect(mutateArg).toEqual({
+                data: {
+                    analytics_filter_id: null,
+                    children: [
+                        {
+                            children: [
+                                {
+                                    config_id: chartId,
+                                    metadata: {},
+                                    type: CustomReportChildType.Chart,
+                                },
+                            ],
+                            metadata: {},
+                            type: CustomReportChildType.Row,
+                        },
+                    ],
+                    emoji: '',
+                    name: dashboard.name,
+                    type: 'custom',
+                },
+            })
+
+            expect(mutateOptions).toEqual(
+                expect.objectContaining({
+                    onSuccess: expect.any(Function),
+                    onError: expect.any(Function),
+                })
+            )
+
+            if (mutateOptions.onSuccess) {
+                mutateOptions.onSuccess()
+            }
+
+            expect(invalidateQueriesMock).toHaveBeenCalledWith(
+                createInvalidateKey
+            )
+
+            expect(notify).toHaveBeenCalledWith({
+                status: NotificationStatus.Success,
+                message: `${dashboard.name} ${SUCCESSFULLY_CREATED}`,
+            })
+
+            expect(onSuccessMock).toHaveBeenCalled()
+        })
+
+        it('should show error notification when duplication fails', () => {
+            const {result} = renderHook(() => useCustomReportActions(), {
+                wrapper: ({children}) => (
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                ),
+            })
+
+            result.current.createDashboardHandler(createHandlerData)
+
+            const [, mutateOptions] = createMutateMock.mock.calls[0] as [
+                unknown,
+                {onError?: () => void},
+            ]
+
+            if (mutateOptions.onError) {
+                mutateOptions.onError()
+            }
+
+            expect(notify).toHaveBeenCalledWith({
+                status: NotificationStatus.Error,
+                message: getErrorMessage(''),
+            })
         })
     })
 })

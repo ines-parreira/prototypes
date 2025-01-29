@@ -11,10 +11,15 @@
         }
     }
 
+    .dropdownWrapper {
+        padding: 0px;
+    }
+
     .dropdownItem {
         display: flex;
         align-items: center;
         gap: @layout-spacing-xs;
+        border-radius: 0;
     }
 
     .moreVertIcon {
@@ -27,7 +32,39 @@
         color: var(--neutral-grey-4);
     }
 
+    .addToDashboardAction {
+        .body-medium();
+        &:hover:not(.disabled) {
+            background: var(--neutral-grey-3);
+        }
+        position: sticky;
+        text-transform: capitalize;
+        justify-content: center;
+        inset: 0px;
+        background: var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-3);
+        color: var(--main-primary);
+        height: 40px;
+        padding: 0 @layout-spacing-xs;
+        > i {
+            color: var(--main-primary);
+        }
+    }
+
     .dropdownLeftIcon {
         color: var(--neutral-grey-6);
+    }
+
+    .dashboardName {
+        .body-semibold();
+    }
+
+    .dashboardName:after {
+        content: ' *';
+        color: var(--feedback-error);
+    }
+
+    .itemsWrapper {
+        padding: @layout-spacing-xs;
     }
 }

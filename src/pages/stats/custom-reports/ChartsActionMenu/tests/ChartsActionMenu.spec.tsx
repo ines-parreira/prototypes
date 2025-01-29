@@ -3,8 +3,10 @@ import userEvent from '@testing-library/user-event'
 import React from 'react'
 
 import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
+import {AddChartToDashboardModal} from 'pages/stats/custom-reports/ChartsActionMenu/AddChartToDashboardModal'
 import {
     ADD_TO_DASHBOARD,
+    ADD_TO_DASHBOARD_CTA,
     ChartsActionMenu,
     REMOVE_FROM_DASHBOARD,
 } from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
@@ -12,13 +14,20 @@ import {
     CustomReportChildType,
     CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
+import {OverviewChart} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/custom-reports/useCustomReportActions')
 const useCustomReportActionsMock = assumeMock(useCustomReportActions)
+jest.mock(
+    'pages/stats/custom-reports/ChartsActionMenu/AddChartToDashboardModal'
+)
+const AddChartToDashboardModalMock = assumeMock(AddChartToDashboardModal)
 
 const updateCustomReportMock = jest.fn()
 const removeChartFromDashboardMock = jest.fn()
+const createDashboardMock = jest.fn()
+const chartName = 'chartName'
 
 const dashboard: CustomReportSchema = {
     id: 1,
@@ -29,7 +38,7 @@ const dashboard: CustomReportSchema = {
 }
 
 describe('<ChartsActionMenu />', () => {
-    const chartId = 'someConfigId'
+    const chartId = OverviewChart.MedianResolutionTimeTrendCard
 
     const dashboardWithANestedChart: CustomReportSchema = {
         id: 3,
@@ -65,18 +74,23 @@ describe('<ChartsActionMenu />', () => {
     ]
 
     beforeEach(() => {
-        return useCustomReportActionsMock.mockReturnValue({
+        useCustomReportActionsMock.mockReturnValue({
             addChartToDashboardHandler: updateCustomReportMock,
             getDashboardsHandler: () => mockData,
             duplicateReportHandler: jest.fn(),
             deleteReportHandler: jest.fn(),
             updateDashboardHandler: jest.fn(),
             removeChartFromDashboardHandler: removeChartFromDashboardMock,
+            createDashboardHandler: createDashboardMock,
         })
+
+        AddChartToDashboardModalMock.mockReturnValue(
+            <div>AddChartToDashboardModal</div>
+        )
     })
 
     it('should render the chart action menu with all the options and select one', () => {
-        render(<ChartsActionMenu chartId="123" />)
+        render(<ChartsActionMenu chartId="123" chartName={chartName} />)
 
         const menu = screen.getByText('more_vert')
         expect(menu).toBeInTheDocument()
@@ -109,7 +123,7 @@ describe('<ChartsActionMenu />', () => {
     })
 
     it('should filter out Dashboards that already contain the Chart', () => {
-        render(<ChartsActionMenu chartId={chartId} />)
+        render(<ChartsActionMenu chartId={chartId} chartName={chartName} />)
 
         const menu = screen.getByText('more_vert')
         userEvent.click(menu)
@@ -123,8 +137,28 @@ describe('<ChartsActionMenu />', () => {
         ).not.toBeInTheDocument()
     })
 
+    it('should contain filtered dashboards and show the add to dashboard action', () => {
+        render(<ChartsActionMenu chartId={chartId} chartName={chartName} />)
+
+        userEvent.click(screen.getByText('more_vert'))
+
+        act(() => {
+            userEvent.click(screen.getByText(ADD_TO_DASHBOARD))
+        })
+
+        expect(screen.getByText(mockData[0].name)).toBeInTheDocument()
+        expect(screen.getByText(mockData[1].name)).toBeInTheDocument()
+        expect(screen.getByText(ADD_TO_DASHBOARD_CTA)).toBeInTheDocument()
+    })
+
     it('should render the action menu with the delete button if dashboardId is defined', () => {
-        render(<ChartsActionMenu chartId={chartId} dashboard={dashboard} />)
+        render(
+            <ChartsActionMenu
+                chartId={chartId}
+                dashboard={dashboard}
+                chartName={chartName}
+            />
+        )
 
         userEvent.click(screen.getByText('more_vert'))
         const action = screen.getByText(REMOVE_FROM_DASHBOARD)
@@ -137,5 +171,28 @@ describe('<ChartsActionMenu />', () => {
             chartId,
             dashboard,
         })
+    })
+
+    it('should render AddChartToDashboardModal when clicking on add to dashboard', () => {
+        render(<ChartsActionMenu chartId={chartId} chartName={chartName} />)
+
+        userEvent.click(screen.getByText('more_vert'))
+
+        act(() => {
+            userEvent.click(screen.getByText(ADD_TO_DASHBOARD))
+        })
+
+        act(() => {
+            userEvent.click(screen.getByText(ADD_TO_DASHBOARD_CTA))
+        })
+
+        expect(AddChartToDashboardModalMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                chartId,
+                chartName: chartName,
+                closeModal: expect.any(Function),
+            }),
+            {}
+        )
     })
 })

@@ -10,7 +10,6 @@ import {
     AnalyticsCustomReportType,
 } from '@gorgias/api-types'
 import {AxiosError} from 'axios'
-
 import React from 'react'
 
 import {REPORTS_MODAL_CONFIG} from 'pages/stats/custom-reports/config'

@@ -36,7 +36,11 @@ export default function MetricCard({
                     {hint && <HintTooltip {...hint} />}
                 </div>
                 {chartId && (
-                    <ChartsActionMenu chartId={chartId} dashboard={dashboard} />
+                    <ChartsActionMenu
+                        chartId={chartId}
+                        dashboard={dashboard}
+                        chartName={title}
+                    />
                 )}
             </div>
 

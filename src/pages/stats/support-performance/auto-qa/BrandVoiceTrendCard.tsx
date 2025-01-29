@@ -7,6 +7,7 @@ import {AutoQAMetric} from 'state/ui/stats/types'
 
 export const BrandVoiceTrendCard = ({
     chartId,
+
     dashboard,
 }: DashboardChartProps) => {
     return (

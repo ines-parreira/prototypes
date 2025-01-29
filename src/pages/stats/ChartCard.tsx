@@ -49,6 +49,7 @@ export default function ChartCard({
                         <ChartsActionMenu
                             chartId={chartId}
                             dashboard={dashboard}
+                            chartName={title}
                         />
                     )}
                 </div>

@@ -105,6 +105,7 @@ describe('AddChartsModal', () => {
             deleteReportHandler: jest.fn(),
             addChartToDashboardHandler: jest.fn(),
             removeChartFromDashboardHandler: jest.fn(),
+            createDashboardHandler: jest.fn(),
         })
     })
 

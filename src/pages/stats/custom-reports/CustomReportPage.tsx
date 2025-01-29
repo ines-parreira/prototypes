@@ -10,7 +10,10 @@ import {CreateCustomReport} from 'pages/stats/custom-reports/CreateCustomReport/
 import {CustomReport} from 'pages/stats/custom-reports/CustomReport'
 import {CustomReportActionButton} from 'pages/stats/custom-reports/CustomReportActionButton'
 import {CustomReportsModal} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
-import {DashboardName} from 'pages/stats/custom-reports/DashboardName'
+import {
+    DashboardName,
+    isValidName,
+} from 'pages/stats/custom-reports/DashboardName'
 import {
     CustomReportChild,
     CustomReportSchema,
@@ -66,8 +69,6 @@ const useNotify = () => {
         [dispatch]
     )
 }
-
-const isValidName = (name: string) => name.trim().length > 2
 
 const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
     const notify = useNotify()
@@ -130,8 +131,8 @@ const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
                     <DashboardName
                         value={details}
                         onChange={setDetails}
-                        isInvalid={!isValidName(details.name)}
                         onBlur={handleUpdateName}
+                        error={isValidName(details.name)}
                     />
                 }
                 right={

@@ -76,7 +76,7 @@ export const CustomReports = () => {
                     <DashboardName
                         value={details}
                         onChange={setDetails}
-                        isInvalid={isError}
+                        error={isError}
                     />
                 }
                 right={

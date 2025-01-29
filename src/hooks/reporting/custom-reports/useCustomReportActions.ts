@@ -1,5 +1,6 @@
 import {
     CreateAnalyticsCustomReportBody,
+    getListAnalyticsCustomReportsQueryOptions,
     useCreateAnalyticsCustomReport,
     useDeleteAnalyticsCustomReport,
     useListAnalyticsCustomReports,
@@ -9,12 +10,16 @@ import {useQueryClient} from '@tanstack/react-query'
 import {useCallback} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {CustomReportSchema} from 'pages/stats/custom-reports/types'
+import {
+    CustomReportSchema,
+    DashboardInput,
+} from 'pages/stats/custom-reports/types'
 import {
     customReportFromApi,
     getChildrenIds,
     getGroupChartsIntoRows,
     createDashboardPayload,
+    getErrorMessage,
 } from 'pages/stats/custom-reports/utils'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -24,6 +29,7 @@ export const CUSTOM_REPORT_DUPLICATE_ERROR_MESSAGE = 'could not be duplicated'
 export const CUSTOM_REPORT_DELETED_SUCCESS_MESSAGE = 'successfully deleted'
 export const CUSTOM_REPORT_DELETED_ERROR_MESSAGE = 'could not be deleted'
 export const CUSTOM_REPORT_EDITED_ERROR_MESSAGE = 'could not be modified'
+export const SUCCESSFULLY_CREATED = 'Successfully created'
 
 const handleMutationSuccess = (
     dispatch: ReturnType<typeof useAppDispatch>,
@@ -63,6 +69,51 @@ export const useCustomReportActions = () => {
     const updateMutation = useUpdateAnalyticsCustomReport()
     const listDashboardsQuery = useListAnalyticsCustomReports()
     const listReportsQueryKey = listDashboardsQuery.queryKey
+
+    const createDashboardHandler = useCallback(
+        ({
+            dashboard,
+            chartIds,
+            onSuccess,
+        }: {
+            dashboard: DashboardInput
+            chartIds: string[]
+            onSuccess?: () => void
+        }) => {
+            const children = getGroupChartsIntoRows(chartIds)
+
+            const apiDashboard = createDashboardPayload({
+                ...dashboard,
+                children,
+            })
+
+            return createMutation.mutate(
+                {
+                    data: apiDashboard,
+                },
+                {
+                    onSuccess: () => {
+                        const {queryKey: customReportsQueryKey} =
+                            getListAnalyticsCustomReportsQueryOptions()
+
+                        void queryClient.invalidateQueries(
+                            customReportsQueryKey
+                        )
+
+                        handleMutationSuccess(
+                            dispatch,
+                            `${dashboard.name} ${SUCCESSFULLY_CREATED}`
+                        )
+
+                        onSuccess && onSuccess()
+                    },
+                    onError: (error) =>
+                        handleMutationError(dispatch, getErrorMessage(error)),
+                }
+            )
+        },
+        [createMutation, dispatch, queryClient]
+    )
 
     const duplicateReportHandler = useCallback(
         (data: CreateAnalyticsCustomReportBody) => {
@@ -128,7 +179,7 @@ export const useCustomReportActions = () => {
             successMessage,
         }: {
             dashboard: CustomReportSchema | undefined
-            chartIds: string[]
+            chartIds?: string[]
             onClose?: () => void
             successMessage?: string
         }) => {
@@ -160,7 +211,7 @@ export const useCustomReportActions = () => {
                             handleMutationSuccess(
                                 dispatch,
                                 successMessage ||
-                                    `Successfully saved ${chartIds.length} ${chartIds.length === 1 ? 'chart' : 'charts'} to ${dashboard.name}`
+                                    `Successfully added ${chartIds?.length} ${chartIds?.length === 1 ? 'chart' : 'charts'} to ${dashboard.name}`
                             )
 
                             if (onClose) {
@@ -236,6 +287,7 @@ export const useCustomReportActions = () => {
     )
 
     return {
+        createDashboardHandler,
         duplicateReportHandler,
         deleteReportHandler,
         updateDashboardHandler,

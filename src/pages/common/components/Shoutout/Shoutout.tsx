@@ -131,6 +131,7 @@ export default function Shoutout({
                     {chartId && (
                         <ChartsActionMenu
                             chartId={chartId}
+                            chartName={value}
                             dashboard={dashboard}
                         />
                     )}

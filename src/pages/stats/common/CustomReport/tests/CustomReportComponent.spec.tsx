@@ -7,6 +7,7 @@ import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComp
 import {
     CustomReportSchema,
     DashboardChartProps,
+    ReportConfig,
 } from 'pages/stats/custom-reports/types'
 
 const content = 'Test'
@@ -36,7 +37,7 @@ describe('<CustomReportComponent />', () => {
                 chartComponent: chartComponentMock,
             },
         },
-    } as any
+    } as unknown as ReportConfig<string>
 
     it('should not render chartId if featureFlag is false', () => {
         render(<CustomReportComponent chart={chart} config={config} />)
