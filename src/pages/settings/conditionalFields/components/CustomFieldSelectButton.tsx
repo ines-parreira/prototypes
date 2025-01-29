@@ -24,6 +24,8 @@ const SelectTrigger = ({
     <Button
         {...buttonProps}
         ref={setRef}
+        intent="secondary"
+        isDisabled={buttonProps['disabled']}
         trailingIcon={isOpen ? 'arrow_drop_up' : 'arrow_drop_down'}
     >
         Add Ticket Field
@@ -34,6 +36,7 @@ type CustomFieldSelectButtonProps = {
     objectType: CustomFieldObjectTypes
     ignoreIds?: number[]
     onSelect: (customField: CustomField) => void
+    isDisabled?: boolean
     className?: string
 }
 
@@ -53,6 +56,7 @@ export default function CustomFieldSelectButton({
     objectType,
     ignoreIds,
     onSelect,
+    isDisabled,
 }: CustomFieldSelectButtonProps) {
     const {data: {data: customFields = []} = {}, isLoading} =
         useCustomFieldDefinitions(
@@ -97,6 +101,7 @@ export default function CustomFieldSelectButton({
             })}
             selectedOption={null as any}
             trigger={SelectTrigger}
+            isDisabled={isDisabled}
         />
     )
 }
