@@ -67,7 +67,7 @@ const tooltipHints = {
         </span>
     ),
     outcome:
-        'The resolution or result of the ticket after being processed by AI Agent.',
+        'Current resolution or result of the ticket after being processed by AI Agent. It may be different from the what the outcome was at the end of selected timeframe.',
     intent: 'The primary topic or issue identified by AI Agent for this ticket.',
 }
 
