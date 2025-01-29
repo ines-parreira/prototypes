@@ -69,7 +69,7 @@ export const OptimizeContainer = () => {
                 period: {
                     start_datetime: moment(
                         subtractsPeriodWithoutData(
-                            dateInPastFromStartOfToday(7)
+                            dateInPastFromStartOfToday(28)
                         )
                     ).format(),
                     end_datetime: moment(
