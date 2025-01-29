@@ -3,14 +3,14 @@ import React from 'react'
 
 import {Provider} from 'react-redux'
 
-import {useFlag} from 'common/flags'
 import {NavBarProvider} from 'common/navigation/components/NavBarProvider'
 import {store} from 'common/store'
+import {useFlag} from 'core/flags'
 import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 
 import App from '../App'
 
-jest.mock('common/flags')
+jest.mock('core/flags')
 jest.mock('hooks/useIsMobileResolution/useIsMobileResolution')
 jest.mock('common/navigation', () => ({
     GlobalNavigation: jest.fn(() => <div data-testid="global-navigation" />),

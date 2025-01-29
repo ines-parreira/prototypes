@@ -1,9 +1,9 @@
 import {Macro} from '@gorgias/api-queries'
 import {useCallback} from 'react'
 
-import useFlag from 'common/flags/hooks/useFlag'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import {OBJECT_TYPES} from 'custom-fields/constants'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {useCustomFieldsConditionsEvaluationResults} from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
@@ -29,8 +29,7 @@ export function useTicketFieldsCheck(ticketId: number) {
     const appliedMacro = useAppSelector(getAppliedMacro)
     const ticketState = useAppSelector(getTicket)
     const conditionalFieldsSupported = useFlag(
-        FeatureFlagKey.TicketConditionalFields,
-        false
+        FeatureFlagKey.TicketConditionalFields
     )
 
     const {

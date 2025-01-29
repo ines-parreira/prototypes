@@ -1,13 +1,13 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
 
-import {useFlag} from 'common/flags'
 import {UserRole} from 'config/types/user'
+import {useFlag} from 'core/flags'
 import {getCurrentUser} from 'state/currentUser/selectors'
 
 import useHasAutoQA from '../useHasAutoQA'
 
-jest.mock('common/flags', () => ({useFlag: jest.fn()}))
+jest.mock('core/flags', () => ({useFlag: jest.fn()}))
 const useFlagMock = useFlag as jest.Mock
 
 jest.mock('hooks/useAppSelector', () => (fn: () => unknown) => fn())

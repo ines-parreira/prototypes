@@ -3,14 +3,14 @@ import {useAgentActivity} from '@gorgias/realtime'
 
 import {useMemo} from 'react'
 
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import {getOtherAgentsOnTicket} from 'state/agents/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 
 export default function useAgentsViewing(ticketId: number) {
-    const isRealtimeEnabled = useFlag(FeatureFlagKey.PubNubRealtime, false)
+    const isRealtimeEnabled = useFlag(FeatureFlagKey.PubNubRealtime)
 
     const currentUser = useAppSelector(getCurrentUser)
     const agentsOnTicket = useAppSelector(

@@ -9,7 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {ulid} from 'ulidx'
 
-import {useFlag} from 'common/flags'
+import {useFlag} from 'core/flags'
 import {shopifyIntegration} from 'fixtures/integrations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {useGetStoreApps} from 'models/workflows/queries'
@@ -26,7 +26,7 @@ import {TemplateConfiguration} from '../../types'
 import TemplateActionForm from '../TemplateActionForm'
 
 jest.mock('launchdarkly-react-client-sdk')
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')

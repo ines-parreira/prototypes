@@ -8,9 +8,9 @@ import configureMockStore from 'redux-mock-store'
 
 import thunk from 'redux-thunk'
 
-import {useFlag} from 'common/flags'
-
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
+
 import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {shopifyIntegration} from 'fixtures/integrations'
@@ -24,7 +24,7 @@ import {renderWithRouter} from 'utils/testing'
 
 import ActionTemplatesView from '../ActionTemplatesView'
 
-jest.mock('common/flags')
+jest.mock('core/flags')
 jest.mock('models/workflows/queries')
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 

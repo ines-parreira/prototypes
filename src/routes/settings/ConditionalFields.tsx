@@ -2,10 +2,10 @@ import React from 'react'
 
 import {Route, Switch, useRouteMatch} from 'react-router-dom'
 
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {PageSection} from 'config/pages'
 import {ADMIN_ROLE} from 'config/user'
+import {useFlag} from 'core/flags'
 
 import NoMatch from 'pages/common/components/NoMatch'
 
@@ -17,8 +17,7 @@ import {renderAppSettings} from './helpers/settingsRenderer'
 export function ConditionalFields() {
     const {path} = useRouteMatch()
     const isTicketConditionalFieldsEnabled = useFlag(
-        FeatureFlagKey.TicketConditionalFields,
-        false
+        FeatureFlagKey.TicketConditionalFields
     )
 
     if (!isTicketConditionalFieldsEnabled) return <NoMatch />

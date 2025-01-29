@@ -5,7 +5,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useFlag} from 'common/flags'
+import {useFlag} from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {EmailIntegration} from 'models/integration/types'
 import {submitSetting} from 'state/currentAccount/actions'
@@ -17,7 +17,7 @@ import EmailIntegrationAddressField from '../EmailIntegrationAddressField'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 jest.mock('hooks/useAppDispatch')

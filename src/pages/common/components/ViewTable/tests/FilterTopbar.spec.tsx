@@ -6,8 +6,8 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {useFlag} from 'core/flags'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {mockSearchRank} from 'fixtures/searchRank'
 import {view as viewFixture} from 'fixtures/views'
@@ -47,7 +47,7 @@ jest.mock('common/segment')
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
 const mockUseSplitTicketViewMock = useSplitTicketView as jest.Mock
 
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 const mockUseFlag = useFlag as jest.Mock

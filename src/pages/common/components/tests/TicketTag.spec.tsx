@@ -2,14 +2,14 @@ import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
 
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import {THEME_NAME, useTheme} from 'core/theme'
 import {getEnoughContrastedColor} from 'utils/colors'
 
 import TicketTag from '../TicketTag'
 
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 const mockUseFlag = useFlag as jest.Mock

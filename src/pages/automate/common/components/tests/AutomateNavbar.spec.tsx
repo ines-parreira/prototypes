@@ -8,8 +8,8 @@ import {Provider} from 'react-redux'
 import {StaticRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {useFlag} from 'common/flags'
 import {AGENT_ROLE} from 'config/user'
+import {useFlag} from 'core/flags'
 import {ThemeProvider} from 'core/theme'
 import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
@@ -25,7 +25,7 @@ import {assumeMock} from 'utils/testing'
 import AutomateNavbar from '../AutomateNavbar'
 
 jest.mock('utils/launchDarkly')
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 

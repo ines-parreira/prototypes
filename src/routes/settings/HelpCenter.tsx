@@ -2,8 +2,8 @@ import React from 'react'
 
 import {Route, Switch, useRouteMatch} from 'react-router-dom'
 
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 
 import HelpCenterCreationWizard from 'pages/settings/helpCenter/components/HelpCenterCreationWizard'
 import HelpCenterNewView from 'pages/settings/helpCenter/components/HelpCenterNewView'
@@ -18,8 +18,7 @@ import {renderAppSettings} from './helpers/settingsRenderer'
 export function HelpCenter() {
     const {path} = useRouteMatch()
     const isHelpCenterCreationWizardEnabled: boolean = useFlag(
-        FeatureFlagKey.HelpCenterCreationWizard,
-        false
+        FeatureFlagKey.HelpCenterCreationWizard
     )
     return (
         <HelpCenterApiClientProvider>

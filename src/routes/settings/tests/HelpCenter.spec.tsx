@@ -2,7 +2,7 @@ import {render} from '@testing-library/react'
 import React from 'react'
 import {Route, useRouteMatch} from 'react-router-dom'
 
-import {useFlag} from 'common/flags'
+import {useFlag} from 'core/flags'
 import HelpCenterCreationWizard from 'pages/settings/helpCenter/components/HelpCenterCreationWizard'
 import HelpCenterNewView from 'pages/settings/helpCenter/components/HelpCenterNewView'
 import HelpCenterStartView from 'pages/settings/helpCenter/components/HelpCenterStartView'
@@ -20,7 +20,7 @@ jest.mock('react-router-dom', () => ({
     Switch: jest.fn(({children}) => <div>{children}</div>),
     useRouteMatch: jest.fn(),
 }))
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({

@@ -1,12 +1,12 @@
 import {screen} from '@testing-library/react'
 import React from 'react'
 
-import {useFlag} from 'common/flags'
+import {useFlag} from 'core/flags'
 import {renderWithRouter} from 'utils/testing'
 
 import CreateActionViewContainer from '../CreateActionViewContainer'
 
-jest.mock('common/flags')
+jest.mock('core/flags')
 jest.mock('../CreateActionFormView', () => () => (
     <div>CreateActionFormView</div>
 ))

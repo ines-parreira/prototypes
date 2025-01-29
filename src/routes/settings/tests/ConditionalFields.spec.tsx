@@ -2,9 +2,9 @@ import {render, screen} from '@testing-library/react'
 import React from 'react'
 import {Route, useRouteMatch} from 'react-router-dom'
 
-import {useFlag} from 'common/flags'
 import {PageSection} from 'config/pages'
 import {ADMIN_ROLE} from 'config/user'
+import {useFlag} from 'core/flags'
 import ConditionalField from 'pages/settings/conditionalFields/ConditionalField'
 import ConditionalFieldsComponent from 'pages/settings/conditionalFields/ConditionalFields'
 import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
@@ -19,7 +19,7 @@ jest.mock('react-router-dom', () => ({
     useRouteMatch: jest.fn(),
 }))
 jest.mock('pages/common/components/NoMatch', () => () => <div>404</div>)
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 const ComponentToRender = () => <div>OK</div>

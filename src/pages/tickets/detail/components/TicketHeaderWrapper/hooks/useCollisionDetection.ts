@@ -1,7 +1,7 @@
 import {User} from '@gorgias/api-queries'
 
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 
 import useRealtimePresence from './useRealtimePresence'
 import useSocketIOPresence from './useSocketIOPresence'
@@ -15,7 +15,7 @@ export type TicketPresenceState = {
 export default function useCollisionDetection(
     ticketId: number
 ): TicketPresenceState {
-    const isRealtimeEnabled = useFlag(FeatureFlagKey.PubNubRealtime, false)
+    const isRealtimeEnabled = useFlag(FeatureFlagKey.PubNubRealtime)
 
     const {agentsViewing, agentsViewingNotTyping, agentsTyping, hasBoth} =
         useSocketIOPresence()

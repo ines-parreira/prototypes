@@ -28,7 +28,7 @@ describe('useFlag', () => {
     })
 
     it('should return the value from the client', () => {
-        const {result} = renderHook(() => useFlag(testFlag, false))
+        const {result} = renderHook(() => useFlag(testFlag))
 
         expect(result.current).toBe(false)
     })
@@ -36,7 +36,7 @@ describe('useFlag', () => {
     it('should set the value once client initialisation completes', async () => {
         ldClientMock.variation.mockReturnValue(false)
 
-        const {result} = renderHook(() => useFlag(testFlag, false))
+        const {result} = renderHook(() => useFlag(testFlag))
         expect(result.current).toBe(false)
 
         ldClientMock.variation.mockReturnValue(true)
@@ -50,7 +50,7 @@ describe('useFlag', () => {
     })
 
     it('should listen for updates to the given flag', () => {
-        const {result} = renderHook(() => useFlag(testFlag, false))
+        const {result} = renderHook(() => useFlag(testFlag))
 
         expect(ldClientMock.on).toHaveBeenCalledWith(
             `change:${testFlag}`,
@@ -69,7 +69,7 @@ describe('useFlag', () => {
     })
 
     it('should stop listening for updates when the hook is unmounted', () => {
-        const {unmount} = renderHook(() => useFlag(testFlag, false))
+        const {unmount} = renderHook(() => useFlag(testFlag))
 
         const [[, onChange]] = ldClientMock.on.mock.calls
         unmount()
@@ -78,5 +78,13 @@ describe('useFlag', () => {
             `change:${testFlag}`,
             onChange
         )
+    })
+
+    it('should return default value when flag cannot be fetched', () => {
+        const defaultValue = true
+        ldClientMock.variation.mockReturnValue(defaultValue)
+        const {result} = renderHook(() => useFlag(testFlag, defaultValue))
+
+        expect(result.current).toBe(defaultValue)
     })
 })

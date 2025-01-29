@@ -14,8 +14,8 @@ import React, {
     useState,
 } from 'react'
 
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import {useStoreAppsContext} from 'pages/aiAgent/actions/providers/StoreAppsContext'
 import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
@@ -1076,8 +1076,7 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
     const [menuItems, setMenuItems] = useState<ReactNode>(null)
 
     const isSimplifiedStepBuilderEnabled = useFlag(
-        FeatureFlagKey.SimplifiedStepBuilder,
-        false
+        FeatureFlagKey.SimplifiedStepBuilder
     )
 
     const initialMenuItems = useMemo<ReactNode>(() => {

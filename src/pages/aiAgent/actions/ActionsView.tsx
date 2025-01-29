@@ -5,8 +5,8 @@ import {useParams, Link} from 'react-router-dom'
 import emptyStateTemplate from 'assets/img/actions/empty-state-template.png'
 import emptyState from 'assets/img/actions/empty-state.png'
 import {AiAgentNotificationType} from 'automate/notifications/types'
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {AiAgentOnboardingState} from 'models/aiAgent/types'
 import {
@@ -34,8 +34,7 @@ const ActionsView = () => {
     const dispatch = useAppDispatch()
 
     const isMultiStepActionEnabled = useFlag(
-        FeatureFlagKey.ActionsUseCaseTemplates,
-        false
+        FeatureFlagKey.ActionsUseCaseTemplates
     )
     const isStandaloneMenuEnabled =
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]

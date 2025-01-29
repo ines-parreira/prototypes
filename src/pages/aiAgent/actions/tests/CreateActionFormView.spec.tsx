@@ -32,7 +32,7 @@ jest.mock('../hooks/useAddStoreApp')
 jest.mock('../hooks/useUpsertAction')
 jest.mock('../hooks/useDeleteAction')
 jest.mock('../hooks/useGetAppImageUrl')
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')

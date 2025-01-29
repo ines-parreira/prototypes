@@ -6,10 +6,10 @@ import {useLocation, useParams} from 'react-router-dom'
 import {Navbar} from 'reactstrap'
 
 import {TicketStatus} from 'business/types/ticket'
-import {useFlag} from 'common/flags'
 import {SegmentEvent} from 'common/segment'
 import {logEvent, logEventWithSampling} from 'common/segment/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {useSearchParam} from 'hooks/useSearchParam'
@@ -68,7 +68,7 @@ export const TicketInfobarContainer = ({
     const hasAutomate = useAppSelector(getHasAutomate)
 
     const hasAIAgent = useHasAIAgent()
-    const hasAutoQA = useFlag<boolean>(FeatureFlagKey.AutoQA, false)
+    const hasAutoQA = useFlag(FeatureFlagKey.AutoQA)
     const hasTicketFeedback = hasAutomate && (hasAIAgent || hasAutoQA)
 
     const location = useLocation()

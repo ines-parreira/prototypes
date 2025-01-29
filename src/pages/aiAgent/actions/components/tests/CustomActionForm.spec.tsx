@@ -21,7 +21,7 @@ import {getInitialConfiguration} from '../../utils'
 import CustomActionForm from '../CustomActionForm'
 
 jest.mock('launchdarkly-react-client-sdk')
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 jest.mock('../../hooks/useUpsertAction')

@@ -8,7 +8,7 @@ import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBu
 
 import LLMPromptTriggerEditor from '../LLMPromptTriggerEditor'
 
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 

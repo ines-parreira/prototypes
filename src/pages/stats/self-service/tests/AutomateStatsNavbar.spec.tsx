@@ -10,7 +10,7 @@ import AutomateStatsNavbar from '../AutomateStatsNavbar'
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const mockUseAppSelector = assumeMock(useAppSelector)
 
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 

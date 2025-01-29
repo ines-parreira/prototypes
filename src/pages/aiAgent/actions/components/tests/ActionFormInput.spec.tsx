@@ -1,11 +1,11 @@
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {useFlag} from 'common/flags'
+import {useFlag} from 'core/flags'
 
 import ActionFormInput from '../ActionFormInput'
 
-jest.mock('common/flags')
+jest.mock('core/flags')
 
 const mockUseFlag = jest.mocked(useFlag)
 

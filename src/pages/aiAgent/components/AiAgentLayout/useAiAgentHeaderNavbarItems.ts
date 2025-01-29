@@ -1,14 +1,11 @@
 import {useRouteMatch} from 'react-router-dom'
 
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 export const useAiAgentHeaderNavbarItems = (shopName: string) => {
-    const isStandaloneMenuEnabled = useFlag(
-        FeatureFlagKey.ConvAiStandaloneMenu,
-        false
-    )
+    const isStandaloneMenuEnabled = useFlag(FeatureFlagKey.ConvAiStandaloneMenu)
 
     const {navigationItems} = useAiAgentNavigation({shopName})
 

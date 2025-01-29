@@ -11,8 +11,8 @@ import classnames from 'classnames'
 import React, {useCallback, useEffect, useState} from 'react'
 import {NavLink, useRouteMatch} from 'react-router-dom'
 
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {GorgiasApiError, OrderDirection} from 'models/api/types'
 import {MacroSortableProperties} from 'models/macro/types'
@@ -39,7 +39,7 @@ export function MacrosSettingsContent() {
     const queryClient = useQueryClient()
     const queryKey = queryKeys.macros.listMacros() as string[]
     queryKey.pop()
-    const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives, false)
+    const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives)
     const isArchiveTab = !!useRouteMatch('/app/settings/macros/archived')
 
     const [listMacrosParams, setListMacrosParams] = useState<ListMacrosParams>({

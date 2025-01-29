@@ -7,8 +7,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {TicketStatus} from 'business/types/ticket'
-import {useFlag} from 'common/flags'
 import {UserRole} from 'config/types/user'
+import {useFlag} from 'core/flags'
 import {ticket} from 'fixtures/ticket'
 import {user} from 'fixtures/users'
 import {Infobar} from 'pages/common/components/infobar/Infobar/Infobar'
@@ -39,7 +39,7 @@ jest.mock('pages/tickets/detail/components/TicketFeedback', () => ({
 }))
 const useHasAIAgentMock = useHasAIAgent as jest.Mock
 
-jest.mock('common/flags', () => ({useFlag: jest.fn()}))
+jest.mock('core/flags', () => ({useFlag: jest.fn()}))
 const useFlagMock = useFlag as jest.Mock
 
 jest.mock('state/currentUser/selectors')

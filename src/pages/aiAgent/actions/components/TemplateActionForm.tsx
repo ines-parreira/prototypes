@@ -5,9 +5,9 @@ import {Controller, FormProvider, useFieldArray, useForm} from 'react-hook-form'
 import {useHistory, useParams, Link} from 'react-router-dom'
 import {ulid} from 'ulidx'
 
-import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {useGetStoreApps} from 'models/workflows/queries'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -291,10 +291,7 @@ const TemplateActionForm = ({configuration, template}: Props) => {
         routes.actions,
     ])
 
-    const isActionEventsLogsEnabled = useFlag(
-        FeatureFlagKey.ActionEventsLogs,
-        false
-    )
+    const isActionEventsLogsEnabled = useFlag(FeatureFlagKey.ActionEventsLogs)
 
     useEffect(() => {
         if (

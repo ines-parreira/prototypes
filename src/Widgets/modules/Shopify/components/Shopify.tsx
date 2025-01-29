@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import Template, {
     TemplateCustomization,
     CustomizationContext,
@@ -49,8 +49,7 @@ export const customization: TemplateCustomization = {
 
 export default function ShopifyWidget(props: WidgetProps) {
     const hideActionsForCustomer = useFlag(
-        FeatureFlagKey.ShopifyHideActionButtons,
-        false
+        FeatureFlagKey.ShopifyHideActionButtons
     )
 
     return (

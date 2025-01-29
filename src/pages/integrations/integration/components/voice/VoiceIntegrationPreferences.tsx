@@ -1,8 +1,8 @@
 import React from 'react'
 
-import {useFlag} from 'common/flags'
 import {Form} from 'components/Form/Form'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import {PhoneIntegration, isPhoneIntegration} from 'models/integration/types'
 import css from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences.less'
 import SettingsContent from 'pages/settings/SettingsContent'
@@ -22,8 +22,7 @@ export default function VoiceIntegrationPreferences({
     const {onSubmit} = useFormSubmit(integration)
 
     const isNewVoicePreferencesFormEnabled = useFlag(
-        FeatureFlagKey.NewVoicePreferencesForm,
-        false
+        FeatureFlagKey.NewVoicePreferencesForm
     )
 
     if (!isPhoneIntegration(integration)) {

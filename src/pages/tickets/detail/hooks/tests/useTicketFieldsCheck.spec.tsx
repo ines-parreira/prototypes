@@ -9,7 +9,7 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import {Map as mockMap} from 'immutable'
 
-import useFlag from 'common/flags/hooks/useFlag'
+import useFlag from 'core/flags/hooks/useFlag'
 
 import {useCustomFieldConditions} from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -98,7 +98,7 @@ jest.mock('custom-fields/hooks/queries/useCustomFieldConditions', () => ({
         isLoading: false,
     })),
 }))
-jest.mock('common/flags/hooks/useFlag')
+jest.mock('core/flags/hooks/useFlag')
 const mockedUseCustomFieldDefinitions = assumeMock(useCustomFieldDefinitions)
 const mockedUseCustomFieldConditions = assumeMock(useCustomFieldConditions)
 const mockedTriggerTicketFieldsErrors = assumeMock(triggerTicketFieldsErrors)

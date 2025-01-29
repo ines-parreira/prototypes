@@ -33,7 +33,7 @@ jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     Redirect: jest.fn(() => <div>Redirect</div>),
 }))
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(() => true),
 }))
 

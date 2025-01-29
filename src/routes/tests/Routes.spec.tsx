@@ -9,10 +9,10 @@ import {Provider} from 'react-redux'
 import {MemoryRouter, Router} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {useFlag} from 'common/flags'
 import {logPageChange} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
+import {useFlag} from 'core/flags'
 import {account} from 'fixtures/account'
 import * as billingFixtures from 'fixtures/billing'
 import {billingState} from 'fixtures/billing'
@@ -41,7 +41,7 @@ jest.mock('routes/settings', () => () => <div>SettingsRoutes</div>)
 jest.mock('common/segment')
 const logPageMock = assumeMock(logPageChange)
 
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 

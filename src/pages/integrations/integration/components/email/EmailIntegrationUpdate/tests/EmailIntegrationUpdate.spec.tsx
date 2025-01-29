@@ -37,7 +37,7 @@ import {
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn().mockReturnValue(false),
 }))
 jest.mock('pages/integrations/integration/components/email/helpers')

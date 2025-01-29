@@ -3,9 +3,9 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
 import navbarCss from 'assets/css/navbar.less'
-import {useFlag} from 'common/flags'
 import {ActiveContent, Navbar} from 'common/navigation'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import {getHasAutomate} from 'state/billing/selectors'
@@ -20,8 +20,7 @@ const AutomateNavbar = () => {
     const isImprovedNavigationEnabled =
         useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
     const isActionsInternalPlatformEnabled = useFlag(
-        FeatureFlagKey.ActionsInternalPlatform,
-        false
+        FeatureFlagKey.ActionsInternalPlatform
     )
 
     return (

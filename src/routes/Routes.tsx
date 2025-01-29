@@ -13,11 +13,11 @@ import {
 import {CompatRoute} from 'react-router-dom-v5-compat'
 
 import {OBS_ADOPT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
-import {useFlag} from 'common/flags'
 import {logPageChange} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {PageSection} from 'config/pages'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
+import {useFlag} from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 // DON'T add 'pages/*' imports above to ensure CSS ordering is preserved. Placing this import elsewhere
 // may cause unexpected CSS precedence issues, breaking the intended design.
@@ -186,10 +186,7 @@ type FeatureFlag = boolean | undefined
 export function AppRoutes() {
     const {path} = useRouteMatch()
     const location = useLocation()
-    const isAiAgentAssistantEnabled = useFlag(
-        FeatureFlagKey.AiAgentAssistant,
-        false
-    )
+    const isAiAgentAssistantEnabled = useFlag(FeatureFlagKey.AiAgentAssistant)
 
     useEffect(() => {
         if (isAiAgentAssistantEnabled) {
@@ -1177,8 +1174,7 @@ function AutomationContent() {
     const isNewChannelsViewEnabled: FeatureFlag =
         useFlags()[FeatureFlagKey.NewChannelsView]
     const isActionsInternalPlatformEnabled = useFlag(
-        FeatureFlagKey.ActionsInternalPlatform,
-        false
+        FeatureFlagKey.ActionsInternalPlatform
     )
 
     return (

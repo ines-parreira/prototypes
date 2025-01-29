@@ -1,9 +1,9 @@
 import cn from 'classnames'
 import React from 'react'
 
-import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
 import {isTrialing as getIsTrialing} from 'state/currentAccount/selectors'
@@ -15,7 +15,7 @@ type Props = {
 }
 
 export default function OfficeHours({onToggleDropdown}: Props) {
-    const hasOfficeHours = useFlag<boolean>(FeatureFlagKey.OfficeHours, false)
+    const hasOfficeHours = useFlag(FeatureFlagKey.OfficeHours)
     const product = useAppSelector(getCurrentHelpdeskPlan)
     const isTrialing = useAppSelector(getIsTrialing)
 

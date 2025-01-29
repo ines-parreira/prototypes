@@ -7,6 +7,7 @@ import {
 } from '@gorgias/api-types'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {render, waitFor, screen} from '@testing-library/react'
+
 import {Map} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
@@ -15,8 +16,8 @@ import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {appQueryClient} from 'api/queryClient'
-import useFlag from 'common/flags/hooks/useFlag'
 import {FeatureFlagKey} from 'config/featureFlags'
+import useFlag from 'core/flags/hooks/useFlag'
 import {getCustomFields} from 'custom-fields/resources'
 import {
     ticketDropdownFieldDefinition,
@@ -40,7 +41,7 @@ type MockedRootState = {
 
 jest.mock('custom-fields/resources')
 jest.mock('@gorgias/api-client')
-jest.mock('common/flags/hooks/useFlag')
+jest.mock('core/flags/hooks/useFlag')
 
 const mockedGetCustomFields = assumeMock(getCustomFields)
 const mockedListCustomFieldConditions = assumeMock(listCustomFieldConditions)

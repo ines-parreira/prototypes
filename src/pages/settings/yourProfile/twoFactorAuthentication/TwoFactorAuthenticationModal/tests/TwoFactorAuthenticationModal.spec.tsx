@@ -11,8 +11,8 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {useFlag} from 'core/flags'
 import {authenticatorData} from 'fixtures/authenticatorData'
 import {recoveryCodes as recoveryCodesFixture} from 'fixtures/recoveryCodes'
 import {
@@ -51,7 +51,7 @@ const createRecoveryCodesMock = createRecoveryCodes as jest.MockedFunction<
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.Mock
 
-jest.mock('common/flags', () => ({useFlag: jest.fn()}))
+jest.mock('core/flags', () => ({useFlag: jest.fn()}))
 const useFlagMock = useFlag as jest.Mock
 
 const waitForModal = async (baseElement: HTMLElement) => {

@@ -9,7 +9,7 @@ import configureMockStore from 'redux-mock-store'
 
 import {ulid} from 'ulidx'
 
-import {useFlag} from 'common/flags'
+import {useFlag} from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useDownloadWorkflowConfigurationStepLogs,
@@ -40,7 +40,7 @@ jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')
 jest.mock('pages/aiAgent/actions/hooks/use3plIntegrations')
-jest.mock('common/flags')
+jest.mock('core/flags')
 
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates

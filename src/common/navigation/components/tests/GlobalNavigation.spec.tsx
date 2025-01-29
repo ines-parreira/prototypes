@@ -2,9 +2,9 @@ import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
 
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
+import {useFlag} from 'core/flags'
 import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {assumeMock} from 'utils/testing'
@@ -34,7 +34,7 @@ jest.mock('../GlobalNavigationSpotlight', () => ({
 jest.mock('../NotificationsItem', () => () => <div>NotificationsItem</div>)
 jest.mock('../UserItem', () => () => <div>UserItem</div>)
 
-jest.mock('common/flags')
+jest.mock('core/flags')
 const mockUseFlag = useFlag as jest.Mock
 
 describe('GlobalNavigation', () => {

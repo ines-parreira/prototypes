@@ -28,7 +28,7 @@ jest.mock('launchdarkly-react-client-sdk')
 jest.mock('models/workflows/queries')
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 jest.mock('../hooks/useAddStoreApp')

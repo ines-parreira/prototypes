@@ -3,7 +3,7 @@ import {EditorState} from 'draft-js'
 import _noop from 'lodash/noop'
 import React, {ComponentProps, MouseEvent} from 'react'
 
-import * as flagUtils from 'common/flags'
+import * as flagUtils from 'core/flags'
 import {utmConfiguration} from 'fixtures/utmConfiguration'
 import ButtonPopover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
 import * as draftjsPluginsUtils from 'pages/common/draftjs/plugins/utils'

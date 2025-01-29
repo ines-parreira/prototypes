@@ -3,7 +3,7 @@ import React from 'react'
 
 import ActionFormInputs from '../ActionFormInputs'
 
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 

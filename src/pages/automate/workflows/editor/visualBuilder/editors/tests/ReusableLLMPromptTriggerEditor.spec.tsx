@@ -8,7 +8,7 @@ import {ReusableLLMPromptTriggerNodeType} from 'pages/automate/workflows/models/
 
 import ReusableLLMPromptTriggerEditor from '../ReusableLLMPromptTriggerEditor'
 
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 

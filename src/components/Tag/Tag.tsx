@@ -9,8 +9,8 @@ import React, {
     useRef,
 } from 'react'
 
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 
 import css from './Tag.less'
 
@@ -51,7 +51,7 @@ const Tag: FC<Props & HTMLAttributes<HTMLDivElement>> = (
 ) => {
     const ref = useRef<HTMLInputElement>(null)
     useImperativeHandle(forwardedRef, () => ref.current!)
-    const hasNewTag = useFlag(FeatureFlagKey.TagNewDesign, false)
+    const hasNewTag = useFlag(FeatureFlagKey.TagNewDesign)
 
     return (
         <div

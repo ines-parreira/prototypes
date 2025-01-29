@@ -5,8 +5,8 @@ import {
 import classNames from 'classnames'
 import React, {memo, useEffect, useMemo, useState} from 'react'
 
-import useFlag from 'common/flags/hooks/useFlag'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import {AI_MANAGED_TYPES, OBJECT_TYPES} from 'custom-fields/constants'
 import {isFieldRequired} from 'custom-fields/helpers/isFieldRequired'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -53,8 +53,9 @@ function TicketFields() {
     const hasAttemptedToCloseTicket = useAppSelector(
         getHasAttemptedToCloseTicket
     )
-    const conditionalFieldsSupported =
-        useFlag(FeatureFlagKey.TicketConditionalFields, false) ?? false
+    const conditionalFieldsSupported = useFlag(
+        FeatureFlagKey.TicketConditionalFields
+    )
 
     const {
         data: {data: ticketFieldDefinitions = []} = {},

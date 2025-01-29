@@ -4,8 +4,8 @@ import React, {useMemo} from 'react'
 
 import {useParams} from 'react-router-dom'
 
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import ActionsPlatformTemplateConditions from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConditions'
 import ActionsPlatformTemplateConfirmation from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConfirmation'
 import ActionsPlatformTemplateInstructions from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateInstructions'
@@ -50,8 +50,7 @@ const ActionFormView = ({
     }>()
 
     const isSimplifiedStepBuilderEnabled = useFlag(
-        FeatureFlagKey.SimplifiedStepBuilder,
-        false
+        FeatureFlagKey.SimplifiedStepBuilder
     )
     const isAdvanced =
         visualBuilderGraph.advanced_datetime || !isSimplifiedStepBuilderEnabled

@@ -2,9 +2,9 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {useParams} from 'react-router-dom'
 
-import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
@@ -31,8 +31,7 @@ const ActionTemplatesView = () => {
     })
 
     const isMultiStepActionEnabled = useFlag(
-        FeatureFlagKey.ActionsUseCaseTemplates,
-        false
+        FeatureFlagKey.ActionsUseCaseTemplates
     )
 
     return (

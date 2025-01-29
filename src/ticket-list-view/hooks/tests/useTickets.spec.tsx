@@ -1,6 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 
-import {useFlag} from 'common/flags'
+import {useFlag} from 'core/flags'
 import useElementSize from 'hooks/useElementSize'
 import useSplitTicketView from 'split-ticket-view-toggle/hooks/useSplitTicketView'
 
@@ -10,7 +10,7 @@ import useTicketData from '../useTicketData'
 import useTicketPartials from '../useTicketPartials'
 import useTickets from '../useTickets'
 
-jest.mock('common/flags', () => ({useFlag: jest.fn()}))
+jest.mock('core/flags', () => ({useFlag: jest.fn()}))
 const useFlagMock = useFlag as jest.Mock
 
 jest.mock('../useTicketData', () => jest.fn())

@@ -2,9 +2,9 @@ import {parseToHsla} from 'color2k'
 import {fromJS, Map} from 'immutable'
 import React, {ComponentProps, useMemo} from 'react'
 
-import {useFlag} from 'common/flags'
 import Tag from 'components/Tag'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import {THEME_NAME, useTheme} from 'core/theme'
 import {getEnoughContrastedColor, isValidColor} from 'utils/colors'
 
@@ -17,7 +17,7 @@ type Props = {
 
 const TicketTag = ({text, className, decoration, title, ...props}: Props) => {
     const theme = useTheme()
-    const hasNewTag = useFlag(FeatureFlagKey.TagNewDesign, false)
+    const hasNewTag = useFlag(FeatureFlagKey.TagNewDesign)
 
     const tagColor = ((decoration || fromJS({})) as Map<any, any>).get(
         'color'

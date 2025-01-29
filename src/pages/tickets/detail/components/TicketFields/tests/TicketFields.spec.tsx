@@ -13,7 +13,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import useFlag from 'common/flags/hooks/useFlag'
+import useFlag from 'core/flags/hooks/useFlag'
 import {useCustomFieldConditions} from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {
@@ -40,7 +40,7 @@ jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
         isLoading: false,
     })),
 }))
-jest.mock('common/flags/hooks/useFlag')
+jest.mock('core/flags/hooks/useFlag')
 
 const mockedUseCustomFieldConditions = assumeMock(useCustomFieldConditions)
 const mockedUseCustomFieldDefinitions = assumeMock(useCustomFieldDefinitions)

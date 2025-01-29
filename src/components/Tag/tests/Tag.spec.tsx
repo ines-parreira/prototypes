@@ -1,12 +1,12 @@
 import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 
 import Tag from '../Tag'
 
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 const mockUseFlag = useFlag as jest.Mock

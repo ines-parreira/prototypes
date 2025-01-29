@@ -1,8 +1,8 @@
 import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {useCallback, useRef} from 'react'
 
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -26,8 +26,7 @@ type Props = {
 
 function EmailIntegrationAddressField({integration}: Props) {
     const isDefaultAddressFeatureEnabled = useFlag(
-        FeatureFlagKey.DefaultEmailAddress,
-        false
+        FeatureFlagKey.DefaultEmailAddress
     )
     const buttonRef = useRef<HTMLButtonElement>(null)
     const dispatch = useAppDispatch()

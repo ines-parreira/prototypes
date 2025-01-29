@@ -2,8 +2,8 @@ import {Tooltip} from '@gorgias/merchant-ui-kit'
 import _omit from 'lodash/omit'
 import React, {useMemo, useRef} from 'react'
 
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import IconButton from 'pages/common/components/button/IconButton'
 import TextInput from 'pages/common/forms/input/TextInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -44,8 +44,7 @@ const ActionFormInput = ({
     const type = 'data_type' in input ? input.data_type : input.kind
 
     const isActionsInputsProductEnabled = useFlag(
-        FeatureFlagKey.ActionsInputsProduct,
-        false
+        FeatureFlagKey.ActionsInputsProduct
     )
 
     const typeOptions = useMemo<Option[]>(() => {

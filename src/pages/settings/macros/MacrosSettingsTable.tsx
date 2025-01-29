@@ -3,9 +3,9 @@ import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React, {ComponentProps, useCallback, useMemo} from 'react'
 import {useRouteMatch} from 'react-router-dom'
 
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {DateAndTimeFormatting} from 'constants/datetime'
+import {useFlag} from 'core/flags'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {OrderDirection} from 'models/api/types'
@@ -53,7 +53,7 @@ export function MacrosSettingsTable({
     setSelectedMacrosIds,
 }: Props) {
     const isArchiveTab = !!useRouteMatch('/app/settings/macros/archived')
-    const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives, false)
+    const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives)
 
     const selectedMacrosLength = useMemo(
         () => selectedMacrosIds.length,

@@ -2,12 +2,12 @@ import {render, screen} from '@testing-library/react'
 import React from 'react'
 import {StaticRouter} from 'react-router-dom'
 
-import {useFlag} from 'common/flags'
+import {useFlag} from 'core/flags'
 import {assumeMock} from 'utils/testing'
 
 import RoutesWrapper from '../RoutesWrapper'
 
-jest.mock('common/flags', () => ({useFlag: jest.fn()}))
+jest.mock('core/flags', () => ({useFlag: jest.fn()}))
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock(

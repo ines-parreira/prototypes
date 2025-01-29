@@ -1,12 +1,12 @@
 import {renderHook} from '@testing-library/react-hooks'
 
-import {useFlag} from 'common/flags'
+import {useFlag} from 'core/flags'
 
 import useCollisionDetection from '../useCollisionDetection'
 import useRealtimePresence from '../useRealtimePresence'
 import useSocketIOPresence from '../useSocketIOPresence'
 
-jest.mock('common/flags')
+jest.mock('core/flags')
 jest.mock('../useRealtimePresence')
 jest.mock('../useSocketIOPresence')
 

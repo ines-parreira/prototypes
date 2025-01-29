@@ -1,8 +1,8 @@
 import React from 'react'
 
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
+import {useFlag} from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
@@ -29,14 +29,10 @@ export default function GlobalNavigation() {
     useNavBarShortcuts()
 
     const hasAutomate = useAppSelector(getHasAutomate)
-    const hasAiAgentStandaloneMenu = useFlag<boolean>(
-        FeatureFlagKey.ConvAiStandaloneMenu,
-        false
+    const hasAiAgentStandaloneMenu = useFlag(
+        FeatureFlagKey.ConvAiStandaloneMenu
     )
-    const hasAiAgentPreview = useFlag<boolean>(
-        FeatureFlagKey.AIAgentPreviewModeAllowed,
-        false
-    )
+    const hasAiAgentPreview = useFlag(FeatureFlagKey.AIAgentPreviewModeAllowed)
     const isAiAgentItemEnabled =
         hasAiAgentStandaloneMenu && (hasAutomate || hasAiAgentPreview)
 

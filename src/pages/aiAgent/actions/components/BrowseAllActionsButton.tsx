@@ -2,8 +2,8 @@ import React from 'react'
 
 import {Link, useParams} from 'react-router-dom'
 
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import Button from 'pages/common/components/button/Button'
 
@@ -14,8 +14,7 @@ export default function CreateCustomActionButton() {
     const {routes} = useAiAgentNavigation({shopName})
 
     const isMultiStepActionEnabled = useFlag(
-        FeatureFlagKey.ActionsUseCaseTemplates,
-        false
+        FeatureFlagKey.ActionsUseCaseTemplates
     )
 
     return (

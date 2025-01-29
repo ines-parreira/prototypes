@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 import React, {ComponentProps} from 'react'
 import {useRouteMatch} from 'react-router-dom'
 
-import {useFlag} from 'common/flags'
+import {useFlag} from 'core/flags'
 import {macros} from 'fixtures/macro'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
@@ -55,7 +55,7 @@ jest.mock(
 )
 const mockUseRouteMatch = useRouteMatch as jest.Mock
 
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 const mockUseFlag = useFlag as jest.Mock

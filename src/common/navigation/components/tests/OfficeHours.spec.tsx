@@ -2,8 +2,8 @@ import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {useFlag} from 'core/flags'
 import type {HelpdeskPlan} from 'models/billing/types'
 import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
 import {isTrialing as getIsTrialing} from 'state/currentAccount/selectors'
@@ -11,7 +11,7 @@ import {assumeMock} from 'utils/testing'
 
 import OfficeHours from '../OfficeHours'
 
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 const useFlagMock = assumeMock(useFlag)

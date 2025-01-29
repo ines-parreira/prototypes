@@ -12,8 +12,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-import useFlag from 'common/flags/hooks/useFlag'
 import {logEvent, SegmentEvent} from 'common/segment'
+import useFlag from 'core/flags/hooks/useFlag'
 import {OBJECT_TYPES} from 'custom-fields/constants'
 import {useCustomFieldsConditionsEvaluationResults} from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
 import {
@@ -99,7 +99,7 @@ jest.mock('state/ticket/actions', () => ({
     triggerTicketFieldsErrors: jest.fn(),
 }))
 
-jest.mock('common/flags/hooks/useFlag')
+jest.mock('core/flags/hooks/useFlag')
 const mockedUseFlag = assumeMock(useFlag)
 const mockStore = configureMockStore([thunk])
 let mockedStore = mockStore({

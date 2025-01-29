@@ -2,7 +2,7 @@ import {useAgentActivity} from '@gorgias/realtime'
 import {renderHook} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
 
-import {useFlag} from 'common/flags'
+import {useFlag} from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 
 import useAgentsViewing from '../useAgentsViewing'
@@ -14,7 +14,7 @@ jest.mock('@gorgias/realtime')
 const mockUseAgentActivity = useAgentActivity as jest.Mock
 const mockGetTicketActivity = jest.fn()
 
-jest.mock('common/flags')
+jest.mock('core/flags')
 const mockUseFlag = useFlag as jest.Mock
 
 describe('useAgentsViewing', () => {

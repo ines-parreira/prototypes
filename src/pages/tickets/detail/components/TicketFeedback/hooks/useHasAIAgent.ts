@@ -1,14 +1,13 @@
 /* istanbul ignore file */
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import {DATE_FEATURE_AVAILABLE} from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import {getAIAgentMessages} from 'state/ticket/selectors'
 
 export default function useHasAIAgent() {
-    const isFeedbackToAiAgentEnabled = useFlag<boolean>(
-        FeatureFlagKey.FeedbackToAIAgentInTicketViews,
-        false
+    const isFeedbackToAiAgentEnabled = useFlag(
+        FeatureFlagKey.FeedbackToAIAgentInTicketViews
     )
 
     const aiMessages = useAppSelector(getAIAgentMessages).filter(

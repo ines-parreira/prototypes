@@ -21,10 +21,10 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
-import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getConfigByName} from 'config/views'
+import {useFlag} from 'core/flags'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -363,8 +363,7 @@ export const FilterTopbar = ({
         }, [dispatch, activeView])
 
     const isTicketFieldsViewFilterEnabled = useFlag(
-        FeatureFlagKey.FilterSearchViewsByTicketFields,
-        false
+        FeatureFlagKey.FilterSearchViewsByTicketFields
     )
 
     const filterableFields = (config.get('fields') as List<any>)

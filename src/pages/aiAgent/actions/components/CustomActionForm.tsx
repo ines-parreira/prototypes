@@ -5,9 +5,9 @@ import {useFieldArray, useForm, Controller, FormProvider} from 'react-hook-form'
 import {useParams, useHistory, Link} from 'react-router-dom'
 import {ulid} from 'ulidx'
 
-import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
@@ -155,10 +155,7 @@ const CustomActionForm = ({configuration}: Props) => {
         }
     }, [history, isActionDeleted, isActionUpserted, routes.actions])
 
-    const isActionEventsLogsEnabled = useFlag(
-        FeatureFlagKey.ActionEventsLogs,
-        false
-    )
+    const isActionEventsLogsEnabled = useFlag(FeatureFlagKey.ActionEventsLogs)
 
     return (
         <ToolbarProvider workflowVariables={variables}>

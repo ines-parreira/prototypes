@@ -2,7 +2,7 @@ import {render, waitFor, fireEvent} from '@testing-library/react'
 import React from 'react'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
-import {useFlag} from 'common/flags'
+import {useFlag} from 'core/flags'
 import * as useOutboundChannels from 'hooks/useOutboundChannels'
 import history from 'pages/history'
 import {assumeMock} from 'utils/testing'
@@ -10,7 +10,7 @@ import {assumeMock} from 'utils/testing'
 import SenderSelectField from '../SenderSelectField'
 
 jest.mock('pages/history')
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 

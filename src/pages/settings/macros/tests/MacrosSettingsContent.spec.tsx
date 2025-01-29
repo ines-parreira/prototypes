@@ -12,7 +12,7 @@ import {Provider} from 'react-redux'
 import {useRouteMatch} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {useFlag} from 'common/flags'
+import {useFlag} from 'core/flags'
 import {macros as macrosFixtures} from 'fixtures/macro'
 import {user} from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -75,7 +75,7 @@ jest.mock(
 )
 const mockUseRouteMatch = useRouteMatch as jest.Mock
 
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 const mockUseFlag = useFlag as jest.Mock

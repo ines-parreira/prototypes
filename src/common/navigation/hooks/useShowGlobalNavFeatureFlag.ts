@@ -1,12 +1,9 @@
-import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 
 export function useDesktopOnlyShowGlobalNavFeatureFlag() {
-    const hasGlobalNav = useFlag<boolean>(
-        FeatureFlagKey.GlobalNavigation,
-        false
-    )
+    const hasGlobalNav = useFlag(FeatureFlagKey.GlobalNavigation)
 
     const isMobileResolution = useIsMobileResolution()
 
@@ -14,10 +11,7 @@ export function useDesktopOnlyShowGlobalNavFeatureFlag() {
 }
 
 export function useShowGlobalNavFeatureFlag() {
-    const hasGlobalNav = useFlag<boolean>(
-        FeatureFlagKey.GlobalNavigation,
-        false
-    )
+    const hasGlobalNav = useFlag(FeatureFlagKey.GlobalNavigation)
 
     return hasGlobalNav
 }

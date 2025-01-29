@@ -7,7 +7,7 @@ import {CustomActionFormInputValues} from '../../types'
 
 import HttpRequestFormInput from '../HttpRequestFormInput'
 
-jest.mock('common/flags', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 

@@ -1,15 +1,15 @@
 import {render} from '@testing-library/react'
 import React from 'react'
 
-import {useFlag} from 'common/flags'
 import {ActiveContent} from 'common/navigation'
+import {useFlag} from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import {assumeMock} from 'utils/testing'
 
 import Navbar from '../Navbar'
 import css from '../Navbar.less'
 
-jest.mock('common/flags', () => ({useFlag: jest.fn()}))
+jest.mock('core/flags', () => ({useFlag: jest.fn()}))
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('common/notifications', () => ({
