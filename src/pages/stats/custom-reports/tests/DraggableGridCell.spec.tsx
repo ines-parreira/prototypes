@@ -1,10 +1,30 @@
-import {DropTargetMonitor} from 'react-dnd'
+import {render, waitFor} from '@testing-library/react'
+import {renderHook, act} from '@testing-library/react-hooks'
+import React from 'react'
+import {DropTargetMonitor, useDragLayer} from 'react-dnd'
 
 import {
+    useMeasure,
     createDragItem,
     createMoveHandler,
+    DraggablePreview,
 } from 'pages/stats/custom-reports/DraggableGridCell'
 import {CustomReportChildType} from 'pages/stats/custom-reports/types'
+import {assumeMock} from 'utils/testing'
+
+const dummyRect = {
+    x: 0,
+    y: 0,
+    width: 100,
+    height: 100,
+    top: 0,
+    left: 0,
+    bottom: 100,
+    right: 100,
+}
+
+jest.mock('react-dnd', () => ({useDragLayer: jest.fn()}))
+const mockUseDragLayer = assumeMock(useDragLayer)
 
 describe('createMoveHandler(node, target, handleMove)', () => {
     const createDummyDragItem = (configId: string = '1', size: number = 2) =>
@@ -14,6 +34,8 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 config_id: configId,
                 type: CustomReportChildType.Chart,
             },
+            element: <div />,
+            rect: dummyRect,
         })
 
     it('returns a function', () => {
@@ -254,5 +276,180 @@ describe('createMoveHandler(node, target, handleMove)', () => {
         handleMove(srcItem, monitor)
 
         expect(onMove).not.toHaveBeenCalled()
+    })
+})
+
+describe('DraggablePreview', () => {
+    it('returns null when not dragging', () => {
+        mockUseDragLayer.mockReturnValue({
+            isDragging: false,
+            currentOffset: null,
+            item: null,
+        })
+
+        const {container} = render(<DraggablePreview />)
+        expect(container.firstChild).toBeNull()
+    })
+
+    it('returns null when no currentOffset', () => {
+        mockUseDragLayer.mockReturnValue({
+            isDragging: true,
+            currentOffset: null,
+            item: null,
+        })
+
+        const {container} = render(<DraggablePreview />)
+        expect(container.firstChild).toBeNull()
+    })
+
+    it('renders preview with correct positioning', () => {
+        const mockItem = {
+            rect: {
+                width: 200,
+                height: 150,
+            },
+            element: <div>Mock Content</div>,
+        }
+
+        mockUseDragLayer.mockReturnValue({
+            isDragging: true,
+            currentOffset: {x: 100, y: 50},
+            item: mockItem,
+        })
+
+        const {container} = render(<DraggablePreview />)
+
+        const previewDiv = container.firstChild as HTMLElement
+        expect(previewDiv).toHaveClass('preview')
+        expect(previewDiv.style.width).toBe('200px')
+        expect(previewDiv.style.height).toBe('150px')
+
+        // Check transform calculation
+        // handleOffset.x = width/2 - HANDLE_WIDTH/2 = 200/2 - 40/2 = 80
+        // x = currentOffset.x - handleOffset.x = 100 - 80 = 20
+        // y = currentOffset.y - 0 = 50
+        expect(previewDiv.style.transform).toBe('translate(20px, 50px)')
+    })
+
+    it('renders the provided element content', () => {
+        const mockItem = {
+            rect: {
+                width: 200,
+                height: 150,
+            },
+            element: <div data-testid="mock-content">Mock Content</div>,
+        }
+
+        mockUseDragLayer.mockReturnValue({
+            isDragging: true,
+            currentOffset: {x: 100, y: 50},
+            item: mockItem,
+        })
+
+        const {getByTestId} = render(<DraggablePreview />)
+        expect(getByTestId('mock-content')).toBeInTheDocument()
+    })
+})
+
+const defaultState = {
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+}
+
+describe('useMeasure', () => {
+    let mockObserve: jest.Mock
+    let mockDisconnect: jest.Mock
+    let mockResizeObserver: jest.Mock
+
+    beforeEach(() => {
+        mockObserve = jest.fn()
+        mockDisconnect = jest.fn()
+        mockResizeObserver = jest.fn((callback) => ({
+            observe: mockObserve,
+            disconnect: mockDisconnect,
+            callback,
+        }))
+        window.ResizeObserver = mockResizeObserver
+    })
+
+    it('should return default state initially', () => {
+        const ref = React.createRef<HTMLDivElement>()
+        const {result} = renderHook(() => useMeasure(ref))
+
+        expect(result.current).toEqual(defaultState)
+    })
+
+    it('should not set up ResizeObserver if ref is null', () => {
+        const ref = React.createRef<HTMLDivElement>()
+        renderHook(() => useMeasure(ref))
+
+        expect(mockResizeObserver).not.toHaveBeenCalled()
+        expect(mockObserve).not.toHaveBeenCalled()
+    })
+
+    it('should set up ResizeObserver when ref is available', () => {
+        const ref = {current: document.createElement('div')}
+        renderHook(() => useMeasure(ref))
+
+        expect(mockResizeObserver).toHaveBeenCalled()
+        expect(mockObserve).toHaveBeenCalledWith(ref.current)
+    })
+
+    it('should update measurements when ResizeObserver fires', async () => {
+        const ref = {current: document.createElement('div')}
+        const {result} = renderHook(() => useMeasure(ref))
+
+        const contentRect = {
+            x: 10,
+            y: 20,
+            width: 200,
+            height: 100,
+            top: 20,
+            left: 10,
+            bottom: 120,
+            right: 210,
+            toJSON: () => {
+                const {toJSON: __toJSON, ...rest} = contentRect
+                return rest
+            },
+        }
+
+        act(() => {
+            const [[callback]] = mockResizeObserver.mock.calls as [
+                [ResizeObserverCallback],
+            ]
+            callback(
+                [{contentRect} as ResizeObserverEntry],
+                mockResizeObserver as unknown as ResizeObserver
+            )
+        })
+
+        await waitFor(() => {
+            expect(result.current).toEqual({
+                x: 10,
+                y: 20,
+                width: 200,
+                height: 100,
+                top: 20,
+                left: 10,
+                bottom: 120,
+                right: 210,
+            })
+        })
+    })
+
+    it('should clean up ResizeObserver on unmount', () => {
+        const ref = {current: document.createElement('div')}
+        const {unmount} = renderHook(() => useMeasure(ref))
+
+        unmount()
+
+        expect(mockDisconnect).toHaveBeenCalled()
     })
 })

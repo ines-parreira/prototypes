@@ -1,7 +1,11 @@
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
-import React, {useRef} from 'react'
-import {useDrag, useDrop, DropTargetMonitor} from 'react-dnd'
+import React, {forwardRef, useRef} from 'react'
+import {useDrag, useDrop, useDragLayer, DropTargetMonitor} from 'react-dnd'
+import {getEmptyImage} from 'react-dnd-html5-backend'
 
+import useId from 'hooks/useId'
+import IconInput from 'pages/common/forms/input/IconInput'
 import css from 'pages/stats/custom-reports/DraggableGridCell.less'
 import {CustomReportChartSchema} from 'pages/stats/custom-reports/types'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
@@ -9,12 +13,19 @@ import DashboardGridCell from 'pages/stats/DashboardGridCell'
 export const createDragItem = ({
     size,
     schema,
+    element,
+    rect,
 }: {
     size: number
     schema: CustomReportChartSchema
+    element: React.ReactNode
+    rect: MeasureRect
 }) => ({
     ...schema,
     size,
+    type: 'ChartType.Card',
+    element,
+    rect,
 })
 
 type DragItem = ReturnType<typeof createDragItem>
@@ -81,6 +92,8 @@ export type DraggableGridCellProps = {
     onDrop: DropHandler
 }
 
+const HANDLE_WIDTH = 40
+
 export const DraggableGridCell = ({
     children,
     size,
@@ -88,31 +101,111 @@ export const DraggableGridCell = ({
     onDrop,
     onMove,
 }: DraggableGridCellProps) => {
-    const nodeRef = useRef<HTMLDivElement>(null)
+    const previewRef = useRef<HTMLDivElement>(null)
 
-    const item = createDragItem({size, schema})
+    const rect = useMeasure(previewRef)
+    const item = createDragItem({element: children, schema, size, rect})
 
-    const [{isDragging}, dragRef] = useDrag({
+    const [{isDragging}, drag, preview] = useDrag({
         item,
         collect: (monitor) => ({isDragging: monitor.isDragging()}),
     })
 
-    const [, dropRef] = useDrop<typeof item, void, void>({
+    const [, drop] = useDrop<typeof item, void, void>({
         accept: item.type,
-        hover: createMoveHandler(nodeRef.current, item, onMove),
+        hover: createMoveHandler(previewRef.current, item, onMove),
         drop: onDrop,
     })
 
-    dragRef(dropRef(nodeRef))
+    preview(drop(previewRef))
+    preview(getEmptyImage(), {captureDraggingState: false})
 
     return (
         <DashboardGridCell size={size} className="pb-0">
             <div
-                ref={nodeRef}
-                className={classNames(css.root, isDragging && css.dragging)}
+                ref={previewRef}
+                className={classNames(
+                    css.root,
+                    css.fallback,
+                    isDragging && css.isDragging
+                )}
             >
+                <Handle ref={drag} />
                 {children}
             </div>
         </DashboardGridCell>
     )
+}
+
+const Handle = forwardRef<HTMLSpanElement>((_, ref) => {
+    const id = 'handle-' + useId()
+
+    return (
+        <span ref={ref} className={css.handle} style={{width: HANDLE_WIDTH}}>
+            <IconInput id={id} icon="drag_indicator" className={css.icon} />
+            <Tooltip target={id} placement="top">
+                Drag to move chart
+            </Tooltip>
+        </span>
+    )
+})
+
+export const DraggablePreview = () => {
+    const {item, isDragging, currentOffset} = useDragLayer((monitor) => ({
+        item: monitor.getItem() as DragItem,
+        isDragging: monitor.isDragging(),
+        currentOffset: monitor.getSourceClientOffset(),
+    }))
+
+    if (!isDragging || !currentOffset) return null
+
+    const handleOffset = {x: item.rect.width / 2 - HANDLE_WIDTH / 2, y: 0}
+
+    const x = currentOffset.x - handleOffset.x
+    const y = currentOffset.y - handleOffset.y
+
+    const transform = `translate(${x}px, ${y}px)`
+
+    return (
+        <div
+            className={css.preview}
+            style={{
+                transform,
+                width: item.rect.width,
+                height: item.rect.height,
+            }}
+        >
+            {item.element}
+        </div>
+    )
+}
+
+const defaultState = {
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+}
+
+type MeasureRect = typeof defaultState
+
+export function useMeasure(ref: React.RefObject<HTMLDivElement>) {
+    const [rect, setRect] = React.useState<MeasureRect>(defaultState)
+
+    React.useLayoutEffect(() => {
+        if (!ref.current) return
+
+        const observer = new window.ResizeObserver((entries) => {
+            if (entries[0]) setRect(entries[0].contentRect.toJSON())
+        })
+
+        observer.observe(ref.current)
+        return () => observer.disconnect()
+    }, [ref])
+
+    return rect
 }

@@ -9,6 +9,7 @@ import {
 } from 'pages/stats/custom-reports/CustomReportChart'
 import {CustomReportRow} from 'pages/stats/custom-reports/CustomReportRow'
 import {CustomReportSection} from 'pages/stats/custom-reports/CustomReportSection'
+import {DraggablePreview} from 'pages/stats/custom-reports/DraggableGridCell'
 import {
     CustomReportChild,
     CustomReportChildType,
@@ -68,6 +69,7 @@ export const CustomReport = ({
                 onMove: moveChart,
                 onDrop: handleDrop,
             })}
+            <DraggablePreview />
         </>
     )
 }

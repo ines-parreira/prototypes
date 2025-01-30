@@ -1,5 +1,7 @@
 import {useGetAnalyticsCustomReport} from '@gorgias/api-queries'
 import React from 'react'
+import {DndProvider} from 'react-dnd'
+import {HTML5Backend} from 'react-dnd-html5-backend'
 
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {CustomReport} from 'pages/stats/custom-reports/CustomReport'
@@ -34,6 +36,13 @@ jest.mock('pages/stats/custom-reports/CustomReportSection')
 const CustomReportSectionMock = assumeMock(CustomReportSection)
 jest.mock('pages/stats/custom-reports/useFiltersFromDashboard')
 const useFiltersFromDashboardMock = assumeMock(useFiltersFromDashboard)
+
+const render = (ui: React.ReactElement) => {
+    return renderWithStore(
+        <DndProvider backend={HTML5Backend}>{ui}</DndProvider>,
+        {}
+    )
+}
 
 describe('CustomReport', () => {
     const section: CustomReportSectionSchema = {
@@ -79,13 +88,12 @@ describe('CustomReport', () => {
     })
 
     it('renders correctly', () => {
-        renderWithStore(
+        render(
             <CustomReport
                 onChartMove={jest.fn()}
                 onChartMoveEnd={jest.fn()}
                 customReport={customReport}
-            />,
-            {}
+            />
         )
 
         expect(CustomReportChartMock).toHaveBeenCalled()
@@ -96,13 +104,12 @@ describe('CustomReport', () => {
     it('calls onChartMove with correct parameters when moving chart', () => {
         const onChartMove = jest.fn()
 
-        renderWithStore(
+        render(
             <CustomReport
                 onChartMove={onChartMove}
                 onChartMoveEnd={jest.fn()}
                 customReport={customReport}
-            />,
-            {}
+            />
         )
 
         const chartProps = CustomReportChartMock.mock.calls[0][0]
@@ -126,13 +133,12 @@ describe('CustomReport', () => {
     it('calls onChartMoveEnd when chart is dropped', () => {
         const onChartMoveEnd = jest.fn()
 
-        renderWithStore(
+        render(
             <CustomReport
                 onChartMove={jest.fn()}
                 onChartMoveEnd={onChartMoveEnd}
                 customReport={customReport}
-            />,
-            {}
+            />
         )
 
         const chartProps = CustomReportChartMock.mock.calls[0][0]
