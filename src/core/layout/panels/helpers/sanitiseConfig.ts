@@ -3,15 +3,8 @@ import clamp from './clamp'
 
 type ConfigKey = keyof PanelConfig
 
-export default function sanitiseConfig(
-    config: PanelConfig,
-    savedSize: number | undefined,
-    totalSize: number
-) {
+export default function sanitiseConfig(config: PanelConfig, totalSize: number) {
     const newConfig = {...config}
-    if (savedSize) {
-        newConfig.defaultSize = savedSize
-    }
 
     Object.entries(newConfig).forEach(([k, v]) => {
         if (v > 0 && v < 1) {

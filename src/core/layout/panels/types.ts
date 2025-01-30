@@ -33,3 +33,5 @@ export type PanelListener = (panelState: PanelState) => void
 export type PanelState = {
     size: number
 }
+
+export type Sizes = Record<string, number>

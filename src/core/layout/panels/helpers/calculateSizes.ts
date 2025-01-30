@@ -3,7 +3,7 @@
 // when panels appear and disappear I've chosen to ignore coverage for
 // this file for the time being - tests will follow once we settle on
 // how we'd like this to behave
-import type {PanelConfig} from '../types'
+import type {PanelConfig, Sizes} from '../types'
 import sum from './sum'
 
 type Options = {
@@ -11,7 +11,8 @@ type Options = {
     configs: Record<string, PanelConfig>
     order: string[]
     previousOrder: string[]
-    previousSizes: Record<string, number>
+    previousSizes: Sizes
+    savedSizes: Sizes
 }
 
 type PanelDelta = [string, number]
@@ -22,6 +23,7 @@ export default function calculateSizes({
     order,
     previousOrder,
     previousSizes,
+    savedSizes,
 }: Options) {
     const sizes = order.reduce(
         (acc, name) => ({...acc, [name]: configs[name].minSize}),
@@ -77,6 +79,18 @@ export default function calculateSizes({
             : order
 
     if (addedPanels.length) {
+        orderedApplyDeltas(
+            addedPanels
+                .filter((name) => !!savedSizes[name])
+                .map<PanelDelta>((name) => [
+                    name,
+                    savedSizes[name] - sizes[name],
+                ])
+                .sort((a, b) => a[1] - b[1])
+        )
+
+        if (remainingSize <= 0) return sizes
+
         evenApplyDeltas(
             addedPanels
                 .filter((name) => configs[name].defaultSize !== Infinity)

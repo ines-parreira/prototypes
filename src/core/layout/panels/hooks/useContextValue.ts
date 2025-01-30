@@ -42,12 +42,12 @@ export default function useContextValue(
     const {handlesMap, panelOrder} = useChildOrder(container, names, ids)
     const sanitisedConfigs = useSanitisedConfigs(
         configs,
-        savedSizes,
         availableSize - subtractedSize
     )
     const [sizes, setSizes] = usePanelSizes(
         availableSize - subtractedSize,
         sanitisedConfigs,
+        savedSizes,
         panelOrder
     )
 

@@ -1,5 +1,7 @@
 import {useCallback, useMemo, useRef} from 'react'
 
+import type {Sizes} from '../types'
+
 const KEY = 'panel-sizes'
 
 function getSavedSizes() {
@@ -15,10 +17,7 @@ function getSavedSizes() {
                 (entry): entry is [string, number] =>
                     typeof entry[1] === 'number'
             )
-            .reduce(
-                (acc, [k, v]) => ({...acc, [k]: v}),
-                {} as Record<string, number>
-            )
+            .reduce((acc, [k, v]) => ({...acc, [k]: v}), {} as Sizes)
     } catch (_err: unknown) {
         return {}
     }
@@ -26,19 +25,19 @@ function getSavedSizes() {
 
 export default function useSavedSizes() {
     const readDone = useRef(false)
-    const savedSizes = useRef<Record<string, number>>({})
+    const savedSizes = useRef<Sizes>({})
     if (!readDone.current) {
         readDone.current = true
         savedSizes.current = getSavedSizes()
     }
 
-    const persistSizes = useCallback((sizes: Record<string, number>) => {
-        const newSizes = {...savedSizes.current, ...sizes}
-        localStorage.setItem(KEY, JSON.stringify(newSizes))
+    const persistSizes = useCallback((sizes: Sizes) => {
+        savedSizes.current = {...savedSizes.current, ...sizes}
+        localStorage.setItem(KEY, JSON.stringify(savedSizes.current))
     }, [])
 
     return useMemo(
-        () => [savedSizes.current, persistSizes] as const,
-        [persistSizes]
+        () => [savedSizes, persistSizes] as const,
+        [persistSizes, savedSizes]
     )
 }

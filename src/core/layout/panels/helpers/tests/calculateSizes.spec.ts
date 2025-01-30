@@ -19,6 +19,7 @@ describe('calculateSizes', () => {
         'ticket-list': {defaultSize: 300, minSize: 300, maxSize: 450},
         view: {defaultSize: Infinity, minSize: 300, maxSize: Infinity},
     }
+    const savedSizes = {}
 
     it('should handle an initial render of the view page', () => {
         const result = calculateSizes({
@@ -27,6 +28,7 @@ describe('calculateSizes', () => {
             order: ['global-navigation', 'navigation', 'view'],
             previousOrder: [],
             previousSizes: {},
+            savedSizes,
         })
 
         expect(result).toEqual({
@@ -48,6 +50,7 @@ describe('calculateSizes', () => {
             ],
             previousOrder: [],
             previousSizes: {},
+            savedSizes,
         })
 
         expect(result).toEqual({
@@ -70,6 +73,7 @@ describe('calculateSizes', () => {
             ],
             previousOrder: [],
             previousSizes: {},
+            savedSizes,
         })
 
         expect(result).toEqual({
@@ -93,6 +97,7 @@ describe('calculateSizes', () => {
             ],
             previousOrder: [],
             previousSizes: {},
+            savedSizes,
         })
 
         expect(result).toEqual({
@@ -120,6 +125,7 @@ describe('calculateSizes', () => {
                 navigation: 238,
                 view: 714,
             },
+            savedSizes,
         })
 
         expect(result).toEqual({
@@ -153,6 +159,7 @@ describe('calculateSizes', () => {
                 'ticket-empty': 814,
                 'ticket-list': 300,
             },
+            savedSizes,
         })
 
         expect(result).toEqual({
@@ -188,6 +195,7 @@ describe('calculateSizes', () => {
                 'ticket-detail': 474,
                 'ticket-list': 300,
             },
+            savedSizes,
         })
 
         expect(result).toEqual({
@@ -222,6 +230,7 @@ describe('calculateSizes', () => {
                 'ticket-detail': 474,
                 'ticket-list': 300,
             },
+            savedSizes,
         })
 
         expect(result).toEqual({
@@ -254,6 +263,7 @@ describe('calculateSizes', () => {
                 'ticket-empty': 414,
                 'ticket-list': 300,
             },
+            savedSizes,
         })
 
         expect(result).toEqual({

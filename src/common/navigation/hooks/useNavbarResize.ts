@@ -24,7 +24,7 @@ export default function useNavbarResize(
     const [savedSizes, persistSizes] = useSavedSizes()
     const [{isResizing, width}, setState] = useState<State>({
         isResizing: false,
-        width: savedSizes.navigation || DEFAULT_WIDTH,
+        width: savedSizes.current.navigation || DEFAULT_WIDTH,
     })
 
     const handleStartResize = useCallback(

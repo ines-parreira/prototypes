@@ -19,7 +19,7 @@ describe('useNavbarResize', () => {
         jest.resetAllMocks()
 
         persistSizes = jest.fn()
-        useSavedSizesMock.mockReturnValue([{}, persistSizes])
+        useSavedSizesMock.mockReturnValue([{current: {}}, persistSizes])
 
         getBoundingClientRect = jest.fn()
         defaultRef = {

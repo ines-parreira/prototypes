@@ -1,9 +1,9 @@
 import {useCallback, useEffect, useMemo, useState} from 'react'
 import type {MouseEvent} from 'react'
 
-import type {Drag} from '../types'
+import type {Drag, Sizes} from '../types'
 
-export default function useDrag(sizes: Record<string, number>) {
+export default function useDrag(sizes: Sizes) {
     const [drag, setDrag] = useState<Drag | null>(null)
 
     useEffect(() => {
