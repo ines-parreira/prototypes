@@ -1,8 +1,8 @@
 import {ExpressionFieldSource, ExpressionOperator} from '@gorgias/api-queries'
 import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {UseFormStateReturn, useFieldArray, useFormState} from 'react-hook-form'
 
+import {UseFormStateReturn, useFieldArray, useFormState} from 'core/forms'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {CustomField} from 'custom-fields/types'
 import {assumeMock, getLastMockCall} from 'utils/testing'
@@ -12,18 +12,18 @@ import {ExpressionField} from '../ExpressionField'
 import {ExpressionRow} from '../ExpressionRow'
 
 jest.mock(
-    'react-hook-form',
+    'core/forms',
     () =>
         ({
-            ...jest.requireActual('react-hook-form'),
+            ...jest.requireActual('core/forms'),
             useFieldArray: jest.fn(),
             useFormState: jest.fn(),
+            FormField: jest.fn(() => <div />),
         }) as Record<string, unknown>
 )
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
     useCustomFieldDefinitions: jest.fn(),
 }))
-jest.mock('components/Form/FormField', () => jest.fn(() => <div />))
 jest.mock('../AddButton', () => ({
     AddButton: jest.fn(() => <button>Add</button>),
 }))

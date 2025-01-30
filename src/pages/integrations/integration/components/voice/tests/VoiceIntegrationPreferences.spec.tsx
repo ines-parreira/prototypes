@@ -3,9 +3,9 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {BrowserRouter} from 'react-router-dom'
 
-import {Form} from 'components/Form/Form'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useFlag} from 'core/flags'
+import {Form} from 'core/forms'
 import {integrationsState} from 'fixtures/integrations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {IntegrationType} from 'models/integration/constants'
@@ -32,7 +32,7 @@ jest.mock('../useVoicePreferencesForm')
 const useFormSubmitMock = assumeMock(useFormSubmit)
 const getDefaultValuesMock = assumeMock(getDefaultValues)
 
-jest.mock('components/Form/Form')
+jest.mock('core/forms')
 const FormMock = assumeMock(Form)
 
 jest.mock('core/flags')

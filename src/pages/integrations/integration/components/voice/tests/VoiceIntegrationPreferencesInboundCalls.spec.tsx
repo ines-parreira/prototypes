@@ -1,11 +1,11 @@
 import {render, RenderResult, screen} from '@testing-library/react'
 import React from 'react'
 
-import FormField from 'components/Form/FormField'
+import {FormField} from 'core/forms'
 
 import {assumeMock} from 'utils/testing'
 
-jest.mock('components/Form/FormField')
+jest.mock('core/forms')
 const FormFieldMock = assumeMock(FormField)
 
 import {

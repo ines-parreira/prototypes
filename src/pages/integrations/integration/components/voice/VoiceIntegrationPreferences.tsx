@@ -1,8 +1,8 @@
 import React from 'react'
 
-import {Form} from 'components/Form/Form'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useFlag} from 'core/flags'
+import {Form} from 'core/forms'
 import {PhoneIntegration, isPhoneIntegration} from 'models/integration/types'
 import css from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences.less'
 import SettingsContent from 'pages/settings/SettingsContent'

@@ -5,7 +5,7 @@ import {useController} from 'react-hook-form'
 import InputField from 'pages/common/forms/input/InputField'
 import {assumeMock, getLastMockCall} from 'utils/testing'
 
-import FormField from '../FormField'
+import {FormField} from '../components/FormField'
 
 jest.mock('react-hook-form', () => ({
     useController: jest.fn(),

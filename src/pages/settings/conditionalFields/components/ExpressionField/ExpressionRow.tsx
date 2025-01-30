@@ -1,8 +1,7 @@
 import {ExpressionOperator} from '@gorgias/api-queries'
 import React from 'react'
-import {useWatch} from 'react-hook-form'
 
-import FormField from 'components/Form/FormField'
+import {FormField, useWatch} from 'core/forms'
 import {CustomField} from 'custom-fields/types'
 import IconButton from 'pages/common/components/button/IconButton'
 

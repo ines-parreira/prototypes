@@ -4,7 +4,7 @@ import {useFormState} from 'react-hook-form'
 
 import {assumeMock} from 'utils/testing'
 
-import FormSubmitButton from '../FormSubmitButton'
+import {FormSubmitButton} from '../components/FormSubmitButton'
 
 jest.mock('react-hook-form', () => ({
     useFormState: jest.fn(),

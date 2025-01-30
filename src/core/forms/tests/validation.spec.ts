@@ -8,7 +8,7 @@ import {
     createResolver,
     toFieldErrors,
     toFormErrors,
-} from '../validation'
+} from '../utils/validation'
 
 describe('toFieldErrors()', () => {
     it('transforms FormErrors into FieldErrors', () => {

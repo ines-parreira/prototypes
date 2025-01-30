@@ -28,14 +28,14 @@ type ControllerParams<CustomFieldProps extends NeededProps> = {
     ) => any
 }
 
-type FormFieldProps<CustomFieldProps extends NeededProps> = {
+export type FormFieldProps<CustomFieldProps extends NeededProps> = {
     field?: ComponentType<CustomFieldProps>
 } & ControllerParams<CustomFieldProps> &
     // onChange, onBlur, value, etc. are handled by the controller
     // we might want to allow some overrides in the future
     Omit<CustomFieldProps, keyof ControllerRenderProps>
 
-export default function FormField<
+export function FormField<
     CustomFieldProps extends NeededProps = ComponentProps<typeof InputField>,
 >({
     name,

@@ -8,7 +8,7 @@ import {useStore} from 'react-redux'
 import {useHistory} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {Form} from 'components/Form/Form'
+import {Form} from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import {StripePaymentMethodType} from 'models/billing/types'
 import BackLink from 'pages/settings/new_billing/components/BackLink'

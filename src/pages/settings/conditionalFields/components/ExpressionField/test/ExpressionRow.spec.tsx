@@ -1,9 +1,8 @@
 import {ExpressionOperator} from '@gorgias/api-queries'
 import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
-import {useWatch} from 'react-hook-form'
 
-import FormField from 'components/Form/FormField'
+import {FormField, useWatch} from 'core/forms'
 import {CustomField} from 'custom-fields/types'
 import {assumeMock} from 'utils/testing'
 
@@ -13,17 +12,17 @@ import {OperatorField} from '../OperatorField'
 import {ValueField} from '../ValueField'
 
 jest.mock(
-    'react-hook-form',
+    'core/forms',
     () =>
         ({
-            ...jest.requireActual('react-hook-form'),
+            ...jest.requireActual('core/forms'),
             useWatch: jest.fn(),
+            FormField: jest.fn(() => <div />),
         }) as Record<string, unknown>
 )
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
     useCustomFieldDefinitions: jest.fn(),
 }))
-jest.mock('components/Form/FormField', () => jest.fn(() => <div />))
 
 const useWatchMock = assumeMock(useWatch)
 

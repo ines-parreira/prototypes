@@ -3,9 +3,7 @@ import {render, screen, fireEvent} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 
 import '@testing-library/jest-dom/extend-expect'
-import {Form} from 'components/Form/Form'
-import FormField from 'components/Form/FormField'
-import FormSubmitButton from 'components/Form/FormSubmitButton'
+import {Form, FormField, FormSubmitButton} from 'core/forms'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import history from 'pages/history'
 import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
@@ -18,11 +16,12 @@ import {DeletionPopover} from '../DeletionPopover'
 import {ExpressionField} from '../ExpressionField'
 import ThenField from '../ThenField'
 
-jest.mock('components/Form/Form', () => ({
+jest.mock('core/forms', () => ({
     Form: jest.fn(({children}) => <form>{children}</form>),
+    FormField: jest.fn(() => <div />),
+    FormSubmitButton: jest.fn(() => <button />),
+    createFormValidator: jest.fn(),
 }))
-jest.mock('components/Form/FormField', () => jest.fn(() => <div />))
-jest.mock('components/Form/FormSubmitButton', () => jest.fn(() => <button />))
 jest.mock('pages/common/forms/ToggleInputField', () =>
     jest.fn(() => <input type="checkbox" />)
 )

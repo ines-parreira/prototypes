@@ -3,7 +3,7 @@ import {validateCreateSlaPolicyBody} from '@gorgias/api-validators'
 import React from 'react'
 import {useLocation, useParams} from 'react-router-dom'
 
-import {toFormErrors} from 'components/Form/validation'
+import {toFormErrors} from 'core/forms'
 import {SLATemplate} from 'pages/settings/SLAs/config/templates'
 import Loader from 'pages/settings/SLAs/features/Loader/Loader'
 

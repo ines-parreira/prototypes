@@ -12,7 +12,7 @@ import {
     FormValidator,
     createResolver,
     toFieldErrors,
-} from './validation'
+} from '../utils/validation'
 
 export type FormProps<TFieldValues extends FieldValues> = PropsWithChildren<
     Omit<UseFormProps<TFieldValues>, 'resolver' | 'errors'> &

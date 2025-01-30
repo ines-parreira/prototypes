@@ -1,6 +1,6 @@
 import React from 'react'
-import {useFieldArray, useFormState} from 'react-hook-form'
 
+import {useFieldArray, useFormState} from 'core/forms'
 import {OBJECT_TYPES} from 'custom-fields/constants'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import Caption from 'pages/common/forms/Caption/Caption'

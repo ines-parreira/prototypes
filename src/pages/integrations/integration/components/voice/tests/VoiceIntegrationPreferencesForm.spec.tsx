@@ -4,9 +4,8 @@ import React from 'react'
 import {useFormContext} from 'react-hook-form'
 import {BrowserRouter} from 'react-router-dom'
 
-import FormField from 'components/Form/FormField'
-import FormSubmitButton from 'components/Form/FormSubmitButton'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {FormField, FormSubmitButton} from 'core/forms'
 import {integrationsState} from 'fixtures/integrations'
 import {IntegrationType} from 'models/integration/constants'
 import {PhoneIntegration} from 'models/integration/types'
@@ -58,13 +57,13 @@ const VoiceIntegrationPreferencesCallRecordingsMock = assumeMock(
 )
 
 const useFormContextMock = assumeMock(useFormContext)
-jest.mock('components/Form/FormField')
+jest.mock('core/forms')
 const FormFieldMock = assumeMock(FormField)
 
 jest.mock('../useDeleteVoiceIntegration')
 const useDeleteVoiceIntegrationMock = assumeMock(useDeleteVoiceIntegration)
 
-jest.mock('components/Form/FormSubmitButton')
+jest.mock('core/forms')
 const FormSubmitButtonMock = assumeMock(FormSubmitButton)
 
 jest.mock('pages/common/components/UnsavedChangesPrompt')

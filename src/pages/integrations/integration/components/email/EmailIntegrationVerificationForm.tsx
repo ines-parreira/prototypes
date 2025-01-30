@@ -1,7 +1,7 @@
 import {EmailIntegration} from '@gorgias/api-queries'
 import React from 'react'
 
-import {Form} from 'components/Form/Form'
+import {Form} from 'core/forms'
 import FormRow from 'pages/common/forms/FormRow'
 import BaseEmailIntegrationInputField from 'pages/integrations/integration/components/email/BaseEmailIntegrationInputField'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'

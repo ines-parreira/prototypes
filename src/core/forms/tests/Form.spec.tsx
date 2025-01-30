@@ -3,11 +3,10 @@ import {produce} from 'immer'
 import _set from 'lodash/set'
 import React from 'react'
 
-import {Form} from 'components/Form/Form'
-import {FormErrors} from 'components/Form/validation'
-
-import FormField from '../FormField'
-import FormSubmitButton from '../FormSubmitButton'
+import {Form} from '../components/Form'
+import {FormField} from '../components/FormField'
+import {FormSubmitButton} from '../components/FormSubmitButton'
+import {FormErrors} from '../utils/validation'
 
 const onSubmit = jest.fn()
 

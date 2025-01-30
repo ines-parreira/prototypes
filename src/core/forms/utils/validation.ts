@@ -1,7 +1,6 @@
 import {ValidationResult, Validator} from '@gorgias/api-validators'
-import {isArray, isObject} from 'lodash'
-import _capitalize from 'lodash/capitalize'
-import {FieldErrors, FieldValues, ResolverResult} from 'react-hook-form'
+import {isArray, isObject, capitalize} from 'lodash'
+import type {FieldErrors, FieldValues, ResolverResult} from 'react-hook-form'
 
 export type FormErrors<V extends FieldValues> = Partial<
     Record<keyof V, unknown>
@@ -49,7 +48,7 @@ export function toFormErrors<V extends FieldValues>(
     return (result.errors ?? []).reduce(
         (acc, error) => ({
             ...acc,
-            [error.path.replace('{base}.', '')]: _capitalize(error.message),
+            [error.path.replace('{base}.', '')]: capitalize(error.message),
         }),
         {} as FormErrors<V>
     )

@@ -4,14 +4,14 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {useFormContext} from 'react-hook-form'
 
-import FormField from 'components/Form/FormField'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {FormField} from 'core/forms'
 import {assumeMock} from 'utils/testing'
 
 import VoiceIntegrationPreferencesCallRecordings from '../VoiceIntegrationPreferencesCallRecordings'
 import VoiceMessageField from '../VoiceMessageField'
 
-jest.mock('components/Form/FormField')
+jest.mock('core/forms')
 const FormFieldMock = assumeMock(FormField)
 
 jest.mock('pages/integrations/integration/components/voice/VoiceMessageField')

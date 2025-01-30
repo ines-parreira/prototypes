@@ -1,9 +1,6 @@
 import React from 'react'
 
-import {Form} from 'components/Form/Form'
-import FormField from 'components/Form/FormField'
-import FormSubmitButton from 'components/Form/FormSubmitButton'
-import {FormValidator} from 'components/Form/validation'
+import {Form, FormField, FormValidator, FormSubmitButton} from 'core/forms'
 import Button from 'pages/common/components/button/Button'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import history from 'pages/history'

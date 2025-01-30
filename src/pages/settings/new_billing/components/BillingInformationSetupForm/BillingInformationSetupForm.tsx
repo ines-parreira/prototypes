@@ -6,8 +6,7 @@ import {SubmitHandler} from 'react-hook-form'
 
 import {useHistory} from 'react-router-dom'
 
-import {Form, type FormProps} from 'components/Form/Form'
-
+import {Form, FormProps} from 'core/forms'
 import {BILLING_PAYMENT_PATH} from 'pages/settings/new_billing/constants'
 import {filterTaxIdsByAddress} from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
 import {useSubmitBillingAddress} from 'pages/settings/new_billing/views/BillingAddressSetupView/hooks/useSubmitBillingAddress'

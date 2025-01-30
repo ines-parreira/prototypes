@@ -4,7 +4,7 @@ import {act, render, screen, waitFor} from '@testing-library/react'
 
 import React from 'react'
 
-import {Form} from 'components/Form/Form'
+import {Form} from 'core/forms'
 import {BillingInformationFields} from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
 import {VATCountries} from 'state/billing/types'
 import {assumeMock} from 'utils/testing'

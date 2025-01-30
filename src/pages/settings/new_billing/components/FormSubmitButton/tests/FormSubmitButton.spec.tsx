@@ -2,7 +2,7 @@ import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 
 import React from 'react'
 
-import {Form} from 'components/Form/Form'
+import {Form} from 'core/forms'
 import {FormInputField} from 'pages/settings/new_billing/components/FormInputField/FormInputField'
 import {FormSubmitButton} from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
 

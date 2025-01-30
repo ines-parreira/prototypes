@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import React from 'react'
 import {Label} from 'reactstrap'
 
-import FormField from 'components/Form/FormField'
+import {FormField} from 'core/forms'
 import {PhoneRingingBehaviour} from 'models/integration/types'
 import CheckBoxField from 'pages/common/forms/CheckBoxField'
 import RadioButtonField from 'pages/common/forms/RadioButtonField'

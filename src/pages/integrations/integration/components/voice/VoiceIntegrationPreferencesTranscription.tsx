@@ -2,8 +2,8 @@ import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import FormField from 'components/Form/FormField'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {FormField} from 'core/forms'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import settingsCss from 'pages/settings/settings.less'
 

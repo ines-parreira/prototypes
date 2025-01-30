@@ -2,13 +2,13 @@ import {render, RenderResult} from '@testing-library/react'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import React from 'react'
 
-import FormField from 'components/Form/FormField'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {FormField} from 'core/forms'
 import {assumeMock} from 'utils/testing'
 
 import VoiceIntegrationPreferencesTranscription from '../VoiceIntegrationPreferencesTranscription'
 
-jest.mock('components/Form/FormField')
+jest.mock('core/forms')
 const FormFieldMock = assumeMock(FormField)
 
 describe('<VoiceIntegrationPreferencesTranscription />', () => {

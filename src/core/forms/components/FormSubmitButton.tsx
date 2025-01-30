@@ -3,9 +3,11 @@ import {useFormState} from 'react-hook-form'
 
 import Button, {type ButtonProps} from 'pages/common/components/button/Button'
 
-export default function FormSubmitButton({
-    ...buttonProps
-}: React.PropsWithChildren<Omit<ButtonProps, 'children'>>) {
+export type FormSubmitButtonProps = Omit<ButtonProps, 'children'> & {
+    children?: React.ReactNode
+}
+
+export function FormSubmitButton({...buttonProps}: FormSubmitButtonProps) {
     const {isDirty} = useFormState()
 
     return (

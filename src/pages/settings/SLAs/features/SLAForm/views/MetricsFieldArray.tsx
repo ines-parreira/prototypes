@@ -1,9 +1,13 @@
 import {CreateSlaPolicyBody} from '@gorgias/api-types'
 import classNames from 'classnames'
 import React, {useEffect, useState} from 'react'
-import {useController, useFieldArray, useFormContext} from 'react-hook-form'
 
-import FormField from 'components/Form/FormField'
+import {
+    FormField,
+    useController,
+    useFieldArray,
+    useFormContext,
+} from 'core/forms'
 import Caption from 'pages/common/forms/Caption/Caption'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import settingsCss from 'pages/settings/settings.less'
