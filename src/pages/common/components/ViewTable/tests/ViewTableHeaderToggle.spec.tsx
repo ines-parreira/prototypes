@@ -1,6 +1,8 @@
 import {render} from '@testing-library/react'
 import React from 'react'
 
+import {MemoryRouter} from 'react-router-dom'
+
 import * as useShowGlobalNavFeatureFlag from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 
 import {ViewTableHeaderToggle} from '../ViewTableHeaderToggle'
@@ -20,7 +22,11 @@ describe('ViewTableHeaderToggle', () => {
     it('renders Toggle when feature flag is true', () => {
         mockUseFeatureFlag.mockReturnValue(true)
 
-        const {getByTestId} = render(<ViewTableHeaderToggle />)
+        const {getByTestId} = render(
+            <MemoryRouter initialEntries={['/app/tickets/123']}>
+                <ViewTableHeaderToggle />
+            </MemoryRouter>
+        )
 
         expect(getByTestId('toggle-component')).toBeInTheDocument()
     })
@@ -28,7 +34,11 @@ describe('ViewTableHeaderToggle', () => {
     it('renders null when feature flag is false', () => {
         mockUseFeatureFlag.mockReturnValue(false)
 
-        const {container} = render(<ViewTableHeaderToggle />)
+        const {container} = render(
+            <MemoryRouter initialEntries={['/app/tickets/123']}>
+                <ViewTableHeaderToggle />
+            </MemoryRouter>
+        )
 
         expect(container.firstChild).toBeNull()
     })
