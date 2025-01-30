@@ -34,6 +34,10 @@ import {
     updateChartPosition,
 } from 'pages/stats/custom-reports/utils'
 import {
+    SatisfactionChart,
+    SatisfactionReportConfig,
+} from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
+import {
     OverviewMetric,
     OverviewMetricConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
@@ -358,7 +362,7 @@ describe('getNumberOfSelections', () => {
 })
 
 describe('getSearchConfig', () => {
-    xit('should return matching charts based on case-insensitive search query', () => {
+    it('should return matching charts based on case-insensitive search query', () => {
         const searchValue =
             OverviewMetricConfig[OverviewMetric.CustomerSatisfaction].title
         const result = getSearchConfig(searchValue)
@@ -377,6 +381,24 @@ describe('getSearchConfig', () => {
                                         .charts[
                                         OverviewChart
                                             .CustomerSatisfactionTrendCard
+                                    ],
+                            },
+                        },
+                    },
+                ],
+            },
+            {
+                category: 'Quality management',
+                children: [
+                    {
+                        type: SatisfactionChart,
+                        config: {
+                            ...SatisfactionReportConfig,
+                            charts: {
+                                [SatisfactionChart.AverageSurveyScoreDonutChart]:
+                                    SatisfactionReportConfig.charts[
+                                        SatisfactionChart
+                                            .AverageSurveyScoreDonutChart
                                     ],
                             },
                         },
