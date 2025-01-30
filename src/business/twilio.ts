@@ -2,9 +2,11 @@ import {TwilioError} from '@twilio/voice-sdk'
 
 export const MAX_DEVICE_RECONNECT_ATTEMPTS = 5
 export const DEFAULT_ERROR_MESSAGE =
-    'An error has occurred while trying to connect to the Gorgias Voice application. Please refresh your browser to reset the connection. If the problem persists, please reach out to support. '
+    'An error has occurred while trying to connect to the Gorgias Voice application. Please refresh your browser to reset the connection. If the problem persists, please reach out to support.'
 export const DEFAULT_WARNING_MESSAGE =
     'Poor network connection detected. Voice calls cannot be properly received or made until connection improves. Try restarting the network on your device.'
+export const MICROPHONE_PERMISSION_ERROR_MESSAGE =
+    'Update your browser settings to allow microphone access so you can place outbound calls'
 
 export enum PhoneCallDirection {
     Inbound = 'inbound',

@@ -3,11 +3,15 @@ import classNames from 'classnames'
 import React, {useEffect} from 'react'
 
 import navbarCss from 'assets/css/navbar.less'
-import {DEFAULT_ERROR_MESSAGE} from 'business/twilio'
+import {
+    DEFAULT_ERROR_MESSAGE,
+    MICROPHONE_PERMISSION_ERROR_MESSAGE,
+} from 'business/twilio'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import useHasPhone from 'hooks/useHasPhone'
 import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
+import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
 import {isDesktopDevice, isDeviceReady} from 'utils/device'
 import {isMacOs} from 'utils/platform'
 
@@ -29,6 +33,8 @@ export default function PlaceCallNavbarButton() {
     const shouldDisplayButton = hasPhone && isDesktopDevice()
     const isDeviceActive = isDeviceReady(device)
 
+    const {permissionDenied} = useMicrophonePermissions()
+
     useConditionalShortcuts(shouldDisplayButton && isDeviceActive, 'Dialpad', {
         OPEN_DIALPAD: {
             action: (e) => {
@@ -44,6 +50,8 @@ export default function PlaceCallNavbarButton() {
         }
     }, [device])
 
+    const isButtonDisabled = !isDeviceActive || permissionDenied
+
     if (!shouldDisplayButton) {
         return null
     }
@@ -53,7 +61,7 @@ export default function PlaceCallNavbarButton() {
             <Button
                 className={classNames(navbarCss.navbarButton, 'flex-grow')}
                 fillStyle="ghost"
-                isDisabled={!isDeviceActive}
+                isDisabled={isButtonDisabled}
                 onClick={() => setIsDeviceVisible(!isDeviceVisible)}
                 ref={buttonRef}
                 id={BUTTON_ID}
@@ -64,10 +72,14 @@ export default function PlaceCallNavbarButton() {
                 />
                 <div className={css.navbarButtonContent}>
                     Place call
-                    {!isDeviceActive && (
+                    {isButtonDisabled && (
                         <DeactivatedViewIcon
                             id="place-call-button"
-                            tooltipText={DEFAULT_ERROR_MESSAGE}
+                            tooltipText={
+                                !isDeviceActive
+                                    ? DEFAULT_ERROR_MESSAGE
+                                    : MICROPHONE_PERMISSION_ERROR_MESSAGE
+                            }
                         />
                     )}
                 </div>

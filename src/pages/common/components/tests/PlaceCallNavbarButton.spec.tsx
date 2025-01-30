@@ -7,10 +7,15 @@ import {
 } from '@testing-library/react'
 import React from 'react'
 
+import {
+    DEFAULT_ERROR_MESSAGE,
+    MICROPHONE_PERMISSION_ERROR_MESSAGE,
+} from 'business/twilio'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import useHasPhone from 'hooks/useHasPhone'
 import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
+import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
 import {isDesktopDevice, isDeviceReady} from 'utils/device'
 import * as platform from 'utils/platform'
 import {assumeMock} from 'utils/testing'
@@ -19,12 +24,15 @@ import PlaceCallNavbarButton from '../PlaceCallNavbarButton'
 
 jest.mock('hooks/useConditionalShortcuts')
 jest.mock('utils/device')
-jest.mock('../DeactivatedViewIcon', () => () => (
-    <div data-testid="deactivated-view-icon" />
+jest.mock('../DeactivatedViewIcon', () => ({tooltipText}: any) => (
+    <div>{tooltipText}</div>
 ))
 jest.mock('pages/integrations/integration/components/phone/PhoneDevice')
 jest.mock('hooks/integrations/phone/useVoiceDevice')
 jest.mock('hooks/useHasPhone')
+jest.mock(
+    'pages/integrations/integration/components/voice/useMicrophonePermissions'
+)
 
 const isDesktopDeviceMock = assumeMock(isDesktopDevice)
 const useVoiceDeviceMock = assumeMock(useVoiceDevice)
@@ -32,6 +40,7 @@ const useHasPhoneMock = assumeMock(useHasPhone)
 const PhoneDeviceMock = assumeMock(PhoneDevice)
 const isDeviceReadyMock = assumeMock(isDeviceReady)
 const useConditionalShortcutsMock = assumeMock(useConditionalShortcuts)
+const useMicrophonePermissionsMock = assumeMock(useMicrophonePermissions)
 
 describe('<PlaceCallNavbarButton />', () => {
     const renderComponent = () => render(<PlaceCallNavbarButton />)
@@ -41,6 +50,7 @@ describe('<PlaceCallNavbarButton />', () => {
         useHasPhoneMock.mockReturnValue(true)
         useVoiceDeviceMock.mockReturnValue({device: {}} as any)
         isDeviceReadyMock.mockReturnValue(true)
+        useMicrophonePermissionsMock.mockReturnValue({permissionDenied: false})
 
         PhoneDeviceMock.mockImplementation(({isOpen}: {isOpen: boolean}) => (
             <div data-testid="phone-device">
@@ -112,11 +122,23 @@ describe('<PlaceCallNavbarButton />', () => {
         isDeviceReadyMock.mockReturnValue(false)
         renderComponent()
 
-        expect(screen.getByTestId('deactivated-view-icon')).toBeInTheDocument()
+        expect(screen.getByText(DEFAULT_ERROR_MESSAGE)).toBeInTheDocument()
         expect(
             screen.getByRole('button', {name: /Place call/})
         ).toBeAriaDisabled()
         expect(useConditionalShortcutsMock.mock.lastCall?.[0]).toBe(false)
+    })
+
+    it('should render DeactivatedViewIcon and disable button when microphone permissions are denied', () => {
+        useMicrophonePermissionsMock.mockReturnValue({permissionDenied: true})
+        renderComponent()
+
+        expect(
+            screen.getByText(MICROPHONE_PERMISSION_ERROR_MESSAGE)
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', {name: /Place call/})
+        ).toBeAriaDisabled()
     })
 
     it('should close PhoneDevice when device is removed', () => {
