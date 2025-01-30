@@ -184,10 +184,10 @@ const INTEGRATION_VARIABLE_MAP: Record<
         icon,
         variables: [
             {
-                name: 'Order number',
-                value: 'objects.order_shipmonk.order_number',
+                name: 'Delivered date',
+                value: 'objects.order_shipmonk.order_tracking_data_output.0.delivered_at',
                 nodeType: 'order_shipmonk',
-                type: 'string',
+                type: 'date',
                 icon,
             },
             {
@@ -207,13 +207,27 @@ const INTEGRATION_VARIABLE_MAP: Record<
                     {value: 'pending_batching', label: 'Pending batching'},
                     {
                         value: 'fulfilled_by_3rd',
-                        label: 'Aulfilled by 3rd party',
+                        label: 'Fulfilled by 3rd party',
                     },
                     {
                         value: 'awaiting_package_forwarding',
                         label: 'Awaiting package forwarding',
                     },
                 ],
+            },
+            {
+                name: 'Order number',
+                value: 'objects.order_shipmonk.order_number',
+                nodeType: 'order_shipmonk',
+                type: 'string',
+                icon,
+            },
+            {
+                name: 'Packages count',
+                value: 'objects.order_shipmonk.packages_count',
+                nodeType: 'order_shipmonk',
+                type: 'number',
+                icon,
             },
             {
                 name: 'Shipping method',
@@ -230,24 +244,10 @@ const INTEGRATION_VARIABLE_MAP: Record<
                 icon,
             },
             {
-                name: 'Submitted at',
+                name: 'Submitted date',
                 value: 'objects.order_shipmonk.date_submitted',
                 nodeType: 'order_shipmonk',
                 type: 'date',
-                icon,
-            },
-            {
-                name: 'Delivered at',
-                value: 'objects.order_shipmonk.order_tracking_data_output.0.delivered_at',
-                nodeType: 'order_shipmonk',
-                type: 'date',
-                icon,
-            },
-            {
-                name: 'Tracking number',
-                value: 'objects.order_shipmonk.order_tracking_data_output.0.tracking_number',
-                nodeType: 'order_shipmonk',
-                type: 'string',
                 icon,
             },
             {
@@ -258,10 +258,10 @@ const INTEGRATION_VARIABLE_MAP: Record<
                 icon,
             },
             {
-                name: 'Packages count',
-                value: 'objects.order_shipmonk.packages_count',
+                name: 'Tracking number',
+                value: 'objects.order_shipmonk.order_tracking_data_output.0.tracking_number',
                 nodeType: 'order_shipmonk',
-                type: 'number',
+                type: 'string',
                 icon,
             },
         ],
