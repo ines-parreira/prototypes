@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React, {useRef} from 'react'
+import React, {useMemo, useRef} from 'react'
 import type {ReactNode, RefObject} from 'react'
 
 import {NotificationsButton} from 'common/notifications'
@@ -10,6 +10,8 @@ import HomePageLink from 'pages/common/components/HomePageLink'
 import SpotlightButton from 'pages/common/components/Spotlight/SpotlightButton'
 import {isOpenedPanel as getIsOpenedPanel} from 'state/layout/selectors'
 
+import {NavBarDisplayMode} from '../hooks/useNavBar/context'
+import {useNavBar} from '../hooks/useNavBar/useNavBar'
 import useNavbarResize from '../hooks/useNavbarResize'
 import {useDesktopOnlyShowGlobalNavFeatureFlag} from '../hooks/useShowGlobalNavFeatureFlag'
 import MainNavigation, {ActiveContent} from './MainNavigation'
@@ -39,14 +41,27 @@ export default function Navbar({
 
     const navbarRef = useRef<HTMLDivElement | null>(null)
     const {isResizing, width, onStartResize} = useNavbarResize(navbarRef)
+    const {navBarDisplay} = useNavBar()
 
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
+
+    const enableResize = useMemo(() => {
+        if (disableResize) {
+            return false
+        }
+
+        if (showGlobalNav) {
+            return navBarDisplay === NavBarDisplayMode.Open
+        }
+
+        return true
+    }, [disableResize, navBarDisplay, showGlobalNav])
 
     return (
         <div
             ref={navbarRef}
             className={cn(css.sidebar, {[css.isResizing]: isResizing})}
-            style={disableResize ? {} : {width: `${width}px`}}
+            {...(enableResize && {style: {width: `${width}px`}})}
         >
             <div
                 className={cn(css['nav-primary'], {

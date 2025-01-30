@@ -8,6 +8,7 @@ import {Provider} from 'react-redux'
 import {StaticRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import {NavBarProvider} from 'common/navigation/components/NavBarProvider'
 import {AGENT_ROLE} from 'config/user'
 import {useFlag} from 'core/flags'
 import {ThemeProvider} from 'core/theme'
@@ -46,7 +47,9 @@ jest.mock('common/notifications/components/Button', () => ({
 }))
 
 const wrapper = ({children}: {children: ReactNode}) => (
-    <StaticRouter location="/app">{children}</StaticRouter>
+    <StaticRouter location="/app">
+        <NavBarProvider>{children}</NavBarProvider>
+    </StaticRouter>
 )
 
 describe('<AutomateNavbar />', () => {

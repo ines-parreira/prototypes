@@ -9,6 +9,7 @@ import {Provider} from 'react-redux'
 import {StaticRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import {NavBarProvider} from 'common/navigation/components/NavBarProvider'
 import {ThemeProvider} from 'core/theme'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
@@ -52,7 +53,9 @@ const mockStore = configureMockStore()
 const queryClient = mockQueryClient()
 
 const wrapper = ({children}: {children: ReactNode}) => (
-    <StaticRouter location="/app">{children}</StaticRouter>
+    <StaticRouter location="/app">
+        <NavBarProvider>{children}</NavBarProvider>
+    </StaticRouter>
 )
 
 describe('<ConvertNavbar />', () => {

@@ -7,6 +7,7 @@ import {Provider} from 'react-redux'
 import {StaticRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import {NavBarProvider} from 'common/navigation/components/NavBarProvider'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {ThemeProvider} from 'core/theme'
 import {account, automationSubscriptionProductPrices} from 'fixtures/account'
@@ -41,7 +42,7 @@ jest.mock('common/notifications/components/Button', () => ({
 
 const wrapper = ({children}: {children: ReactNode}) => (
     <StaticRouter location="/app/ai-agent/shopify/teststore1/optimize">
-        {children}
+        <NavBarProvider>{children}</NavBarProvider>
     </StaticRouter>
 )
 
