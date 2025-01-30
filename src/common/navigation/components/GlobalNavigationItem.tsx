@@ -5,6 +5,7 @@ import type {ReactNode} from 'react'
 import {Link} from 'react-router-dom'
 
 import navbarCss from 'assets/css/navbar.less'
+import type {TooltipDelayValue} from 'core/ui/tooltip.utils'
 import useId from 'hooks/useId'
 
 import css from './GlobalNavigationItem.less'
@@ -16,10 +17,7 @@ type CommonGlobalNavigationItemProps = {
     icon: string
     isActive?: boolean
     tooltip?: ReactNode
-    tooltipDelay?: {
-        show: number
-        hide: number
-    }
+    tooltipDelay?: TooltipDelayValue
     tooltipTrigger?: GlobalNavigationItemTooltipTrigger
 }
 

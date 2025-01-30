@@ -4,6 +4,7 @@ import React, {useCallback} from 'react'
 
 import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {TooltipDelay} from 'core/ui/tooltip.utils'
 import useId from 'hooks/useId'
 
 import useSplitTicketView from '../hooks/useSplitTicketView'
@@ -44,27 +45,23 @@ export default function Toggle() {
                 id={buttonId}
                 disabled={!isToggleEnabled}
                 data-candu-id="dtp-toggle"
-                aria-describedby={
-                    showGlobalNav && isEnabled
-                        ? 'Use full width view'
-                        : 'Use split ticket view'
-                }
+                {...(showGlobalNav && {
+                    'aria-describedby': isEnabled ? 'Expand' : 'Collapse',
+                })}
             >
                 {showGlobalNav ? (
                     <div className={cn(css.mask, {[css.active]: isEnabled})} />
                 ) : (
-                    <span>
-                        {isEnabled
-                            ? 'Use full width view'
-                            : 'Use split ticket view'}
-                    </span>
+                    <span>{isEnabled ? 'Expand' : 'Collapse'}</span>
                 )}
             </button>
             {showGlobalNav && isToggleEnabled && (
-                <Tooltip target={buttonId} placement="right">
-                    {isEnabled
-                        ? 'Use full width view'
-                        : 'Use split ticket view'}
+                <Tooltip
+                    target={buttonId}
+                    placement="right"
+                    delay={TooltipDelay.Long}
+                >
+                    {isEnabled ? 'Expand' : 'Collapse'}
                 </Tooltip>
             )}
 
@@ -72,6 +69,7 @@ export default function Toggle() {
                 <Tooltip
                     target={buttonId}
                     placement="bottom-start"
+                    delay={TooltipDelay.Long}
                     innerProps={{
                         popperClassName: css.tooltip,
                     }}

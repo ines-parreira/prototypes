@@ -3,6 +3,7 @@ import React from 'react'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
 import {useFlag} from 'core/flags'
+import {TooltipDelay} from 'core/ui/tooltip.utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
@@ -49,10 +50,7 @@ export default function GlobalNavigation() {
                         icon={navBarMenuIcon}
                         onClick={onMenuToggle}
                         tooltip={<NavBarButtonTooltip />}
-                        tooltipDelay={{
-                            show: 1500,
-                            hide: 0,
-                        }}
+                        tooltipDelay={TooltipDelay.Long}
                     />
                     <Item
                         icon="home"
