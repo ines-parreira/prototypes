@@ -4,11 +4,15 @@ import moment from 'moment'
 import React, {SyntheticEvent, useCallback, useRef} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 
+import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
 import {declineCall} from 'hooks/integrations/phone/api'
 import {useNow} from 'hooks/useNow'
 import Button from 'pages/common/components/button/Button'
 
+import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
+
 import VoiceCallAgentLabel from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'
+import {MICROPHONE_PERMISSION_REQUIRED_MESSAGE} from '../constants'
 import {useConnectionParameters} from '../hooks'
 import PhoneCustomerName from '../PhoneCustomerName/PhoneCustomerName'
 
@@ -27,6 +31,7 @@ export default function IncomingPhoneCall({
 }: Props): JSX.Element {
     const history = useHistory()
     const location = useLocation()
+    const {permissionDenied} = useMicrophonePermissions()
 
     const {
         integrationId,
@@ -53,61 +58,73 @@ export default function IncomingPhoneCall({
         .format('mm:ss')
 
     return (
-        <div
-            className={classNames(css.container, className)}
-            onClick={openTicket}
-        >
-            <div className={css.inner}>
-                <PhoneIntegrationName integrationId={integrationId} primary />
-                <div className={css.callerDetails}>
-                    {transferFromAgentId && (
-                        <>
-                            <VoiceCallAgentLabel
-                                agentId={transferFromAgentId}
-                                className={css.agentLabel}
-                                semibold
-                            />
-                            <span>transferring</span>
-                        </>
-                    )}
-                    <PhoneCustomerName
-                        name={customerName}
-                        phoneNumber={customerPhoneNumber}
+        <>
+            {permissionDenied && (
+                <AlertBanner
+                    message={MICROPHONE_PERMISSION_REQUIRED_MESSAGE}
+                    type={AlertBannerTypes.Critical}
+                />
+            )}
+            <div
+                className={classNames(css.container, className)}
+                onClick={openTicket}
+            >
+                <div className={css.inner}>
+                    <PhoneIntegrationName
+                        integrationId={integrationId}
+                        primary
                     />
-                </div>
-                <Button
-                    aria-label="Accept phone call"
-                    intent="secondary"
-                    className={css.accept}
-                    onClick={() => call.accept()}
-                >
-                    <i className="material-icons mr-2">phone</i>
-                    Accept
-                </Button>
-                <Button
-                    intent="secondary"
-                    aria-label="Decline phone call"
-                    className={css.decline}
-                    onClick={(event: SyntheticEvent<HTMLButtonElement>) => {
-                        event.stopPropagation()
+                    <div className={css.callerDetails}>
+                        {transferFromAgentId && (
+                            <>
+                                <VoiceCallAgentLabel
+                                    agentId={transferFromAgentId}
+                                    className={css.agentLabel}
+                                    semibold
+                                />
+                                <span>transferring</span>
+                            </>
+                        )}
+                        <PhoneCustomerName
+                            name={customerName}
+                            phoneNumber={customerPhoneNumber}
+                        />
+                    </div>
+                    <Button
+                        aria-label="Accept phone call"
+                        intent="secondary"
+                        className={css.accept}
+                        onClick={() => call.accept()}
+                        isDisabled={permissionDenied}
+                    >
+                        <i className="material-icons mr-2">phone</i>
+                        Accept
+                    </Button>
+                    <Button
+                        intent="secondary"
+                        aria-label="Decline phone call"
+                        className={css.decline}
+                        onClick={(event: SyntheticEvent<HTMLButtonElement>) => {
+                            event.stopPropagation()
 
-                        call.reject()
-                        call.emit('cancel')
-                        void declineCall(call)
-                    }}
-                >
-                    <i className="material-icons mr-2">call_end</i>
-                    Decline
-                </Button>
+                            call.reject()
+                            call.emit('cancel')
+                            void declineCall(call)
+                        }}
+                    >
+                        <i className="material-icons mr-2">call_end</i>
+                        Decline
+                    </Button>
+                </div>
+                <PhoneInfobarWrapper primary>
+                    <span>
+                        {transferFromAgentId
+                            ? 'Incoming transfer...'
+                            : 'Incoming call...'}
+                    </span>
+                    <span>Waiting for {formattedWaitTime}</span>
+                </PhoneInfobarWrapper>
             </div>
-            <PhoneInfobarWrapper primary>
-                <span>
-                    {transferFromAgentId
-                        ? 'Incoming transfer...'
-                        : 'Incoming call...'}
-                </span>
-                <span>Waiting for {formattedWaitTime}</span>
-            </PhoneInfobarWrapper>
-        </div>
+        </>
     )
 }

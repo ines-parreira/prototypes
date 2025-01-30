@@ -12,9 +12,13 @@ import thunk from 'redux-thunk'
 
 import client from 'models/api/resources'
 import * as hooks from 'pages/common/components/PhoneIntegrationBar/hooks'
+import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
 import {RootState, StoreDispatch} from 'state/types'
 import {mockIncomingCall} from 'tests/twilioMocks'
 
+import {assumeMock} from 'utils/testing'
+
+import {MICROPHONE_PERMISSION_REQUIRED_MESSAGE} from '../../constants'
 import IncomingPhoneCall from '../IncomingPhoneCall'
 
 jest.mock('@twilio/voice-sdk')
@@ -26,6 +30,11 @@ jest.mock(
             <div>VoiceCallAgentLabel {agentId}</div>
         )
 )
+jest.mock(
+    'pages/integrations/integration/components/voice/useMicrophonePermissions'
+)
+
+const useMicrophonePermissionsMock = assumeMock(useMicrophonePermissions)
 
 describe('<IncomingPhoneCall />', () => {
     let state: RootState
@@ -67,6 +76,16 @@ describe('<IncomingPhoneCall />', () => {
                 ],
             }),
         } as RootState
+
+        jest.spyOn(hooks, 'useConnectionParameters').mockReturnValue({
+            integrationId,
+            ticketId,
+            customerName: 'Bob',
+            customerPhoneNumber: '+25111111111',
+            transferFromAgentId: null,
+        })
+
+        useMicrophonePermissionsMock.mockReturnValue({permissionDenied: false})
 
         mockFlags({})
         cleanup()
@@ -189,5 +208,34 @@ describe('<IncomingPhoneCall />', () => {
 
         expect(screen.queryByText('Incoming transfer...')).toBeNull()
         expect(screen.getByText('Incoming call...')).toBeInTheDocument()
+    })
+
+    it('should display error message and disable accept button when microphone permissions are not enabled', () => {
+        useMicrophonePermissionsMock.mockReturnValue({permissionDenied: true})
+
+        const call = mockIncomingCall(integrationId) as Call
+
+        renderComponent({call})
+
+        expect(
+            screen.getByText(MICROPHONE_PERMISSION_REQUIRED_MESSAGE)
+        ).toBeInTheDocument()
+
+        expect(screen.getByRole('button', {name: /Accept/})).toBeAriaDisabled()
+    })
+
+    it('should not display error message when microphone permissions are enabled', () => {
+        useMicrophonePermissionsMock.mockReturnValue({permissionDenied: false})
+
+        const call = mockIncomingCall(integrationId) as Call
+
+        renderComponent({call})
+
+        expect(
+            screen.queryByText(MICROPHONE_PERMISSION_REQUIRED_MESSAGE)
+        ).toBeNull()
+        expect(
+            screen.getByRole('button', {name: /Accept/})
+        ).not.toBeAriaDisabled()
     })
 })
