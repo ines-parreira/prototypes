@@ -45,7 +45,15 @@ yarn install
 
 ## Development
 
-Start the development server with:
+1. If you dont want run the backend on your machine, start the development server with:
+
+```bash
+yarn dev:proxy
+```
+
+You also need to have your proxy setup correctly. Follow the instructions [here](https://www.notion.so/gorgias/Using-local-dev-server-on-production-5c7d9cfd3bcb4c118e3f49e59c3e1d40#1efa9466a2724c95885c4219994d3fe7).
+
+2. If you have the backend running on your machine, start the development server with:
 
 ```bash
 yarn serve
