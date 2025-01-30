@@ -400,7 +400,8 @@ export const getDrillDownMetricColumn = (
     } else if (
         metricData.metricName === SatisfactionMetric.SatisfactionScore ||
         metricData.metricName === SatisfactionMetric.ResponseRate ||
-        metricData.metricName === SatisfactionMetric.SurveysSent
+        metricData.metricName === SatisfactionMetric.SurveysSent ||
+        metricData.metricName === SatisfactionMetric.AverageSurveyScore
     ) {
         metricTitle = SatisfactionTrendCardConfig[metricData.metricName].title
         metricValueFormat =

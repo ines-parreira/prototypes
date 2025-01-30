@@ -1,3 +1,4 @@
+import {useAverageScoreTrend} from 'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
 import {useResponseRateTrend} from 'hooks/reporting/quality-management/satisfaction/useResponseRateTrend'
 import {useSatisfactionScoreTrend} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
 import {useSurveysSentTrend} from 'hooks/reporting/quality-management/satisfaction/useSurveysSentTrend'
@@ -9,6 +10,7 @@ import {SatisfactionMetric} from 'state/ui/stats/types'
 export const SATISFACTION_SCORE_LABEL = 'Satisfaction score'
 export const RESPONSE_RATE_LABEL = 'Response rate'
 export const SURVEYS_SENT_LABEL = 'Surveys sent'
+export const AVERAGE_SURVEY_SCORE = 'Average CSAT'
 
 export const SatisfactionMetricConfig: Record<
     SatisfactionMetric,
@@ -52,5 +54,15 @@ export const SatisfactionMetricConfig: Record<
         metricFormat: 'decimal',
         useTrend: useSurveysSentTrend,
         drillDownMetric: SatisfactionMetric.SurveysSent,
+    },
+    [SatisfactionMetric.AverageSurveyScore]: {
+        title: AVERAGE_SURVEY_SCORE,
+        hint: {
+            title: 'Average calculated score from 1-5 stars given by customers',
+        },
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+        useTrend: useAverageScoreTrend,
+        drillDownMetric: SatisfactionMetric.AverageSurveyScore,
     },
 }

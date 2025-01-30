@@ -7,6 +7,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {billingState} from 'fixtures/billing'
 import {useSatisfactionMetrics} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
 import {FiltersPanelWrapper} from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import AverageSurveyScoreDonutChart from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
 import {ResponseRateTrendCard} from 'pages/stats/quality-management/satisfaction/ResponseRateTrendCard'
 import SatisfactionReport from 'pages/stats/quality-management/satisfaction/SatisfactionReport'
 import {
@@ -52,6 +53,13 @@ jest.mock(
 )
 const useSatisfactionMetricsMock = assumeMock(useSatisfactionMetrics)
 
+jest.mock(
+    'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
+)
+const AverageSurveyScoreDonutChartMock = assumeMock(
+    AverageSurveyScoreDonutChart
+)
+
 describe('<Satisfaction>', () => {
     const reportData = {} as any
     const isLoading = false
@@ -85,6 +93,7 @@ describe('<Satisfaction>', () => {
         SatisfactionScoreTrendCardMock.mockImplementation(componentMock)
         ResponseRateTrendCardMock.mockImplementation(componentMock)
         SurveysSentTrendCardMock.mockImplementation(componentMock)
+        AverageSurveyScoreDonutChartMock.mockImplementation(componentMock)
     })
 
     it('should render new satisfaction report page', () => {
@@ -97,6 +106,7 @@ describe('<Satisfaction>', () => {
         expect(SatisfactionScoreTrendCardMock).toHaveBeenCalled()
         expect(ResponseRateTrendCardMock).toHaveBeenCalled()
         expect(SurveysSentTrendCardMock).toHaveBeenCalled()
+        expect(AverageSurveyScoreDonutChartMock).toHaveBeenCalled()
     })
 
     it('should contain filters panel component', () => {
@@ -110,6 +120,7 @@ describe('<Satisfaction>', () => {
             expect(SatisfactionScoreTrendCardMock).toHaveBeenCalled()
             expect(ResponseRateTrendCardMock).toHaveBeenCalled()
             expect(SurveysSentTrendCardMock).toHaveBeenCalled()
+            expect(AverageSurveyScoreDonutChartMock).toHaveBeenCalled()
         })
     })
 })

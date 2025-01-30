@@ -7,7 +7,7 @@ import {
     ChartOptions,
     TooltipModel,
 } from 'chart.js'
-import React, {useCallback, useMemo} from 'react'
+import React, {ReactNode, useCallback, useMemo} from 'react'
 import {Doughnut} from 'react-chartjs-2'
 
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
@@ -62,19 +62,21 @@ type DoughnutStatProps = {
     showTooltip?: boolean
     className?: string
     legendClassName?: string
+    children?: ReactNode
 }
 
 const DonutChart = ({
-    width,
-    height,
+    width = 180,
+    height = 180,
     customColors,
     displayLegend = false,
     isLoading = false,
     showTooltip = true,
-    skeletonHeight = 250,
+    skeletonHeight,
     data,
     className,
     legendClassName,
+    children,
 }: DoughnutStatProps) => {
     const total = useMemo(
         () => data.reduce((acc, i) => acc + i.value, 0),
@@ -118,8 +120,20 @@ const DonutChart = ({
         [customTooltip]
     )
 
+    const plugins = useMemo(
+        () => (!children ? [innerLabelPlugin] : []),
+        [children]
+    )
+
     if (isLoading) {
-        return <Skeleton height={skeletonHeight ?? height} />
+        return (
+            <div className={css.donutSkeleton}>
+                <Skeleton height={skeletonHeight ?? height} width={width} />
+                {displayLegend && (
+                    <Skeleton height={24} className="mt-4" width={width} />
+                )}
+            </div>
+        )
     }
 
     return (
@@ -129,10 +143,11 @@ const DonutChart = ({
                     id={DONUT_TOOLTIP_TARGET}
                     data={formattedData}
                     options={options}
-                    plugins={[innerLabelPlugin]}
                     width={width}
                     height={height}
+                    plugins={plugins}
                 />
+                {children}
 
                 {showTooltip && (
                     <ChartTooltip

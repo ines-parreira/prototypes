@@ -107,4 +107,15 @@ describe('<DonutChart />', () => {
         expect(screen.getByText('Label 1')).toBeInTheDocument()
         expect(screen.getByText('Label 2')).toBeInTheDocument()
     })
+
+    it('should render a children element', () => {
+        renderComponent({
+            data: [
+                {label: 'Label 1', value: 11},
+                {label: 'Label 2', value: 12},
+            ],
+            children: <div>children</div>,
+        })
+        expect(screen.getByText('children')).toBeInTheDocument()
+    })
 })

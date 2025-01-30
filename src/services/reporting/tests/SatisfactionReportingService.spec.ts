@@ -1,6 +1,8 @@
 import moment from 'moment'
 
+import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {formatMetricValue} from 'pages/stats/common/utils'
+import {formatSurveyScores} from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
 import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {saveReport} from 'services/reporting/satisfactionReportingService'
@@ -31,6 +33,8 @@ describe('satisfactionReportingService', () => {
         satisfactionScoreTrend: {data: undefined},
         responseRateTrend: {data: undefined},
         surveysSentTrend: {data: undefined},
+        averageScoreTrend: {data: undefined},
+        surveyScores: {data: undefined},
     } as any
 
     it('should zip the report', async () => {
@@ -63,10 +67,33 @@ describe('satisfactionReportingService', () => {
             },
         }
 
+        const exampleSurveyScoresData = {
+            isFetching: false,
+            isError: false,
+            data: {
+                value: null,
+                decile: null,
+                allData: [
+                    {[TicketSatisfactionSurveyDimension.SurveyScore]: '1'},
+                    {[TicketSatisfactionSurveyDimension.SurveyScore]: '2'},
+                    {[TicketSatisfactionSurveyDimension.SurveyScore]: '3'},
+                    {[TicketSatisfactionSurveyDimension.SurveyScore]: '4'},
+                    {[TicketSatisfactionSurveyDimension.SurveyScore]: '5'},
+                ],
+            },
+        }
+
+        const formattedExampleSurveyScoresData = formatSurveyScores(
+            exampleSurveyScoresData,
+            '- star count'
+        )?.map(({value, label}) => [label, value])
+
         const data = {
             satisfactionScoreTrend: exampleTrendData,
             responseRateTrend: exampleTrendData,
             surveysSentTrend: exampleTrendData,
+            averageScoreTrend: exampleTrendData,
+            surveyScores: exampleSurveyScoresData,
         }
         await saveReport(data, period)
 
@@ -77,6 +104,23 @@ describe('satisfactionReportingService', () => {
         ]
         expect(createCsvSpy).toHaveBeenCalledWith([
             headers,
+            [
+                SatisfactionMetricConfig[SatisfactionMetric.AverageSurveyScore]
+                    .title,
+                formatMetricValue(
+                    exampleTrendData.data.value,
+                    SatisfactionMetricConfig[
+                        SatisfactionMetric.AverageSurveyScore
+                    ].metricFormat
+                ),
+                formatMetricValue(
+                    exampleTrendData.data.prevValue,
+                    SatisfactionMetricConfig[
+                        SatisfactionMetric.AverageSurveyScore
+                    ].metricFormat
+                ),
+            ],
+            ...(formattedExampleSurveyScoresData || []),
             [
                 SatisfactionMetricConfig[SatisfactionMetric.SatisfactionScore]
                     .title,

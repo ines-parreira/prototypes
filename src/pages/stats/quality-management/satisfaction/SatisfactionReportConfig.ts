@@ -1,5 +1,6 @@
 import {FilterKey, StaticFilter} from 'models/stat/types'
 import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
+import AverageSurveyScoreDonutChart from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
 import {ResponseRateTrendCard} from 'pages/stats/quality-management/satisfaction/ResponseRateTrendCard'
 import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
 
@@ -11,6 +12,7 @@ export enum SatisfactionChart {
     SatisfactionScoreTrendCard = 'satisfaction-score-trend-card',
     ResponseRateTrendCard = 'response-rate-trend-card',
     SurveysSentTrendCard = 'surveys-sent-trend-card',
+    AverageSurveyScoreDonutChart = 'average-survey-score-donut-chart',
 }
 
 export const SATISFACTION_TITLE = 'Satisfaction'
@@ -62,6 +64,17 @@ export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {
                     .title,
             csvProducer: null,
             chartType: ChartType.Card,
+        },
+        [SatisfactionChart.AverageSurveyScoreDonutChart]: {
+            chartComponent: AverageSurveyScoreDonutChart,
+            label: SatisfactionMetricConfig[
+                SatisfactionMetric.AverageSurveyScore
+            ].title,
+            description:
+                SatisfactionMetricConfig[SatisfactionMetric.AverageSurveyScore]
+                    .hint.title,
+            csvProducer: null,
+            chartType: ChartType.Graph,
         },
     },
 }

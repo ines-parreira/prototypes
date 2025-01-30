@@ -83,6 +83,16 @@ export default function SatisfactionReport() {
                         />
                     </DashboardGridCell>
                 </DashboardSection>
+                <DashboardSection>
+                    <DashboardGridCell size={getGridCellSize(6)}>
+                        <CustomReportComponent
+                            chart={
+                                SatisfactionChart.AverageSurveyScoreDonutChart
+                            }
+                            config={SatisfactionReportConfig}
+                        />
+                    </DashboardGridCell>
+                </DashboardSection>
                 <AnalyticsFooter />
             </StatsPage>
         </div>

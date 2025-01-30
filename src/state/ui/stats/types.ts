@@ -42,6 +42,7 @@ export enum SatisfactionMetric {
     ResponseRate = 'satisfaction_survey_response_rate',
     SatisfactionScore = 'satisfaction_survey_satisfaction_score',
     SurveysSent = 'satisfaction_survey_surveys_sent',
+    AverageSurveyScore = 'satisfaction_average_survey_score',
 }
 
 export enum TicketFieldsMetric {

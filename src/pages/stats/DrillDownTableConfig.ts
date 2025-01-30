@@ -10,6 +10,7 @@ import {internalComplianceDrillDownQueryFactory} from 'models/reporting/queryFac
 import {languageProficiencyDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/languageProficiencyQueryFactory'
 import {resolutionCompletenessDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
 import {reviewedClosedTicketsDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
+import {averageScoreDrillDownQueryFactory} from 'models/reporting/queryFactories/satisfaction/averageScoreQueryFactory'
 import {responseRateDrillDownQueryFactory} from 'models/reporting/queryFactories/satisfaction/responseRateQueryFactory'
 import {satisfactionScoreDrillDownQueryFactory} from 'models/reporting/queryFactories/satisfaction/satisfactionScoreQueryFactory'
 import {surveysSentDrillDownQueryFactory} from 'models/reporting/queryFactories/satisfaction/surveysSentQueryFactory'
@@ -259,6 +260,8 @@ export const getDrillDownQuery = (
             return communicationSkillsDrillDownQueryFactory
         case AutoQAMetric.LanguageProficiency:
             return languageProficiencyDrillDownQueryFactory
+        case SatisfactionMetric.AverageSurveyScore:
+            return averageScoreDrillDownQueryFactory
         case SatisfactionMetric.SatisfactionScore:
             return satisfactionScoreDrillDownQueryFactory
         case SatisfactionMetric.ResponseRate:
