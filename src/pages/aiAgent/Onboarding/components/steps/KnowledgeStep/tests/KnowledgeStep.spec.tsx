@@ -2,13 +2,19 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {act, render, screen, waitFor} from '@testing-library/react'
 
 import {fromJS} from 'immutable'
+
 import React from 'react'
+
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
 import {appQueryClient} from 'api/queryClient'
 import {shopifyIntegration} from 'fixtures/integrations'
 import * as hooks from 'hooks/useAppSelector'
-
+import {useGetHelpCentersByShopName} from 'pages/aiAgent/Onboarding/hooks/useGetHelpCentersByShopName'
 import {OnboardingContext} from 'pages/aiAgent/Onboarding/providers/OnboardingContext'
+import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {assumeMock} from 'utils/testing'
 
 import {KnowledgeStep} from '../KnowledgeStep'
 
@@ -18,7 +24,14 @@ jest.mock(
         useGetKnowledgeStatusByShopName: jest.fn().mockReturnValue('DONE'),
     })
 )
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetHelpCentersByShopName', () => ({
+    useGetHelpCentersByShopName: jest
+        .fn()
+        .mockReturnValue({isHelpCenterLoading: false, helpCenters: []}),
+}))
 jest.spyOn(hooks, 'default').mockReturnValue(fromJS(shopifyIntegration))
+
+const useGetHelpCentersByShopNameMock = assumeMock(useGetHelpCentersByShopName)
 
 describe('KnowledgeStep', () => {
     jest.useFakeTimers()
@@ -32,18 +45,20 @@ describe('KnowledgeStep', () => {
 
     const renderWithProvider = (props = defaultProps) => {
         return render(
-            <QueryClientProvider client={appQueryClient}>
-                <OnboardingContext.Provider
-                    value={
-                        {
-                            shopName: shopifyIntegration.meta.shop_name,
-                            setOnboardingData: jest.fn(),
-                        } as any
-                    }
-                >
-                    <KnowledgeStep {...props} />
-                </OnboardingContext.Provider>
-            </QueryClientProvider>
+            <Provider store={configureMockStore()()}>
+                <QueryClientProvider client={appQueryClient}>
+                    <OnboardingContext.Provider
+                        value={
+                            {
+                                shopName: shopifyIntegration.meta.shop_name,
+                                setOnboardingData: jest.fn(),
+                            } as any
+                        }
+                    >
+                        <KnowledgeStep {...props} />
+                    </OnboardingContext.Provider>
+                </QueryClientProvider>
+            </Provider>
         )
     }
 
@@ -72,10 +87,31 @@ describe('KnowledgeStep', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders Help center knowledge source', () => {
+    it('does not render Help center knowledge source when there is none', () => {
         renderWithProvider()
 
-        expect(screen.getByText('Help center example')).toBeInTheDocument()
+        expect(screen.queryByText('ACME Help Center')).toBeNull()
+    })
+
+    it('does not render Help center knowledge source when it is loading', () => {
+        useGetHelpCentersByShopNameMock.mockReturnValue({
+            isHelpCenterLoading: true,
+            helpCenters: [],
+        })
+        renderWithProvider()
+
+        expect(screen.queryByText('ACME Help Center')).toBeNull()
+    })
+
+    it('renders Help center knowledge source when there is one', () => {
+        useGetHelpCentersByShopNameMock.mockReturnValue({
+            isHelpCenterLoading: false,
+            helpCenters: getHelpCentersResponseFixture.data,
+        })
+
+        renderWithProvider()
+
+        expect(screen.getByText('ACME Help Center')).toBeInTheDocument()
     })
 
     it('renders preview section', async () => {

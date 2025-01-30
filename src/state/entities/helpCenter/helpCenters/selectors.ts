@@ -6,7 +6,7 @@ import {StoreState} from 'state/types'
 import {getCurrentHelpCenterId} from 'state/ui/helpCenter/selectors'
 
 export const getHelpCenters = (state: StoreState): Record<string, HelpCenter> =>
-    state.entities.helpCenter.helpCenters.helpCentersById || {}
+    state.entities?.helpCenter.helpCenters.helpCentersById || {}
 
 export const getCurrentHelpCenter = createSelector(
     getCurrentHelpCenterId,

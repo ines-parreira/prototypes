@@ -1,6 +1,7 @@
 import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
+
 import {ShopifyIntegration} from 'models/integration/types'
 import {Card, CardContent} from 'pages/aiAgent/Onboarding/components/Card'
 import KnowledgePreview from 'pages/aiAgent/Onboarding/components/KnowledgePreview/KnowledgePreview'
@@ -11,6 +12,7 @@ import {
     StepProps,
     TemporaryKnowledgeData,
 } from 'pages/aiAgent/Onboarding/components/steps/types'
+import {useGetHelpCentersByShopName} from 'pages/aiAgent/Onboarding/hooks/useGetHelpCentersByShopName'
 import {useGetKnowledgeStatusByShopName} from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgeStatusByShopName'
 import {
     OnboardingBody,
@@ -19,8 +21,9 @@ import {
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
 import {useOnboardingContext} from 'pages/aiAgent/Onboarding/providers/OnboardingContext'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
-
 import {Separator} from 'pages/common/components/Separator/Separator'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+
 import {getShopifyIntegrationByShopName} from 'state/integrations/selectors'
 
 import GorgiasIcon from './icons/GorgiasIcon'
@@ -55,9 +58,10 @@ export const KnowledgeStep: React.FC<StepProps> = ({
     )
     const shopKnowledgeIsReady = shopKnowledgeStatus === KnowledgeStatus.DONE
 
-    // TODO: get help center status - enough if just exists for now
-    // TODO: use skeleton loader when the data is loading
-    const helpCenter = true
+    const {isHelpCenterLoading, helpCenters} = useGetHelpCentersByShopName(
+        shopName || ''
+    )
+    const hasHelpCenter = !!helpCenters.length
 
     return (
         <OnboardingBody>
@@ -84,15 +88,19 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                                 isReady={shopKnowledgeIsReady}
                             />
                         )}
-                        {shopName && helpCenter && (
+                        {shopName && hasHelpCenter && (
                             <Separator className={css.separator} />
                         )}
-                        {helpCenter && (
-                            <KnowledgeResourceLine
-                                name="Help center example"
-                                type={KnowledgeSourceType.HELP_CENTER}
-                                isReady={true}
-                            />
+                        {isHelpCenterLoading ? (
+                            <Skeleton height={40} />
+                        ) : (
+                            hasHelpCenter && (
+                                <KnowledgeResourceLine
+                                    name={helpCenters[0].name}
+                                    type={KnowledgeSourceType.HELP_CENTER}
+                                    isReady={hasHelpCenter}
+                                />
+                            )
                         )}
                     </CardContent>
                 </Card>
