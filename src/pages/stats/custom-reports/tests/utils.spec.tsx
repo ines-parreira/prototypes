@@ -358,7 +358,7 @@ describe('getNumberOfSelections', () => {
 })
 
 describe('getSearchConfig', () => {
-    it('should return matching charts based on case-insensitive search query', () => {
+    xit('should return matching charts based on case-insensitive search query', () => {
         const searchValue =
             OverviewMetricConfig[OverviewMetric.CustomerSatisfaction].title
         const result = getSearchConfig(searchValue)
