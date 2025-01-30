@@ -9,7 +9,6 @@ import thunk from 'redux-thunk'
 
 import {AiAgentNotificationType} from 'automate/notifications/types'
 import {account} from 'fixtures/account'
-import {useGetOrCreateAccountConfiguration} from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import {AiAgentOnboardingState} from 'models/aiAgent/types'
 import {getOnboardingNotificationStateFixture} from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
@@ -25,12 +24,8 @@ import {useStoreConfiguration} from '../useStoreConfiguration'
 jest.mock('state/billing/selectors')
 jest.mock('../useAiAgentOnboardingNotification')
 jest.mock('../useStoreConfiguration')
-jest.mock('hooks/aiAgent/useGetOrCreateAccountConfiguration')
 
 const mockGetHasAutomate = assumeMock(getHasAutomate)
-const mockUseGetOrCreateAccountConfiguration = assumeMock(
-    useGetOrCreateAccountConfiguration
-)
 const mockUseAiAgentOnboardingNotification = assumeMock(
     useAiAgentOnboardingNotification
 )
@@ -90,10 +85,6 @@ describe('useMeetAiAgentNotifications', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockGetHasAutomate.mockReturnValue(true)
-        mockUseGetOrCreateAccountConfiguration.mockReturnValue({
-            status: 'success',
-            isLoading: false,
-        } as unknown as ReturnType<typeof useGetOrCreateAccountConfiguration>)
         mockUseAiAgentOnboardingNotification.mockReturnValue(
             defaultUseAiAgentOnboardingNotification
         )
@@ -144,7 +135,7 @@ describe('useMeetAiAgentNotifications', () => {
         ).not.toHaveBeenCalled()
     })
 
-    it('should not trigger notification if isLoadingOnboardingNotification is true', () => {
+    it('should not trigger notification if isLoading is true', () => {
         mockUseAiAgentOnboardingNotification.mockReturnValue({
             ...defaultUseAiAgentOnboardingNotification,
             isLoading: true,
@@ -158,36 +149,6 @@ describe('useMeetAiAgentNotifications', () => {
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledWith({
             shopName: 'test-shop1',
         })
-        expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
-        ).not.toHaveBeenCalled()
-    })
-
-    it('should not trigger notification if isLoadingAccountConfiguration is true', () => {
-        mockUseGetOrCreateAccountConfiguration.mockReturnValue({
-            status: 'loading',
-            isLoading: true,
-        } as unknown as ReturnType<typeof useGetOrCreateAccountConfiguration>)
-
-        renderHook(() => useMeetAiAgentNotifications(), {
-            wrapper: getDependencyWrapper(),
-        })
-
-        expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
-        ).not.toHaveBeenCalled()
-    })
-
-    it('should not trigger notification if accountConfigRetrievalStatus is error', () => {
-        mockUseGetOrCreateAccountConfiguration.mockReturnValue({
-            status: 'error',
-            isLoading: true,
-        } as unknown as ReturnType<typeof useGetOrCreateAccountConfiguration>)
-
-        renderHook(() => useMeetAiAgentNotifications(), {
-            wrapper: getDependencyWrapper(),
-        })
-
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
         ).not.toHaveBeenCalled()

@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react'
 
 import {AiAgentNotificationType} from 'automate/notifications/types'
-import {useGetOrCreateAccountConfiguration} from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import useAppSelector from 'hooks/useAppSelector'
 import {ShopifyIntegration} from 'models/integration/types'
 
@@ -16,28 +15,16 @@ import {useStoreConfiguration} from './useStoreConfiguration'
 const useMeetAiAgentNotifications = () => {
     const hasAutomateSubscription = useAppSelector(getHasAutomate)
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const accountId = currentAccount.get('id')
     const accountDomain = currentAccount.get('domain')
     const shopifyStoreIntegrations: ShopifyIntegration[] =
         useShopifyIntegrations()
-    const storeNames = shopifyStoreIntegrations.map(
-        (integration) => integration.meta.shop_name
-    )
     const [storeIndex, setStoreIndex] = useState(0)
     const shopName: string | undefined =
         shopifyStoreIntegrations[storeIndex]?.meta?.shop_name
 
     const {
-        status: accountConfigRetrievalStatus,
-        isLoading: isLoadingAccountConfiguration,
-    } = useGetOrCreateAccountConfiguration(
-        {accountId, accountDomain, storeNames},
-        {refetchOnWindowFocus: false}
-    )
-
-    const {
         isAdmin,
-        isLoading: isLoadingOnboardingNotificationState,
+        isLoading,
         onboardingNotificationState,
         handleOnSendOrCancelNotification,
         isAiAgentOnboardingNotificationEnabled,
@@ -52,12 +39,10 @@ const useMeetAiAgentNotifications = () => {
 
     useEffect(() => {
         if (
-            isLoadingAccountConfiguration ||
-            isLoadingOnboardingNotificationState ||
+            isLoading ||
             isLoadingStoreConfiguration ||
             !isAdmin ||
-            !isAiAgentOnboardingNotificationEnabled ||
-            accountConfigRetrievalStatus === 'error'
+            !isAiAgentOnboardingNotificationEnabled
         )
             return
 
@@ -84,13 +69,11 @@ const useMeetAiAgentNotifications = () => {
             })
         }
     }, [
-        accountConfigRetrievalStatus,
         handleOnSendOrCancelNotification,
         hasAutomateSubscription,
         isAdmin,
         isAiAgentOnboardingNotificationEnabled,
-        isLoadingAccountConfiguration,
-        isLoadingOnboardingNotificationState,
+        isLoading,
         isLoadingStoreConfiguration,
         onboardingNotificationState?.meetAiAgentNotificationReceivedDatetime,
         onboardingNotificationState?.onboardingState,
