@@ -5,8 +5,8 @@ import type {
     TouchEvent as TouchEventReact,
 } from 'react'
 
+import {useSavedSizes} from 'core/layout/panels'
 import {clamp} from 'panels'
-import {tryLocalStorage} from 'services/common/utils'
 import {isTouchEvent} from 'utils'
 
 export const DEFAULT_WIDTH = 238
@@ -21,23 +21,11 @@ type State = {
 export default function useNavbarResize(
     navbarRef: RefObject<HTMLDivElement | null>
 ) {
+    const [savedSizes, persistSizes] = useSavedSizes()
     const [{isResizing, width}, setState] = useState<State>({
         isResizing: false,
-        width: DEFAULT_WIDTH,
+        width: savedSizes.navigation || DEFAULT_WIDTH,
     })
-
-    useEffect(() => {
-        const storedWidth = localStorage.getItem('navbar-width')
-        let width = DEFAULT_WIDTH
-        if (storedWidth) {
-            width = parseInt(storedWidth, 10)
-            if (isNaN(width)) {
-                width = DEFAULT_WIDTH
-            }
-        }
-
-        setState((s) => ({...s, width}))
-    }, [])
 
     const handleStartResize = useCallback(
         (event: MouseEventReact | TouchEventReact) => {
@@ -72,12 +60,10 @@ export default function useNavbarResize(
 
     const handleStopResize = useCallback(() => {
         setState((s) => {
-            tryLocalStorage(() =>
-                window.localStorage.setItem('navbar-width', s.width.toString())
-            )
+            persistSizes({navigation: s.width})
             return {...s, isResizing: false}
         })
-    }, [])
+    }, [persistSizes])
 
     useEffect(() => {
         if (!isResizing) return

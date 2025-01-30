@@ -2,19 +2,24 @@ import {fireEvent} from '@testing-library/react'
 import {act, renderHook} from '@testing-library/react-hooks'
 import type {MouseEvent as MouseEventReact, RefObject} from 'react'
 
+import {useSavedSizes} from 'core/layout/panels'
+import {assumeMock} from 'utils/testing'
+
 import useNavbarResize, {DEFAULT_WIDTH} from '../useNavbarResize'
+
+jest.mock('core/layout/panels', () => ({useSavedSizes: jest.fn()}))
+const useSavedSizesMock = assumeMock(useSavedSizes)
 
 describe('useNavbarResize', () => {
     let getBoundingClientRect: jest.Mock
     let defaultRef: RefObject<HTMLDivElement>
-    let getItem: jest.SpyInstance
-    let setItem: jest.SpyInstance
+    let persistSizes: jest.Mock
 
     beforeEach(() => {
         jest.resetAllMocks()
 
-        getItem = jest.spyOn(Storage.prototype, 'getItem')
-        setItem = jest.spyOn(Storage.prototype, 'setItem')
+        persistSizes = jest.fn()
+        useSavedSizesMock.mockReturnValue([{}, persistSizes])
 
         getBoundingClientRect = jest.fn()
         defaultRef = {
@@ -29,18 +34,6 @@ describe('useNavbarResize', () => {
             isResizing: false,
             width: DEFAULT_WIDTH,
         })
-    })
-
-    it('should return the default width if localstorage contains an invalid value', () => {
-        getItem.mockReturnValue('non-number')
-        const {result} = renderHook(() => useNavbarResize(defaultRef))
-        expect(result.current.width).toBe(DEFAULT_WIDTH)
-    })
-
-    it('should return the stored value if it is a number', () => {
-        getItem.mockReturnValue('123')
-        const {result} = renderHook(() => useNavbarResize(defaultRef))
-        expect(result.current.width).toBe(123)
     })
 
     it('should set `isResizing` when resizing begins', () => {
@@ -122,7 +115,7 @@ describe('useNavbarResize', () => {
             fireEvent.touchEnd(window)
         })
 
-        expect(setItem).toHaveBeenCalledWith('navbar-width', '238')
+        expect(persistSizes).toHaveBeenCalledWith({navigation: 238})
         expect(result.current.isResizing).toBe(false)
     })
 
@@ -135,7 +128,7 @@ describe('useNavbarResize', () => {
             fireEvent.mouseUp(window)
         })
 
-        expect(setItem).toHaveBeenCalledWith('navbar-width', '238')
+        expect(persistSizes).toHaveBeenCalledWith({navigation: 238})
         expect(result.current.isResizing).toBe(false)
     })
 })
