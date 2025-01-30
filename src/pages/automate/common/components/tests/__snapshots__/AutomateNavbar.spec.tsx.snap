@@ -137,9 +137,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
             Home
           </span>
         </a>
-        <div
-          data-candu-id="navbar-home-spacer"
-        />
         <button
           aria-disabled="false"
           class="wrapper navbarButton ghost primary medium"
@@ -600,9 +597,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
             Home
           </span>
         </a>
-        <div
-          data-candu-id="navbar-home-spacer"
-        />
         <button
           aria-disabled="false"
           class="wrapper navbarButton ghost primary medium"
@@ -799,9 +793,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
             Home
           </span>
         </a>
-        <div
-          data-candu-id="navbar-home-spacer"
-        />
         <button
           aria-disabled="false"
           class="wrapper navbarButton ghost primary medium"
@@ -1249,9 +1240,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
             Home
           </span>
         </a>
-        <div
-          data-candu-id="navbar-home-spacer"
-        />
         <button
           aria-disabled="false"
           class="wrapper navbarButton ghost primary medium"

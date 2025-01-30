@@ -80,7 +80,6 @@ export default function Navbar({
                     {!showGlobalNav && (
                         <>
                             <HomePageLink />
-                            <div data-candu-id="navbar-home-spacer" />
                             <SpotlightButton />
                             <NotificationsButton />
                         </>
@@ -92,12 +91,8 @@ export default function Navbar({
                     {children}
                 </div>
 
-                {!showGlobalNav && (
-                    <>
-                        <div data-candu-id="navbar-menu-spacer" />
-                        <UserMenuWithToggle />
-                    </>
-                )}
+                <div data-candu-id="navbar-menu-spacer" />
+                {!showGlobalNav && <UserMenuWithToggle />}
             </div>
             {!disableResize && (
                 <div
