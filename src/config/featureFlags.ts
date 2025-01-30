@@ -129,6 +129,7 @@ export enum FeatureFlagKey {
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
     ShopifyHideActionButtons = 'shopify-widget-hide-action-buttons',
     ShopifyOrderNotes = 'shopify-order-notes',
+    StandaloneConvAiOverviewPage = 'standalone-conv-ai_overview-page',
     SummarizeCalls = 'summarize-calls',
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
     TagNewDesign = 'tag-new-design',

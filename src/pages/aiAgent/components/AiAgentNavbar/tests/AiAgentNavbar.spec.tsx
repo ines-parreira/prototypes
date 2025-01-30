@@ -257,5 +257,61 @@ describe('<AiAgentNavbar />', () => {
 
             expect(queryByText('teststore1')).not.toBeInTheDocument()
         })
+
+        it('should render Overview menu item when flag StandaloneConvAiOverviewPage true', () => {
+            mockUseFlags.mockReturnValue({
+                [FeatureFlagKey.StandaloneConvAiOverviewPage]: true,
+            })
+
+            const {queryByText} = render(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        currentAccount: fromJS({
+                            ...account,
+                            current_subscription: {
+                                ...account.current_subscription,
+                                products: automationSubscriptionProductPrices,
+                            },
+                        }),
+                    })}
+                >
+                    <ThemeProvider>
+                        <AiAgentNavbar />
+                    </ThemeProvider>
+                </Provider>,
+                {wrapper}
+            )
+
+            expect(queryByText('Overview')).toBeInTheDocument()
+        })
+
+        it('should not render Overview menu item when flag StandaloneConvAiOverviewPage true', () => {
+            mockUseFlags.mockReturnValue({
+                [FeatureFlagKey.StandaloneConvAiOverviewPage]: false,
+            })
+
+            const {queryByText} = render(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        currentAccount: fromJS({
+                            ...account,
+                            current_subscription: {
+                                ...account.current_subscription,
+                                products: automationSubscriptionProductPrices,
+                            },
+                        }),
+                    })}
+                >
+                    <ThemeProvider>
+                        <AiAgentNavbar />
+                    </ThemeProvider>
+                </Provider>,
+                {wrapper}
+            )
+
+            expect(queryByText('Overview')).not.toBeInTheDocument()
+        })
     })
 })

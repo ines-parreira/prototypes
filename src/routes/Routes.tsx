@@ -46,9 +46,11 @@ import {AiAgentPlaygroundContainer} from 'pages/aiAgent/AiAgentPlaygroundContain
 import {AiAgentPreviewModeSettingsContainer} from 'pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer'
 import {AiAgentNavbar} from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
 import {RedirectToAiAgentStore} from 'pages/aiAgent/components/RedirectToAiAgentStore/RedirectToAiAgentStore'
+import {useAiAgentItemEnabled} from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import {Level2IntentsContainer} from 'pages/aiAgent/insights/Level2IntentsContainer/Level2IntentsContainer'
 import {OptimizeContainer} from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
 import {AiAgentOnboarding} from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
+import {AiAgentOverview} from 'pages/aiAgent/Overview/AiAgentOverview'
 import {AiAgentAccountConfigurationProvider} from 'pages/aiAgent/providers/AiAgentAccountConfigurationProvider'
 import {AiAgentErrorBoundary} from 'pages/aiAgent/providers/AiAgentErrorBoundary'
 import AiAgentStoreConfigurationProvider from 'pages/aiAgent/providers/AiAgentStoreConfigurationProvider'
@@ -1176,6 +1178,7 @@ function AutomationContent() {
     const isActionsInternalPlatformEnabled = useFlag(
         FeatureFlagKey.ActionsInternalPlatform
     )
+    const isAiAgentItemEnabled = useAiAgentItemEnabled()
 
     return (
         <Switch>
@@ -1493,6 +1496,17 @@ function AutomationContent() {
             <Route path={`${path}`} exact>
                 <AutomateLandingPageContainer />
             </Route>
+
+            {!isAiAgentItemEnabled && (
+                <Route
+                    path={`${path}/ai-agent-overview`}
+                    component={withUserRoleRequired(
+                        AiAgentOverview,
+                        AGENT_ROLE
+                    )}
+                />
+            )}
+
             <Route>
                 <Redirect to={`${path}`} />
             </Route>
@@ -1532,9 +1546,20 @@ export function AiAgentBaseRoutes({match: {path}}: RouteComponentProps) {
 
 function AiAgentContent() {
     const {path} = useRouteMatch()
+    const hasStandaloneConvAiOverviewPage =
+        useFlags()[FeatureFlagKey.StandaloneConvAiOverviewPage]
 
     return (
         <Switch>
+            {hasStandaloneConvAiOverviewPage && (
+                <Route
+                    path={`${path}/overview`}
+                    component={withUserRoleRequired(
+                        AiAgentOverview,
+                        AGENT_ROLE
+                    )}
+                />
+            )}
             <Route
                 path={`${path}/:shopType/:shopName`}
                 component={withUserRoleRequired(AiAgentRoutes, AGENT_ROLE)}

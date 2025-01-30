@@ -1,18 +1,16 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
-import {getHasAutomate} from 'state/billing/selectors'
+import {useAiAgentItemEnabled} from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import {assumeMock} from 'utils/testing'
 
 import {useMainNavigationItems} from '../useMainNavigationItems'
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 
-jest.mock('state/billing/selectors', () => ({getHasAutomate: jest.fn()}))
-const getHasAutomateMock = assumeMock(getHasAutomate)
+jest.mock('pages/aiAgent/hooks/useAiAgentItemEnabled')
+const useAiAgentItemEnabledMock = assumeMock(useAiAgentItemEnabled)
 
 describe('MainNavigation', () => {
     const basicUser = fromJS({role: {name: UserRole.BasicAgent}})
@@ -76,24 +74,16 @@ describe('MainNavigation', () => {
         )
     })
 
-    it('should not render the AI Agent menu item if the feature flag is disabled', () => {
-        const {result} = renderHook(() => useMainNavigationItems(agentUser))
-        expect(result.current.map((item) => item.url)).not.toContain(
-            '/app/ai-agent'
-        )
-    })
-
     it('should not render the AI Agent menu item if the feature flag is enabled but user does not have access to automate', () => {
+        useAiAgentItemEnabledMock.mockReturnValue(false)
         const {result} = renderHook(() => useMainNavigationItems(agentUser))
-        mockFlags({[FeatureFlagKey.ConvAiStandaloneMenu]: true})
         expect(result.current.map((item) => item.url)).not.toContain(
             '/app/ai-agent'
         )
     })
 
     it('should render the AI Agent menu item if the feature flag is enabled and user has access to automate', () => {
-        mockFlags({[FeatureFlagKey.ConvAiStandaloneMenu]: true})
-        getHasAutomateMock.mockReturnValue(true)
+        useAiAgentItemEnabledMock.mockReturnValue(true)
         const {result} = renderHook(() => useMainNavigationItems(agentUser))
         expect(result.current.map((item) => item.url)).toContain(
             '/app/ai-agent'

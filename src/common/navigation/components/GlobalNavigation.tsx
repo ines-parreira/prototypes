@@ -1,11 +1,9 @@
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
-import {useFlag} from 'core/flags'
 import {TooltipDelay} from 'core/ui/tooltip.utils'
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomate} from 'state/billing/selectors'
+import {useAiAgentItemEnabled} from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {hasRole} from 'utils'
 
@@ -29,13 +27,7 @@ export default function GlobalNavigation() {
 
     useNavBarShortcuts()
 
-    const hasAutomate = useAppSelector(getHasAutomate)
-    const hasAiAgentStandaloneMenu = useFlag(
-        FeatureFlagKey.ConvAiStandaloneMenu
-    )
-    const hasAiAgentPreview = useFlag(FeatureFlagKey.AIAgentPreviewModeAllowed)
-    const isAiAgentItemEnabled =
-        hasAiAgentStandaloneMenu && (hasAutomate || hasAiAgentPreview)
+    const isAiAgentItemEnabled = useAiAgentItemEnabled()
 
     return (
         <nav

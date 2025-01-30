@@ -20,7 +20,7 @@ import UserMenuWithToggle from './UserMenuWithToggle'
 
 type Props = {
     activeContent: ActiveContent
-    children: ReactNode
+    children?: ReactNode
     disableResize?: boolean
     headerContent?: ReactNode
     navbarContentRef?: RefObject<HTMLDivElement>

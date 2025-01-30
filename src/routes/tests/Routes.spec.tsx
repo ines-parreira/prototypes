@@ -23,6 +23,7 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import {user} from 'fixtures/users'
+import {useAiAgentItemEnabled} from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import {CustomReportPage} from 'pages/stats/custom-reports/CustomReportPage'
 import {CustomReports} from 'pages/stats/custom-reports/CustomReports'
 import LiveOverview from 'pages/stats/LiveOverview'
@@ -159,6 +160,9 @@ const SatisfactionMock = assumeMock(SatisfactionReport)
 jest.mock('pages/stats/custom-reports/CustomReports')
 const CustomReportsMock = assumeMock(CustomReports)
 
+jest.mock('pages/aiAgent/hooks/useAiAgentItemEnabled')
+const useAiAgentItemEnabledMock = assumeMock(useAiAgentItemEnabled)
+
 const mockHistory = createBrowserHistory()
 const mockStore = configureMockStore()
 const mockUseFlag = useFlag as jest.Mock
@@ -186,6 +190,8 @@ describe('<Routes/>', () => {
         LiveOverviewMock.mockImplementation(() => <div />)
         CustomReportPageMock.mockImplementation(() => <div />)
         CustomReportsMock.mockImplementation(() => <div />)
+
+        useAiAgentItemEnabledMock.mockReturnValue(false)
     })
 
     afterEach(() => {

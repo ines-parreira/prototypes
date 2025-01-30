@@ -1,5 +1,6 @@
 import {render, screen} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import type {ReactNode} from 'react'
 import {DndProvider} from 'react-dnd'
@@ -9,6 +10,7 @@ import {StaticRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import {NavBarProvider} from 'common/navigation/components/NavBarProvider'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {AGENT_ROLE} from 'config/user'
 import {useFlag} from 'core/flags'
 import {ThemeProvider} from 'core/theme'
@@ -17,9 +19,9 @@ import {billingState} from 'fixtures/billing'
 import {integrationsState} from 'fixtures/integrations'
 import {user} from 'fixtures/users'
 import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import {useAiAgentItemEnabled} from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
 import {RootState} from 'state/types'
-import {getLDClient} from 'utils/launchDarkly'
 
 import {assumeMock} from 'utils/testing'
 
@@ -30,11 +32,11 @@ jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 
-jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
-
-const allFlagsMock = getLDClient().allFlags as jest.Mock
+jest.mock('launchdarkly-react-client-sdk')
+const allFlagsMock = assumeMock(useFlags)
 allFlagsMock.mockReturnValue({})
 
+jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
 const mockStore = configureMockStore()
 const useStoreConfigurationMock = assumeMock(useStoreConfiguration)
 const defaultStoreConfiguration = getStoreConfigurationFixture()
@@ -46,6 +48,9 @@ jest.mock('common/notifications/components/Button', () => ({
     default: () => <div>NotificationsButton</div>,
 }))
 
+jest.mock('pages/aiAgent/hooks/useAiAgentItemEnabled')
+const useAiAgentItemEnabledMock = assumeMock(useAiAgentItemEnabled)
+
 const wrapper = ({children}: {children: ReactNode}) => (
     <StaticRouter location="/app">
         <NavBarProvider>{children}</NavBarProvider>
@@ -54,6 +59,7 @@ const wrapper = ({children}: {children: ReactNode}) => (
 
 describe('<AutomateNavbar />', () => {
     beforeEach(() => {
+        useAiAgentItemEnabledMock.mockReturnValue(false)
         mockUseFlag.mockReturnValue(false)
         useStoreConfigurationMock.mockReturnValue({
             storeConfiguration: defaultStoreConfiguration,
@@ -196,6 +202,38 @@ describe('<AutomateNavbar />', () => {
         it('should render automate navbar with actions internal platform', () => {
             mockUseFlag.mockReturnValue(true)
 
+            const {queryByText} = render(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        integrations,
+                        currentAccount: fromJS({
+                            ...account,
+                            current_subscription: {
+                                ...account.current_subscription,
+                                products: automationSubscriptionProductPrices,
+                            },
+                        }),
+                    })}
+                >
+                    <DndProvider backend={HTML5Backend}>
+                        <ThemeProvider>
+                            <AutomateNavbar />
+                        </ThemeProvider>
+                    </DndProvider>
+                </Provider>,
+                {wrapper}
+            )
+
+            expect(queryByText('Actions platform')).toBeInTheDocument()
+        })
+
+        it('should render AI Agent overview menu item when flag StandaloneConvAiOverviewPage is ON and AI Agent menu item is not enabled', () => {
+            useAiAgentItemEnabledMock.mockReturnValue(false)
+            allFlagsMock.mockReturnValue({
+                [FeatureFlagKey.StandaloneConvAiOverviewPage]: true,
+            })
+
             render(
                 <Provider
                     store={mockStore({
@@ -219,7 +257,71 @@ describe('<AutomateNavbar />', () => {
                 {wrapper}
             )
 
-            expect(screen.getByText('Actions platform')).toBeInTheDocument()
+            expect(screen.getByText('AI Agent Overview')).toBeInTheDocument()
+        })
+
+        it('should not render AI Agent overview menu item when flag StandaloneConvAiOverviewPage is ON and AI Agent menu item is enabled', () => {
+            useAiAgentItemEnabledMock.mockReturnValue(true)
+            allFlagsMock.mockReturnValue({
+                [FeatureFlagKey.StandaloneConvAiOverviewPage]: true,
+            })
+
+            const {queryByText} = render(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        integrations,
+                        currentAccount: fromJS({
+                            ...account,
+                            current_subscription: {
+                                ...account.current_subscription,
+                                products: automationSubscriptionProductPrices,
+                            },
+                        }),
+                    })}
+                >
+                    <DndProvider backend={HTML5Backend}>
+                        <ThemeProvider>
+                            <AutomateNavbar />
+                        </ThemeProvider>
+                    </DndProvider>
+                </Provider>,
+                {wrapper}
+            )
+
+            expect(queryByText('AI Agent Overview')).not.toBeInTheDocument()
+        })
+
+        it('should not render AI Agent overview menu item when flag StandaloneConvAiOverviewPage is OFF and AI Agent menu item is enabled', () => {
+            useAiAgentItemEnabledMock.mockReturnValue(true)
+            allFlagsMock.mockReturnValue({
+                [FeatureFlagKey.StandaloneConvAiOverviewPage]: false,
+            })
+
+            const {queryByText} = render(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        integrations,
+                        currentAccount: fromJS({
+                            ...account,
+                            current_subscription: {
+                                ...account.current_subscription,
+                                products: automationSubscriptionProductPrices,
+                            },
+                        }),
+                    })}
+                >
+                    <DndProvider backend={HTML5Backend}>
+                        <ThemeProvider>
+                            <AutomateNavbar />
+                        </ThemeProvider>
+                    </DndProvider>
+                </Provider>,
+                {wrapper}
+            )
+
+            expect(queryByText('AI Agent Overview')).not.toBeInTheDocument()
         })
     })
 })

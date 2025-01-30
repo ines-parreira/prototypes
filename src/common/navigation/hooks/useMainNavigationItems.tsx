@@ -1,13 +1,9 @@
 import {Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {ReactNode, useMemo} from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
+import {useAiAgentItemEnabled} from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import Badge, {ColorType} from 'pages/common/components/Badge'
-
-import {getHasAutomate} from 'state/billing/selectors'
 
 import {hasRole} from 'utils'
 
@@ -37,8 +33,7 @@ export type MenuItem = {
 export const useMainNavigationItems = (
     currentUser: Map<any, any>
 ): MenuItem[] => {
-    const flags = useFlags()
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const isAiAgentItemEnabled = useAiAgentItemEnabled()
 
     return useMemo(() => {
         const menuItems: Array<MenuItem & {onlyIf?: boolean}> = [
@@ -72,11 +67,7 @@ export const useMainNavigationItems = (
                 ),
                 segmentProp: {link: 'ai-agent'},
                 requiredRole: UserRole.Agent,
-                onlyIf: !!(
-                    flags[FeatureFlagKey.ConvAiStandaloneMenu] &&
-                    (hasAutomate ||
-                        flags[FeatureFlagKey.AIAgentPreviewModeAllowed])
-                ),
+                onlyIf: isAiAgentItemEnabled,
             },
             {
                 url: '/app/convert',
@@ -117,5 +108,5 @@ export const useMainNavigationItems = (
                     hasRole(currentUser, item.requiredRole)
             )
             .filter((item) => item.onlyIf !== false)
-    }, [currentUser, flags, hasAutomate])
+    }, [currentUser, isAiAgentItemEnabled])
 }
