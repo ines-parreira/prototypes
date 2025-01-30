@@ -56,6 +56,30 @@ describe('OneTouchTicketsPercentageMetricTrend', () => {
             expect(result.current.isError).toBe(false)
         })
 
+        it('should return undefined when loading', () => {
+            const mockData = {
+                data: undefined,
+                isFetching: true,
+                isError: false,
+            }
+            const mockClosedTicketsPerAgent = {
+                data: undefined,
+                isFetching: false,
+                isError: false,
+            }
+
+            useOneTicketsTrendMock.mockReturnValue(mockData)
+            useClosedTicketsTrendMock.mockReturnValue(mockClosedTicketsPerAgent)
+
+            const {result} = renderHook(() =>
+                useOneTouchTicketsPercentageMetricTrend(statsFilters, timezone)
+            )
+
+            expect(result?.current?.data).toBe(undefined)
+            expect(result.current.isFetching).toBe(true)
+            expect(result.current.isError).toBe(false)
+        })
+
         it('should return null on missing data', () => {
             const mockData = {
                 data: undefined,
@@ -77,8 +101,8 @@ describe('OneTouchTicketsPercentageMetricTrend', () => {
                 useOneTouchTicketsPercentageMetricTrend(statsFilters, timezone)
             )
 
-            expect(result?.current?.data?.value).toBe(undefined)
-            expect(result?.current?.data?.prevValue).toBe(undefined)
+            expect(result?.current?.data?.value).toBe(null)
+            expect(result?.current?.data?.prevValue).toBe(null)
             expect(result.current.isFetching).toBe(false)
             expect(result.current.isError).toBe(false)
         })
@@ -143,8 +167,8 @@ describe('OneTouchTicketsPercentageMetricTrend', () => {
                 timezone
             )
 
-            expect(result?.data?.value).toBe(undefined)
-            expect(result?.data?.prevValue).toBe(undefined)
+            expect(result?.data?.value).toBe(null)
+            expect(result?.data?.prevValue).toBe(null)
             expect(result.isFetching).toBe(false)
             expect(result.isError).toBe(false)
         })

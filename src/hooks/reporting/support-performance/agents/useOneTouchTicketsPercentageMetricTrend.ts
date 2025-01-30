@@ -32,13 +32,10 @@ const formatData = (
         )
     }
 
-    if (metricValue && prevMetricValue) {
-        return {
-            value: metricValue,
-            prevValue: prevMetricValue,
-        }
+    return {
+        value: metricValue,
+        prevValue: prevMetricValue,
     }
-    return undefined
 }
 
 export const useOneTouchTicketsPercentageMetricTrend = (
@@ -50,11 +47,13 @@ export const useOneTouchTicketsPercentageMetricTrend = (
 
     const data = formatData(oneTouchTicketsTrend, closedTicketsTrend)
 
+    const isFetching =
+        oneTouchTicketsTrend.isFetching || closedTicketsTrend.isFetching
+
     return {
-        isFetching:
-            oneTouchTicketsTrend.isFetching || closedTicketsTrend.isFetching,
+        isFetching,
         isError: oneTouchTicketsTrend.isError || closedTicketsTrend.isError,
-        data,
+        data: isFetching ? undefined : data,
     }
 }
 
