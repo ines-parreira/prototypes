@@ -162,9 +162,7 @@ export default class GorgiasApi {
         return fromJS(resp.data) as Map<any, any>
     }
 
-    async *getTicketEvents(
-        ticketId: number
-    ): AsyncGenerator<List<any>, void, Array<Event>> {
+    async *getTicketEvents(ticketId: number) {
         const pages = this.cursorPaginate<Event, FetchEventsOptions>(
             fetchEvents,
             {
@@ -175,7 +173,26 @@ export default class GorgiasApi {
         )
 
         for await (const events of pages) {
-            yield fromJS(events)
+            yield fromJS(events) as List<Event>
+        }
+    }
+
+    async *getSatisfactionSurveyEvents(
+        satisfactionSurveyId: number,
+        config?: FetchEventsOptions
+    ) {
+        const pages = this.cursorPaginate<Event, FetchEventsOptions>(
+            fetchEvents,
+            {
+                ...config,
+                objectId: satisfactionSurveyId,
+                objectType: EventObjectType.SatisfactionSurvey,
+                limit: 30,
+            }
+        )
+
+        for await (const events of pages) {
+            yield fromJS(events) as List<Event>
         }
     }
 

@@ -22,6 +22,8 @@ import {
     TICKET_EVENT_TYPES,
     rulesActionsFailures,
     EventType,
+    SATISFACTION_SURVEY_EVENT_TYPES,
+    SatisfactionSurveyEventType,
 } from 'models/event/types'
 import {actionsConfigWithManagedRules} from 'pages/common/components/ast/actions/config'
 import TicketTag from 'pages/common/components/TicketTag'
@@ -53,6 +55,7 @@ export type HighlightedElements = {
 
 const CONTENTFUL_EVENT_TYPES = Object.freeze({
     ..._omit(TICKET_EVENT_TYPES, ['TicketMessageCreated', 'TicketUpdated']),
+    ...SATISFACTION_SURVEY_EVENT_TYPES,
 })
 
 export const contentfulEventTypesValues = Object.freeze(
@@ -161,7 +164,9 @@ export class AuditLogEventContainer extends Component<Props, State> {
         showDetails: false,
     }
 
-    _CONTENT_RENDERERS: Partial<Record<TicketEventType, () => ReactNode>> = {
+    _CONTENT_RENDERERS: Partial<
+        Record<TicketEventType | SatisfactionSurveyEventType, () => ReactNode>
+    > = {
         [CONTENTFUL_EVENT_TYPES.RuleExecuted]: () => {
             const {event} = this.props
             const hasManagedRuleSlug = event.hasIn(['data', 'slug'])

@@ -5,7 +5,10 @@ import {FETCH_TICKET_REPLY_MACRO} from 'common/state'
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {CustomFieldState} from 'custom-fields/types'
 import {ShopperAddress, ShopperOrder} from 'models/customerEcommerceData/types'
-import {TICKET_EVENT_TYPES} from 'models/event/types'
+import {
+    SATISFACTION_SURVEY_DETAIL_EVENT_TYPES,
+    TICKET_EVENT_TYPES,
+} from 'models/event/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {Ticket} from 'models/ticket/types'
 import * as customerTypes from 'state/customers/constants'
@@ -812,7 +815,6 @@ export default function reducer(
                             results = results.set(index, eventToDisplay)
                         }
                     })
-
                 return shouldDeduplicateAuditLogEvents(
                     state.get('created_datetime')
                 )
@@ -824,9 +826,12 @@ export default function reducer(
             return state.updateIn(['events'], (events: List<any>) =>
                 events.filter(
                     (event: Map<any, any>) =>
-                        !Object.values(TICKET_EVENT_TYPES).includes(
-                            event.get('type')
-                        )
+                        ![
+                            ...Object.values(TICKET_EVENT_TYPES),
+                            ...Object.values(
+                                SATISFACTION_SURVEY_DETAIL_EVENT_TYPES
+                            ),
+                        ].includes(event.get('type'))
                 )
             )
 

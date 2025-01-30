@@ -31,6 +31,7 @@ import {
     ShopperOrder,
 } from 'models/customerEcommerceData/types'
 import {CustomerExternalData} from 'models/customerExternalData/types'
+import {Event, EventType} from 'models/event/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {Member, Team} from 'models/team/types'
 import {mapNormalizedToArray} from 'models/ticket/mappers'
@@ -819,7 +820,7 @@ export const fetchTicket =
                 return response?.data
             })
             .then(
-                (response) => {
+                async (response) => {
                     if (_isEmpty(response)) {
                         console.error('No results for', url)
                     }
@@ -840,6 +841,22 @@ export const fetchTicket =
 
                     if (customerId) {
                         socketManager.join(JoinEventType.Customer, customerId)
+                    }
+
+                    const client = new GorgiasApi()
+                    const satisfactionSurveyId =
+                        response?.satisfaction_survey?.id
+
+                    if (satisfactionSurveyId) {
+                        let surveyEvents: typeof response.events = []
+
+                        for await (const events of client.getSatisfactionSurveyEvents(
+                            satisfactionSurveyId,
+                            {types: [EventType.SatisfactionSurveyResponded]}
+                        )) {
+                            surveyEvents = [...surveyEvents, ...events.toJS()]
+                        }
+                        response.events = [...response.events, ...surveyEvents]
                     }
 
                     // dispatch for ticket reducer branch
@@ -1142,23 +1159,34 @@ export const goToNextTicket =
     }
 
 export const displayAuditLogEvents =
-    (ticketId: number) => async (dispatch: StoreDispatch) => {
+    (ticketId: number, satisfactionSurveyId?: number) =>
+    async (dispatch: StoreDispatch) => {
         logEvent(SegmentEvent.DisplayAllEventsClicked, {
             ticketId,
         })
 
         const client = new GorgiasApi()
-        const generator = client.getTicketEvents(ticketId)
-
         dispatch({
             type: types.DISPLAY_TICKET_AUDIT_LOG_EVENTS,
         })
 
-        let allEvents: List<any> = fromJS([])
+        let allEvents: List<Event> = fromJS([])
 
-        for await (const events of generator as any) {
-            allEvents = allEvents.concat(events) as List<any>
+        const generators = [client.getTicketEvents(ticketId)]
+        if (satisfactionSurveyId) {
+            generators.push(
+                client.getSatisfactionSurveyEvents(satisfactionSurveyId)
+            )
         }
+
+        // Run generators in parallel and merge results
+        await Promise.all(
+            generators.map(async (generator) => {
+                for await (const events of generator) {
+                    allEvents = List(allEvents.concat(events))
+                }
+            })
+        )
 
         if (allEvents.size) {
             dispatch({

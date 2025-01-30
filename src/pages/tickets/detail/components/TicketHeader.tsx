@@ -176,7 +176,14 @@ const TicketHeader = ({
 
     const toggleAuditLogEvents = () => {
         if (!shouldDisplayAuditLogEvents) {
-            void dispatch(displayAuditLogEvents(ticket.get('id')))
+            void dispatch(
+                displayAuditLogEvents(
+                    ticket.get('id'),
+                    (ticket.get('satisfaction_survey') as Map<any, any>)?.get(
+                        'id'
+                    )
+                )
+            )
         } else {
             dispatch(hideAuditLogEvents())
         }

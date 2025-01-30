@@ -719,6 +719,61 @@ describe('ticket actions', () => {
                 })
             })
         })
+
+        it('should fetch and merge satisfaction survey events when ticket has a satisfaction survey', () => {
+            const ticketWithSurvey = {
+                id: 1,
+                messages: [],
+                events: [{id: 1, type: 'ticket_created'}],
+                satisfaction_survey: {
+                    id: 456,
+                },
+            }
+
+            const surveyEvents = [
+                {id: 2, type: 'satisfaction_survey_responded'},
+                {id: 3, type: 'satisfaction_survey_responded'},
+            ]
+
+            mockServer
+                .onGet(endpointMatchers.ticket1)
+                .reply(200, ticketWithSurvey)
+
+            mockServer.onGet('/api/events/').replyOnce(200, {
+                data: surveyEvents,
+                meta: {
+                    next_cursor: null,
+                    prev_cursor: null,
+                },
+                object: 'list',
+                uri: 'api/events',
+            })
+
+            store = mockStore({
+                newMessage: newMessageState,
+                ticket: initialState.set('id', 1),
+                currentUser: fromJS({id: 1}),
+            })
+
+            return store
+                .dispatch(actions.fetchTicket('1', {isCurrentlyOnTicket: true}))
+                .then(() => {
+                    expect(
+                        (
+                            store
+                                .getActions()
+                                .find(
+                                    (action: {type: string}) =>
+                                        action.type === 'FETCH_TICKET_SUCCESS'
+                                ) as {response: Ticket}
+                        ).response.events
+                    ).toEqual([
+                        {id: 1, type: 'ticket_created'},
+                        {id: 2, type: 'satisfaction_survey_responded'},
+                        {id: 3, type: 'satisfaction_survey_responded'},
+                    ])
+                })
+        })
     })
 
     describe('handleMessageError()', () => {
@@ -1280,33 +1335,45 @@ describe('ticket actions', () => {
 
         it('should dispatch audit logs events, page per page', async () => {
             const ticketId = 123
-            const path = `/api/events/`
-            const matcher = new RegExp(path + '*')
+            const surveyId = 456
+            const path = '/api/events/'
 
-            const mocks: ApiListResponseCursorPagination<Event[]>[] = [
+            const ticketMocks: ApiListResponseCursorPagination<Event[]>[] = [
                 {
-                    data: [getEvent(1), getEvent(2), getEvent(3)],
+                    data: [getEvent(1), getEvent(2)],
                     meta: {
-                        next_cursor: 'cursored_page_2',
+                        next_cursor: 'ticket_page_2',
                         prev_cursor: null,
                     },
                     object: 'list',
                     uri: 'api/events',
                 },
                 {
-                    data: [getEvent(4), getEvent(5), getEvent(6)],
+                    data: [getEvent(3), getEvent(4)],
                     meta: {
-                        next_cursor: 'cursored_page_3',
-                        prev_cursor: 'cursored_page_1',
+                        next_cursor: null,
+                        prev_cursor: 'ticket_page_1',
+                    },
+                    object: 'list',
+                    uri: 'api/events',
+                },
+            ]
+
+            const surveyMocks: ApiListResponseCursorPagination<Event[]>[] = [
+                {
+                    data: [getEvent(5), getEvent(6)],
+                    meta: {
+                        next_cursor: 'survey_page_2',
+                        prev_cursor: null,
                     },
                     object: 'list',
                     uri: 'api/events',
                 },
                 {
-                    data: [getEvent(7), getEvent(8), getEvent(9)],
+                    data: [getEvent(7), getEvent(8)],
                     meta: {
                         next_cursor: null,
-                        prev_cursor: 'cursored_page_2',
+                        prev_cursor: 'survey_page_1',
                     },
                     object: 'list',
                     uri: 'api/events',
@@ -1314,32 +1381,45 @@ describe('ticket actions', () => {
             ]
 
             mockServerGorgiasApi
-                .onGet(matcher)
-                .replyOnce(200, mocks[0])
-                .onGet(matcher)
-                .replyOnce(200, mocks[1])
-                .onGet(matcher)
-                .replyOnce(200, mocks[2])
+                .onGet(path, {
+                    params: {
+                        object_type: EventObjectType.Ticket,
+                        object_id: ticketId,
+                        limit: 30,
+                    },
+                })
+                .replyOnce(200, ticketMocks[0])
+                .onGet(path, {
+                    params: {
+                        object_type: EventObjectType.Ticket,
+                        object_id: ticketId,
+                        limit: 30,
+                        cursor: 'ticket_page_2',
+                    },
+                })
+                .replyOnce(200, ticketMocks[1])
+                .onGet(path, {
+                    params: {
+                        object_type: EventObjectType.SatisfactionSurvey,
+                        object_id: surveyId,
+                        limit: 30,
+                    },
+                })
+                .replyOnce(200, surveyMocks[0])
+                .onGet(path, {
+                    params: {
+                        object_type: EventObjectType.SatisfactionSurvey,
+                        object_id: surveyId,
+                        limit: 30,
+                        cursor: 'survey_page_2',
+                    },
+                })
+                .replyOnce(200, surveyMocks[1])
 
-            await store.dispatch(actions.displayAuditLogEvents(ticketId))
+            await store.dispatch(
+                actions.displayAuditLogEvents(ticketId, surveyId)
+            )
             expect(store.getActions()).toMatchSnapshot()
-        })
-
-        it('should dispatch a notification because there is no event for the given ticket', async () => {
-            const ticketId = 123
-            const path = `/api/events/`
-
-            mockServerGorgiasApi.onGet(path).reply(200, {
-                data: [],
-                meta: {next_cursor: null, prev_cursor: null},
-            })
-
-            await store.dispatch(actions.displayAuditLogEvents(ticketId))
-
-            expect(notify).toBeCalledWith({
-                status: 'info',
-                message: 'No event for this ticket',
-            })
         })
     })
 

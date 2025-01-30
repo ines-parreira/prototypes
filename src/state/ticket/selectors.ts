@@ -2,6 +2,7 @@ import {fromJS, Map, List} from 'immutable'
 import {createSelector} from 'reselect'
 
 import {TicketVia} from 'business/types/ticket'
+import {EventType} from 'models/event/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {
     isTicketMessage,
@@ -226,6 +227,7 @@ export const getBody = createImmutableSelector(
     getRuleSuggestion,
     getTicketFieldState,
     getVoiceCalls,
+    shouldDisplayAuditLogEvents,
     (
         messages,
         pendingMessages,
@@ -257,7 +259,14 @@ export const getBody = createImmutableSelector(
                     message.get('created_datetime') as string
             ) as List<any>
 
+        let hasSatisfactionSurveyRespondedPreviousEvents = false
         const nextEvents = events.map((event: Map<any, any>) => {
+            if (event.get('type') === EventType.SatisfactionSurveyResponded) {
+                hasSatisfactionSurveyRespondedPreviousEvents = true
+                return event
+                    .set('isSatisfactionSurvey', true)
+                    .set('isEvent', true)
+            }
             return event.set('isEvent', true)
         }) as List<any>
 
@@ -266,11 +275,17 @@ export const getBody = createImmutableSelector(
                 return fromJS(voiceCall) as List<any>
             }) ?? fromJS([])
 
-        const nextSatisfactionSurveys = satisfactionSurveys.map(
-            (satisfactionSurveys: Map<any, any>) => {
-                return satisfactionSurveys.set('isSatisfactionSurvey', true)
-            }
-        ) as List<any>
+        const nextSatisfactionSurveys =
+            hasSatisfactionSurveyRespondedPreviousEvents
+                ? fromJS([])
+                : (satisfactionSurveys.map(
+                      (satisfactionSurveys: Map<any, any>) => {
+                          return satisfactionSurveys.set(
+                              'isSatisfactionSurvey',
+                              true
+                          )
+                      }
+                  ) as List<any>)
 
         let body = nextMessages
             .concat(failedPendingMessages)
@@ -279,7 +294,8 @@ export const getBody = createImmutableSelector(
             .concat(nextSatisfactionSurveys)
             .sortBy(
                 (element: Map<any, any>) =>
-                    (element.get('isSatisfactionSurvey')
+                    (element.get('isSatisfactionSurvey') &&
+                    element.get('scored_datetime')
                         ? element.get('scored_datetime')
                         : element.get('created_datetime')) as string
             )

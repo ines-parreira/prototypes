@@ -103,6 +103,24 @@ describe('TicketBodyElement', () => {
         expect(getByText('SatisfactionSurvey')).toBeInTheDocument()
     })
 
+    it('should display a satisfaction survey event', () => {
+        const {getByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketBodyElement
+                    {...defaultProps}
+                    element={
+                        {
+                            isSatisfactionSurvey: true,
+                            isEvent: true,
+                        } as unknown as TicketElement
+                    }
+                />
+            </Provider>
+        )
+
+        expect(getByText('SatisfactionSurvey')).toBeInTheDocument()
+    })
+
     it('should display a rule suggestion', () => {
         const {getByText} = render(
             <Provider store={mockStore(defaultState)}>

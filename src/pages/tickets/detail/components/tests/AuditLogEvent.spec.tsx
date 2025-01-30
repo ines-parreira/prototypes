@@ -9,6 +9,8 @@ import {
     EventObjectType,
     EventData,
     TICKET_EVENT_TYPES,
+    SATISFACTION_SURVEY_EVENT_TYPES,
+    SatisfactionSurveyEventType,
 } from 'models/event/types'
 import {RuleEvent} from 'state/rules/types'
 
@@ -50,14 +52,18 @@ describe('<AuditLogEvent/>', () => {
     } as unknown as ComponentProps<typeof AuditLogEventContainer>
 
     const getEvent = (
-        eventType: TicketEventType,
+        eventType: TicketEventType | SatisfactionSurveyEventType,
         data: EventData | null = null,
         options?: Record<string, unknown>
     ) => ({
         id: 1,
         account_id: 1,
         user_id: 1,
-        object_type: EventObjectType.Ticket,
+        object_type: Object.values(SATISFACTION_SURVEY_EVENT_TYPES).includes(
+            eventType as any
+        )
+            ? EventObjectType.SatisfactionSurvey
+            : EventObjectType.Ticket,
         object_id: 1,
         data,
         context: 'foo',
@@ -68,7 +74,12 @@ describe('<AuditLogEvent/>', () => {
 
     describe('render()', () => {
         describe('should render', () => {
-            it.each<[TicketEventType, EventData | null]>([
+            it.each<
+                [
+                    TicketEventType | SatisfactionSurveyEventType,
+                    EventData | null,
+                ]
+            >([
                 [TICKET_EVENT_TYPES.RuleExecuted, {id: 1, name: 'Rule 1'}],
                 [TICKET_EVENT_TYPES.TicketAssigned, {assignee_user_id: 1}],
                 [TICKET_EVENT_TYPES.TicketClosed, null],
@@ -124,6 +135,10 @@ describe('<AuditLogEvent/>', () => {
                             'The customer does not have an email address associated to them.',
                         ],
                     },
+                ],
+                [
+                    SATISFACTION_SURVEY_EVENT_TYPES.SatisfactionSurveyResponded,
+                    {score: 5, body_text: 'Great service!'},
                 ],
             ])('with event type %s', (eventType, eventData) => {
                 const event = getEvent(eventType, eventData)

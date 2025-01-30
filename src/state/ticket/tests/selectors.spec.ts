@@ -2,6 +2,7 @@ import {fromJS, Map, List} from 'immutable'
 
 import {TicketVia} from 'business/types/ticket'
 import {ACTION_TEMPLATES} from 'config'
+import {EventType} from 'models/event/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {shouldMessagesBeGrouped} from 'models/ticket/predicates'
 
@@ -83,6 +84,11 @@ describe('ticket selectors', () => {
                     {
                         id: 1,
                         created_datetime: '2017-06-31T21:00:00',
+                    },
+                    {
+                        id: 3,
+                        created_datetime: '2017-06-31T22:00:00',
+                        type: EventType.SatisfactionSurveyResponded,
                     },
                 ],
                 _internal: {
@@ -295,19 +301,19 @@ describe('ticket selectors', () => {
 
             const body = selectors.getBody(state)
             expect(body).toBeInstanceOf(List)
-            expect(body.size).toBe(8)
+            expect(body.size).toBe(9)
 
-            body.take(2).forEach((element: Map<any, any>) => {
+            body.take(3).forEach((element: Map<any, any>) => {
                 expect(element.get('isEvent')).toBe(true)
             })
 
-            body.slice(2, 6).forEach((element: Map<any, any>) => {
+            body.slice(3, 8).forEach((element: Map<any, any>) => {
                 expect(element.get('isMessage')).toBe(true)
             })
 
-            expect((body.get(5) as Map<any, any>).get('isPending')).toBe(false)
-            expect((body.get(6) as Map<any, any>).get('isPending')).toBe(true)
-            expect((body.get(7) as Map<any, any>).get('isRuleSuggestion')).toBe(
+            expect((body.get(6) as Map<any, any>).get('isPending')).toBe(false)
+            expect((body.get(7) as Map<any, any>).get('isPending')).toBe(true)
+            expect((body.get(8) as Map<any, any>).get('isRuleSuggestion')).toBe(
                 true
             )
             expect(body).toMatchSnapshot()
@@ -335,7 +341,7 @@ describe('ticket selectors', () => {
                         from_agent: false,
                     },
                 ],
-                2,
+                3,
             ],
             [
                 [
@@ -358,7 +364,7 @@ describe('ticket selectors', () => {
                         from_agent: false,
                     },
                 ],
-                7,
+                8,
             ],
             [
                 [
@@ -405,7 +411,7 @@ describe('ticket selectors', () => {
                         rule_id: 1,
                     },
                 ],
-                7,
+                8,
             ],
             [
                 [
@@ -434,7 +440,7 @@ describe('ticket selectors', () => {
                         from_agent: true,
                     },
                 ],
-                4,
+                5,
             ],
         ])(
             'should set rule suggestion above the first message of any agent or at the end of the thread if suggestion not applied',
@@ -451,6 +457,64 @@ describe('ticket selectors', () => {
                 expect(ruleSuggestionIndex).toBe(expectedIndex)
             }
         )
+
+        it('should handle satisfaction survey events and display flags correctly', () => {
+            state = {
+                ticket: initialState.mergeDeep({
+                    events: [
+                        {
+                            id: 1,
+                            type: EventType.SatisfactionSurveyResponded,
+                            created_datetime: '2023-02-01T12:00:00',
+                        },
+                    ],
+                    satisfaction_survey: {
+                        id: 1,
+                        scored_datetime: '2023-02-01T12:00:00',
+                    },
+                    _internal: {
+                        shouldDisplayAuditLogEvents: true,
+                    },
+                }),
+            } as RootState
+
+            const body = selectors.getBody(state)
+
+            // Check that event is marked correctly
+            const surveyEvent = body.first() as Map<any, string>
+            expect(surveyEvent.get('isSatisfactionSurvey')).toBe(true)
+            expect(surveyEvent.get('isEvent')).toBe(true)
+
+            // Verify that satisfaction survey is not included when event is present
+            expect(
+                body.filter(
+                    (item) =>
+                        !(item as Map<any, string>).get('type') &&
+                        !!(item as Map<any, string>).get('isSatisfactionSurvey')
+                ).size
+            ).toBe(0)
+        })
+
+        it('should include satisfaction survey when no survey event exists', () => {
+            state = {
+                ticket: initialState.mergeDeep({
+                    satisfaction_survey: {
+                        id: 1,
+                        scored_datetime: '2023-02-01T12:00:00',
+                    },
+                    _internal: {
+                        shouldDisplayAuditLogEvents: true,
+                    },
+                }),
+            } as RootState
+
+            const body = selectors.getBody(state)
+
+            // Verify satisfaction survey is included and marked correctly
+            const survey = body.first() as Map<any, string>
+            expect(survey.get('isSatisfactionSurvey')).toBe(true)
+            expect(survey.get('type')).toBeUndefined()
+        })
     })
 
     it('getAppliedMacro', () => {

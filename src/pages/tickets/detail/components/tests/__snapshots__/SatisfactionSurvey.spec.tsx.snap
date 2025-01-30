@@ -3,15 +3,16 @@
 exports[`SatisfactionSurvey should display satisfaction survey 1`] = `
 <div
   class="component last"
-  id="satisfactionSurvey"
+  id="satisfactionSurvey-undefined"
 >
   <div
-    class="star"
+    class="icon last"
   >
-    <img
-      alt="survey rating"
-      src="test-file-stub"
-    />
+    <i
+      class="material-icons"
+    >
+      star
+    </i>
   </div>
   <div
     class="body"
@@ -25,7 +26,7 @@ exports[`SatisfactionSurvey should display satisfaction survey 1`] = `
         <span
           class="score"
         >
-          3 stars
+          3 stars CSAT review
         </span>
         from
         <span
@@ -36,12 +37,25 @@ exports[`SatisfactionSurvey should display satisfaction survey 1`] = `
       </div>
       <span
         class="date text-faded float-right"
-      />
+      >
+        <div>
+          datetime
+        </div>
+      </span>
     </div>
     <div
-      class="body_text"
+      class="body_text_container"
     >
-      test
+      <i
+        class="material-icons"
+      >
+        star
+      </i>
+      <span
+        class="body_text"
+      >
+        test
+      </span>
     </div>
   </div>
 </div>

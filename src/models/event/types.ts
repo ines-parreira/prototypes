@@ -1,4 +1,5 @@
 import {List} from 'immutable'
+import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
 
 import {ApiPaginationParams, OrderParams} from 'models/api/types'
@@ -79,6 +80,11 @@ export type TicketSatisfactionSurveySkippedData = {
     reasons: string[]
 }
 
+export type SatisfactionSurveyRespondedEventData = {
+    score: number
+    body_text?: string
+}
+
 export type EventData =
     | TicketTagsAddedEventData
     | TicketTagsRemovedEventData
@@ -94,6 +100,7 @@ export type EventData =
     | TicketCreatedEventData
     | TicketSplitEventData
     | TicketSatisfactionSurveySkippedData
+    | SatisfactionSurveyRespondedEventData
 
 export enum EventType {
     AccountCreated = 'account-created',
@@ -113,6 +120,7 @@ export enum EventType {
     RuleDeleted = 'rule-deleted',
     RuleUpdated = 'rule-updated',
     RuleSuggestionSuggested = 'rule-suggestion-suggested',
+    SatisfactionSurveyResponded = 'satisfaction-survey-responded',
     TagCreated = 'tag-created',
     TagDeleted = 'tag-deleted',
     TagMerged = 'tag-merged',
@@ -177,6 +185,7 @@ export enum EventObjectType {
     Ticket = 'Ticket',
     Rule = 'Rule',
     Integration = 'Integration',
+    SatisfactionSurvey = 'SatisfactionSurvey',
 }
 
 export type Event = {
@@ -244,6 +253,18 @@ export const TICKET_EVENT_TYPES = Object.freeze({
 } as const)
 
 export type TicketEventType = ValueOf<typeof TICKET_EVENT_TYPES>
+
+export const SATISFACTION_SURVEY_EVENT_TYPES = Object.freeze({
+    ..._pick(EventType, ['SatisfactionSurveyResponded']),
+} as const)
+
+export type SatisfactionSurveyEventType = ValueOf<
+    typeof SATISFACTION_SURVEY_EVENT_TYPES
+>
+
+export const SATISFACTION_SURVEY_DETAIL_EVENT_TYPES = Object.freeze({
+    ..._omit(SATISFACTION_SURVEY_EVENT_TYPES, ['SatisfactionSurveyResponded']),
+} as const)
 
 export type RuleExecutedEventData = {
     id: number

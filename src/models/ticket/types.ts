@@ -1,4 +1,4 @@
-import {Tag} from '@gorgias/api-queries'
+import {SatisfactionSurvey, Tag} from '@gorgias/api-queries'
 
 import {
     TicketChannel,
@@ -37,6 +37,7 @@ export type Ticket = {
     meta: Record<string, unknown> | null
     opened_datetime: string | null
     receiver: Actor
+    satisfaction_survey?: SatisfactionSurvey
     sender: Actor
     snooze_datetime: string | null
     status: TicketStatus

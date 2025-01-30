@@ -15,7 +15,12 @@ import {
 } from 'fixtures/shopify'
 import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'
-import {Event, EventObjectType, TICKET_EVENT_TYPES} from 'models/event/types'
+import {
+    Event,
+    EventObjectType,
+    SATISFACTION_SURVEY_EVENT_TYPES,
+    TICKET_EVENT_TYPES,
+} from 'models/event/types'
 import {
     IntegrationDataItem,
     IntegrationType,
@@ -274,6 +279,50 @@ describe('services', () => {
                 // @ts-ignore ts(2763)
                 for await (const events of gorgiasApi.getTicketEvents(
                     ticketId
+                )) {
+                    pages.push(events)
+                }
+
+                expect(pages.length).toBe(mocks.length)
+                pages.forEach((page, index) => {
+                    expect(page).toEqual(fromJS(mocks[index]))
+                })
+            })
+        })
+
+        describe('*getSatisfactionSurveyEvents()', function () {
+            const getEvent = (id: number): Event => ({
+                id,
+                user_id: 1,
+                object_type: EventObjectType.SatisfactionSurvey,
+                object_id: 1,
+                data: null,
+                context: '7d87ac05-8689-43ee-9cdd-b2928fd3ca6f',
+                type: SATISFACTION_SURVEY_EVENT_TYPES.SatisfactionSurveyResponded,
+                created_datetime: '2019-11-15 19:00:00.000000',
+                uri: '/api/events/3265847/',
+            })
+
+            it('should yield each page of events until last page is reached', async () => {
+                const gorgiasApi = new GorgiasApi()
+                const surveyId = 123
+                const mocks = [
+                    [getEvent(1), getEvent(2), getEvent(3)],
+                    [getEvent(4), getEvent(5), getEvent(6)],
+                    [getEvent(7), getEvent(8), getEvent(9)],
+                ]
+
+                gorgiasApi.cursorPaginate = function* () {
+                    for (const mock of mocks) {
+                        yield mock
+                    }
+                } as any
+
+                const pages = []
+
+                // @ts-ignore ts(2763)
+                for await (const events of gorgiasApi.getSatisfactionSurveyEvents(
+                    surveyId
                 )) {
                     pages.push(events)
                 }

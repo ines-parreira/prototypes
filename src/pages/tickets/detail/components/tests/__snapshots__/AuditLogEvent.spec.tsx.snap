@@ -219,6 +219,8 @@ exports[`<AuditLogEvent/> render() should render with event type rule-suggestion
 </div>
 `;
 
+exports[`<AuditLogEvent/> render() should render with event type satisfaction-survey-responded 1`] = `null`;
+
 exports[`<AuditLogEvent/> render() should render with event type ticket-assigned 1`] = `
 <div
   class="component"
