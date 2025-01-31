@@ -17,6 +17,8 @@ import {
 import {useFiltersFromDashboard} from 'pages/stats/custom-reports/useFiltersFromDashboard'
 import {updateChartPosition} from 'pages/stats/custom-reports/utils'
 import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import {RootState} from 'state/types'
+import {initialState} from 'state/ui/stats/filtersSlice'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('react-router-dom', () => ({
@@ -36,13 +38,6 @@ jest.mock('pages/stats/custom-reports/CustomReportSection')
 const CustomReportSectionMock = assumeMock(CustomReportSection)
 jest.mock('pages/stats/custom-reports/useFiltersFromDashboard')
 const useFiltersFromDashboardMock = assumeMock(useFiltersFromDashboard)
-
-const render = (ui: React.ReactElement) => {
-    return renderWithStore(
-        <DndProvider backend={HTML5Backend}>{ui}</DndProvider>,
-        {}
-    )
-}
 
 describe('CustomReport', () => {
     const section: CustomReportSectionSchema = {
@@ -70,6 +65,29 @@ describe('CustomReport', () => {
         children: [row, section],
     }
 
+    const state = {
+        stats: {
+            filters: {
+                period: {
+                    start_datetime: '2021-02-03T00:00:00.000Z',
+                    end_datetime: '2021-02-03T23:59:59.999Z',
+                },
+            },
+        },
+        ui: {
+            stats: {
+                filters: initialState,
+            },
+        },
+    } as RootState
+
+    const renderComponent = (ui: React.ReactElement) => {
+        return renderWithStore(
+            <DndProvider backend={HTML5Backend}>{ui}</DndProvider>,
+            state
+        )
+    }
+
     beforeEach(() => {
         FiltersPanelWrapperMock.mockReturnValue(<div />)
         CustomReportSectionMock.mockReturnValue(<div />)
@@ -88,7 +106,7 @@ describe('CustomReport', () => {
     })
 
     it('renders correctly', () => {
-        render(
+        renderComponent(
             <CustomReport
                 onChartMove={jest.fn()}
                 onChartMoveEnd={jest.fn()}
@@ -104,7 +122,7 @@ describe('CustomReport', () => {
     it('calls onChartMove with correct parameters when moving chart', () => {
         const onChartMove = jest.fn()
 
-        render(
+        renderComponent(
             <CustomReport
                 onChartMove={onChartMove}
                 onChartMoveEnd={jest.fn()}
@@ -133,7 +151,7 @@ describe('CustomReport', () => {
     it('calls onChartMoveEnd when chart is dropped', () => {
         const onChartMoveEnd = jest.fn()
 
-        render(
+        renderComponent(
             <CustomReport
                 onChartMove={jest.fn()}
                 onChartMoveEnd={onChartMoveEnd}
