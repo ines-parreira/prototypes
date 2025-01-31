@@ -20,6 +20,10 @@
         justify-content: flex-start;
         gap: @layout-spacing-xs;
         text-transform: none;
+        > span {
+            width: 100%;
+            gap: @layout-spacing-xs;
+        }
     }
 
     .channelTypeSettingsLink,
@@ -32,6 +36,10 @@
         font-size: 20px !important;
     }
 
+    .arrowDown,
+    .dropDownLabel {
+        color: var(--neutral-grey-6);
+    }
     .dropdownItem {
         display: flex;
         gap: @layout-spacing-xs;

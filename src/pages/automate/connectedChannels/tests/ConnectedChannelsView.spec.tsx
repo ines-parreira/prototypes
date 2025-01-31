@@ -388,10 +388,10 @@ describe('ConnectedChannelsView', () => {
                         'Display up to 6 Flows on your Chat to proactively resolve top customer requests.'
                     )
                 ).toHaveLength(1)
-                expect(screen.getByText(/forum/i)).toBeInTheDocument()
+                expect(screen.getByText(/chat_bubble/i)).toBeInTheDocument()
             })
         })
-        expect(screen.getByText(/forum/i)).toBeInTheDocument()
+        expect(screen.getByText(/chat_bubble/i)).toBeInTheDocument()
     })
 
     it('should change the route to help center when clicking on a channel', async () => {

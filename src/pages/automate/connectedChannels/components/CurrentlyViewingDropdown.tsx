@@ -14,10 +14,13 @@ import css from './CurrentlyViewingDropdown.less'
 
 type ChannelType = 'help-center' | 'chat' | 'contact-form'
 
-const renderIconByChannelType = (channelType: ChannelType) => {
+const renderIconByChannelType = (
+    channelType: ChannelType,
+    isOnButton: boolean = false
+) => {
     switch (channelType) {
         case 'chat':
-            return 'forum'
+            return isOnButton ? 'chat_bubble' : 'forum'
         case 'help-center':
             return 'live_help'
         case 'contact-form':
@@ -92,11 +95,13 @@ export const CurrentlyViewingDropdown = <T,>({
                             css.channelIcon
                         )}
                     >
-                        {renderIconByChannelType(channelType)}
+                        {renderIconByChannelType(channelType, true)}
                     </i>
-                    <span>{label}</span>
+                    <span className={css.dropDownLabel}>{label}</span>
                     <div className={css.dropdownButtonSpacer} />
-                    <i className="material-icons">keyboard_arrow_down</i>
+                    <i className={classNames('material-icons', css.arrowDown)}>
+                        arrow_drop_down
+                    </i>
                 </Button>
                 <Button intent="secondary" fillStyle="ghost">
                     <Link

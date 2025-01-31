@@ -301,7 +301,7 @@ describe('ConnectedChannelsView', () => {
                 </Provider>
             </Router>
         )
-        expect(screen.getByText('forum')).toBeInTheDocument()
+        expect(screen.getByText('chat_bubble')).toBeInTheDocument()
     })
 
     it('should show the current channel name', () => {
@@ -644,7 +644,7 @@ describe('ConnectedChannelsView', () => {
         )
 
         expect(screen.queryByText(/currently viewing/i)).not.toBeInTheDocument()
-        expect(screen.queryByText(/forum/i)).not.toBeInTheDocument()
+        expect(screen.queryByText(/chat_bubble/i)).not.toBeInTheDocument()
         expect(
             screen.getByRole('switch', {name: /enable article recommendation/i})
         ).not.toBeChecked()
