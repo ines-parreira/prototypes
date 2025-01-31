@@ -3,18 +3,16 @@ import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React, {useCallback, useState} from 'react'
 import {useParams} from 'react-router-dom'
 
+import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
 import {useUpdateDashboard} from 'hooks/reporting/custom-reports/useUpdateDashboard'
 import {useUpdateDashboardCache} from 'hooks/reporting/custom-reports/useUpdateDashboardCache'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {useNotify} from 'hooks/useNotify'
 import {CreateCustomReport} from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
 import {CustomReport} from 'pages/stats/custom-reports/CustomReport'
 import {CustomReportActionButton} from 'pages/stats/custom-reports/CustomReportActionButton'
 import {CustomReportsModal} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
-import {
-    DashboardName,
-    isValidName,
-} from 'pages/stats/custom-reports/DashboardName'
+import {DashboardName} from 'pages/stats/custom-reports/DashboardName'
 import {
     CustomReportChild,
     CustomReportSchema,
@@ -29,8 +27,6 @@ import StatsPage, {
     StatsPageWrapper,
 } from 'pages/stats/StatsPage'
 import {getCurrentUser} from 'state/currentUser/selectors'
-import {notify as notifyAction} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
 import {isTeamLead} from 'utils'
 
 export const CUSTOM_REPORT_SCHEMA_ERROR = 'Custom report schema error'
@@ -62,15 +58,6 @@ export const CustomReportPage = () => {
     return <DashboardPage key={dashboard.id} dashboard={dashboard} />
 }
 
-const useNotify = () => {
-    const dispatch = useAppDispatch()
-    return useCallback(
-        (config: {status: NotificationStatus; message: string}) =>
-            dispatch(notifyAction(config)),
-        [dispatch]
-    )
-}
-
 const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
     const notify = useNotify()
 
@@ -92,16 +79,11 @@ const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
             await updateDashboard({...dashboard, children: charts})
 
             closeModal()
-
-            void notify({
-                status: NotificationStatus.Success,
-                message: `Successfully saved ${size} ${size === 1 ? 'chart' : 'charts'} to ${dashboard.name}`,
-            })
+            void notify.success(
+                `Successfully saved ${size} ${size === 1 ? 'chart' : 'charts'} to ${dashboard.name}`
+            )
         } catch (error) {
-            void notify({
-                status: NotificationStatus.Error,
-                message: getErrorMessage(error),
-            })
+            void notify.error(getErrorMessage(error))
         }
     }
 
@@ -110,9 +92,14 @@ const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
         emoji: dashboard.emoji || '',
     })
 
+    const {isValid, isInvalid} = useDashboardNameValidation(
+        details.name,
+        dashboard.name
+    )
+
     const handleUpdateName = async () => {
         try {
-            if (isValidName(details.name)) {
+            if (isValid) {
                 await updateDashboard({
                     ...dashboard,
                     name: details.name,
@@ -120,10 +107,7 @@ const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
                 })
             }
         } catch (error) {
-            void notify({
-                status: NotificationStatus.Error,
-                message: getErrorMessage(error),
-            })
+            void notify.error(getErrorMessage(error))
         }
     }
 
@@ -135,10 +119,7 @@ const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
         try {
             await updateDashboard(dashboard)
         } catch (error) {
-            void notify({
-                status: NotificationStatus.Error,
-                message: getErrorMessage(error),
-            })
+            void notify.error(getErrorMessage(error))
         }
     }
 
@@ -150,7 +131,7 @@ const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
                         value={details}
                         onChange={setDetails}
                         onBlur={handleUpdateName}
-                        error={isValidName(details.name)}
+                        error={isInvalid}
                     />
                 }
                 right={

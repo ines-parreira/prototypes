@@ -1,6 +1,7 @@
 import React, {ReactNode, useCallback, useState} from 'react'
 
 import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
+import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -10,7 +11,6 @@ import css from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu.le
 import {
     DashboardName,
     DashboardNameValue,
-    isValidName,
 } from 'pages/stats/custom-reports/DashboardName'
 
 export const CREATE_DASHBOARD = 'Create Dashboard'
@@ -18,13 +18,6 @@ export const CREATE_DASHBOARD = 'Create Dashboard'
 export const getModalTitle = (chartName: ReactNode) =>
     `Add ${chartName?.toString()} to new Dashboard`
 export const DASHBOARD_NAME = 'Dashboard Name'
-
-const getErrorMessage = (name: string): string => {
-    if (isValidName(name)) {
-        return ''
-    }
-    return 'Dashboard name must be unique and under 150 characters'
-}
 
 export const AddChartToDashboardModal = ({
     closeModal,
@@ -39,25 +32,20 @@ export const AddChartToDashboardModal = ({
         name: '',
         emoji: '',
     })
-    const errorMessage = getErrorMessage(dashboard.name)
+
+    const {error, isValid} = useDashboardNameValidation(dashboard.name)
 
     const {createDashboardHandler} = useCustomReportActions()
 
     const handleCreateDashboard = useCallback(() => {
-        if (!errorMessage.length) {
+        if (isValid) {
             createDashboardHandler({
                 dashboard,
                 chartIds: [chartId],
                 onSuccess: closeModal,
             })
         }
-    }, [
-        errorMessage.length,
-        createDashboardHandler,
-        dashboard,
-        chartId,
-        closeModal,
-    ])
+    }, [isValid, createDashboardHandler, dashboard, chartId, closeModal])
 
     return (
         <Modal isOpen onClose={closeModal} size="medium" isClosable={false}>
@@ -67,7 +55,8 @@ export const AddChartToDashboardModal = ({
                 <DashboardName
                     value={dashboard}
                     onChange={setDashboard}
-                    error={errorMessage}
+                    error={error || false}
+                    autoFocus
                 />
             </ModalBody>
             <ModalActionsFooter>

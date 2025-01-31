@@ -9,13 +9,12 @@ export type DashboardNameValue = {
     emoji: string
 }
 
-export const isValidName = (name: string) => name.trim().length > 2
-
 export type DashboardNameProps = {
     value: DashboardNameValue
     onChange: (value: DashboardNameValue) => void
     onBlur?: () => void
     error?: boolean | string
+    autoFocus?: boolean
 }
 
 export const DashboardName = ({
@@ -23,6 +22,7 @@ export const DashboardName = ({
     onChange,
     onBlur,
     error,
+    autoFocus,
 }: DashboardNameProps) => {
     const [isTouched, setIsTouched] = useState(false)
 
@@ -31,12 +31,13 @@ export const DashboardName = ({
             <InputField
                 type="text"
                 aria-label="Dashboard name"
-                name="name"
+                name="dashboard-name"
                 placeholder="Add dashboard name"
                 value={value.name}
                 onChange={(nextValue) =>
                     onChange({emoji: value.emoji, name: nextValue})
                 }
+                autoFocus={autoFocus}
                 onBlur={() => {
                     setIsTouched(true)
                     onBlur && onBlur()

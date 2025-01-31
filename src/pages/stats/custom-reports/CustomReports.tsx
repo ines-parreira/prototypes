@@ -2,7 +2,8 @@ import React, {useCallback, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import {useCreateCustomReport} from 'hooks/reporting/custom-reports/useCreateCustomReport'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
+import {useNotify} from 'hooks/useNotify'
 import Button from 'pages/common/components/button/Button'
 import {CreateCustomReport} from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
 import {CustomReportsModal} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
@@ -17,8 +18,6 @@ import {
     StatsPageHeader,
     StatsPageWrapper,
 } from 'pages/stats/StatsPage'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
 
 export const CUSTOM_REPORT_CTA = 'Add Charts'
 
@@ -33,7 +32,7 @@ const createDashboardName = () => {
 
 export const CustomReports = () => {
     const history = useHistory()
-    const dispatch = useAppDispatch()
+    const notify = useNotify()
 
     const [isOpen, setIsOpen] = useState(false)
     const closeModal = useCallback(() => setIsOpen(false), [])
@@ -44,7 +43,9 @@ export const CustomReports = () => {
         emoji: '',
     })
 
-    const {createCustomReport, isLoading, isError} = useCreateCustomReport()
+    const {error, isInvalid} = useDashboardNameValidation(details.name)
+
+    const {createCustomReport, isLoading} = useCreateCustomReport()
 
     const handleCreateCustomReport = useCallback(
         async (charts: CustomReportChild[]) => {
@@ -58,15 +59,10 @@ export const CustomReports = () => {
             } catch (error) {
                 closeModal()
 
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: getErrorMessage(error),
-                    })
-                )
+                void notify.error(getErrorMessage(error))
             }
         },
-        [closeModal, createCustomReport, details, dispatch, history]
+        [closeModal, createCustomReport, details, notify, history]
     )
 
     return (
@@ -76,7 +72,11 @@ export const CustomReports = () => {
                     <DashboardName
                         value={details}
                         onChange={setDetails}
-                        error={isError}
+                        onBlur={() => {
+                            if (error) void notify.error(error)
+                        }}
+                        error={isInvalid}
+                        autoFocus
                     />
                 }
                 right={

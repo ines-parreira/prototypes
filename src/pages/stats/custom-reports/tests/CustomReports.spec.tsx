@@ -3,7 +3,8 @@ import React from 'react'
 import {useHistory} from 'react-router-dom'
 
 import {useCreateCustomReport} from 'hooks/reporting/custom-reports/useCreateCustomReport'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
+import {useNotify} from 'hooks/useNotify'
 import {CreateCustomReport} from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
 import {
     CUSTOM_REPORT_CTA,
@@ -21,7 +22,9 @@ jest.mock('react-router-dom', () => ({
 const useHistoryMock = assumeMock(useHistory)
 
 jest.mock('hooks/useAppDispatch')
-const useAppDispatchMock = assumeMock(useAppDispatch)
+
+jest.mock('hooks/useNotify')
+const useNotifyMock = assumeMock(useNotify)
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
@@ -30,13 +33,16 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
 jest.mock('hooks/reporting/custom-reports/useCreateCustomReport')
 const useCreateCustomReportMock = assumeMock(useCreateCustomReport)
 
+jest.mock('hooks/reporting/custom-reports/useDashboardNameValidation')
+const useDashboardNameValidationMock = assumeMock(useDashboardNameValidation)
+
 jest.mock('pages/stats/custom-reports/CreateCustomReport/CreateCustomReport')
 const CreateCustomReportMock = assumeMock(CreateCustomReport)
 
 describe('CustomReports', () => {
     const createCustomReportMock = jest.fn()
     const historyPushMock = jest.fn()
-    const dispatchMock = jest.fn()
+    const notifyMock = jest.fn()
 
     beforeEach(() => {
         const mockedDate = new Date(2025, 0, 15, 12, 10)
@@ -53,11 +59,17 @@ describe('CustomReports', () => {
             createCustomReport: createCustomReportMock,
         } as any)
 
+        useDashboardNameValidationMock.mockReturnValue({
+            error: null,
+            isValid: true,
+            isInvalid: false,
+        } as any)
+
         useHistoryMock.mockReturnValue({
             push: historyPushMock,
         } as any)
 
-        useAppDispatchMock.mockReturnValue(dispatchMock)
+        useNotifyMock.mockReturnValue({error: notifyMock} as any)
     })
 
     afterEach(() => {
@@ -203,7 +215,41 @@ describe('CustomReports', () => {
         fireEvent.click(saveButton)
 
         await waitFor(() => {
-            expect(dispatchMock).toHaveBeenCalledTimes(1)
+            expect(notifyMock).toHaveBeenCalledTimes(1)
         })
+    })
+
+    it('should display error on input blur when validation fails', async () => {
+        const validationError = 'Invalid dashboard name'
+        useDashboardNameValidationMock.mockReturnValue({
+            error: validationError,
+            isValid: false,
+            isInvalid: true,
+        } as any)
+
+        render(<CustomReports />)
+
+        const nameInput = screen.getByRole('textbox')
+        fireEvent.blur(nameInput)
+
+        await waitFor(() => {
+            expect(notifyMock).toHaveBeenCalledWith(validationError)
+        })
+    })
+
+    it('should not display error on input blur when validation passes', () => {
+        useDashboardNameValidationMock.mockReturnValue({
+            error: null,
+            isValid: true,
+            isInvalid: false,
+        } as any)
+
+        render(<CustomReports />)
+
+        const nameInput = screen.getByRole('textbox')
+        fireEvent.change(nameInput, {target: {value: 'valid name'}})
+        fireEvent.blur(nameInput)
+
+        expect(notifyMock).not.toHaveBeenCalled()
     })
 })

@@ -2,6 +2,7 @@ import {act, fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
 import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
+import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
 import {
     AddChartToDashboardModal,
     CREATE_DASHBOARD,
@@ -20,6 +21,9 @@ const createDashboardMock = jest.fn()
 jest.mock('hooks/reporting/custom-reports/useCustomReportActions')
 const useCustomReportActionsMock = assumeMock(useCustomReportActions)
 
+jest.mock('hooks/reporting/custom-reports/useDashboardNameValidation')
+const useDashboardNameValidationMock = assumeMock(useDashboardNameValidation)
+
 describe('AddChartToDashboardModal', () => {
     beforeEach(() => {
         useCustomReportActionsMock.mockReturnValue({
@@ -31,6 +35,12 @@ describe('AddChartToDashboardModal', () => {
             removeChartFromDashboardHandler: jest.fn(),
             createDashboardHandler: createDashboardMock,
         })
+
+        useDashboardNameValidationMock.mockReturnValue({
+            error: null,
+            isValid: true,
+            isInvalid: false,
+        } as any)
     })
 
     it('should render the modal', () => {
@@ -87,6 +97,12 @@ describe('AddChartToDashboardModal', () => {
     })
 
     it('should not call action if theres an error', () => {
+        useDashboardNameValidationMock.mockReturnValue({
+            error: 'Invalid dashboard name',
+            isValid: false,
+            isInvalid: true,
+        })
+
         render(
             <AddChartToDashboardModal
                 chartId={chartId}

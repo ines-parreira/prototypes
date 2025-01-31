@@ -12,6 +12,7 @@ import {useParams} from 'react-router-dom'
 
 import {AGENT_ROLE, BASIC_AGENT_ROLE} from 'config/user'
 import {user} from 'fixtures/users'
+import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
 import {useUpdateDashboard} from 'hooks/reporting/custom-reports/useUpdateDashboard'
 import {useUpdateDashboardCache} from 'hooks/reporting/custom-reports/useUpdateDashboardCache'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -65,6 +66,9 @@ const customReportId = '2'
 
 jest.mock('pages/stats/custom-reports/CustomReportActionButton')
 const CustomReportActionButtonMock = assumeMock(CustomReportActionButton)
+
+jest.mock('hooks/reporting/custom-reports/useDashboardNameValidation')
+const useDashboardNameValidationMock = assumeMock(useDashboardNameValidation)
 
 describe('CustomReportPage', () => {
     const defaultState = {
@@ -134,6 +138,12 @@ describe('CustomReportPage', () => {
         useUpdateDashboardCacheMock.mockReturnValue(updateDashboardCacheMock)
 
         useAppDispatchMock.mockReturnValue(dispatchMock)
+
+        useDashboardNameValidationMock.mockReturnValue({
+            error: null,
+            isValid: true,
+            isInvalid: false,
+        } as any)
     })
 
     it('should render fallback when no charts are present', () => {
@@ -224,12 +234,17 @@ describe('CustomReportPage', () => {
         })
     })
 
-    it('should _not_ update name when name is less than 2 characters', async () => {
+    it('should _not_ update name when name is invalid', async () => {
+        const validationError = 'Invalid dashboard name'
+        useDashboardNameValidationMock.mockReturnValue({
+            error: validationError,
+            isValid: false,
+            isInvalid: true,
+        } as any)
+
         renderWithStore(<CustomReportPage />, {})
 
         const nameInput = screen.getByRole('textbox', {name: 'Dashboard name'})
-
-        fireEvent.change(nameInput, {target: {value: 'a'}})
 
         fireEvent.blur(nameInput)
 
@@ -358,6 +373,35 @@ describe('CustomReportPage', () => {
             expect(notify).toHaveBeenCalledWith(
                 expect.objectContaining({
                     message: `Successfully saved 3 charts to ${dashboardName}`,
+                    status: NotificationStatus.Success,
+                })
+            )
+        })
+    })
+
+    it('should show correct notification message when a single chart is updated', async () => {
+        updateDashboardMock.mockResolvedValue({
+            data: {id: customReportId},
+        })
+
+        renderWithStore(<CustomReportPage />, defaultState)
+
+        const actionButton = screen.getByText(CUSTOM_REPORT_ID_CTA)
+        fireEvent.click(actionButton)
+
+        const saveButton = screen.getByText('Add Charts (1)')
+        fireEvent.click(saveButton)
+
+        await waitForElementToBeRemoved(() =>
+            screen.getByRole('textbox', {name: 'Search charts'})
+        )
+
+        await waitFor(() => {
+            expect(dispatchMock).toHaveBeenCalledTimes(1)
+
+            expect(notify).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: `Successfully saved 1 chart to ${dashboardName}`,
                     status: NotificationStatus.Success,
                 })
             )
