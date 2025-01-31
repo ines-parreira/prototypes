@@ -93,6 +93,7 @@ export default function calculateSizes({
 
         evenApplyDeltas(
             addedPanels
+                .filter((name) => !savedSizes[name])
                 .filter((name) => configs[name].defaultSize !== Infinity)
                 .map<PanelDelta>((name) => [
                     name,
@@ -105,6 +106,7 @@ export default function calculateSizes({
 
         evenApplyDeltas(
             addedPanels
+                .filter((name) => !savedSizes[name])
                 .filter((name) => configs[name].defaultSize === Infinity)
                 .map<PanelDelta>((name) => [
                     name,
