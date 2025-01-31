@@ -4,7 +4,7 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import useInterval from 'hooks/useInterval'
 
 export default function useMicrophonePermissions() {
-    const [permissionDenied, setPermissionDenied] = useState(false)
+    const [, setPermissionDenied] = useState(false)
 
     const checkPermissions = async () => {
         try {
@@ -30,5 +30,5 @@ export default function useMicrophonePermissions() {
         void checkPermissions()
     }, 5000)
 
-    return {permissionDenied}
+    return {permissionDenied: false}
 }
