@@ -6,7 +6,7 @@ import {personNames} from 'fixtures/personNames'
 import Shoutout, {
     SHOUTOUT_MAX_PERSONS,
     SHOUTOUT_NO_VALUE_PLACEHOLDER,
-} from 'pages/common/components/Shoutout/Shoutout'
+} from 'pages/stats/common/components/Shoutout/Shoutout'
 import {ChartsActionMenu} from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
 import {assumeMock} from 'utils/testing'
 

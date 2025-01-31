@@ -2,14 +2,12 @@ import React from 'react'
 
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {useShoutoutTopResults} from 'hooks/reporting/useShoutoutTopResults'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import Shoutout, {
     SHOUTOUT_HEIGHT_PX,
-} from 'pages/common/components/Shoutout/Shoutout'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+} from 'pages/stats/common/components/Shoutout/Shoutout'
 import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {ShoutoutConfig} from 'pages/stats/support-performance/agents/AgentsShoutOutsConfig'
-
-export const AGENTS_SHOUT_OUTS_TITLE = 'Top performers'
 
 export default function AgentsShoutOut({
     useQuery,

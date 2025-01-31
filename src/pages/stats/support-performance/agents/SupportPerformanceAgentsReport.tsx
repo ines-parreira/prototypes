@@ -1,4 +1,5 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -11,7 +12,7 @@ import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComp
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
-import {AGENTS_SHOUT_OUTS_TITLE} from 'pages/stats/support-performance/agents/AgentsShoutOut'
+import {AGENTS_SHOUT_OUTS_TITLE} from 'pages/stats/support-performance/agents/AgentsShoutOutsConfig'
 import {DownloadAgentsPerformanceDataButton} from 'pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton'
 import {
     AGENTS_OPTIONAL_FILTERS,

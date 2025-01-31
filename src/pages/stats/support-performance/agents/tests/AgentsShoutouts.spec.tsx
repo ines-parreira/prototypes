@@ -15,7 +15,7 @@ import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {SHOUTOUT_NO_VALUE_PLACEHOLDER} from 'pages/common/components/Shoutout/Shoutout'
+import {SHOUTOUT_NO_VALUE_PLACEHOLDER} from 'pages/stats/common/components/Shoutout/Shoutout'
 import {
     AgentsShoutOutsConfig,
     TopPerformersChart,

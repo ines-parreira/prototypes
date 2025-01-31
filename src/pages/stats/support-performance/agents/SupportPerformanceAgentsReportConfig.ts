@@ -6,6 +6,10 @@ import {
     ReportConfig,
 } from 'pages/stats/custom-reports/types'
 import {
+    AgentsShoutOutsConfig,
+    TopPerformersChart,
+} from 'pages/stats/support-performance/agents/AgentsShoutOutsConfig'
+import {
     AGENT_PERFORMANCE_SECTION_TITLE,
     AgentsTableChart,
 } from 'pages/stats/support-performance/agents/AgentsTableChart'
@@ -51,30 +55,48 @@ export const SupportPerformanceAgentsReportConfig: ReportConfig<AgentsChart> = {
         },
         [AgentsChart.TopCSATPerformers]: {
             chartComponent: TopCsatPerformers,
-            label: '',
+            label: AgentsShoutOutsConfig[TopPerformersChart.TopCSATPerformers]
+                .title,
+            description:
+                AgentsShoutOutsConfig[TopPerformersChart.TopCSATPerformers].hint
+                    .title,
             csvProducer: null,
-            description: '',
             chartType: ChartType.Card,
         },
         [AgentsChart.TopFirstResponseTimePerformers]: {
             chartComponent: TopFirstResponseTimePerformers,
-            label: '',
+            label: AgentsShoutOutsConfig[
+                TopPerformersChart.TopFirstResponseTimePerformers
+            ].title,
+            description:
+                AgentsShoutOutsConfig[
+                    TopPerformersChart.TopFirstResponseTimePerformers
+                ].hint.title,
             csvProducer: null,
-            description: '',
             chartType: ChartType.Card,
         },
         [AgentsChart.TopResponseTimePerformers]: {
             chartComponent: TopResponseTimePerformers,
-            label: '',
+            label: AgentsShoutOutsConfig[
+                TopPerformersChart.TopResponseTimePerformers
+            ].title,
+            description:
+                AgentsShoutOutsConfig[
+                    TopPerformersChart.TopResponseTimePerformers
+                ].hint.title,
             csvProducer: null,
-            description: '',
             chartType: ChartType.Card,
         },
         [AgentsChart.TopClosedTicketsPerformers]: {
             chartComponent: TopClosedTicketsPerformers,
-            label: '',
+            label: AgentsShoutOutsConfig[
+                TopPerformersChart.TopClosedTicketsPerformers
+            ].title,
+            description:
+                AgentsShoutOutsConfig[
+                    TopPerformersChart.TopClosedTicketsPerformers
+                ].hint.title,
             csvProducer: null,
-            description: '',
             chartType: ChartType.Card,
         },
     },

@@ -1,21 +1,16 @@
+import {Card} from '@gorgias/analytics-ui-kit'
 import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import isNil from 'lodash/isNil'
 import React, {Fragment, ReactNode, useMemo, useRef} from 'react'
 
+import Avatar from 'pages/common/components/Avatar/Avatar'
+import css from 'pages/stats/common/components/Shoutout/Shoutout.less'
 import {ChartsActionMenu} from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
 import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 
-import Avatar from '../Avatar/Avatar'
-import css from './Shoutout.less'
-
 type Props = {
-    className?: string
-
     persons: ShoutoutPerson[]
-    /**
-     * The label of the shoutout card in case there are multiple persons
-     */
     multiplePersonsLabel: ReactNode | ((count: number) => ReactNode)
     metricName: string
     value: ReactNode
@@ -32,7 +27,6 @@ export const SHOUTOUT_HEIGHT_PX = 82
 export const SHOUTOUT_NO_VALUE_PLACEHOLDER = '-'
 
 export default function Shoutout({
-    className,
     persons,
     multiplePersonsLabel,
     metricName,
@@ -63,25 +57,27 @@ export default function Shoutout({
     const personsLengthExceeded = persons.length > maxTooltipPersons
 
     return (
-        <div className={classNames(css.card, className)}>
-            {persons.length !== 1 ? (
-                <div className={css.avatarPlaceholder}>
-                    {!persons.length ? (
-                        <span className={css.noValuePlaceholder}>
-                            {SHOUTOUT_NO_VALUE_PLACEHOLDER}
-                        </span>
-                    ) : (
-                        <i className="material-icons">people</i>
-                    )}
-                </div>
-            ) : (
-                <Avatar
-                    name={firstPerson?.name}
-                    size={48}
-                    url={firstPerson?.image}
-                    shape="round"
-                />
-            )}
+        <Card className={css.card}>
+            <div className={css.avatar}>
+                {persons.length !== 1 ? (
+                    <div className={css.avatarPlaceholder}>
+                        {!persons.length ? (
+                            <span className={css.noValuePlaceholder}>
+                                {SHOUTOUT_NO_VALUE_PLACEHOLDER}
+                            </span>
+                        ) : (
+                            <i className="material-icons">people</i>
+                        )}
+                    </div>
+                ) : (
+                    <Avatar
+                        name={firstPerson?.name}
+                        size={48}
+                        url={firstPerson?.image}
+                        shape="round"
+                    />
+                )}
+            </div>
             <div className={css.content}>
                 <div
                     className={css.label}
@@ -128,13 +124,6 @@ export default function Shoutout({
                             </Tooltip>
                         </>
                     )}
-                    {chartId && (
-                        <ChartsActionMenu
-                            chartId={chartId}
-                            chartName={value}
-                            dashboard={dashboard}
-                        />
-                    )}
                 </div>
                 <div className={css.metricRow}>
                     <div className={css.metricName}>{metricName}</div>
@@ -144,6 +133,15 @@ export default function Shoutout({
                     </div>
                 </div>
             </div>
-        </div>
+            {chartId && (
+                <div className={css.actionMenu}>
+                    <ChartsActionMenu
+                        chartId={chartId}
+                        chartName={value}
+                        dashboard={dashboard}
+                    />
+                </div>
+            )}
+        </Card>
     )
 }

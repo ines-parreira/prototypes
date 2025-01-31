@@ -3,11 +3,14 @@ import React, {ComponentProps} from 'react'
 
 import {personNames} from 'fixtures/personNames'
 
-import Shoutout from './Shoutout'
+import Shoutout from 'pages/stats/common/components/Shoutout/Shoutout'
 
 const storyConfig: Meta = {
     title: 'Stats/Shoutout',
     component: Shoutout,
+    parameters: {
+        chromatic: {disableSnapshot: false},
+    },
     argTypes: {
         multiplePersonsLabel: {
             control: {

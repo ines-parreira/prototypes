@@ -10,6 +10,7 @@ import {
     AnalyticsCustomReportType,
 } from '@gorgias/api-types'
 import {AxiosError} from 'axios'
+
 import React from 'react'
 
 import {REPORTS_MODAL_CONFIG} from 'pages/stats/custom-reports/config'
@@ -37,6 +38,17 @@ import {
     SatisfactionChart,
     SatisfactionReportConfig,
 } from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
+import {
+    AgentsShoutOutsConfig,
+    TopPerformersChart,
+} from 'pages/stats/support-performance/agents/AgentsShoutOutsConfig'
+import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/agents/AgentsTableChart'
+import {
+    AGENT_PERSISTENT_FILTERS,
+    AGENTS_OPTIONAL_FILTERS,
+    AgentsChart,
+} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
+import {TopCsatPerformers} from 'pages/stats/support-performance/agents/TopCsatPerformers'
 import {
     OverviewMetric,
     OverviewMetricConfig,
@@ -384,6 +396,31 @@ describe('getSearchConfig', () => {
                                     ],
                             },
                         },
+                    },
+                    {
+                        config: {
+                            charts: {
+                                [AgentsChart.TopCSATPerformers]: {
+                                    chartComponent: TopCsatPerformers,
+                                    label: AgentsShoutOutsConfig[
+                                        TopPerformersChart.TopCSATPerformers
+                                    ].title,
+                                    description:
+                                        AgentsShoutOutsConfig[
+                                            TopPerformersChart.TopCSATPerformers
+                                        ].hint.title,
+                                    csvProducer: null,
+                                    chartType: ChartType.Card,
+                                },
+                            },
+                            reportFilters: {
+                                persistent: AGENT_PERSISTENT_FILTERS,
+                                optional: AGENTS_OPTIONAL_FILTERS,
+                            },
+                            reportName: AGENT_PERFORMANCE_SECTION_TITLE,
+                            reportPath: 'support-performance-agents',
+                        },
+                        type: AgentsChart,
                     },
                 ],
             },

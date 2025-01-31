@@ -14,8 +14,8 @@ import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {StatsFilters} from 'models/stat/types'
 import {
-    NOT_AVAILABLE_PLACEHOLDER,
     formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import {TableLabels} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {AgentsTableColumn} from 'state/ui/stats/types'
@@ -31,6 +31,10 @@ export interface ShoutoutConfig {
     metricName: string
     formatValue: typeof formatMetricValue
     measure: HelpdeskMessageCubeWithJoins['measures']
+    title: string
+    hint: {
+        title: string
+    }
 }
 
 const formatDecimals = _partial(
@@ -53,6 +57,10 @@ export enum TopPerformersChart {
     TopClosedTicketsPerformers = 'top_performers_closed_tickets_performers',
 }
 
+export const AGENTS_SHOUT_OUTS_TITLE = 'Top performers'
+export const SHOUTOUT_DESCRIPTION =
+    'Shoutout for the agent(s) that is doing the best for'
+
 export const AgentsShoutOutsConfig: Record<TopPerformersChart, ShoutoutConfig> =
     {
         [TopPerformersChart.TopCSATPerformers]: {
@@ -61,6 +69,10 @@ export const AgentsShoutOutsConfig: Record<TopPerformersChart, ShoutoutConfig> =
             metricName: TableLabels[AgentsTableColumn.CustomerSatisfaction],
             formatValue: formatDecimals,
             measure: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+            title: `${AGENTS_SHOUT_OUTS_TITLE} - ${TableLabels[AgentsTableColumn.CustomerSatisfaction]}`,
+            hint: {
+                title: `${SHOUTOUT_DESCRIPTION} ${TableLabels[AgentsTableColumn.CustomerSatisfaction]}`,
+            },
         },
         [TopPerformersChart.TopFirstResponseTimePerformers]: {
             useQuery: useMedianFirstResponseTimeMetricPerAgent,
@@ -68,6 +80,10 @@ export const AgentsShoutOutsConfig: Record<TopPerformersChart, ShoutoutConfig> =
             metricName: TableLabels[AgentsTableColumn.MedianFirstResponseTime],
             formatValue: formatDuration,
             measure: TicketMessagesMeasure.MedianFirstResponseTime,
+            title: `${AGENTS_SHOUT_OUTS_TITLE} - ${TableLabels[AgentsTableColumn.MedianFirstResponseTime]}`,
+            hint: {
+                title: `${SHOUTOUT_DESCRIPTION} ${TableLabels[AgentsTableColumn.MedianFirstResponseTime]}`,
+            },
         },
         [TopPerformersChart.TopResponseTimePerformers]: {
             useQuery: useMedianResolutionTimeMetricPerAgent,
@@ -75,6 +91,10 @@ export const AgentsShoutOutsConfig: Record<TopPerformersChart, ShoutoutConfig> =
             metricName: TableLabels[AgentsTableColumn.MedianResolutionTime],
             formatValue: formatDuration,
             measure: TicketMessagesMeasure.MedianResolutionTime,
+            title: `${AGENTS_SHOUT_OUTS_TITLE} - ${TableLabels[AgentsTableColumn.MedianResolutionTime]}`,
+            hint: {
+                title: `${SHOUTOUT_DESCRIPTION} ${TableLabels[AgentsTableColumn.MedianResolutionTime]}`,
+            },
         },
         [TopPerformersChart.TopClosedTicketsPerformers]: {
             useQuery: useClosedTicketsMetricPerAgent,
@@ -82,5 +102,9 @@ export const AgentsShoutOutsConfig: Record<TopPerformersChart, ShoutoutConfig> =
             metricName: TableLabels[AgentsTableColumn.ClosedTickets],
             formatValue: formatDecimals,
             measure: TicketMeasure.TicketCount,
+            title: `${AGENTS_SHOUT_OUTS_TITLE} - ${TableLabels[AgentsTableColumn.ClosedTickets]}`,
+            hint: {
+                title: `${SHOUTOUT_DESCRIPTION} ${TableLabels[AgentsTableColumn.ClosedTickets]}`,
+            },
         },
     }
