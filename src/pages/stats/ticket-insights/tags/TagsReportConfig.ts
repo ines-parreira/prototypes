@@ -1,5 +1,9 @@
 import {FilterKey, StaticFilter} from 'models/stat/types'
-import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
+import {
+    ChartType,
+    DataExportFormat,
+    ReportConfig,
+} from 'pages/stats/custom-reports/types'
 import {AllUsedTagsTableChart} from 'pages/stats/ticket-insights/tags/AllUsedTagsTableChart'
 import {
     TicketInsightsTagsMetric,
@@ -7,6 +11,7 @@ import {
 } from 'pages/stats/ticket-insights/tags/TagsMetricConfig'
 import {TagsTrendChart} from 'pages/stats/ticket-insights/tags/TagsTrendChart'
 import {TopUsedTagsChart} from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'
+import {fetchTagsReportData} from 'services/reporting/tagsReportingService'
 
 export const TAGS_OPTIONAL_FILTERS = [
     FilterKey.Agents,
@@ -47,7 +52,12 @@ export const TicketInsightsTagsReportConfig: ReportConfig<TicketInsightsTagsChar
                     TicketInsightsTagsMetricConfig[
                         TicketInsightsTagsMetric.AllUsedTagsTableChart
                     ].hint.title,
-                csvProducer: null,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Table,
+                        fetch: fetchTagsReportData,
+                    },
+                ],
                 chartType: ChartType.Table,
             },
             [TicketInsightsTagsChart.TagsTrendChart]: {

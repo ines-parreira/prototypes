@@ -186,6 +186,11 @@ describe('useChannelsReportMetrics', () => {
                     column: 1,
                 },
                 selectedCustomFieldId: null,
+                tags: {},
+                tagsTableOrder: {
+                    direction: OrderDirection.Asc,
+                    column: 1,
+                },
             }
             const fileName = getCsvFileNameWithDates(
                 statsFilters.period,
@@ -226,6 +231,11 @@ describe('useChannelsReportMetrics', () => {
                     column: 1,
                 },
                 selectedCustomFieldId: null,
+                tags: {},
+                tagsTableOrder: {
+                    direction: OrderDirection.Asc,
+                    column: 1,
+                },
             }
             const fileName = getCsvFileNameWithDates(
                 statsFilters.period,

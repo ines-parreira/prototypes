@@ -2,6 +2,8 @@ import {waitFor} from '@testing-library/react'
 import {renderHook} from '@testing-library/react-hooks'
 
 import {fromJS} from 'immutable'
+import _keyBy from 'lodash/keyBy'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -10,6 +12,7 @@ import thunk from 'redux-thunk'
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
+import {tags} from 'fixtures/tag'
 import {
     fetchTableReportData,
     TableDataSources,
@@ -31,6 +34,10 @@ import {
     busiestTimesSlice,
     initialState as busiestTimesSliceInitialState,
 } from 'state/ui/stats/busiestTimesSlice'
+import {
+    initialState as tagsReportSliceinitialState,
+    tagsReportSlice,
+} from 'state/ui/stats/tagsReportSlice'
 import {
     initialState,
     ticketInsightsSlice,
@@ -64,6 +71,9 @@ describe('useTable hooks', () => {
         agents: fromJS({
             all: agents,
         }),
+        entities: {
+            tags: _keyBy(tags, 'id'),
+        },
         ui: {
             stats: {
                 [ticketInsightsSlice.name]: {
@@ -75,6 +85,7 @@ describe('useTable hooks', () => {
                     },
                 },
                 [busiestTimesSlice.name]: busiestTimesSliceInitialState,
+                [tagsReportSlice.name]: tagsReportSliceinitialState,
             },
         },
     } as RootState
@@ -83,7 +94,10 @@ describe('useTable hooks', () => {
     const fileName = 'someFileName'
 
     describe('useTables', () => {
-        const tableResponse = {isLoading: false, fileName, files: {}}
+        const files = {
+            ['fileName']: 'fileContent',
+        }
+        const tableResponse = {isLoading: false, fileName, files}
         const tableSources = [
             {
                 title: 'someTitle',
@@ -124,7 +138,7 @@ describe('useTable hooks', () => {
 
             await waitFor(() => {
                 expect(result.current).toEqual({
-                    files: {},
+                    files,
                     isFetching: false,
                 })
             })
@@ -132,10 +146,14 @@ describe('useTable hooks', () => {
 
         it('should return empty on error', async () => {
             const state = {
+                entities: {
+                    tags: _keyBy(tags, 'id'),
+                },
                 ui: {
                     stats: {
                         [ticketInsightsSlice.name]: initialState,
                         [busiestTimesSlice.name]: busiestTimesSliceInitialState,
+                        [tagsReportSlice.name]: tagsReportSliceinitialState,
                     },
                 },
             } as RootState

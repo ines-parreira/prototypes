@@ -1,3 +1,4 @@
+import {Tag} from '@gorgias/api-queries'
 import {ReactNode} from 'react'
 
 import {User} from 'config/types/user'
@@ -25,6 +26,7 @@ import {TicketInsightsTagsChart} from 'pages/stats/ticket-insights/tags/TagsRepo
 import {TicketFieldsChart} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 import {VoiceAgentsChart} from 'pages/stats/voice/pages/VoiceAgentsReportConfig'
 import {VoiceOverviewChart} from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
+import {TagsTableOrder} from 'state/ui/stats/tagsReportSlice'
 import {TicketInsightsOrder} from 'state/ui/stats/ticketInsightsSlice'
 import {AgentsTableColumn, ChannelsTableColumns} from 'state/ui/stats/types'
 
@@ -109,6 +111,8 @@ export type ReportFetch = (
         selectedBTODMetric: BusiestTimeOfDaysMetrics
         customFieldsOrder: TicketInsightsOrder
         selectedCustomFieldId: string | null
+        tags: Record<string, Tag | undefined>
+        tagsTableOrder: TagsTableOrder
     }
 ) => Promise<{
     isLoading: boolean

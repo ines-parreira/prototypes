@@ -1,46 +1,26 @@
 import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {useTicketCountPerTag} from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
-import Button from 'pages/common/components/button/Button'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
-import {formatDates} from 'pages/stats/utils'
-import {saveReport} from 'services/reporting/tagsReportingService'
+import {DownloadDataButton} from 'pages/stats/support-performance/components/DownloadDataButton'
+import {useTagsReportData} from 'services/reporting/tagsReportingService'
+import {saveZippedFiles} from 'utils/file'
 
 const DOWNLOAD_BUTTON_TITLE = 'Download Tags Data'
 
 export const TagsReportDownloadDataButton = () => {
-    const {
-        data: ticketCountPerTagData,
-        dateTimes,
-        isLoading,
-        cleanStatsFilters,
-        granularity,
-    } = useTicketCountPerTag()
-    const formattedDateTimes = dateTimes.map((item) =>
-        formatDates(granularity, item)
-    )
+    const {files, fileName, isLoading} = useTagsReportData()
 
     return (
-        <Button
-            intent="secondary"
-            fillStyle="ghost"
+        <DownloadDataButton
             onClick={async () => {
                 logEvent(SegmentEvent.StatDownloadClicked, {
                     name: 'all-metrics',
                 })
 
-                await saveReport(
-                    ticketCountPerTagData,
-                    formattedDateTimes,
-                    cleanStatsFilters.period
-                )
+                await saveZippedFiles(files, fileName)
             }}
+            disabled={isLoading}
             title={DOWNLOAD_BUTTON_TITLE}
-            isDisabled={isLoading}
-            leadingIcon="file_download"
-        >
-            {DOWNLOAD_DATA_BUTTON_LABEL}
-        </Button>
+        />
     )
 }

@@ -67,6 +67,19 @@ const getTimeSeriesPerDimensionHook =
         )
     }
 
+const getTimeSeriesPerDimensionFetch =
+    <TCube extends Cubes>(query: TimeSeriesPerDimensionQueryFactory<TCube>) =>
+    (
+        filters: StatsFilters,
+        timezone: string,
+        granularity: ReportingGranularity,
+        sorting?: OrderDirection
+    ) => {
+        return fetchTimeSeriesPerDimension(
+            query(filters, timezone, granularity, sorting)
+        )
+    }
+
 export const useTicketsCreatedTimeSeries = getTimeSeriesHook(
     ticketsCreatedTimeSeriesQueryFactory
 )
@@ -133,6 +146,9 @@ export const fetchCustomFieldsTicketCountTimeSeries = (
     )
 
 export const useTagsTicketCountTimeSeries = getTimeSeriesPerDimensionHook(
+    tagsTicketCountTimeSeriesFactory
+)
+export const fetchTagsTicketCountTimeSeries = getTimeSeriesPerDimensionFetch(
     tagsTicketCountTimeSeriesFactory
 )
 

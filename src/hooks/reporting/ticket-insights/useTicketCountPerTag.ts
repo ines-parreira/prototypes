@@ -66,9 +66,9 @@ const getOrderBy = (order: TagsTableOrder) => {
     }
 }
 
-const getFormattedDataWithTotals = (
+export const getFormattedDataWithTotals = (
     timeSeriesData: TimeSeriesPerDimension | undefined,
-    tags: Record<string, Tag>,
+    tags: Record<string, Tag | undefined>,
     order: TagsTableOrder
 ) => {
     const timeData = timeSeriesData

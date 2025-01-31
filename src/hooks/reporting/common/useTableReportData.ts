@@ -11,8 +11,10 @@ import {ReportingGranularity} from 'models/reporting/types'
 
 import {StatsFilters} from 'models/stat/types'
 import {ReportFetch} from 'pages/stats/custom-reports/types'
+import {getEntitiesTags} from 'state/entities/tags/selectors'
 import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
 import {getSelectedMetric} from 'state/ui/stats/busiestTimesSlice'
+import {getTagsOrder} from 'state/ui/stats/tagsReportSlice'
 import {
     getCustomFieldsOrder,
     getSelectedCustomField,
@@ -49,6 +51,8 @@ export const useTables = (
     const selectedCustomField = useAppSelector(getSelectedCustomField)
     const {sortedChannels} = useSortedChannels()
     const selectedBTODMetric = useAppSelector(getSelectedMetric)
+    const tags = useAppSelector(getEntitiesTags)
+    const tagsTableOrder = useAppSelector(getTagsOrder)
     const context = useMemo(
         () => ({
             agents,
@@ -61,6 +65,8 @@ export const useTables = (
                     ? String(selectedCustomField.id)
                     : null,
             selectedBTODMetric,
+            tags,
+            tagsTableOrder,
         }),
         [
             agents,
@@ -68,8 +74,10 @@ export const useTables = (
             sortedChannels,
             channelColumnsOrder,
             customFieldsOrder,
-            selectedCustomField,
+            selectedCustomField.id,
             selectedBTODMetric,
+            tags,
+            tagsTableOrder,
         ]
     )
 

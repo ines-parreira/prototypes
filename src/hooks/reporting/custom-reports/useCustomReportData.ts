@@ -29,6 +29,7 @@ import {SupportPerformanceAgentsReportConfig} from 'pages/stats/support-performa
 import {BusiestTimesReportConfig} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
 import {ChannelsReportConfig} from 'pages/stats/support-performance/channels/ChannelsReportConfig'
 import {SupportPerformanceOverviewReportConfig} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import {TicketInsightsTagsReportConfig} from 'pages/stats/ticket-insights/tags/TagsReportConfig'
 import {TicketFieldsReportConfig} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 import {createTimeSeriesPerDimensionReport} from 'services/reporting/SLAsReportingService'
 
@@ -44,6 +45,7 @@ const chartsLookupTable: Record<string, ChartConfig | undefined> = {
     ...BusiestTimesReportConfig.charts,
     ...SupportPerformanceAgentsReportConfig.charts,
     ...ChannelsReportConfig.charts,
+    ...TicketInsightsTagsReportConfig.charts,
 }
 
 type Queries = {

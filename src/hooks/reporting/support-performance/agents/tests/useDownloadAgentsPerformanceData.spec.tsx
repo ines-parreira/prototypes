@@ -216,6 +216,11 @@ describe('useDownloadAgentsPerformanceData', () => {
                 column: 1,
             },
             selectedCustomFieldId: null,
+            tags: {},
+            tagsTableOrder: {
+                direction: OrderDirection.Asc,
+                column: 1,
+            },
         }
 
         it('Should return report file name', async () => {
