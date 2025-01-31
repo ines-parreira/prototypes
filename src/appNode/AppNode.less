@@ -3,7 +3,13 @@
         display: flex;
         flex-direction: column;
         height: 100%;
-        background-color: var(--navigation-background);
+        background-color: var(--neutral-grey-1);
         color: var(--neutral-grey-6);
+    }
+}
+
+:global(.globalNav) :local {
+    .app {
+        background-color: var(--navigation-background);
     }
 }
