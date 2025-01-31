@@ -320,6 +320,12 @@ export const ConditionsBranchBody = ({
                                                 index
                                             )}
                                             isDisabled={isDisabled}
+                                            icon={
+                                                variable.nodeType ===
+                                                'order_shipmonk'
+                                                    ? variable.icon
+                                                    : undefined
+                                            }
                                         >
                                             {renderInput(variable, index)}
                                         </Condition>

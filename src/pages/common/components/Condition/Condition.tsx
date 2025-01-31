@@ -28,6 +28,7 @@ export type ConditionProps = {
     onOperatorSelect: (key: string) => void
     onDelete?: () => void
     isDisabled?: boolean
+    icon?: React.ReactNode
 }
 
 export const Condition = ({
@@ -40,6 +41,7 @@ export const Condition = ({
     onDelete,
     onOperatorSelect,
     isDisabled,
+    icon,
 }: ConditionProps) => {
     const [isSelectOpen, setIsSelectOpen] = useState(false)
     const selectRef = useRef<HTMLDivElement>(null)
@@ -55,6 +57,7 @@ export const Condition = ({
                 <Button className={css.type}>{capitalize(type)}</Button>
             )}
             <div className={css.labelWrapper}>
+                {icon}
                 <span className={css.label}>{label}</span>
             </div>
 

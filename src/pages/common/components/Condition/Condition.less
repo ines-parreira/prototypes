@@ -36,6 +36,10 @@
         overflow: hidden;
         text-overflow: ellipsis;
         text-align: center;
+
+        &:not(:only-child) {
+            margin-left: @layout-spacing-xs;
+        }
     }
 
     .type {

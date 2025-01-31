@@ -179,7 +179,7 @@ const INTEGRATION_VARIABLE_MAP: Record<
     (icon: ReactNode) => WorkflowVariable | WorkflowVariableGroup
 > = {
     [SHIPMONK_APPLICATION_ID]: (icon: ReactNode) => ({
-        name: 'Shipmonk order',
+        name: 'ShipMonk order',
         nodeType: 'order_shipmonk',
         icon,
         variables: [
@@ -197,21 +197,21 @@ const INTEGRATION_VARIABLE_MAP: Record<
                 type: 'string',
                 icon,
                 options: [
-                    {value: 'invalid', label: 'Invalid'},
-                    {value: 'cancelled', label: 'Cancelled'},
-                    {value: 'processing', label: 'Processing'},
-                    {value: 'submitted', label: 'Submitted'},
-                    {value: 'complete', label: 'Complete'},
-                    {value: 'onHold', label: 'On hold'},
-                    {value: 'pick_in_progress', label: 'Pick in progress'},
-                    {value: 'pending_batching', label: 'Pending batching'},
+                    {value: 'invalid', label: 'invalid'},
+                    {value: 'cancelled', label: 'cancelled'},
+                    {value: 'processing', label: 'processing'},
+                    {value: 'submitted', label: 'submitted'},
+                    {value: 'complete', label: 'complete'},
+                    {value: 'onHold', label: 'on hold'},
+                    {value: 'pick_in_progress', label: 'pick in progress'},
+                    {value: 'pending_batching', label: 'pending batching'},
                     {
                         value: 'fulfilled_by_3rd',
-                        label: 'Fulfilled by 3rd party',
+                        label: 'fulfilled by 3rd party',
                     },
                     {
                         value: 'awaiting_package_forwarding',
-                        label: 'Awaiting package forwarding',
+                        label: 'awaiting package forwarding',
                     },
                 ],
             },
