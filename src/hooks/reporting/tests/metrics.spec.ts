@@ -9,12 +9,22 @@ import {
     useMessagesSentMetric,
     useMedianResolutionTimeMetric,
     useTicketsRepliedMetric,
-    useOneTouchTicketsMetric,
     useOnlineTimeMetric,
     useTicketAverageHandleTimeMetric,
     useTicketsCreatedMetric,
+    fetchTicketAverageHandleTimeMetric,
+    fetchClosedTicketsMetric,
+    fetchCustomerSatisfactionMetric,
+    fetchMedianFirstResponseTimeMetric,
+    fetchMedianResolutionTimeMetric,
+    fetchOneTouchTicketsMetric,
+    useOneTouchTicketsMetric,
+    fetchMessagesSentMetric,
+    fetchTicketsRepliedMetric,
+    fetchTicketsCreatedMetric,
+    fetchOnlineTimeMetric,
 } from 'hooks/reporting/metrics'
-import {useMetric} from 'hooks/reporting/useMetric'
+import {fetchMetric, useMetric} from 'hooks/reporting/useMetric'
 import {onlineTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/onlineTime'
 import {ticketAverageHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
@@ -32,6 +42,7 @@ import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetric')
 const useMetricMock = assumeMock(useMetric)
+const fetchMetricMock = assumeMock(fetchMetric)
 
 describe('metrics', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -51,6 +62,7 @@ describe('metrics', () => {
     }
 
     useMetricMock.mockReturnValue(defaultMetricValue)
+    fetchMetricMock.mockResolvedValue(defaultMetricValue)
 
     describe.each([
         [
@@ -112,6 +124,62 @@ describe('metrics', () => {
 
     describe.each([
         [
+            'fetchClosedTicketsMetric',
+            fetchClosedTicketsMetric,
+            closedTicketsQueryFactory,
+        ],
+        [
+            'fetchCustomerSatisfactionMetric',
+            fetchCustomerSatisfactionMetric,
+            customerSatisfactionQueryFactory,
+        ],
+        [
+            'fetchMedianFirstResponseTimeMetric',
+            fetchMedianFirstResponseTimeMetric,
+            medianFirstResponseTimeQueryFactory,
+        ],
+        [
+            'fetchMedianResolutionTimeMetric',
+            fetchMedianResolutionTimeMetric,
+            medianResolutionTimeQueryFactory,
+        ],
+
+        [
+            'fetchOneTouchTicketsMetric',
+            fetchOneTouchTicketsMetric,
+            oneTouchTicketsQueryFactory,
+        ],
+        [
+            'fetchTicketHandleTimeMetric',
+            fetchTicketAverageHandleTimeMetric,
+            ticketAverageHandleTimeQueryFactory,
+        ],
+    ])(
+        '%s',
+        (
+            _,
+            fetchTrendFn,
+            queryFactory: (
+                statsFilters: StatsFilters,
+                timezone: string
+            ) => ReportingQuery
+        ) => {
+            it('should fetch reporting metric with assigned tickets only', async () => {
+                const result = await fetchTrendFn(statsFilters, timezone)
+
+                expect(fetchMetricMock).toHaveBeenCalledWith(
+                    withFilter(
+                        queryFactory(statsFilters, timezone),
+                        ignoreNotAssignedTicketsFilter
+                    )
+                )
+                expect(result).toBe(defaultMetricValue)
+            })
+        }
+    )
+
+    describe.each([
+        [
             'useMessagesSentMetric',
             useMessagesSentMetric,
             messagesSentQueryFactory,
@@ -146,6 +214,48 @@ describe('metrics', () => {
                     queryFactory(statsFilters, timezone)
                 )
                 expect(result.current).toBe(defaultMetricValue)
+            })
+        }
+    )
+
+    describe.each([
+        [
+            'fetchMessagesSentMetric',
+            fetchMessagesSentMetric,
+            messagesSentQueryFactory,
+        ],
+        [
+            'fetchTicketsRepliedMetric',
+            fetchTicketsRepliedMetric,
+            ticketsRepliedQueryFactory,
+        ],
+        [
+            'fetchOnlineTimeMetric',
+            fetchOnlineTimeMetric,
+            onlineTimeQueryFactory,
+        ],
+        [
+            'fetchTicketsCreatedMetric',
+            fetchTicketsCreatedMetric,
+            ticketsCreatedQueryFactory,
+        ],
+    ])(
+        '%s',
+        (
+            _,
+            fetchTrendFn,
+            queryFactory: (
+                statsFilters: StatsFilters,
+                timezone: string
+            ) => ReportingQuery
+        ) => {
+            it('should create reporting metric with all tickets', async () => {
+                const result = await fetchTrendFn(statsFilters, timezone)
+
+                expect(fetchMetricMock).toHaveBeenCalledWith(
+                    queryFactory(statsFilters, timezone)
+                )
+                expect(result).toBe(defaultMetricValue)
             })
         }
     )

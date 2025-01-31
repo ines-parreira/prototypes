@@ -1,6 +1,7 @@
 import {useMemo} from 'react'
 
-import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
+import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerCustomField'
+
 import useAppSelector from 'hooks/useAppSelector'
 
 import {OrderDirection} from 'models/api/types'

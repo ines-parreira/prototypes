@@ -25,7 +25,9 @@ import {
     ReportFetch,
 } from 'pages/stats/custom-reports/types'
 import {ServiceLevelAgreementsReportConfig} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
+import {SupportPerformanceAgentsReportConfig} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import {BusiestTimesReportConfig} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
+import {ChannelsReportConfig} from 'pages/stats/support-performance/channels/ChannelsReportConfig'
 import {SupportPerformanceOverviewReportConfig} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import {TicketFieldsReportConfig} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 import {createTimeSeriesPerDimensionReport} from 'services/reporting/SLAsReportingService'
@@ -40,6 +42,8 @@ const chartsLookupTable: Record<string, ChartConfig | undefined> = {
     ...ServiceLevelAgreementsReportConfig.charts,
     ...TicketFieldsReportConfig.charts,
     ...BusiestTimesReportConfig.charts,
+    ...SupportPerformanceAgentsReportConfig.charts,
+    ...ChannelsReportConfig.charts,
 }
 
 type Queries = {
@@ -95,6 +99,12 @@ const reduceReport = (acc: Queries, child: CustomReportChild): Queries => {
                     ...producer.fetch,
                     title: String(config.label),
                 }
+            }
+            if (producer.type === DataExportFormat.Table) {
+                acc.tables.push({
+                    fetchTable: producer.fetch,
+                    title: String(config.label),
+                })
             }
             if (producer.type === DataExportFormat.Table) {
                 acc.tables.push({
@@ -183,6 +193,7 @@ export const useCustomReportData = (customReport: CustomReportSchema) => {
         granularity,
         queryGroups.tables
     )
+
     const loading = useMemo(() => {
         return [
             trends,

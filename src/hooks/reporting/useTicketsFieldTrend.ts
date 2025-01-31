@@ -3,7 +3,8 @@ import _fromPairs from 'lodash/fromPairs'
 import _sortBy from 'lodash/sortBy'
 import {useMemo} from 'react'
 
-import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
+import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerCustomField'
+
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'

@@ -1,4 +1,8 @@
 import {
+    createFetchPerDimension,
+    createMetricPerDimensionHook,
+} from 'hooks/reporting/metricsPerAgent'
+import {
     MetricWithDecile,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
@@ -37,116 +41,59 @@ export const useMedianFirstResponseTimeMetricPerChannel: MetricPerChannelQueryHo
             channel
         )
 
-export const useTicketsRepliedMetricPerChannel: MetricPerChannelQueryHook = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-    channel?: string
-) =>
-    useMetricPerDimension(
-        ticketsRepliedMetricPerChannelQueryFactory(
-            statsFilters,
-            timezone,
-            sorting
-        ),
-        channel
+export const useTicketsRepliedMetricPerChannel = createMetricPerDimensionHook(
+    ticketsRepliedMetricPerChannelQueryFactory
+)
+export const fetchTicketsRepliedMetricPerChannel = createFetchPerDimension(
+    ticketsRepliedMetricPerChannelQueryFactory
+)
+
+export const useClosedTicketsMetricPerChannel = createMetricPerDimensionHook(
+    closedTicketsPerChannelQueryFactory
+)
+export const fetchClosedTicketsMetricPerChannel = createFetchPerDimension(
+    closedTicketsPerChannelQueryFactory
+)
+
+export const useCreatedTicketsMetricPerChannel = createMetricPerDimensionHook(
+    ticketsCreatedPerChannelPerChannelQueryFactory
+)
+export const fetchCreatedTicketsMetricPerChannel = createFetchPerDimension(
+    ticketsCreatedPerChannelPerChannelQueryFactory
+)
+
+export const useMessagesSentMetricPerChannel = createMetricPerDimensionHook(
+    messagesSentMetricPerChannelQueryFactory
+)
+export const fetchMessagesSentMetricPerChannel = createFetchPerDimension(
+    messagesSentMetricPerChannelQueryFactory
+)
+
+export const useMedianResolutionTimeMetricPerChannel =
+    createMetricPerDimensionHook(
+        medianResolutionTimeMetricPerChannelQueryFactory
     )
+export const fetchMedianResolutionTimeMetricPerChannel =
+    createFetchPerDimension(medianResolutionTimeMetricPerChannelQueryFactory)
 
-export const useClosedTicketsMetricPerChannel: MetricPerChannelQueryHook = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-    channel?: string
-) =>
-    useMetricPerDimension(
-        closedTicketsPerChannelQueryFactory(statsFilters, timezone, sorting),
-        channel
+export const useCustomerSatisfactionMetricPerChannel =
+    createMetricPerDimensionHook(
+        customerSatisfactionMetricPerChannelQueryFactory
     )
+export const fetchCustomerSatisfactionMetricPerChannel =
+    createFetchPerDimension(customerSatisfactionMetricPerChannelQueryFactory)
 
-export const useCreatedTicketsMetricPerChannel: MetricPerChannelQueryHook = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-    channel?: string
-) =>
-    useMetricPerDimension(
-        ticketsCreatedPerChannelPerChannelQueryFactory(
-            statsFilters,
-            timezone,
-            sorting
-        ),
-        channel
+export const useOneTouchTicketsMetricPerChannel = createMetricPerDimensionHook(
+    oneTouchTicketsPerChannelQueryFactory
+)
+export const fetchOneTouchTicketsMetricPerChannel = createFetchPerDimension(
+    oneTouchTicketsPerChannelQueryFactory
+)
+
+export const useTicketAverageHandleTimePerChannel =
+    createMetricPerDimensionHook(
+        ticketAverageHandleTimePerAgentPerChannelQueryFactory
     )
-
-export const useMessagesSentMetricPerChannel: MetricPerChannelQueryHook = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-    channel?: string
-) =>
-    useMetricPerDimension(
-        messagesSentMetricPerChannelQueryFactory(
-            statsFilters,
-            timezone,
-            sorting
-        ),
-        channel
-    )
-
-export const useMedianResolutionTimeMetricPerChannel: MetricPerChannelQueryHook =
-    (
-        statsFilters: StatsFilters,
-        timezone: string,
-        sorting?: OrderDirection,
-        channel?: string
-    ) =>
-        useMetricPerDimension(
-            medianResolutionTimeMetricPerChannelQueryFactory(
-                statsFilters,
-                timezone,
-                sorting
-            ),
-            channel
-        )
-
-export const useCustomerSatisfactionMetricPerChannel: MetricPerChannelQueryHook =
-    (
-        statsFilters: StatsFilters,
-        timezone: string,
-        sorting?: OrderDirection,
-        channel?: string
-    ) =>
-        useMetricPerDimension(
-            customerSatisfactionMetricPerChannelQueryFactory(
-                statsFilters,
-                timezone,
-                sorting
-            ),
-            channel
-        )
-
-export const useOneTouchTicketsMetricPerChannel: MetricPerChannelQueryHook = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-    channel?: string
-) =>
-    useMetricPerDimension(
-        oneTouchTicketsPerChannelQueryFactory(statsFilters, timezone, sorting),
-        channel
-    )
-
-export const useTicketAverageHandleTimePerChannel: MetricPerChannelQueryHook = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-    channel?: string
-) =>
-    useMetricPerDimension(
-        ticketAverageHandleTimePerAgentPerChannelQueryFactory(
-            statsFilters,
-            timezone,
-            sorting
-        ),
-        channel
-    )
+export const fetchTicketAverageHandleTimePerChannel = createFetchPerDimension(
+    ticketAverageHandleTimePerAgentPerChannelQueryFactory
+)

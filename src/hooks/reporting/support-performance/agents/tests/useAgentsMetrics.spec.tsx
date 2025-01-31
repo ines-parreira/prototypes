@@ -92,7 +92,6 @@ describe('useAgentsMetric', () => {
     }
     const expectedAgentsMetrics: ReturnType<typeof useAgentsMetrics> = {
         reportData: {
-            agents: [],
             closedTicketsMetric: metricData,
             customerSatisfactionMetric: metricData,
             medianFirstResponseTimeMetric: metricData,

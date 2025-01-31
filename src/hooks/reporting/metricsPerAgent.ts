@@ -1,10 +1,10 @@
 import {
-    MetricWithBreakdown,
-    MetricWithDecile,
+    fetchMetricPerDimension,
+    MetricWithDecileFetch,
     useMetricPerDimension,
-    useMetricPerDimensionWithBreakdown,
 } from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
+import {Cubes} from 'models/reporting/cubes'
 import {onlineTimePerAgentQueryFactory} from 'models/reporting/queryFactories/agentxp/onlineTime'
 import {ticketAverageHandleTimePerAgentQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {closedTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
@@ -14,154 +14,107 @@ import {medianResolutionTimeMetricPerAgentQueryFactory} from 'models/reporting/q
 import {messagesSentMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {oneTouchTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import {ticketsRepliedMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
-import {customFieldsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 
-export const useMedianFirstResponseTimeMetricPerAgent = (
-    statsFilters: StatsFilters,
+type QueryFactory<TCube extends Cubes> = (
+    filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection,
-    agentAssigneeId?: string
-) =>
-    useMetricPerDimension(
-        medianFirstResponseTimeMetricPerAgentQueryFactory(
-            statsFilters,
-            timezone,
-            sorting
-        ),
-        agentAssigneeId
-    )
-
-export const useTicketsRepliedMetricPerAgent = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-    agentAssigneeId?: string
-) =>
-    useMetricPerDimension(
-        ticketsRepliedMetricPerAgentQueryFactory(
-            statsFilters,
-            timezone,
-            sorting
-        ),
-        agentAssigneeId
-    )
-
-export const useClosedTicketsMetricPerAgent = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-    agentAssigneeId?: string
-) =>
-    useMetricPerDimension(
-        closedTicketsPerAgentQueryFactory(statsFilters, timezone, sorting),
-        agentAssigneeId
-    )
-
-export const useMessagesSentMetricPerAgent = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-    agentAssigneeId?: string
-) =>
-    useMetricPerDimension(
-        messagesSentMetricPerAgentQueryFactory(statsFilters, timezone, sorting),
-        agentAssigneeId
-    )
-
-export const useMedianResolutionTimeMetricPerAgent = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-    agentAssigneeId?: string
-) =>
-    useMetricPerDimension(
-        medianResolutionTimeMetricPerAgentQueryFactory(
-            statsFilters,
-            timezone,
-            sorting
-        ),
-        agentAssigneeId
-    )
-
-export const useCustomerSatisfactionMetricPerAgent = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-    agentAssigneeId?: string
-) =>
-    useMetricPerDimension(
-        customerSatisfactionMetricPerAgentQueryFactory(
-            statsFilters,
-            timezone,
-            sorting
-        ),
-        agentAssigneeId
-    )
-
-export const useCustomFieldsTicketCount = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    customFieldId: string,
     sorting?: OrderDirection
-): MetricWithDecile =>
-    useMetricPerDimension(
-        customFieldsTicketCountQueryFactory(
-            statsFilters,
-            timezone,
-            customFieldId,
-            sorting
+) => ReportingQuery<TCube>
+
+export const createFetchPerDimension =
+    <TCube extends Cubes>(query: QueryFactory<TCube>): MetricWithDecileFetch =>
+    (
+        statsFilters: StatsFilters,
+        timezone: string,
+        sorting?: OrderDirection,
+        dimensionId?: string
+    ) =>
+        fetchMetricPerDimension(
+            query(statsFilters, timezone, sorting),
+            dimensionId
         )
-    )
 
-export const useCustomTicketFieldWithBreakdown = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    customFieldId: string,
-    sorting?: OrderDirection
-): MetricWithBreakdown =>
-    useMetricPerDimensionWithBreakdown(
-        customFieldsTicketCountQueryFactory(
-            statsFilters,
-            timezone,
-            customFieldId,
-            sorting
+export const createMetricPerDimensionHook =
+    <TCube extends Cubes>(query: QueryFactory<TCube>) =>
+    (
+        statsFilters: StatsFilters,
+        timezone: string,
+        sorting?: OrderDirection,
+        dimensionId?: string
+    ) =>
+        useMetricPerDimension(
+            query(statsFilters, timezone, sorting),
+            dimensionId
         )
+
+export const useMedianFirstResponseTimeMetricPerAgent =
+    createMetricPerDimensionHook(
+        medianFirstResponseTimeMetricPerAgentQueryFactory
     )
 
-export const useOneTouchTicketsMetricPerAgent = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-    agentAssigneeId?: string
-) =>
-    useMetricPerDimension(
-        oneTouchTicketsPerAgentQueryFactory(statsFilters, timezone, sorting),
-        agentAssigneeId
-    )
+export const fetchMedianFirstResponseTimeMetricPerAgent =
+    createFetchPerDimension(medianFirstResponseTimeMetricPerAgentQueryFactory)
 
-export const useOnlineTimePerAgent = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-    agentAssigneeId?: string
-) =>
-    useMetricPerDimension(
-        onlineTimePerAgentQueryFactory(statsFilters, timezone, sorting),
-        agentAssigneeId
-    )
+export const useTicketsRepliedMetricPerAgent = createMetricPerDimensionHook(
+    ticketsRepliedMetricPerAgentQueryFactory
+)
 
-export const useTicketAverageHandleTimePerAgent = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-    agentAssigneeId?: string
-) =>
-    useMetricPerDimension(
-        ticketAverageHandleTimePerAgentQueryFactory(
-            statsFilters,
-            timezone,
-            sorting
-        ),
-        agentAssigneeId
-    )
+export const fetchTicketsRepliedMetricPerAgent = createFetchPerDimension(
+    ticketsRepliedMetricPerAgentQueryFactory
+)
+
+export const useClosedTicketsMetricPerAgent = createMetricPerDimensionHook(
+    closedTicketsPerAgentQueryFactory
+)
+
+export const fetchClosedTicketsMetricPerAgent = createFetchPerDimension(
+    closedTicketsPerAgentQueryFactory
+)
+
+export const useMessagesSentMetricPerAgent = createMetricPerDimensionHook(
+    messagesSentMetricPerAgentQueryFactory
+)
+
+export const fetchMessagesSentMetricPerAgent = createFetchPerDimension(
+    messagesSentMetricPerAgentQueryFactory
+)
+
+export const useMedianResolutionTimeMetricPerAgent =
+    createMetricPerDimensionHook(medianResolutionTimeMetricPerAgentQueryFactory)
+
+export const fetchMedianResolutionTimeMetricPerAgent = createFetchPerDimension(
+    medianResolutionTimeMetricPerAgentQueryFactory
+)
+
+export const useCustomerSatisfactionMetricPerAgent =
+    createMetricPerDimensionHook(customerSatisfactionMetricPerAgentQueryFactory)
+
+export const fetchCustomerSatisfactionMetricPerAgent = createFetchPerDimension(
+    customerSatisfactionMetricPerAgentQueryFactory
+)
+
+export const useOneTouchTicketsMetricPerAgent = createMetricPerDimensionHook(
+    oneTouchTicketsPerAgentQueryFactory
+)
+
+export const fetchOneTouchTicketsMetricPerAgent = createFetchPerDimension(
+    oneTouchTicketsPerAgentQueryFactory
+)
+
+export const useOnlineTimePerAgent = createMetricPerDimensionHook(
+    onlineTimePerAgentQueryFactory
+)
+
+export const fetchOnlineTimePerAgent = createFetchPerDimension(
+    onlineTimePerAgentQueryFactory
+)
+
+export const useTicketAverageHandleTimePerAgent = createMetricPerDimensionHook(
+    ticketAverageHandleTimePerAgentQueryFactory
+)
+
+export const fetchTicketAverageHandleTimePerAgent = createFetchPerDimension(
+    ticketAverageHandleTimePerAgentQueryFactory
+)

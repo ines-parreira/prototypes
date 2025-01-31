@@ -6,14 +6,15 @@ import {
     TicketMessagesMeasure,
 } from 'models/reporting/cubes/TicketMessagesCube'
 
-import {usePostReporting} from 'models/reporting/queries'
+import {fetchPostReporting, usePostReporting} from 'models/reporting/queries'
 import {ReportingQuery} from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
 
-import {useMetric} from '../useMetric'
+import {fetchMetric, useMetric} from '../useMetric'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
+const fetchPostReportingMock = assumeMock(fetchPostReporting)
 
 describe('useMetric', () => {
     const defaultReporting = {
@@ -113,5 +114,82 @@ describe('useMetric', () => {
                 },
             } as any)
         ).toEqual(medianFirstResponseTime)
+    })
+})
+
+describe('fetchMetric', () => {
+    const defaultReporting = {
+        isFetching: false,
+        isError: false,
+    } as UseQueryResult
+
+    const defaultQuery: ReportingQuery<TicketMessagesCube> = {
+        measures: [TicketMessagesMeasure.MedianFirstResponseTime],
+        dimensions: [],
+        filters: [],
+    }
+    const rawResponseValue = 12
+    const rawResponse = [
+        {
+            [TicketMessagesMeasure.MedianFirstResponseTime]:
+                String(rawResponseValue),
+        },
+    ]
+
+    beforeEach(() => {
+        fetchPostReportingMock.mockResolvedValue({
+            data: {...defaultReporting, data: rawResponse},
+        } as unknown as ReturnType<typeof fetchPostReporting>)
+    })
+
+    it('should return isFetching=false when no queries are fetching', async () => {
+        const result = await fetchMetric(defaultQuery)
+
+        expect(result.isFetching).toBe(false)
+    })
+
+    it('should return isError=false when no queries errored', async () => {
+        const result = await fetchMetric(defaultQuery)
+
+        expect(result.isError).toBe(false)
+    })
+
+    it('should return isError=true when one the queries errored', async () => {
+        fetchPostReportingMock.mockRejectedValueOnce({})
+
+        const result = await fetchMetric(defaultQuery)
+
+        expect(result.isError).toBe(true)
+    })
+
+    it('should not return data when one the queries does not have data', async () => {
+        fetchPostReportingMock.mockResolvedValue({
+            data: {...defaultReporting, data: undefined},
+        } as unknown as ReturnType<typeof fetchPostReporting>)
+
+        const result = await fetchMetric(defaultQuery)
+
+        expect(result.data).toBe(undefined)
+    })
+
+    it('should return data', async () => {
+        fetchPostReportingMock.mockResolvedValueOnce({
+            data: {
+                ...defaultReporting,
+                data: rawResponse,
+            },
+        } as unknown as ReturnType<typeof fetchPostReporting>)
+
+        const result = await fetchMetric(defaultQuery)
+
+        expect(result.data).toEqual({
+            value: rawResponseValue,
+        })
+    })
+
+    it('should call fetchPostReporting with the query', async () => {
+        await fetchMetric(defaultQuery)
+
+        expect(fetchPostReportingMock).toHaveBeenCalledWith([defaultQuery])
     })
 })

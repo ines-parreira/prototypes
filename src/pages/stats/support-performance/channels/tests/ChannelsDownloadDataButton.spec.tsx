@@ -1,20 +1,20 @@
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {channels} from 'fixtures/channels'
 import {useChannelsReportMetrics} from 'hooks/reporting/useChannelsReportMetrics'
-import {useChannelsTableSetting} from 'hooks/reporting/useChannelsTableConfigSetting'
 import {ChannelsDownloadDataButton} from 'pages/stats/support-performance/channels/ChannelsDownloadDataButton'
-import {columnsOrder} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import * as channelsReportingService from 'services/reporting/channelsReportingService'
+import {saveZippedFiles} from 'utils/file'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useChannelsReportMetrics')
 const useChannelsReportMetricsMock = assumeMock(useChannelsReportMetrics)
 
-jest.mock('hooks/reporting/useChannelsTableConfigSetting')
-const useChannelsTableSettingMock = assumeMock(useChannelsTableSetting)
+jest.mock('utils/file')
+const saveZippedFilesMock = assumeMock(saveZippedFiles)
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
@@ -22,36 +22,24 @@ const logEventMock = assumeMock(logEvent)
 describe('ChannelsDownloadDataButton', () => {
     const reportData = {} as any
     const isLoading = false
-    const period = {
-        start_datetime: '2021-04-02T00:00:00.000Z',
-        end_datetime: '2021-04-02T23:59:59.999Z',
-    }
-    const columnsOrderFromConfig = [...columnsOrder]
+    const files = {}
+    const fileName = 'someFileName'
 
     beforeEach(() => {
         useChannelsReportMetricsMock.mockReturnValue({
+            files,
+            fileName,
             reportData,
+            channels,
             isLoading,
-            period,
         })
-        useChannelsTableSettingMock.mockReturnValue({
-            columnsOrder: columnsOrderFromConfig,
-        } as any)
     })
 
     it('should fetch data and allow calling the csv with report and report the click', () => {
-        const reportServiceSpy = jest
-            .spyOn(channelsReportingService, 'saveReport')
-            .mockReturnValue({} as any)
-
         render(<ChannelsDownloadDataButton />)
         userEvent.click(screen.getByRole('button'))
 
-        expect(reportServiceSpy).toHaveBeenCalledWith(
-            reportData,
-            columnsOrder,
-            period
-        )
+        expect(saveZippedFilesMock).toHaveBeenCalledWith(files, fileName)
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.StatDownloadClicked,
             expect.objectContaining({

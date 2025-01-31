@@ -24,8 +24,7 @@ export type MetricTrendHook = (
 
 export type MetricTrendFetch = (
     statsFilters: StatsFilters,
-    timezone: string,
-    enabled?: boolean
+    timezone: string
 ) => Promise<MetricTrend>
 
 export type QueryReturnType<Measure extends Cubes['measures']> = [

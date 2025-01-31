@@ -1,5 +1,4 @@
-import moment from 'moment/moment'
-
+import {ChannelsReportData} from 'hooks/reporting/useChannelsReportMetrics'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {Channel} from 'models/channel/types'
 import {AgentTimeTrackingCube} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
@@ -15,7 +14,6 @@ import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
-import {Period} from 'models/stat/types'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -26,9 +24,7 @@ import {
     LeadColumn,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {ChannelsTableColumns} from 'state/ui/stats/types'
-import {createCsv, saveZippedFiles} from 'utils/file'
-
-import {DATE_TIME_FORMAT} from './constants'
+import {createCsv} from 'utils/file'
 
 export type ChannelsReportMetrics =
     | HelpdeskMessageCubeWithJoins['dimensions']
@@ -46,18 +42,13 @@ type ReportDataMap = Record<
     }
 >
 
-export interface ChannelsReportData<T = MetricWithDecile> {
-    channels: Channel[]
-    createdTicketsMetricPerChannel: T
-    percentageOfCreatedTicketsMetricPerChannel: T
-    closedTicketsMetricPerChannel: T
-    ticketAverageHandleTimePerChannel: T
-    medianFirstResponseTimeMetricPerChannel: T
-    medianResolutionTimeMetricPerChannel: T
-    ticketsRepliedMetricPerChannel: T
-    messagesSentMetricPerChannel: T
-    customerSatisfactionMetricPerChannel: T
-}
+const TicketCount = TicketMeasure.TicketCount
+const MedianFirstResponseTime = TicketMessagesMeasure.MedianFirstResponseTime
+const MedianResolutionTime = TicketMessagesMeasure.MedianResolutionTime
+const HelpdeskTicketCount = HelpdeskMessageMeasure.TicketCount
+const MessageCount = HelpdeskMessageMeasure.MessageCount
+const AvgSurveyScore = TicketSatisfactionSurveyMeasure.AvgSurveyScore
+const AverageHandleTime = HandleTimeMeasure.AverageHandleTime
 
 const formatMetric = (column: ChannelsTableColumns, value?: number | null) =>
     formatMetricValue(
@@ -94,19 +85,17 @@ const getMetric = (
               )
           )
 
-export const saveReport = async (
-    data: ChannelsReportData,
+export const saveReport = (
+    channels: Channel[],
+    data: ChannelsReportData | null,
     columnsOrder: ChannelsTableColumns[],
-    period?: Period
+    fileName: string
 ) => {
-    const TicketCount = TicketMeasure.TicketCount
-    const MedianFirstResponseTime =
-        TicketMessagesMeasure.MedianFirstResponseTime
-    const MedianResolutionTime = TicketMessagesMeasure.MedianResolutionTime
-    const HelpdeskTicketCount = HelpdeskMessageMeasure.TicketCount
-    const MessageCount = HelpdeskMessageMeasure.MessageCount
-    const AvgSurveyScore = TicketSatisfactionSurveyMeasure.AvgSurveyScore
-    const AverageHandleTime = HandleTimeMeasure.AverageHandleTime
+    if (data === null) {
+        return {
+            files: {},
+        }
+    }
 
     const columnsToMetricDataMap: ReportDataMap = {
         [ChannelsTableColumns.Channel]: {
@@ -173,23 +162,16 @@ export const saveReport = async (
 
     const metricData = [
         columnsOrder.map((column) => ChannelsTableLabels[column]),
-        ...data.channels.map((channel) => {
+        ...channels.map((channel) => {
             return columnsOrder.map((column) =>
                 getMetric(column, channel, columnsToMetricDataMap)
             )
         }),
     ]
 
-    const export_datetime = moment().format(DATE_TIME_FORMAT)
-    const startDate = moment(period?.start_datetime).format(DATE_TIME_FORMAT)
-    const endDate = moment(period?.end_datetime).format(DATE_TIME_FORMAT)
-    const periodPrefix = `${startDate}_${endDate}`
-
-    return saveZippedFiles(
-        {
-            [`${periodPrefix}-channels-metrics-${export_datetime}.csv`]:
-                createCsv(metricData),
+    return {
+        files: {
+            [fileName]: createCsv(metricData),
         },
-        `${periodPrefix}-channels-metrics-${export_datetime}`
-    )
+    }
 }

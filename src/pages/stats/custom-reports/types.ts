@@ -1,11 +1,14 @@
 import {ReactNode} from 'react'
 
+import {User} from 'config/types/user'
+
 import {MetricPerDimensionFetch} from 'hooks/reporting/distributions'
 import {MetricTrendFetch} from 'hooks/reporting/useMetricTrend'
 import {
     TimeSeriesFetch,
     TimeSeriesPerDimensionFetch,
 } from 'hooks/reporting/useTimeSeries'
+import {Channel} from 'models/channel/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StaticFilter, StatsFilters} from 'models/stat/types'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
@@ -23,6 +26,7 @@ import {TicketFieldsChart} from 'pages/stats/ticket-insights/ticket-fields/Ticke
 import {VoiceAgentsChart} from 'pages/stats/voice/pages/VoiceAgentsReportConfig'
 import {VoiceOverviewChart} from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
 import {TicketInsightsOrder} from 'state/ui/stats/ticketInsightsSlice'
+import {AgentsTableColumn, ChannelsTableColumns} from 'state/ui/stats/types'
 
 type FilterSettings = {
     optional: OptionalFilter[]
@@ -98,6 +102,10 @@ export type ReportFetch = (
     timezone: string,
     granularity: ReportingGranularity,
     context: {
+        agents: User[]
+        columnsOrder: AgentsTableColumn[]
+        channels: Channel[]
+        channelColumnsOrder: ChannelsTableColumns[]
         selectedBTODMetric: BusiestTimeOfDaysMetrics
         customFieldsOrder: TicketInsightsOrder
         selectedCustomFieldId: string | null

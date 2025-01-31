@@ -1,6 +1,7 @@
 import {useMemo} from 'react'
 
-import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
+import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerCustomField'
+
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 

@@ -1,5 +1,3 @@
-import moment from 'moment/moment'
-
 import {User} from 'config/types/user'
 import {Metric} from 'hooks/reporting/metrics'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
@@ -24,7 +22,6 @@ import {
     TicketMessagesMeasure,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {Period} from 'models/stat/types'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -33,7 +30,6 @@ import {
     AgentsColumnConfig,
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import {createCsv} from 'utils/file'
 
@@ -65,7 +61,6 @@ type ReportDataMap = Record<
 >
 
 export interface AgentsPerformanceReportData<T = MetricWithDecile> {
-    agents: User[]
     customerSatisfactionMetric: T
     medianFirstResponseTimeMetric: T
     medianResolutionTimeMetric: T
@@ -87,6 +82,7 @@ const formatMetric = (column: AgentsTableColumn, value?: number | null) =>
         AgentsColumnConfig[column].format,
         NOT_AVAILABLE_PLACEHOLDER
     )
+
 const getAgentMetric = (
     agentId: number,
     data: Pick<MetricWithDecile, 'data'>,
@@ -98,6 +94,7 @@ const getAgentMetric = (
     )?.[metricField]
     return typeof metricValue === 'string' ? Number(metricValue) : metricValue
 }
+
 const getSummary = (
     column: AgentsTableColumn,
     summaryDataMap: ReportDataMap,
@@ -131,6 +128,7 @@ const getMetric = (
           )
 
 export const getData = (
+    agents: User[],
     data: AgentsPerformanceReportData,
     summary: Omit<AgentsPerformanceReportData<Metric>, 'agents'>,
     columnsOrder: AgentsTableColumn[]
@@ -255,9 +253,9 @@ export const getData = (
     return [
         columnsOrder.map((column) => TableLabels[column]),
         columnsOrder.map((column) =>
-            getSummary(column, columnsToMetricDataMap, data.agents.length)
+            getSummary(column, columnsToMetricDataMap, agents.length)
         ),
-        ...data.agents.map((agent) => {
+        ...agents.map((agent) => {
             return columnsOrder.map((column) =>
                 getMetric(column, agent, columnsToMetricDataMap)
             )
@@ -265,24 +263,23 @@ export const getData = (
     ]
 }
 
-export const saveReport = (
-    data: AgentsPerformanceReportData,
-    summary: Omit<AgentsPerformanceReportData<Metric>, 'agents'>,
+export const createAgentsReport = (
+    agents: User[],
+    data: AgentsPerformanceReportData | null,
+    summary: AgentsPerformanceReportData<Metric> | null,
     columnsOrder: AgentsTableColumn[],
-    period?: Period
+    fileName: string
 ) => {
-    const agentsMetricData = getData(data, summary, columnsOrder)
+    if (data === null || summary === null) {
+        return {
+            files: {},
+        }
+    }
 
-    const export_datetime = moment().format(DATE_TIME_FORMAT)
-    const startDate = moment(period?.start_datetime).format(DATE_TIME_FORMAT)
-    const endDate = moment(period?.end_datetime).format(DATE_TIME_FORMAT)
-    const periodPrefix = `${startDate}_${endDate}`
-
+    const agentsMetricData = getData(agents, data, summary, columnsOrder)
     return {
         files: {
-            [`${periodPrefix}-agents-metrics-${export_datetime}.csv`]:
-                createCsv(agentsMetricData),
+            [fileName]: createCsv(agentsMetricData),
         },
-        fileName: `${periodPrefix}-agents-metrics-${export_datetime}`,
     }
 }

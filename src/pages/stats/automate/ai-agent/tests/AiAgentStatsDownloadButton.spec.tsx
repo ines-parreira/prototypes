@@ -1,9 +1,11 @@
 import {render, fireEvent, act} from '@testing-library/react'
+
 import moment from 'moment'
 import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import {agents} from 'fixtures/agents'
 import {
     DisplayEventType,
     useAutomateStatsMeasureLabelMap,
@@ -163,15 +165,18 @@ describe('AiAgentStatsDownloadButton', () => {
         // Mock stats filters
         useAppSelectorMock.mockReturnValueOnce(statsFiltersMock)
 
+        // Mock agents
+        useAppSelectorMock.mockReturnValueOnce(agents)
+
         // Mock performance data
         useAgentsMetricsMock.mockReturnValue({
             isLoading: agentsMetricsIsLoading,
-            reportData: 'agents-metrics',
+            reportData: {'agents-metrics': []},
         } as unknown as ReturnType<typeof useAgentsMetrics>)
 
         useAgentsSummaryMetricsMock.mockReturnValue({
             isLoading: agentsSummaryMetricsIsLoading,
-            summaryData: 'agents-summary-metrics',
+            summaryData: {'agents-summary-metrics': []},
         } as unknown as ReturnType<typeof useAgentsSummaryMetrics>)
 
         useAgentsTableConfigSettingMock.mockReturnValue({
@@ -253,10 +258,11 @@ describe('AiAgentStatsDownloadButton', () => {
         )
 
         expect(saveReportMock).toHaveBeenCalledWith(
+            agents,
             statsFiltersMock.period,
             {
-                data: 'agents-metrics',
-                summary: 'agents-summary-metrics',
+                data: {'agents-metrics': []},
+                summary: {'agents-summary-metrics': []},
                 columnsOrder: [AgentsTableColumn.AgentName],
             },
             {
@@ -284,10 +290,11 @@ describe('AiAgentStatsDownloadButton', () => {
         })
 
         expect(saveReportMock).toHaveBeenCalledWith(
+            agents,
             statsFiltersMock.period,
             {
-                data: 'agents-metrics',
-                summary: 'agents-summary-metrics',
+                data: {'agents-metrics': []},
+                summary: {'agents-summary-metrics': []},
                 columnsOrder: [AgentsTableColumn.AgentName],
             },
             {

@@ -1,95 +1,143 @@
-import {useMemo} from 'react'
+import {
+    fetchTableReportData,
+    TableDataSources,
+    useTableReportData,
+} from 'hooks/reporting/common/useTableReportData'
 
 import {
-    useClosedTicketsMetricPerChannel,
-    useCreatedTicketsMetricPerChannel,
-    useCustomerSatisfactionMetricPerChannel,
-    useMedianFirstResponseTimeMetricPerChannel,
-    useMedianResolutionTimeMetricPerChannel,
-    useMessagesSentMetricPerChannel,
-    useTicketAverageHandleTimePerChannel,
-    useTicketsRepliedMetricPerChannel,
+    fetchClosedTicketsMetricPerChannel,
+    fetchCreatedTicketsMetricPerChannel,
+    fetchCustomerSatisfactionMetricPerChannel,
+    fetchMedianResolutionTimeMetricPerChannel,
+    fetchMessagesSentMetricPerChannel,
+    fetchTicketAverageHandleTimePerChannel,
+    fetchTicketsRepliedMetricPerChannel,
 } from 'hooks/reporting/metricsPerChannel'
+import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
-import {usePercentageOfCreatedTicketsMetricPerChannel} from 'hooks/reporting/usePercentageOfCreatedTicketsMetricPerChannel'
+import {useChannelsTableSetting} from 'hooks/reporting/useChannelsTableConfigSetting'
+import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
+import {fetchPercentageOfCreatedTicketsMetricPerChannel} from 'hooks/reporting/usePercentageOfCreatedTicketsMetricPerChannel'
+import {Channel} from 'models/channel/types'
+import {ReportingGranularity} from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
+import {ReportFetch} from 'pages/stats/custom-reports/types'
+import {saveReport} from 'services/reporting/channelsReportingService'
+import {ChannelsTableColumns} from 'state/ui/stats/types'
+
+export const CHANNELS_REPORT_FILE_NAME = 'channels-metrics'
+
+export type ChannelsReportDataPoints =
+    | 'closedTicketsMetricPerChannel'
+    | 'createdTicketsMetricPerChannel'
+    | 'customerSatisfactionMetricPerChannel'
+    | 'medianFirstResponseTimeMetricPerChannel'
+    | 'medianResolutionTimeMetricPerChannel'
+    | 'messagesSentMetricPerChannel'
+    | 'percentageOfCreatedTicketsMetricPerChannel'
+    | 'ticketAverageHandleTimePerChannel'
+    | 'ticketsRepliedMetricPerChannel'
+
+export type ChannelsReportData = Record<
+    ChannelsReportDataPoints,
+    MetricWithDecile
+>
+export const ChannelsMetricsDataSources: TableDataSources<ChannelsReportData> =
+    [
+        {
+            fetchData: fetchClosedTicketsMetricPerChannel,
+            title: 'closedTicketsMetricPerChannel',
+        },
+        {
+            fetchData: fetchCreatedTicketsMetricPerChannel,
+            title: 'createdTicketsMetricPerChannel',
+        },
+        {
+            fetchData: fetchCustomerSatisfactionMetricPerChannel,
+            title: 'customerSatisfactionMetricPerChannel',
+        },
+        {
+            fetchData: fetchMedianResolutionTimeMetricPerChannel,
+            title: 'medianFirstResponseTimeMetricPerChannel',
+        },
+        {
+            fetchData: fetchMedianResolutionTimeMetricPerChannel,
+            title: 'medianResolutionTimeMetricPerChannel',
+        },
+        {
+            fetchData: fetchMessagesSentMetricPerChannel,
+            title: 'messagesSentMetricPerChannel',
+        },
+        {
+            fetchData: fetchPercentageOfCreatedTicketsMetricPerChannel,
+            title: 'percentageOfCreatedTicketsMetricPerChannel',
+        },
+        {
+            fetchData: fetchTicketAverageHandleTimePerChannel,
+            title: 'ticketAverageHandleTimePerChannel',
+        },
+        {
+            fetchData: fetchTicketsRepliedMetricPerChannel,
+            title: 'ticketsRepliedMetricPerChannel',
+        },
+    ]
 
 export const useChannelsReportMetrics = () => {
     const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
-
+    const {columnsOrder} = useChannelsTableSetting()
     const {sortedChannels: channels, isLoading} = useSortedChannels()
 
-    const createdTicketsMetricPerChannel = useCreatedTicketsMetricPerChannel(
-        cleanStatsFilters,
-        userTimezone
-    )
-    const percentageOfCreatedTicketsMetricPerChannel =
-        usePercentageOfCreatedTicketsMetricPerChannel(
-            cleanStatsFilters,
-            userTimezone
-        )
-    const closedTicketsMetricPerChannel = useClosedTicketsMetricPerChannel(
-        cleanStatsFilters,
-        userTimezone
-    )
-    const ticketAverageHandleTimePerChannel =
-        useTicketAverageHandleTimePerChannel(cleanStatsFilters, userTimezone)
-    const medianFirstResponseTimeMetricPerChannel =
-        useMedianFirstResponseTimeMetricPerChannel(
-            cleanStatsFilters,
-            userTimezone
-        )
-    const medianResolutionTimeMetricPerChannel =
-        useMedianResolutionTimeMetricPerChannel(cleanStatsFilters, userTimezone)
-    const ticketsRepliedMetricPerChannel = useTicketsRepliedMetricPerChannel(
-        cleanStatsFilters,
-        userTimezone
-    )
-    const messagesSentMetricPerChannel = useMessagesSentMetricPerChannel(
-        cleanStatsFilters,
-        userTimezone
-    )
-    const customerSatisfactionMetricPerChannel =
-        useCustomerSatisfactionMetricPerChannel(cleanStatsFilters, userTimezone)
+    const {data: reportData, isFetching} = useTableReportData<
+        keyof ChannelsReportData,
+        MetricWithDecile
+    >(cleanStatsFilters, userTimezone, ChannelsMetricsDataSources)
 
-    const loading = useMemo(() => {
-        return Object.values({
-            createdTicketsMetricPerChannel,
-            percentageOfCreatedTicketsMetricPerChannel,
-            closedTicketsMetricPerChannel,
-            ticketAverageHandleTimePerChannel,
-            medianFirstResponseTimeMetricPerChannel,
-            medianResolutionTimeMetricPerChannel,
-            ticketsRepliedMetricPerChannel,
-            messagesSentMetricPerChannel,
-            customerSatisfactionMetricPerChannel,
-        }).some((metric) => metric.isFetching)
-    }, [
-        closedTicketsMetricPerChannel,
-        createdTicketsMetricPerChannel,
-        customerSatisfactionMetricPerChannel,
-        medianFirstResponseTimeMetricPerChannel,
-        medianResolutionTimeMetricPerChannel,
-        messagesSentMetricPerChannel,
-        percentageOfCreatedTicketsMetricPerChannel,
-        ticketAverageHandleTimePerChannel,
-        ticketsRepliedMetricPerChannel,
-    ])
+    const fileName = getCsvFileNameWithDates(
+        cleanStatsFilters.period,
+        CHANNELS_REPORT_FILE_NAME
+    )
+
+    const {files} = saveReport(channels, reportData, columnsOrder, fileName)
 
     return {
-        reportData: {
-            channels,
-            createdTicketsMetricPerChannel,
-            percentageOfCreatedTicketsMetricPerChannel,
-            closedTicketsMetricPerChannel,
-            ticketAverageHandleTimePerChannel,
-            medianFirstResponseTimeMetricPerChannel,
-            medianResolutionTimeMetricPerChannel,
-            ticketsRepliedMetricPerChannel,
-            messagesSentMetricPerChannel,
-            customerSatisfactionMetricPerChannel,
-        },
-        isLoading: loading || isLoading,
-        period: cleanStatsFilters.period,
+        files,
+        fileName,
+        reportData,
+        channels,
+        isLoading: isLoading || isFetching,
     }
+}
+
+export const fetchChannelsTableReportData: ReportFetch = async (
+    cleanStatsFilters: StatsFilters,
+    userTimezone: string,
+    granularity: ReportingGranularity,
+    context: {
+        channels: Channel[]
+        channelColumnsOrder: ChannelsTableColumns[]
+    }
+) => {
+    const metricConfig = ChannelsMetricsDataSources
+    const fileName = getCsvFileNameWithDates(
+        cleanStatsFilters.period,
+        CHANNELS_REPORT_FILE_NAME
+    )
+    return Promise.all([
+        fetchTableReportData(cleanStatsFilters, userTimezone, metricConfig),
+    ])
+        .then(([metrics]) => {
+            return {
+                isLoading: false,
+                isError: false,
+                ...saveReport(
+                    context.channels,
+                    metrics.data,
+                    context.channelColumnsOrder,
+                    fileName
+                ),
+                fileName,
+            }
+        })
+        .catch(() => ({isLoading: false, isError: true, files: {}, fileName}))
 }

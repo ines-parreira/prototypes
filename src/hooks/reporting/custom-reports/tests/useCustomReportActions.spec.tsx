@@ -105,8 +105,7 @@ const updateMutationMock = jest.fn() as jest.MockedFunction<
     UseMutateFunction<
         HttpResponse<AnalyticsCustomReport>,
         unknown,
-        {id: number; data: CreateAnalyticsCustomReportBody},
-        unknown
+        {id: number; data: CreateAnalyticsCustomReportBody}
     >
 >
 
@@ -135,19 +134,13 @@ describe('useCustomReportActions', () => {
         } as UseMutationResult<
             HttpResponse<AnalyticsCustomReport>,
             unknown,
-            {data: CreateAnalyticsCustomReportBody},
-            unknown
+            {data: CreateAnalyticsCustomReportBody}
         >)
 
         useDeleteAnalyticsCustomReportMock.mockReturnValue({
             ...baseMutationResult,
             mutate: deleteMutateMock,
-        } as UseMutationResult<
-            HttpResponse<void>,
-            unknown,
-            {id: number},
-            unknown
-        >)
+        } as UseMutationResult<HttpResponse<void>, unknown, {id: number}>)
 
         useListAnalyticsCustomReportsMock.mockReturnValue({
             queryKey: invalidationKeys,

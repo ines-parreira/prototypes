@@ -1,5 +1,10 @@
+import {fetchChannelsTableReportData} from 'hooks/reporting/useChannelsReportMetrics'
 import {FilterKey} from 'models/stat/types'
-import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
+import {
+    ChartType,
+    DataExportFormat,
+    ReportConfig,
+} from 'pages/stats/custom-reports/types'
 import {
     CHANNEL_PERFORMANCE_TABLE_TITLE,
     ChannelsPerformanceTableChart,
@@ -26,7 +31,12 @@ export const ChannelsReportConfig: ReportConfig<ChannelsChart> = {
         [ChannelsChart.ChannelsPerformanceTable]: {
             chartComponent: ChannelsPerformanceTableChart,
             label: CHANNEL_PERFORMANCE_TABLE_TITLE,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Table,
+                    fetch: fetchChannelsTableReportData,
+                },
+            ],
             description:
                 'Selected metrics broken by channel (e.g Closed tickets, CSAT, FRT, Ticket Handle Time...)',
             chartType: ChartType.Table,

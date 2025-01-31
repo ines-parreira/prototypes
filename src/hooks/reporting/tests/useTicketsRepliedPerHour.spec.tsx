@@ -5,10 +5,15 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {
+    fetchOnlineTimeMetric,
+    fetchTicketsRepliedMetric,
     useOnlineTimeMetric,
     useTicketsRepliedMetric,
 } from 'hooks/reporting/metrics'
-import {useTicketsRepliedPerHour} from 'hooks/reporting/useTicketsRepliedPerHour'
+import {
+    fetchTicketsRepliedPerHour,
+    useTicketsRepliedPerHour,
+} from 'hooks/reporting/useTicketsRepliedPerHour'
 
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
@@ -18,10 +23,12 @@ import {assumeMock} from 'utils/testing'
 jest.mock('hooks/reporting/metrics')
 const useTicketsRepliedMetricMock = assumeMock(useTicketsRepliedMetric)
 const useOnlineTimeMock = assumeMock(useOnlineTimeMetric)
+const fetchTicketsRepliedMetricMock = assumeMock(fetchTicketsRepliedMetric)
+const fetchOnlineTimeMetricMock = assumeMock(fetchOnlineTimeMetric)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-describe('useTicketsRepliedPerHour.ts', () => {
+describe('TicketsRepliedPerHour', () => {
     const statsFilters = {
         period: {
             start_datetime: '2021-05-29T00:00:00+02:00',
@@ -43,14 +50,14 @@ describe('useTicketsRepliedPerHour.ts', () => {
     const timeZone = 'UTC'
     const ticketsClosed = 50
     const onlineTimeValue = 60 * 60 * 4
-    const useTicketsRepliedMetricReturnValue = {
+    const ticketsRepliedMetricReturnValue = {
         data: {
             value: ticketsClosed,
         },
         isFetching: false,
         isError: false,
     }
-    const useOnlineTimeReturnValue = {
+    const onlineTimeReturnValue = {
         data: {
             value: onlineTimeValue,
         },
@@ -58,120 +65,243 @@ describe('useTicketsRepliedPerHour.ts', () => {
         isError: false,
     }
 
-    beforeEach(() => {
-        useTicketsRepliedMetricMock.mockReturnValue(
-            useTicketsRepliedMetricReturnValue
-        )
-        useOnlineTimeMock.mockReturnValue(useOnlineTimeReturnValue)
-    })
-
-    it('should calculate the metric from messages sent and online time', () => {
-        const {result} = renderHook(
-            () => useTicketsRepliedPerHour(statsFilters, timeZone),
-            {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
-            }
-        )
-
-        expect(result.current).toEqual({
-            data: {
-                value: 12.5,
-            },
-            isError: false,
-            isFetching: false,
-        })
-    })
-
-    it('should strip the statsFilters to period and agents only', () => {
-        renderHook(() => useTicketsRepliedPerHour(statsFilters, timeZone), {
-            wrapper: ({children}) => (
-                <Provider store={mockStore(defaultState)}>{children}</Provider>
-            ),
+    describe('useTicketsRepliedPerHour.ts', () => {
+        beforeEach(() => {
+            useTicketsRepliedMetricMock.mockReturnValue(
+                ticketsRepliedMetricReturnValue
+            )
+            useOnlineTimeMock.mockReturnValue(onlineTimeReturnValue)
         })
 
-        expect(useTicketsRepliedMetricMock).toHaveBeenCalledWith(
-            {
-                period: statsFilters.period,
-                agents: statsFilters.agents,
-            },
-            timeZone
-        )
-        expect(useOnlineTimeMock).toHaveBeenCalledWith(
-            {
-                period: statsFilters.period,
-                agents: statsFilters.agents,
-            },
-            timeZone
-        )
-    })
+        it('should calculate the metric from messages sent and online time', () => {
+            const {result} = renderHook(
+                () => useTicketsRepliedPerHour(statsFilters, timeZone),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(defaultState)}>
+                            {children}
+                        </Provider>
+                    ),
+                }
+            )
 
-    it('should strip the statsFilters to period and no agents', () => {
-        const statsFiltersWithoutAgents = {
-            period: statsFilters.period,
-        }
-        const state = {
-            stats: {filters: statsFiltersWithoutAgents},
-            ui: {
-                stats: {
-                    filters: uiStatsInitialState,
+            expect(result.current).toEqual({
+                data: {
+                    value: 12.5,
                 },
-            },
-        } as RootState
-
-        renderHook(
-            () => useTicketsRepliedPerHour(statsFiltersWithoutAgents, timeZone),
-            {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(state)}>{children}</Provider>
-                ),
-            }
-        )
-
-        expect(useTicketsRepliedMetricMock).toHaveBeenCalledWith(
-            {
-                period: statsFilters.period,
-            },
-            timeZone
-        )
-        expect(useOnlineTimeMock).toHaveBeenCalledWith(
-            {
-                period: statsFilters.period,
-            },
-            timeZone
-        )
-    })
-
-    it('should return empty data when no data', () => {
-        useTicketsRepliedMetricMock.mockReturnValue({
-            ...useTicketsRepliedMetricReturnValue,
-            data: undefined,
-        })
-        useOnlineTimeMock.mockReturnValue({
-            ...useOnlineTimeReturnValue,
-            data: undefined,
+                isError: false,
+                isFetching: false,
+            })
         })
 
-        const {result} = renderHook(
-            () => useTicketsRepliedPerHour(statsFilters, timeZone),
-            {
+        it('should strip the statsFilters to period and agents only', () => {
+            renderHook(() => useTicketsRepliedPerHour(statsFilters, timeZone), {
                 wrapper: ({children}) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
-        )
+            })
 
-        expect(result.current).toEqual({
-            data: {
-                value: null,
-            },
-            isError: false,
-            isFetching: false,
+            expect(useTicketsRepliedMetricMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                    agents: statsFilters.agents,
+                },
+                timeZone
+            )
+            expect(useOnlineTimeMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                    agents: statsFilters.agents,
+                },
+                timeZone
+            )
+        })
+
+        it('should strip the statsFilters to period and no agents', () => {
+            const statsFiltersWithoutAgents = {
+                period: statsFilters.period,
+            }
+            const state = {
+                stats: {filters: statsFiltersWithoutAgents},
+                ui: {
+                    stats: {
+                        filters: uiStatsInitialState,
+                    },
+                },
+            } as RootState
+
+            renderHook(
+                () =>
+                    useTicketsRepliedPerHour(
+                        statsFiltersWithoutAgents,
+                        timeZone
+                    ),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(state)}>{children}</Provider>
+                    ),
+                }
+            )
+
+            expect(useTicketsRepliedMetricMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                },
+                timeZone
+            )
+            expect(useOnlineTimeMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                },
+                timeZone
+            )
+        })
+
+        it('should return empty data when no data', () => {
+            useTicketsRepliedMetricMock.mockReturnValue({
+                ...ticketsRepliedMetricReturnValue,
+                data: undefined,
+            })
+            useOnlineTimeMock.mockReturnValue({
+                ...onlineTimeReturnValue,
+                data: undefined,
+            })
+
+            const {result} = renderHook(
+                () => useTicketsRepliedPerHour(statsFilters, timeZone),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(defaultState)}>
+                            {children}
+                        </Provider>
+                    ),
+                }
+            )
+
+            expect(result.current).toEqual({
+                data: {
+                    value: null,
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
+    })
+
+    describe('fetchTicketsRepliedPerHour.ts', () => {
+        beforeEach(() => {
+            fetchTicketsRepliedMetricMock.mockResolvedValue(
+                ticketsRepliedMetricReturnValue
+            )
+            fetchOnlineTimeMetricMock.mockResolvedValue(onlineTimeReturnValue)
+        })
+
+        it('should calculate the metric from messages sent and online time', async () => {
+            const result = await fetchTicketsRepliedPerHour(
+                statsFilters,
+                timeZone
+            )
+
+            expect(result).toEqual({
+                data: {
+                    value: 12.5,
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
+
+        it('should strip the statsFilters to period and agents only', async () => {
+            await fetchTicketsRepliedPerHour(statsFilters, timeZone)
+
+            expect(fetchTicketsRepliedMetricMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                    agents: statsFilters.agents,
+                },
+                timeZone
+            )
+            expect(fetchOnlineTimeMetricMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                    agents: statsFilters.agents,
+                },
+                timeZone
+            )
+        })
+
+        it('should strip the statsFilters to period and no agents', async () => {
+            const statsFiltersWithoutAgents = {
+                period: statsFilters.period,
+            }
+
+            await fetchTicketsRepliedPerHour(
+                statsFiltersWithoutAgents,
+                timeZone
+            )
+
+            expect(fetchTicketsRepliedMetricMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                },
+                timeZone
+            )
+            expect(fetchOnlineTimeMetricMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                },
+                timeZone
+            )
+        })
+
+        it('should return empty data when no data', async () => {
+            fetchTicketsRepliedMetricMock.mockResolvedValue({
+                ...ticketsRepliedMetricReturnValue,
+                data: undefined,
+            })
+            fetchOnlineTimeMetricMock.mockResolvedValue({
+                ...onlineTimeReturnValue,
+                data: undefined,
+            })
+
+            const result = await fetchTicketsRepliedPerHour(
+                statsFilters,
+                timeZone
+            )
+
+            expect(result).toEqual({
+                data: {
+                    value: null,
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
+
+        it('should return empty data on error', async () => {
+            fetchTicketsRepliedMetricMock.mockRejectedValue({
+                ...ticketsRepliedMetricReturnValue,
+                data: undefined,
+            })
+            fetchOnlineTimeMetricMock.mockResolvedValue({
+                ...onlineTimeReturnValue,
+                data: undefined,
+            })
+
+            const result = await fetchTicketsRepliedPerHour(
+                statsFilters,
+                timeZone
+            )
+
+            expect(result).toEqual({
+                data: {
+                    value: null,
+                },
+                isError: true,
+                isFetching: false,
+            })
         })
     })
 })

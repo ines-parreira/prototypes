@@ -1,10 +1,12 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
+import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerCustomField'
+
 import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
 import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
 import {Cubes} from 'models/reporting/cubes'
@@ -20,7 +22,7 @@ import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 
-jest.mock('hooks/reporting/metricsPerAgent')
+jest.mock('hooks/reporting/metricsPerCustomField')
 const useCustomFieldsTicketCountMock = assumeMock(useCustomFieldsTicketCount)
 
 const transformData = (

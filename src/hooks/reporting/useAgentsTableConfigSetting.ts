@@ -1,3 +1,5 @@
+import {useMemo} from 'react'
+
 import {useTableConfigSetting} from 'hooks/reporting/useTableConfigSetting'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -76,13 +78,16 @@ export const useAgentsTableConfigSetting = () => {
         )
     }
 
+    const columnsOrder = useMemo(() => {
+        return currentView.metrics
+            .filter((metric) => metric.visibility !== false)
+            .map((metric) => metric.id)
+    }, [currentView])
+
     return {
         settings: currentSettings,
         currentView,
-        columnsOrder:
-            currentView?.metrics
-                .filter((metric) => metric.visibility !== false)
-                .map((metric) => metric.id) || [],
+        columnsOrder,
         submitActiveView,
     }
 }

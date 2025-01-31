@@ -5,8 +5,6 @@ import {TicketChannel} from 'business/types/ticket'
 import {
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
-    useCustomFieldsTicketCount,
-    useCustomTicketFieldWithBreakdown,
     useMedianFirstResponseTimeMetricPerAgent,
     useMessagesSentMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
@@ -14,10 +12,19 @@ import {
     useOneTouchTicketsMetricPerAgent,
     useOnlineTimePerAgent,
     useTicketAverageHandleTimePerAgent,
+    fetchOneTouchTicketsMetricPerAgent,
+    fetchTicketAverageHandleTimePerAgent,
+    fetchOnlineTimePerAgent,
+    fetchCustomerSatisfactionMetricPerAgent,
+    fetchMedianResolutionTimeMetricPerAgent,
+    fetchMessagesSentMetricPerAgent,
+    fetchClosedTicketsMetricPerAgent,
+    fetchTicketsRepliedMetricPerAgent,
+    fetchMedianFirstResponseTimeMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
 import {
+    fetchMetricPerDimension,
     useMetricPerDimension,
-    useMetricPerDimensionWithBreakdown,
 } from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {onlineTimePerAgentQueryFactory} from 'models/reporting/queryFactories/agentxp/onlineTime'
@@ -29,19 +36,14 @@ import {medianResolutionTimeMetricPerAgentQueryFactory} from 'models/reporting/q
 import {messagesSentMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {oneTouchTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import {ticketsRepliedMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
-import {customFieldsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 
 import {LegacyStatsFilters} from 'models/stat/types'
 
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
-jest.mock('models/reporting/queryFactories/ticket-insights/tagsTicketCount')
-
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
-const useCustomTicketFieldWithBreakdownMock = assumeMock(
-    useMetricPerDimensionWithBreakdown
-)
+const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
 
 describe('metricsPerAgent', () => {
     const periodStart = moment()
@@ -58,265 +60,125 @@ describe('metricsPerAgent', () => {
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
     const agentId = '2'
-    const customFieldId = '1'
 
-    describe('useMedianFirstResponseTimeMetricPerAgent', () => {
-        it('should pass the query to useMetricPerDimension hook', () => {
-            renderHook(
-                () =>
-                    useMedianFirstResponseTimeMetricPerAgent(
-                        statsFilters,
-                        timezone,
-                        sorting,
-                        agentId
-                    ),
-                {}
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                medianFirstResponseTimeMetricPerAgentQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting
-                ),
-                agentId
-            )
-        })
-    })
-
-    describe('useTicketsRepliedMetricPerAgent', () => {
-        it('should pass the query to useMetricPerDimension hook', () => {
-            renderHook(
-                () =>
-                    useTicketsRepliedMetricPerAgent(
-                        statsFilters,
-                        timezone,
-                        sorting,
-                        agentId
-                    ),
-                {}
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                ticketsRepliedMetricPerAgentQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting
-                ),
-                agentId
-            )
-        })
-    })
-
-    describe('useClosedTicketsMetricPerAgent', () => {
-        it('should pass the query to useMetricPerDimension hook', () => {
-            renderHook(
-                () =>
-                    useClosedTicketsMetricPerAgent(
-                        statsFilters,
-                        timezone,
-                        sorting,
-                        agentId
-                    ),
-                {}
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                closedTicketsPerAgentQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting
-                ),
-                agentId
-            )
-        })
-    })
-
-    describe('useMessagesSentMetricPerAgent', () => {
-        it('should pass the query to useMetricPerDimension hook', () => {
-            renderHook(
-                () =>
-                    useMessagesSentMetricPerAgent(
-                        statsFilters,
-                        timezone,
-                        sorting,
-                        agentId
-                    ),
-                {}
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                messagesSentMetricPerAgentQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting
-                ),
-                agentId
-            )
-        })
-    })
-
-    describe('useMedianResolutionTimeMetricPerAgent', () => {
-        it('should pass the query to useMetricPerDimension hook', () => {
-            renderHook(
-                () =>
-                    useMedianResolutionTimeMetricPerAgent(
-                        statsFilters,
-                        timezone,
-                        sorting,
-                        agentId
-                    ),
-                {}
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                medianResolutionTimeMetricPerAgentQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting
-                ),
-                agentId
-            )
-        })
-    })
-
-    describe('useCustomerSatisfactionMetricPerAgent', () => {
-        it('should pass the query to useMetricPerDimension hook', () => {
-            renderHook(
-                () =>
-                    useCustomerSatisfactionMetricPerAgent(
-                        statsFilters,
-                        timezone,
-                        sorting,
-                        agentId
-                    ),
-                {}
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                customerSatisfactionMetricPerAgentQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting
-                ),
-                agentId
-            )
-        })
-    })
-
-    describe('useCustomFieldsTicketCount', () => {
-        it('should pass the query to useMetricPerDimension hook', () => {
-            renderHook(
-                () =>
-                    useCustomFieldsTicketCount(
-                        statsFilters,
-                        timezone,
-                        customFieldId,
-                        sorting
-                    ),
-                {}
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                customFieldsTicketCountQueryFactory(
-                    statsFilters,
-                    timezone,
-                    customFieldId,
-                    sorting
+    describe('metricsPerAgent', () => {
+        it.each([
+            [
+                'useMedianFirstResponseTimeMetricPerAgent',
+                useMedianFirstResponseTimeMetricPerAgent,
+                medianFirstResponseTimeMetricPerAgentQueryFactory,
+            ],
+            [
+                'useTicketsRepliedMetricPerAgent',
+                useTicketsRepliedMetricPerAgent,
+                ticketsRepliedMetricPerAgentQueryFactory,
+            ],
+            [
+                'useClosedTicketsMetricPerAgent',
+                useClosedTicketsMetricPerAgent,
+                closedTicketsPerAgentQueryFactory,
+            ],
+            [
+                'useMessagesSentMetricPerAgent',
+                useMessagesSentMetricPerAgent,
+                messagesSentMetricPerAgentQueryFactory,
+            ],
+            [
+                'useMedianResolutionTimeMetricPerAgent',
+                useMedianResolutionTimeMetricPerAgent,
+                medianResolutionTimeMetricPerAgentQueryFactory,
+            ],
+            [
+                'useCustomerSatisfactionMetricPerAgent',
+                useCustomerSatisfactionMetricPerAgent,
+                customerSatisfactionMetricPerAgentQueryFactory,
+            ],
+            [
+                'useOnlineTimePerAgent',
+                useOnlineTimePerAgent,
+                onlineTimePerAgentQueryFactory,
+            ],
+            [
+                'useTicketAverageHandleTimePerAgent',
+                useTicketAverageHandleTimePerAgent,
+                ticketAverageHandleTimePerAgentQueryFactory,
+            ],
+            [
+                'useOneTouchTicketsMetricPerAgent',
+                useOneTouchTicketsMetricPerAgent,
+                oneTouchTicketsPerAgentQueryFactory,
+            ],
+        ])(
+            '%s should pass the query to useMetricPerDimension hook',
+            (_, useFn, queryFactory) => {
+                renderHook(
+                    () => useFn(statsFilters, timezone, sorting, agentId),
+                    {}
                 )
-            )
-        })
-    })
 
-    describe('useCustomFieldsTicketCountWithBreakdown', () => {
-        it('should pass the query to useCustomTicketFieldWithBreakdown hook', () => {
-            renderHook(
-                () =>
-                    useCustomTicketFieldWithBreakdown(
-                        statsFilters,
-                        timezone,
-                        customFieldId,
-                        sorting
-                    ),
-                {}
-            )
-
-            expect(useCustomTicketFieldWithBreakdownMock).toHaveBeenCalledWith(
-                customFieldsTicketCountQueryFactory(
-                    statsFilters,
-                    timezone,
-                    customFieldId,
-                    sorting
+                expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                    queryFactory(statsFilters, timezone, sorting),
+                    agentId
                 )
-            )
-        })
-    })
+            }
+        )
 
-    describe('useOneTouchTicketsMetricPerAgent', () => {
-        it('should pass the query to useMetricPerDimension hook', () => {
-            renderHook(
-                () =>
-                    useOneTouchTicketsMetricPerAgent(
-                        statsFilters,
-                        timezone,
-                        sorting,
-                        agentId
-                    ),
-                {}
-            )
+        it.each([
+            [
+                'fetchMedianFirstResponseTimeMetricPerAgent',
+                fetchMedianFirstResponseTimeMetricPerAgent,
+                medianFirstResponseTimeMetricPerAgentQueryFactory,
+            ],
+            [
+                'fetchTicketsRepliedMetricPerAgent',
+                fetchTicketsRepliedMetricPerAgent,
+                ticketsRepliedMetricPerAgentQueryFactory,
+            ],
+            [
+                'fetchClosedTicketsMetricPerAgent',
+                fetchClosedTicketsMetricPerAgent,
+                closedTicketsPerAgentQueryFactory,
+            ],
+            [
+                'fetchMessagesSentMetricPerAgent',
+                fetchMessagesSentMetricPerAgent,
+                messagesSentMetricPerAgentQueryFactory,
+            ],
+            [
+                'fetchMedianResolutionTimeMetricPerAgent',
+                fetchMedianResolutionTimeMetricPerAgent,
+                medianResolutionTimeMetricPerAgentQueryFactory,
+            ],
+            [
+                'fetchCustomerSatisfactionMetricPerAgent',
+                fetchCustomerSatisfactionMetricPerAgent,
+                customerSatisfactionMetricPerAgentQueryFactory,
+            ],
+            [
+                'fetchOnlineTimePerAgent',
+                fetchOnlineTimePerAgent,
+                onlineTimePerAgentQueryFactory,
+            ],
+            [
+                'fetchTicketAverageHandleTimePerAgent',
+                fetchTicketAverageHandleTimePerAgent,
+                ticketAverageHandleTimePerAgentQueryFactory,
+            ],
+            [
+                'fetchOneTouchTicketsMetricPerAgent',
+                fetchOneTouchTicketsMetricPerAgent,
+                oneTouchTicketsPerAgentQueryFactory,
+            ],
+        ])(
+            '%s should pass the query to useMetricPerDimension hook',
+            async (_, fetchFn, queryFactory) => {
+                await fetchFn(statsFilters, timezone, sorting, agentId)
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                oneTouchTicketsPerAgentQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting
-                ),
-                agentId
-            )
-        })
-    })
-
-    describe('useOnlineTimePerAgent', () => {
-        it('should pass the query to useMetricPerDimension hook with agentId', () => {
-            renderHook(
-                () =>
-                    useOnlineTimePerAgent(
-                        statsFilters,
-                        timezone,
-                        sorting,
-                        agentId
-                    ),
-                {}
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                onlineTimePerAgentQueryFactory(statsFilters, timezone, sorting),
-                agentId
-            )
-        })
-    })
-
-    describe('useTicketAverageHandleTimePerAgent', () => {
-        it('should pass the query to useMetricPerDimension hook with agentId', () => {
-            renderHook(
-                () =>
-                    useTicketAverageHandleTimePerAgent(
-                        statsFilters,
-                        timezone,
-                        sorting,
-                        agentId
-                    ),
-                {}
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                ticketAverageHandleTimePerAgentQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting
-                ),
-                agentId
-            )
-        })
+                expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+                    queryFactory(statsFilters, timezone, sorting),
+                    agentId
+                )
+            }
+        )
     })
 })

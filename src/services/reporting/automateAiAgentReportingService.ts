@@ -1,5 +1,6 @@
 import moment from 'moment/moment'
 
+import {User} from 'config/types/user'
 import {Metric} from 'hooks/reporting/metrics'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {OrderDirection} from 'models/api/types'
@@ -22,6 +23,7 @@ export const AI_AGENT_AUTOMATED_TICKETS_FILENAME = 'ai-agent-automated-tickets'
 export const AI_AGENT_METRICS_FILENAME = 'ai-agent-metrics'
 
 export const saveReport = async (
+    agents: User[],
     period: Period,
     performance: {
         data: AgentsPerformanceReportData
@@ -42,6 +44,7 @@ export const saveReport = async (
     }
 ) => {
     const performanceData = getPerformanceData(
+        agents,
         performance.data,
         performance.summary,
         performance.columnsOrder

@@ -1,10 +1,12 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
+import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerCustomField'
+
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {useTicketsFieldTrend} from 'hooks/reporting/useTicketsFieldTrend'
 import {
@@ -24,7 +26,7 @@ jest.mock('hooks/reporting/timeSeries')
 const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
     useCustomFieldsTicketCountTimeSeries
 )
-jest.mock('hooks/reporting/metricsPerAgent')
+jest.mock('hooks/reporting/metricsPerCustomField')
 const useCustomFieldsTicketCountMock = assumeMock(useCustomFieldsTicketCount)
 
 describe('useTicketsFieldTrend', () => {

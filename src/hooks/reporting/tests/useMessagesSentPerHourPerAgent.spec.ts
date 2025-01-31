@@ -2,10 +2,15 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import {User} from 'config/types/user'
 import {
+    fetchMessagesSentMetricPerAgent,
+    fetchOnlineTimePerAgent,
     useMessagesSentMetricPerAgent,
     useOnlineTimePerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import {useMessagesSentPerHourPerAgent} from 'hooks/reporting/useMessagesSentPerHourPerAgent'
+import {
+    fetchMessagesSentPerHourPerAgent,
+    useMessagesSentPerHourPerAgent,
+} from 'hooks/reporting/useMessagesSentPerHourPerAgent'
 import {
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
@@ -21,8 +26,12 @@ const useMessagesSentMetricPerAgentMock = assumeMock(
     useMessagesSentMetricPerAgent
 )
 const useOnlineTimePerAgentMock = assumeMock(useOnlineTimePerAgent)
+const fetchMessagesSentMetricPerAgentMock = assumeMock(
+    fetchMessagesSentMetricPerAgent
+)
+const fetchOnlineTimePerAgentMock = assumeMock(fetchOnlineTimePerAgent)
 
-describe('useMessagesSentPerHourPerAgent.ts', () => {
+describe('MessagesSentPerAgent', () => {
     const statsFilters = {
         period: {
             start_datetime: '2021-05-29T00:00:00+02:00',
@@ -70,104 +79,119 @@ describe('useMessagesSentPerHourPerAgent.ts', () => {
         isError: false,
     }
 
-    beforeEach(() => {
-        useMessagesSentMetricPerAgentMock.mockReturnValue(
-            useMessagesSentMetricPerAgentReturnValue
-        )
-        useOnlineTimePerAgentMock.mockReturnValue(
-            useOnlineTimePerAgentReturnValue
-        )
-    })
-
-    it('should calculate the metric from messages sent and online time', () => {
-        const {result} = renderHook(() =>
-            useMessagesSentPerHourPerAgent(
-                statsFilters,
-                timeZone,
-                undefined,
-                String(agent.id)
+    describe('useMessagesSentPerHourPerAgent', () => {
+        beforeEach(() => {
+            useMessagesSentMetricPerAgentMock.mockReturnValue(
+                useMessagesSentMetricPerAgentReturnValue
             )
-        )
-
-        expect(result.current).toEqual({
-            data: {
-                allData: [
-                    {
-                        [HelpdeskMessageMeasure.MessageCount]: String(
-                            messagesSentValue / (onlineTimeValue / 60 / 60)
-                        ),
-                        [HelpdeskMessageDimension.SenderId]: String(agent.id),
-                    },
-                ],
-                decile: 9,
-                value: 12.5,
-            },
-            isError: false,
-            isFetching: false,
+            useOnlineTimePerAgentMock.mockReturnValue(
+                useOnlineTimePerAgentReturnValue
+            )
         })
-    })
 
-    it('should handle no data', () => {
-        const {result} = renderHook(() =>
-            useMessagesSentPerHourPerAgent(
-                statsFilters,
-                timeZone,
-                undefined,
-                String(agent.id)
+        it('should calculate the metric from messages sent and online time', () => {
+            const {result} = renderHook(() =>
+                useMessagesSentPerHourPerAgent(
+                    statsFilters,
+                    timeZone,
+                    undefined,
+                    String(agent.id)
+                )
             )
-        )
 
-        expect(result.current).toEqual({
-            data: {
-                allData: [
-                    {
-                        [HelpdeskMessageMeasure.MessageCount]: String(
-                            messagesSentValue / (onlineTimeValue / 60 / 60)
-                        ),
-                        [HelpdeskMessageDimension.SenderId]: String(agent.id),
-                    },
-                ],
-                decile: 9,
-                value: 12.5,
-            },
-            isError: false,
-            isFetching: false,
+            expect(result.current).toEqual({
+                data: {
+                    allData: [
+                        {
+                            [HelpdeskMessageMeasure.MessageCount]: String(
+                                messagesSentValue / (onlineTimeValue / 60 / 60)
+                            ),
+                            [HelpdeskMessageDimension.SenderId]: String(
+                                agent.id
+                            ),
+                        },
+                    ],
+                    decile: 9,
+                    value: 12.5,
+                },
+                isError: false,
+                isFetching: false,
+            })
         })
-    })
 
-    it('should strip the statsFilters to period and agents only', () => {
-        renderHook(() =>
-            useMessagesSentPerHourPerAgent(
-                statsFilters,
+        it('should handle no data', () => {
+            const {result} = renderHook(() =>
+                useMessagesSentPerHourPerAgent(
+                    statsFilters,
+                    timeZone,
+                    undefined,
+                    String(agent.id)
+                )
+            )
+
+            expect(result.current).toEqual({
+                data: {
+                    allData: [
+                        {
+                            [HelpdeskMessageMeasure.MessageCount]: String(
+                                messagesSentValue / (onlineTimeValue / 60 / 60)
+                            ),
+                            [HelpdeskMessageDimension.SenderId]: String(
+                                agent.id
+                            ),
+                        },
+                    ],
+                    decile: 9,
+                    value: 12.5,
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
+
+        it('should strip the statsFilters to period and agents only', () => {
+            renderHook(() =>
+                useMessagesSentPerHourPerAgent(
+                    statsFilters,
+                    timeZone,
+                    undefined,
+                    String(agent.id)
+                )
+            )
+
+            expect(useMessagesSentMetricPerAgentMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                    agents: statsFilters.agents,
+                },
                 timeZone,
                 undefined,
                 String(agent.id)
             )
-        )
+            expect(useOnlineTimePerAgentMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                    agents: statsFilters.agents,
+                },
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+        })
 
-        expect(useMessagesSentMetricPerAgentMock).toHaveBeenCalledWith(
-            {
-                period: statsFilters.period,
-                agents: statsFilters.agents,
-            },
-            timeZone,
-            undefined,
-            String(agent.id)
-        )
-        expect(useOnlineTimePerAgentMock).toHaveBeenCalledWith(
-            {
-                period: statsFilters.period,
-                agents: statsFilters.agents,
-            },
-            timeZone,
-            undefined,
-            String(agent.id)
-        )
-    })
+        it('should strip the statsFilters to period when no agents', () => {
+            renderHook(() =>
+                useMessagesSentPerHourPerAgent(
+                    {
+                        period: statsFilters.period,
+                    },
+                    timeZone,
+                    undefined,
+                    String(agent.id)
+                )
+            )
 
-    it('should strip the statsFilters to period when no agents', () => {
-        renderHook(() =>
-            useMessagesSentPerHourPerAgent(
+            expect(useMessagesSentMetricPerAgentMock).toHaveBeenCalledWith(
                 {
                     period: statsFilters.period,
                 },
@@ -175,53 +199,219 @@ describe('useMessagesSentPerHourPerAgent.ts', () => {
                 undefined,
                 String(agent.id)
             )
-        )
+            expect(useOnlineTimePerAgentMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                },
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+        })
 
-        expect(useMessagesSentMetricPerAgentMock).toHaveBeenCalledWith(
-            {
-                period: statsFilters.period,
-            },
-            timeZone,
-            undefined,
-            String(agent.id)
-        )
-        expect(useOnlineTimePerAgentMock).toHaveBeenCalledWith(
-            {
-                period: statsFilters.period,
-            },
-            timeZone,
-            undefined,
-            String(agent.id)
-        )
+        it('should return empty data when no data available', () => {
+            useMessagesSentMetricPerAgentMock.mockReturnValue({
+                ...useMessagesSentMetricPerAgentReturnValue,
+                data: null,
+            })
+            useOnlineTimePerAgentMock.mockReturnValue({
+                ...useOnlineTimePerAgentReturnValue,
+                data: null,
+            })
+
+            const {result} = renderHook(() =>
+                useMessagesSentPerHourPerAgent(
+                    statsFilters,
+                    timeZone,
+                    undefined,
+                    String(agent.id)
+                )
+            )
+
+            expect(result.current).toEqual({
+                data: {
+                    allData: [],
+                    decile: -0,
+                    value: null,
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
     })
 
-    it('should return empty data when no data available', () => {
-        useMessagesSentMetricPerAgentMock.mockReturnValue({
-            ...useMessagesSentMetricPerAgentReturnValue,
-            data: null,
-        })
-        useOnlineTimePerAgentMock.mockReturnValue({
-            ...useOnlineTimePerAgentReturnValue,
-            data: null,
+    describe('fetchMessagesSentPerHourPerAgent', () => {
+        beforeEach(() => {
+            fetchMessagesSentMetricPerAgentMock.mockResolvedValue(
+                useMessagesSentMetricPerAgentReturnValue
+            )
+            fetchOnlineTimePerAgentMock.mockResolvedValue(
+                useOnlineTimePerAgentReturnValue
+            )
         })
 
-        const {result} = renderHook(() =>
-            useMessagesSentPerHourPerAgent(
+        it('should calculate the metric from messages sent and online time', async () => {
+            const result = await fetchMessagesSentPerHourPerAgent(
                 statsFilters,
                 timeZone,
                 undefined,
                 String(agent.id)
             )
-        )
 
-        expect(result.current).toEqual({
-            data: {
-                allData: [],
-                decile: -0,
-                value: null,
-            },
-            isError: false,
-            isFetching: false,
+            expect(result).toEqual({
+                data: {
+                    allData: [
+                        {
+                            [HelpdeskMessageMeasure.MessageCount]: String(
+                                messagesSentValue / (onlineTimeValue / 60 / 60)
+                            ),
+                            [HelpdeskMessageDimension.SenderId]: String(
+                                agent.id
+                            ),
+                        },
+                    ],
+                    decile: 9,
+                    value: 12.5,
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
+
+        it('should handle no data', async () => {
+            const result = await fetchMessagesSentPerHourPerAgent(
+                statsFilters,
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+
+            expect(result).toEqual({
+                data: {
+                    allData: [
+                        {
+                            [HelpdeskMessageMeasure.MessageCount]: String(
+                                messagesSentValue / (onlineTimeValue / 60 / 60)
+                            ),
+                            [HelpdeskMessageDimension.SenderId]: String(
+                                agent.id
+                            ),
+                        },
+                    ],
+                    decile: 9,
+                    value: 12.5,
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
+
+        it('should strip the statsFilters to period and agents only', async () => {
+            await fetchMessagesSentPerHourPerAgent(
+                statsFilters,
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+
+            expect(fetchMessagesSentMetricPerAgentMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                    agents: statsFilters.agents,
+                },
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+            expect(fetchOnlineTimePerAgentMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                    agents: statsFilters.agents,
+                },
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+        })
+
+        it('should strip the statsFilters to period when no agents', async () => {
+            await fetchMessagesSentPerHourPerAgent(
+                {
+                    period: statsFilters.period,
+                },
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+
+            expect(fetchMessagesSentMetricPerAgentMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                },
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+            expect(fetchOnlineTimePerAgentMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                },
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+        })
+
+        it('should return empty data when no data available', async () => {
+            fetchMessagesSentMetricPerAgentMock.mockResolvedValue({
+                ...useMessagesSentMetricPerAgentReturnValue,
+                data: null,
+            })
+            fetchOnlineTimePerAgentMock.mockResolvedValue({
+                ...useOnlineTimePerAgentReturnValue,
+                data: null,
+            })
+
+            const result = await fetchMessagesSentPerHourPerAgent(
+                statsFilters,
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+
+            expect(result).toEqual({
+                data: {
+                    allData: [],
+                    decile: -0,
+                    value: null,
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
+
+        it('should return empty data on error', async () => {
+            fetchMessagesSentMetricPerAgentMock.mockRejectedValue({
+                ...useMessagesSentMetricPerAgentReturnValue,
+                data: null,
+            })
+            fetchOnlineTimePerAgentMock.mockResolvedValue({
+                ...useOnlineTimePerAgentReturnValue,
+                data: null,
+            })
+
+            const result = await fetchMessagesSentPerHourPerAgent(
+                statsFilters,
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+
+            expect(result).toEqual({
+                data: null,
+                isError: true,
+                isFetching: false,
+            })
         })
     })
 })

@@ -1,5 +1,10 @@
+import {fetchAgentsTableReportData} from 'hooks/reporting/support-performance/agents/useDownloadAgentsPerformanceData'
 import {FilterKey, StaticFilter} from 'models/stat/types'
-import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
+import {
+    ChartType,
+    DataExportFormat,
+    ReportConfig,
+} from 'pages/stats/custom-reports/types'
 import {
     AGENT_PERFORMANCE_SECTION_TITLE,
     AgentsTableChart,
@@ -34,7 +39,12 @@ export const SupportPerformanceAgentsReportConfig: ReportConfig<AgentsChart> = {
         [AgentsChart.Table]: {
             chartComponent: AgentsTableChart,
             label: AGENT_PERFORMANCE_SECTION_TITLE,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Table,
+                    fetch: fetchAgentsTableReportData,
+                },
+            ],
             description:
                 'Selected metrics broken by agent (e.g Closed tickets, CSAT, FRT, Ticket Handle Time...)',
             chartType: ChartType.Table,

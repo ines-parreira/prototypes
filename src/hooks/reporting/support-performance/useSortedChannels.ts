@@ -50,10 +50,9 @@ export const sortChannels = (
 export const useSortedChannels = () => {
     const channelsSorting = useAppSelector(getChannelsSorting)
     const channels = getChannels()
-    const sortedChannels = useMemo(
-        () => sortChannels([...channels], channelsSorting),
-        [channels, channelsSorting]
-    )
+    const sortedChannels = useMemo(() => {
+        return sortChannels([...channels], channelsSorting)
+    }, [channels, channelsSorting])
 
     return {
         sortedChannels,

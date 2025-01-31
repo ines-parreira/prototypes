@@ -1,3 +1,4 @@
+import {useCallback, useMemo} from 'react'
 import {CombinedState} from 'redux'
 import {Selector} from 'reselect'
 
@@ -36,43 +37,52 @@ export const useTableConfigSetting = <T extends TableColumnSet>(
 ) => {
     const dispatch = useAppDispatch()
     const tableConfig = useAppSelector(tableSettingSelector)
-    const currentView =
-        getActiveViewFromTableSetting(tableConfig) || fallbackView
 
-    const currentViewColumnsInOrder = currentView.metrics
-        .map((metric) => metric.id)
-        .filter((column) => columnsOrder.includes(column))
-    const columnsMissingInSettings = columnsOrder.filter(
-        (column) => !currentViewColumnsInOrder.includes(column)
+    const submitActiveView = useCallback(
+        async (activeView: TableView<T>) => {
+            await dispatch(submitActiveViewAction(activeView))
+        },
+        [dispatch, submitActiveViewAction]
     )
-    const columnsInOrder = [
-        ...currentViewColumnsInOrder,
-        ...columnsMissingInSettings,
-    ]
 
-    currentView.metrics = columnsInOrder.map((metric) => {
-        const savedSetting = currentView.metrics.find(
-            (entry) => entry.id === metric
+    const response = useMemo(() => {
+        const currentView =
+            getActiveViewFromTableSetting(tableConfig) || fallbackView
+        const currentViewColumnsInOrder = currentView.metrics
+            .map((metric) => metric.id)
+            .filter((column) => columnsOrder.includes(column))
+        const columnsMissingInSettings = columnsOrder.filter(
+            (column) => !currentViewColumnsInOrder.includes(column)
         )
+
+        const columnsInOrder = [
+            ...currentViewColumnsInOrder,
+            ...columnsMissingInSettings,
+        ]
+
+        currentView.metrics = columnsInOrder.map((metric) => {
+            const savedSetting = currentView.metrics.find(
+                (entry) => entry.id === metric
+            )
+            return {
+                id: metric,
+                visibility:
+                    savedSetting?.visibility !== undefined
+                        ? savedSetting?.visibility
+                        : null,
+            }
+        })
+
+        const filteredColumnsOrder = currentView?.metrics
+            .filter((metric) => metric.visibility !== false)
+            .map((metric) => metric.id)
+
         return {
-            id: metric,
-            visibility:
-                savedSetting?.visibility !== undefined
-                    ? savedSetting?.visibility
-                    : null,
+            currentView,
+            columnsOrder: filteredColumnsOrder,
+            submitActiveView,
         }
-    })
+    }, [columnsOrder, fallbackView, submitActiveView, tableConfig])
 
-    const submitActiveView = async (activeView: TableView<T>) => {
-        await dispatch(submitActiveViewAction(activeView))
-    }
-
-    return {
-        currentView,
-        columnsOrder:
-            currentView?.metrics
-                .filter((metric) => metric.visibility !== false)
-                .map((metric) => metric.id) || [],
-        submitActiveView,
-    }
+    return response
 }

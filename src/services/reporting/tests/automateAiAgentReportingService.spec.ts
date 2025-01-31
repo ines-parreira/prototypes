@@ -1,6 +1,8 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
 
+import {agents} from 'fixtures/agents'
+
 import {useAutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
 import {OrderDirection} from 'models/api/types'
 import {getData as getPerformanceData} from 'services/reporting/agentsPerformanceReportingService'
@@ -109,6 +111,7 @@ describe('automateAiAgentReportingService', () => {
             }
 
             await saveReport(
+                agents,
                 period,
                 performance,
                 automatedTickets,
@@ -116,6 +119,7 @@ describe('automateAiAgentReportingService', () => {
             )
 
             expect(getPerformanceDataMock).toHaveBeenCalledWith(
+                agents,
                 performance.data,
                 performance.summary,
                 performance.columnsOrder
@@ -154,7 +158,7 @@ describe('automateAiAgentReportingService', () => {
                 automatedInteractionByEventTypesTimeSeries: [[timeSeriesData]],
             }
 
-            await saveReport(period, performance, automatedTickets)
+            await saveReport(agents, period, performance, automatedTickets)
 
             const downloadDate = moment().format(DATE_TIME_FORMAT)
 

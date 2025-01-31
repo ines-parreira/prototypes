@@ -13,6 +13,7 @@ import {useTrendReportData} from 'hooks/reporting/common/useTrendReportData'
 import {useCustomReportData} from 'hooks/reporting/custom-reports/useCustomReportData'
 import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
@@ -22,6 +23,11 @@ import {
     CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
 import {ServiceLevelAgreementsChart} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
+import {
+    OverviewChartConfig,
+    OverviewMetric,
+    OverviewMetricConfig,
+} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
@@ -49,6 +55,8 @@ jest.mock('hooks/reporting/common/useTableReportData')
 const useTablesMock = assumeMock(useTables)
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
 const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/useAgentsTableConfigSetting')
+const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)
 
 describe('useDownloadCustomReportData', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -112,6 +120,9 @@ describe('useDownloadCustomReportData', () => {
     const granularity = ReportingGranularity.Day
 
     beforeEach(() => {
+        useAgentsTableConfigSettingMock.mockReturnValue({
+            columnsOrder: [],
+        } as unknown as ReturnType<typeof useAgentsTableConfigSetting>)
         useNewStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: statsFilters,
             userTimezone,
@@ -148,9 +159,8 @@ describe('useDownloadCustomReportData', () => {
             expect.arrayContaining([
                 {
                     fetchTrend:
-                        SupportPerformanceOverviewReportConfig.charts[
-                            trendChartId
-                        ].csvProducer?.[0].fetch,
+                        OverviewMetricConfig[OverviewMetric.MessagesPerTicket]
+                            .fetchTrend,
                     title: SupportPerformanceOverviewReportConfig.charts[
                         trendChartId
                     ].label,
@@ -164,9 +174,8 @@ describe('useDownloadCustomReportData', () => {
             expect.arrayContaining([
                 {
                     fetchTimeSeries:
-                        SupportPerformanceOverviewReportConfig.charts[
-                            timeSeriesChartId
-                        ].csvProducer?.[0].fetch,
+                        OverviewChartConfig[OverviewMetric.MessagesSent]
+                            .fetchTimeSeries,
                     title: SupportPerformanceOverviewReportConfig.charts[
                         timeSeriesChartId
                     ].label,
@@ -207,9 +216,8 @@ describe('useDownloadCustomReportData', () => {
             expect.arrayContaining([
                 {
                     fetchTrend:
-                        SupportPerformanceOverviewReportConfig.charts[
-                            trendChartId
-                        ].csvProducer?.[0].fetch,
+                        OverviewMetricConfig[OverviewMetric.MessagesPerTicket]
+                            .fetchTrend,
                     title: SupportPerformanceOverviewReportConfig.charts[
                         trendChartId
                     ].label,
@@ -223,9 +231,8 @@ describe('useDownloadCustomReportData', () => {
             expect.arrayContaining([
                 {
                     fetchTimeSeries:
-                        SupportPerformanceOverviewReportConfig.charts[
-                            timeSeriesChartId
-                        ].csvProducer?.[0].fetch,
+                        OverviewChartConfig[OverviewMetric.MessagesSent]
+                            .fetchTimeSeries,
                     title: SupportPerformanceOverviewReportConfig.charts[
                         timeSeriesChartId
                     ].label,

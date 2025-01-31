@@ -210,6 +210,20 @@ describe('MetricPerDimension', () => {
 
             expect(result?.data).toBeNull()
         })
+
+        it('should return null on error', async () => {
+            const agentIdNotInResponse = 'notInResponse'
+            fetchPostReportingMock.mockRejectedValue(
+                {} as unknown as ReturnType<typeof fetchPostReporting>
+            )
+
+            const result = await fetchMetricPerDimension(
+                query,
+                agentIdNotInResponse
+            )
+
+            expect(result?.data).toEqual(null)
+        })
     })
 })
 

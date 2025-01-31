@@ -1,14 +1,12 @@
-import moment from 'moment'
-
 import {UserRole, UserSettingType, User} from 'config/types/user'
+import {Metric} from 'hooks/reporting/metrics'
 import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {Period} from 'models/stat/types'
 import {
-    saveReport,
+    AgentsPerformanceReportData,
+    createAgentsReport,
     SUMMARY_ROW_AGENT_COLUMN_LABEL,
 } from 'services/reporting/agentsPerformanceReportingService'
-import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import * as files from 'utils/file'
 
@@ -113,52 +111,33 @@ const baseMetricBuilder = (reportData: any) => ({
 })
 
 const reportDataFactory = (
+    agents: User[],
     reportData: any,
-    agents: Parameters<typeof saveReport>[0]['agents'],
-    period: Period,
     metricsOverride: Record<string, any> | undefined = {},
     testName: string | undefined = ''
 ) => {
     const baseMetrics = baseMetricBuilder(reportData)
-    const data: Parameters<typeof saveReport>[0] = {
-        agents,
+    const data: AgentsPerformanceReportData = {
         ...baseMetrics,
     }
-    const summaryData: Parameters<typeof saveReport>[1] = {
+    const summaryData: AgentsPerformanceReportData<Metric> = {
         ...{...baseMetrics, ...metricsOverride},
     }
 
-    return {data, summaryData, period, testName}
+    return {agents, data, summaryData, testName}
 }
 
 const testCasesData = [
+    reportDataFactory(emptyAgents, emptyReportData, undefined, 'Empty data'),
     reportDataFactory(
-        emptyReportData,
-        emptyAgents,
-        {
-            start_datetime: '2023-06-07',
-            end_datetime: '2023-06-14',
-        },
-        undefined,
-        'Empty data'
-    ),
-    reportDataFactory(
-        reportDataWithoutCubeMetrics,
         agents,
-        {
-            start_datetime: '2023-08-01',
-            end_datetime: '2023-08-31',
-        },
+        reportDataWithoutCubeMetrics,
         undefined,
         'Report data without cube metrics'
     ),
     reportDataFactory(
-        reportDataWithCubeMetrics,
         agents,
-        {
-            start_datetime: '2023-08-01',
-            end_datetime: '2023-08-31',
-        },
+        reportDataWithCubeMetrics,
         {
             closedTicketsMetric: {data: null},
             ticketsRepliedMetric: {data: null},
@@ -172,23 +151,23 @@ const testCasesData = [
 describe('agentsPerformanceReportingService', () => {
     it.each(testCasesData)(
         'should call saveReport with $testName',
-        ({data, summaryData, period}) => {
+        ({agents, data, summaryData, testName}) => {
             const fakeReport1 = 'someString'
 
             jest.spyOn(files, 'createCsv').mockReturnValue(fakeReport1)
 
-            const result = saveReport(data, summaryData, columnsOrder, period)
+            const result = createAgentsReport(
+                agents,
+                data,
+                summaryData,
+                columnsOrder,
+                testName
+            )
 
             expect(result).toEqual({
                 files: {
-                    [`${period.start_datetime}_${
-                        period.end_datetime
-                    }-agents-metrics-${moment().format(DATE_TIME_FORMAT)}.csv`]:
-                        fakeReport1,
+                    [testName]: fakeReport1,
                 },
-                fileName: `${period.start_datetime}_${
-                    period.end_datetime
-                }-agents-metrics-${moment().format(DATE_TIME_FORMAT)}`,
             })
         }
     )
@@ -198,19 +177,65 @@ describe('agentsPerformanceReportingService', () => {
             ({testName}) => testName === 'Report data with cube metrics'
         )
         const fakeReport1 = 'someString'
+        const fileName = 'someFileName'
         const createCsvMock = jest
             .spyOn(files, 'createCsv')
             .mockReturnValue(fakeReport1)
-        jest.spyOn(files, 'saveZippedFiles')
 
         if (reportData) {
-            const {data, summaryData, period} = reportData
-            saveReport(data, summaryData, columnsOrder, period)
+            const {data, summaryData} = reportData
+            createAgentsReport(
+                agents,
+                data,
+                summaryData,
+                columnsOrder,
+                fileName
+            )
         }
         const summaryRowAgentLabel = createCsvMock.mock.calls[0][0][1][0]
         const firstAgentName = createCsvMock.mock.calls[0][0][2][0]
 
         expect(summaryRowAgentLabel).toEqual(SUMMARY_ROW_AGENT_COLUMN_LABEL)
         expect(firstAgentName).toEqual(agents[0].name)
+    })
+
+    it('should return empty when no data', () => {
+        const reportData = testCasesData.find(
+            ({testName}) => testName === 'Report data with cube metrics'
+        )
+        const fileName = 'someFileName'
+
+        if (reportData) {
+            const {summaryData} = reportData
+            const result = createAgentsReport(
+                agents,
+                null,
+                summaryData,
+                columnsOrder,
+                fileName
+            )
+
+            expect(result).toEqual({files: {}})
+        }
+    })
+
+    it('should return empty when no summary data', () => {
+        const reportData = testCasesData.find(
+            ({testName}) => testName === 'Report data with cube metrics'
+        )
+        const fileName = 'someFileName'
+
+        if (reportData) {
+            const {data} = reportData
+            const result = createAgentsReport(
+                agents,
+                data,
+                null,
+                columnsOrder,
+                fileName
+            )
+
+            expect(result).toEqual({files: {}})
+        }
     })
 })

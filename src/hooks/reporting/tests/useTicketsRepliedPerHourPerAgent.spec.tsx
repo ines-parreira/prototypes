@@ -2,10 +2,15 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import {User} from 'config/types/user'
 import {
+    fetchOnlineTimePerAgent,
+    fetchTicketsRepliedMetricPerAgent,
     useOnlineTimePerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import {useTicketsRepliedPerHourPerAgent} from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
+import {
+    fetchTicketsRepliedPerHourPerAgent,
+    useTicketsRepliedPerHourPerAgent,
+} from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
 import {
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
@@ -19,8 +24,12 @@ const useTicketsRepliedMetricPerAgentMock = assumeMock(
     useTicketsRepliedMetricPerAgent
 )
 const useOnlineTimePerAgentMock = assumeMock(useOnlineTimePerAgent)
+const fetchTicketsRepliedMetricPerAgentMock = assumeMock(
+    fetchTicketsRepliedMetricPerAgent
+)
+const fetchOnlineTimePerAgentMock = assumeMock(fetchOnlineTimePerAgent)
 
-describe('useTicketsRepliedPerHourPerAgent.ts', () => {
+describe('TicketsRepliedPerHourPerAgent.ts', () => {
     const statsFilters = {
         period: {
             start_datetime: '2021-05-29T00:00:00+02:00',
@@ -68,104 +77,117 @@ describe('useTicketsRepliedPerHourPerAgent.ts', () => {
         isError: false,
     }
 
-    beforeEach(() => {
-        useTicketsRepliedMetricPerAgentMock.mockReturnValue(
-            useRepliedTicketsMetricPerAgentReturnValue
-        )
-        useOnlineTimePerAgentMock.mockReturnValue(
-            useOnlineTimePerAgentReturnValue
-        )
-    })
-
-    it('should calculate the metric from messages sent and online time', () => {
-        const {result} = renderHook(() =>
-            useTicketsRepliedPerHourPerAgent(
-                statsFilters,
-                timeZone,
-                undefined,
-                String(agent.id)
+    describe('useTicketsRepliedPerHourPerAgent()', () => {
+        beforeEach(() => {
+            useTicketsRepliedMetricPerAgentMock.mockReturnValue(
+                useRepliedTicketsMetricPerAgentReturnValue
             )
-        )
-
-        expect(result.current).toEqual({
-            data: {
-                allData: [
-                    {
-                        [HelpdeskMessageMeasure.TicketCount]: String(
-                            ticketsRepliedValue / (onlineTimeValue / 60 / 60)
-                        ),
-                        [TicketMember.MessageSenderId]: String(agent.id),
-                    },
-                ],
-                decile: 9,
-                value: 12.5,
-            },
-            isError: false,
-            isFetching: false,
+            useOnlineTimePerAgentMock.mockReturnValue(
+                useOnlineTimePerAgentReturnValue
+            )
         })
-    })
 
-    it('should handle no data', () => {
-        const {result} = renderHook(() =>
-            useTicketsRepliedPerHourPerAgent(
-                statsFilters,
-                timeZone,
-                undefined,
-                String(agent.id)
+        it('should calculate the metric from messages sent and online time', () => {
+            const {result} = renderHook(() =>
+                useTicketsRepliedPerHourPerAgent(
+                    statsFilters,
+                    timeZone,
+                    undefined,
+                    String(agent.id)
+                )
             )
-        )
 
-        expect(result.current).toEqual({
-            data: {
-                allData: [
-                    {
-                        [HelpdeskMessageMeasure.TicketCount]: String(
-                            ticketsRepliedValue / (onlineTimeValue / 60 / 60)
-                        ),
-                        [TicketMember.MessageSenderId]: String(agent.id),
-                    },
-                ],
-                decile: 9,
-                value: 12.5,
-            },
-            isError: false,
-            isFetching: false,
+            expect(result.current).toEqual({
+                data: {
+                    allData: [
+                        {
+                            [HelpdeskMessageMeasure.TicketCount]: String(
+                                ticketsRepliedValue /
+                                    (onlineTimeValue / 60 / 60)
+                            ),
+                            [TicketMember.MessageSenderId]: String(agent.id),
+                        },
+                    ],
+                    decile: 9,
+                    value: 12.5,
+                },
+                isError: false,
+                isFetching: false,
+            })
         })
-    })
 
-    it('should strip the statsFilters to period and agents only', () => {
-        renderHook(() =>
-            useTicketsRepliedPerHourPerAgent(
-                statsFilters,
+        it('should handle no data', () => {
+            const {result} = renderHook(() =>
+                useTicketsRepliedPerHourPerAgent(
+                    statsFilters,
+                    timeZone,
+                    undefined,
+                    String(agent.id)
+                )
+            )
+
+            expect(result.current).toEqual({
+                data: {
+                    allData: [
+                        {
+                            [HelpdeskMessageMeasure.TicketCount]: String(
+                                ticketsRepliedValue /
+                                    (onlineTimeValue / 60 / 60)
+                            ),
+                            [TicketMember.MessageSenderId]: String(agent.id),
+                        },
+                    ],
+                    decile: 9,
+                    value: 12.5,
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
+
+        it('should strip the statsFilters to period and agents only', () => {
+            renderHook(() =>
+                useTicketsRepliedPerHourPerAgent(
+                    statsFilters,
+                    timeZone,
+                    undefined,
+                    String(agent.id)
+                )
+            )
+
+            expect(useTicketsRepliedMetricPerAgentMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                    agents: statsFilters.agents,
+                },
                 timeZone,
                 undefined,
                 String(agent.id)
             )
-        )
+            expect(useOnlineTimePerAgentMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                    agents: statsFilters.agents,
+                },
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+        })
 
-        expect(useTicketsRepliedMetricPerAgentMock).toHaveBeenCalledWith(
-            {
-                period: statsFilters.period,
-                agents: statsFilters.agents,
-            },
-            timeZone,
-            undefined,
-            String(agent.id)
-        )
-        expect(useOnlineTimePerAgentMock).toHaveBeenCalledWith(
-            {
-                period: statsFilters.period,
-                agents: statsFilters.agents,
-            },
-            timeZone,
-            undefined,
-            String(agent.id)
-        )
-    })
+        it('should strip the statsFilters to period when no agents', () => {
+            renderHook(() =>
+                useTicketsRepliedPerHourPerAgent(
+                    {
+                        period: statsFilters.period,
+                    },
+                    timeZone,
+                    undefined,
+                    String(agent.id)
+                )
+            )
 
-    it('should strip the statsFilters to period when no agents', () => {
-        renderHook(() =>
-            useTicketsRepliedPerHourPerAgent(
+            expect(useTicketsRepliedMetricPerAgentMock).toHaveBeenCalledWith(
                 {
                     period: statsFilters.period,
                 },
@@ -173,53 +195,217 @@ describe('useTicketsRepliedPerHourPerAgent.ts', () => {
                 undefined,
                 String(agent.id)
             )
-        )
+            expect(useOnlineTimePerAgentMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                },
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+        })
 
-        expect(useTicketsRepliedMetricPerAgentMock).toHaveBeenCalledWith(
-            {
-                period: statsFilters.period,
-            },
-            timeZone,
-            undefined,
-            String(agent.id)
-        )
-        expect(useOnlineTimePerAgentMock).toHaveBeenCalledWith(
-            {
-                period: statsFilters.period,
-            },
-            timeZone,
-            undefined,
-            String(agent.id)
-        )
+        it('should return empty data when no data available', () => {
+            useTicketsRepliedMetricPerAgentMock.mockReturnValue({
+                ...useRepliedTicketsMetricPerAgentReturnValue,
+                data: null,
+            })
+            useOnlineTimePerAgentMock.mockReturnValue({
+                ...useOnlineTimePerAgentReturnValue,
+                data: null,
+            })
+
+            const {result} = renderHook(() =>
+                useTicketsRepliedPerHourPerAgent(
+                    statsFilters,
+                    timeZone,
+                    undefined,
+                    String(agent.id)
+                )
+            )
+
+            expect(result.current).toEqual({
+                data: {
+                    allData: [],
+                    decile: -0,
+                    value: null,
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
     })
 
-    it('should return empty data when no data available', () => {
-        useTicketsRepliedMetricPerAgentMock.mockReturnValue({
-            ...useRepliedTicketsMetricPerAgentReturnValue,
-            data: null,
-        })
-        useOnlineTimePerAgentMock.mockReturnValue({
-            ...useOnlineTimePerAgentReturnValue,
-            data: null,
+    describe('fetchTicketsRepliedPerHourPerAgent()', () => {
+        beforeEach(() => {
+            fetchTicketsRepliedMetricPerAgentMock.mockResolvedValue(
+                useRepliedTicketsMetricPerAgentReturnValue
+            )
+            fetchOnlineTimePerAgentMock.mockResolvedValue(
+                useOnlineTimePerAgentReturnValue
+            )
         })
 
-        const {result} = renderHook(() =>
-            useTicketsRepliedPerHourPerAgent(
+        it('should calculate the metric from messages sent and online time', async () => {
+            const result = await fetchTicketsRepliedPerHourPerAgent(
                 statsFilters,
                 timeZone,
                 undefined,
                 String(agent.id)
             )
-        )
 
-        expect(result.current).toEqual({
-            data: {
-                allData: [],
-                decile: -0,
-                value: null,
-            },
-            isError: false,
-            isFetching: false,
+            expect(result).toEqual({
+                data: {
+                    allData: [
+                        {
+                            [HelpdeskMessageMeasure.TicketCount]: String(
+                                ticketsRepliedValue /
+                                    (onlineTimeValue / 60 / 60)
+                            ),
+                            [TicketMember.MessageSenderId]: String(agent.id),
+                        },
+                    ],
+                    decile: 9,
+                    value: 12.5,
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
+
+        it('should handle no data', async () => {
+            const result = await fetchTicketsRepliedPerHourPerAgent(
+                statsFilters,
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+
+            expect(result).toEqual({
+                data: {
+                    allData: [
+                        {
+                            [HelpdeskMessageMeasure.TicketCount]: String(
+                                ticketsRepliedValue /
+                                    (onlineTimeValue / 60 / 60)
+                            ),
+                            [TicketMember.MessageSenderId]: String(agent.id),
+                        },
+                    ],
+                    decile: 9,
+                    value: 12.5,
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
+
+        it('should strip the statsFilters to period and agents only', async () => {
+            await fetchTicketsRepliedPerHourPerAgent(
+                statsFilters,
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+
+            expect(fetchTicketsRepliedMetricPerAgentMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                    agents: statsFilters.agents,
+                },
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+            expect(fetchOnlineTimePerAgentMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                    agents: statsFilters.agents,
+                },
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+        })
+
+        it('should strip the statsFilters to period when no agents', async () => {
+            await fetchTicketsRepliedPerHourPerAgent(
+                {
+                    period: statsFilters.period,
+                },
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+
+            expect(fetchTicketsRepliedMetricPerAgentMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                },
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+            expect(fetchOnlineTimePerAgentMock).toHaveBeenCalledWith(
+                {
+                    period: statsFilters.period,
+                },
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+        })
+
+        it('should return empty data when no data available', async () => {
+            fetchTicketsRepliedMetricPerAgentMock.mockResolvedValue({
+                ...useRepliedTicketsMetricPerAgentReturnValue,
+                data: null,
+            })
+            fetchOnlineTimePerAgentMock.mockResolvedValue({
+                ...useOnlineTimePerAgentReturnValue,
+                data: null,
+            })
+
+            const result = await fetchTicketsRepliedPerHourPerAgent(
+                statsFilters,
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+
+            expect(result).toEqual({
+                data: {
+                    allData: [],
+                    decile: -0,
+                    value: null,
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
+
+        it('should return empty data on error', async () => {
+            fetchTicketsRepliedMetricPerAgentMock.mockRejectedValue({
+                ...useRepliedTicketsMetricPerAgentReturnValue,
+                data: null,
+            })
+            fetchOnlineTimePerAgentMock.mockResolvedValue({
+                ...useOnlineTimePerAgentReturnValue,
+                data: null,
+            })
+
+            const result = await fetchTicketsRepliedPerHourPerAgent(
+                statsFilters,
+                timeZone,
+                undefined,
+                String(agent.id)
+            )
+
+            expect(result).toEqual({
+                data: null,
+                isError: false,
+                isFetching: false,
+            })
         })
     })
 })

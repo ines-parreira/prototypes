@@ -7,18 +7,14 @@ export const useSortedChannelsWithData = (): {
     channels: Channel[]
     isLoading: boolean
 } => {
-    const {reportData, isLoading} = useChannelsReportMetrics()
+    const {channels, reportData, isLoading} = useChannelsReportMetrics()
 
-    let channels = reportData.channels
+    let visibleChannels = channels
 
-    if (!isLoading) {
+    if (!isLoading && reportData !== null) {
         const channelVisibility: Record<string, boolean> = Object.values(
             reportData
         ).reduce<Record<string, boolean>>((acc, metricDataOrChannels) => {
-            if (Array.isArray(metricDataOrChannels)) {
-                return acc
-            }
-
             if (metricDataOrChannels.data === null) {
                 return acc
             }
@@ -32,13 +28,13 @@ export const useSortedChannelsWithData = (): {
 
             return acc
         }, {})
-        channels = reportData.channels.filter(
+        visibleChannels = channels.filter(
             (channel: Channel) => channelVisibility[channel.slug] ?? false
         )
     }
 
     return {
-        channels,
+        channels: visibleChannels,
         isLoading,
     }
 }

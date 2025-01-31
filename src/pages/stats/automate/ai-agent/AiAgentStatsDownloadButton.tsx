@@ -2,6 +2,7 @@ import moment from 'moment'
 import React, {useMemo} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {User} from 'config/types/user'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {useAutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
 import {useAutomateMetricsTimeseriesV2} from 'hooks/reporting/automate/useAutomationDatasetV2'
@@ -22,6 +23,7 @@ import {activeParams} from 'pages/stats/ticket-insights/ticket-fields/CustomFiel
 import {formatDates} from 'pages/stats/utils'
 import {saveReport} from 'services/reporting/automateAiAgentReportingService'
 import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
 import {
     getCustomFieldsOrder,
     getSelectedCustomField,
@@ -34,6 +36,7 @@ export const AiAgentStatsDownloadButton = () => {
     const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
 
     // Get performance data
+    const agents = useAppSelector<User[]>(getSortedAgents)
     const {reportData, isLoading: reportIsLoading} = useAgentsMetrics()
     const {summaryData, isLoading: summaryIsLoading} = useAgentsSummaryMetrics()
     const {columnsOrder} = useAgentsTableConfigSetting()
@@ -129,6 +132,7 @@ export const AiAgentStatsDownloadButton = () => {
                     name: 'all-metrics',
                 })
                 await saveReport(
+                    agents,
                     statsFilters.period,
                     performanceData,
                     automatedTicketsData,

@@ -1,6 +1,5 @@
 import {useMemo} from 'react'
 
-import {User} from 'config/types/user'
 import {
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
@@ -17,13 +16,9 @@ import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStat
 import {useMessagesSentPerHourPerAgent} from 'hooks/reporting/useMessagesSentPerHourPerAgent'
 import {useTicketsClosedPerHourPerAgent} from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
 import {useTicketsRepliedPerHourPerAgent} from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
-import useAppSelector from 'hooks/useAppSelector'
-import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
 
 export function useAgentsMetrics() {
     const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
-
-    const agents = useAppSelector<User[]>(getSortedAgents)
 
     const customerSatisfactionMetric = useCustomerSatisfactionMetricPerAgent(
         cleanStatsFilters,
@@ -114,7 +109,6 @@ export function useAgentsMetrics() {
 
     return {
         reportData: {
-            agents,
             customerSatisfactionMetric,
             percentageOfClosedTicketsMetric,
             closedTicketsMetric,

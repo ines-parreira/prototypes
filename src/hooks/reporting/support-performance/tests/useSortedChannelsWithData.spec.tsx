@@ -11,7 +11,6 @@ const useChannelsReportMetricsMock = assumeMock(useChannelsReportMetrics)
 
 describe('useSortedChannelsWithData', () => {
     const nullReportData = {
-        channels: mockChannels,
         createdTicketsMetricPerChannel: {
             data: null,
         },
@@ -49,6 +48,7 @@ describe('useSortedChannelsWithData', () => {
 
     it('should return all channels while loading data', () => {
         useChannelsReportMetricsMock.mockReturnValue({
+            channels: mockChannels,
             reportData: nullReportData,
             isLoading: true,
         } as any)
@@ -63,6 +63,7 @@ describe('useSortedChannelsWithData', () => {
 
     it('should hides channels without data', () => {
         useChannelsReportMetricsMock.mockReturnValue({
+            channels: mockChannels,
             reportData: nullReportData,
             isLoading: false,
         } as any)
@@ -79,6 +80,7 @@ describe('useSortedChannelsWithData', () => {
         const emailChannel = 'email'
         const airflowChannel = 'airflow'
         useChannelsReportMetricsMock.mockReturnValue({
+            channels: mockChannels,
             reportData: {
                 ...nullReportData,
                 createdTicketsMetricPerChannel: {

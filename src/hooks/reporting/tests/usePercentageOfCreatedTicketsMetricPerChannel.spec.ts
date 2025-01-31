@@ -3,34 +3,35 @@ import moment from 'moment/moment'
 
 import {TicketChannel} from 'business/types/ticket'
 import {
-    fetchClosedTicketsMetric,
-    useClosedTicketsMetric,
+    fetchTicketsCreatedMetric,
+    useTicketsCreatedMetric,
 } from 'hooks/reporting/metrics'
 import {
-    fetchClosedTicketsMetricPerAgent,
-    useClosedTicketsMetricPerAgent,
-} from 'hooks/reporting/metricsPerAgent'
+    fetchCreatedTicketsMetricPerChannel,
+    useCreatedTicketsMetricPerChannel,
+} from 'hooks/reporting/metricsPerChannel'
 import {
-    fetchPercentageOfClosedTicketsMetricPerAgent,
-    usePercentageOfClosedTicketsMetricPerAgent,
-} from 'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
+    fetchPercentageOfCreatedTicketsMetricPerChannel,
+    usePercentageOfCreatedTicketsMetricPerChannel,
+} from 'hooks/reporting/usePercentageOfCreatedTicketsMetricPerChannel'
+
 import {OrderDirection} from 'models/api/types'
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {LegacyStatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
 
-jest.mock('hooks/reporting/metricsPerAgent')
+jest.mock('hooks/reporting/metricsPerChannel')
 jest.mock('hooks/reporting/metrics')
-const useClosedTicketsMetricMock = assumeMock(useClosedTicketsMetric)
-const useClosedTicketsMetricPerAgentMock = assumeMock(
-    useClosedTicketsMetricPerAgent
+const useTicketsCreatedMetricMock = assumeMock(useTicketsCreatedMetric)
+const useTicketsCreatedMetricPerChannelMock = assumeMock(
+    useCreatedTicketsMetricPerChannel
 )
-const fetchClosedTicketsMetricMock = assumeMock(fetchClosedTicketsMetric)
-const fetchClosedTicketsMetricPerAgentMock = assumeMock(
-    fetchClosedTicketsMetricPerAgent
+const fetchTicketsCreatedMetricMock = assumeMock(fetchTicketsCreatedMetric)
+const fetchTicketsCreatedMetricPerChannelMock = assumeMock(
+    fetchCreatedTicketsMetricPerChannel
 )
 
-describe('PercentageOfClosedTicketsMetricPerAgent', () => {
+describe('PercentageOfCreatedTicketsMetricPerChannel', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const statsFilters: LegacyStatsFilters = {
@@ -48,9 +49,9 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
     const closedTickets = 3200
     const ticketCount = 200
 
-    describe('usePercentageOfClosedTicketsMetricPerAgent', () => {
+    describe('usePercentageOfCreatedTicketsMetricPerChannel', () => {
         it('should pass return percentage of closed tickets', () => {
-            useClosedTicketsMetricPerAgentMock.mockReturnValue({
+            useTicketsCreatedMetricPerChannelMock.mockReturnValue({
                 data: {
                     allData: [{[TicketMeasure.TicketCount]: `${ticketCount}`}],
                     value: ticketCount,
@@ -60,7 +61,7 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
                 isFetching: false,
             })
 
-            useClosedTicketsMetricMock.mockReturnValue({
+            useTicketsCreatedMetricMock.mockReturnValue({
                 data: {value: closedTickets},
                 isError: false,
                 isFetching: false,
@@ -68,7 +69,7 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
 
             const {result} = renderHook(
                 () =>
-                    usePercentageOfClosedTicketsMetricPerAgent(
+                    usePercentageOfCreatedTicketsMetricPerChannel(
                         statsFilters,
                         timezone,
                         sorting,
@@ -95,13 +96,13 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
         })
 
         it('should return null when missing data', () => {
-            useClosedTicketsMetricPerAgentMock.mockReturnValue({
+            useTicketsCreatedMetricPerChannelMock.mockReturnValue({
                 data: null,
                 isError: false,
                 isFetching: false,
             })
 
-            useClosedTicketsMetricMock.mockReturnValue({
+            useTicketsCreatedMetricMock.mockReturnValue({
                 data: undefined,
                 isError: false,
                 isFetching: false,
@@ -109,7 +110,7 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
 
             const {result} = renderHook(
                 () =>
-                    usePercentageOfClosedTicketsMetricPerAgent(
+                    usePercentageOfCreatedTicketsMetricPerChannel(
                         statsFilters,
                         timezone,
                         sorting,
@@ -130,7 +131,7 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
         })
 
         it('should return something on partial data', () => {
-            useClosedTicketsMetricPerAgentMock.mockReturnValue({
+            useTicketsCreatedMetricPerChannelMock.mockReturnValue({
                 data: {
                     allData: [{[TicketMeasure.TicketCount]: `${ticketCount}`}],
                     value: ticketCount,
@@ -140,7 +141,7 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
                 isFetching: false,
             })
 
-            useClosedTicketsMetricMock.mockReturnValue({
+            useTicketsCreatedMetricMock.mockReturnValue({
                 data: undefined,
                 isError: false,
                 isFetching: false,
@@ -148,7 +149,7 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
 
             const {result} = renderHook(
                 () =>
-                    usePercentageOfClosedTicketsMetricPerAgent(
+                    usePercentageOfCreatedTicketsMetricPerChannel(
                         statsFilters,
                         timezone,
                         sorting,
@@ -173,9 +174,9 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
         })
     })
 
-    describe('fetchPercentageOfClosedTicketsMetricPerAgent', () => {
+    describe('fetchPercentageOfCreatedTicketsMetricPerChannel', () => {
         it('should pass return percentage of closed tickets', async () => {
-            fetchClosedTicketsMetricPerAgentMock.mockResolvedValue({
+            fetchTicketsCreatedMetricPerChannelMock.mockResolvedValue({
                 data: {
                     allData: [{[TicketMeasure.TicketCount]: `${ticketCount}`}],
                     value: ticketCount,
@@ -185,18 +186,19 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
                 isFetching: false,
             })
 
-            fetchClosedTicketsMetricMock.mockResolvedValue({
+            fetchTicketsCreatedMetricMock.mockResolvedValue({
                 data: {value: closedTickets},
                 isError: false,
                 isFetching: false,
             })
 
-            const result = await fetchPercentageOfClosedTicketsMetricPerAgent(
-                statsFilters,
-                timezone,
-                sorting,
-                agentId
-            )
+            const result =
+                await fetchPercentageOfCreatedTicketsMetricPerChannel(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                    agentId
+                )
 
             expect(result).toEqual({
                 data: {
@@ -216,24 +218,25 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
         })
 
         it('should return null when missing data', async () => {
-            fetchClosedTicketsMetricPerAgentMock.mockResolvedValue({
+            fetchTicketsCreatedMetricPerChannelMock.mockResolvedValue({
                 data: null,
                 isError: false,
                 isFetching: false,
             })
 
-            fetchClosedTicketsMetricMock.mockResolvedValue({
+            fetchTicketsCreatedMetricMock.mockResolvedValue({
                 data: undefined,
                 isError: false,
                 isFetching: false,
             })
 
-            const result = await fetchPercentageOfClosedTicketsMetricPerAgent(
-                statsFilters,
-                timezone,
-                sorting,
-                agentId
-            )
+            const result =
+                await fetchPercentageOfCreatedTicketsMetricPerChannel(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                    agentId
+                )
 
             expect(result).toEqual({
                 data: {
@@ -246,35 +249,8 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
             })
         })
 
-        it('should return null on error', async () => {
-            fetchClosedTicketsMetricPerAgentMock.mockRejectedValue({
-                data: null,
-                isError: false,
-                isFetching: false,
-            })
-
-            fetchClosedTicketsMetricMock.mockResolvedValue({
-                data: undefined,
-                isError: false,
-                isFetching: false,
-            })
-
-            const result = await fetchPercentageOfClosedTicketsMetricPerAgent(
-                statsFilters,
-                timezone,
-                sorting,
-                agentId
-            )
-
-            expect(result).toEqual({
-                data: null,
-                isFetching: false,
-                isError: true,
-            })
-        })
-
         it('should return something on partial data', async () => {
-            fetchClosedTicketsMetricPerAgentMock.mockResolvedValue({
+            fetchTicketsCreatedMetricPerChannelMock.mockResolvedValue({
                 data: {
                     allData: [{[TicketMeasure.TicketCount]: `${ticketCount}`}],
                     value: ticketCount,
@@ -284,18 +260,19 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
                 isFetching: false,
             })
 
-            fetchClosedTicketsMetricMock.mockResolvedValue({
+            fetchTicketsCreatedMetricMock.mockResolvedValue({
                 data: undefined,
                 isError: false,
                 isFetching: false,
             })
 
-            const result = await fetchPercentageOfClosedTicketsMetricPerAgent(
-                statsFilters,
-                timezone,
-                sorting,
-                agentId
-            )
+            const result =
+                await fetchPercentageOfCreatedTicketsMetricPerChannel(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                    agentId
+                )
 
             expect(result).toEqual({
                 data: {
@@ -309,6 +286,30 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
                 },
                 isFetching: false,
                 isError: false,
+            })
+        })
+
+        it('should return no data on error', async () => {
+            fetchTicketsCreatedMetricPerChannelMock.mockRejectedValue({})
+
+            fetchTicketsCreatedMetricMock.mockResolvedValue({
+                data: undefined,
+                isError: false,
+                isFetching: false,
+            })
+
+            const result =
+                await fetchPercentageOfCreatedTicketsMetricPerChannel(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                    agentId
+                )
+
+            expect(result).toEqual({
+                data: null,
+                isFetching: false,
+                isError: true,
             })
         })
     })

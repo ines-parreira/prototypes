@@ -162,6 +162,10 @@ describe('ticketFieldsReportingService', () => {
                 userTimezone,
                 granularity,
                 {
+                    agents: [],
+                    channelColumnsOrder: [],
+                    channels: [],
+                    columnsOrder: [],
                     selectedBTODMetric: BusiestTimeOfDaysMetrics.TicketsCreated,
                     customFieldsOrder,
                     selectedCustomFieldId: String(selectedCustomFieldId),
@@ -184,6 +188,10 @@ describe('ticketFieldsReportingService', () => {
                 userTimezone,
                 granularity,
                 {
+                    agents: [],
+                    channelColumnsOrder: [],
+                    channels: [],
+                    columnsOrder: [],
                     selectedBTODMetric: BusiestTimeOfDaysMetrics.TicketsCreated,
                     customFieldsOrder,
                     selectedCustomFieldId: String(selectedCustomFieldId),
@@ -203,6 +211,10 @@ describe('ticketFieldsReportingService', () => {
                 userTimezone,
                 granularity,
                 {
+                    agents: [],
+                    channelColumnsOrder: [],
+                    channels: [],
+                    columnsOrder: [],
                     selectedBTODMetric: BusiestTimeOfDaysMetrics.TicketsCreated,
                     customFieldsOrder,
                     selectedCustomFieldId: null,
@@ -224,6 +236,10 @@ describe('ticketFieldsReportingService', () => {
                 userTimezone,
                 granularity,
                 {
+                    agents: [],
+                    channelColumnsOrder: [],
+                    channels: [],
+                    columnsOrder: [],
                     selectedBTODMetric: BusiestTimeOfDaysMetrics.TicketsCreated,
                     customFieldsOrder,
                     selectedCustomFieldId: String(selectedCustomFieldId),

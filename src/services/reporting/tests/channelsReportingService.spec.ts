@@ -1,5 +1,3 @@
-import moment from 'moment/moment'
-
 import {channels} from 'fixtures/channels'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {Channel} from 'models/channel/types'
@@ -18,54 +16,17 @@ import {
     ChannelsReportMetrics,
     saveReport,
 } from 'services/reporting/channelsReportingService'
-import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import * as files from 'utils/file'
 
 jest.mock('utils/file')
 
 describe('channelsReportingService', () => {
-    const period = {
-        start_datetime: '2023-08-01',
-        end_datetime: '2023-08-31',
-    }
-
-    const defaultData = {
-        channels: [],
-        createdTicketsMetricPerChannel: {data: null},
-        percentageOfCreatedTicketsMetricPerChannel: {data: null},
-        closedTicketsMetricPerChannel: {data: null},
-        ticketAverageHandleTimePerChannel: {data: null},
-        medianFirstResponseTimeMetricPerChannel: {data: null},
-        medianResolutionTimeMetricPerChannel: {data: null},
-        ticketsRepliedMetricPerChannel: {data: null},
-        messagesSentMetricPerChannel: {data: null},
-        customerSatisfactionMetricPerChannel: {data: null},
-    } as any
-
     const channelA = channels[0]
     const channelB = channels[1]
     const reportChannels: Channel[] = [channelA, channelB]
+    const fileName = 'someFileName'
 
-    it('should zip the report', async () => {
-        jest.spyOn(files, 'createCsv').mockReturnValue('fakeReport1')
-        const zipperMock = jest.spyOn(files, 'saveZippedFiles')
-
-        await saveReport(defaultData, columnsOrder, period)
-
-        expect(zipperMock).toHaveBeenCalledWith(
-            {
-                [`${period.start_datetime}_${
-                    period.end_datetime
-                }-channels-metrics-${moment().format(DATE_TIME_FORMAT)}.csv`]:
-                    'fakeReport1',
-            },
-            `${period.start_datetime}_${
-                period.end_datetime
-            }-channels-metrics-${moment().format(DATE_TIME_FORMAT)}`
-        )
-    })
-
-    it('should format data', async () => {
+    it('should format data', () => {
         const createCsvSpy = jest
             .spyOn(files, 'createCsv')
             .mockReturnValue('fakeReport1')
@@ -136,7 +97,7 @@ describe('channelsReportingService', () => {
                 '5'
             ),
         }
-        await saveReport(data, columnsOrder, period)
+        saveReport(reportChannels, data, columnsOrder, fileName)
 
         expect(createCsvSpy).toHaveBeenCalledWith([
             [...columnsOrder.map((column) => ChannelsTableLabels[column])],
@@ -148,5 +109,11 @@ describe('channelsReportingService', () => {
                 ),
             ],
         ])
+    })
+
+    it('should return empty when no data', () => {
+        const result = saveReport(reportChannels, null, columnsOrder, fileName)
+
+        expect(result).toEqual({files: {}})
     })
 })
