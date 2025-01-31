@@ -240,7 +240,11 @@ export default function TicketListView({
 
     return (
         <div className={css.wrapper}>
-            <div className={css.titleWrapper}>
+            <div
+                className={
+                    showGlobalNav ? css.globalNavTitleWrapper : css.titleWrapper
+                }
+            >
                 <div className={css.headerChild}>
                     {showGlobalNav && <SplitTicketViewToggle />}
                     <ViewDecoration view={view} />

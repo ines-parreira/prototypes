@@ -1,9 +1,13 @@
 import {act, fireEvent, render} from '@testing-library/react'
+
 import {fromJS} from 'immutable'
 import React, {ComponentProps, Fragment, ReactElement, ReactNode} from 'react'
 import {Provider} from 'react-redux'
+import {MemoryRouter} from 'react-router-dom'
 import {Virtuoso} from 'react-virtuoso'
 import configureMockStore from 'redux-mock-store'
+
+import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 
 import {ticket} from 'fixtures/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -42,6 +46,10 @@ jest.mock('../bulk-actions/BulkActions', () => () => <div>BulkActions</div>)
 
 jest.mock('../../hooks/useSortOrder')
 const useSortOrderMock = useSortOrder as jest.Mock
+
+jest.mock('common/navigation/hooks/useShowGlobalNavFeatureFlag')
+const useDesktopOnlyShowGlobalNavFeatureFlagMock =
+    useDesktopOnlyShowGlobalNavFeatureFlag as jest.Mock
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
@@ -149,6 +157,7 @@ describe('<TicketListView />', () => {
             },
             clear: clearMock,
         })
+        useDesktopOnlyShowGlobalNavFeatureFlagMock.mockReturnValue(false)
     })
 
     it('should pause updates when there are selected tickets', () => {
@@ -566,6 +575,34 @@ describe('<TicketListView />', () => {
             )
 
             expect(getByText('1 selected')).toBeInTheDocument()
+        })
+    })
+
+    describe('title wrapper', () => {
+        it('should apply correct className based on global nav feature flag', () => {
+            useDesktopOnlyShowGlobalNavFeatureFlagMock.mockReturnValue(true)
+            const {container, rerender} = render(
+                <Provider store={store}>
+                    <MemoryRouter initialEntries={['/app/views/123']}>
+                        <TicketListView viewId={123} />
+                    </MemoryRouter>
+                </Provider>
+            )
+
+            expect(
+                container.querySelector('.globalNavTitleWrapper')
+            ).toBeInTheDocument()
+
+            useDesktopOnlyShowGlobalNavFeatureFlagMock.mockReturnValue(false)
+            rerender(
+                <Provider store={store}>
+                    <MemoryRouter initialEntries={['/app/views/123']}>
+                        <TicketListView viewId={123} />
+                    </MemoryRouter>
+                </Provider>
+            )
+
+            expect(container.querySelector('.titleWrapper')).toBeInTheDocument()
         })
     })
 })
