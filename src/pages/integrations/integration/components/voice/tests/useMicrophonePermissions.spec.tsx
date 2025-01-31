@@ -22,7 +22,7 @@ describe('useMicrophonePermissions', () => {
     it('should check microphone permissions every 5 seconds', async () => {
         const queryPermissionsMock = jest
             .fn()
-            .mockReturnValueOnce(Promise.resolve({state: 'denied'}))
+            .mockReturnValue(Promise.resolve({state: 'denied'}))
         Object.defineProperty(navigator, 'permissions', {
             value: {
                 query: queryPermissionsMock,
@@ -31,18 +31,18 @@ describe('useMicrophonePermissions', () => {
         })
 
         const {result, waitFor} = render()
-        queryPermissionsMock.mockReturnValue(
-            Promise.resolve({state: 'granted'})
-        )
         jest.advanceTimersByTime(5000)
 
         await waitFor(() => result.current.permissionDenied === true)
+        queryPermissionsMock.mockReturnValue(
+            Promise.resolve({state: 'granted'})
+        )
 
         expect(queryPermissionsMock).toHaveBeenCalledWith({name: 'microphone'})
-        expect(queryPermissionsMock).toHaveBeenCalledTimes(1)
+        expect(queryPermissionsMock).toHaveBeenCalledTimes(2)
 
         jest.advanceTimersByTime(5000)
-        expect(queryPermissionsMock).toHaveBeenCalledTimes(2)
+        expect(queryPermissionsMock).toHaveBeenCalledTimes(3)
         await waitFor(() => result.current.permissionDenied === false)
     })
 })

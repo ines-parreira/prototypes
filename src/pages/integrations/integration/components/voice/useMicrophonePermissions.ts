@@ -1,5 +1,6 @@
 import {useState} from 'react'
 
+import useEffectOnce from 'hooks/useEffectOnce'
 import useInterval from 'hooks/useInterval'
 
 export default function useMicrophonePermissions() {
@@ -20,6 +21,10 @@ export default function useMicrophonePermissions() {
             // Permission API not supported for older browser versions
         }
     }
+
+    useEffectOnce(() => {
+        void checkPermissions()
+    })
 
     useInterval(() => {
         void checkPermissions()
