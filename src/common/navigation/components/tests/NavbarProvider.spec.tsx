@@ -7,7 +7,7 @@ import {
 } from '../../hooks/useNavBar/context'
 import {useNavBar} from '../../hooks/useNavBar/useNavBar'
 
-import {NavBarProvider} from '../NavBarProvider'
+import {NAVBAR_DISPLAY_KEY, NavBarProvider} from '../NavBarProvider'
 
 // Updated Test component with interactive buttons
 function TestComponent() {
@@ -29,6 +29,10 @@ function TestComponent() {
 }
 
 describe('NavBarProvider', () => {
+    beforeEach(() => {
+        localStorage.removeItem(NAVBAR_DISPLAY_KEY)
+    })
+
     it('provides initial state', () => {
         const {getByTestId} = render(
             <NavBarProvider>

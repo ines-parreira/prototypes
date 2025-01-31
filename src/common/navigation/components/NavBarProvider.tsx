@@ -1,12 +1,16 @@
 import React, {ReactNode, useMemo, useState, useCallback} from 'react'
 
+import useLocalStorage from 'hooks/useLocalStorage'
+
 import {NavBarContext, NavBarDisplayMode} from '../hooks/useNavBar/context'
+
+export const NAVBAR_DISPLAY_KEY = 'navbar-display'
 
 export function NavBarProvider({children}: {children: ReactNode}) {
     const [isNavHovered, setisNavHovered] = useState(false)
-    const [navBarDisplay, setNavBarDisplay] = useState<
+    const [navBarDisplay, setNavBarDisplay] = useLocalStorage<
         ValueOf<typeof NavBarDisplayMode>
-    >(NavBarDisplayMode.Open)
+    >(NAVBAR_DISPLAY_KEY, NavBarDisplayMode.Open)
 
     const onMenuToggle = useCallback(() => {
         setNavBarDisplay((display) =>
@@ -14,7 +18,7 @@ export function NavBarProvider({children}: {children: ReactNode}) {
                 ? NavBarDisplayMode.Collapsed
                 : NavBarDisplayMode.Open
         )
-    }, [])
+    }, [setNavBarDisplay])
 
     // Used for both the global nav and the collapsible navbar mouse hover events
     const onNavHover = useCallback(() => {
@@ -22,7 +26,7 @@ export function NavBarProvider({children}: {children: ReactNode}) {
         if (navBarDisplay === NavBarDisplayMode.Collapsed) {
             setNavBarDisplay(NavBarDisplayMode.Hover)
         }
-    }, [navBarDisplay])
+    }, [navBarDisplay, setNavBarDisplay])
 
     // Used for the both global nav and the collapsible navbar mouse leave events
     const onNavLeave = useCallback(() => {
@@ -34,7 +38,7 @@ export function NavBarProvider({children}: {children: ReactNode}) {
         if (navBarDisplay === NavBarDisplayMode.Hover) {
             setNavBarDisplay(NavBarDisplayMode.Collapsed)
         }
-    }, [navBarDisplay, onNavLeave])
+    }, [navBarDisplay, onNavLeave, setNavBarDisplay])
 
     const value = useMemo(
         () => ({
