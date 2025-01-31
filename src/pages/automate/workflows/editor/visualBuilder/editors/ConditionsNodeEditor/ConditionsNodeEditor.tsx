@@ -178,6 +178,22 @@ export default function ConditionsNodeEditor({
         return false
     }
 
+    const inProductData = useMemo(() => {
+        switch (visualBuilderGraph.nodes[0].type) {
+            case 'llm_prompt_trigger':
+            case 'reusable_llm_prompt_trigger':
+                return {
+                    href: ' https://link.gorgias.com/0gm',
+                    text: 'Learn About Conditions in Actions',
+                }
+            default:
+                return {
+                    href: 'https://link.gorgias.com/noh',
+                    text: 'Learn About Conditions in Flows',
+                }
+        }
+    }, [visualBuilderGraph.nodes])
+
     const branches = edges.slice(0, edges.length - 1)
 
     return (
@@ -187,12 +203,12 @@ export default function ConditionsNodeEditor({
                 <ToolbarProvider workflowVariables={workflowVariables}>
                     <div className={css.container}>
                         <a
-                            href="https://link.gorgias.com/noh"
+                            href={inProductData.href}
                             rel="noopener noreferrer"
                             target="_blank"
                         >
                             <i className="material-icons mr-2">menu_book</i>
-                            Learn About Conditions in Flows
+                            {inProductData.text}
                         </a>
 
                         <InputField
