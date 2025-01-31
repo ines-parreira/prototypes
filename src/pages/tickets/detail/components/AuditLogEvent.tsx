@@ -156,7 +156,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
         [CONTENTFUL_EVENT_TYPES.TicketMessageSummaryCreated]: ['email'],
         [CONTENTFUL_EVENT_TYPES.TicketSubjectUpdated]: ['mode'],
         [CONTENTFUL_EVENT_TYPES.TicketExcludedFromAutoMerge]: ['close'],
-        [CONTENTFUL_EVENT_TYPES.TicketExcludedFromCSAT]: ['close'],
+        [CONTENTFUL_EVENT_TYPES.TicketExcludedFromCSAT]: ['star'],
         [CONTENTFUL_EVENT_TYPES.TicketSatisfactionSurveySkipped]: ['star'],
     }
 
@@ -235,7 +235,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
             <ActionName>Excluded from Auto-Merge</ActionName>
         ),
         [CONTENTFUL_EVENT_TYPES.TicketExcludedFromCSAT]: () => (
-            <ActionName>Excluded from CSAT</ActionName>
+            <ActionName>Ticket excluded from CSAT</ActionName>
         ),
         [CONTENTFUL_EVENT_TYPES.TicketSatisfactionSurveySkipped]: () =>
             this._renderTicketSatisfactionSurveySkipped(),

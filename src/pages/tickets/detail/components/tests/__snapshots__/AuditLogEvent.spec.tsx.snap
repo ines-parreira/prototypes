@@ -538,13 +538,13 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-excluded
         <i
           class="material-icons"
         >
-          close
+          star
         </i>
       </div>
       <span
         class="actionName"
       >
-        Excluded from CSAT
+        Ticket excluded from CSAT
       </span>
       <span
         class="filler"
