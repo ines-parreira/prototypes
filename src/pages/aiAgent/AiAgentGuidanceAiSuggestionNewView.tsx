@@ -91,6 +91,7 @@ export const AiAgentGuidanceAiSuggestionNewView = ({
             onSubmit={onSubmit}
             isLoading={isGuidanceArticleUpdating || onSubmitLoading}
             sourceType="ai"
+            helpCenterId={guidanceHelpCenterId}
         />
     )
 }

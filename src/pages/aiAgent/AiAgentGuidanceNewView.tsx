@@ -32,6 +32,7 @@ export const AiAgentGuidanceNewView = ({shopName, helpCenter}: Props) => {
             isLoading={isGuidanceArticleUpdating}
             onSubmit={onSubmit}
             sourceType="scratch"
+            helpCenterId={helpCenter.id}
         />
     )
 }

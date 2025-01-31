@@ -77,6 +77,8 @@ const defaultUseAiAgentOnboardingNotification = {
     handleOnSendOrCancelNotification: jest.fn(),
     handleOnEnablementPostReceivedNotification: jest.fn(),
     handleOnPerformActionPostReceivedNotification: jest.fn(),
+    handleOnTriggerActivateAiAgentNotification: jest.fn(),
+    handleOnCancelActivateAiAgentNotification: jest.fn(),
     isLoading: false,
     isAiAgentOnboardingNotificationEnabled: true,
 }

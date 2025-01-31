@@ -4,6 +4,8 @@ import React, {useState} from 'react'
 import {SegmentEvent, logEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
+import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
+import {useGuidanceAiSuggestions} from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import BackLink from 'pages/common/components/BackLink'
 import Button from 'pages/common/components/button/Button'
@@ -34,6 +36,7 @@ type Props = {
     onDelete?: () => Promise<void>
     initialFields?: GuidanceFormFields
     sourceType: 'ai' | 'template' | 'scratch'
+    helpCenterId: number
 }
 
 export const GuidanceForm = ({
@@ -44,6 +47,7 @@ export const GuidanceForm = ({
     onDelete,
     actionType,
     sourceType,
+    helpCenterId,
 }: Props) => {
     const dispatch = useAppDispatch()
     const {routes} = useAiAgentNavigation({shopName})
@@ -69,9 +73,26 @@ export const GuidanceForm = ({
         })
     })
 
+    const {
+        guidanceArticles,
+        isLoadingAiGuidances,
+        isLoadingGuidanceArticleList,
+    } = useGuidanceAiSuggestions({
+        helpCenterId,
+        shopName,
+    })
+
+    const {
+        isLoading: isLoadingOnboardingNotificationState,
+        handleOnTriggerActivateAiAgentNotification,
+    } = useAiAgentOnboardingNotification({shopName})
+
     const isFormDirty = !_isEqual(initialFormState, formState)
 
     const isSubmitDisabled =
+        isLoadingAiGuidances ||
+        isLoadingGuidanceArticleList ||
+        isLoadingOnboardingNotificationState ||
         !formState.name ||
         !formState.content ||
         (actionType === 'update' && !isFormDirty)
@@ -120,6 +141,10 @@ export const GuidanceForm = ({
                 })
             )
             logEvents()
+
+            if (guidanceArticles.length >= 2) {
+                handleOnTriggerActivateAiAgentNotification()
+            }
             history.push(redirectTo)
         } catch (err) {
             void dispatch(

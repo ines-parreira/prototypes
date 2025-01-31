@@ -13,6 +13,7 @@ import {useFlag} from 'core/flags'
 import {shopifyIntegration} from 'fixtures/integrations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {useGetStoreApps} from 'models/workflows/queries'
+import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
@@ -35,6 +36,9 @@ jest.mock('../../hooks/useAddStoreApp')
 jest.mock('../../hooks/useUpsertAction')
 jest.mock('../../hooks/useDeleteAction')
 jest.mock('hooks/useAppDispatch')
+jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
+    useAiAgentOnboardingNotification: jest.fn(),
+}))
 
 const mockUseFlag = useFlag as jest.Mock
 
@@ -53,6 +57,9 @@ const mockUseAddStoreApp = jest.mocked(useAddStoreApp)
 const mockUseUpsertAction = jest.mocked(useUpsertAction)
 const mockUseDeleteAction = jest.mocked(useDeleteAction)
 const useAppDispatchMock = assumeMock(useAppDispatch)
+const mockUseAiAgentOnboardingNotification = jest.mocked(
+    useAiAgentOnboardingNotification
+)
 
 describe('<TemplateActionForm />', () => {
     const dispatchMock = jest.fn()
@@ -90,6 +97,18 @@ describe('<TemplateActionForm />', () => {
             isSuccess: false,
         } as unknown as ReturnType<typeof useDeleteAction>)
         useAppDispatchMock.mockReturnValue(dispatchMock)
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            isAdmin: true,
+            onboardingNotificationState: undefined,
+            handleOnSave: jest.fn(),
+            handleOnSendOrCancelNotification: jest.fn(),
+            handleOnEnablementPostReceivedNotification: jest.fn(),
+            handleOnPerformActionPostReceivedNotification: jest.fn(),
+            handleOnTriggerActivateAiAgentNotification: jest.fn(),
+            handleOnCancelActivateAiAgentNotification: jest.fn(),
+            isLoading: false,
+            isAiAgentOnboardingNotificationEnabled: true,
+        })
     })
 
     it('should render template Action form', () => {

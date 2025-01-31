@@ -22,6 +22,7 @@ import use3plIntegrations from 'pages/aiAgent/actions/hooks/use3plIntegrations'
 import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
 import {notify} from 'state/notifications/actions'
@@ -41,6 +42,9 @@ jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')
 jest.mock('pages/aiAgent/actions/hooks/use3plIntegrations')
 jest.mock('core/flags')
+jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
+    useAiAgentOnboardingNotification: jest.fn(),
+}))
 
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates
@@ -60,10 +64,26 @@ const mockUseGetStoreWorkflowsConfigurations = jest.mocked(
     useGetStoreWorkflowsConfigurations
 )
 const mockUseListActionsApps = jest.mocked(useListActionsApps)
+const mockUseAiAgentOnboardingNotification = jest.mocked(
+    useAiAgentOnboardingNotification
+)
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
 const queryClient = mockQueryClient()
+
+const defaultUseAiAgentOnboardingNotification = {
+    isAdmin: true,
+    onboardingNotificationState: undefined,
+    handleOnSave: jest.fn(),
+    handleOnSendOrCancelNotification: jest.fn(),
+    handleOnEnablementPostReceivedNotification: jest.fn(),
+    handleOnPerformActionPostReceivedNotification: jest.fn(),
+    handleOnTriggerActivateAiAgentNotification: jest.fn(),
+    handleOnCancelActivateAiAgentNotification: jest.fn(),
+    isLoading: false,
+    isAiAgentOnboardingNotificationEnabled: true,
+}
 
 describe('<CreateActionView />', () => {
     beforeEach(() => {
@@ -103,6 +123,9 @@ describe('<CreateActionView />', () => {
         mockUseListActionsApps.mockReturnValue({
             data: [],
         } as unknown as ReturnType<typeof useListActionsApps>)
+        mockUseAiAgentOnboardingNotification.mockReturnValue(
+            defaultUseAiAgentOnboardingNotification
+        )
     })
 
     it('should render create action page', () => {
@@ -850,5 +873,177 @@ describe('<CreateActionView />', () => {
         const replaceCalls = historyReplaceSpy.mock.invocationCallOrder
         const pushCalls = historyPushSpy.mock.invocationCallOrder
         expect(Math.min(...replaceCalls)).toBeLessThan(Math.min(...pushCalls))
+    })
+
+    it('should trigger call to send activate AI agent notification when successfully creating Action', () => {
+        const {rerender} = renderWithRouter(
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
+                <QueryClientProvider client={queryClient}>
+                    <CreateActionView />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
+                route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+            }
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Create Action'))
+        })
+
+        mockUseUpsertAction.mockReturnValue({
+            isLoading: false,
+            mutateAsync: jest.fn(),
+            isSuccess: true,
+        } as unknown as ReturnType<typeof useUpsertAction>)
+
+        rerender(
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
+                <QueryClientProvider client={queryClient}>
+                    <CreateActionView />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+        ).toHaveBeenCalled()
+    })
+
+    it('should not trigger call to send activate AI agent notification when creating Action is not successfull', () => {
+        const {rerender} = renderWithRouter(
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
+                <QueryClientProvider client={queryClient}>
+                    <CreateActionView />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
+                route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+            }
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Create Action'))
+        })
+
+        mockUseUpsertAction.mockReturnValue({
+            isLoading: false,
+            mutateAsync: jest.fn(),
+            isSuccess: false,
+        } as unknown as ReturnType<typeof useUpsertAction>)
+
+        rerender(
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
+                <QueryClientProvider client={queryClient}>
+                    <CreateActionView />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+        ).not.toHaveBeenCalled()
+    })
+
+    it('should trigger call to send activate AI agent notification when click on Create and test', () => {
+        const {rerender} = renderWithRouter(
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
+                <QueryClientProvider client={queryClient}>
+                    <CreateActionView />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
+                route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
+            }
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Create and test'))
+        })
+
+        mockUseUpsertAction.mockReturnValue({
+            isLoading: false,
+            mutateAsync: jest.fn(),
+            isSuccess: true,
+        } as unknown as ReturnType<typeof useUpsertAction>)
+
+        rerender(
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
+                <QueryClientProvider client={queryClient}>
+                    <CreateActionView />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+        ).toHaveBeenCalled()
+    })
+
+    it('should disable "Create Action" and "Create and test" buttons if fetching onboarding notification state is still loading', () => {
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            isLoading: true,
+        })
+
+        renderWithRouter(
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
+                <QueryClientProvider client={queryClient}>
+                    <CreateActionView />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        expect(
+            screen.getByRole('button', {name: 'Create and test'})
+        ).toBeAriaDisabled()
+        expect(
+            screen.getByRole('button', {name: 'Create Action'})
+        ).toBeAriaDisabled()
     })
 })

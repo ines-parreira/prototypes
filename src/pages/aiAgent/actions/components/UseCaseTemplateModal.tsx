@@ -11,6 +11,7 @@ import useHumanReadableOrderConditions from 'pages/aiAgent/actions/hooks/useHuma
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import {StoreWorkflowsConfiguration} from 'pages/aiAgent/actions/types'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
@@ -159,11 +160,23 @@ const UseCaseTemplateModal = ({template, onClose}: Props) => {
         history.push(routes.newAction(), configuration)
     }, [history, routes, graph, steps])
 
+    const {
+        isLoading: isLoadingOnboardingNotificationState,
+        handleOnTriggerActivateAiAgentNotification,
+    } = useAiAgentOnboardingNotification({shopName})
+
     useEffect(() => {
         if (isCreateActionSuccess) {
+            handleOnTriggerActivateAiAgentNotification()
+
             history.push(routes.actions)
         }
-    }, [isCreateActionSuccess, history, routes.actions])
+    }, [
+        isCreateActionSuccess,
+        history,
+        routes.actions,
+        handleOnTriggerActivateAiAgentNotification,
+    ])
 
     return (
         <Modal isOpen onClose={onClose} size="medium">
@@ -423,7 +436,10 @@ const UseCaseTemplateModal = ({template, onClose}: Props) => {
                     </Button>
                     <Button
                         intent="primary"
-                        isDisabled={isCreateActionLoading}
+                        isDisabled={
+                            isCreateActionLoading ||
+                            isLoadingOnboardingNotificationState
+                        }
                         onClick={handleCreateAndEnable}
                         leadingIcon="play_arrow"
                     >

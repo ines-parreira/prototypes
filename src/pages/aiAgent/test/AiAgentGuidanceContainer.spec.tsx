@@ -5,9 +5,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {AiAgentNotificationType} from 'automate/notifications/types'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {AiAgentOnboardingState} from 'models/aiAgent/types'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import history from 'pages/history'
@@ -21,9 +19,7 @@ import {
     GUIDANCE_ARTICLE_LIMIT_WARNING,
 } from '../constants'
 import {getGuidanceArticleFixture} from '../fixtures/guidanceArticle.fixture'
-import {getOnboardingNotificationStateFixture} from '../fixtures/onboardingNotificationState.fixture'
 import {getStoreConfigurationFixture} from '../fixtures/storeConfiguration.fixtures'
-import {useAiAgentOnboardingNotification} from '../hooks/useAiAgentOnboardingNotification'
 import {useGuidanceAiSuggestions} from '../hooks/useGuidanceAiSuggestions'
 import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
 import {useGuidanceArticles} from '../hooks/useGuidanceArticles'
@@ -50,10 +46,6 @@ jest.mock('../providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
 }))
 
-jest.mock('../hooks/useAiAgentOnboardingNotification', () => ({
-    useAiAgentOnboardingNotification: jest.fn(),
-}))
-
 jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
 
 jest.mock('models/helpCenter/queries')
@@ -74,9 +66,6 @@ const mockedUseAiAgentStoreConfigurationContext = assumeMock(
     useAiAgentStoreConfigurationContext
 )
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
-const mockUseAiAgentOnboardingNotification = jest.mocked(
-    useAiAgentOnboardingNotification
-)
 
 const helpCenter = {...getHelpCentersResponseFixture.data[0], type: 'guidance'}
 const defaultGuidanceArticleProps: ReturnType<typeof useGuidanceArticles> = {
@@ -91,17 +80,6 @@ const defaultGuidanceArticleMutationProps: ReturnType<
     updateGuidanceArticle: jest.fn(),
     isGuidanceArticleUpdating: false,
     isGuidanceArticleDeleting: false,
-}
-
-const defaultUseAiAgentOnboardingNotification = {
-    isAdmin: true,
-    onboardingNotificationState: undefined,
-    handleOnSave: jest.fn(),
-    handleOnSendOrCancelNotification: jest.fn(),
-    handleOnEnablementPostReceivedNotification: jest.fn(),
-    handleOnPerformActionPostReceivedNotification: jest.fn(),
-    isLoading: false,
-    isAiAgentOnboardingNotificationEnabled: true,
 }
 
 const defaultGuidanceAiSuggestionsProps: ReturnType<
@@ -177,10 +155,6 @@ describe('<AiAgentGuidanceContainer />', () => {
         mockUseEnableAiAgent.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),
         })
-
-        mockUseAiAgentOnboardingNotification.mockReturnValue(
-            defaultUseAiAgentOnboardingNotification
-        )
     })
 
     it('should render loader', () => {
@@ -469,138 +443,6 @@ describe('<AiAgentGuidanceContainer />', () => {
                     locale: guidanceArticles[0].locale,
                 }
             )
-        })
-
-        it('should trigger activate AI agent notification when there are at least 3 guidances in the list', () => {
-            const guidanceArticles = Array(3)
-                .fill(null)
-                .map((_, index) => getGuidanceArticleFixture(index))
-            mockedUseGuidanceAiSuggestions.mockReturnValue({
-                ...defaultGuidanceAiSuggestionsProps,
-                isGuidancesAndAIGuidances: false,
-                guidanceArticles,
-            })
-            mockUseAiAgentOnboardingNotification.mockReturnValue({
-                ...defaultUseAiAgentOnboardingNotification,
-                onboardingNotificationState:
-                    getOnboardingNotificationStateFixture(),
-            })
-
-            renderComponent()
-
-            expect(
-                defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
-            ).toHaveBeenCalledWith({
-                aiAgentNotificationType:
-                    AiAgentNotificationType.ActivateAiAgent,
-            })
-        })
-
-        it('should not trigger activate AI agent notification when there are less than 3 guidances in the list', () => {
-            const guidanceArticles = Array(2)
-                .fill(null)
-                .map((_, index) => getGuidanceArticleFixture(index))
-            mockedUseGuidanceAiSuggestions.mockReturnValue({
-                ...defaultGuidanceAiSuggestionsProps,
-                isGuidancesAndAIGuidances: false,
-                guidanceArticles,
-            })
-
-            renderComponent()
-
-            expect(
-                defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
-            ).not.toHaveBeenCalled()
-        })
-
-        it('should not trigger activate AI agent notification when merchant already fully onboarded', () => {
-            const guidanceArticles = Array(3)
-                .fill(null)
-                .map((_, index) => getGuidanceArticleFixture(index))
-            mockedUseGuidanceAiSuggestions.mockReturnValue({
-                ...defaultGuidanceAiSuggestionsProps,
-                isGuidancesAndAIGuidances: false,
-                guidanceArticles,
-            })
-            mockUseAiAgentOnboardingNotification.mockReturnValue({
-                ...defaultUseAiAgentOnboardingNotification,
-                onboardingNotificationState:
-                    getOnboardingNotificationStateFixture({
-                        onboardingState: AiAgentOnboardingState.FullyOnboarded,
-                    }),
-            })
-
-            renderComponent()
-
-            expect(
-                defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
-            ).not.toHaveBeenCalled()
-        })
-
-        it('should not trigger activate AI agent notification when there is no onboardingNotificationState', () => {
-            const guidanceArticles = Array(3)
-                .fill(null)
-                .map((_, index) => getGuidanceArticleFixture(index))
-            mockedUseGuidanceAiSuggestions.mockReturnValue({
-                ...defaultGuidanceAiSuggestionsProps,
-                isGuidancesAndAIGuidances: false,
-                guidanceArticles,
-            })
-
-            renderComponent()
-
-            expect(
-                defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
-            ).not.toHaveBeenCalled()
-        })
-
-        it('should not trigger activate AI agent notification when merchant already activated AI agent previously', () => {
-            const guidanceArticles = Array(3)
-                .fill(null)
-                .map((_, index) => getGuidanceArticleFixture(index))
-            mockedUseGuidanceAiSuggestions.mockReturnValue({
-                ...defaultGuidanceAiSuggestionsProps,
-                isGuidancesAndAIGuidances: false,
-                guidanceArticles,
-            })
-            mockUseAiAgentOnboardingNotification.mockReturnValue({
-                ...defaultUseAiAgentOnboardingNotification,
-                onboardingNotificationState:
-                    getOnboardingNotificationStateFixture({
-                        onboardingState: AiAgentOnboardingState.Activated,
-                    }),
-            })
-
-            renderComponent()
-
-            expect(
-                defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
-            ).not.toHaveBeenCalled()
-        })
-
-        it('should not trigger activate AI agent notification when merchant already received the notification previously', () => {
-            const guidanceArticles = Array(3)
-                .fill(null)
-                .map((_, index) => getGuidanceArticleFixture(index))
-            mockedUseGuidanceAiSuggestions.mockReturnValue({
-                ...defaultGuidanceAiSuggestionsProps,
-                isGuidancesAndAIGuidances: false,
-                guidanceArticles,
-            })
-            mockUseAiAgentOnboardingNotification.mockReturnValue({
-                ...defaultUseAiAgentOnboardingNotification,
-                onboardingNotificationState:
-                    getOnboardingNotificationStateFixture({
-                        activateAiAgentNotificationReceivedDatetime:
-                            '2024-12-01T12:00:00Z',
-                    }),
-            })
-
-            renderComponent()
-
-            expect(
-                defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
-            ).not.toHaveBeenCalled()
         })
     })
 })

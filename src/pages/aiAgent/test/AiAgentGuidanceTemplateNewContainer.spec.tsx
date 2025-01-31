@@ -1,4 +1,4 @@
-import {screen} from '@testing-library/react'
+import {screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
@@ -7,8 +7,12 @@ import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/
 import {renderWithRouter} from 'utils/testing'
 
 import {AiAgentGuidanceTemplateNewContainer} from '../AiAgentGuidanceTemplateNewContainer'
+import {getAIGuidanceFixture} from '../fixtures/aiGuidance.fixture'
+import {getGuidanceArticleFixture} from '../fixtures/guidanceArticle.fixture'
 import {getGuidanceTemplateFixture} from '../fixtures/guidanceTemplate.fixture'
 import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
+import {useAiAgentOnboardingNotification} from '../hooks/useAiAgentOnboardingNotification'
+import {useGuidanceAiSuggestions} from '../hooks/useGuidanceAiSuggestions'
 import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
 import {useGuidanceTemplate} from '../hooks/useGuidanceTemplate'
 
@@ -20,6 +24,12 @@ jest.mock('../hooks/useGuidanceTemplate', () => ({
 }))
 jest.mock('../hooks/useGuidanceArticleMutation', () => ({
     useGuidanceArticleMutation: jest.fn(),
+}))
+jest.mock('../hooks/useGuidanceAiSuggestions', () => ({
+    useGuidanceAiSuggestions: jest.fn(),
+}))
+jest.mock('../hooks/useAiAgentOnboardingNotification', () => ({
+    useAiAgentOnboardingNotification: jest.fn(),
 }))
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock(
@@ -41,6 +51,10 @@ const mockedUseAiAgentHelpCenter = jest.mocked(useAiAgentHelpCenter)
 const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 const mockedUseGuidanceTemplate = jest.mocked(useGuidanceTemplate)
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
+const mockedUseGuidanceAiSuggestions = jest.mocked(useGuidanceAiSuggestions)
+const mockUseAiAgentOnboardingNotification = jest.mocked(
+    useAiAgentOnboardingNotification
+)
 
 const helpCenter = getHelpCentersResponseFixture.data[0]
 const guidanceTemplate = getGuidanceTemplateFixture('order-status')
@@ -52,6 +66,38 @@ const defaultGuidanceArticleMutationProps: ReturnType<
     updateGuidanceArticle: jest.fn(),
     isGuidanceArticleUpdating: false,
     isGuidanceArticleDeleting: false,
+}
+
+const defaultUseAiAgentOnboardingNotification = {
+    isAdmin: true,
+    onboardingNotificationState: undefined,
+    handleOnSave: jest.fn(),
+    handleOnSendOrCancelNotification: jest.fn(),
+    handleOnEnablementPostReceivedNotification: jest.fn(),
+    handleOnPerformActionPostReceivedNotification: jest.fn(),
+    handleOnTriggerActivateAiAgentNotification: jest.fn(),
+    handleOnCancelActivateAiAgentNotification: jest.fn(),
+    isLoading: false,
+    isAiAgentOnboardingNotificationEnabled: true,
+}
+
+const defaultUseGuidanceAiSuggestions = {
+    guidanceAISuggestions: [
+        getAIGuidanceFixture('id-1'),
+        getAIGuidanceFixture('id-2'),
+    ],
+    isLoadingAiGuidances: false,
+    invalidateAiGuidances: jest.fn(),
+    guidanceArticles: [
+        getGuidanceArticleFixture(1),
+        getGuidanceArticleFixture(2),
+    ],
+    isLoadingGuidanceArticleList: false,
+    isAllAIGuidancesUsed: undefined,
+    isEmptyStateNoAIGuidances: false,
+    isEmptyStateAIGuidances: false,
+    isGuidancesOnly: false,
+    isGuidancesAndAIGuidances: false,
 }
 
 const renderComponent = () => {
@@ -71,6 +117,12 @@ describe('<AiAgentGuidanceTemplateNewContainer />', () => {
         mockUseEnableAiAgent.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),
         })
+        mockedUseGuidanceAiSuggestions.mockReturnValue(
+            defaultUseGuidanceAiSuggestions
+        )
+        mockUseAiAgentOnboardingNotification.mockReturnValue(
+            defaultUseAiAgentOnboardingNotification
+        )
     })
 
     it('should render loader when no help center', () => {
@@ -108,5 +160,64 @@ describe('<AiAgentGuidanceTemplateNewContainer />', () => {
                 content: guidanceTemplate.content,
             })
         )
+    })
+
+    it('should trigger call to send activate AI agent notification when created more than 3 guidance', async () => {
+        renderComponent()
+
+        expect(screen.getByText('Create Guidance')).toBeEnabled()
+
+        userEvent.click(screen.getByText('Create Guidance'))
+
+        await waitFor(() => {
+            expect(
+                defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+            ).toHaveBeenCalled()
+        })
+    })
+
+    it('should trigger call to send activate AI agent notification when click on Create and test', async () => {
+        renderComponent()
+
+        expect(screen.getByText('Create And Test')).toBeEnabled()
+
+        userEvent.click(screen.getByText('Create And Test'))
+
+        await waitFor(() => {
+            expect(
+                defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+            ).toHaveBeenCalled()
+        })
+    })
+
+    it('should not trigger call to send activate AI agent notification when created less than 3 guidance', async () => {
+        mockedUseGuidanceAiSuggestions.mockReturnValue({
+            ...defaultUseGuidanceAiSuggestions,
+            guidanceArticles: [getGuidanceArticleFixture(1)],
+        })
+
+        renderComponent()
+
+        expect(screen.getByText('Create Guidance')).toBeEnabled()
+
+        userEvent.click(screen.getByText('Create Guidance'))
+
+        await waitFor(() => {
+            expect(
+                defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+            ).not.toHaveBeenCalled()
+        })
+    })
+
+    it('should disable "Create Guidance" and "Create And Test" buttons if fetching onboarding notification state is still loading', () => {
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            isLoading: true,
+        })
+
+        renderComponent()
+
+        expect(screen.getByText('Create Guidance')).toBeAriaDisabled()
+        expect(screen.getByText('Create And Test')).toBeAriaDisabled()
     })
 })

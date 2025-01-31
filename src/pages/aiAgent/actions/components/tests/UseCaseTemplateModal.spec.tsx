@@ -7,6 +7,7 @@ import {ulid} from 'ulidx'
 
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
+import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
 import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
@@ -20,6 +21,9 @@ jest.mock('models/workflows/queries')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 jest.mock('pages/aiAgent/actions/hooks/useUpsertAction')
 jest.mock('pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled')
+jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
+    useAiAgentOnboardingNotification: jest.fn(),
+}))
 
 const queryClient = mockQueryClient()
 
@@ -29,6 +33,9 @@ const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates
 )
 const mockUseGetIsActionStepEnabled = jest.mocked(useGetIsActionStepEnabled)
+const mockUseAiAgentOnboardingNotification = jest.mocked(
+    useAiAgentOnboardingNotification
+)
 
 const b = new WorkflowConfigurationBuilder({
     id: ulid(),
@@ -126,6 +133,19 @@ b.insertReusableLLMPromptCallConditionAndEndStepAndSelect('error', {
 
 const template = b.build<ActionTemplate>()
 
+const defaultUseAiAgentOnboardingNotification = {
+    isAdmin: true,
+    onboardingNotificationState: undefined,
+    handleOnSave: jest.fn(),
+    handleOnSendOrCancelNotification: jest.fn(),
+    handleOnEnablementPostReceivedNotification: jest.fn(),
+    handleOnPerformActionPostReceivedNotification: jest.fn(),
+    handleOnTriggerActivateAiAgentNotification: jest.fn(),
+    handleOnCancelActivateAiAgentNotification: jest.fn(),
+    isLoading: false,
+    isAiAgentOnboardingNotificationEnabled: true,
+}
+
 describe('<UseCaseTemplateModal />', () => {
     beforeEach(() => {
         mockUseApps.mockReturnValue({
@@ -212,6 +232,9 @@ describe('<UseCaseTemplateModal />', () => {
         } as unknown as ReturnType<typeof useGetWorkflowConfigurationTemplates>)
         mockUseGetIsActionStepEnabled.mockReturnValue(
             jest.fn().mockReturnValue(true)
+        )
+        mockUseAiAgentOnboardingNotification.mockReturnValue(
+            defaultUseAiAgentOnboardingNotification
         )
     })
 
@@ -599,5 +622,90 @@ describe('<UseCaseTemplateModal />', () => {
 
         expect(screen.getByText('Shopify')).toBeInTheDocument()
         expect(screen.queryByText('Some app')).not.toBeInTheDocument()
+    })
+
+    it('should trigger call to send activate AI agent notification when successfully creating Action', () => {
+        mockUseUpsertAction.mockReturnValue({
+            isLoading: false,
+            mutateAsync: jest.fn(),
+            isSuccess: true,
+        } as unknown as ReturnType<typeof useUpsertAction>)
+
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <UseCaseTemplateModal onClose={jest.fn()} template={template} />
+            </QueryClientProvider>
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Shopify'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Continue'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Create and enable'))
+        })
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+        ).toHaveBeenCalled()
+    })
+
+    it('should not trigger call to send activate AI agent notification when creating Action is not successfull', () => {
+        mockUseUpsertAction.mockReturnValue({
+            isLoading: false,
+            mutateAsync: jest.fn(),
+            isSuccess: false,
+        } as unknown as ReturnType<typeof useUpsertAction>)
+
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <UseCaseTemplateModal onClose={jest.fn()} template={template} />
+            </QueryClientProvider>
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Shopify'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Continue'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Create and enable'))
+        })
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+        ).not.toHaveBeenCalled()
+    })
+
+    it('should disable "Create and enable" button if fetching onboarding notification state is still loading', () => {
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            isLoading: true,
+        })
+
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <UseCaseTemplateModal onClose={jest.fn()} template={template} />
+            </QueryClientProvider>
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Shopify'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Continue'))
+        })
+
+        expect(
+            screen.getByRole('button', {name: 'Create and enable'})
+        ).toBeAriaDisabled()
     })
 })

@@ -73,6 +73,7 @@ const defaultState: Partial<RootState> = {
 const mockStore = configureMockStore([thunk])
 
 describe('useAiAgentOnboardingNotification', () => {
+    const logEventSpy = jest.spyOn(notificationTracker, 'logNotificationEvent')
     const mockDispatch = jest.fn()
     const mockCreateOnboardingNotificationState = jest
         .fn()
@@ -89,7 +90,7 @@ describe('useAiAgentOnboardingNotification', () => {
         mockUseAppDispatch.mockReturnValue(mockDispatch)
 
         mockUseOnboardingnotificationState.mockReturnValue({
-            onboardingNotificationState: undefined,
+            onboardingNotificationState: mockedOnboardingNotificationState,
             isLoading: false,
         })
 
@@ -119,39 +120,7 @@ describe('useAiAgentOnboardingNotification', () => {
         expect(result.current.isAiAgentOnboardingNotificationEnabled).toBe(true)
     })
 
-    it('should handle save (createOnboardingNotificationState) without error', async () => {
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
-            {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
-            }
-        )
-
-        const payload = {
-            onboardingState: AiAgentOnboardingState.Activated,
-        }
-
-        await act(async () => {
-            await result.current.handleOnSave(payload)
-        })
-
-        expect(mockCreateOnboardingNotificationState).toHaveBeenCalledWith({
-            ...payload,
-            shopName: SHOP_NAME,
-        })
-        expect(mockDispatch).not.toHaveBeenCalledWith(
-            notify({
-                status: NotificationStatus.Error,
-                message: 'Failed to save onboarding notification state',
-            })
-        )
-    })
-
-    it('should handle save (updateOnboardingNotificationState) without error', async () => {
+    it('should handle save without error', async () => {
         mockUseOnboardingnotificationState.mockReturnValue({
             onboardingNotificationState: mockedOnboardingNotificationState,
             isLoading: false,
@@ -189,15 +158,15 @@ describe('useAiAgentOnboardingNotification', () => {
     })
 
     it('should handle save with error', async () => {
-        const mockErrorCreateOnboardingNotificationState = jest
+        const mockErrorUpsertOnboardingNotificationState = jest
             .fn()
             .mockRejectedValueOnce(new Error('Save error'))
         mockUseOnboardingNotificationStateMutation.mockReturnValue({
             isLoading: false,
             createOnboardingNotificationState:
-                mockErrorCreateOnboardingNotificationState,
+                mockCreateOnboardingNotificationState,
             upsertOnboardingNotificationState:
-                mockUpsertOnboardingNotificationState,
+                mockErrorUpsertOnboardingNotificationState,
             error: null,
         })
 
@@ -213,6 +182,7 @@ describe('useAiAgentOnboardingNotification', () => {
         )
 
         const payload = {
+            ...mockedOnboardingNotificationState,
             onboardingState: AiAgentOnboardingState.Activated,
         }
 
@@ -220,7 +190,7 @@ describe('useAiAgentOnboardingNotification', () => {
             await result.current.handleOnSave(payload)
         })
 
-        expect(mockErrorCreateOnboardingNotificationState).toHaveBeenCalledWith(
+        expect(mockErrorUpsertOnboardingNotificationState).toHaveBeenCalledWith(
             {
                 ...payload,
                 shopName: SHOP_NAME,
@@ -235,11 +205,6 @@ describe('useAiAgentOnboardingNotification', () => {
     })
 
     it('should log notification event when handleOnSendOrCancelNotification is called', () => {
-        const logEventSpy = jest.spyOn(
-            notificationTracker,
-            'logNotificationEvent'
-        )
-
         const {result} = renderHook(
             () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
             {
@@ -325,29 +290,6 @@ describe('useAiAgentOnboardingNotification', () => {
         })
 
         expect(logEvent).not.toHaveBeenCalled()
-    })
-
-    it('should not call createOnboardingNotificationState when shopName is not provided', async () => {
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: undefined}),
-            {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
-            }
-        )
-
-        const payload = {
-            onboardingState: AiAgentOnboardingState.Activated,
-        }
-
-        await act(async () => {
-            await result.current.handleOnSave(payload)
-        })
-
-        expect(mockCreateOnboardingNotificationState).not.toHaveBeenCalled()
     })
 
     it('should not call updateOnboardingNotificationState when shopName is not provided', async () => {
@@ -602,6 +544,310 @@ describe('useAiAgentOnboardingNotification', () => {
             )
         })
 
+        expect(logEvent).not.toHaveBeenCalled()
+    })
+
+    it('should trigger call to send activate AI agent notification when handleOnTriggerActivateAiAgentNotification is called', () => {
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: {
+                ...mockedOnboardingNotificationState,
+                onboardingState: AiAgentOnboardingState.FinishedSetup,
+            },
+            isLoading: false,
+        })
+
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        act(() => {
+            result.current.handleOnTriggerActivateAiAgentNotification()
+        })
+
+        const notificationType = AiAgentNotificationType.ActivateAiAgent
+
+        expect(logEventSpy).toHaveBeenCalledWith(NotificationEvent, {
+            command_type: 'send-notification',
+            notification_workflow: AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
+            notification_type: AI_AGENT_SET_AND_OPTIMIZED_TYPE,
+            idempotency_key: expect.stringContaining(
+                `idempotent:${ACCOUNT_DOMAIN}+${SHOP_NAME}+${notificationType}`
+            ),
+            notification_data: {
+                ai_agent_notification_type: notificationType,
+                shop_name: SHOP_NAME,
+                shop_type: 'shopify',
+            },
+            cancellation_key: `cancel:${ACCOUNT_DOMAIN}+${SHOP_NAME}+${notificationType}`,
+        })
+    })
+
+    it('should not trigger call to send activate AI agent notification when AiAgentOnboardingNotification feature flag is disabled', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentOnboardingNotification]: false,
+        })
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: {
+                ...mockedOnboardingNotificationState,
+                onboardingState: AiAgentOnboardingState.FinishedSetup,
+            },
+            isLoading: false,
+        })
+
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        act(() => {
+            result.current.handleOnTriggerActivateAiAgentNotification()
+        })
+
+        expect(logEventSpy).not.toHaveBeenCalled()
+    })
+
+    it('should not trigger call to send activate AI agent notification when onboarding state is already activated', () => {
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: {
+                ...mockedOnboardingNotificationState,
+                onboardingState: AiAgentOnboardingState.Activated,
+            },
+            isLoading: false,
+        })
+
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        act(() => {
+            result.current.handleOnTriggerActivateAiAgentNotification()
+        })
+
+        expect(logEventSpy).not.toHaveBeenCalled()
+    })
+
+    it('should not trigger call to send activate AI agent notification when onboarding state is already fully onboarded', () => {
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: {
+                ...mockedOnboardingNotificationState,
+                onboardingState: AiAgentOnboardingState.FullyOnboarded,
+            },
+            isLoading: false,
+        })
+
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        act(() => {
+            result.current.handleOnTriggerActivateAiAgentNotification()
+        })
+
+        expect(logEventSpy).not.toHaveBeenCalled()
+    })
+
+    it('should not trigger call to send activate AI agent notification when activate notification is already received', () => {
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: {
+                ...mockedOnboardingNotificationState,
+                activateAiAgentNotificationReceivedDatetime:
+                    new Date().toISOString(),
+            },
+            isLoading: false,
+        })
+
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        act(() => {
+            result.current.handleOnTriggerActivateAiAgentNotification()
+        })
+
+        expect(logEventSpy).not.toHaveBeenCalled()
+    })
+
+    it('should trigger call to cancel activate AI agent notification when handleOnCancelActivateAiAgentNotification is called', () => {
+        const mockedValue = {
+            ...mockedOnboardingNotificationState,
+            activateAiAgentNotificationReceivedDatetime: new Date(
+                Date.now() - 7 * NUMBER_OF_MILLISECONDS_IN_A_DAY
+            ).toISOString(),
+            onboardingState: AiAgentOnboardingState.FinishedSetup,
+        }
+
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: mockedValue,
+            isLoading: false,
+        })
+
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        act(() => {
+            result.current.handleOnCancelActivateAiAgentNotification()
+        })
+
+        const notificationType = AiAgentNotificationType.ActivateAiAgent
+
+        expect(logEventSpy).toHaveBeenCalledWith(NotificationEvent, {
+            command_type: 'cancel-notification',
+            notification_workflow: AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
+            notification_type: AI_AGENT_SET_AND_OPTIMIZED_TYPE,
+            idempotency_key: expect.stringContaining(
+                `idempotent:${ACCOUNT_DOMAIN}+${SHOP_NAME}+${notificationType}`
+            ),
+            notification_data: {},
+            cancellation_key: `cancel:${ACCOUNT_DOMAIN}+${SHOP_NAME}+${notificationType}`,
+        })
+
+        expect(mockUpsertOnboardingNotificationState).toHaveBeenCalledWith({
+            ...mockedValue,
+            onboardingState: AiAgentOnboardingState.Activated,
+            firstActivationDatetime: expect.any(String),
+        })
+
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentEnablementPostReceivedOnboardingNotification
+        )
+
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentActionPerformedPostReceivedOnboardingNotification,
+            {
+                type: AiAgentNotificationType.ActivateAiAgent,
+            }
+        )
+    })
+
+    it('should not trigger call to cancel activate AI agent notification when AiAgentOnboardingNotification feature flag is disabled', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentOnboardingNotification]: false,
+        })
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: {
+                ...mockedOnboardingNotificationState,
+                onboardingState: AiAgentOnboardingState.FinishedSetup,
+            },
+            isLoading: false,
+        })
+
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        act(() => {
+            result.current.handleOnCancelActivateAiAgentNotification()
+        })
+
+        expect(logEventSpy).not.toHaveBeenCalled()
+        expect(mockUpsertOnboardingNotificationState).not.toHaveBeenCalled()
+        expect(logEvent).not.toHaveBeenCalled()
+    })
+
+    it('should not trigger call to cancel activate AI agent notification when onboarding state is already activated', () => {
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: {
+                ...mockedOnboardingNotificationState,
+                onboardingState: AiAgentOnboardingState.Activated,
+            },
+            isLoading: false,
+        })
+
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        act(() => {
+            result.current.handleOnCancelActivateAiAgentNotification()
+        })
+
+        expect(logEventSpy).not.toHaveBeenCalled()
+        expect(mockUpsertOnboardingNotificationState).not.toHaveBeenCalled()
+        expect(logEvent).not.toHaveBeenCalled()
+    })
+
+    it('should not trigger call to cancel activate AI agent notification when onboarding state is already fully onboarded', () => {
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: {
+                ...mockedOnboardingNotificationState,
+                onboardingState: AiAgentOnboardingState.FullyOnboarded,
+            },
+            isLoading: false,
+        })
+
+        const {result} = renderHook(
+            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        act(() => {
+            result.current.handleOnCancelActivateAiAgentNotification()
+        })
+
+        expect(logEventSpy).not.toHaveBeenCalled()
+        expect(mockUpsertOnboardingNotificationState).not.toHaveBeenCalled()
         expect(logEvent).not.toHaveBeenCalled()
     })
 })

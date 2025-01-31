@@ -14,6 +14,7 @@ import {
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
@@ -42,9 +43,15 @@ jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
         aiAgentTicketViewId: 1,
     }),
 }))
+jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
+    useAiAgentOnboardingNotification: jest.fn(),
+}))
 
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates
+)
+const mockUseAiAgentOnboardingNotification = jest.mocked(
+    useAiAgentOnboardingNotification
 )
 const mockUseGetActionsApp = jest.mocked(useGetActionsApp)
 const mockUseGetActionAppIntegration = jest.mocked(useGetActionAppIntegration)
@@ -158,6 +165,18 @@ mockUseApps.mockReturnValue({
 } as unknown as ReturnType<typeof useApps>)
 mockUseEnableAiAgent.mockReturnValue({
     updateSettingsAfterAiAgentEnabled: jest.fn(),
+})
+mockUseAiAgentOnboardingNotification.mockReturnValue({
+    isAdmin: true,
+    onboardingNotificationState: undefined,
+    handleOnSave: jest.fn(),
+    handleOnSendOrCancelNotification: jest.fn(),
+    handleOnEnablementPostReceivedNotification: jest.fn(),
+    handleOnPerformActionPostReceivedNotification: jest.fn(),
+    handleOnTriggerActivateAiAgentNotification: jest.fn(),
+    handleOnCancelActivateAiAgentNotification: jest.fn(),
+    isLoading: false,
+    isAiAgentOnboardingNotificationEnabled: true,
 })
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])()

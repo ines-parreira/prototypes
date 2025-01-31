@@ -1,16 +1,23 @@
-import {render, screen} from '@testing-library/react'
+import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
+import {AiAgentNotificationType} from 'automate/notifications/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useSearchParam} from 'hooks/useSearchParam'
 import {useSearchCustomer} from 'models/aiAgent/queries'
+import {
+    AiAgentOnboardingState,
+    OnboardingNotificationState,
+} from 'models/aiAgent/types'
 import {
     MessageType,
     PlaygroundPromptType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
+
+import {getOnboardingNotificationStateFixture} from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 
 import {
     CustomerHttpIntegrationDataMock,
@@ -72,6 +79,19 @@ const defaultUsePlaygroundFormProps = {
     disabledMessage: undefined,
 }
 
+const defaultUseAiAgentOnboardingNotification = {
+    isAdmin: true,
+    onboardingNotificationState: getOnboardingNotificationStateFixture(),
+    handleOnSave: jest.fn(),
+    handleOnSendOrCancelNotification: jest.fn(),
+    handleOnEnablementPostReceivedNotification: jest.fn(),
+    handleOnPerformActionPostReceivedNotification: jest.fn(),
+    handleOnTriggerActivateAiAgentNotification: jest.fn(),
+    handleOnCancelActivateAiAgentNotification: jest.fn(),
+    isLoading: false,
+    isAiAgentOnboardingNotificationEnabled: true,
+}
+
 const renderComponent = () => {
     render(
         <PlaygroundChat
@@ -96,16 +116,9 @@ describe('PlaygroundChat', () => {
             isKnowledgeBaseEmpty: false,
             disabledMessage: undefined,
         })
-        mockUseAiAgentOnboardingNotification.mockReturnValue({
-            isAdmin: true,
-            isLoading: false,
-            onboardingNotificationState: undefined,
-            handleOnSave: jest.fn(),
-            handleOnSendOrCancelNotification: jest.fn(),
-            handleOnEnablementPostReceivedNotification: jest.fn(),
-            handleOnPerformActionPostReceivedNotification: jest.fn(),
-            isAiAgentOnboardingNotificationEnabled: true,
-        })
+        mockUseAiAgentOnboardingNotification.mockReturnValue(
+            defaultUseAiAgentOnboardingNotification
+        )
 
         mockFlags({
             [FeatureFlagKey.AiAgentChatTestMode]: true,
@@ -161,6 +174,238 @@ describe('PlaygroundChat', () => {
         )
         userEvent.click(await screen.findByText(customer.address))
         expect(screen.getByDisplayValue(customer.address)).toBeInTheDocument()
+    })
+
+    it('should save the test datetime when an admin performed test', () => {
+        mockedUsePlaygroundForm.mockReturnValue({
+            ...defaultUsePlaygroundFormProps,
+            formValues: {
+                message: 'Hello',
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+            },
+            isFormValid: true,
+        })
+
+        renderComponent()
+
+        userEvent.click(screen.getByRole('button', {name: 'Send'}))
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSave
+        ).toHaveBeenCalledWith({
+            onboardingState: AiAgentOnboardingState.FinishedSetup,
+            testBeforeActivationDatetimes: [expect.any(String)],
+        })
+    })
+
+    it('should not save the test datetime when user without admin role performed test', () => {
+        mockedUsePlaygroundForm.mockReturnValue({
+            ...defaultUsePlaygroundFormProps,
+            formValues: {
+                message: 'Hello',
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+            },
+            isFormValid: true,
+        })
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            isAdmin: false,
+        })
+
+        renderComponent()
+
+        userEvent.click(screen.getByRole('button', {name: 'Send'}))
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSave
+        ).not.toHaveBeenCalled()
+    })
+
+    it('should not save the test datetime when AiAgentOnboardingNotification feature flag is disable', () => {
+        mockedUsePlaygroundForm.mockReturnValue({
+            ...defaultUsePlaygroundFormProps,
+            formValues: {
+                message: 'Hello',
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+            },
+            isFormValid: true,
+        })
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            isAiAgentOnboardingNotificationEnabled: false,
+        })
+
+        renderComponent()
+
+        userEvent.click(screen.getByRole('button', {name: 'Send'}))
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSave
+        ).not.toHaveBeenCalled()
+    })
+
+    it('should not save the test datetime when it is already fully onboarded', () => {
+        mockedUsePlaygroundForm.mockReturnValue({
+            ...defaultUsePlaygroundFormProps,
+            formValues: {
+                message: 'Hello',
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+            },
+            isFormValid: true,
+        })
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            onboardingNotificationState: getOnboardingNotificationStateFixture({
+                onboardingState: AiAgentOnboardingState.FullyOnboarded,
+            }),
+        })
+
+        renderComponent()
+
+        userEvent.click(screen.getByRole('button', {name: 'Send'}))
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSave
+        ).not.toHaveBeenCalled()
+    })
+
+    it('should not save the test datetime when it is already activated', () => {
+        mockedUsePlaygroundForm.mockReturnValue({
+            ...defaultUsePlaygroundFormProps,
+            formValues: {
+                message: 'Hello',
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+            },
+            isFormValid: true,
+        })
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            onboardingNotificationState: getOnboardingNotificationStateFixture({
+                onboardingState: AiAgentOnboardingState.Activated,
+            }),
+        })
+
+        renderComponent()
+
+        userEvent.click(screen.getByRole('button', {name: 'Send'}))
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSave
+        ).not.toHaveBeenCalled()
+    })
+
+    it('should not save the test datetime when activate notification is already received previously', () => {
+        mockedUsePlaygroundForm.mockReturnValue({
+            ...defaultUsePlaygroundFormProps,
+            formValues: {
+                message: 'Hello',
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+            },
+            isFormValid: true,
+        })
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            onboardingNotificationState: getOnboardingNotificationStateFixture({
+                activateAiAgentNotificationReceivedDatetime:
+                    '2021-09-01T00:00:00Z',
+            }),
+        })
+
+        renderComponent()
+
+        userEvent.click(screen.getByRole('button', {name: 'Send'}))
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSave
+        ).not.toHaveBeenCalled()
+    })
+
+    it('should trigger call to send activate AI agent notification when user performed at least 5 tests', async () => {
+        mockedUsePlaygroundForm.mockReturnValue({
+            ...defaultUsePlaygroundFormProps,
+            formValues: {
+                message: 'Hello',
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+            },
+            isFormValid: true,
+        })
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            onboardingNotificationState: {
+                ...defaultUseAiAgentOnboardingNotification.onboardingNotificationState,
+                testBeforeActivationDatetimes: [
+                    '2021-09-01T00:00:00Z',
+                    '2021-09-02T00:00:00Z',
+                    '2021-09-03T00:00:00Z',
+                    '2021-09-04T00:00:00Z',
+                ],
+            },
+            handleOnSave: jest
+                .fn()
+                .mockImplementation(
+                    (payload: Partial<OnboardingNotificationState>) => ({
+                        ...defaultUseAiAgentOnboardingNotification.onboardingNotificationState,
+                        testBeforeActivationDatetimes: [
+                            ...(payload.testBeforeActivationDatetimes || []),
+                        ],
+                    })
+                ),
+        })
+
+        renderComponent()
+
+        userEvent.click(screen.getByRole('button', {name: 'Send'}))
+
+        await waitFor(() => {
+            expect(
+                defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+            ).toHaveBeenCalledWith({
+                aiAgentNotificationType:
+                    AiAgentNotificationType.ActivateAiAgent,
+            })
+        })
+    })
+
+    it('should not trigger call to send activate AI agent notification when user performed less than 5 tests', async () => {
+        mockedUsePlaygroundForm.mockReturnValue({
+            ...defaultUsePlaygroundFormProps,
+            formValues: {
+                message: 'Hello',
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+            },
+            isFormValid: true,
+        })
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            ...defaultUseAiAgentOnboardingNotification,
+            onboardingNotificationState: {
+                ...defaultUseAiAgentOnboardingNotification.onboardingNotificationState,
+                testBeforeActivationDatetimes: [
+                    '2021-09-01T00:00:00Z',
+                    '2021-09-02T00:00:00Z',
+                    '2021-09-03T00:00:00Z',
+                ],
+            },
+            handleOnSave: jest
+                .fn()
+                .mockImplementation(
+                    (payload: Partial<OnboardingNotificationState>) => ({
+                        ...defaultUseAiAgentOnboardingNotification.onboardingNotificationState,
+                        testBeforeActivationDatetimes: [
+                            ...(payload.testBeforeActivationDatetimes || []),
+                        ],
+                    })
+                ),
+        })
+
+        renderComponent()
+
+        userEvent.click(screen.getByRole('button', {name: 'Send'}))
+
+        await waitFor(() => {
+            expect(
+                defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+            ).not.toHaveBeenCalled()
+        })
     })
 
     describe('Chat', () => {

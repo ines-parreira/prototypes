@@ -4,11 +4,9 @@ import {useParams, Link} from 'react-router-dom'
 
 import emptyStateTemplate from 'assets/img/actions/empty-state-template.png'
 import emptyState from 'assets/img/actions/empty-state.png'
-import {AiAgentNotificationType} from 'automate/notifications/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useFlag} from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {AiAgentOnboardingState} from 'models/aiAgent/types'
 import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
@@ -18,7 +16,6 @@ import {ACTIONS, AI_AGENT} from 'pages/aiAgent/constants'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
 
-import {useAiAgentOnboardingNotification} from '../hooks/useAiAgentOnboardingNotification'
 import css from './ActionsView.less'
 import ActionsList from './components/ActionsList'
 import ActionsTemplatesCards from './components/ActionsTemplatesCards'
@@ -69,56 +66,6 @@ const ActionsView = () => {
             )
         }
     }, [dispatch, error, isError])
-
-    const {
-        isAdmin,
-        onboardingNotificationState,
-        isLoading: isLoadingOnboardingNotificationState,
-        handleOnSendOrCancelNotification,
-        isAiAgentOnboardingNotificationEnabled,
-    } = useAiAgentOnboardingNotification({shopName})
-
-    useEffect(() => {
-        if (
-            isLoadingOnboardingNotificationState ||
-            !isAiAgentOnboardingNotificationEnabled ||
-            !isAdmin ||
-            !onboardingNotificationState
-        )
-            return
-
-        const isFullyOnboarded =
-            onboardingNotificationState.onboardingState ===
-            AiAgentOnboardingState.FullyOnboarded
-        const isActivated =
-            onboardingNotificationState.onboardingState ===
-            AiAgentOnboardingState.Activated
-        const isActivateAiAgentNotificationAlreadyReceived =
-            !!onboardingNotificationState.activateAiAgentNotificationReceivedDatetime
-
-        if (
-            isFullyOnboarded ||
-            isActivated ||
-            isActivateAiAgentNotificationAlreadyReceived
-        )
-            return
-
-        if (!!storeWfConfigurations.length) {
-            handleOnSendOrCancelNotification({
-                aiAgentNotificationType:
-                    AiAgentNotificationType.ActivateAiAgent,
-            })
-        }
-    }, [
-        handleOnSendOrCancelNotification,
-        isAdmin,
-        isAiAgentOnboardingNotificationEnabled,
-        isLoadingOnboardingNotificationState,
-        onboardingNotificationState,
-        onboardingNotificationState?.activateAiAgentNotificationReceivedDatetime,
-        onboardingNotificationState?.onboardingState,
-        storeWfConfigurations.length,
-    ])
 
     return (
         <AiAgentLayout

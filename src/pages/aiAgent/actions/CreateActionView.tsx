@@ -41,6 +41,7 @@ import useUnsavedChangesPrompt from 'pages/common/components/useUnsavedChangesPr
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
+import {useAiAgentOnboardingNotification} from '../hooks/useAiAgentOnboardingNotification'
 import ActionFormView from './components/ActionFormView'
 import css from './CreateActionView.less'
 import use3plIntegrations from './hooks/use3plIntegrations'
@@ -231,8 +232,15 @@ const CreateActionView = () => {
             when: !isCreateActionSuccess && !isEditingSteps,
         })
 
+    const {
+        isLoading: isLoadingOnboardingNotificationState,
+        handleOnTriggerActivateAiAgentNotification,
+    } = useAiAgentOnboardingNotification({shopName})
+
     useEffect(() => {
         if (isCreateActionSuccess) {
+            handleOnTriggerActivateAiAgentNotification()
+
             if (isCreateAndTestButtonClicked) {
                 history.replace(`${routes.actions}/edit/${configuration.id}`)
                 history.push(routes.test)
@@ -246,6 +254,7 @@ const CreateActionView = () => {
         history,
         routes,
         configuration.id,
+        handleOnTriggerActivateAiAgentNotification,
     ])
 
     const [
@@ -323,6 +332,7 @@ const CreateActionView = () => {
                             void handleSave().catch(_noop)
                         }}
                         isLoading={isCreateActionLoading}
+                        isDisabled={isLoadingOnboardingNotificationState}
                     >
                         Create Action
                     </Button>
@@ -336,6 +346,7 @@ const CreateActionView = () => {
                         }}
                         isLoading={isCreateActionLoading}
                         isDisabled={
+                            isLoadingOnboardingNotificationState ||
                             !!visualBuilderGraphDirty.nodes[0].data
                                 .deactivated_datetime
                         }

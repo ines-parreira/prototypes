@@ -10,6 +10,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {useFlag} from 'core/flags'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
 import {transformVisualBuilderGraphIntoWfConfiguration} from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import {
@@ -149,11 +150,27 @@ const CustomActionForm = ({configuration}: Props) => {
         ])
     }, [getValues, graph, shopName, shopType, upsertAction])
 
+    const {
+        isLoading: isLoadingOnboardingNotificationState,
+        handleOnTriggerActivateAiAgentNotification,
+    } = useAiAgentOnboardingNotification({shopName})
+
     useEffect(() => {
         if (isActionUpserted || isActionDeleted) {
+            if (isActionUpserted && isNewAction) {
+                handleOnTriggerActivateAiAgentNotification()
+            }
+
             history.push(routes.actions)
         }
-    }, [history, isActionDeleted, isActionUpserted, routes.actions])
+    }, [
+        handleOnTriggerActivateAiAgentNotification,
+        history,
+        isActionDeleted,
+        isActionUpserted,
+        isNewAction,
+        routes.actions,
+    ])
 
     const isActionEventsLogsEnabled = useFlag(FeatureFlagKey.ActionEventsLogs)
 
@@ -375,7 +392,8 @@ const CustomActionForm = ({configuration}: Props) => {
                                     !formState.isValid ||
                                     (!isNewAction && !formState.isDirty) ||
                                     isActionUpserted ||
-                                    isDeletingAction
+                                    isDeletingAction ||
+                                    isLoadingOnboardingNotificationState
                                 }
                                 onClick={handleSave}
                             >

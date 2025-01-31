@@ -98,6 +98,7 @@ export const AiAgentGuidanceDetailView = ({
                     isGuidanceArticleUpdating || isGuidanceArticleLoading
                 }
                 sourceType={sourceType}
+                helpCenterId={guidanceHelpCenterId}
             />
         </AiAgentLayout>
     )

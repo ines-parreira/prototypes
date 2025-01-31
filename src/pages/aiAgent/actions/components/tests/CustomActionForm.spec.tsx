@@ -12,6 +12,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {renderWithRouter} from 'utils/testing'
 
@@ -26,11 +27,17 @@ jest.mock('core/flags', () => ({
 }))
 jest.mock('../../hooks/useUpsertAction')
 jest.mock('../../hooks/useDeleteAction')
+jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
+    useAiAgentOnboardingNotification: jest.fn(),
+}))
 
 const mockStore = configureMockStore([thunk])
 const mockUseUpsertAction = jest.mocked(useUpsertAction)
 const mockUseDeleteAction = jest.mocked(useDeleteAction)
 const mockUseFlags = jest.mocked(useFlags)
+const mockUseAiAgentOnboardingNotification = jest.mocked(
+    useAiAgentOnboardingNotification
+)
 
 const queryClient = mockQueryClient()
 
@@ -52,6 +59,18 @@ describe('<CustomActionForm />', () => {
             isLoading: false,
             isSuccess: false,
         } as unknown as ReturnType<typeof useDeleteAction>)
+        mockUseAiAgentOnboardingNotification.mockReturnValue({
+            isAdmin: true,
+            onboardingNotificationState: undefined,
+            handleOnSave: jest.fn(),
+            handleOnSendOrCancelNotification: jest.fn(),
+            handleOnEnablementPostReceivedNotification: jest.fn(),
+            handleOnPerformActionPostReceivedNotification: jest.fn(),
+            handleOnTriggerActivateAiAgentNotification: jest.fn(),
+            handleOnCancelActivateAiAgentNotification: jest.fn(),
+            isLoading: false,
+            isAiAgentOnboardingNotificationEnabled: true,
+        })
     })
 
     it('should render custom Action form ', () => {

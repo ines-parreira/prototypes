@@ -2,14 +2,9 @@ import classnames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useState} from 'react'
 
-import {AiAgentNotificationType} from 'automate/notifications/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
-    AiAgentOnboardingState,
-    OnboardingNotificationState,
-    StoreConfiguration,
-} from 'models/aiAgent/types'
+import {StoreConfiguration} from 'models/aiAgent/types'
 import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {
     AI_AGENT,
@@ -102,45 +97,8 @@ const AiAgentPreviewModeSettingsView: React.FC<
 
     const {
         isLoading: isLoadingOnboardingNotificationState,
-        onboardingNotificationState,
-        handleOnSave,
-        isAiAgentOnboardingNotificationEnabled,
-        handleOnSendOrCancelNotification,
-        handleOnEnablementPostReceivedNotification,
-        handleOnPerformActionPostReceivedNotification,
+        handleOnCancelActivateAiAgentNotification,
     } = useAiAgentOnboardingNotification({shopName})
-
-    const handleActivatedAiAgent = async () => {
-        if (!isAiAgentOnboardingNotificationEnabled) return
-
-        const isFullyOnboarded =
-            onboardingNotificationState?.onboardingState ===
-            AiAgentOnboardingState.FullyOnboarded
-        const isActivated =
-            onboardingNotificationState?.onboardingState ===
-            AiAgentOnboardingState.Activated
-
-        if (isFullyOnboarded || isActivated) return
-
-        handleOnSendOrCancelNotification({
-            aiAgentNotificationType: AiAgentNotificationType.ActivateAiAgent,
-            isCancel: true,
-        })
-
-        const payload: Partial<OnboardingNotificationState> = {
-            onboardingState: AiAgentOnboardingState.Activated,
-            firstActivationDatetime:
-                onboardingNotificationState?.firstActivationDatetime ??
-                new Date().toISOString(),
-        }
-
-        await handleOnSave(payload)
-
-        handleOnEnablementPostReceivedNotification()
-        handleOnPerformActionPostReceivedNotification(
-            AiAgentNotificationType.ActivateAiAgent
-        )
-    }
 
     const onSubmit = async () => {
         if (!storeConfiguration || hasNoEmailConnected || hasNoKnowledgeBase) {
@@ -198,7 +156,7 @@ const AiAgentPreviewModeSettingsView: React.FC<
             )
 
             if (isToggled) {
-                await handleActivatedAiAgent()
+                handleOnCancelActivateAiAgentNotification()
             }
 
             setIsPristine(true)

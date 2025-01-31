@@ -11,6 +11,7 @@ import {useFlag} from 'core/flags'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {useGetStoreApps} from 'models/workflows/queries'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 import {ActionsApp} from 'pages/automate/actionsPlatform/types'
@@ -274,20 +275,31 @@ const TemplateActionForm = ({configuration, template}: Props) => {
         addStoreApp,
     ])
 
+    const {
+        isLoading: isLoadingOnboardingNotificationState,
+        handleOnTriggerActivateAiAgentNotification,
+    } = useAiAgentOnboardingNotification({shopName})
+
     useEffect(() => {
         if (
             isActionUpserted ||
             isActionDeleted ||
             (isNativeAppIntegration && !actionAppIntegration)
         ) {
+            if (isActionUpserted && isNewAction) {
+                handleOnTriggerActivateAiAgentNotification()
+            }
+
             history.push(routes.actions)
         }
     }, [
         actionAppIntegration,
+        handleOnTriggerActivateAiAgentNotification,
         history,
         isActionDeleted,
         isActionUpserted,
         isNativeAppIntegration,
+        isNewAction,
         routes.actions,
     ])
 
@@ -580,7 +592,8 @@ const TemplateActionForm = ({configuration, template}: Props) => {
                                     isActionUpserted ||
                                     isDeletingAction ||
                                     !formState.isValid ||
-                                    isStoreAppsLoading
+                                    isStoreAppsLoading ||
+                                    isLoadingOnboardingNotificationState
                                 }
                                 onClick={handleSave}
                             >

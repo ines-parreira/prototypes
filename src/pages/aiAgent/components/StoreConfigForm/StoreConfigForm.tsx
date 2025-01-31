@@ -14,7 +14,6 @@ import React, {
 import {Link, useParams} from 'react-router-dom'
 
 // Absolute Imports
-import {AiAgentNotificationType} from 'automate/notifications/types'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
@@ -22,11 +21,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {useSearchParam} from 'hooks/useSearchParam'
-import {
-    AiAgentOnboardingState,
-    OnboardingNotificationState,
-    Tag,
-} from 'models/aiAgent/types'
+import {Tag} from 'models/aiAgent/types'
 import {HelpCenter} from 'models/helpCenter/types'
 import {useStoreConfigurationForm} from 'pages/aiAgent/hooks/useStoreConfigurationForm'
 import {getFormValuesFromStoreConfiguration} from 'pages/aiAgent/hooks/utils/configurationForm.utils'
@@ -451,6 +446,11 @@ export const StoreConfigForm = ({
         trialModeAvailable,
     ])
 
+    const {
+        isLoading: isLoadingOnboardingNotificationState,
+        handleOnCancelActivateAiAgentNotification,
+    } = useAiAgentOnboardingNotification({shopName})
+
     const onSubmit = () => {
         const isAiAgentWasEnabled =
             storeConfiguration?.deactivatedDatetime !== null &&
@@ -461,6 +461,15 @@ export const StoreConfigForm = ({
         const isAiAgentWasEnabledForEmail =
             storeConfiguration?.emailChannelDeactivatedDatetime !== null &&
             formValues.emailChannelDeactivatedDatetime === null
+
+        const shouldCancelActivateNotification =
+            isAiAgentWasEnabled ||
+            isAiAgentWasEnabledForChat ||
+            isAiAgentWasEnabledForEmail
+
+        if (shouldCancelActivateNotification) {
+            handleOnCancelActivateAiAgentNotification()
+        }
 
         const shouldUpdateSettingsAfterAiAgentEnabled =
             isAiAgentOnboardingWizardEnabled &&
@@ -562,73 +571,6 @@ export const StoreConfigForm = ({
             })
         }
     }
-
-    const {
-        isLoading,
-        onboardingNotificationState,
-        handleOnSave: handleOnSaveOnboardingNotificationState,
-        handleOnSendOrCancelNotification,
-        handleOnEnablementPostReceivedNotification,
-        handleOnPerformActionPostReceivedNotification,
-        isAiAgentOnboardingNotificationEnabled,
-    } = useAiAgentOnboardingNotification({shopName})
-
-    useEffect(() => {
-        if (
-            isLoading ||
-            !isAiAgentOnboardingNotificationEnabled ||
-            !onboardingNotificationState
-        )
-            return
-
-        const isFullyOnboarded =
-            onboardingNotificationState.onboardingState ===
-            AiAgentOnboardingState.FullyOnboarded
-        const isActivated =
-            onboardingNotificationState.onboardingState ===
-            AiAgentOnboardingState.Activated
-
-        if (isFullyOnboarded || isActivated) return
-
-        if (
-            !!storeConfiguration?.previewModeActivatedDatetime ||
-            storeConfiguration?.chatChannelDeactivatedDatetime === null ||
-            storeConfiguration?.emailChannelDeactivatedDatetime === null
-        ) {
-            handleOnSendOrCancelNotification({
-                aiAgentNotificationType:
-                    AiAgentNotificationType.ActivateAiAgent,
-                isCancel: true,
-            })
-
-            const payload: Partial<OnboardingNotificationState> = {
-                onboardingState: AiAgentOnboardingState.Activated,
-                firstActivationDatetime:
-                    onboardingNotificationState.firstActivationDatetime ??
-                    new Date().toISOString(),
-            }
-
-            void handleOnSaveOnboardingNotificationState(payload)
-
-            handleOnEnablementPostReceivedNotification()
-            handleOnPerformActionPostReceivedNotification(
-                AiAgentNotificationType.ActivateAiAgent
-            )
-        }
-    }, [
-        handleOnSaveOnboardingNotificationState,
-        handleOnSendOrCancelNotification,
-        handleOnEnablementPostReceivedNotification,
-        handleOnPerformActionPostReceivedNotification,
-        isAiAgentOnboardingNotificationEnabled,
-        isLoading,
-        onboardingNotificationState?.firstActivationDatetime,
-        onboardingNotificationState?.onboardingState,
-        storeConfiguration?.chatChannelDeactivatedDatetime,
-        storeConfiguration?.emailChannelDeactivatedDatetime,
-        storeConfiguration?.previewModeActivatedDatetime,
-        onboardingNotificationState,
-    ])
 
     return (
         <>
@@ -895,7 +837,10 @@ export const StoreConfigForm = ({
                     <section>
                         <Button
                             onClick={onSubmit}
-                            isDisabled={isPendingCreateOrUpdate}
+                            isDisabled={
+                                isPendingCreateOrUpdate ||
+                                isLoadingOnboardingNotificationState
+                            }
                             className="mb-3"
                         >
                             Save Changes

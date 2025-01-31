@@ -7,8 +7,11 @@ import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/
 import {renderWithRouter} from 'utils/testing'
 
 import {AiAgentGuidanceDetailContainer} from '../AiAgentGuidanceDetailContainer'
+import {getAIGuidanceFixture} from '../fixtures/aiGuidance.fixture'
 import {getGuidanceArticleFixture} from '../fixtures/guidanceArticle.fixture'
 import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
+import {useAiAgentOnboardingNotification} from '../hooks/useAiAgentOnboardingNotification'
+import {useGuidanceAiSuggestions} from '../hooks/useGuidanceAiSuggestions'
 import {useGuidanceArticle} from '../hooks/useGuidanceArticle'
 import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
 
@@ -20,6 +23,12 @@ jest.mock('../hooks/useGuidanceArticle', () => ({
 }))
 jest.mock('../hooks/useGuidanceArticleMutation', () => ({
     useGuidanceArticleMutation: jest.fn(),
+}))
+jest.mock('../hooks/useGuidanceAiSuggestions', () => ({
+    useGuidanceAiSuggestions: jest.fn(),
+}))
+jest.mock('../hooks/useAiAgentOnboardingNotification', () => ({
+    useAiAgentOnboardingNotification: jest.fn(),
 }))
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock(
@@ -40,7 +49,11 @@ jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
 const mockedUseAiAgentHelpCenter = jest.mocked(useAiAgentHelpCenter)
 const mockedUseGuidanceArticle = jest.mocked(useGuidanceArticle)
 const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
+const mockedUseGuidanceAiSuggestions = jest.mocked(useGuidanceAiSuggestions)
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
+const mockUseAiAgentOnboardingNotification = jest.mocked(
+    useAiAgentOnboardingNotification
+)
 
 const helpCenter = getHelpCentersResponseFixture.data[0]
 const defaultGuidanceArticleMutationProps: ReturnType<
@@ -53,6 +66,19 @@ const defaultGuidanceArticleMutationProps: ReturnType<
     isGuidanceArticleDeleting: false,
 }
 const guidanceArticle = getGuidanceArticleFixture(1)
+
+const defaultUseAiAgentOnboardingNotification = {
+    isAdmin: true,
+    onboardingNotificationState: undefined,
+    handleOnSave: jest.fn(),
+    handleOnSendOrCancelNotification: jest.fn(),
+    handleOnEnablementPostReceivedNotification: jest.fn(),
+    handleOnPerformActionPostReceivedNotification: jest.fn(),
+    handleOnTriggerActivateAiAgentNotification: jest.fn(),
+    handleOnCancelActivateAiAgentNotification: jest.fn(),
+    isLoading: false,
+    isAiAgentOnboardingNotificationEnabled: true,
+}
 
 const renderComponent = (articleId = 1) => {
     renderWithRouter(<AiAgentGuidanceDetailContainer />, {
@@ -70,10 +96,19 @@ describe('<AiAgentGuidanceDetail />', () => {
             guidanceArticle: guidanceArticle,
             isGuidanceArticleLoading: false,
         })
+        mockedUseGuidanceAiSuggestions.mockReturnValue({
+            guidanceAISuggestions: [
+                getAIGuidanceFixture('id-1'),
+                getAIGuidanceFixture('id-2'),
+            ],
+        } as any)
 
         mockUseEnableAiAgent.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),
         })
+        mockUseAiAgentOnboardingNotification.mockReturnValue(
+            defaultUseAiAgentOnboardingNotification
+        )
     })
 
     it('should render loader when no help center', () => {

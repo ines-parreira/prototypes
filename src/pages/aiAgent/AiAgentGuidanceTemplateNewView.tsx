@@ -52,6 +52,7 @@ export const AiAgentGuidanceTemplateNewView = ({
             onSubmit={onSubmit}
             isLoading={isGuidanceArticleUpdating}
             sourceType="template"
+            helpCenterId={guidanceHelpCenterId}
         />
     )
 }

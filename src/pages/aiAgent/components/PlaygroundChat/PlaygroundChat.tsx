@@ -1,6 +1,7 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useRef, useState} from 'react'
 
+import {AiAgentNotificationType} from 'automate/notifications/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     AccountConfigurationWithHttpIntegration,
@@ -93,6 +94,7 @@ export const PlaygroundChat = ({
         isLoading,
         onboardingNotificationState,
         handleOnSave,
+        handleOnSendOrCancelNotification,
         isAiAgentOnboardingNotificationEnabled,
     } = useAiAgentOnboardingNotification({
         shopName: storeData.storeName,
@@ -105,8 +107,15 @@ export const PlaygroundChat = ({
         const isActivated =
             onboardingNotificationState?.onboardingState ===
             AiAgentOnboardingState.Activated
+        const isActivateAiAgentNotificationAlreadyReceived =
+            !!onboardingNotificationState?.activateAiAgentNotificationReceivedDatetime
 
-        if (isFullyOnboarded || isActivated) return
+        if (
+            isFullyOnboarded ||
+            isActivated ||
+            isActivateAiAgentNotificationAlreadyReceived
+        )
+            return
 
         const payload: Partial<OnboardingNotificationState> = {
             onboardingState: AiAgentOnboardingState.FinishedSetup,
@@ -117,8 +126,23 @@ export const PlaygroundChat = ({
                   ]
                 : [new Date().toISOString()],
         }
-        await handleOnSave(payload)
-    }, [handleOnSave, onboardingNotificationState])
+        const updatedOnboardingNotificationState = await handleOnSave(payload)
+
+        if (
+            updatedOnboardingNotificationState?.testBeforeActivationDatetimes &&
+            updatedOnboardingNotificationState.testBeforeActivationDatetimes
+                .length >= 5
+        ) {
+            handleOnSendOrCancelNotification({
+                aiAgentNotificationType:
+                    AiAgentNotificationType.ActivateAiAgent,
+            })
+        }
+    }, [
+        handleOnSave,
+        handleOnSendOrCancelNotification,
+        onboardingNotificationState,
+    ])
 
     const onSendMessage = () => {
         if (!isFormValid) {

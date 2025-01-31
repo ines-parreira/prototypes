@@ -14,7 +14,10 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {OnboardingNotificationState} from 'models/aiAgent/types'
+import {
+    AiAgentOnboardingState,
+    OnboardingNotificationState,
+} from 'models/aiAgent/types'
 import {NotificationEvent} from 'services/notificationTracker/constants'
 import {
     getAdminRecipientIds,
@@ -54,7 +57,6 @@ export const useAiAgentOnboardingNotification = ({shopName}: Params) => {
 
     const {
         isLoading: isLoadingCreateOrUpdate,
-        createOnboardingNotificationState,
         upsertOnboardingNotificationState,
     } = useOnboardingNotificationStateMutation({accountDomain, shopName})
 
@@ -65,29 +67,23 @@ export const useAiAgentOnboardingNotification = ({shopName}: Params) => {
         async (
             payload: Partial<OnboardingNotificationState>
         ): Promise<OnboardingNotificationState | undefined> => {
-            if (!isAiAgentOnboardingNotificationEnabled || !shopName) {
+            if (
+                !isAiAgentOnboardingNotificationEnabled ||
+                !shopName ||
+                !onboardingNotificationState
+            ) {
                 return onboardingNotificationState
             }
 
-            const isUpdate = !!onboardingNotificationState
             let result: OnboardingNotificationState | undefined
 
             try {
-                if (isUpdate) {
-                    const updatedValue = {
-                        ...onboardingNotificationState,
-                        ...payload,
-                        shopName,
-                    }
-                    result =
-                        await upsertOnboardingNotificationState(updatedValue)
-                } else {
-                    const initValues = {
-                        ...payload,
-                        shopName,
-                    }
-                    result = await createOnboardingNotificationState(initValues)
+                const updatedValue = {
+                    ...onboardingNotificationState,
+                    ...payload,
+                    shopName,
                 }
+                result = await upsertOnboardingNotificationState(updatedValue)
             } catch (error) {
                 void dispatch(
                     notify({
@@ -100,7 +96,6 @@ export const useAiAgentOnboardingNotification = ({shopName}: Params) => {
             return result
         },
         [
-            createOnboardingNotificationState,
             dispatch,
             isAiAgentOnboardingNotificationEnabled,
             onboardingNotificationState,
@@ -109,52 +104,64 @@ export const useAiAgentOnboardingNotification = ({shopName}: Params) => {
         ]
     )
 
-    const handleOnSendOrCancelNotification = ({
-        aiAgentNotificationType,
-        isCancel = false,
-    }: {
-        aiAgentNotificationType: AiAgentNotificationType
-        isCancel?: boolean
-    }) => {
-        if (!isAdmin || !isAiAgentOnboardingNotificationEnabled || !shopName) {
-            return
-        }
+    const handleOnSendOrCancelNotification = useCallback(
+        ({
+            aiAgentNotificationType,
+            isCancel = false,
+        }: {
+            aiAgentNotificationType: AiAgentNotificationType
+            isCancel?: boolean
+        }) => {
+            if (
+                !isAiAgentOnboardingNotificationEnabled ||
+                !shopName ||
+                !onboardingNotificationState
+            ) {
+                return
+            }
 
-        const adminRecipientIdsList = getAdminRecipientIds() ?? []
+            const adminRecipientIdsList = getAdminRecipientIds() ?? []
 
-        const idempotencyKey = `idempotent:${accountDomain}+${shopName}+${aiAgentNotificationType}+${hash(adminRecipientIdsList)}`
-        const cancellationKey = `cancel:${accountDomain}+${shopName}+${aiAgentNotificationType}`
-        const notificationData = {
-            ai_agent_notification_type: aiAgentNotificationType,
-            shop_name: shopName,
-            shop_type: 'shopify',
-        }
-        const notificationProps = {
-            command_type: 'cancel-notification',
-            notification_workflow: AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
-            notification_type: AI_AGENT_SET_AND_OPTIMIZED_TYPE,
-            cancellation_key: cancellationKey,
-            idempotency_key: idempotencyKey,
-            notification_data: {},
-        }
+            const idempotencyKey = `idempotent:${accountDomain}+${shopName}+${aiAgentNotificationType}+${hash(adminRecipientIdsList)}`
+            const cancellationKey = `cancel:${accountDomain}+${shopName}+${aiAgentNotificationType}`
+            const notificationData = {
+                ai_agent_notification_type: aiAgentNotificationType,
+                shop_name: shopName,
+                shop_type: 'shopify',
+            }
+            const notificationProps = {
+                command_type: 'cancel-notification',
+                notification_workflow: AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
+                notification_type: AI_AGENT_SET_AND_OPTIMIZED_TYPE,
+                cancellation_key: cancellationKey,
+                idempotency_key: idempotencyKey,
+                notification_data: {},
+            }
 
-        logNotificationEvent(
-            NotificationEvent,
-            isCancel
-                ? notificationProps
-                : {
-                      ...notificationProps,
-                      command_type: 'send-notification',
-                      notification_data: notificationData,
-                  }
-        )
+            logNotificationEvent(
+                NotificationEvent,
+                isCancel
+                    ? notificationProps
+                    : {
+                          ...notificationProps,
+                          command_type: 'send-notification',
+                          notification_data: notificationData,
+                      }
+            )
 
-        if (!isCancel) {
-            logEvent(SegmentEvent.AiAgentOnboardingNotificationTriggered, {
-                type: aiAgentNotificationType,
-            })
-        }
-    }
+            if (!isCancel) {
+                logEvent(SegmentEvent.AiAgentOnboardingNotificationTriggered, {
+                    type: aiAgentNotificationType,
+                })
+            }
+        },
+        [
+            accountDomain,
+            isAiAgentOnboardingNotificationEnabled,
+            onboardingNotificationState,
+            shopName,
+        ]
+    )
 
     const handleOnEnablementPostReceivedNotification = useCallback(() => {
         if (
@@ -242,6 +249,87 @@ export const useAiAgentOnboardingNotification = ({shopName}: Params) => {
         ]
     )
 
+    const handleOnTriggerActivateAiAgentNotification = useCallback(() => {
+        if (
+            !isAiAgentOnboardingNotificationEnabled ||
+            !isAdmin ||
+            !shopName ||
+            !onboardingNotificationState
+        )
+            return
+
+        const isFullyOnboarded =
+            onboardingNotificationState.onboardingState ===
+            AiAgentOnboardingState.FullyOnboarded
+        const isActivated =
+            onboardingNotificationState.onboardingState ===
+            AiAgentOnboardingState.Activated
+        const isActivateAiAgentNotificationAlreadyReceived =
+            !!onboardingNotificationState?.activateAiAgentNotificationReceivedDatetime
+
+        if (
+            isFullyOnboarded ||
+            isActivated ||
+            isActivateAiAgentNotificationAlreadyReceived
+        )
+            return
+
+        handleOnSendOrCancelNotification({
+            aiAgentNotificationType: AiAgentNotificationType.ActivateAiAgent,
+        })
+    }, [
+        handleOnSendOrCancelNotification,
+        isAdmin,
+        isAiAgentOnboardingNotificationEnabled,
+        onboardingNotificationState,
+        shopName,
+    ])
+
+    const handleOnCancelActivateAiAgentNotification = useCallback(() => {
+        if (
+            !isAiAgentOnboardingNotificationEnabled ||
+            !shopName ||
+            !onboardingNotificationState
+        )
+            return
+
+        const isFullyOnboarded =
+            onboardingNotificationState.onboardingState ===
+            AiAgentOnboardingState.FullyOnboarded
+        const isActivated =
+            onboardingNotificationState.onboardingState ===
+            AiAgentOnboardingState.Activated
+
+        if (isFullyOnboarded || isActivated) return
+
+        handleOnSendOrCancelNotification({
+            aiAgentNotificationType: AiAgentNotificationType.ActivateAiAgent,
+            isCancel: true,
+        })
+
+        const payload: Partial<OnboardingNotificationState> = {
+            onboardingState: AiAgentOnboardingState.Activated,
+            firstActivationDatetime:
+                onboardingNotificationState?.firstActivationDatetime ??
+                new Date().toISOString(),
+        }
+
+        void handleOnSave(payload)
+
+        handleOnEnablementPostReceivedNotification()
+        handleOnPerformActionPostReceivedNotification(
+            AiAgentNotificationType.ActivateAiAgent
+        )
+    }, [
+        handleOnEnablementPostReceivedNotification,
+        handleOnPerformActionPostReceivedNotification,
+        handleOnSave,
+        handleOnSendOrCancelNotification,
+        isAiAgentOnboardingNotificationEnabled,
+        onboardingNotificationState,
+        shopName,
+    ])
+
     return {
         isAdmin,
         onboardingNotificationState,
@@ -249,6 +337,8 @@ export const useAiAgentOnboardingNotification = ({shopName}: Params) => {
         handleOnSendOrCancelNotification,
         handleOnEnablementPostReceivedNotification,
         handleOnPerformActionPostReceivedNotification,
+        handleOnTriggerActivateAiAgentNotification,
+        handleOnCancelActivateAiAgentNotification,
         isLoading: isLoadingCreateOrUpdate || isLoadingGet,
         isAiAgentOnboardingNotificationEnabled,
     }

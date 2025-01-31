@@ -5,7 +5,6 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {AiAgentNotificationType} from 'automate/notifications/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
 import {user} from 'fixtures/users'
@@ -14,7 +13,6 @@ import {
     useGetAccountConfiguration,
     useGetStoreConfigurationPure,
 } from 'models/aiAgent/queries'
-import {AiAgentOnboardingState} from 'models/aiAgent/types'
 import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import {notify} from 'state/notifications/actions'
 import {RootState} from 'state/types'
@@ -23,9 +21,7 @@ import {assumeMock, renderWithRouter} from 'utils/testing'
 import {AiAgentPlaygroundContainer} from '../AiAgentPlaygroundContainer'
 import {AI_AGENT, TEST} from '../constants'
 import {getAccountConfigurationWithHttpIntegrationFixture} from '../fixtures/accountConfiguration.fixture'
-import {getOnboardingNotificationStateFixture} from '../fixtures/onboardingNotificationState.fixture'
 import {getStoreConfigurationFixture} from '../fixtures/storeConfiguration.fixtures'
-import {useAiAgentOnboardingNotification} from '../hooks/useAiAgentOnboardingNotification'
 import {useGetOrCreateSnippetHelpCenter} from '../hooks/useGetOrCreateSnippetHelpCenter'
 import {usePlaygroundMessages} from '../hooks/usePlaygroundMessages'
 import {usePublicResources} from '../hooks/usePublicResources'
@@ -64,11 +60,6 @@ const mockUsePublicResources = assumeMock(usePublicResources)
 jest.mock('../hooks/usePlaygroundMessages')
 const mockUsePlaygroundMessages = assumeMock(usePlaygroundMessages)
 
-jest.mock('../hooks/useAiAgentOnboardingNotification')
-const mockUseAiAgentOnboardingNotification = assumeMock(
-    useAiAgentOnboardingNotification
-)
-
 jest.mock('../hooks/useGetOrCreateSnippetHelpCenter', () => ({
     useGetOrCreateSnippetHelpCenter: jest.fn(),
 }))
@@ -90,17 +81,6 @@ const accountConfiguration = getAccountConfigurationWithHttpIntegrationFixture(
     {}
 )
 
-const defaultUseAiAgentOnboardingNotification = {
-    isAdmin: true,
-    onboardingNotificationState: undefined,
-    handleOnSave: jest.fn(),
-    handleOnSendOrCancelNotification: jest.fn(),
-    handleOnEnablementPostReceivedNotification: jest.fn(),
-    handleOnPerformActionPostReceivedNotification: jest.fn(),
-    isLoading: false,
-    isAiAgentOnboardingNotificationEnabled: true,
-}
-
 const renderComponent = () => {
     renderWithRouter(
         <Provider store={mockStore(defaultState)}>
@@ -118,9 +98,6 @@ describe('AiAgentPlayground', () => {
         mockUseEnableAiAgent.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),
         })
-        mockUseAiAgentOnboardingNotification.mockReturnValue(
-            defaultUseAiAgentOnboardingNotification
-        )
 
         mockUseAppDispatch.mockReturnValue(jest.fn())
     })
@@ -306,115 +283,5 @@ describe('AiAgentPlayground', () => {
                 within(document.querySelector('.page-header')!).getByText(title)
             ).toBeInTheDocument()
         })
-    })
-    it('should trigger activate AI agent notification when merchant have tested for at least 5 times', () => {
-        mockUseAiAgentOnboardingNotification.mockReturnValue({
-            ...defaultUseAiAgentOnboardingNotification,
-            onboardingNotificationState: getOnboardingNotificationStateFixture({
-                testBeforeActivationDatetimes: [
-                    '2024-12-01T12:00:00Z',
-                    '2024-12-02T12:00:00Z',
-                    '2024-12-03T12:00:00Z',
-                    '2024-12-04T12:00:00Z',
-                    '2024-12-05T12:00:00Z',
-                ],
-            }),
-        })
-
-        renderComponent()
-
-        expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
-        ).toHaveBeenCalledWith({
-            aiAgentNotificationType: AiAgentNotificationType.ActivateAiAgent,
-        })
-    })
-
-    it('should not trigger activate AI agent notification when merchant have not tested for at least 5 times', () => {
-        renderComponent()
-
-        expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
-        ).not.toHaveBeenCalled()
-    })
-
-    it('should not trigger activate AI agent notification when merchant already fully onboarded', () => {
-        mockUseAiAgentOnboardingNotification.mockReturnValue({
-            ...defaultUseAiAgentOnboardingNotification,
-            onboardingNotificationState: getOnboardingNotificationStateFixture({
-                testBeforeActivationDatetimes: [
-                    '2024-12-01T12:00:00Z',
-                    '2024-12-02T12:00:00Z',
-                    '2024-12-03T12:00:00Z',
-                    '2024-12-04T12:00:00Z',
-                    '2024-12-05T12:00:00Z',
-                ],
-                onboardingState: AiAgentOnboardingState.FullyOnboarded,
-            }),
-        })
-
-        renderComponent()
-
-        expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
-        ).not.toHaveBeenCalled()
-    })
-
-    it('should not trigger activate AI agent notification when merchant already activated AI agent previously', () => {
-        mockUseAiAgentOnboardingNotification.mockReturnValue({
-            ...defaultUseAiAgentOnboardingNotification,
-            onboardingNotificationState: getOnboardingNotificationStateFixture({
-                testBeforeActivationDatetimes: [
-                    '2024-12-01T12:00:00Z',
-                    '2024-12-02T12:00:00Z',
-                    '2024-12-03T12:00:00Z',
-                    '2024-12-04T12:00:00Z',
-                    '2024-12-05T12:00:00Z',
-                ],
-                onboardingState: AiAgentOnboardingState.Activated,
-            }),
-        })
-
-        renderComponent()
-
-        expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
-        ).not.toHaveBeenCalled()
-    })
-
-    it('should not trigger activate AI agent notification when merchant already received the notification previously', () => {
-        mockUseAiAgentOnboardingNotification.mockReturnValue({
-            ...defaultUseAiAgentOnboardingNotification,
-            onboardingNotificationState: getOnboardingNotificationStateFixture({
-                testBeforeActivationDatetimes: [
-                    '2024-12-01T12:00:00Z',
-                    '2024-12-02T12:00:00Z',
-                    '2024-12-03T12:00:00Z',
-                    '2024-12-04T12:00:00Z',
-                    '2024-12-05T12:00:00Z',
-                ],
-                activateAiAgentNotificationReceivedDatetime:
-                    '2024-12-01T12:00:00Z',
-            }),
-        })
-
-        renderComponent()
-
-        expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
-        ).not.toHaveBeenCalled()
-    })
-
-    it('should not trigger activate AI agent notification when AiAgentOnboardingNotification flag is disabled', () => {
-        mockUseAiAgentOnboardingNotification.mockReturnValue({
-            ...defaultUseAiAgentOnboardingNotification,
-            isAiAgentOnboardingNotificationEnabled: false,
-        })
-
-        renderComponent()
-
-        expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
-        ).not.toHaveBeenCalled()
     })
 })
