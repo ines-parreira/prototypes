@@ -1,49 +1,21 @@
 @import '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/new/mixins';
 
 @import (reference) '~css/new/util.less';
 
+// Would be better in the common file, but for now, it's here
+@tablets-up: ~'only screen and (min-width: 768px)';
+
 :local {
     .onboardingLayout {
-        display: flex;
-        flex-direction: column;
         width: 100vw;
-        height: 100vh;
-    }
-
-    .onboardingBody {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
         height: 100%;
-        width: 100%;
-    }
-
-    .onboardingPreviewContainerWrapper {
-        padding: @layout-spacing-m;
-        display: flex;
-        height: 100%;
-        width: 50%;
-    }
-
-    .onboardingContentContainer {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        width: 50%;
-        min-width: 400px;
-        padding: @layout-spacing-m 8%;
         overflow-y: auto;
-        gap: @layout-spacing-m;
-    }
 
-    .onboardingPreviewContainer {
-        border-radius: @layout-spacing-m;
-        display: flex;
-        background: linear-gradient(165.76deg, #eeeeee 30.85%, #c34ced 145.54%);
-        height: 100%;
-        width: 100%;
-        place-items: center;
-        flex-direction: column;
+        @media @tablets-up {
+            display: flex;
+            flex-direction: column;
+        }
     }
 
     .onboardingHeader {
@@ -51,24 +23,82 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        padding: @layout-spacing-m;
+        padding: @layout-spacing-s @layout-spacing-m;
         width: 100%;
+
+        @media @tablets-up {
+            padding: @layout-spacing-m;
+        }
+    }
+
+    .onboardingBody {
+        @media @tablets-up {
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    .onboardingContentContainer {
+        padding: @layout-spacing-s @layout-spacing-m;
+
+        @media @tablets-up {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 50%;
+            min-width: 400px;
+            padding: @layout-spacing-m 8%;
+            gap: @layout-spacing-m;
+        }
+    }
+
+    .onboardingPreviewContainerWrapper {
+        padding: @layout-spacing-m;
+
+        @media @tablets-up {
+            display: flex;
+            height: 100%;
+            width: 50%;
+        }
+    }
+
+    .onboardingPreviewContainer {
+        @media @tablets-up {
+            border-radius: @layout-spacing-m;
+            display: flex;
+            background: linear-gradient(
+                165.76deg,
+                #eeeeee 30.85%,
+                #c34ced 145.54%
+            );
+            height: 100%;
+            width: 100%;
+            place-items: center;
+            flex-direction: column;
+        }
     }
 
     .ghostContainer {
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: inherit;
-        align-items: inherit;
-        // negate the caption margin
-        margin-bottom: -@layout-spacing-m;
+        @media @tablets-up {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: inherit;
+            align-items: inherit;
+            // negate the caption margin
+            margin-bottom: -@layout-spacing-m;
+        }
     }
 
     .caption {
-        margin-bottom: @layout-spacing-m;
-        width: 50%;
-        text-align: center;
+        @media @tablets-up {
+            margin-bottom: @layout-spacing-m;
+            width: 50%;
+            text-align: center;
+        }
     }
 
     .progressTrackerContainer {
@@ -76,12 +106,19 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        margin-top: auto;
-        padding: @layout-spacing-m;
+        padding: @layout-spacing-m 0;
+
+        @media @mobiles {
+            position: fixed;
+            bottom: -0.33rem;
+            z-index: 4;
+            right: 120px;
+            left: 24px;
+        }
     }
 
     .loadingPulserIcon {
-        width: 12vw;
+        @width: 12vw;
         height: 12vw;
         border-radius: 50%;
         background-color: #ffffff33;
