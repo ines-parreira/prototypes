@@ -35,11 +35,17 @@ It's built using ReactJS + Redux + many other smaller tools.
 
 Please `cat ~/.npmrc` and ensure that `@gorgias:registry=https://npm.pkg.github.com` is present, otherwise prepend it manually.
 
+## Prerequisites
+
+-   [Node.js (v18, uses nvm to install)](https://nodejs.org/en/download/package-manager)
+-   [Yarn](https://classic.yarnpkg.com/en/docs/install)
+-   [nvm (Node Version Manager)](https://github.com/nvm-sh/nvm)
 ## Installation
 
 ```bash
 git clone git@github.com:gorgias/helpdesk-web-app.git
 cd helpdesk-web-app
+nvm install && nvm use # (This uses the node version specified in the .nvmrc file)
 yarn install
 ```
 
