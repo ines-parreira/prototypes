@@ -1,12 +1,36 @@
-import {useAccuracyTrend} from 'hooks/reporting/support-performance/auto-qa/useAccuracyTrend'
-import {useBrandVoiceTrend} from 'hooks/reporting/support-performance/auto-qa/useBrandVoiceTrend'
-import {useCommunicationSkillsTrend} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsTrend'
-import {useEfficiencyTrend} from 'hooks/reporting/support-performance/auto-qa/useEfficiencyTrend'
-import {useInternalComplianceTrend} from 'hooks/reporting/support-performance/auto-qa/useInternalComplianceTrend'
-import {useLanguageProficiencyTrend} from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyTrend'
-import {useResolutionCompletenessTrend} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
-import {useReviewedClosedTicketsTrend} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
-import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
+import {
+    fetchAccuracyTrend,
+    useAccuracyTrend,
+} from 'hooks/reporting/support-performance/auto-qa/useAccuracyTrend'
+import {
+    fetchBrandVoiceTrend,
+    useBrandVoiceTrend,
+} from 'hooks/reporting/support-performance/auto-qa/useBrandVoiceTrend'
+import {
+    fetchCommunicationSkillsTrend,
+    useCommunicationSkillsTrend,
+} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsTrend'
+import {
+    fetchEfficiencyTrend,
+    useEfficiencyTrend,
+} from 'hooks/reporting/support-performance/auto-qa/useEfficiencyTrend'
+import {
+    fetchInternalComplianceTrend,
+    useInternalComplianceTrend,
+} from 'hooks/reporting/support-performance/auto-qa/useInternalComplianceTrend'
+import {
+    fetchLanguageProficiencyTrend,
+    useLanguageProficiencyTrend,
+} from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyTrend'
+import {
+    fetchResolutionCompletenessTrend,
+    useResolutionCompletenessTrend,
+} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
+import {
+    fetchReviewedClosedTicketsTrend,
+    useReviewedClosedTicketsTrend,
+} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
+import {MetricTrendFetch, MetricTrendHook} from 'hooks/reporting/useMetricTrend'
 import {MetricTrendFormat} from 'pages/stats/common/utils'
 import {TooltipData} from 'pages/stats/types'
 import {AutoQAMetric} from 'state/ui/stats/types'
@@ -30,6 +54,7 @@ export const TrendCardConfig: Record<
         hint: TooltipData
         title: string
         useTrend: MetricTrendHook
+        fetchTrend: MetricTrendFetch
         interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
         metricFormat: MetricTrendFormat
         drillDownMetric: AutoQAMetric
@@ -43,6 +68,7 @@ export const TrendCardConfig: Record<
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
         useTrend: useReviewedClosedTicketsTrend,
+        fetchTrend: fetchReviewedClosedTicketsTrend,
         drillDownMetric: AutoQAMetric.ReviewedClosedTickets,
     },
     [AutoQAMetric.ResolutionCompleteness]: {
@@ -55,6 +81,7 @@ export const TrendCardConfig: Record<
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-to-percent',
         useTrend: useResolutionCompletenessTrend,
+        fetchTrend: fetchResolutionCompletenessTrend,
         drillDownMetric: AutoQAMetric.ResolutionCompleteness,
     },
     [AutoQAMetric.Accuracy]: {
@@ -66,6 +93,7 @@ export const TrendCardConfig: Record<
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
         useTrend: useAccuracyTrend,
+        fetchTrend: fetchAccuracyTrend,
         drillDownMetric: AutoQAMetric.Accuracy,
     },
     [AutoQAMetric.InternalCompliance]: {
@@ -77,6 +105,7 @@ export const TrendCardConfig: Record<
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
         useTrend: useInternalComplianceTrend,
+        fetchTrend: fetchInternalComplianceTrend,
         drillDownMetric: AutoQAMetric.InternalCompliance,
     },
     [AutoQAMetric.Efficiency]: {
@@ -88,6 +117,7 @@ export const TrendCardConfig: Record<
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
         useTrend: useEfficiencyTrend,
+        fetchTrend: fetchEfficiencyTrend,
         drillDownMetric: AutoQAMetric.Efficiency,
     },
     [AutoQAMetric.CommunicationSkills]: {
@@ -100,6 +130,7 @@ export const TrendCardConfig: Record<
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
         useTrend: useCommunicationSkillsTrend,
+        fetchTrend: fetchCommunicationSkillsTrend,
         drillDownMetric: AutoQAMetric.CommunicationSkills,
     },
     [AutoQAMetric.LanguageProficiency]: {
@@ -112,6 +143,7 @@ export const TrendCardConfig: Record<
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
         useTrend: useLanguageProficiencyTrend,
+        fetchTrend: fetchLanguageProficiencyTrend,
         drillDownMetric: AutoQAMetric.LanguageProficiency,
     },
     [AutoQAMetric.BrandVoice]: {
@@ -123,6 +155,7 @@ export const TrendCardConfig: Record<
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
         useTrend: useBrandVoiceTrend,
+        fetchTrend: fetchBrandVoiceTrend,
         drillDownMetric: AutoQAMetric.BrandVoice,
     },
 }

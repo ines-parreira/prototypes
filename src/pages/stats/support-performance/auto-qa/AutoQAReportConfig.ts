@@ -1,5 +1,9 @@
 import {FilterKey, StaticFilter} from 'models/stat/types'
-import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
+import {
+    ChartType,
+    DataExportFormat,
+    ReportConfig,
+} from 'pages/stats/custom-reports/types'
 import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/agents/AgentsTableChart'
 import {AccuracyTrendCard} from 'pages/stats/support-performance/auto-qa/AccuracyTrendCard'
 import {
@@ -14,6 +18,7 @@ import {InternalComplianceTrendCard} from 'pages/stats/support-performance/auto-
 import {LanguageProficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/LanguageProficiencyTrendCard'
 import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
 import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
+import {fetchAutoQAAgentsTableReportData} from 'services/reporting/autoQAReportingService'
 import {AutoQAMetric} from 'state/ui/stats/types'
 
 export enum AutoQAChart {
@@ -46,7 +51,13 @@ export const AutoQAReportConfig: ReportConfig<AutoQAChart> = {
             label: TrendCardConfig[AutoQAMetric.ReviewedClosedTickets].title,
             description:
                 TrendCardConfig[AutoQAMetric.ReviewedClosedTickets].hint.title,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: TrendCardConfig[AutoQAMetric.ReviewedClosedTickets]
+                        .fetchTrend,
+                },
+            ],
             chartType: ChartType.Card,
         },
         [AutoQAChart.ResolutionCompleteness]: {
@@ -54,7 +65,13 @@ export const AutoQAReportConfig: ReportConfig<AutoQAChart> = {
             label: TrendCardConfig[AutoQAMetric.ResolutionCompleteness].title,
             description:
                 TrendCardConfig[AutoQAMetric.ResolutionCompleteness].hint.title,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: TrendCardConfig[AutoQAMetric.ResolutionCompleteness]
+                        .fetchTrend,
+                },
+            ],
             chartType: ChartType.Card,
         },
         [AutoQAChart.CommunicationSkills]: {
@@ -62,7 +79,13 @@ export const AutoQAReportConfig: ReportConfig<AutoQAChart> = {
             label: TrendCardConfig[AutoQAMetric.CommunicationSkills].title,
             description:
                 TrendCardConfig[AutoQAMetric.CommunicationSkills].hint.title,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: TrendCardConfig[AutoQAMetric.CommunicationSkills]
+                        .fetchTrend,
+                },
+            ],
             chartType: ChartType.Card,
         },
         [AutoQAChart.LanguageProficiency]: {
@@ -70,21 +93,37 @@ export const AutoQAReportConfig: ReportConfig<AutoQAChart> = {
             label: TrendCardConfig[AutoQAMetric.LanguageProficiency].title,
             description:
                 TrendCardConfig[AutoQAMetric.LanguageProficiency].hint.title,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: TrendCardConfig[AutoQAMetric.LanguageProficiency]
+                        .fetchTrend,
+                },
+            ],
             chartType: ChartType.Card,
         },
         [AutoQAChart.Accuracy]: {
             chartComponent: AccuracyTrendCard,
             label: TrendCardConfig[AutoQAMetric.Accuracy].title,
             description: TrendCardConfig[AutoQAMetric.Accuracy].hint.title,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: TrendCardConfig[AutoQAMetric.Accuracy].fetchTrend,
+                },
+            ],
             chartType: ChartType.Card,
         },
         [AutoQAChart.Efficiency]: {
             chartComponent: EfficiencyTrendCard,
             label: TrendCardConfig[AutoQAMetric.Efficiency].title,
             description: TrendCardConfig[AutoQAMetric.Efficiency].hint.title,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: TrendCardConfig[AutoQAMetric.Efficiency].fetchTrend,
+                },
+            ],
             chartType: ChartType.Card,
         },
         [AutoQAChart.InternalCompliance]: {
@@ -92,21 +131,37 @@ export const AutoQAReportConfig: ReportConfig<AutoQAChart> = {
             label: TrendCardConfig[AutoQAMetric.InternalCompliance].title,
             description:
                 TrendCardConfig[AutoQAMetric.InternalCompliance].hint.title,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: TrendCardConfig[AutoQAMetric.InternalCompliance]
+                        .fetchTrend,
+                },
+            ],
             chartType: ChartType.Card,
         },
         [AutoQAChart.BrandVoice]: {
             chartComponent: BrandVoiceTrendCard,
             label: TrendCardConfig[AutoQAMetric.BrandVoice].title,
             description: TrendCardConfig[AutoQAMetric.BrandVoice].hint.title,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: TrendCardConfig[AutoQAMetric.BrandVoice].fetchTrend,
+                },
+            ],
             chartType: ChartType.Card,
         },
         [AutoQAChart.AgentsTable]: {
             chartComponent: AutoQaAgentsTableChart,
             label: AGENT_PERFORMANCE_SECTION_TITLE,
             description: AUTO_QA_TITLE_TOOLTIP,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Table,
+                    fetch: fetchAutoQAAgentsTableReportData,
+                },
+            ],
             chartType: ChartType.Table,
         },
     },

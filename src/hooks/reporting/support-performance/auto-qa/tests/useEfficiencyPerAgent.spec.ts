@@ -2,19 +2,25 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import moment from 'moment'
 
-import {useEfficiencyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useEfficiencyPerAgent'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import {
+    fetchEfficiencyPerAgent,
+    useEfficiencyPerAgent,
+} from 'hooks/reporting/support-performance/auto-qa/useEfficiencyPerAgent'
+import {
+    fetchMetricPerDimension,
+    useMetricPerDimension,
+} from 'hooks/reporting/useMetricPerDimension'
 import {efficiencyPerAgentQueryFactory} from 'models/reporting/queryFactories/auto-qa/efficiencyQueryFactory'
 
-import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
 
-describe('useEfficiencyPerAgent', () => {
+describe('EfficiencyPerAgent', () => {
     const periodStart = formatReportingQueryDate(moment())
     const periodEnd = formatReportingQueryDate(moment())
     const agentId = '123'
@@ -26,18 +32,45 @@ describe('useEfficiencyPerAgent', () => {
     }
     const timezone = 'someTimeZone'
 
-    useMetricPerDimensionMock.mockImplementation(
-        ((queryCreator: ReportingQuery) => queryCreator) as any
-    )
+    describe('useEfficiencyPerAgent', () => {
+        it('should call perDimension hook with agent id', () => {
+            renderHook(() =>
+                useEfficiencyPerAgent(
+                    statsFilters,
+                    timezone,
+                    undefined,
+                    agentId
+                )
+            )
 
-    it('should call perDimension hook with agent id', () => {
-        renderHook(() =>
-            useEfficiencyPerAgent(statsFilters, timezone, undefined, agentId)
-        )
+            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                efficiencyPerAgentQueryFactory(
+                    statsFilters,
+                    timezone,
+                    undefined
+                ),
+                agentId
+            )
+        })
+    })
 
-        expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-            efficiencyPerAgentQueryFactory(statsFilters, timezone, undefined),
-            agentId
-        )
+    describe('fetchEfficiencyPerAgent', () => {
+        it('should call perDimension hook with agent id', async () => {
+            await fetchEfficiencyPerAgent(
+                statsFilters,
+                timezone,
+                undefined,
+                agentId
+            )
+
+            expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+                efficiencyPerAgentQueryFactory(
+                    statsFilters,
+                    timezone,
+                    undefined
+                ),
+                agentId
+            )
+        })
     })
 })

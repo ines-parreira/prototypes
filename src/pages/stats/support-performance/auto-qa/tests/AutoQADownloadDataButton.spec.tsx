@@ -4,47 +4,38 @@ import userEvent from '@testing-library/user-event'
 import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {useAutoQAMetrics} from 'hooks/reporting/support-performance/auto-qa/useAutoQAMetrics'
-import {AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {AutoQADownloadDataButton} from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
-import * as autoQAReportingService from 'services/reporting/autoQAReportingService'
+import {useAutoQAReportData} from 'services/reporting/autoQAReportingService'
+import {saveZippedFiles} from 'utils/file'
 import {assumeMock} from 'utils/testing'
 
-jest.mock('hooks/reporting/support-performance/auto-qa/useAutoQAMetrics')
-const useAutoQAMetricsMock = assumeMock(useAutoQAMetrics)
+jest.mock('services/reporting/autoQAReportingService')
+const useAutoQAReportDataMock = assumeMock(useAutoQAReportData)
+
+jest.mock('utils/file')
+const saveZippedFilesMock = assumeMock(saveZippedFiles)
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
 
 describe('ChannelsDownloadDataButton', () => {
-    const reportData = {} as any
     const isLoading = false
-    const period = {
-        start_datetime: '2021-04-02T00:00:00.000Z',
-        end_datetime: '2021-04-02T23:59:59.999Z',
-    }
+    const fileName = 'fileName'
+    const files = {[fileName]: 'someReportData'}
 
     beforeEach(() => {
-        useAutoQAMetricsMock.mockReturnValue({
-            reportData,
+        useAutoQAReportDataMock.mockReturnValue({
+            files,
+            fileName,
             isLoading,
-            period,
         })
     })
 
     it('should fetch data and allow calling the csv with report and report the click', () => {
-        const reportServiceSpy = jest
-            .spyOn(autoQAReportingService, 'saveReport')
-            .mockReturnValue({} as any)
-
         render(<AutoQADownloadDataButton />)
         userEvent.click(screen.getByRole('button'))
 
-        expect(reportServiceSpy).toHaveBeenCalledWith(
-            reportData,
-            AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER,
-            period
-        )
+        expect(saveZippedFilesMock).toHaveBeenCalledWith(files, fileName)
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.StatDownloadClicked,
             expect.objectContaining({

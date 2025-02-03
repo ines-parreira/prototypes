@@ -155,7 +155,6 @@ describe('useAutoQAMetrics', () => {
 
         expect(result.current).toEqual({
             reportData: {
-                agents,
                 communicationSkillsPerAgent: someMetricData,
                 communicationSkillsTrend: someTrendData,
                 resolutionCompletenessPerAgent: someMetricData,
@@ -194,7 +193,6 @@ describe('useAutoQAMetrics', () => {
 
         expect(result.current).toEqual({
             reportData: {
-                agents,
                 communicationSkillsPerAgent: someMetricData,
                 communicationSkillsTrend: someTrendData,
                 resolutionCompletenessPerAgent: someMetricData,

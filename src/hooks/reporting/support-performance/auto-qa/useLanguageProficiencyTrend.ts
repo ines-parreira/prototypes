@@ -1,4 +1,4 @@
-import useMetricTrend from 'hooks/reporting/useMetricTrend'
+import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
 import {languageProficiencyQueryFactory} from 'models/reporting/queryFactories/auto-qa/languageProficiencyQueryFactory'
 import {StatsFilters} from 'models/stat/types'
 import {getPreviousPeriod} from 'utils/reporting'
@@ -8,6 +8,21 @@ export const useLanguageProficiencyTrend = (
     timezone: string
 ) =>
     useMetricTrend(
+        languageProficiencyQueryFactory(filters, timezone),
+        languageProficiencyQueryFactory(
+            {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone
+        )
+    )
+
+export const fetchLanguageProficiencyTrend = (
+    filters: StatsFilters,
+    timezone: string
+) =>
+    fetchMetricTrend(
         languageProficiencyQueryFactory(filters, timezone),
         languageProficiencyQueryFactory(
             {

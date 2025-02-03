@@ -13,6 +13,7 @@ import {StatsFilters} from 'models/stat/types'
 import {ReportFetch} from 'pages/stats/custom-reports/types'
 import {getEntitiesTags} from 'state/entities/tags/selectors'
 import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
+import {getSortedAutoQAAgents} from 'state/ui/stats/autoQAAgentPerformanceSlice'
 import {getSelectedMetric} from 'state/ui/stats/busiestTimesSlice'
 import {getTagsOrder} from 'state/ui/stats/tagsReportSlice'
 import {
@@ -47,6 +48,7 @@ export const useTables = (
     const {columnsOrder: channelColumnsOrder} = useChannelsTableSetting()
 
     const agents = useAppSelector<User[]>(getSortedAgents)
+    const agentsQA = useAppSelector<User[]>(getSortedAutoQAAgents)
     const customFieldsOrder = useAppSelector(getCustomFieldsOrder)
     const selectedCustomField = useAppSelector(getSelectedCustomField)
     const {sortedChannels} = useSortedChannels()
@@ -56,6 +58,7 @@ export const useTables = (
     const context = useMemo(
         () => ({
             agents,
+            agentsQA,
             columnsOrder,
             channels: sortedChannels,
             channelColumnsOrder,
@@ -70,6 +73,7 @@ export const useTables = (
         }),
         [
             agents,
+            agentsQA,
             columnsOrder,
             sortedChannels,
             channelColumnsOrder,

@@ -1,4 +1,4 @@
-import useMetricTrend from 'hooks/reporting/useMetricTrend'
+import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
 import {internalComplianceQueryFactory} from 'models/reporting/queryFactories/auto-qa/internalComplianceQueryFactory'
 import {StatsFilters} from 'models/stat/types'
 import {getPreviousPeriod} from 'utils/reporting'
@@ -8,6 +8,21 @@ export const useInternalComplianceTrend = (
     timezone: string
 ) =>
     useMetricTrend(
+        internalComplianceQueryFactory(filters, timezone),
+        internalComplianceQueryFactory(
+            {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone
+        )
+    )
+
+export const fetchInternalComplianceTrend = (
+    filters: StatsFilters,
+    timezone: string
+) =>
+    fetchMetricTrend(
         internalComplianceQueryFactory(filters, timezone),
         internalComplianceQueryFactory(
             {

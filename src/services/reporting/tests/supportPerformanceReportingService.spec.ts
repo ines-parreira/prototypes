@@ -3,7 +3,6 @@ import moment from 'moment'
 import {Period} from 'models/stat/types'
 import {
     MESSAGES_SENT_LABEL,
-    NOT_AVAILABLE_LABEL,
     OPEN_TICKETS_LABEL,
     TICKETS_CLOSED_LABEL,
     TICKETS_CREATED_LABEL,
@@ -96,10 +95,9 @@ const workloadDataSource = [
     ...(exampleWorkloadPerChannelData.data?.map((channelData) => ({
         label: `${WORKLOAD_BY_CHANNEL_LABEL} - ${channelData.label}`,
         value: channelData.value,
-        prevValue:
-            exampleWorkloadPerChannelData.data?.find(
-                (row) => row.label === channelData.label
-            )?.value || NOT_AVAILABLE_LABEL,
+        prevValue: exampleWorkloadPerChannelData.data?.find(
+            (row) => row.label === channelData.label
+        )?.value,
     })) || []),
 ]
 

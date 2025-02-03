@@ -2,12 +2,10 @@ import {useEffect, useState} from 'react'
 
 import {MetricPerDimensionFetch} from 'hooks/reporting/distributions'
 import {StatsFilters} from 'models/stat/types'
-import {NOT_AVAILABLE_LABEL} from 'services/reporting/constants'
-import {TrendDataWithLabel} from 'services/reporting/supportPerformanceReportingService'
 
 export type LabelledData = {
     label: string
-    value: number | string | null | undefined
+    value: number | null | undefined
 }[]
 
 export const formatPerDimensionTrendData = (
@@ -18,9 +16,7 @@ export const formatPerDimensionTrendData = (
     current.map((dataPoint) => ({
         label: `${labelPrefix} - ${dataPoint.label}`,
         value: dataPoint.value,
-        prevValue:
-            previous.find((row) => row.label === dataPoint.label)?.value ||
-            NOT_AVAILABLE_LABEL,
+        prevValue: previous.find((row) => row.label === dataPoint.label)?.value,
     }))
 
 export const useDistributionTrendReportData = (
@@ -34,7 +30,11 @@ export const useDistributionTrendReportData = (
 ) => {
     const [perDimensionData, setPerDimensionData] = useState<{
         isFetching: boolean
-        data: TrendDataWithLabel[]
+        data: {
+            label: string
+            value: number | null | undefined
+            prevValue: number | null | undefined
+        }[]
     }>({
         isFetching: true,
         data: [],

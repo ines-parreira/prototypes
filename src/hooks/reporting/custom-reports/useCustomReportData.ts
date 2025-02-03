@@ -26,6 +26,7 @@ import {
 } from 'pages/stats/custom-reports/types'
 import {ServiceLevelAgreementsReportConfig} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
 import {SupportPerformanceAgentsReportConfig} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
+import {AutoQAReportConfig} from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
 import {BusiestTimesReportConfig} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
 import {ChannelsReportConfig} from 'pages/stats/support-performance/channels/ChannelsReportConfig'
 import {SupportPerformanceOverviewReportConfig} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
@@ -46,6 +47,7 @@ const chartsLookupTable: Record<string, ChartConfig | undefined> = {
     ...SupportPerformanceAgentsReportConfig.charts,
     ...ChannelsReportConfig.charts,
     ...TicketInsightsTagsReportConfig.charts,
+    ...AutoQAReportConfig.charts,
 }
 
 type Queries = {

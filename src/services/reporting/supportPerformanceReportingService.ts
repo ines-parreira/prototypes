@@ -1,4 +1,5 @@
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
+import {formatMetricValue} from 'pages/stats/common/utils'
 import {
     CURRENT_PERIOD_LABEL,
     EMPTY_LABEL,
@@ -9,8 +10,8 @@ import {createCsv} from 'utils/file'
 
 export type TrendDataWithLabel = {
     label: string
-    value: number | string | null | undefined
-    prevValue: number | string | null | undefined
+    value: number | null | undefined
+    prevValue: number | null | undefined
 }
 
 export interface TimeSeriesDataWithLabels {
@@ -21,7 +22,11 @@ export interface TimeSeriesDataWithLabels {
 const getTrendDataReport = (data: TrendDataWithLabel[]) => {
     return [
         [EMPTY_LABEL, CURRENT_PERIOD_LABEL, PREVIOUS_PERIOD_LABEL],
-        ...data.map((row) => [row.label, row?.value, row?.prevValue]),
+        ...data.map((row) => [
+            row.label,
+            formatMetricValue(row?.value),
+            formatMetricValue(row?.prevValue),
+        ]),
     ]
 }
 

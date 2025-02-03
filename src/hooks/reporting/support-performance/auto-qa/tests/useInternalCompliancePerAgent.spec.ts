@@ -2,19 +2,25 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import moment from 'moment'
 
-import {useInternalCompliancePerAgent} from 'hooks/reporting/support-performance/auto-qa/useInternalCompliancePerAgent'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import {
+    fetchInternalCompliancePerAgent,
+    useInternalCompliancePerAgent,
+} from 'hooks/reporting/support-performance/auto-qa/useInternalCompliancePerAgent'
+import {
+    fetchMetricPerDimension,
+    useMetricPerDimension,
+} from 'hooks/reporting/useMetricPerDimension'
 import {internalCompliancePerAgentQueryFactory} from 'models/reporting/queryFactories/auto-qa/internalComplianceQueryFactory'
 
-import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
 
-describe('useInternalCompliancePerAgent', () => {
+describe('InternalCompliancePerAgent', () => {
     const periodStart = formatReportingQueryDate(moment())
     const periodEnd = formatReportingQueryDate(moment())
     const agentId = '123'
@@ -26,27 +32,45 @@ describe('useInternalCompliancePerAgent', () => {
     }
     const timezone = 'someTimeZone'
 
-    useMetricPerDimensionMock.mockImplementation(
-        ((queryCreator: ReportingQuery) => queryCreator) as any
-    )
+    describe('useInternalCompliancePerAgent', () => {
+        it('should call perDimension hook with agent id', () => {
+            renderHook(() =>
+                useInternalCompliancePerAgent(
+                    statsFilters,
+                    timezone,
+                    undefined,
+                    agentId
+                )
+            )
 
-    it('should call perDimension hook with agent id', () => {
-        renderHook(() =>
-            useInternalCompliancePerAgent(
+            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                internalCompliancePerAgentQueryFactory(
+                    statsFilters,
+                    timezone,
+                    undefined
+                ),
+                agentId
+            )
+        })
+    })
+
+    describe('fetchInternalCompliancePerAgent', () => {
+        it('should call perDimension hook with agent id', async () => {
+            await fetchInternalCompliancePerAgent(
                 statsFilters,
                 timezone,
                 undefined,
                 agentId
             )
-        )
 
-        expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-            internalCompliancePerAgentQueryFactory(
-                statsFilters,
-                timezone,
-                undefined
-            ),
-            agentId
-        )
+            expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+                internalCompliancePerAgentQueryFactory(
+                    statsFilters,
+                    timezone,
+                    undefined
+                ),
+                agentId
+            )
+        })
     })
 })

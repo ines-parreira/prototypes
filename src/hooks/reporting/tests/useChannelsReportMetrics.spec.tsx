@@ -177,6 +177,7 @@ describe('useChannelsReportMetrics', () => {
             })
             const context = {
                 agents: [],
+                agentsQA: [],
                 columnsOrder: [],
                 channels: [],
                 channelColumnsOrder: [],
@@ -222,6 +223,7 @@ describe('useChannelsReportMetrics', () => {
             })
             const context = {
                 agents: [],
+                agentsQA: [],
                 columnsOrder: [],
                 channels: [],
                 channelColumnsOrder: [],

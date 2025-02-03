@@ -19,17 +19,18 @@ import {
     useTableReportData,
     useTables,
 } from 'hooks/reporting/common/useTableReportData'
+
 import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import {useChannelsTableSetting} from 'hooks/reporting/useChannelsTableConfigSetting'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
+import {getSortedAutoQAAgents} from 'state/ui/stats/autoQAAgentPerformanceSlice'
 import {
     busiestTimesSlice,
     initialState as busiestTimesSliceInitialState,
@@ -52,6 +53,8 @@ jest.mock('hooks/reporting/support-performance/useSortedChannels')
 const useSortedChannelsMock = assumeMock(useSortedChannels)
 jest.mock('state/ui/stats/agentPerformanceSlice')
 const getSortedAgentsMock = assumeMock(getSortedAgents)
+jest.mock('state/ui/stats/autoQAAgentPerformanceSlice')
+const getSortedAutoQAAgentsMock = assumeMock(getSortedAutoQAAgents)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -116,6 +119,7 @@ describe('useTable hooks', () => {
                 sortedChannels: [],
             } as unknown as ReturnType<typeof useSortedChannels>)
             getSortedAgentsMock.mockReturnValue(agents)
+            getSortedAutoQAAgentsMock.mockReturnValue(agents)
         })
 
         it('should fetch Table Reports', async () => {

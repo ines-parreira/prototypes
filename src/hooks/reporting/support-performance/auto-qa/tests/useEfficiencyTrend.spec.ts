@@ -2,19 +2,22 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import moment from 'moment'
 
-import {useEfficiencyTrend} from 'hooks/reporting/support-performance/auto-qa/useEfficiencyTrend'
-import useMetricTrend from 'hooks/reporting/useMetricTrend'
+import {
+    fetchEfficiencyTrend,
+    useEfficiencyTrend,
+} from 'hooks/reporting/support-performance/auto-qa/useEfficiencyTrend'
+import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
 import {efficiencyQueryFactory} from 'models/reporting/queryFactories/auto-qa/efficiencyQueryFactory'
 
-import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)
+const fetchMetricTrendMock = assumeMock(fetchMetricTrend)
 
-describe('useEfficiencyTrend', () => {
+describe('EfficiencyTrend', () => {
     const periodStart = formatReportingQueryDate(moment())
     const periodEnd = formatReportingQueryDate(moment())
     const statsFilters: StatsFilters = {
@@ -25,22 +28,37 @@ describe('useEfficiencyTrend', () => {
     }
     const timezone = 'someTimeZone'
 
-    useMetricTrendMock.mockImplementation(
-        ((queryCreator: ReportingQuery) => queryCreator) as any
-    )
+    describe('useEfficiencyTrend', () => {
+        it('should pass query factories with two periods', () => {
+            renderHook(() => useEfficiencyTrend(statsFilters, timezone))
 
-    it('should pass query factories with two periods', () => {
-        renderHook(() => useEfficiencyTrend(statsFilters, timezone))
-
-        expect(useMetricTrendMock).toHaveBeenCalledWith(
-            efficiencyQueryFactory(statsFilters, timezone),
-            efficiencyQueryFactory(
-                {
-                    ...statsFilters,
-                    period: getPreviousPeriod(statsFilters.period),
-                },
-                timezone
+            expect(useMetricTrendMock).toHaveBeenCalledWith(
+                efficiencyQueryFactory(statsFilters, timezone),
+                efficiencyQueryFactory(
+                    {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone
+                )
             )
-        )
+        })
+    })
+
+    describe('fetchEfficiencyTrend', () => {
+        it('should pass query factories with two periods', () => {
+            renderHook(() => fetchEfficiencyTrend(statsFilters, timezone))
+
+            expect(fetchMetricTrendMock).toHaveBeenCalledWith(
+                efficiencyQueryFactory(statsFilters, timezone),
+                efficiencyQueryFactory(
+                    {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone
+                )
+            )
+        })
     })
 })

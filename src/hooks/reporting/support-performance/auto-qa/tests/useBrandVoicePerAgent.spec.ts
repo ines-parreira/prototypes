@@ -2,19 +2,25 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import moment from 'moment'
 
-import {useBrandVoicePerAgent} from 'hooks/reporting/support-performance/auto-qa/useBrandVoicePerAgent'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import {
+    fetchBrandVoicePerAgent,
+    useBrandVoicePerAgent,
+} from 'hooks/reporting/support-performance/auto-qa/useBrandVoicePerAgent'
+import {
+    fetchMetricPerDimension,
+    useMetricPerDimension,
+} from 'hooks/reporting/useMetricPerDimension'
 import {brandVoicePerAgentQueryFactory} from 'models/reporting/queryFactories/auto-qa/brandVoiceQueryFactory'
 
-import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
 
-describe('useBrandVoicePerAgent', () => {
+describe('BrandVoicePerAgent', () => {
     const periodStart = formatReportingQueryDate(moment())
     const periodEnd = formatReportingQueryDate(moment())
     const agentId = '123'
@@ -25,19 +31,45 @@ describe('useBrandVoicePerAgent', () => {
         },
     }
     const timezone = 'someTimeZone'
+    describe('useBrandVoicePerAgent', () => {
+        it('should call perDimension hook with agent id', () => {
+            renderHook(() =>
+                useBrandVoicePerAgent(
+                    statsFilters,
+                    timezone,
+                    undefined,
+                    agentId
+                )
+            )
 
-    useMetricPerDimensionMock.mockImplementation(
-        ((queryCreator: ReportingQuery) => queryCreator) as any
-    )
+            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                brandVoicePerAgentQueryFactory(
+                    statsFilters,
+                    timezone,
+                    undefined
+                ),
+                agentId
+            )
+        })
+    })
 
-    it('should call perDimension hook with agent id', () => {
-        renderHook(() =>
-            useBrandVoicePerAgent(statsFilters, timezone, undefined, agentId)
-        )
+    describe('useMetricPerDimension', () => {
+        it('should call perDimension hook with agent id', async () => {
+            await fetchBrandVoicePerAgent(
+                statsFilters,
+                timezone,
+                undefined,
+                agentId
+            )
 
-        expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-            brandVoicePerAgentQueryFactory(statsFilters, timezone, undefined),
-            agentId
-        )
+            expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+                brandVoicePerAgentQueryFactory(
+                    statsFilters,
+                    timezone,
+                    undefined
+                ),
+                agentId
+            )
+        })
     })
 })

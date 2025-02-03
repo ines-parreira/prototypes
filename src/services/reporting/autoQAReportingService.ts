@@ -1,27 +1,48 @@
 import moment from 'moment/moment'
 
 import {User} from 'config/types/user'
+import {
+    fetchTableReportData,
+    TableDataSources,
+} from 'hooks/reporting/common/useTableReportData'
+import {fetchAccuracyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useAccuracyPerAgent'
+import {useAutoQAMetrics} from 'hooks/reporting/support-performance/auto-qa/useAutoQAMetrics'
+import {fetchBrandVoicePerAgent} from 'hooks/reporting/support-performance/auto-qa/useBrandVoicePerAgent'
+import {fetchCommunicationSkillsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsPerAgent'
+import {fetchEfficiencyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useEfficiencyPerAgent'
+import {fetchInternalCompliancePerAgent} from 'hooks/reporting/support-performance/auto-qa/useInternalCompliancePerAgent'
+
+import {fetchLanguageProficiencyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyPerAgent'
+import {fetchResolutionCompletenessPerAgent} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessPerAgent'
+import {fetchReviewedClosedTicketsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsPerAgent'
+import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     TicketQAScoreCubeWithJoins,
     TicketQAScoreMeasure,
 } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {Period} from 'models/stat/types'
+import {ReportingGranularity} from 'models/reporting/types'
+import {Period, StatsFilters} from 'models/stat/types'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
+import {ReportFetch} from 'pages/stats/custom-reports/types'
 import {
+    AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER,
     AutoQAAgentsColumnConfig,
     AutoQAAgentsTableColumn,
     TableLabels,
 } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
+import {getSortedAutoQAAgents} from 'state/ui/stats/autoQAAgentPerformanceSlice'
+import {TicketInsightsOrder} from 'state/ui/stats/ticketInsightsSlice'
 import {AutoQAMetric} from 'state/ui/stats/types'
-import {createCsv, saveZippedFiles} from 'utils/file'
+import {createCsv} from 'utils/file'
 import {getPreviousPeriod} from 'utils/reporting'
 
 export type AutoQAReportMetrics =
@@ -38,27 +59,34 @@ type ReportDataMap = Record<
     }
 >
 
-export interface AutoQAReportData {
-    agents: User[]
+export interface AutoQATableReportData {
     communicationSkillsPerAgent: MetricWithDecile
-    communicationSkillsTrend: MetricTrend
     resolutionCompletenessPerAgent: MetricWithDecile
-    resolutionCompletenessTrend: MetricTrend
     reviewedClosedTicketsPerAgent: MetricWithDecile
-    reviewedClosedTicketsTrend: MetricTrend
     languageProficiencyPerAgent: MetricWithDecile
-    languageProficiencyTrend: MetricTrend
     accuracyPerAgent: MetricWithDecile
-    accuracyTrend: MetricTrend
     efficiencyPerAgent: MetricWithDecile
-    efficiencyTrend: MetricTrend
     internalCompliancePerAgent: MetricWithDecile
-    internalComplianceTrend: MetricTrend
     brandVoicePerAgent: MetricWithDecile
+}
+
+export interface AutoQATrendReportData {
+    communicationSkillsTrend: MetricTrend
+    resolutionCompletenessTrend: MetricTrend
+    reviewedClosedTicketsTrend: MetricTrend
+    languageProficiencyTrend: MetricTrend
+    accuracyTrend: MetricTrend
+    efficiencyTrend: MetricTrend
+    internalComplianceTrend: MetricTrend
     brandVoiceTrend: MetricTrend
 }
 
+export type AutoQAReportData = AutoQATableReportData & AutoQATrendReportData
+
 export const AGENT_ID_DIMENSION = TicketDimension.AssigneeUserId
+export const AUTO_QA_DOWNLOAD_DATA_FILE_NAME = 'auto-qa-metrics'
+export const AUTO_QA_DOWNLOAD_TRENDS_FILE_NAME = 'auto-qa-trends-metrics'
+export const AUTO_QA_DOWNLOAD_AGENTS_FILE_NAME = 'auto-qa-agents-metrics'
 
 const formatAgentsColumnMetric = (
     column: AutoQAAgentsTableColumn,
@@ -106,8 +134,9 @@ const getMetric = (
               )
           )
 
-export const saveReport = async (
-    data: AutoQAReportData,
+const createTableReport = (
+    agents: User[],
+    data: AutoQATableReportData,
     columnsOrder: AutoQAAgentsTableColumn[],
     period: Period
 ) => {
@@ -168,8 +197,27 @@ export const saveReport = async (
         },
     }
 
+    const agentsMetricData = [
+        columnsOrder.map((column) => TableLabels[column]),
+        ...agents.map((channel) => {
+            return columnsOrder.map((column) =>
+                getMetric(column, channel, columnsToMetricDataMap)
+            )
+        }),
+    ]
+
+    return {
+        files: {
+            [getCsvFileNameWithDates(
+                period,
+                AUTO_QA_DOWNLOAD_AGENTS_FILE_NAME
+            )]: createCsv(agentsMetricData),
+        },
+    }
+}
+
+const createTrendReport = (data: AutoQAReportData, period: Period) => {
     const previousPeriod = getPreviousPeriod(period)
-    const export_datetime = moment().format(DATE_TIME_FORMAT)
     const startDate = moment(period.start_datetime).format(DATE_TIME_FORMAT)
     const previousStartDate = moment(previousPeriod.start_datetime).format(
         DATE_TIME_FORMAT
@@ -178,7 +226,6 @@ export const saveReport = async (
     const previousEndDate = moment(previousPeriod.end_datetime).format(
         DATE_TIME_FORMAT
     )
-    const periodPrefix = `${startDate}_${endDate}`
 
     const trendData = [
         [
@@ -208,10 +255,7 @@ export const saveReport = async (
                 data.resolutionCompletenessTrend.data?.prevValue
             ),
         ],
-    ]
-
-    if (columnsOrder.map(String).includes(AutoQAAgentsTableColumn.Accuracy)) {
-        trendData.push([
+        [
             TrendCardConfig[AutoQAMetric.Accuracy].title,
             formatTrendMetric(
                 AutoQAMetric.Accuracy,
@@ -221,15 +265,8 @@ export const saveReport = async (
                 AutoQAMetric.Accuracy,
                 data.accuracyTrend.data?.prevValue
             ),
-        ])
-    }
-
-    if (
-        columnsOrder
-            .map(String)
-            .includes(AutoQAAgentsTableColumn.InternalCompliance)
-    ) {
-        trendData.push([
+        ],
+        [
             TrendCardConfig[AutoQAMetric.InternalCompliance].title,
             formatTrendMetric(
                 AutoQAMetric.InternalCompliance,
@@ -239,11 +276,8 @@ export const saveReport = async (
                 AutoQAMetric.InternalCompliance,
                 data.internalComplianceTrend.data?.prevValue
             ),
-        ])
-    }
-
-    if (columnsOrder.map(String).includes(AutoQAAgentsTableColumn.Efficiency)) {
-        trendData.push([
+        ],
+        [
             TrendCardConfig[AutoQAMetric.Efficiency].title,
             formatTrendMetric(
                 AutoQAMetric.Efficiency,
@@ -253,27 +287,19 @@ export const saveReport = async (
                 AutoQAMetric.Efficiency,
                 data.efficiencyTrend.data?.prevValue
             ),
-        ])
-    }
-
-    trendData.push([
-        TrendCardConfig[AutoQAMetric.CommunicationSkills].title,
-        formatTrendMetric(
-            AutoQAMetric.CommunicationSkills,
-            data.communicationSkillsTrend.data?.value
-        ),
-        formatTrendMetric(
-            AutoQAMetric.CommunicationSkills,
-            data.communicationSkillsTrend.data?.prevValue
-        ),
-    ])
-
-    if (
-        columnsOrder
-            .map(String)
-            .includes(AutoQAAgentsTableColumn.LanguageProficiency)
-    ) {
-        trendData.push([
+        ],
+        [
+            TrendCardConfig[AutoQAMetric.CommunicationSkills].title,
+            formatTrendMetric(
+                AutoQAMetric.CommunicationSkills,
+                data.communicationSkillsTrend.data?.value
+            ),
+            formatTrendMetric(
+                AutoQAMetric.CommunicationSkills,
+                data.communicationSkillsTrend.data?.prevValue
+            ),
+        ],
+        [
             TrendCardConfig[AutoQAMetric.LanguageProficiency].title,
             formatTrendMetric(
                 AutoQAMetric.LanguageProficiency,
@@ -283,11 +309,8 @@ export const saveReport = async (
                 AutoQAMetric.LanguageProficiency,
                 data.languageProficiencyTrend.data?.prevValue
             ),
-        ])
-    }
-
-    if (columnsOrder.map(String).includes(AutoQAAgentsTableColumn.BrandVoice)) {
-        trendData.push([
+        ],
+        [
             TrendCardConfig[AutoQAMetric.BrandVoice].title,
             formatTrendMetric(
                 AutoQAMetric.BrandVoice,
@@ -297,25 +320,125 @@ export const saveReport = async (
                 AutoQAMetric.BrandVoice,
                 data.brandVoiceTrend.data?.prevValue
             ),
-        ])
-    }
-
-    const agentsMetricData = [
-        columnsOrder.map((column) => TableLabels[column]),
-        ...data.agents.map((channel) => {
-            return columnsOrder.map((column) =>
-                getMetric(column, channel, columnsToMetricDataMap)
-            )
-        }),
+        ],
     ]
 
-    return saveZippedFiles(
-        {
-            [`${periodPrefix}-auto-qa-trends-metrics-${export_datetime}.csv`]:
-                createCsv(trendData),
-            [`${periodPrefix}-auto-qa-agents-metrics-${export_datetime}.csv`]:
-                createCsv(agentsMetricData),
+    return {
+        files: {
+            [getCsvFileNameWithDates(
+                period,
+                AUTO_QA_DOWNLOAD_TRENDS_FILE_NAME
+            )]: createCsv(trendData),
         },
-        `${periodPrefix}-auto-qa-metrics-${export_datetime}`
+    }
+}
+
+export const createReport = (
+    agents: User[],
+    data: AutoQAReportData,
+    columnsOrder: AutoQAAgentsTableColumn[],
+    period: Period
+) => {
+    const fileName = getCsvFileNameWithDates(
+        period,
+        AUTO_QA_DOWNLOAD_DATA_FILE_NAME
     )
+
+    const trendData = createTrendReport(data, period)
+    const agentsMetricData = createTableReport(
+        agents,
+        data,
+        columnsOrder,
+        period
+    )
+
+    return {
+        files: {
+            ...trendData.files,
+            ...agentsMetricData.files,
+        },
+        fileName: fileName,
+    }
+}
+
+export const useAutoQAReportData = () => {
+    const agents = useAppSelector<User[]>(getSortedAutoQAAgents)
+    const {reportData, isLoading, period} = useAutoQAMetrics()
+
+    return {
+        ...createReport(
+            agents,
+            reportData,
+            AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER,
+            period
+        ),
+        isLoading,
+    }
+}
+
+const autoQAAgentsMetricsDataSources: TableDataSources<AutoQATableReportData> =
+    [
+        {
+            fetchData: fetchCommunicationSkillsPerAgent,
+            title: 'communicationSkillsPerAgent',
+        },
+        {
+            fetchData: fetchResolutionCompletenessPerAgent,
+            title: 'resolutionCompletenessPerAgent',
+        },
+        {
+            fetchData: fetchReviewedClosedTicketsPerAgent,
+            title: 'reviewedClosedTicketsPerAgent',
+        },
+        {
+            fetchData: fetchLanguageProficiencyPerAgent,
+            title: 'languageProficiencyPerAgent',
+        },
+        {fetchData: fetchAccuracyPerAgent, title: 'accuracyPerAgent'},
+        {fetchData: fetchEfficiencyPerAgent, title: 'efficiencyPerAgent'},
+        {
+            fetchData: fetchInternalCompliancePerAgent,
+            title: 'internalCompliancePerAgent',
+        },
+        {fetchData: fetchBrandVoicePerAgent, title: 'brandVoicePerAgent'},
+    ]
+
+export const fetchAutoQAAgentsTableReportData: ReportFetch = async (
+    statsFilters: StatsFilters,
+    userTimezone: string,
+    _: ReportingGranularity,
+    context: {
+        agentsQA: User[]
+        customFieldsOrder: TicketInsightsOrder
+        selectedCustomFieldId: string | null
+    }
+) => {
+    const metricConfig = autoQAAgentsMetricsDataSources
+    const fileName = getCsvFileNameWithDates(
+        statsFilters.period,
+        AUTO_QA_DOWNLOAD_DATA_FILE_NAME
+    )
+    return Promise.all([
+        fetchTableReportData(statsFilters, userTimezone, metricConfig),
+    ])
+        .then(([metrics]) => {
+            if (metrics.data === null) {
+                return {
+                    isLoading: false,
+                    files: {},
+                    fileName,
+                }
+            }
+            return {
+                isLoading: false,
+                ...createTableReport(
+                    context.agentsQA,
+                    metrics.data,
+                    AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER,
+                    statsFilters.period
+                ),
+                fileName,
+            }
+        })
+        .catch(() => ({isLoading: false, files: {}, fileName}))
 }

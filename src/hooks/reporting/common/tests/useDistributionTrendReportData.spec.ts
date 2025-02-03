@@ -6,7 +6,6 @@ import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
 import {useDistributionTrendReportData} from 'hooks/reporting/common/useDistributionTrendReportData'
 import {LegacyStatsFilters} from 'models/stat/types'
-import {NOT_AVAILABLE_LABEL} from 'services/reporting/constants'
 
 describe('useDistributionTrendReportData', () => {
     const defaultStatsFilters: LegacyStatsFilters = {
@@ -102,12 +101,12 @@ describe('useDistributionTrendReportData', () => {
                     {
                         label: `${labelPrefix} - ${emailResult.label}`,
                         value: emailResult.value,
-                        prevValue: NOT_AVAILABLE_LABEL,
+                        prevValue: undefined,
                     },
                     {
                         label: `${labelPrefix} - ${facebookResult.label}`,
                         value: facebookResult.value,
-                        prevValue: NOT_AVAILABLE_LABEL,
+                        prevValue: undefined,
                     },
                 ],
             })

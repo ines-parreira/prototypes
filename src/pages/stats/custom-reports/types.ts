@@ -105,6 +105,7 @@ export type ReportFetch = (
     granularity: ReportingGranularity,
     context: {
         agents: User[]
+        agentsQA: User[]
         columnsOrder: AgentsTableColumn[]
         channels: Channel[]
         channelColumnsOrder: ChannelsTableColumns[]

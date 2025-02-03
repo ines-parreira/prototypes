@@ -1,8 +1,11 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
-import {useReviewedClosedTicketsTrend} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
-import useMetricTrend from 'hooks/reporting/useMetricTrend'
+import {
+    fetchReviewedClosedTicketsTrend,
+    useReviewedClosedTicketsTrend,
+} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
+import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
 import {reviewedClosedTicketsQueryFactory} from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
 import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
@@ -11,8 +14,9 @@ import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)
+const fetchMetricTrendMock = assumeMock(fetchMetricTrend)
 
-describe('useReviewedClosedTicketsTrend', () => {
+describe('ReviewedClosedTicketsTrend', () => {
     const periodStart = formatReportingQueryDate(moment())
     const periodEnd = formatReportingQueryDate(moment())
     const statsFilters: StatsFilters = {
@@ -27,18 +31,39 @@ describe('useReviewedClosedTicketsTrend', () => {
         ((queryCreator: ReportingQuery) => queryCreator) as any
     )
 
-    it('should pass query factories with two periods', () => {
-        renderHook(() => useReviewedClosedTicketsTrend(statsFilters, timezone))
-
-        expect(useMetricTrendMock).toHaveBeenCalledWith(
-            reviewedClosedTicketsQueryFactory(statsFilters, timezone),
-            reviewedClosedTicketsQueryFactory(
-                {
-                    ...statsFilters,
-                    period: getPreviousPeriod(statsFilters.period),
-                },
-                timezone
+    describe('useReviewedClosedTicketsTrend', () => {
+        it('should pass query factories with two periods', () => {
+            renderHook(() =>
+                useReviewedClosedTicketsTrend(statsFilters, timezone)
             )
-        )
+
+            expect(useMetricTrendMock).toHaveBeenCalledWith(
+                reviewedClosedTicketsQueryFactory(statsFilters, timezone),
+                reviewedClosedTicketsQueryFactory(
+                    {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone
+                )
+            )
+        })
+    })
+
+    describe('fetchReviewedClosedTicketsTrend', () => {
+        it('should pass query factories with two periods', async () => {
+            await fetchReviewedClosedTicketsTrend(statsFilters, timezone)
+
+            expect(fetchMetricTrendMock).toHaveBeenCalledWith(
+                reviewedClosedTicketsQueryFactory(statsFilters, timezone),
+                reviewedClosedTicketsQueryFactory(
+                    {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone
+                )
+            )
+        })
     })
 })

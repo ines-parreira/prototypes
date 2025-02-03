@@ -207,6 +207,7 @@ describe('useDownloadAgentsPerformanceData', () => {
         const granularity = ReportingGranularity.Day
         const context = {
             agents: [],
+            agentsQA: [],
             columnsOrder: [],
             channels: [],
             channelColumnsOrder: [],

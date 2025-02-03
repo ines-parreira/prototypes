@@ -1,6 +1,5 @@
 import {useMemo} from 'react'
 
-import {User} from 'config/types/user'
 import {useAccuracyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useAccuracyPerAgent'
 import {useAccuracyTrend} from 'hooks/reporting/support-performance/auto-qa/useAccuracyTrend'
 import {useBrandVoicePerAgent} from 'hooks/reporting/support-performance/auto-qa/useBrandVoicePerAgent'
@@ -18,13 +17,9 @@ import {useResolutionCompletenessTrend} from 'hooks/reporting/support-performanc
 import {useReviewedClosedTicketsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsPerAgent'
 import {useReviewedClosedTicketsTrend} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import useAppSelector from 'hooks/useAppSelector'
-import {getSortedAutoQAAgents} from 'state/ui/stats/autoQAAgentPerformanceSlice'
 
 export const useAutoQAMetrics = () => {
     const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
-
-    const agents = useAppSelector<User[]>(getSortedAutoQAAgents)
 
     const reviewedClosedTicketsTrend = useReviewedClosedTicketsTrend(
         cleanStatsFilters,
@@ -97,6 +92,10 @@ export const useAutoQAMetrics = () => {
             reviewedClosedTicketsPerAgent,
             communicationSkillsPerAgent,
             languageProficiencyPerAgent,
+            accuracyPerAgent,
+            efficiencyPerAgent,
+            internalCompliancePerAgent,
+            brandVoicePerAgent,
         ].some((data) => data.isFetching)
     }, [
         communicationSkillsPerAgent,
@@ -111,11 +110,14 @@ export const useAutoQAMetrics = () => {
         reviewedClosedTicketsPerAgent,
         reviewedClosedTicketsTrend,
         languageProficiencyPerAgent,
+        accuracyPerAgent,
+        efficiencyPerAgent,
+        internalCompliancePerAgent,
+        brandVoicePerAgent,
     ])
 
     return {
         reportData: {
-            agents,
             communicationSkillsPerAgent,
             communicationSkillsTrend,
             resolutionCompletenessPerAgent,

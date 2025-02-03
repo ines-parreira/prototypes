@@ -164,6 +164,7 @@ describe('ticketFieldsReportingService', () => {
                 granularity,
                 {
                     agents: [],
+                    agentsQA: [],
                     channelColumnsOrder: [],
                     channels: [],
                     columnsOrder: [],
@@ -195,6 +196,7 @@ describe('ticketFieldsReportingService', () => {
                 granularity,
                 {
                     agents: [],
+                    agentsQA: [],
                     channelColumnsOrder: [],
                     channels: [],
                     columnsOrder: [],
@@ -223,6 +225,7 @@ describe('ticketFieldsReportingService', () => {
                 granularity,
                 {
                     agents: [],
+                    agentsQA: [],
                     channelColumnsOrder: [],
                     channels: [],
                     columnsOrder: [],
@@ -253,6 +256,7 @@ describe('ticketFieldsReportingService', () => {
                 granularity,
                 {
                     agents: [],
+                    agentsQA: [],
                     channelColumnsOrder: [],
                     channels: [],
                     columnsOrder: [],
