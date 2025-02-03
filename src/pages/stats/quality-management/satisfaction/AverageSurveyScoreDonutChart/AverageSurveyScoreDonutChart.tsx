@@ -53,10 +53,10 @@ const EMPTY_CHART_DATA = [
 
 export const formatSurveyScores = (
     scores: MetricWithDecile,
-    labelSufix: string = '★'
+    labelSuffix: string = '★'
 ) => {
     if (!scores.data?.allData) {
-        return
+        return []
     }
 
     const dataMap = scores.data.allData.reduce(
@@ -68,15 +68,13 @@ export const formatSurveyScores = (
         {}
     )
 
-    const chartData = EMPTY_CHART_DATA.map((item) => {
+    return EMPTY_CHART_DATA.map((item) => {
         return {
             ...item,
             value: parseInt(dataMap[item.label] ?? '0'),
-            label: `${item.label} ${labelSufix}`,
+            label: `${item.label} ${labelSuffix}`,
         }
     })
-
-    return chartData
 }
 
 export default function AverageSurveyScoreDonutChart(
@@ -94,7 +92,7 @@ export default function AverageSurveyScoreDonutChart(
             customColors: [],
         }
 
-        return chartData?.reduce((acc, {value, backgroundColor, label}) => {
+        return chartData.reduce((acc, {value, backgroundColor, label}) => {
             acc.data.push({label, value})
             acc.customColors.push(backgroundColor)
             return acc

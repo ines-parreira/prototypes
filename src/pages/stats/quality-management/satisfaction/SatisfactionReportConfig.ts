@@ -1,11 +1,16 @@
 import {FilterKey, StaticFilter} from 'models/stat/types'
-import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
+import {
+    ChartType,
+    DataExportFormat,
+    ReportConfig,
+} from 'pages/stats/custom-reports/types'
 import AverageSurveyScoreDonutChart from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
 import {ResponseRateTrendCard} from 'pages/stats/quality-management/satisfaction/ResponseRateTrendCard'
 import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
 
 import {SatisfactionScoreTrendCard} from 'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard'
 import {SurveysSentTrendCard} from 'pages/stats/quality-management/satisfaction/SurveysSentTrendCard'
+import {fetchSurveyScoresReportData} from 'services/reporting/satisfactionReportingService'
 import {SatisfactionMetric} from 'state/ui/stats/types'
 
 export enum SatisfactionChart {
@@ -42,7 +47,14 @@ export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {
             description:
                 SatisfactionMetricConfig[SatisfactionMetric.SatisfactionScore]
                     .hint.title,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: SatisfactionMetricConfig[
+                        SatisfactionMetric.SatisfactionScore
+                    ].fetchTrend,
+                },
+            ],
             chartType: ChartType.Card,
         },
         [SatisfactionChart.ResponseRateTrendCard]: {
@@ -52,7 +64,14 @@ export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {
             description:
                 SatisfactionMetricConfig[SatisfactionMetric.ResponseRate].hint
                     .title,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: SatisfactionMetricConfig[
+                        SatisfactionMetric.ResponseRate
+                    ].fetchTrend,
+                },
+            ],
             chartType: ChartType.Card,
         },
         [SatisfactionChart.SurveysSentTrendCard]: {
@@ -62,7 +81,14 @@ export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {
             description:
                 SatisfactionMetricConfig[SatisfactionMetric.SurveysSent].hint
                     .title,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: SatisfactionMetricConfig[
+                        SatisfactionMetric.SurveysSent
+                    ].fetchTrend,
+                },
+            ],
             chartType: ChartType.Card,
         },
         [SatisfactionChart.AverageSurveyScoreDonutChart]: {
@@ -73,7 +99,18 @@ export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {
             description:
                 SatisfactionMetricConfig[SatisfactionMetric.AverageSurveyScore]
                     .hint.title,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: SatisfactionMetricConfig[
+                        SatisfactionMetric.AverageSurveyScore
+                    ].fetchTrend,
+                },
+                {
+                    type: DataExportFormat.Table,
+                    fetch: fetchSurveyScoresReportData,
+                },
+            ],
             chartType: ChartType.Graph,
         },
     },

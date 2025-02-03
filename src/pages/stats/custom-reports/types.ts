@@ -121,7 +121,7 @@ export type ReportFetch = (
     files: Record<string, string>
 }>
 
-type DataExportFetch =
+export type DataExportFetch =
     | {type: DataExportFormat.Trend; fetch: MetricTrendFetch; title?: string}
     | {type: DataExportFormat.Table; fetch: ReportFetch}
     | {

@@ -1,8 +1,20 @@
-import {useAverageScoreTrend} from 'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
-import {useResponseRateTrend} from 'hooks/reporting/quality-management/satisfaction/useResponseRateTrend'
-import {useSatisfactionScoreTrend} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
-import {useSurveysSentTrend} from 'hooks/reporting/quality-management/satisfaction/useSurveysSentTrend'
-import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
+import {
+    fetchAverageScoreTrend,
+    useAverageScoreTrend,
+} from 'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
+import {
+    fetchResponseRateTrend,
+    useResponseRateTrend,
+} from 'hooks/reporting/quality-management/satisfaction/useResponseRateTrend'
+import {
+    fetchSatisfactionScoreTrend,
+    useSatisfactionScoreTrend,
+} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
+import {
+    fetchSurveysSentTrend,
+    useSurveysSentTrend,
+} from 'hooks/reporting/quality-management/satisfaction/useSurveysSentTrend'
+import {MetricTrendFetch, MetricTrendHook} from 'hooks/reporting/useMetricTrend'
 import {MetricTrendFormat} from 'pages/stats/common/utils'
 import {TooltipData} from 'pages/stats/types'
 import {SatisfactionMetric} from 'state/ui/stats/types'
@@ -18,6 +30,7 @@ export const SatisfactionMetricConfig: Record<
         hint: TooltipData
         title: string
         useTrend: MetricTrendHook
+        fetchTrend: MetricTrendFetch
         interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
         metricFormat: MetricTrendFormat
         drillDownMetric: SatisfactionMetric
@@ -31,6 +44,7 @@ export const SatisfactionMetricConfig: Record<
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-to-percent',
         useTrend: useSatisfactionScoreTrend,
+        fetchTrend: fetchSatisfactionScoreTrend,
         drillDownMetric: SatisfactionMetric.SatisfactionScore,
     },
     [SatisfactionMetric.ResponseRate]: {
@@ -42,6 +56,7 @@ export const SatisfactionMetricConfig: Record<
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-to-percent',
         useTrend: useResponseRateTrend,
+        fetchTrend: fetchResponseRateTrend,
         drillDownMetric: SatisfactionMetric.ResponseRate,
     },
     [SatisfactionMetric.SurveysSent]: {
@@ -53,6 +68,7 @@ export const SatisfactionMetricConfig: Record<
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
         useTrend: useSurveysSentTrend,
+        fetchTrend: fetchSurveysSentTrend,
         drillDownMetric: SatisfactionMetric.SurveysSent,
     },
     [SatisfactionMetric.AverageSurveyScore]: {
@@ -63,6 +79,7 @@ export const SatisfactionMetricConfig: Record<
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
         useTrend: useAverageScoreTrend,
+        fetchTrend: fetchAverageScoreTrend,
         drillDownMetric: SatisfactionMetric.AverageSurveyScore,
     },
 }

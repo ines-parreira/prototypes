@@ -5,10 +5,10 @@ import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {billingState} from 'fixtures/billing'
-import {useSatisfactionMetrics} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
 import {FiltersPanelWrapper} from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import AverageSurveyScoreDonutChart from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
 import {ResponseRateTrendCard} from 'pages/stats/quality-management/satisfaction/ResponseRateTrendCard'
+import {SatisfactionDownloadDataButton} from 'pages/stats/quality-management/satisfaction/SatisfactionDownloadDataButton'
 import SatisfactionReport from 'pages/stats/quality-management/satisfaction/SatisfactionReport'
 import {
     SATISFACTION_OPTIONAL_FILTERS,
@@ -47,11 +47,12 @@ const ResponseRateTrendCardMock = assumeMock(ResponseRateTrendCard)
 
 jest.mock('pages/stats/quality-management/satisfaction/SurveysSentTrendCard')
 const SurveysSentTrendCardMock = assumeMock(SurveysSentTrendCard)
-
 jest.mock(
-    'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
+    'pages/stats/quality-management/satisfaction/SatisfactionDownloadDataButton'
 )
-const useSatisfactionMetricsMock = assumeMock(useSatisfactionMetrics)
+const SatisfactionDownloadDataButtonMock = assumeMock(
+    SatisfactionDownloadDataButton
+)
 
 jest.mock(
     'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
@@ -61,12 +62,6 @@ const AverageSurveyScoreDonutChartMock = assumeMock(
 )
 
 describe('<Satisfaction>', () => {
-    const reportData = {} as any
-    const isLoading = false
-    const period = {
-        start_datetime: '2021-04-02T00:00:00.000Z',
-        end_datetime: '2021-04-02T23:59:59.999Z',
-    }
     const defaultState = {
         stats: {
             filters: fromLegacyStatsFilters(defaultStatsFilters),
@@ -85,15 +80,11 @@ describe('<Satisfaction>', () => {
             [FeatureFlagKey.AnalyticsNewFilters]: true,
             [FeatureFlagKey.NewSatisfactionReport]: true,
         })
-        useSatisfactionMetricsMock.mockReturnValue({
-            reportData,
-            isLoading,
-            period,
-        })
         SatisfactionScoreTrendCardMock.mockImplementation(componentMock)
         ResponseRateTrendCardMock.mockImplementation(componentMock)
         SurveysSentTrendCardMock.mockImplementation(componentMock)
         AverageSurveyScoreDonutChartMock.mockImplementation(componentMock)
+        SatisfactionDownloadDataButtonMock.mockImplementation(componentMock)
     })
 
     it('should render new satisfaction report page', () => {

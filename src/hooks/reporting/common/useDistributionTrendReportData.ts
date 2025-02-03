@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react'
 
 import {MetricPerDimensionFetch} from 'hooks/reporting/distributions'
 import {StatsFilters} from 'models/stat/types'
+import {TrendDataWithLabel} from 'services/reporting/supportPerformanceReportingService'
 
 export type LabelledData = {
     label: string
@@ -30,11 +31,7 @@ export const useDistributionTrendReportData = (
 ) => {
     const [perDimensionData, setPerDimensionData] = useState<{
         isFetching: boolean
-        data: {
-            label: string
-            value: number | null | undefined
-            prevValue: number | null | undefined
-        }[]
+        data: TrendDataWithLabel[]
     }>({
         isFetching: true,
         data: [],

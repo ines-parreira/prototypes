@@ -1,18 +1,21 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
 
-import {useResponseRateTrend} from 'hooks/reporting/quality-management/satisfaction/useResponseRateTrend'
-import useMetricTrend from 'hooks/reporting/useMetricTrend'
+import {
+    fetchResponseRateTrend,
+    useResponseRateTrend,
+} from 'hooks/reporting/quality-management/satisfaction/useResponseRateTrend'
+import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
 import {responseRateQueryFactory} from 'models/reporting/queryFactories/satisfaction/responseRateQueryFactory'
-import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)
+const fetchMetricTrendMock = assumeMock(fetchMetricTrend)
 
-describe('useResponseRateTrend', () => {
+describe('ResponseRateTrend', () => {
     const periodStart = formatReportingQueryDate(moment())
     const periodEnd = formatReportingQueryDate(moment())
     const statsFilters: StatsFilters = {
@@ -23,22 +26,37 @@ describe('useResponseRateTrend', () => {
     }
     const timezone = 'someTimeZone'
 
-    useMetricTrendMock.mockImplementation(
-        ((queryCreator: ReportingQuery) => queryCreator) as any
-    )
+    describe('useResponseRateTrend', () => {
+        it('should pass query factories with two periods', () => {
+            renderHook(() => useResponseRateTrend(statsFilters, timezone))
 
-    it('should pass query factories with two periods', () => {
-        renderHook(() => useResponseRateTrend(statsFilters, timezone))
-
-        expect(useMetricTrendMock).toHaveBeenCalledWith(
-            responseRateQueryFactory(statsFilters, timezone),
-            responseRateQueryFactory(
-                {
-                    ...statsFilters,
-                    period: getPreviousPeriod(statsFilters.period),
-                },
-                timezone
+            expect(useMetricTrendMock).toHaveBeenCalledWith(
+                responseRateQueryFactory(statsFilters, timezone),
+                responseRateQueryFactory(
+                    {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone
+                )
             )
-        )
+        })
+    })
+
+    describe('fetchResponseRateTrend', () => {
+        it('should pass query factories with two periods', async () => {
+            await fetchResponseRateTrend(statsFilters, timezone)
+
+            expect(fetchMetricTrendMock).toHaveBeenCalledWith(
+                responseRateQueryFactory(statsFilters, timezone),
+                responseRateQueryFactory(
+                    {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone
+                )
+            )
+        })
     })
 })

@@ -24,6 +24,7 @@ import {
     DataExportFormat,
     ReportFetch,
 } from 'pages/stats/custom-reports/types'
+import {SatisfactionReportConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
 import {ServiceLevelAgreementsReportConfig} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
 import {SupportPerformanceAgentsReportConfig} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import {AutoQAReportConfig} from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
@@ -52,6 +53,7 @@ const chartsLookupTable: Record<string, ChartConfig | undefined> = {
     ...AutoQAReportConfig.charts,
     ...VoiceOverviewReportConfig.charts,
     ...VoiceAgentsReportConfig.charts,
+    ...SatisfactionReportConfig.charts,
 }
 
 type Queries = {

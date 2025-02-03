@@ -1,15 +1,15 @@
 import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {useSatisfactionMetrics} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
 
 import {DownloadDataButton} from 'pages/stats/support-performance/components/DownloadDataButton'
-import {saveReport} from 'services/reporting/satisfactionReportingService'
+import {useSatisfactionReportData} from 'services/reporting/satisfactionReportingService'
+import {saveZippedFiles} from 'utils/file'
 
 const DOWNLOAD_SATISFACTION_DATA_BUTTON_TITLE = 'Download Satisfaction data'
 
 export const SatisfactionDownloadDataButton = () => {
-    const {reportData, isLoading, period} = useSatisfactionMetrics()
+    const {files, fileName, isLoading} = useSatisfactionReportData()
 
     return (
         <DownloadDataButton
@@ -17,7 +17,7 @@ export const SatisfactionDownloadDataButton = () => {
                 logEvent(SegmentEvent.StatDownloadClicked, {
                     name: 'all-metrics',
                 })
-                await saveReport(reportData, period)
+                await saveZippedFiles(files, fileName)
             }}
             disabled={isLoading}
             title={DOWNLOAD_SATISFACTION_DATA_BUTTON_TITLE}

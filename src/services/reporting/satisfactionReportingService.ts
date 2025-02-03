@@ -1,8 +1,13 @@
 import moment from 'moment/moment'
 
+import {useSatisfactionMetrics} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
+import {fetchSurveyScores} from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
+import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
+
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {Period} from 'models/stat/types'
+import {Period, StatsFilters} from 'models/stat/types'
+
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -11,7 +16,7 @@ import {formatSurveyScores} from 'pages/stats/quality-management/satisfaction/Av
 import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {SatisfactionMetric} from 'state/ui/stats/types'
-import {createCsv, saveZippedFiles} from 'utils/file'
+import {createCsv} from 'utils/file'
 import {getPreviousPeriod} from 'utils/reporting'
 
 export interface SatisfactionReportData {
@@ -22,6 +27,10 @@ export interface SatisfactionReportData {
     surveyScores: MetricWithDecile
 }
 
+export const SATISFACTION_TRENDS_METRICS_FILE_NAME =
+    'satisfaction-trends-metrics'
+export const SATISFACTION_METRICS_FILE_NAME = 'satisfaction-metrics'
+
 const formatTrendMetric = (column: SatisfactionMetric, value?: number | null) =>
     formatMetricValue(
         value,
@@ -29,12 +38,8 @@ const formatTrendMetric = (column: SatisfactionMetric, value?: number | null) =>
         NOT_AVAILABLE_PLACEHOLDER
     )
 
-export const saveReport = async (
-    data: SatisfactionReportData,
-    period: Period
-) => {
+const getHeaders = (period: Period) => {
     const previousPeriod = getPreviousPeriod(period)
-    const export_datetime = moment().format(DATE_TIME_FORMAT)
     const startDate = moment(period.start_datetime).format(DATE_TIME_FORMAT)
     const previousStartDate = moment(previousPeriod.start_datetime).format(
         DATE_TIME_FORMAT
@@ -43,19 +48,24 @@ export const saveReport = async (
     const previousEndDate = moment(previousPeriod.end_datetime).format(
         DATE_TIME_FORMAT
     )
-    const periodPrefix = `${startDate}_${endDate}`
 
+    return [
+        'Metric',
+        `${startDate} - ${endDate}`,
+        `${previousStartDate} - ${previousEndDate}`,
+    ]
+}
+
+export const saveReport = (data: SatisfactionReportData, period: Period) => {
     const formattedSurveyScores = formatSurveyScores(
         data.surveyScores,
         '- star count'
-    )?.map(({value, label}) => [label, value])
+    ).map(({value, label}) => [label, value])
+
+    const headers = getHeaders(period)
 
     const trendData = [
-        [
-            'Metric',
-            `${startDate} - ${endDate}`,
-            `${previousStartDate} - ${previousEndDate}`,
-        ],
+        headers,
         [
             SatisfactionMetricConfig[SatisfactionMetric.AverageSurveyScore]
                 .title,
@@ -68,7 +78,7 @@ export const saveReport = async (
                 data.averageScoreTrend.data?.prevValue
             ),
         ],
-        ...(formattedSurveyScores || []),
+        ...formattedSurveyScores,
         [
             SatisfactionMetricConfig[SatisfactionMetric.SatisfactionScore]
                 .title,
@@ -105,11 +115,66 @@ export const saveReport = async (
         ],
     ]
 
-    return saveZippedFiles(
-        {
-            [`${periodPrefix}-satisfaction-trends-metrics-${export_datetime}.csv`]:
-                createCsv(trendData),
-        },
-        `${periodPrefix}-satisfaction-metrics-${export_datetime}`
+    return createCsv(trendData)
+}
+
+export const useSatisfactionReportData = () => {
+    const {reportData, isLoading, period} = useSatisfactionMetrics()
+
+    const fileName = getCsvFileNameWithDates(
+        period,
+        SATISFACTION_METRICS_FILE_NAME
     )
+    const trendsFileName = getCsvFileNameWithDates(
+        period,
+        SATISFACTION_TRENDS_METRICS_FILE_NAME
+    )
+
+    return {
+        files: {
+            [trendsFileName]: saveReport(reportData, period),
+        },
+        fileName,
+        isLoading,
+    }
+}
+
+const formatSurveyScoresReport = (scores: MetricWithDecile, period: Period) => {
+    const formattedSurveyScores = formatSurveyScores(
+        scores,
+        '- star count'
+    ).map(({value, label}) => [label, value])
+    const headers = getHeaders(period)
+
+    return [headers, ...formattedSurveyScores]
+}
+
+export const fetchSurveyScoresReportData = (
+    filters: StatsFilters,
+    timezone: string
+) => {
+    const fileName = getCsvFileNameWithDates(
+        filters.period,
+        SATISFACTION_TRENDS_METRICS_FILE_NAME
+    )
+
+    return fetchSurveyScores(filters, timezone)
+        .then((result) => {
+            return {
+                files: {
+                    [fileName]: createCsv(
+                        formatSurveyScoresReport(result, filters.period)
+                    ),
+                },
+                fileName,
+                isLoading: false,
+                isError: false,
+            }
+        })
+        .catch(() => ({
+            files: {},
+            fileName,
+            isLoading: false,
+            isError: true,
+        }))
 }

@@ -4,44 +4,50 @@ import userEvent from '@testing-library/user-event'
 import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {useSatisfactionMetrics} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
+import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {SatisfactionDownloadDataButton} from 'pages/stats/quality-management/satisfaction/SatisfactionDownloadDataButton'
-import * as satisfactionReportingService from 'services/reporting/satisfactionReportingService'
+import {
+    SATISFACTION_METRICS_FILE_NAME,
+    useSatisfactionReportData,
+} from 'services/reporting/satisfactionReportingService'
+import {saveZippedFiles} from 'utils/file'
 import {assumeMock} from 'utils/testing'
 
-jest.mock(
-    'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
-)
-const useSatisfactionMetricsMock = assumeMock(useSatisfactionMetrics)
-
+jest.mock('services/reporting/satisfactionReportingService')
+const useSatisfactionReportDataMock = assumeMock(useSatisfactionReportData)
+jest.mock('utils/file')
+const saveZippedFilesMock = assumeMock(saveZippedFiles)
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
 
 describe('SatisfactionDownloadDataButton', () => {
-    const reportData = {} as any
+    const reportData = 'someData'
     const isLoading = false
     const period = {
         start_datetime: '2021-04-02T00:00:00.000Z',
         end_datetime: '2021-04-02T23:59:59.999Z',
     }
+    const fileName = getCsvFileNameWithDates(
+        period,
+        SATISFACTION_METRICS_FILE_NAME
+    )
+    const files = {
+        [fileName]: reportData,
+    }
 
     beforeEach(() => {
-        useSatisfactionMetricsMock.mockReturnValue({
-            reportData,
+        useSatisfactionReportDataMock.mockReturnValue({
+            files,
+            fileName,
             isLoading,
-            period,
         })
     })
 
     it('should fetch data and allow calling the csv with report and report the click', () => {
-        const reportServiceSpy = jest
-            .spyOn(satisfactionReportingService, 'saveReport')
-            .mockReturnValue({} as any)
-
         render(<SatisfactionDownloadDataButton />)
         userEvent.click(screen.getByRole('button'))
 
-        expect(reportServiceSpy).toHaveBeenCalledWith(reportData, period)
+        expect(saveZippedFilesMock).toHaveBeenCalledWith(files, fileName)
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.StatDownloadClicked,
             expect.objectContaining({
@@ -51,14 +57,10 @@ describe('SatisfactionDownloadDataButton', () => {
     })
 
     it('should call report without Language Proficiency', () => {
-        const reportServiceSpy = jest
-            .spyOn(satisfactionReportingService, 'saveReport')
-            .mockReturnValue({} as any)
-
         render(<SatisfactionDownloadDataButton />)
         userEvent.click(screen.getByRole('button'))
 
-        expect(reportServiceSpy).toHaveBeenCalledWith(reportData, period)
+        expect(saveZippedFilesMock).toHaveBeenCalledWith(files, fileName)
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.StatDownloadClicked,
             expect.objectContaining({
