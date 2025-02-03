@@ -1,4 +1,4 @@
-import useMetricTrend from 'hooks/reporting/useMetricTrend'
+import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
 import {
     voiceCallAverageTalkTimeQueryFactory,
     voiceCallAverageWaitTimeQueryFactory,
@@ -19,6 +19,32 @@ export const useVoiceCallAverageTimeTrend = (
     return useMetricTrend(
         factory(filters, timezone),
         factory(
+            {...filters, period: getPreviousPeriod(filters.period)},
+            timezone
+        )
+    )
+}
+
+export const fetchVoiceCallAverageTimeWaitTimeTrend = (
+    filters: StatsFilters,
+    timezone: string
+) => {
+    return fetchMetricTrend(
+        voiceCallAverageWaitTimeQueryFactory(filters, timezone),
+        voiceCallAverageWaitTimeQueryFactory(
+            {...filters, period: getPreviousPeriod(filters.period)},
+            timezone
+        )
+    )
+}
+
+export const fetchVoiceCallAverageTimeTalkTimeTrend = (
+    filters: StatsFilters,
+    timezone: string
+) => {
+    return fetchMetricTrend(
+        voiceCallAverageTalkTimeQueryFactory(filters, timezone),
+        voiceCallAverageTalkTimeQueryFactory(
             {...filters, period: getPreviousPeriod(filters.period)},
             timezone
         )

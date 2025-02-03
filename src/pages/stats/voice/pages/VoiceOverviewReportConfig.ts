@@ -1,6 +1,10 @@
 import {FilterComponentKey, FilterKey, StaticFilter} from 'models/stat/types'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
-import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
+import {
+    ChartType,
+    DataExportFormat,
+    ReportConfig,
+} from 'pages/stats/custom-reports/types'
 import {VoiceCallCallCallerExperiencAverageTalkTime} from 'pages/stats/voice/charts/VoiceCallCallerExperiencAverageTalkTime'
 import {VoiceCallCallerExperienceAverageWaitTimeChart} from 'pages/stats/voice/charts/VoiceCallCallerExperienceAverageWaitTimeChart'
 import {VoiceCallTableChart} from 'pages/stats/voice/charts/VoiceCallTableChart'
@@ -24,6 +28,16 @@ import {
     TOTAL_CALLS_METRIC_HINT,
     TOTAL_CALLS_METRIC_TITLE,
 } from 'pages/stats/voice/constants/voiceOverview'
+import {
+    fetchVoiceCallAverageTimeTalkTimeTrend,
+    fetchVoiceCallAverageTimeWaitTimeTrend,
+} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
+import {
+    fetchVoiceCallCountInboundTrend,
+    fetchVoiceCallCountMissedTrend,
+    fetchVoiceCallCountOutboundTrend,
+    fetchVoiceCallCountTrend,
+} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 
 export const VOICE_OVERVIEW_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.Period,
@@ -53,42 +67,72 @@ export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
             label: AVERAGE_WAIT_TIME_METRIC_TITLE,
             description: AVERAGE_WAIT_TIME_METRIC_HINT,
             chartType: ChartType.Card,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: fetchVoiceCallAverageTimeWaitTimeTrend,
+                },
+            ],
         },
         [VoiceOverviewChart.VoiceCallCallCallerExperienceAverageTalkTime]: {
             chartComponent: VoiceCallCallCallerExperiencAverageTalkTime,
             label: AVERAGE_TALK_TIME_METRIC_TITLE,
             description: AVERAGE_TALK_TIME_METRIC_HINT,
             chartType: ChartType.Card,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: fetchVoiceCallAverageTimeTalkTimeTrend,
+                },
+            ],
         },
         [VoiceOverviewChart.VoiceCallVolumeTotalCallCountTrendChart]: {
             chartComponent: VoiceCallVolumeTotalCallCountTrendChart,
             label: TOTAL_CALLS_METRIC_TITLE,
             description: TOTAL_CALLS_METRIC_HINT,
             chartType: ChartType.Card,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: fetchVoiceCallCountTrend,
+                },
+            ],
         },
         [VoiceOverviewChart.VoiceCallVolumeMetricOutboundCallsCountTrend]: {
             chartComponent: VoiceCallVolumeMetricOutboundCallsCountTrend,
             label: OUTBOUND_CALLS_METRIC_TITLE,
             description: OUTBOUND_CALLS_METRIC_HINT,
             chartType: ChartType.Card,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: fetchVoiceCallCountOutboundTrend,
+                },
+            ],
         },
         [VoiceOverviewChart.VoiceCallVolumeMetricInboundCallsCountTrend]: {
             chartComponent: VoiceCallVolumeMetricInboundCallsCountTrend,
             label: INBOUND_CALLS_METRIC_TITLE,
             description: INBOUND_CALLS_METRIC_HINT,
             chartType: ChartType.Card,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: fetchVoiceCallCountInboundTrend,
+                },
+            ],
         },
         [VoiceOverviewChart.VoiceCallVolumeMetricMissedCallsCountTrendChart]: {
             chartComponent: VoiceCallVolumeMetricMissedCallsCountTrendChart,
             label: MISSED_CALLS_METRIC_TITLE,
             description: MISSED_CALLS_METRIC_HINT,
             chartType: ChartType.Card,
-            csvProducer: null,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: fetchVoiceCallCountMissedTrend,
+                },
+            ],
         },
         [VoiceOverviewChart.VoiceCallTableChart]: {
             chartComponent: VoiceCallTableChart,
@@ -96,6 +140,12 @@ export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
             description: CALL_LIST_HINT,
             chartType: ChartType.Table,
             csvProducer: null,
+            // csvProducer: [ // TODO
+            //     {
+            //         type: DataExportFormat.Table,
+            //         fetch: ,
+            //     },
+            // ],
         },
     },
     reportFilters: {

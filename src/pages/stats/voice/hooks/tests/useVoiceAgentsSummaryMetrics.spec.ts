@@ -59,7 +59,9 @@ describe('useVoiceAgentsSummaryMetrics', () => {
         useOutboundCallsMetricMock.mockReturnValue(metricData)
         useAverageTalkTimeMetricMock.mockReturnValue(metricData)
 
-        const {result} = renderHook(() => useVoiceAgentsSummaryMetrics())
+        const {result} = renderHook(() =>
+            useVoiceAgentsSummaryMetrics(statsFilters, userTimezone)
+        )
 
         expect(result.current).toEqual({
             summaryData: {
@@ -112,10 +114,6 @@ describe('useVoiceAgentsSummaryMetrics with AnalyticsNewFiltersVoice', () => {
     })
 
     it('should return agents performance summary metrics', () => {
-        useAppSelectorMock.mockReturnValue({
-            cleanStatsFilters: statsFilters,
-            userTimezone,
-        })
         useTotalCallsMetricMock.mockReturnValue(metricData)
         useAnsweredCallsMetricMock.mockReturnValue(metricData)
         useMissedCallsMetricMock.mockReturnValue(metricData)
@@ -123,7 +121,9 @@ describe('useVoiceAgentsSummaryMetrics with AnalyticsNewFiltersVoice', () => {
         useOutboundCallsMetricMock.mockReturnValue(metricData)
         useAverageTalkTimeMetricMock.mockReturnValue(metricData)
 
-        const {result} = renderHook(() => useVoiceAgentsSummaryMetrics())
+        const {result} = renderHook(() =>
+            useVoiceAgentsSummaryMetrics(statsFilters, userTimezone)
+        )
 
         expect(result.current).toEqual({
             summaryData: {

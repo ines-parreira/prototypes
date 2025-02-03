@@ -1,5 +1,7 @@
 import {useMemo} from 'react'
 
+import {StatsFilters} from 'models/stat/types'
+
 import {
     useAnsweredCallsMetric,
     useAverageTalkTimeMetric,
@@ -8,11 +10,11 @@ import {
     useOutboundCallsMetric,
     useTotalCallsMetric,
 } from 'pages/stats/voice/hooks/agentMetrics'
-import {useNewVoiceStatsFilters} from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
 
-export function useVoiceAgentsSummaryMetrics() {
-    const {cleanStatsFilters, userTimezone} = useNewVoiceStatsFilters()
-
+export function useVoiceAgentsSummaryMetrics(
+    cleanStatsFilters: StatsFilters,
+    userTimezone: string
+) {
     const totalCallsMetric = useTotalCallsMetric(
         cleanStatsFilters,
         userTimezone

@@ -1,36 +1,25 @@
 import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {DownloadDataButton} from 'pages/stats/support-performance/components/DownloadDataButton'
 
-import Button from 'pages/common/components/button/Button'
-import {
-    DOWNLOAD_BUTTON_TITLE,
-    DOWNLOAD_DATA_BUTTON_LABEL,
-} from 'pages/stats/voice/constants/voiceAgents'
-import {useVoiceAgentsMetrics} from 'pages/stats/voice/hooks/useVoiceAgentsMetrics'
-import {useVoiceAgentsSummaryMetrics} from 'pages/stats/voice/hooks/useVoiceAgentsSummaryMetrics'
-import {saveReport} from 'services/reporting/voiceAgentsReportingService'
+import {DOWNLOAD_BUTTON_TITLE} from 'pages/stats/voice/constants/voiceAgents'
+import {useVoiceAgentsReportData} from 'services/reporting/voiceAgentsReportingService'
+import {saveZippedFiles} from 'utils/file'
 
 export const VoiceAgentsDownloadDataButton = () => {
-    const {reportData, isLoading, period} = useVoiceAgentsMetrics()
-    const {summaryData, isLoading: summaryIsLoading} =
-        useVoiceAgentsSummaryMetrics()
+    const {files, fileName, isLoading} = useVoiceAgentsReportData()
 
     return (
-        <Button
-            intent="secondary"
-            fillStyle="ghost"
+        <DownloadDataButton
             onClick={async () => {
                 logEvent(SegmentEvent.StatDownloadClicked, {
                     name: 'all-metrics',
                 })
-                await saveReport(reportData, summaryData, period)
+                await saveZippedFiles(files, fileName)
             }}
-            isDisabled={isLoading || summaryIsLoading}
+            disabled={isLoading}
             title={DOWNLOAD_BUTTON_TITLE}
-            leadingIcon="file_download"
-        >
-            {DOWNLOAD_DATA_BUTTON_LABEL}
-        </Button>
+        />
     )
 }

@@ -1,6 +1,8 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
 
+import {agents} from 'fixtures/agents'
+
 import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 
 import {
@@ -224,7 +226,7 @@ describe('ticketFieldsReportingService', () => {
                 userTimezone,
                 granularity,
                 {
-                    agents: [],
+                    agents,
                     agentsQA: [],
                     channelColumnsOrder: [],
                     channels: [],
@@ -255,7 +257,7 @@ describe('ticketFieldsReportingService', () => {
                 userTimezone,
                 granularity,
                 {
-                    agents: [],
+                    agents,
                     agentsQA: [],
                     channelColumnsOrder: [],
                     channels: [],

@@ -1,6 +1,9 @@
-import moment from 'moment/moment'
+import {useMemo} from 'react'
 
+import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
+
 import {Period} from 'models/stat/types'
 
 import {formatMetricValue} from 'pages/stats/common/utils'
@@ -11,15 +14,21 @@ import {
     MISSED_CALLS_METRIC_TITLE,
     OUTBOUND_CALLS_METRIC_TITLE,
     TOTAL_CALLS_METRIC_TITLE,
+    VOICE_OVERVIEW_CALL_EXPERIENCE_REPORT_FILE_NAME,
+    VOICE_OVERVIEW_CALL_VOLUME_REPORT_FILE_NAME,
+    VOICE_OVERVIEW_REPORT_FILE_NAME,
 } from 'pages/stats/voice/constants/voiceOverview'
+import {useNewVoiceStatsFilters} from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
+import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
+import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
+import {VoiceCallAverageTimeMetric} from 'pages/stats/voice/models/types'
 import {
     CURRENT_PERIOD_LABEL,
-    DATE_TIME_FORMAT,
     EMPTY_LABEL,
     NOT_AVAILABLE_LABEL,
     PREVIOUS_PERIOD_LABEL,
 } from 'services/reporting/constants'
-import {createCsv, saveZippedFiles} from 'utils/file'
+import {createCsv} from 'utils/file'
 
 export interface VoiceReportData {
     averageWaitTimeTrend: MetricTrend
@@ -30,7 +39,7 @@ export interface VoiceReportData {
     missedCallsCountTrend: MetricTrend
 }
 
-export const saveReport = async (data: VoiceReportData, period: Period) => {
+export const saveReport = (data: VoiceReportData, period: Period) => {
     const {
         averageWaitTimeTrend,
         averageTalkTimeTrend,
@@ -80,18 +89,83 @@ export const saveReport = async (data: VoiceReportData, period: Period) => {
         ],
     ]
 
-    const export_datetime = moment().format(DATE_TIME_FORMAT)
-    const startDate = moment(period.start_datetime).format(DATE_TIME_FORMAT)
-    const endDate = moment(period.end_datetime).format(DATE_TIME_FORMAT)
-    const periodPrefix = `${startDate}_${endDate}`
-
-    return saveZippedFiles(
-        {
-            [`${periodPrefix}-caller-experience-${export_datetime}.csv`]:
-                createCsv(callerExperienceData),
-            [`${periodPrefix}-call-volume-${export_datetime}.csv`]:
-                createCsv(callVolumeData),
-        },
-        `${periodPrefix}-voice-call-overview-metrics-${export_datetime}`
+    const downloadFileName = getCsvFileNameWithDates(
+        period,
+        VOICE_OVERVIEW_REPORT_FILE_NAME
     )
+
+    return {
+        files: {
+            [getCsvFileNameWithDates(
+                period,
+                VOICE_OVERVIEW_CALL_EXPERIENCE_REPORT_FILE_NAME
+            )]: createCsv(callerExperienceData),
+            [getCsvFileNameWithDates(
+                period,
+                VOICE_OVERVIEW_CALL_VOLUME_REPORT_FILE_NAME
+            )]: createCsv(callVolumeData),
+        },
+        fileName: downloadFileName,
+    }
+}
+
+export const useVoiceOverviewReportData = () => {
+    const {cleanStatsFilters, userTimezone} = useNewVoiceStatsFilters()
+
+    const averageWaitTimeTrend = useVoiceCallAverageTimeTrend(
+        VoiceCallAverageTimeMetric.WaitTime,
+        cleanStatsFilters,
+        userTimezone
+    )
+    const averageTalkTimeTrend = useVoiceCallAverageTimeTrend(
+        VoiceCallAverageTimeMetric.TalkTime,
+        cleanStatsFilters,
+        userTimezone
+    )
+    const totalCallsCountTrend = useVoiceCallCountTrend(
+        cleanStatsFilters,
+        userTimezone
+    )
+    const outboundCallsCountTrend = useVoiceCallCountTrend(
+        cleanStatsFilters,
+        userTimezone,
+        VoiceCallSegment.outboundCalls
+    )
+    const inboundCallsCountTrend = useVoiceCallCountTrend(
+        cleanStatsFilters,
+        userTimezone,
+        VoiceCallSegment.inboundCalls
+    )
+    const missedCallsCountTrend = useVoiceCallCountTrend(
+        cleanStatsFilters,
+        userTimezone,
+        VoiceCallSegment.missedCalls
+    )
+
+    const exportableData = useMemo(() => {
+        return {
+            averageWaitTimeTrend,
+            averageTalkTimeTrend,
+            totalCallsCountTrend,
+            outboundCallsCountTrend,
+            inboundCallsCountTrend,
+            missedCallsCountTrend,
+        }
+    }, [
+        averageWaitTimeTrend,
+        averageTalkTimeTrend,
+        totalCallsCountTrend,
+        outboundCallsCountTrend,
+        inboundCallsCountTrend,
+        missedCallsCountTrend,
+    ])
+
+    const isLoading = useMemo(() => {
+        return Object.values(exportableData).some((metric) => metric.isFetching)
+    }, [exportableData])
+
+    return {
+        ...saveReport(exportableData, cleanStatsFilters.period),
+        isLoading,
+    }
 }

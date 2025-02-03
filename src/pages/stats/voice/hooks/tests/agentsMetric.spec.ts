@@ -1,7 +1,8 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import moment from 'moment/moment'
 
-import {useMetric} from 'hooks/reporting/useMetric'
+import {fetchMetric, useMetric} from 'hooks/reporting/useMetric'
 import {
     VoiceCallMeasure,
     VoiceCallMember,
@@ -12,8 +13,13 @@ import {
     VoiceEventsByAgentMember,
     VoiceEventsByAgentSegment,
 } from 'models/reporting/cubes/VoiceEventsByAgent'
+import {
+    voiceCallAverageTalkTimeQueryFactory,
+    voiceCallCountQueryFactory,
+} from 'models/reporting/queryFactories/voice/voiceCall'
+import {declinedVoiceCallsCountQueryFactory} from 'models/reporting/queryFactories/voice/voiceEventsByAgent'
 import {LegacyStatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
+import {formatReportingQueryDate, withFilter} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 
 import {
@@ -23,10 +29,20 @@ import {
     useOutboundCallsMetric,
     useDeclinedCallsMetric,
     useAverageTalkTimeMetric,
+    fetchTotalCallsMetric,
+    fetchAnsweredCallsMetric,
+    fetchMissedCallsMetric,
+    fetchOutboundCallsMetric,
+    fetchDeclinedCallsMetric,
+    fetchAverageTalkTimeMetric,
+    ignoreCallsWithNoAgentsFilter,
+    ignoreDeclinedWithNoAgentsFilter,
+    ignoreCallsWithNoAssignedAgentFilter,
 } from '../agentMetrics'
 
 jest.mock('hooks/reporting/useMetric')
 const useMetricMock = assumeMock(useMetric)
+const fetchMetricMock = assumeMock(fetchMetric)
 
 describe('metricsPerDimension', () => {
     const statsFilters: LegacyStatsFilters = {
@@ -35,184 +51,242 @@ describe('metricsPerDimension', () => {
             start_datetime: formatReportingQueryDate(moment()),
         },
     }
+    const userTimezone = 'UTC'
 
-    it('useTotalCallsMetric', () => {
-        renderHook(() => useTotalCallsMetric(statsFilters, 'UTC'))
+    describe('hooks', () => {
+        it('useTotalCallsMetric', () => {
+            renderHook(() => useTotalCallsMetric(statsFilters, userTimezone))
 
-        expect(useMetricMock.mock.calls[0]).toEqual([
-            {
-                dimensions: [],
-                filters: [
-                    {
-                        member: VoiceCallMember.PeriodStart,
-                        operator: 'afterDate',
-                        values: [statsFilters.period.start_datetime],
-                    },
-                    {
-                        member: VoiceCallMember.PeriodEnd,
-                        operator: 'beforeDate',
-                        values: [statsFilters.period.end_datetime],
-                    },
-                    {
-                        member: VoiceCallMember.AgentId,
-                        operator: 'set',
-                        values: [],
-                    },
-                ],
-                measures: [VoiceCallMeasure.VoiceCallCount],
-                segments: [],
-                timezone: 'UTC',
-            },
-        ])
+            expect(useMetricMock.mock.calls[0]).toEqual([
+                {
+                    dimensions: [],
+                    filters: [
+                        {
+                            member: VoiceCallMember.PeriodStart,
+                            operator: 'afterDate',
+                            values: [statsFilters.period.start_datetime],
+                        },
+                        {
+                            member: VoiceCallMember.PeriodEnd,
+                            operator: 'beforeDate',
+                            values: [statsFilters.period.end_datetime],
+                        },
+                        {
+                            member: VoiceCallMember.AgentId,
+                            operator: 'set',
+                            values: [],
+                        },
+                    ],
+                    measures: [VoiceCallMeasure.VoiceCallCount],
+                    segments: [],
+                    timezone: userTimezone,
+                },
+            ])
+        })
+
+        it('useAnsweredCallsMetric', () => {
+            renderHook(() => useAnsweredCallsMetric(statsFilters, userTimezone))
+
+            expect(useMetricMock.mock.calls[0]).toEqual([
+                {
+                    dimensions: [],
+                    filters: [
+                        {
+                            member: VoiceCallMember.PeriodStart,
+                            operator: 'afterDate',
+                            values: [statsFilters.period.start_datetime],
+                        },
+                        {
+                            member: VoiceCallMember.PeriodEnd,
+                            operator: 'beforeDate',
+                            values: [statsFilters.period.end_datetime],
+                        },
+                        {
+                            member: VoiceCallMember.AgentId,
+                            operator: 'set',
+                            values: [],
+                        },
+                    ],
+                    measures: [VoiceCallMeasure.VoiceCallCount],
+                    segments: [VoiceCallSegment.answeredCallsByAgent],
+                    timezone: userTimezone,
+                },
+            ])
+        })
+
+        it('useMissedCallsMetric', () => {
+            renderHook(() => useMissedCallsMetric(statsFilters, userTimezone))
+
+            expect(useMetricMock.mock.calls[0]).toEqual([
+                {
+                    dimensions: [],
+                    filters: [
+                        {
+                            member: VoiceCallMember.PeriodStart,
+                            operator: 'afterDate',
+                            values: [statsFilters.period.start_datetime],
+                        },
+                        {
+                            member: VoiceCallMember.PeriodEnd,
+                            operator: 'beforeDate',
+                            values: [statsFilters.period.end_datetime],
+                        },
+                        {
+                            member: VoiceCallMember.AgentId,
+                            operator: 'set',
+                            values: [],
+                        },
+                    ],
+                    measures: [VoiceCallMeasure.VoiceCallCount],
+                    segments: [VoiceCallSegment.missedCallsByAgent],
+                    timezone: userTimezone,
+                },
+            ])
+        })
+
+        it('useOutboundCallsMetric', () => {
+            renderHook(() => useOutboundCallsMetric(statsFilters, userTimezone))
+
+            expect(useMetricMock.mock.calls[0]).toEqual([
+                {
+                    dimensions: [],
+                    filters: [
+                        {
+                            member: VoiceCallMember.PeriodStart,
+                            operator: 'afterDate',
+                            values: [statsFilters.period.start_datetime],
+                        },
+                        {
+                            member: VoiceCallMember.PeriodEnd,
+                            operator: 'beforeDate',
+                            values: [statsFilters.period.end_datetime],
+                        },
+                        {
+                            member: VoiceCallMember.AssignedAgentId,
+                            operator: 'set',
+                            values: [],
+                        },
+                    ],
+                    measures: [VoiceCallMeasure.VoiceCallCount],
+                    segments: [VoiceCallSegment.outboundCalls],
+                    timezone: userTimezone,
+                },
+            ])
+        })
+
+        it('useDeclinedCallsMetric', () => {
+            renderHook(() => useDeclinedCallsMetric(statsFilters, userTimezone))
+
+            expect(useMetricMock.mock.calls[0]).toEqual([
+                {
+                    dimensions: [],
+                    filters: [
+                        {
+                            member: VoiceEventsByAgentMember.PeriodStart,
+                            operator: 'afterDate',
+                            values: [statsFilters.period.start_datetime],
+                        },
+                        {
+                            member: VoiceEventsByAgentMember.PeriodEnd,
+                            operator: 'beforeDate',
+                            values: [statsFilters.period.end_datetime],
+                        },
+                        {
+                            member: VoiceEventsByAgentMember.AgentId,
+                            operator: 'set',
+                            values: [],
+                        },
+                    ],
+                    measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
+                    segments: [VoiceEventsByAgentSegment.declinedCalls],
+                    timezone: userTimezone,
+                },
+            ])
+        })
+
+        it('useAverageTalkTimeMetric', () => {
+            renderHook(() =>
+                useAverageTalkTimeMetric(statsFilters, userTimezone)
+            )
+
+            expect(useMetricMock.mock.calls[0]).toEqual([
+                {
+                    dimensions: [],
+                    filters: [
+                        {
+                            member: VoiceCallMember.PeriodStart,
+                            operator: 'afterDate',
+                            values: [statsFilters.period.start_datetime],
+                        },
+                        {
+                            member: VoiceCallMember.PeriodEnd,
+                            operator: 'beforeDate',
+                            values: [statsFilters.period.end_datetime],
+                        },
+                        {
+                            member: VoiceCallMember.AssignedAgentId,
+                            operator: 'set',
+                            values: [],
+                        },
+                    ],
+                    measures: [VoiceCallMeasure.VoiceCallAverageTalkTime],
+                    segments: [],
+                    timezone: userTimezone,
+                },
+            ])
+        })
     })
 
-    it('useAnsweredCallsMetric', () => {
-        renderHook(() => useAnsweredCallsMetric(statsFilters, 'UTC'))
-
-        expect(useMetricMock.mock.calls[0]).toEqual([
+    describe('fetch', () => {
+        it.each([
             {
-                dimensions: [],
-                filters: [
-                    {
-                        member: VoiceCallMember.PeriodStart,
-                        operator: 'afterDate',
-                        values: [statsFilters.period.start_datetime],
-                    },
-                    {
-                        member: VoiceCallMember.PeriodEnd,
-                        operator: 'beforeDate',
-                        values: [statsFilters.period.end_datetime],
-                    },
-                    {
-                        member: VoiceCallMember.AgentId,
-                        operator: 'set',
-                        values: [],
-                    },
-                ],
-                measures: [VoiceCallMeasure.VoiceCallCount],
-                segments: [VoiceCallSegment.answeredCallsByAgent],
-                timezone: 'UTC',
+                fetch: fetchTotalCallsMetric,
+                queryFactory: voiceCallCountQueryFactory,
+                segment: undefined,
+                filter: ignoreCallsWithNoAgentsFilter,
             },
-        ])
-    })
-
-    it('useMissedCallsMetric', () => {
-        renderHook(() => useMissedCallsMetric(statsFilters, 'UTC'))
-
-        expect(useMetricMock.mock.calls[0]).toEqual([
             {
-                dimensions: [],
-                filters: [
-                    {
-                        member: VoiceCallMember.PeriodStart,
-                        operator: 'afterDate',
-                        values: [statsFilters.period.start_datetime],
-                    },
-                    {
-                        member: VoiceCallMember.PeriodEnd,
-                        operator: 'beforeDate',
-                        values: [statsFilters.period.end_datetime],
-                    },
-                    {
-                        member: VoiceCallMember.AgentId,
-                        operator: 'set',
-                        values: [],
-                    },
-                ],
-                measures: [VoiceCallMeasure.VoiceCallCount],
-                segments: [VoiceCallSegment.missedCallsByAgent],
-                timezone: 'UTC',
+                fetch: fetchAnsweredCallsMetric,
+                queryFactory: voiceCallCountQueryFactory,
+                segment: VoiceCallSegment.answeredCallsByAgent,
+                filter: ignoreCallsWithNoAgentsFilter,
             },
-        ])
-    })
-
-    it('useOutboundCallsMetric', () => {
-        renderHook(() => useOutboundCallsMetric(statsFilters, 'UTC'))
-
-        expect(useMetricMock.mock.calls[0]).toEqual([
             {
-                dimensions: [],
-                filters: [
-                    {
-                        member: VoiceCallMember.PeriodStart,
-                        operator: 'afterDate',
-                        values: [statsFilters.period.start_datetime],
-                    },
-                    {
-                        member: VoiceCallMember.PeriodEnd,
-                        operator: 'beforeDate',
-                        values: [statsFilters.period.end_datetime],
-                    },
-                    {
-                        member: VoiceCallMember.AssignedAgentId,
-                        operator: 'set',
-                        values: [],
-                    },
-                ],
-                measures: [VoiceCallMeasure.VoiceCallCount],
-                segments: [VoiceCallSegment.outboundCalls],
-                timezone: 'UTC',
+                fetch: fetchMissedCallsMetric,
+                queryFactory: voiceCallCountQueryFactory,
+                segment: VoiceCallSegment.missedCallsByAgent,
+                filter: ignoreCallsWithNoAgentsFilter,
             },
-        ])
-    })
-
-    it('useDeclinedCallsMetric', () => {
-        renderHook(() => useDeclinedCallsMetric(statsFilters, 'UTC'))
-
-        expect(useMetricMock.mock.calls[0]).toEqual([
             {
-                dimensions: [],
-                filters: [
-                    {
-                        member: VoiceEventsByAgentMember.PeriodStart,
-                        operator: 'afterDate',
-                        values: [statsFilters.period.start_datetime],
-                    },
-                    {
-                        member: VoiceEventsByAgentMember.PeriodEnd,
-                        operator: 'beforeDate',
-                        values: [statsFilters.period.end_datetime],
-                    },
-                    {
-                        member: VoiceEventsByAgentMember.AgentId,
-                        operator: 'set',
-                        values: [],
-                    },
-                ],
-                measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
-                segments: [VoiceEventsByAgentSegment.declinedCalls],
-                timezone: 'UTC',
+                fetch: fetchOutboundCallsMetric,
+                queryFactory: voiceCallCountQueryFactory,
+                segment: VoiceCallSegment.outboundCalls,
+                filter: ignoreCallsWithNoAssignedAgentFilter,
             },
-        ])
-    })
-
-    it('useAverageTalkTimeMetric', () => {
-        renderHook(() => useAverageTalkTimeMetric(statsFilters, 'UTC'))
-
-        expect(useMetricMock.mock.calls[0]).toEqual([
             {
-                dimensions: [],
-                filters: [
-                    {
-                        member: VoiceCallMember.PeriodStart,
-                        operator: 'afterDate',
-                        values: [statsFilters.period.start_datetime],
-                    },
-                    {
-                        member: VoiceCallMember.PeriodEnd,
-                        operator: 'beforeDate',
-                        values: [statsFilters.period.end_datetime],
-                    },
-                    {
-                        member: VoiceCallMember.AssignedAgentId,
-                        operator: 'set',
-                        values: [],
-                    },
-                ],
-                measures: [VoiceCallMeasure.VoiceCallAverageTalkTime],
-                segments: [],
-                timezone: 'UTC',
+                fetch: fetchDeclinedCallsMetric,
+                queryFactory: declinedVoiceCallsCountQueryFactory,
+                segment: undefined,
+                filter: ignoreDeclinedWithNoAgentsFilter,
             },
-        ])
+            {
+                fetch: fetchAverageTalkTimeMetric,
+                queryFactory: voiceCallAverageTalkTimeQueryFactory,
+                segment: undefined,
+                filter: ignoreCallsWithNoAssignedAgentFilter,
+            },
+        ])(
+            'should use $fetch and $segment',
+            async ({fetch, queryFactory, segment, filter}) => {
+                await fetch(statsFilters, userTimezone)
+
+                expect(fetchMetricMock).toHaveBeenCalledWith(
+                    withFilter(
+                        queryFactory(statsFilters, userTimezone, segment),
+                        filter
+                    )
+                )
+            }
+        )
     })
 })

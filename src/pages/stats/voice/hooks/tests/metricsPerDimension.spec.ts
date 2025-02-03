@@ -1,7 +1,10 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import {
+    fetchMetricPerDimension,
+    useMetricPerDimension,
+} from 'hooks/reporting/useMetricPerDimension'
 
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {
@@ -14,6 +17,12 @@ import {formatReportingQueryDate} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 
 import {
+    fetchAnsweredCallsMetricPerAgent,
+    fetchAverageTalkTimeMetricPerAgent,
+    fetchDeclinedCallsMetricPerAgent,
+    fetchMissedCallsMetricPerAgent,
+    fetchOutboundCallsMetricPerAgent,
+    fetchTotalCallsMetricPerAgent,
     useAnsweredCallsMetricPerAgent,
     useAverageTalkTimeMetricPerAgent,
     useDeclinedCallsMetricPerAgent,
@@ -24,6 +33,7 @@ import {
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
 
 describe('metricsPerDimension', () => {
     const statsFilters: StatsFilters = {
@@ -32,78 +42,166 @@ describe('metricsPerDimension', () => {
             start_datetime: formatReportingQueryDate(moment()),
         },
     }
+    const userTimezone = 'UTC'
+    const agentId = '1'
 
-    it('useTotalCallsMetricPerAgent', () => {
-        renderHook(() => useTotalCallsMetricPerAgent(statsFilters, 'UTC', '1'))
+    describe('hooks', () => {
+        it('useTotalCallsMetricPerAgent', () => {
+            renderHook(() =>
+                useTotalCallsMetricPerAgent(statsFilters, userTimezone, agentId)
+            )
 
-        expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
-            voiceCallCountPerFilteringAgentQueryFactory(statsFilters, 'UTC'),
-            '1',
-        ])
+            expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
+                voiceCallCountPerFilteringAgentQueryFactory(
+                    statsFilters,
+                    userTimezone
+                ),
+                agentId,
+            ])
+        })
+
+        it('useAnsweredCallsMetricPerAgent', () => {
+            renderHook(() =>
+                useAnsweredCallsMetricPerAgent(
+                    statsFilters,
+                    userTimezone,
+                    agentId
+                )
+            )
+
+            expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
+                voiceCallCountPerFilteringAgentQueryFactory(
+                    statsFilters,
+                    userTimezone,
+                    VoiceCallSegment.answeredCallsByAgent
+                ),
+                agentId,
+            ])
+        })
+
+        it('useMissedCallsMetricPerAgent', () => {
+            renderHook(() =>
+                useMissedCallsMetricPerAgent(
+                    statsFilters,
+                    userTimezone,
+                    agentId
+                )
+            )
+
+            expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
+                voiceCallCountPerFilteringAgentQueryFactory(
+                    statsFilters,
+                    userTimezone,
+                    VoiceCallSegment.missedCallsByAgent
+                ),
+                agentId,
+            ])
+        })
+
+        it('useOutboundCallsMetricPerAgent', () => {
+            renderHook(() =>
+                useOutboundCallsMetricPerAgent(
+                    statsFilters,
+                    userTimezone,
+                    agentId
+                )
+            )
+
+            expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
+                voiceCallCountPerFilteringAgentQueryFactory(
+                    statsFilters,
+                    userTimezone,
+                    VoiceCallSegment.outboundCalls
+                ),
+                agentId,
+            ])
+        })
+
+        it('useAverageTalkTimeMetricPerAgent', () => {
+            renderHook(() =>
+                useAverageTalkTimeMetricPerAgent(
+                    statsFilters,
+                    userTimezone,
+                    agentId
+                )
+            )
+
+            expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
+                voiceCallAverageTalkTimePerAgentQueryFactory(
+                    statsFilters,
+                    userTimezone
+                ),
+                agentId,
+            ])
+        })
+
+        it('useDeclinedCallsMetricPerAgent', () => {
+            renderHook(() =>
+                useDeclinedCallsMetricPerAgent(
+                    statsFilters,
+                    userTimezone,
+                    agentId
+                )
+            )
+
+            expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
+                declinedVoiceCallsCountPerAgentQueryFactory(
+                    statsFilters,
+                    userTimezone
+                ),
+                agentId,
+            ])
+        })
     })
 
-    it('useAnsweredCallsMetricPerAgent', () => {
-        renderHook(() =>
-            useAnsweredCallsMetricPerAgent(statsFilters, 'UTC', '1')
-        )
+    describe('fetch', () => {
+        it.each([
+            {
+                fetch: fetchTotalCallsMetricPerAgent,
+                query: voiceCallCountPerFilteringAgentQueryFactory,
+            },
+            {
+                fetch: fetchAnsweredCallsMetricPerAgent,
+                query: (statsFilters, timezone) =>
+                    voiceCallCountPerFilteringAgentQueryFactory(
+                        statsFilters,
+                        timezone,
+                        VoiceCallSegment.answeredCallsByAgent
+                    ),
+            },
+            {
+                fetch: fetchMissedCallsMetricPerAgent,
+                query: (statsFilters, timezone) =>
+                    voiceCallCountPerFilteringAgentQueryFactory(
+                        statsFilters,
+                        timezone,
+                        VoiceCallSegment.missedCallsByAgent
+                    ),
+            },
+            {
+                fetch: fetchOutboundCallsMetricPerAgent,
+                query: (statsFilters, timezone) =>
+                    voiceCallCountPerFilteringAgentQueryFactory(
+                        statsFilters,
+                        timezone,
+                        VoiceCallSegment.outboundCalls
+                    ),
+            },
+            {
+                fetch: fetchAverageTalkTimeMetricPerAgent,
+                query: voiceCallAverageTalkTimePerAgentQueryFactory,
+            },
+            {
+                fetch: fetchDeclinedCallsMetricPerAgent,
+                query: declinedVoiceCallsCountPerAgentQueryFactory,
+            },
+        ])('should use query', async ({fetch, query}) => {
+            await fetch(statsFilters, userTimezone, agentId)
 
-        expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
-            voiceCallCountPerFilteringAgentQueryFactory(
-                statsFilters,
-                'UTC',
-                VoiceCallSegment.answeredCallsByAgent
-            ),
-            '1',
-        ])
-    })
-
-    it('useMissedCallsMetricPerAgent', () => {
-        renderHook(() => useMissedCallsMetricPerAgent(statsFilters, 'UTC', '1'))
-
-        expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
-            voiceCallCountPerFilteringAgentQueryFactory(
-                statsFilters,
-                'UTC',
-                VoiceCallSegment.missedCallsByAgent
-            ),
-            '1',
-        ])
-    })
-
-    it('useOutboundCallsMetricPerAgent', () => {
-        renderHook(() =>
-            useOutboundCallsMetricPerAgent(statsFilters, 'UTC', '1')
-        )
-
-        expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
-            voiceCallCountPerFilteringAgentQueryFactory(
-                statsFilters,
-                'UTC',
-                VoiceCallSegment.outboundCalls
-            ),
-            '1',
-        ])
-    })
-
-    it('useAverageTalkTimeMetricPerAgent', () => {
-        renderHook(() =>
-            useAverageTalkTimeMetricPerAgent(statsFilters, 'UTC', '1')
-        )
-
-        expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
-            voiceCallAverageTalkTimePerAgentQueryFactory(statsFilters, 'UTC'),
-            '1',
-        ])
-    })
-
-    it('useDeclinedCallsMetricPerAgent', () => {
-        renderHook(() =>
-            useDeclinedCallsMetricPerAgent(statsFilters, 'UTC', '1')
-        )
-
-        expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
-            declinedVoiceCallsCountPerAgentQueryFactory(statsFilters, 'UTC'),
-            '1',
-        ])
+            expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+                query(statsFilters, userTimezone),
+                agentId
+            )
+        })
     })
 })

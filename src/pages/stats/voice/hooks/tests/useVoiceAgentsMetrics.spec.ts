@@ -77,11 +77,12 @@ describe('useVoiceAgentsMetric', () => {
         useOutboundCallsMetricPerAgentMock.mockReturnValue(metricData)
         useAverageTalkTimeMetricPerAgentMock.mockReturnValue(metricData)
 
-        const {result} = renderHook(() => useVoiceAgentsMetrics())
+        const {result} = renderHook(() =>
+            useVoiceAgentsMetrics(statsFilters, userTimezone)
+        )
 
         expect(result.current).toEqual({
             reportData: {
-                agents: agents,
                 totalCallsMetric: metricData,
                 answeredCallsMetric: metricData,
                 missedCallsMetric: metricData,
@@ -139,11 +140,12 @@ describe('useVoiceAgentsMetric with the new filters', () => {
         useOutboundCallsMetricPerAgentMock.mockReturnValue(metricData)
         useAverageTalkTimeMetricPerAgentMock.mockReturnValue(metricData)
 
-        const {result} = renderHook(() => useVoiceAgentsMetrics())
+        const {result} = renderHook(() =>
+            useVoiceAgentsMetrics(statsFilters, userTimezone)
+        )
 
         expect(result.current).toEqual({
             reportData: {
-                agents: agents,
                 totalCallsMetric: metricData,
                 answeredCallsMetric: metricData,
                 missedCallsMetric: metricData,

@@ -7,3 +7,4 @@ export const VOICE_METRIC_COLUMN_WIDTH = 90
 
 export const DOWNLOAD_DATA_BUTTON_LABEL = 'Download data'
 export const DOWNLOAD_BUTTON_TITLE = 'Download Voice Agents Data'
+export const VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME = 'call-activity-per-agent'

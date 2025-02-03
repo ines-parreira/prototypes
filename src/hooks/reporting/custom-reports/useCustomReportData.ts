@@ -32,6 +32,8 @@ import {ChannelsReportConfig} from 'pages/stats/support-performance/channels/Cha
 import {SupportPerformanceOverviewReportConfig} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import {TicketInsightsTagsReportConfig} from 'pages/stats/ticket-insights/tags/TagsReportConfig'
 import {TicketFieldsReportConfig} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
+import {VoiceAgentsReportConfig} from 'pages/stats/voice/pages/VoiceAgentsReportConfig'
+import {VoiceOverviewReportConfig} from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
 import {createTimeSeriesPerDimensionReport} from 'services/reporting/SLAsReportingService'
 
 import {
@@ -48,6 +50,8 @@ const chartsLookupTable: Record<string, ChartConfig | undefined> = {
     ...ChannelsReportConfig.charts,
     ...TicketInsightsTagsReportConfig.charts,
     ...AutoQAReportConfig.charts,
+    ...VoiceOverviewReportConfig.charts,
+    ...VoiceAgentsReportConfig.charts,
 }
 
 type Queries = {

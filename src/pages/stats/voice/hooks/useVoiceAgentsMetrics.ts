@@ -1,7 +1,7 @@
 import {useMemo} from 'react'
 
-import {User} from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
+import {StatsFilters} from 'models/stat/types'
+
 import {
     useAnsweredCallsMetricPerAgent,
     useAverageTalkTimeMetricPerAgent,
@@ -10,14 +10,11 @@ import {
     useOutboundCallsMetricPerAgent,
     useTotalCallsMetricPerAgent,
 } from 'pages/stats/voice/hooks/metricsPerDimension'
-import {useNewVoiceStatsFilters} from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
-import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
 
-export function useVoiceAgentsMetrics() {
-    const {cleanStatsFilters, userTimezone} = useNewVoiceStatsFilters()
-
-    const agents = useAppSelector<User[]>(getSortedAgents)
-
+export function useVoiceAgentsMetrics(
+    cleanStatsFilters: StatsFilters,
+    userTimezone: string
+) {
     const totalCallsMetric = useTotalCallsMetricPerAgent(
         cleanStatsFilters,
         userTimezone
@@ -67,7 +64,6 @@ export function useVoiceAgentsMetrics() {
 
     return {
         reportData: {
-            agents,
             totalCallsMetric,
             answeredCallsMetric,
             missedCallsMetric,

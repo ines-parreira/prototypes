@@ -40,4 +40,9 @@ export const DOWNLOAD_DATA_BUTTON_LABEL = 'Download data'
 export const DOWNLOAD_BUTTON_TITLE =
     'Download Caller Experience and Call Volume Data'
 
+export const VOICE_OVERVIEW_REPORT_FILE_NAME = 'voice-call-overview-metrics'
+export const VOICE_OVERVIEW_CALL_EXPERIENCE_REPORT_FILE_NAME =
+    'caller-experience'
+export const VOICE_OVERVIEW_CALL_VOLUME_REPORT_FILE_NAME = 'call-volume'
+
 export const MAX_VOICE_CALLS_PAGE_NUMBER = 500
