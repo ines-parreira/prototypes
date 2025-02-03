@@ -36,16 +36,14 @@ export default function StatsNavbarView() {
     const isTeamLeadOrAdmin = isTeamLead(user)
     const isHelpCenterAnalyticsEnabled: FeatureFlag =
         useFlags()[FeatureFlagKey.HelpCenterAnalytics]
-    const isAutoQAEnabled: FeatureFlag =
-        useFlags()[FeatureFlagKey.AnalyticsAutoQA]
     const isNewSatisfactionReportEnabled: FeatureFlag =
         useFlags()[FeatureFlagKey.NewSatisfactionReport]
     const isAnalyticsCustomReports: FeatureFlag =
         useFlags()[FeatureFlagKey.AnalyticsCustomReports]
 
     const isAutoQANavLinkAvailable = useMemo(
-        () => !!isAutoQAEnabled && isTeamLeadOrAdmin && hasAutomate,
-        [hasAutomate, isAutoQAEnabled, isTeamLeadOrAdmin]
+        () => isTeamLeadOrAdmin && hasAutomate,
+        [hasAutomate, isTeamLeadOrAdmin]
     )
 
     return (

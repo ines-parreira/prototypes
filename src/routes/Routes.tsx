@@ -9,7 +9,6 @@ import {
     useParams,
     useRouteMatch,
 } from 'react-router-dom'
-
 import {CompatRoute} from 'react-router-dom-v5-compat'
 
 import {OBS_ADOPT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
@@ -470,8 +469,6 @@ export function StatsRoutes() {
         currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
     )
 
-    const isAutoQAEnabled: FeatureFlag =
-        useFlags()[FeatureFlagKey.AnalyticsAutoQA]
     const hasAutomate = useAppSelector(getHasAutomate)
 
     const isAiAgentStatsPageEnabled: FeatureFlag =
@@ -637,7 +634,8 @@ export function StatsRoutes() {
                         />
                     )}
                 />
-                {!!isAutoQAEnabled && hasAutomate && (
+
+                {hasAutomate && (
                     <Route
                         exact
                         path={`${path}/auto-qa`}
@@ -652,6 +650,7 @@ export function StatsRoutes() {
                         )}
                     />
                 )}
+
                 <Route
                     exact
                     path={`${path}/support-performance-agents`}

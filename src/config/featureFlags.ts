@@ -24,7 +24,6 @@ export enum FeatureFlagKey {
     AIAgentStatsPage = 'ai-agent-stats-page',
     AiAgentTrialMode = 'ai-agent-trial-mode-allowed',
     AIAgentWelcomePage = 'ai-agent-welcome-page',
-    AnalyticsAutoQA = 'analytics-auto-qa',
     AnalyticsCustomFieldsFilter = 'analytics-custom-fields-filter',
     AnalyticsCustomReports = 'analytics-custom-reports',
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',

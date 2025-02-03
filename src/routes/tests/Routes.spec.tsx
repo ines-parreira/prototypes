@@ -536,9 +536,6 @@ describe('<Routes/>', () => {
                         billingFixtures.billingState
                     ),
                 }
-                mockFlags({
-                    [FeatureFlagKey.AnalyticsAutoQA]: true,
-                })
 
                 renderWithStore(
                     <MemoryRouter initialEntries={['/app/stats/auto-qa']}>

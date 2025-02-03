@@ -2,7 +2,6 @@ import {useListAnalyticsCustomReports} from '@gorgias/api-queries'
 import {screen} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
-
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -62,12 +61,6 @@ describe('StatsNavbarView', () => {
             ],
         }),
     }
-
-    beforeEach(() => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsAutoQA]: false,
-        })
-    })
 
     it('should render', () => {
         const {container} = renderWithRouterAndDnD(
@@ -173,9 +166,6 @@ describe('StatsNavbarView', () => {
                     },
                 }),
             }
-            mockFlags({
-                [FeatureFlagKey.AnalyticsAutoQA]: true,
-            })
 
             renderWithRouterAndDnD(
                 <Provider store={mockStore(state)}>
@@ -298,7 +288,6 @@ describe('StatsNavbarView', () => {
 
         mockFlags({
             [FeatureFlagKey.NewSatisfactionReport]: true,
-            [FeatureFlagKey.AnalyticsAutoQA]: true,
         })
 
         const {container} = renderWithRouterAndDnD(
@@ -339,7 +328,6 @@ describe('StatsNavbarView', () => {
 
         mockFlags({
             [FeatureFlagKey.NewSatisfactionReport]: false,
-            [FeatureFlagKey.AnalyticsAutoQA]: true,
         })
 
         const {container} = renderWithRouterAndDnD(
