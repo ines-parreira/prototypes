@@ -10,12 +10,13 @@ describe('ThankYouModal', () => {
     const closeTestLabel = 'Test Close Label'
 
     const defaultProps = {
+        isOpen: true,
         image: <img src="test" alt="Thank you" />,
         title: titleTestLabel,
         description: descriptionTestLabel,
         actionLabel: actionTestLabel,
-        onClick: jest.fn(),
         closeLabel: closeTestLabel,
+        onClick: jest.fn(),
         onClose: jest.fn(),
     }
 

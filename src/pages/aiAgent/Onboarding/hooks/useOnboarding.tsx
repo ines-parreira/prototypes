@@ -1,14 +1,20 @@
 import React, {useEffect, useMemo, useState} from 'react'
 
+import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {ChannelsStep} from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
 import {KnowledgeStep} from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeStep'
 import {PersonalityPreviewStep} from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep'
 import {PersonalityStep} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersonalityStep'
 import {ShopifyIntegrationStep} from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep'
 import {SkillsetStep} from 'pages/aiAgent/Onboarding/components/steps/SkillsetStep/SkillsetStep'
+import {
+    OnboardingBody,
+    OnboardingContentContainer,
+} from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
 import {useOnboardingContext} from 'pages/aiAgent/Onboarding/providers/OnboardingContext'
 import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import history from 'pages/history'
 import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 
 type OnboardingStep = {
@@ -24,10 +30,11 @@ type OnboardingStep = {
 
 export const useOnboarding = ({shopName}: {shopName: string}) => {
     const [currentStep, setCurrentStep] = useState(0)
-
     const {integration} = useShopifyIntegrationAndScope(shopName)
     const {emailIntegrations, defaultIntegration} = useEmailIntegrations()
     const {scope, lastStep, setOnboardingData} = useOnboardingContext()
+
+    const {routes} = useAiAgentNavigation({shopName: shopName ?? ''})
 
     const stepsMap = useMemo(
         () => ({
@@ -134,7 +141,23 @@ export const useOnboarding = ({shopName}: {shopName: string}) => {
             [WizardStepEnum.HANDOVER]: {
                 step: WizardStepEnum.HANDOVER,
                 condition: true,
-                render: () => <div>Handover Step</div>,
+                render: (
+                    onNextClick: () => void,
+                    onBackClick: () => void,
+                    currentStep: number,
+                    totalSteps: number
+                ) => (
+                    <OnboardingBody>
+                        <OnboardingContentContainer
+                            currentStep={currentStep}
+                            totalSteps={totalSteps}
+                            onNextClick={onNextClick}
+                            onBackClick={onBackClick}
+                        >
+                            <div>Handover Step</div>
+                        </OnboardingContentContainer>
+                    </OnboardingBody>
+                ),
             },
             [WizardStepEnum.KNOWLEDGE]: {
                 step: WizardStepEnum.KNOWLEDGE,
@@ -190,6 +213,11 @@ export const useOnboarding = ({shopName}: {shopName: string}) => {
                     lastStep: userSteps[currentStep + 1].step,
                 })
             }
+        }
+
+        if (currentStep + 1 === totalSteps) {
+            // TODO: [MARCVT-3086] Add the useStoreConfigurationMutation with all datas and create it before redirect
+            history.push(routes.overview, {from: history.location.pathname})
         }
     }
 

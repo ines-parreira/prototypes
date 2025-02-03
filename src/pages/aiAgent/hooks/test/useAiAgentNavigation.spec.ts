@@ -256,6 +256,14 @@ describe('useAiAgentNavigation', () => {
         )
     })
 
+    it('should contain the overview page route', () => {
+        const {result} = renderHook(() =>
+            useAiAgentNavigation({shopName: 'test'})
+        )
+
+        expect(result.current.routes.overview).toBe('/app/ai-agent/overview')
+    })
+
     describe('when ConvAiStandaloneMenu flag is true', () => {
         beforeEach(() => {
             useFlagsMock.mockReturnValue({

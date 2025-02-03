@@ -1,9 +1,11 @@
-import {renderHook, act} from '@testing-library/react-hooks'
+import {act, renderHook} from '@testing-library/react-hooks'
+
 import React, {ReactNode} from 'react'
 
 import * as ContextModule from 'pages/aiAgent/Onboarding/providers/OnboardingContext'
 import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import history from 'pages/history'
 import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 
 import {useOnboarding} from '../useOnboarding'
@@ -11,6 +13,7 @@ import {useOnboarding} from '../useOnboarding'
 // Mock the hooks
 jest.mock('pages/common/hooks/useShopifyIntegrationAndScope')
 jest.mock('pages/settings/contactForm/hooks/useEmailIntegrations')
+jest.mock('pages/history')
 
 const mockUseShopifyIntegrationAndScope =
     useShopifyIntegrationAndScope as jest.Mock
@@ -147,6 +150,39 @@ describe('useOnboarding', () => {
             })
         }
         expect(result.current.currentStep).toBe(totalSteps - 1)
+    })
+
+    it('does redirect to overview page at the last step', () => {
+        const spyInstance = jest.spyOn(
+            ContextModule,
+            'useOnboardingContext'
+        ) as jest.SpyInstance
+        spyInstance.mockReturnValue({
+            scope: [AiAgentScopes.SALES, AiAgentScopes.SUPPORT],
+        })
+        mockUseShopifyIntegrationAndScope.mockReturnValue({
+            integration: undefined,
+        })
+        mockUseEmailIntegrations.mockReturnValue({
+            emailIntegrations: undefined,
+            defaultIntegration: undefined,
+        })
+
+        const {result} = renderHook(
+            () => useOnboarding({shopName: 'testShop'}),
+            {wrapper}
+        )
+        const totalSteps = result.current.totalSteps
+
+        for (let i = 0; i < totalSteps; i++) {
+            act(() => {
+                result.current.nextStep()
+                expect(result.current.render()).not.toBeNull()
+            })
+        }
+        expect(history.push).toHaveBeenCalledWith('/app/ai-agent/overview', {
+            from: '/',
+        })
     })
 
     it('should have 9 steps when scope is SALES and SUPPORT without integrations', () => {

@@ -6,6 +6,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import useShowAutomateActions from 'pages/aiAgent/actions/hooks/useShowAutomateActions'
 import {
     ACTIONS,
+    CHANNELS,
     GENERAL,
     GUIDANCE,
     KNOWLEDGE,
@@ -13,7 +14,6 @@ import {
     PREVIEW,
     SETTINGS,
     TEST,
-    CHANNELS,
 } from 'pages/aiAgent/constants'
 
 const getAiAgentBasePath = (shopName: string, flags: LDFlagSet) => {
@@ -78,6 +78,7 @@ export const getAiAgentNavigationRoutes = (
         optimize: `${basePath}/optimize`,
         optimizeIntent: (intentId: string) =>
             `${basePath}/optimize/${intentId}`,
+        overview: '/app/ai-agent/overview',
     }
 }
 

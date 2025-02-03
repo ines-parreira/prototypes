@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -36,7 +36,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
     onNextClick,
     onBackClick,
 }) => {
-    const {shopName} = useOnboardingContext()
+    const {shopName, setOnboardingData} = useOnboardingContext()
 
     /// This part is a temporary block to be removed once the actual data is available
     const shopifyIntegration: ShopifyIntegration = useAppSelector(
@@ -63,12 +63,23 @@ export const KnowledgeStep: React.FC<StepProps> = ({
     )
     const hasHelpCenter = !!helpCenters.length
 
+    const onNextClickWithValidation = useCallback(() => {
+        if (!hasHelpCenter) {
+            return
+        }
+
+        setOnboardingData({
+            helpCenterId: helpCenters[0].id.toString(),
+        })
+        onNextClick()
+    }, [setOnboardingData, onNextClick, hasHelpCenter, helpCenters])
+
     return (
         <OnboardingBody>
             <OnboardingContentContainer
                 currentStep={currentStep}
                 totalSteps={totalSteps}
-                onNextClick={onNextClick}
+                onNextClick={onNextClickWithValidation}
                 onBackClick={onBackClick}
             >
                 <MainTitle

@@ -1,34 +1,38 @@
 import React, {ReactNode} from 'react'
 
 import Button from 'pages/common/components/button/Button'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalBody from 'pages/common/components/modal/ModalBody'
 
 import css from './ThankYouModal.less'
 
 type Props = {
+    isOpen: boolean
     image: ReactNode
     title: string
     description: string
     actionLabel: string
     onClick: React.MouseEventHandler
     closeLabel: string
-    onClose: React.MouseEventHandler
+    onClose: () => void
 }
 
 const ThankYouModal: React.FC<Props> = ({
+    isOpen,
     image,
     title,
     description,
     actionLabel,
-    onClick,
     closeLabel,
+    onClick,
     onClose,
 }: Props) => {
     return (
-        <div className={css.modal}>
+        <Modal classNameDialog={css.modal} isOpen={isOpen} onClose={onClose}>
             <div className={css.modalImage}>{image}</div>
-            <div className={css.modalContent}>
-                <h3 className={css.title}>{title}</h3>
-                <p className={css.description}>{description}</p>
+            <ModalBody>
+                <h3 className="heading-page-semibold">{title}</h3>
+                <p>{description}</p>
                 <div className={css.buttonWrapper}>
                     <Button
                         className={css.buttonSpaced}
@@ -46,8 +50,8 @@ const ThankYouModal: React.FC<Props> = ({
                         {closeLabel}
                     </Button>
                 </div>
-            </div>
-        </div>
+            </ModalBody>
+        </Modal>
     )
 }
 

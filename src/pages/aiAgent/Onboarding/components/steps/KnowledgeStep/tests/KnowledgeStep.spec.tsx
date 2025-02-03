@@ -1,6 +1,7 @@
 import {QueryClientProvider} from '@tanstack/react-query'
-import {act, render, screen, waitFor} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 
+import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
 
 import React from 'react'
@@ -116,10 +117,33 @@ describe('KnowledgeStep', () => {
 
     it('renders preview section', async () => {
         renderWithProvider()
-        act(() => jest.runAllTimers())
 
-        await waitFor(() =>
-            expect(screen.getAllByText('Top Locations').length).toBe(2)
-        )
+        expect((await screen.findAllByText('Top Locations')).length).toBe(2)
+    })
+
+    it('should not call onClick when no HelpCenter', () => {
+        useGetHelpCentersByShopNameMock.mockReturnValue({
+            isHelpCenterLoading: false,
+            helpCenters: [],
+        })
+        renderWithProvider()
+        const nextButton = screen.getByText('Next')
+
+        userEvent.click(nextButton)
+
+        expect(defaultProps.onNextClick).not.toHaveBeenCalled()
+    })
+
+    it('should call onClick when there is an HelpCenter', () => {
+        useGetHelpCentersByShopNameMock.mockReturnValue({
+            isHelpCenterLoading: false,
+            helpCenters: getHelpCentersResponseFixture.data,
+        })
+        renderWithProvider()
+        const nextButton = screen.getByText('Next')
+
+        userEvent.click(nextButton)
+
+        expect(defaultProps.onNextClick).toHaveBeenCalled()
     })
 })

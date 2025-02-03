@@ -1,3 +1,4 @@
+import {action} from '@storybook/addon-actions'
 import {Meta, StoryObj} from '@storybook/react'
 
 import React from 'react'
@@ -15,13 +16,14 @@ type Story = StoryObj<typeof ThankYouModal>
 
 export const Default: Story = {
     args: {
+        isOpen: true,
         image: <img src={modalImage} alt="Thank you" />,
         title: 'Your account is ready!',
         description: 'Lorem ipsum, lorem ipsum, lorem ipsum.',
         actionLabel: 'Go live with AI agent',
-        onClick: () => {},
         closeLabel: 'Close',
-        onClose: () => {},
+        onClick: action('onClick'),
+        onClose: action('onClose'),
     },
 }
 

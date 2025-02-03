@@ -29,4 +29,5 @@ export type OnboardingContextData = {
     persuasionLevel?: PersuasionLevel
     discountStrategy?: DiscountStrategy
     maxDiscountPercentage?: number
+    helpCenterId?: string
 }
