@@ -2,6 +2,7 @@ import classnames from 'classnames'
 import React, {ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {clamp} from 'core/layout/panels'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 import {tryLocalStorage} from 'services/common/utils'
 import * as layoutSelectors from 'state/layout/selectors'
@@ -23,7 +24,7 @@ type State = {
 export class InfobarLayout extends React.Component<Props, State> {
     private cursorX: number | null
     private originalWidth: number
-    private readonly minWidth: number | undefined
+    private readonly minWidth: number
     private readonly maxWidth: number
     private readonly classHandle: string
     private readonly classActive: string
@@ -35,12 +36,17 @@ export class InfobarLayout extends React.Component<Props, State> {
 
         this.cursorX = null
         this.originalWidth = 0
-        this.minWidth = getInfobarMinWidth()
-        this.maxWidth = window.innerWidth / 2
+        this.minWidth = getInfobarMinWidth() as number
+        this.maxWidth = clamp(window.innerWidth / 2, this.minWidth, Infinity)
         this.classHandle = 'infobar-drag-handle'
         this.classActive = 'infobar-drag-active'
 
-        const width = getInfobarWidth() || this.minWidth
+        const storedWidth = getInfobarWidth()
+        const width = clamp(
+            storedWidth ? parseInt(storedWidth, 10) : this.minWidth,
+            this.minWidth,
+            this.maxWidth
+        )
         this.state = {width}
     }
 
@@ -91,19 +97,15 @@ export class InfobarLayout extends React.Component<Props, State> {
     }
 
     drag = (e: MouseEvent) => {
-        if (this.cursorX === null) {
-            return
-        }
+        if (!this.cursorX) return
 
-        const nextWidth = this.originalWidth + this.cursorX - e.clientX
+        const nextWidth = clamp(
+            this.originalWidth + this.cursorX - e.clientX,
+            this.minWidth,
+            this.maxWidth
+        )
 
-        // don't expand/shrink past min/max width.
-        // for performance.
-        if (nextWidth > this.minWidth! && nextWidth < this.maxWidth) {
-            this.setState({
-                width: this.originalWidth + this.cursorX - e.clientX,
-            })
-        }
+        this.setState({width: nextWidth})
     }
 
     render() {

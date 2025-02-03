@@ -5,9 +5,10 @@ codecov:
     wait_for_ci: true
 
 ignore:
-  - src/pages/automate/workflows/editor/visualBuilder/editors/TestFlowEditor.tsx
   - src/core/layout/panels/helpers/calculateSizes.ts
+  - src/pages/automate/workflows/editor/visualBuilder/editors/TestFlowEditor.tsx
   - src/pages/aiAgent/Onboarding/components/OnboardingDevPreview/OnboardingDevPreview.tsx
+  - src/pages/common/components/infobar/InfobarLayout.tsx
 
 coverage:
   status:
