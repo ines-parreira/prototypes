@@ -8,6 +8,7 @@ import {
     ADD_TO_DASHBOARD,
     ADD_TO_DASHBOARD_CTA,
     ChartsActionMenu,
+    NO_DASHBOARDS_LABEL,
     REMOVE_FROM_DASHBOARD,
 } from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
 import {
@@ -149,6 +150,22 @@ describe('<ChartsActionMenu />', () => {
         expect(screen.getByText(mockData[0].name)).toBeInTheDocument()
         expect(screen.getByText(mockData[1].name)).toBeInTheDocument()
         expect(screen.getByText(ADD_TO_DASHBOARD_CTA)).toBeInTheDocument()
+    })
+
+    it('should show label when no Dashboards ', () => {
+        useCustomReportActionsMock.mockReturnValue({
+            getDashboardsHandler: () => [],
+        } as any)
+
+        render(<ChartsActionMenu chartId={chartId} chartName={chartName} />)
+
+        userEvent.click(screen.getByText('more_vert'))
+
+        act(() => {
+            userEvent.click(screen.getByText(ADD_TO_DASHBOARD))
+        })
+
+        expect(screen.getByText(NO_DASHBOARDS_LABEL)).toBeInTheDocument()
     })
 
     it('should render the action menu with the delete button if dashboardId is defined', () => {

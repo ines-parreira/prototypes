@@ -12,7 +12,7 @@
     }
 
     .dropdownWrapper {
-        padding: 0px;
+        padding: 0;
     }
 
     .dropdownItem {
@@ -40,7 +40,7 @@
         position: sticky;
         text-transform: capitalize;
         justify-content: center;
-        inset: 0px;
+        inset: 0;
         background: var(--neutral-grey-2);
         border: 1px solid var(--neutral-grey-3);
         color: var(--main-primary);
@@ -65,6 +65,12 @@
     }
 
     .itemsWrapper {
+        padding: @layout-spacing-xs;
+    }
+
+    .noDashboards {
+        .body-regular();
+        color: var(--neutral-grey-4);
         padding: @layout-spacing-xs;
     }
 }

@@ -17,6 +17,7 @@ import {
 export const ADD_TO_DASHBOARD = 'Add to dashboard'
 export const ADD_TO_DASHBOARD_CTA = 'Add To Dashboard'
 export const REMOVE_FROM_DASHBOARD = 'Delete chart from dashboard'
+export const NO_DASHBOARDS_LABEL = 'No existing dashboards'
 
 const ActionMenuItem = ({
     dashboard,
@@ -112,20 +113,26 @@ export const ChartsActionMenu = ({
                         {showActions ? (
                             <>
                                 <div className={css.itemsWrapper}>
-                                    {filteredDashboards.map((dashboard) => (
-                                        <ActionMenuItem
-                                            dashboard={dashboard}
-                                            key={dashboard.id}
-                                            updateDashboard={() => {
-                                                addChartToDashboardHandler({
-                                                    dashboard,
-                                                    chartId,
-                                                    onClose:
-                                                        handleToggleDropdown,
-                                                })
-                                            }}
-                                        />
-                                    ))}
+                                    {filteredDashboards.length > 0 ? (
+                                        filteredDashboards.map((dashboard) => (
+                                            <ActionMenuItem
+                                                dashboard={dashboard}
+                                                key={dashboard.id}
+                                                updateDashboard={() => {
+                                                    addChartToDashboardHandler({
+                                                        dashboard,
+                                                        chartId,
+                                                        onClose:
+                                                            handleToggleDropdown,
+                                                    })
+                                                }}
+                                            />
+                                        ))
+                                    ) : (
+                                        <div className={css.noDashboards}>
+                                            {NO_DASHBOARDS_LABEL}
+                                        </div>
+                                    )}
                                 </div>
                                 <DropdownItem
                                     onClick={handleOpenModal}
