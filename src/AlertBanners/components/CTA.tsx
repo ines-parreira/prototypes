@@ -10,7 +10,9 @@ import {AlertBannerCTATypes} from '../types'
 
 function getOpenInNewTabProps(opensInNewTab?: boolean) {
     if (!opensInNewTab) {
-        return {}
+        return {
+            target: '_self',
+        }
     }
     return {
         target: '_blank',

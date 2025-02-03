@@ -15,24 +15,30 @@ import {useStepState} from 'pages/convert/campaigns/hooks/useStepState'
 import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
 import {editorStateWithReplacedText} from 'utils/editor'
 
+import InventoryScopeMissingBanner from '../../components/InventoryScopeMissingBanner'
+
 type Props = {
     agents: User[]
     count?: number
+    shopifyIntegrationId: number
     isPristine?: boolean
     isValid?: boolean
     isDisabled?: boolean
     isConvertSubscriber?: boolean
     showContentWarning?: boolean
     onDeleteAttachment: (index: number) => void
+    hasProductRecommendations?: boolean
 }
 
 export const CampaignMessageStep = ({
     agents,
     count,
+    shopifyIntegrationId,
     isPristine = true,
     isValid = false,
     isDisabled = false,
     isConvertSubscriber = false,
+    hasProductRecommendations = false,
     showContentWarning = false,
     onDeleteAttachment,
 }: Props) => {
@@ -76,6 +82,12 @@ export const CampaignMessageStep = ({
             id={CampaignStepsKeys.Message}
             title="Write your message"
         >
+            {isConvertSubscriber && hasProductRecommendations && (
+                <InventoryScopeMissingBanner
+                    className={'mb-4'}
+                    shopIntegrationId={shopifyIntegrationId}
+                />
+            )}
             <CampaignMessage
                 richAreaRef={(ref) => setRichArea(ref)}
                 showContentWarning={showContentWarning}

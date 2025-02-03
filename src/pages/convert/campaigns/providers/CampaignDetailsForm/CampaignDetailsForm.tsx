@@ -772,6 +772,9 @@ export const CampaignDetailsForm = ({
                                         <CampaignMessageStep
                                             agents={agents}
                                             count={3}
+                                            shopifyIntegrationId={shopifyIntegration.get(
+                                                'id'
+                                            )}
                                             key={CampaignStepsKeys.Message}
                                             isPristine={pristine.message}
                                             isValid={isStepValid(
@@ -782,6 +785,9 @@ export const CampaignDetailsForm = ({
                                             )}
                                             isConvertSubscriber={
                                                 isConvertSubscriber
+                                            }
+                                            hasProductRecommendations={
+                                                !!productRecommendations.length
                                             }
                                             showContentWarning={
                                                 showContentWarning

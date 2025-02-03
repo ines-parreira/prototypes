@@ -49,6 +49,7 @@ export const BannerCategories = {
     STATUS_PAGE_INCIDENT: 'status_page_incident',
     STATUS_PAGE_MAINTENANCE: 'status_page_maintenance',
     TMP_AI_AGENT_MOVED: 'ai_agent_moved',
+    SHOPIFY_INVENTORY_SCOPE: 'shopify_inventory_scope',
 } as const
 
 export type BannerCategory =

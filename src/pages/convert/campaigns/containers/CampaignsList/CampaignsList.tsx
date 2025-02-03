@@ -10,12 +10,14 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import ConvertSetupBanner from 'pages/convert/campaigns/components/ConvertSetupBanner'
+import InventoryScopeMissingBanner from 'pages/convert/campaigns/components/InventoryScopeMissingBanner'
 import {isActiveStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 
 import {CampaignChatHiddenWarning} from '../../components/CampaignChatHiddenWarning'
 import {CampaignsSearch} from '../../components/CampaignsSearch'
 import {CampaignsTable} from '../../components/CampaignsTable'
 import {ConvertLimitBanner} from '../../components/ConvertLimitBanner/ConvertLimitBanner'
+
 import {QUICK_FILTERS} from '../../constants/filters'
 
 import {useCampaignListOptions} from '../../hooks/useCampaignListOptions'
@@ -219,6 +221,15 @@ const CampaignsList = ({
                     ])}
                     chatIntegrationId={integration.get('id')}
                 />
+                {isConvertSubscriber && (
+                    <InventoryScopeMissingBanner
+                        className={'mt-4'}
+                        shopIntegrationId={integration.getIn([
+                            'meta',
+                            'shop_integration_id',
+                        ])}
+                    />
+                )}
 
                 <CampaignChatHiddenWarning integration={integration} />
 

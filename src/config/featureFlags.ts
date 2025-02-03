@@ -127,6 +127,7 @@ export enum FeatureFlagKey {
     SimplifiedStepBuilder = 'simplified-step-builder',
     ShopifyCustomerProfileCreation = 'shopify-customer-profile-creation',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
+    ShopifyInventoryItemScopeBanner = 'shopify-inventory-item-scope-banner',
     ShopifyHideActionButtons = 'shopify-widget-hide-action-buttons',
     ShopifyOrderNotes = 'shopify-order-notes',
     StandaloneConvAiOverviewPage = 'standalone-conv-ai_overview-page',

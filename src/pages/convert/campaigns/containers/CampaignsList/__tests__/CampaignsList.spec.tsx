@@ -13,6 +13,7 @@ import {
     convertStatusNotInstalled,
 } from 'fixtures/convert'
 import {entitiesInitialState} from 'fixtures/entities'
+import {integrationsState} from 'fixtures/integrations'
 import {user} from 'fixtures/users'
 import useSearch from 'hooks/useSearch'
 
@@ -89,6 +90,7 @@ describe('<CampaignsList />', () => {
             currentUser: fromJS(user),
             entities: entitiesInitialState,
             billing: fromJS(billingState),
+            integrations: fromJS(integrationsState),
         })
         ;(useSearch as jest.Mock).mockImplementation(() => {
             return {

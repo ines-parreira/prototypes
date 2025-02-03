@@ -52,4 +52,11 @@ describe('<CTA/>', () => {
             expect(CTAElement).toHaveAttribute('rel', 'noopener noreferrer')
         }
     })
+
+    it('should not have target _blank when opensInNewTab is false', () => {
+        render(<CTA {...externalCTAProps} opensInNewTab={false} />)
+
+        const CTAElement = screen.getByText(externalCTAProps.text)
+        expect(CTAElement).not.toHaveAttribute('target', '_blank')
+    })
 })
