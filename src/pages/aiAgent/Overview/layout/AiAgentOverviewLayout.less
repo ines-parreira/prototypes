@@ -1,0 +1,21 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 12px;
+        background-color: var(--white);
+        box-shadow: 1px 1px 8px 0 rgba(22, 22, 22, 0.05);
+        gap: @layout-spacing-m;
+
+        & > *:not(:first-child) {
+            margin: 0 80px;
+        }
+        & > :last-child {
+            margin-bottom: 32px;
+        }
+    }
+}
