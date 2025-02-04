@@ -3,8 +3,8 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {FilterKey} from 'models/stat/types'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/helpers'
 import {getHasAutomate} from 'state/billing/selectors'
 
 type UseOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters = (
@@ -17,10 +17,16 @@ export const useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters: UseO
         const analyticsNewCSATFilter =
             !!useFlags()[FeatureFlagKey.AnalyticsNewCSATFilter]
         const autoQaFilters = !!useFlags()[FeatureFlagKey.AutoQAFilters]
-
-        return [
+        const filters = [
             ...optionalFilters,
             ...(analyticsNewCSATFilter ? [FilterKey.Score] : []),
-            ...(autoQaFilters && hasAutomate ? [...AUTO_QA_FILTER_KEYS] : []),
         ]
+        if (autoQaFilters && hasAutomate) {
+            const uniqueFilters = new Set(filters)
+            AUTO_QA_FILTER_KEYS.forEach((key) => uniqueFilters.add(key))
+            return Array.from(uniqueFilters)
+        }
+        return filters.filter(
+            (filter) => !AUTO_QA_FILTER_KEYS.find((key) => key === filter)
+        )
     }

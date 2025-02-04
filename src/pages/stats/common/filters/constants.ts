@@ -110,3 +110,22 @@ export const brandVoiceFilterLogicalOperators = [
     LogicalOperatorEnum.ONE_OF,
     LogicalOperatorEnum.NOT_ONE_OF,
 ]
+
+export const AUTO_QA_FILTER_KEYS = [
+    FilterKey.CommunicationSkills,
+    FilterKey.ResolutionCompleteness,
+    FilterKey.LanguageProficiency,
+    FilterKey.Accuracy,
+    FilterKey.BrandVoice,
+    FilterKey.Efficiency,
+    FilterKey.InternalCompliance,
+] as const
+
+export const SAVEABLE_FILTERS: Exclude<FilterKey, FilterKey.Period>[] = [
+    FilterKey.CustomFields,
+    FilterKey.Channels,
+    FilterKey.Integrations,
+    FilterKey.Agents,
+    FilterKey.Tags,
+    ...AUTO_QA_FILTER_KEYS,
+]

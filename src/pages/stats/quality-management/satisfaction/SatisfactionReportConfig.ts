@@ -29,6 +29,7 @@ export const SATISFACTION_OPTIONAL_FILTERS = [
     FilterKey.Channels,
     FilterKey.Integrations,
     FilterKey.CustomFields,
+    FilterKey.Tags,
 ]
 
 export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {

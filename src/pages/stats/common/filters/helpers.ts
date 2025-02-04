@@ -22,7 +22,10 @@ import {
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {OptionGroup} from 'pages/stats/common/filters/AddFilterButton'
 import {ChannelsFilterWithState} from 'pages/stats/common/filters/ChannelsFilter'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {
+    AUTO_QA_FILTER_KEYS,
+    FilterLabels,
+} from 'pages/stats/common/filters/constants'
 import {ActiveFilter} from 'pages/stats/common/filters/FiltersPanel'
 import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
 
@@ -147,15 +150,7 @@ export const toApiFormatted = (
 }
 
 const ticketFieldsTypes = [FilterKey.CustomFields]
-export const AUTO_QA_FILTER_KEYS = [
-    FilterKey.CommunicationSkills,
-    FilterKey.ResolutionCompleteness,
-    FilterKey.LanguageProficiency,
-    FilterKey.Accuracy,
-    FilterKey.BrandVoice,
-    FilterKey.Efficiency,
-    FilterKey.InternalCompliance,
-]
+
 const qaFilterTypes = [FilterKey.Score, ...AUTO_QA_FILTER_KEYS]
 
 type FilterOption = {

@@ -1,8 +1,7 @@
 import {createSelector} from '@reduxjs/toolkit'
 
-import {SAVABLE_FILTERS} from 'models/reporting/types'
-
 import {FilterKey} from 'models/stat/types'
+import {SAVEABLE_FILTERS} from 'pages/stats/common/filters/constants'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {getTimezone} from 'state/currentUser/selectors'
 import {
@@ -68,7 +67,7 @@ export const getCleanStatsFiltersWithLogicalOperatorsWithTimezone =
                 const filtersNotSupportedBySavedFilters =
                     excludeFromFiltersWithLogicalOperators(
                         statsFilters,
-                        SAVABLE_FILTERS
+                        SAVEABLE_FILTERS
                     )
                 filters = {
                     ...filtersNotSupportedBySavedFilters,

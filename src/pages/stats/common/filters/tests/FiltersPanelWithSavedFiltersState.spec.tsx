@@ -13,7 +13,6 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import {SAVABLE_FILTERS} from 'models/reporting/types'
 import {FilterKey} from 'models/stat/types'
 import {
     FiltersPanelComponent,
@@ -30,7 +29,7 @@ import {RootState} from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
 import {assumeMock, mockStore, renderWithStore} from 'utils/testing'
 
-import {AUTO_QA_FILTER_KEYS} from '../helpers'
+import {SAVEABLE_FILTERS, AUTO_QA_FILTER_KEYS} from '../constants'
 
 jest.mock('state/billing/selectors', () => ({
     __esModule: true,
@@ -39,6 +38,10 @@ jest.mock('state/billing/selectors', () => ({
 jest.mock('pages/stats/common/filters/FiltersPanel')
 const FiltersPanelComponentMock = assumeMock(FiltersPanelComponent)
 const mockGetHasAutomate = jest.mocked(getHasAutomate)
+
+const SAVEABLE_FILTERS_WITHOUT_AUTO_QA = SAVEABLE_FILTERS.filter(
+    (filter) => !AUTO_QA_FILTER_KEYS.includes(filter as any)
+)
 
 describe('SavedFiltersPanel', () => {
     const defaultState = {
@@ -77,7 +80,7 @@ describe('SavedFiltersPanel', () => {
 
         expect(FiltersPanelComponentMock).toHaveBeenCalledWith(
             expect.objectContaining({
-                optionalFilters: SAVABLE_FILTERS,
+                optionalFilters: SAVEABLE_FILTERS_WITHOUT_AUTO_QA,
                 filterComponentMap: SavedFilterComponentMap,
             }),
             {}
@@ -91,44 +94,48 @@ describe('SavedFiltersPanel', () => {
                 [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
             },
             hasAutomate: true,
-            expectedFilters: [...SAVABLE_FILTERS, ...AUTO_QA_FILTER_KEYS],
+            expectedFilters: [...SAVEABLE_FILTERS],
         },
         {
             flags: {
                 [FeatureFlagKey.AutoQAFilters]: true,
+                [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
+            },
+            hasAutomate: true,
+            expectedFilters: [...SAVEABLE_FILTERS, FilterKey.Score],
+        },
+        {
+            flags: {
+                [FeatureFlagKey.AutoQAFilters]: true,
+                [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
+            },
+            hasAutomate: false,
+            expectedFilters: [
+                ...SAVEABLE_FILTERS_WITHOUT_AUTO_QA,
+                FilterKey.Score,
+            ],
+        },
+        {
+            flags: {
+                [FeatureFlagKey.AutoQAFilters]: false,
                 [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
             },
             hasAutomate: true,
             expectedFilters: [
-                ...SAVABLE_FILTERS,
+                ...SAVEABLE_FILTERS_WITHOUT_AUTO_QA,
                 FilterKey.Score,
-                ...AUTO_QA_FILTER_KEYS,
             ],
         },
-
-        {
-            flags: {
-                [FeatureFlagKey.AutoQAFilters]: true,
-                [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
-            },
-            hasAutomate: false,
-            expectedFilters: [...SAVABLE_FILTERS, FilterKey.Score],
-        },
-        {
-            flags: {
-                [FeatureFlagKey.AutoQAFilters]: false,
-                [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
-            },
-            hasAutomate: true,
-            expectedFilters: [...SAVABLE_FILTERS, FilterKey.Score],
-        },
         {
             flags: {
                 [FeatureFlagKey.AutoQAFilters]: false,
                 [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
             },
             hasAutomate: false,
-            expectedFilters: [...SAVABLE_FILTERS, FilterKey.Score],
+            expectedFilters: [
+                ...SAVEABLE_FILTERS_WITHOUT_AUTO_QA,
+                FilterKey.Score,
+            ],
         },
         {
             flags: {
@@ -136,7 +143,7 @@ describe('SavedFiltersPanel', () => {
                 [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
             },
             hasAutomate: false,
-            expectedFilters: [...SAVABLE_FILTERS],
+            expectedFilters: [...SAVEABLE_FILTERS_WITHOUT_AUTO_QA],
         },
     ])(
         'should render FiltersPanel with expected filters',

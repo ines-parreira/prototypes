@@ -14,8 +14,8 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import {FilterKey} from 'models/stat/types'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/helpers'
 import {AccuracyTrendCard} from 'pages/stats/support-performance/auto-qa/AccuracyTrendCard'
 import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
 import {AutoQAAgentPerformanceHeatmapSwitch} from 'pages/stats/support-performance/auto-qa/AutoQAAgentPerformanceHeatmapSwitch'

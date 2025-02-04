@@ -2,7 +2,7 @@ import React, {ComponentProps} from 'react'
 import {connect} from 'react-redux'
 
 import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
-import {SAVABLE_FILTERS} from 'models/reporting/types'
+import {SAVEABLE_FILTERS} from 'pages/stats/common/filters/constants'
 import {FiltersPanelComponent} from 'pages/stats/common/filters/FiltersPanel'
 import {SavedFilterComponentMap} from 'pages/stats/common/filters/FiltersPanelConfig'
 import {RootState} from 'state/types'
@@ -13,7 +13,7 @@ export const FiltersPanelWithCustomFilters = (
 ) => {
     const optionalFilters =
         useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            SAVABLE_FILTERS
+            SAVEABLE_FILTERS
         )
 
     return (
