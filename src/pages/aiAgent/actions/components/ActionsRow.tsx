@@ -90,7 +90,7 @@ export default function ActionsRow({action}: Props) {
                 }
             }}
         >
-            <BodyCell className={css.nameCell}>
+            <BodyCell width={360} className={css.nameCell}>
                 <div className={css.nameWrapper}>
                     <ToggleInput
                         isLoading={isEditActionLoading}
