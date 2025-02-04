@@ -6,13 +6,13 @@ exports[`<DropdownInput/> should render correctly 1`] = `
     class="formLabelWithTooltip"
   >
     <label
-      class="_label_e6rgs_141"
+      class="ui-label-label-3864"
       for="settings.choices"
     >
       Dropdown values
       <abbr
         aria-label="required"
-        class="_abbr_e6rgs_136"
+        class="ui-label-abbr-3864"
         title="required"
       >
         *

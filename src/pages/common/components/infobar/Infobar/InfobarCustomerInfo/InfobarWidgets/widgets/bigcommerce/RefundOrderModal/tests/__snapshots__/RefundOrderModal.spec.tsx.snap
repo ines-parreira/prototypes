@@ -51,7 +51,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
             >
               <div>
                 <label
-                  class="_label_e6rgs_141 label"
+                  class="ui-label-label-3864 label"
                   for="Entire order"
                 >
                   <input
@@ -75,7 +75,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
             >
               <div>
                 <label
-                  class="_label_e6rgs_141 label"
+                  class="ui-label-label-3864 label"
                   for="Manual amount"
                 >
                   <input
@@ -122,7 +122,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
               Other
             </p>
             <label
-              class="_label_e6rgs_141 label"
+              class="ui-label-label-3864 label"
               for="refundReason"
             >
               Reason for refund
@@ -147,7 +147,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
               </div>
             </div>
             <label
-              class="_label_e6rgs_141 label smallSpacingMarginTop"
+              class="ui-label-label-3864 label smallSpacingMarginTop"
               for="newOrderStatus"
             >
               New status
@@ -334,7 +334,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
             >
               <div>
                 <label
-                  class="_label_e6rgs_141 label"
+                  class="ui-label-label-3864 label"
                   for="Entire order"
                 >
                   <input
@@ -358,7 +358,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
             >
               <div>
                 <label
-                  class="_label_e6rgs_141 label"
+                  class="ui-label-label-3864 label"
                   for="Manual amount"
                 >
                   <input
@@ -696,7 +696,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
                         class="isDisabled"
                       >
                         <label
-                          class="_label_e6rgs_141 label"
+                          class="ui-label-label-3864 label"
                           for="checkbox-3"
                         >
                           <input
@@ -760,7 +760,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
                         class="isDisabled"
                       >
                         <label
-                          class="_label_e6rgs_141 label"
+                          class="ui-label-label-3864 label"
                           for="checkbox-4"
                         >
                           <input
@@ -875,7 +875,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
               Other
             </p>
             <label
-              class="_label_e6rgs_141 label"
+              class="ui-label-label-3864 label"
               for="refundReason"
             >
               Reason for refund
@@ -900,7 +900,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
               </div>
             </div>
             <label
-              class="_label_e6rgs_141 label smallSpacingMarginTop"
+              class="ui-label-label-3864 label smallSpacingMarginTop"
               for="newOrderStatus"
             >
               New status
@@ -1087,7 +1087,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
             >
               <div>
                 <label
-                  class="_label_e6rgs_141 label"
+                  class="ui-label-label-3864 label"
                   for="Entire order"
                 >
                   <input
@@ -1111,7 +1111,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
             >
               <div>
                 <label
-                  class="_label_e6rgs_141 label"
+                  class="ui-label-label-3864 label"
                   for="Manual amount"
                 >
                   <input
@@ -1158,7 +1158,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
               Other
             </p>
             <label
-              class="_label_e6rgs_141 label"
+              class="ui-label-label-3864 label"
               for="refundReason"
             >
               Reason for refund
@@ -1183,7 +1183,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
               </div>
             </div>
             <label
-              class="_label_e6rgs_141 label smallSpacingMarginTop"
+              class="ui-label-label-3864 label smallSpacingMarginTop"
               for="newOrderStatus"
             >
               New status

@@ -7,7 +7,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
   type="button"
 >
   <svg
-    class="_spinner_1an91_136 _gloom_1an91_162 spinner"
+    class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 spinner"
     height="22"
     preserveAspectRatio="xMidYMid meet"
     role="status"
@@ -15,7 +15,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
     width="22"
   >
     <circle
-      class="_dot_1an91_168"
+      class="ui-loadingspinner-dot-4660"
       cx="10"
       cy="10"
       fill="none"
@@ -23,7 +23,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
       stroke-width="2"
     />
     <circle
-      class="_circle_1an91_174"
+      class="ui-loadingspinner-circle-4660"
       cx="10"
       cy="10"
       fill="none"
@@ -51,7 +51,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
   type="button"
 >
   <svg
-    class="_spinner_1an91_136 _gloom_1an91_162 spinner"
+    class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 spinner"
     height="22"
     preserveAspectRatio="xMidYMid meet"
     role="status"
@@ -59,7 +59,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
     width="22"
   >
     <circle
-      class="_dot_1an91_168"
+      class="ui-loadingspinner-dot-4660"
       cx="10"
       cy="10"
       fill="none"
@@ -67,7 +67,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
       stroke-width="2"
     />
     <circle
-      class="_circle_1an91_174"
+      class="ui-loadingspinner-circle-4660"
       cx="10"
       cy="10"
       fill="none"
@@ -95,7 +95,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
   type="button"
 >
   <svg
-    class="_spinner_1an91_136 _gloom_1an91_162 spinner"
+    class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 spinner"
     height="22"
     preserveAspectRatio="xMidYMid meet"
     role="status"
@@ -103,7 +103,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
     width="22"
   >
     <circle
-      class="_dot_1an91_168"
+      class="ui-loadingspinner-dot-4660"
       cx="10"
       cy="10"
       fill="none"
@@ -111,7 +111,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
       stroke-width="2"
     />
     <circle
-      class="_circle_1an91_174"
+      class="ui-loadingspinner-circle-4660"
       cx="10"
       cy="10"
       fill="none"

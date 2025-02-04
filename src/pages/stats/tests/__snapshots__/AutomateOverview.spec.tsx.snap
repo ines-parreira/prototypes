@@ -590,7 +590,7 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                     class="legendCheckbox"
                   >
                     <label
-                      class="_label_e6rgs_141 label"
+                      class="ui-label-label-3864 label"
                       for="checkbox-abc"
                     >
                       <input
@@ -1214,7 +1214,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                           class="legendCheckbox"
                         >
                           <label
-                            class="_label_e6rgs_141 label"
+                            class="ui-label-label-3864 label"
                             for="checkbox-abc"
                           >
                             <input
@@ -1942,7 +1942,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                         class="legendCheckbox"
                       >
                         <label
-                          class="_label_e6rgs_141 label"
+                          class="ui-label-label-3864 label"
                           for="checkbox-abc"
                         >
                           <input
@@ -2619,7 +2619,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                           class="legendCheckbox"
                         >
                           <label
-                            class="_label_e6rgs_141 label"
+                            class="ui-label-label-3864 label"
                             for="checkbox-abc"
                           >
                             <input
@@ -3347,7 +3347,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                         class="legendCheckbox"
                       >
                         <label
-                          class="_label_e6rgs_141 label"
+                          class="ui-label-label-3864 label"
                           for="checkbox-abc"
                         >
                           <input
@@ -4024,7 +4024,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                           class="legendCheckbox"
                         >
                           <label
-                            class="_label_e6rgs_141 label"
+                            class="ui-label-label-3864 label"
                             for="checkbox-abc"
                           >
                             <input
@@ -4752,7 +4752,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                         class="legendCheckbox"
                       >
                         <label
-                          class="_label_e6rgs_141 label"
+                          class="ui-label-label-3864 label"
                           for="checkbox-abc"
                         >
                           <input
@@ -6028,7 +6028,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                     class="legendCheckbox"
                   >
                     <label
-                      class="_label_e6rgs_141 label"
+                      class="ui-label-label-3864 label"
                       for="checkbox-abc"
                     >
                       <input
@@ -6648,7 +6648,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                     class="legendCheckbox"
                   >
                     <label
-                      class="_label_e6rgs_141 label"
+                      class="ui-label-label-3864 label"
                       for="checkbox-abc"
                     >
                       <input
@@ -7268,7 +7268,7 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                     class="legendCheckbox"
                   >
                     <label
-                      class="_label_e6rgs_141 label"
+                      class="ui-label-label-3864 label"
                       for="checkbox-abc"
                     >
                       <input

@@ -324,13 +324,13 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
                 >
                   <div>
                     <label
-                      class="_label_e6rgs_141 label"
+                      class="ui-label-label-3864 label"
                       for="input-text-3"
                     >
                       Title
                       <abbr
                         aria-label="required"
-                        class="_abbr_e6rgs_136"
+                        class="ui-label-abbr-3864"
                         title="required"
                       >
                         *

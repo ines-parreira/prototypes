@@ -39,13 +39,13 @@ exports[`<BigCommerceIntegration/> render() should render an integration with a 
               class="loadingIcon"
             >
               <svg
-                class="_spinner_1an91_136 _dark_1an91_159 _small_1an91_178"
+                class="ui-loadingspinner-spinner-4660 ui-loadingspinner-dark-4660 ui-loadingspinner-small-4660"
                 preserveAspectRatio="xMidYMid meet"
                 role="status"
                 viewBox="0 0 20 20"
               >
                 <circle
-                  class="_dot_1an91_168"
+                  class="ui-loadingspinner-dot-4660"
                   cx="10"
                   cy="10"
                   fill="none"
@@ -53,7 +53,7 @@ exports[`<BigCommerceIntegration/> render() should render an integration with a 
                   stroke-width="2"
                 />
                 <circle
-                  class="_circle_1an91_174"
+                  class="ui-loadingspinner-circle-4660"
                   cx="10"
                   cy="10"
                   fill="none"
@@ -80,7 +80,7 @@ exports[`<BigCommerceIntegration/> render() should render an integration with a 
         </div>
         <form>
           <label
-            class="_label_e6rgs_141 _isDisabled_e6rgs_151 mb-2"
+            class="ui-label-label-3864 ui-label-isdisabled-3864 mb-2"
             for="disabled-store-field"
           >
             Store domain

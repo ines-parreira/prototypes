@@ -45,7 +45,7 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
           class="wrapperItem"
         >
           <label
-            class="_label_e6rgs_141 label labelItem"
+            class="ui-label-label-3864 label labelItem"
             for="checkbox-1"
           >
             <input
@@ -65,7 +65,7 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
           class="wrapperItem"
         >
           <label
-            class="_label_e6rgs_141 label labelItem"
+            class="ui-label-label-3864 label labelItem"
             for="checkbox-3"
           >
             <input
@@ -124,7 +124,7 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
           class="checkbox"
         >
           <label
-            class="_label_e6rgs_141 label quickSelectionOption"
+            class="ui-label-label-3864 label quickSelectionOption"
             for="checkbox-5"
           >
             <input
@@ -154,7 +154,7 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
           class="wrapperItem"
         >
           <label
-            class="_label_e6rgs_141 label labelItem"
+            class="ui-label-label-3864 label labelItem"
             for="checkbox-6"
           >
             <input
@@ -175,7 +175,7 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
           class="wrapperItem"
         >
           <label
-            class="_label_e6rgs_141 label labelItem"
+            class="ui-label-label-3864 label labelItem"
             for="checkbox-8"
           >
             <input

@@ -3,7 +3,7 @@
 exports[`<CheckBox /> should render a disabled CheckBox 1`] = `
 <div>
   <label
-    class="_label_e6rgs_141 _isDisabled_e6rgs_151 label"
+    class="ui-label-label-3864 ui-label-isdisabled-3864 label"
     for="checkbox-2"
   >
     <input
@@ -21,7 +21,7 @@ exports[`<CheckBox /> should render a disabled CheckBox 1`] = `
 exports[`<CheckBox /> should render an enabled CheckBox 1`] = `
 <div>
   <label
-    class="_label_e6rgs_141 label"
+    class="ui-label-label-3864 label"
     for="checkbox-1"
   >
     <input
@@ -38,7 +38,7 @@ exports[`<CheckBox /> should render an enabled CheckBox 1`] = `
 exports[`<CheckBox /> should render caption under the checkbox 1`] = `
 <div>
   <label
-    class="_label_e6rgs_141 label"
+    class="ui-label-label-3864 label"
     for="checkbox-3"
   >
     <input

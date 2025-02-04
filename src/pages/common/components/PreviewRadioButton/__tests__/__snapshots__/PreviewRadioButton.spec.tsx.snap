@@ -20,7 +20,7 @@ exports[`<PreviewRadioButton /> should match snapshot 1`] = `
     </div>
     <div>
       <label
-        class="_label_e6rgs_141 label"
+        class="ui-label-label-3864 label"
         for="light"
       >
         <input

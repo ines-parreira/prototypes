@@ -179,7 +179,7 @@ describe('<CampaignsTable />', () => {
             )
 
             const disabledToggles = container.querySelectorAll(
-                'label[class*="isDisabled"]'
+                'label[class*="isdisabled"]'
             )
             expect(disabledToggles.length).toEqual(1)
         })
@@ -192,7 +192,7 @@ describe('<CampaignsTable />', () => {
             )
 
             const disabledToggles = container.querySelectorAll(
-                'label[class*="isDisabled"]'
+                'label[class*="isdisabled"]'
             )
 
             expect(disabledToggles.length).toEqual(
@@ -212,7 +212,7 @@ describe('<CampaignsTable />', () => {
             ).filter(
                 (el) =>
                     !Array.from(el.classList).some((cn) =>
-                        cn.includes('isDisabled')
+                        cn.includes('isdisabled')
                     )
             )
 
@@ -299,7 +299,7 @@ describe('<CampaignsTable />', () => {
             const {container} = render(<CampaignsTable {...componentProps} />)
 
             const disabledToggles = container.querySelectorAll(
-                'label[class*="isDisabled"]'
+                'label[class*="isdisabled"]'
             )
 
             expect(disabledToggles.length).toEqual(1)

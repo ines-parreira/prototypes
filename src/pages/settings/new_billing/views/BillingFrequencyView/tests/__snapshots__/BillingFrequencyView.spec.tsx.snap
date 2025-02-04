@@ -87,7 +87,7 @@ exports[`UsageAndPlansView should render 1`] = `
             >
               <div>
                 <label
-                  class="_label_e6rgs_141 label"
+                  class="ui-label-label-3864 label"
                   for="month"
                 >
                   <input
@@ -110,7 +110,7 @@ exports[`UsageAndPlansView should render 1`] = `
             >
               <div>
                 <label
-                  class="_label_e6rgs_141 label"
+                  class="ui-label-label-3864 label"
                   for="year"
                 >
                   <input

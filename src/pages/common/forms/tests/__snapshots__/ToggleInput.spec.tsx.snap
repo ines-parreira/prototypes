@@ -4,7 +4,7 @@ exports[`ToggleInput should render caption 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="_label_e6rgs_141 label"
+    class="ui-label-label-3864 label"
     for="toggle-button-8"
     role="switch"
   >
@@ -33,7 +33,7 @@ exports[`ToggleInput should render label 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="_label_e6rgs_141 label"
+    class="ui-label-label-3864 label"
     for="toggle-button-7"
     role="switch"
   >
@@ -57,7 +57,7 @@ exports[`ToggleInput should render the button disabled, and have onClick disable
 <div>
   <label
     aria-checked="true"
-    class="_label_e6rgs_141 _isDisabled_e6rgs_151 label disabledLabel"
+    class="ui-label-label-3864 ui-label-isdisabled-3864 label disabledLabel"
     for="toggle-button-5"
     role="switch"
   >
@@ -80,7 +80,7 @@ exports[`ToggleInput should render the button loading and disabled 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="_label_e6rgs_141 _isDisabled_e6rgs_151 label loadingLabel disabledLabel"
+    class="ui-label-label-3864 ui-label-isdisabled-3864 label loadingLabel disabledLabel"
     for="toggle-button-6"
     role="switch"
   >
@@ -96,13 +96,13 @@ exports[`ToggleInput should render the button loading and disabled 1`] = `
       class="slider"
     />
     <svg
-      class="_spinner_1an91_136 _light_1an91_165 _small_1an91_178 spinner spinnerLeft"
+      class="ui-loadingspinner-spinner-4660 ui-loadingspinner-light-4660 ui-loadingspinner-small-4660 spinner spinnerLeft"
       preserveAspectRatio="xMidYMid meet"
       role="status"
       viewBox="0 0 20 20"
     >
       <circle
-        class="_dot_1an91_168"
+        class="ui-loadingspinner-dot-4660"
         cx="10"
         cy="10"
         fill="none"
@@ -110,7 +110,7 @@ exports[`ToggleInput should render the button loading and disabled 1`] = `
         stroke-width="2"
       />
       <circle
-        class="_circle_1an91_174"
+        class="ui-loadingspinner-circle-4660"
         cx="10"
         cy="10"
         fill="none"
@@ -131,7 +131,7 @@ exports[`ToggleInput should render the button loading, and have onClick disabled
 <div>
   <label
     aria-checked="true"
-    class="_label_e6rgs_141 label loadingLabel"
+    class="ui-label-label-3864 label loadingLabel"
     for="toggle-button-4"
     role="switch"
   >
@@ -147,13 +147,13 @@ exports[`ToggleInput should render the button loading, and have onClick disabled
       class="slider"
     />
     <svg
-      class="_spinner_1an91_136 _light_1an91_165 _small_1an91_178 spinner spinnerLeft"
+      class="ui-loadingspinner-spinner-4660 ui-loadingspinner-light-4660 ui-loadingspinner-small-4660 spinner spinnerLeft"
       preserveAspectRatio="xMidYMid meet"
       role="status"
       viewBox="0 0 20 20"
     >
       <circle
-        class="_dot_1an91_168"
+        class="ui-loadingspinner-dot-4660"
         cx="10"
         cy="10"
         fill="none"
@@ -161,7 +161,7 @@ exports[`ToggleInput should render the button loading, and have onClick disabled
         stroke-width="2"
       />
       <circle
-        class="_circle_1an91_174"
+        class="ui-loadingspinner-circle-4660"
         cx="10"
         cy="10"
         fill="none"
@@ -182,7 +182,7 @@ exports[`ToggleInput should render the checkbox checked 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="_label_e6rgs_141 label"
+    class="ui-label-label-3864 label"
     for="toggle-button-1"
     role="switch"
   >
@@ -205,7 +205,7 @@ exports[`ToggleInput should render the checkbox unchecked 1`] = `
 <div>
   <label
     aria-checked="false"
-    class="_label_e6rgs_141 label"
+    class="ui-label-label-3864 label"
     for="toggle-button-3"
     role="switch"
   >

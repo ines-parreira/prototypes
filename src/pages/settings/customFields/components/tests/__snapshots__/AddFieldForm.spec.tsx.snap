@@ -54,13 +54,13 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
     class="formRow"
   >
     <label
-      class="_label_e6rgs_141 label"
+      class="ui-label-label-3864 label"
       for="input-text-1"
     >
       Name
       <abbr
         aria-label="required"
-        class="_abbr_e6rgs_136"
+        class="ui-label-abbr-3864"
         title="required"
       >
         *
@@ -91,7 +91,7 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
     class="formRow"
   >
     <label
-      class="_label_e6rgs_141 label"
+      class="ui-label-label-3864 label"
       for="textarea-3"
     >
       Description
@@ -115,7 +115,7 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
     class="formRow"
   >
     <label
-      class="_label_e6rgs_141 label"
+      class="ui-label-label-3864 label"
       for="checkbox-4"
     >
       <input
@@ -137,13 +137,13 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
     class="formRow"
   >
     <label
-      class="_label_e6rgs_141 formLabel"
+      class="ui-label-label-3864 formLabel"
       for="type"
     >
       Type
       <abbr
         aria-label="required"
-        class="_abbr_e6rgs_136"
+        class="ui-label-abbr-3864"
         title="required"
       >
         *
@@ -182,13 +182,13 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
       class="formLabelWithTooltip"
     >
       <label
-        class="_label_e6rgs_141"
+        class="ui-label-label-3864"
         for="settings.choices"
       >
         Dropdown values
         <abbr
           aria-label="required"
-          class="_abbr_e6rgs_136"
+          class="ui-label-abbr-3864"
           title="required"
         >
           *

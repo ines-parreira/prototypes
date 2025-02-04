@@ -190,8 +190,8 @@ describe('SatisfactionSurveyView', () => {
             const element =
                 screen.getByLabelText(/Help Center/).parentElement?.className
 
-            if (isDisabled) expect(element).toContain('isDisabled')
-            else expect(element).not.toContain('isDisabled')
+            if (isDisabled) expect(element).toContain('isdisabled')
+            else expect(element).not.toContain('isdisabled')
         }
     )
 })

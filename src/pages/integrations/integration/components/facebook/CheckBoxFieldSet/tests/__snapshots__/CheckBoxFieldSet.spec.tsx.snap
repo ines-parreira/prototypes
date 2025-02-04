@@ -15,7 +15,7 @@ exports[`<CheckBoxFieldSet/> should display the title, subtitle and checkboxes 1
       class="mb-2"
     >
       <label
-        class="_label_e6rgs_141 label"
+        class="ui-label-label-3864 label"
         for="comments"
       >
         <input
@@ -35,7 +35,7 @@ exports[`<CheckBoxFieldSet/> should display the title, subtitle and checkboxes 1
       class="mb-2"
     >
       <label
-        class="_label_e6rgs_141 label"
+        class="ui-label-label-3864 label"
         for="mentions"
       >
         <input

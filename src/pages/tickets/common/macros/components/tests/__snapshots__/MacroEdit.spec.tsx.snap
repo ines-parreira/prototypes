@@ -15,13 +15,13 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
           class="mb-0"
         >
           <label
-            class="_label_e6rgs_141 label"
+            class="ui-label-label-3864 label"
             for="input-text-1"
           >
             Macro name
             <abbr
               aria-label="required"
-              class="_abbr_e6rgs_136"
+              class="ui-label-abbr-3864"
               title="required"
             >
               *
