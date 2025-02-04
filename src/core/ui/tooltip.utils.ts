@@ -1,4 +1,8 @@
 export const TooltipDelay = {
+    Short: {
+        show: 500,
+        hide: 0,
+    },
     Default: {
         show: 1000,
         hide: 0,

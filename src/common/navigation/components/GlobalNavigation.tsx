@@ -1,7 +1,6 @@
 import React from 'react'
 
 import {UserRole} from 'config/types/user'
-import {TooltipDelay} from 'core/ui/tooltip.utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {useAiAgentItemEnabled} from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import {getCurrentUser} from 'state/currentUser/selectors'
@@ -42,7 +41,6 @@ export default function GlobalNavigation() {
                         icon={navBarMenuIcon}
                         onClick={onMenuToggle}
                         tooltip={<NavBarButtonTooltip />}
-                        tooltipDelay={TooltipDelay.Long}
                     />
                     <Item
                         icon="home"

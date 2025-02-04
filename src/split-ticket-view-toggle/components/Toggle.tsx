@@ -59,7 +59,7 @@ export default function Toggle() {
                 <Tooltip
                     target={buttonId}
                     placement="right"
-                    delay={TooltipDelay.Long}
+                    delay={TooltipDelay.Short}
                 >
                     {isEnabled ? 'Expand' : 'Collapse'}
                 </Tooltip>
@@ -69,7 +69,7 @@ export default function Toggle() {
                 <Tooltip
                     target={buttonId}
                     placement="bottom-start"
-                    delay={TooltipDelay.Long}
+                    delay={TooltipDelay.Short}
                     innerProps={{
                         popperClassName: css.tooltip,
                     }}
