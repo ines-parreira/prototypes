@@ -136,8 +136,8 @@ export const MaximumCampaignDisplayed = ({
                                         className={css.numberInput}
                                         value={internalValue}
                                         onChange={handleChangeValue}
-                                        min={3}
-                                        max={30}
+                                        min={minValue}
+                                        max={maxValue}
                                     />
                                     <div className={css.suffix}>
                                         in 24 hours
