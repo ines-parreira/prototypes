@@ -1,7 +1,5 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {useDeleteAgent} from 'hooks/agents/useDeleteAgent'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
@@ -26,8 +24,6 @@ export const DeleteModal = ({
     isModalOpen,
     setModalOpen,
 }: Props) => {
-    const isAnalyticsSavedFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsSavedFilters]
     const {mutateAsync: deleteAgent, isLoading: isDeleting} =
         useDeleteAgent(name)
 
@@ -45,12 +41,8 @@ export const DeleteModal = ({
                         Deleting this user will unassign them from all their
                         tickets, open or closed, and will delete their
                         statistics.
-                        {isAnalyticsSavedFilters ? (
-                            <>
-                                <br />
-                                {REMOVE_MESSAGE_ABOUT_SAVED_FILTERS}
-                            </>
-                        ) : null}
+                        <br />
+                        {REMOVE_MESSAGE_ABOUT_SAVED_FILTERS}
                         <br />
                         <br />
                         This action is irreversible.

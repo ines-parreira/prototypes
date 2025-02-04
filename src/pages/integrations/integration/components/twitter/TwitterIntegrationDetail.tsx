@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import {fromJS, Map} from 'immutable'
 import _truncate from 'lodash/truncate'
+
 import React, {useCallback, useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {
@@ -17,7 +18,7 @@ import {IntegrationType} from 'models/integration/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {useNotificationTextForRemovalMessage} from 'pages/integrations/integration/hooks/useNotificationTextForRemovalMessage'
+import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
 import {
     deleteIntegration,
@@ -38,8 +39,6 @@ export default function TwitterIntegrationDetail({
     actions,
     redirectUri,
 }: Props): JSX.Element {
-    const confirmationContent = useNotificationTextForRemovalMessage()
-
     const [isInitialized, setIsInitialized] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isDeleting, setIsDeleting] = useState(false)
@@ -256,7 +255,7 @@ export default function TwitterIntegrationDetail({
                                         className="float-right"
                                         onConfirm={onDelete}
                                         confirmationContent={
-                                            confirmationContent
+                                            INTEGRATION_REMOVAL_CONFIGURATION_TEXT
                                         }
                                         isDisabled={isSubmitting}
                                         isLoading={isDeleting}

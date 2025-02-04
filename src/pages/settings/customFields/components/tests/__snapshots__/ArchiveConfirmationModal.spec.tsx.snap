@@ -60,7 +60,7 @@ exports[`<ArchiveConfirmationModal/> should render 1`] = `
                 s with existing fields will keep the values associated to them.
               </p>
               <p>
-                This field may be in use in rules and macros. Make sure to edit the rules and macros, as they will not be able to apply a value on an archived field.
+                This field may be in use in Rules, Macros and Saved Filters. Make sure to edit them, as they will not be able to apply a value on an archived field.
               </p>
               <p>
                 Are you sure you want to archive this field?

@@ -1,7 +1,5 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
@@ -30,9 +28,6 @@ const BulkDeleteButton = ({
     selectedTagsCount,
     selectedTagsText,
 }: Props) => {
-    const isAnalyticsSavedFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsSavedFilters]
-
     const getMessage = (messageType: MessageType) => {
         switch (messageType) {
             case MessageType.DEFAULT:
@@ -64,12 +59,7 @@ const BulkDeleteButton = ({
                         <br />
                         {getMessage(MessageType.PERMANENT)}
                         <br />
-                        {isAnalyticsSavedFilters && (
-                            <>
-                                <br />
-                                {getMessage(MessageType.SAVED_FILTERS)}
-                            </>
-                        )}
+                        {getMessage(MessageType.SAVED_FILTERS)}
                     </b>
                 </>
             }

@@ -2,11 +2,9 @@ import {Tag, TagDecoration} from '@gorgias/api-queries'
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import classNames from 'classnames'
 import {fromJS, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {FormEvent, useEffect, useState} from 'react'
 import {Form} from 'reactstrap'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -28,9 +26,6 @@ type Props = {
 
 export default function Row({meta, refresh, row}: Props) {
     const dispatch = useAppDispatch()
-    const isAnalyticsSavedFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsSavedFilters]
-
     const [decoration, setDecoration] = useState<TagDecoration>({color: ''})
     const [description, setDescription] = useState<string | null>('')
     const [name, setName] = useState('')
@@ -193,12 +188,10 @@ export default function Row({meta, refresh, row}: Props) {
                                         It will not be possible to add the tag
                                         back to the tickets it was previously on
                                     </li>
-                                    {isAnalyticsSavedFilters ? (
-                                        <li>
-                                            The tag will have to be removed from
-                                            Saved Filters manually
-                                        </li>
-                                    ) : null}
+                                    <li>
+                                        The tag will have to be removed from
+                                        Saved Filters manually
+                                    </li>
                                 </ul>
                             </>
                         }

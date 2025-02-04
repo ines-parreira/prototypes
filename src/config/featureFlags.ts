@@ -33,7 +33,6 @@ export enum FeatureFlagKey {
     AnalyticsNewFiltersConvert = 'analytics-new-filters-convert',
     AnalyticsNewFiltersHelpCenter = 'analytics-new-filters-help-center',
     AnalyticsNewFiltersVoice = 'analytics-new-filters-voice',
-    AnalyticsSavedFilters = 'analytics-saved-f-ilters',
     AutomateNonFilteredDenominatorInAutomationRate = 'use-non-filtered-automated-interactions-in-automation-rate-denominator',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',
     AutoQA = 'auto-qa',

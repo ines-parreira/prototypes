@@ -1,5 +1,6 @@
 import {Label} from '@gorgias/merchant-ui-kit'
 import {Map} from 'immutable'
+
 import React, {FormEvent, useCallback, useEffect, useState} from 'react'
 import {Col, Container, Row} from 'reactstrap'
 
@@ -13,8 +14,8 @@ import TextInput from 'pages/common/forms/input/TextInput'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import BackToConvertButton from 'pages/convert/onboarding/components/BackToConvertButton'
 import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
+import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
 import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
-import {useNotificationTextForRemovalMessage} from 'pages/integrations/integration/hooks/useNotificationTextForRemovalMessage'
 import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
 import css from 'pages/settings/settings.less'
@@ -35,7 +36,6 @@ export default function Integration({
     redirectUri,
 }: Props) {
     const dispatch = useAppDispatch()
-    const confirmationContent = useNotificationTextForRemovalMessage()
     useQueryNotify()
 
     const isAuthenticationPending = useAuthenticationPolling(integration)
@@ -270,7 +270,9 @@ export default function Integration({
                                 onConfirm={() =>
                                     dispatch(deleteIntegration(integration))
                                 }
-                                confirmationContent={confirmationContent}
+                                confirmationContent={
+                                    INTEGRATION_REMOVAL_CONFIGURATION_TEXT
+                                }
                                 intent="destructive"
                                 leadingIcon="delete"
                             >

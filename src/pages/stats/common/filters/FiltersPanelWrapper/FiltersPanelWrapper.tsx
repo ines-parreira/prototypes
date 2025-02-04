@@ -1,7 +1,5 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {ReactElement} from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     FiltersPanel,
@@ -25,9 +23,6 @@ export const FiltersPanelWrapper = ({
     persistentFilters,
     withSavedFilters = true,
 }: Props): ReactElement => {
-    const isAnalyticsSavedFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsSavedFilters]
-
     const shouldHideFilters = useAppSelector(getHideFiltersPanelOptionalFilters)
 
     return (
@@ -43,14 +38,14 @@ export const FiltersPanelWrapper = ({
                     ]}
                     shouldHideFilters={shouldHideFilters}
                 />
-                {isAnalyticsSavedFilters && withSavedFilters && (
+                {withSavedFilters && (
                     <SavedFiltersActions
                         optionalFilters={optionalFilters}
                         shouldHideFilters={shouldHideFilters}
                     />
                 )}
             </div>
-            {isAnalyticsSavedFilters && withSavedFilters && (
+            {withSavedFilters && (
                 <SavedFiltersPanel
                     persistentFilters={persistentFilters}
                     optionalFilters={optionalFilters}

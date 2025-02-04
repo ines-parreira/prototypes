@@ -1,5 +1,6 @@
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
+
 import React, {useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
@@ -12,7 +13,7 @@ import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import css from 'pages/integrations/integration/components/sms/SmsIntegrationPreferences.less'
-import {useNotificationTextForRemovalMessage} from 'pages/integrations/integration/hooks/useNotificationTextForRemovalMessage'
+import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
 import settingsCss from 'pages/settings/settings.less'
 import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
@@ -35,8 +36,6 @@ export default function SmsIntegrationPreferences({
     const phoneNumber = useAppSelector(getNewPhoneNumber(phoneNumberId))
 
     const dispatch = useAppDispatch()
-
-    const confirmationContent = useNotificationTextForRemovalMessage()
 
     const [{loading: isLoading}, handleSubmit] = useAsyncFn(
         async (event: React.FormEvent) => {
@@ -145,7 +144,9 @@ export default function SmsIntegrationPreferences({
                                 isDisabled={!isInitialized}
                                 isLoading={isDeleting}
                                 onConfirm={handleDelete}
-                                confirmationContent={confirmationContent}
+                                confirmationContent={
+                                    INTEGRATION_REMOVAL_CONFIGURATION_TEXT
+                                }
                                 leadingIcon="delete"
                             >
                                 Delete integration

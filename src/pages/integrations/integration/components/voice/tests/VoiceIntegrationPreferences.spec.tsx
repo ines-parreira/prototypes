@@ -1,9 +1,7 @@
 import {RenderResult, render, screen} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {BrowserRouter} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {useFlag} from 'core/flags'
 import {Form} from 'core/forms'
 import {integrationsState} from 'fixtures/integrations'
@@ -66,9 +64,6 @@ describe('<VoiceIntegrationPreferences />', () => {
         )
 
     beforeEach(() => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsSavedFilters]: false,
-        })
         useFlagMock.mockReturnValue(true)
         useFormSubmitMock.mockReturnValue({onSubmit})
         getDefaultValuesMock.mockReturnValue('default-values' as any)

@@ -1,5 +1,6 @@
 import classnames from 'classnames'
 import {List, Map} from 'immutable'
+
 import React from 'react'
 import {useRouteMatch} from 'react-router-dom'
 import {Col, Container, Label, Row} from 'reactstrap'
@@ -14,7 +15,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {useNotificationTextForRemovalMessage} from 'pages/integrations/integration/hooks/useNotificationTextForRemovalMessage'
+import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
 import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 import settingsCss from 'pages/settings/settings.less'
 import {deleteIntegration} from 'state/integrations/actions'
@@ -36,7 +37,6 @@ export default function Integration({
     redirectUri,
 }: Props) {
     const dispatch = useAppDispatch()
-    const confirmationContent = useNotificationTextForRemovalMessage()
     useQueryNotify()
     const match = useRouteMatch<{integrationId: string}>()
     const isUpdate = match.params.integrationId !== 'new'
@@ -125,7 +125,9 @@ export default function Integration({
                                     onConfirm={() =>
                                         dispatch(deleteIntegration(integration))
                                     }
-                                    confirmationContent={confirmationContent}
+                                    confirmationContent={
+                                        INTEGRATION_REMOVAL_CONFIGURATION_TEXT
+                                    }
                                     intent="destructive"
                                     leadingIcon="delete"
                                 >

@@ -6,12 +6,8 @@ import {baseHttp, httpIntegration} from 'fixtures/integrations'
 import {ContentType, HttpMethod} from 'models/api/types'
 import {HTTPForm, IntegrationType} from 'models/integration/types'
 
-import {
-    INTEGRATION_REMOVAL_CONFIGURATION_TEXT,
-    INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT,
-} from 'pages/integrations/integration/constants'
-
-import {Integration} from '../Integration'
+import {Integration} from 'pages/integrations/integration/components/http/Integration/Integration'
+import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
 
 describe('HTTP Integration', () => {
     const minProps = {
@@ -439,72 +435,6 @@ describe('HTTP Integration', () => {
             fireEvent.change(urlInput, {target: {value: 'invalid-url'}})
 
             expect(urlInput).toBeInvalid()
-        })
-    })
-
-    describe('Analytics saved filters', () => {
-        it('should not show saved filters warning when feature flag is disabled', () => {
-            const mockIntegration = {
-                ...httpIntegration,
-                id: 1,
-                type: IntegrationType.Http as IntegrationType.Http,
-                name: 'Test Integration',
-                meta: {},
-                created_datetime: '2024-01-01T00:00:00Z',
-                updated_datetime: '2024-01-01T00:00:00Z',
-                deleted_datetime: null,
-                deactivated_datetime: null,
-                decoration: null,
-                application_id: null,
-                account_id: 1,
-                created_by_id: 1,
-                locked_datetime: null,
-                uri: '/api/integrations/1',
-                user: {
-                    id: 1,
-                    email: 'test@example.com',
-                },
-                managed: false,
-                http: {
-                    ...httpIntegration.http,
-                    id: 1,
-                    url: 'https://test.com',
-                    execution_order: 0,
-                    method: HttpMethod.Get,
-                    request_content_type: ContentType.Json,
-                    response_content_type: ContentType.Json,
-                    headers: {},
-                    triggers: {
-                        'ticket-created': true,
-                        'ticket-updated': true,
-                    },
-                    form: '' as HTTPForm,
-                },
-            }
-
-            render(
-                <Integration
-                    {...minProps}
-                    integration={mockIntegration}
-                    isUpdate={true}
-                    flags={{AnalyticsSavedFilters: false}}
-                />
-            )
-
-            // Open confirmation dialog
-            const deleteButton = screen.getByRole('button', {
-                name: /Delete HTTP integration/i,
-            })
-            fireEvent.click(deleteButton)
-
-            // Verify only base message appears in confirmation tooltip
-            const confirmTooltip = screen.getByRole('tooltip')
-            expect(confirmTooltip).toHaveTextContent(
-                INTEGRATION_REMOVAL_CONFIGURATION_TEXT
-            )
-            expect(confirmTooltip).not.toHaveTextContent(
-                INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT
-            )
         })
     })
 })

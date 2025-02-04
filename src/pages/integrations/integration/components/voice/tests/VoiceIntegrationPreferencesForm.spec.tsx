@@ -1,19 +1,14 @@
 import {RenderResult, fireEvent, render, screen} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {useFormContext} from 'react-hook-form'
 import {BrowserRouter} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {FormField, FormSubmitButton} from 'core/forms'
 import {integrationsState} from 'fixtures/integrations'
 import {IntegrationType} from 'models/integration/constants'
 import {PhoneIntegration} from 'models/integration/types'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import {
-    INTEGRATION_REMOVAL_CONFIGURATION_TEXT,
-    INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT,
-} from 'pages/integrations/integration/constants'
+import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
 import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import {assumeMock} from 'utils/testing'
 
@@ -105,9 +100,6 @@ describe('<VoiceIntegrationPreferencesForm />', () => {
         )
 
     beforeEach(() => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsSavedFilters]: false,
-        })
         getNewPhoneNumberMock.mockReturnValue((() => phoneIntegration) as any)
         useFormContextMock.mockReturnValue(methodsMock)
         useDeleteVoiceIntegrationMock.mockReturnValue(
@@ -172,16 +164,13 @@ describe('<VoiceIntegrationPreferencesForm />', () => {
     })
 
     it('should display delete warning message and it should not contain text about "saved filters"', () => {
-        const {getByText, queryByText, getByRole} = renderComponent(props)
+        const {getByText, getByRole} = renderComponent(props)
 
         fireEvent.click(getByRole('button', {name: /Delete integration/i}))
 
         expect(
             getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
         ).toBeInTheDocument()
-        expect(
-            queryByText(INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT)
-        ).not.toBeInTheDocument()
     })
 
     it('should pass correct props to Title field', () => {

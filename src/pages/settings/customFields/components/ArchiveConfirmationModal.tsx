@@ -1,7 +1,5 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useMemo} from 'react'
+import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {OBJECT_TYPES, OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
 import {CustomFieldObjectTypes} from 'custom-fields/types'
 import {ConfirmationModal} from 'pages/settings/helpCenter/components/ConfirmationModal'
@@ -14,6 +12,9 @@ export type Props = {
     objectType: CustomFieldObjectTypes
 }
 
+const TICKET_FIELDS_RELATED_MESSAGE =
+    'This field may be in use in Rules, Macros and Saved Filters. Make sure to edit them, as they will not be able to apply a value on an archived field.'
+
 export default function ArchiveConfirmationModal({
     customFieldLabel,
     isOpen,
@@ -21,17 +22,9 @@ export default function ArchiveConfirmationModal({
     onClose,
     objectType,
 }: Props) {
-    const isAnalyticsSavedFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsSavedFilters]
     const customFieldTypeLabel = OBJECT_TYPE_SETTINGS[objectType].LABEL
     const customFieldTypeTitleLabel =
         OBJECT_TYPE_SETTINGS[objectType].TITLE_LABEL
-    const ticketFieldsRelatedMessage = useMemo(() => {
-        if (isAnalyticsSavedFilters) {
-            return 'This field may be in use in Rules, Macros and Saved Filters. Make sure to edit them, as they will not be able to apply a value on an archived field.'
-        }
-        return 'This field may be in use in rules and macros. Make sure to edit the rules and macros, as they will not be able to apply a value on an archived field.'
-    }, [isAnalyticsSavedFilters])
 
     return (
         <ConfirmationModal
@@ -48,7 +41,7 @@ export default function ArchiveConfirmationModal({
                 existing fields will keep the values associated to them.
             </p>
             {objectType === OBJECT_TYPES.TICKET && (
-                <p>{ticketFieldsRelatedMessage}</p>
+                <p>{TICKET_FIELDS_RELATED_MESSAGE}</p>
             )}
             <p>Are you sure you want to archive this field?</p>
         </ConfirmationModal>

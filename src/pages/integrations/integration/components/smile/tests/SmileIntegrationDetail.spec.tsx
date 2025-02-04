@@ -5,17 +5,13 @@ import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
 import {match} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     PENDING_AUTHENTICATION_STATUS,
     SMILE_INTEGRATION_TYPE,
     SUCCESS_AUTHENTICATION_STATUS,
 } from 'constants/integration'
 import {SmileIntegrationDetailComponent} from 'pages/integrations/integration/components/smile/SmileIntegrationDetail'
-import {
-    INTEGRATION_REMOVAL_CONFIGURATION_TEXT,
-    INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT,
-} from 'pages/integrations/integration/constants'
+import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
 
 jest.useFakeTimers()
 
@@ -364,36 +360,11 @@ describe('<SmileIntegrationDetail/>', () => {
             }
         )
 
-        it('should check the warning message of removing the integration, it should not contain the text related to saved filters', () => {
-            const {getByRole, getByText, queryByText} = render(
-                <SmileIntegrationDetailComponent
-                    {...defaultProps}
-                    integration={fromJS({
-                        id: 1,
-                        meta: {
-                            oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
-                            sync_state: {is_initialized: false},
-                        },
-                    })}
-                />
-            )
-
-            fireEvent.click(getByRole('button', {name: /Delete integration/i}))
-
-            expect(
-                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
-            ).toBeInTheDocument()
-            expect(
-                queryByText(INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT)
-            ).not.toBeInTheDocument()
-        })
-
         it('should check the warning message of removing the integration, it should contain the text related to saved filters', () => {
             const {getByRole, getByText} = render(
                 <SmileIntegrationDetailComponent
                     {...{
                         ...defaultProps,
-                        flags: {[FeatureFlagKey.AnalyticsSavedFilters]: true},
                     }}
                     integration={fromJS({
                         id: 1,
@@ -408,9 +379,7 @@ describe('<SmileIntegrationDetail/>', () => {
             fireEvent.click(getByRole('button', {name: /Delete integration/i}))
 
             expect(
-                getByText(
-                    `${INTEGRATION_REMOVAL_CONFIGURATION_TEXT} ${INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT}`
-                )
+                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
             ).toBeInTheDocument()
         })
     })

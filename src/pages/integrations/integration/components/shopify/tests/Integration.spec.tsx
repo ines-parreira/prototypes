@@ -1,17 +1,12 @@
 import {fireEvent, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import * as ToggleInput from 'pages/common/forms/ToggleInput'
-import {
-    INTEGRATION_REMOVAL_CONFIGURATION_TEXT,
-    INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT,
-} from 'pages/integrations/integration/constants'
+import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
 import * as actions from 'state/integrations/actions'
 import {renderWithRouter} from 'utils/testing'
 
@@ -29,9 +24,6 @@ describe('<ShopifyIntegration/>', () => {
 
     beforeEach(() => {
         jest.restoreAllMocks()
-        mockFlags({
-            [FeatureFlagKey.AnalyticsSavedFilters]: false,
-        })
     })
 
     describe('render()', () => {
@@ -111,30 +103,7 @@ describe('<ShopifyIntegration/>', () => {
             expect(deleteIntegration.mock.calls).toMatchSnapshot()
         })
 
-        it('should display delete warning message and it should not contain text about "saved filters"', () => {
-            const {getByRole, getByText, queryByText} = renderWithRouter(
-                <Provider store={store}>
-                    <Integration {...minProps} />
-                </Provider>
-            )
-
-            fireEvent.click(
-                getByRole('button', {
-                    name: /Delete app/i,
-                })
-            )
-            expect(
-                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
-            ).toBeInTheDocument()
-            expect(
-                queryByText(INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT)
-            ).not.toBeInTheDocument()
-        })
-
         it('should display delete warning message and it should contain text about "saved filters"', () => {
-            mockFlags({
-                [FeatureFlagKey.AnalyticsSavedFilters]: true,
-            })
             const {getByRole, getByText} = renderWithRouter(
                 <Provider store={store}>
                     <Integration {...minProps} />
@@ -147,9 +116,7 @@ describe('<ShopifyIntegration/>', () => {
                 })
             )
             expect(
-                getByText(
-                    `${INTEGRATION_REMOVAL_CONFIGURATION_TEXT} ${INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT}`
-                )
+                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
             ).toBeInTheDocument()
         })
 

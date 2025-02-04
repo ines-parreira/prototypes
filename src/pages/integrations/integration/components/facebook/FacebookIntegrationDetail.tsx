@@ -1,6 +1,5 @@
 import classNames from 'classnames'
 import {fromJS, Map} from 'immutable'
-import {LDFlagSet, withLDConsumer} from 'launchdarkly-react-client-sdk'
 import isEmpty from 'lodash/isEmpty'
 import isEqual from 'lodash/isEqual'
 import merge from 'lodash/merge'
@@ -18,7 +17,6 @@ import {
 
 import warningIcon from 'assets/img/icons/warning2.svg'
 import pageIconDefault from 'assets/img/integrations/facebook-page.png'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     FACEBOOK_LANGUAGE_OPTIONS,
     FACEBOOK_LANGUAGE_DEFAULT,
@@ -48,8 +46,7 @@ import {
     hasFacebookRole,
     InstagramDMSettingStatus,
 } from 'pages/integrations/integration/components/facebook/utils'
-import {INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT} from 'pages/integrations/integration/constants'
-import {getRemovalConfirmationMessageWithSavedFiltersText} from 'pages/integrations/integration/utils'
+import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
 import * as billingSelectors from 'state/billing/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
@@ -62,7 +59,6 @@ import {RootState} from 'state/types'
 type Props = {
     integration: FacebookIntegration
     loading: Map<any, any>
-    flags?: LDFlagSet
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -156,12 +152,9 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
             currentHelpdeskProduct,
             deleteIntegration,
             hasInstagramDMFeature,
-            flags = {},
         } = this.props
 
         const integrationMeta = integration.meta || {}
-        const isAnalyticsSavedFilters =
-            !!flags[FeatureFlagKey.AnalyticsSavedFilters]
 
         let userRoles: string | undefined | FacebookRole[] =
             integrationMeta.roles
@@ -566,10 +559,9 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                                     Save changes
                                 </Button>
                                 <ConfirmButton
-                                    confirmationContent={getRemovalConfirmationMessageWithSavedFiltersText(
-                                        isAnalyticsSavedFilters,
-                                        INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT
-                                    )}
+                                    confirmationContent={
+                                        INTEGRATION_REMOVAL_CONFIGURATION_TEXT
+                                    }
                                     onConfirm={() =>
                                         deleteIntegration(fromJS(integration))
                                     }
@@ -603,4 +595,4 @@ const connector = connect(
     }
 )
 
-export default connector(withLDConsumer()(FacebookIntegrationDetail))
+export default connector(FacebookIntegrationDetail)

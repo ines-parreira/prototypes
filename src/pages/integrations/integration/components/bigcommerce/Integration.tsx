@@ -1,5 +1,6 @@
 import {Label} from '@gorgias/merchant-ui-kit'
 import {Map} from 'immutable'
+
 import React, {FormEvent, useCallback} from 'react'
 import {Col, Container, Row} from 'reactstrap'
 
@@ -11,8 +12,8 @@ import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {getConnectUrl} from 'pages/integrations/integration/components/bigcommerce/Utils'
 import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
+import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
 import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
-import {useNotificationTextForRemovalMessage} from 'pages/integrations/integration/hooks/useNotificationTextForRemovalMessage'
 import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 import settingsCss from 'pages/settings/settings.less'
 import {
@@ -28,7 +29,6 @@ type Props = {
 
 const Integration = ({integration, loading}: Props) => {
     const dispatch = useAppDispatch()
-    const confirmationContent = useNotificationTextForRemovalMessage()
     useQueryNotify()
     const isAuthenticationPending = useAuthenticationPolling(integration)
 
@@ -133,7 +133,9 @@ const Integration = ({integration, loading}: Props) => {
                                 onConfirm={() =>
                                     dispatch(deleteIntegration(integration))
                                 }
-                                confirmationContent={confirmationContent}
+                                confirmationContent={
+                                    INTEGRATION_REMOVAL_CONFIGURATION_TEXT
+                                }
                                 intent="destructive"
                                 leadingIcon="delete"
                             >

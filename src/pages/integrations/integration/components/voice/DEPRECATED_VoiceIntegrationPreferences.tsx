@@ -5,6 +5,7 @@ import {
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import {isEmpty, isEqual} from 'lodash'
+
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Form, Label} from 'reactstrap'
@@ -41,7 +42,7 @@ import {
     isValueInRange,
 } from 'pages/integrations/integration/components/voice/utils'
 import css from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences.less'
-import {useNotificationTextForRemovalMessage} from 'pages/integrations/integration/hooks/useNotificationTextForRemovalMessage'
+import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
 import settingsCss from 'pages/settings/settings.less'
 import SettingsContent from 'pages/settings/SettingsContent'
@@ -86,8 +87,6 @@ export default function DEPRECATED_VoiceIntegrationPreferences({
     const phoneNumberId = integration.meta.phone_number_id
     const phoneNumber = useAppSelector(getNewPhoneNumber(phoneNumberId))
     const dispatch = useAppDispatch()
-
-    const confirmationContent = useNotificationTextForRemovalMessage()
 
     const {mutate: updatePhoneSettings, isLoading} = useUpdatePhoneSettings({
         mutation: {
@@ -389,7 +388,9 @@ export default function DEPRECATED_VoiceIntegrationPreferences({
                             fillStyle="ghost"
                             isLoading={isDeleting}
                             onConfirm={handleDelete}
-                            confirmationContent={confirmationContent}
+                            confirmationContent={
+                                INTEGRATION_REMOVAL_CONFIGURATION_TEXT
+                            }
                             leadingIcon="delete"
                         >
                             Delete integration

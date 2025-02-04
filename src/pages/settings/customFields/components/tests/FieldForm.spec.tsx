@@ -62,7 +62,6 @@ describe('<FieldForm/>', () => {
             } as unknown as ReturnType<typeof useUpdateCustomFieldArchiveStatus>
         })
         mockFlags({
-            [FeatureFlagKey.AnalyticsSavedFilters]: false,
             [FeatureFlagKey.TicketConditionalFields]: false,
         })
     })
@@ -80,7 +79,6 @@ describe('<FieldForm/>', () => {
         userEvent.hover(screen.getByText(/Save changes/))
         await waitFor(() => {
             expect(screen.getByText(/The values you have changed/))
-            expect(screen.queryByText(/Saved Filters/i)).not.toBeInTheDocument()
         })
     })
 
@@ -95,9 +93,6 @@ describe('<FieldForm/>', () => {
     })
 
     it('should show a tooltip on hover save after doing a change on placeholder with saved filters text added', async () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsSavedFilters]: true,
-        })
         render(<FieldForm {...defaultProps} />)
 
         await userEvent.type(screen.getByLabelText(/Placeholder/), 'a')
@@ -201,7 +196,6 @@ describe('<FieldForm/>', () => {
 
     it('should show three options instead of a checkbox when conditional fields are enabled', () => {
         mockFlags({
-            [FeatureFlagKey.AnalyticsSavedFilters]: false,
             [FeatureFlagKey.TicketConditionalFields]: true,
         })
 

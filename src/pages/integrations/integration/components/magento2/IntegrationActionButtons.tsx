@@ -1,10 +1,11 @@
 import {Map} from 'immutable'
+
 import React from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {useNotificationTextForRemovalMessage} from 'pages/integrations/integration/hooks/useNotificationTextForRemovalMessage'
+import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
 import {deleteIntegration} from 'state/integrations/actions'
 
 type Props = {
@@ -23,7 +24,6 @@ export const IntegrationActionButtons = ({
     redirectUri,
 }: Props) => {
     const dispatch = useAppDispatch()
-    const confirmationOfRemovalContent = useNotificationTextForRemovalMessage()
     const isDeactivated = integration.get('deactivated_datetime')
     const isManual = integration.getIn(['meta', 'is_manual']) as boolean
 
@@ -75,7 +75,7 @@ export const IntegrationActionButtons = ({
                     id="delete-integration"
                     className="float-right"
                     onConfirm={() => dispatch(deleteIntegration(integration))}
-                    confirmationContent={confirmationOfRemovalContent}
+                    confirmationContent={INTEGRATION_REMOVAL_CONFIGURATION_TEXT}
                     intent="destructive"
                     leadingIcon="delete"
                 >

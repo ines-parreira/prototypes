@@ -5,17 +5,13 @@ import {fromJS, Map} from 'immutable'
 import React, {ComponentProps} from 'react'
 import {match} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     PENDING_AUTHENTICATION_STATUS,
     SUCCESS_AUTHENTICATION_STATUS,
     YOTPO_INTEGRATION_TYPE,
 } from 'constants/integration'
 import {YotpoIntegrationDetailComponent} from 'pages/integrations/integration/components/yotpo/YotpoIntegrationDetail'
-import {
-    INTEGRATION_REMOVAL_CONFIGURATION_TEXT,
-    INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT,
-} from 'pages/integrations/integration/constants'
+import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
 
 type Integration = ComponentProps<
     typeof YotpoIntegrationDetailComponent
@@ -413,37 +409,11 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
             }
         )
 
-        it('should check the warning message of removing the integration, it should not contain the text related to saved filters', () => {
-            const {getByRole, getByText, queryByText} = render(
-                <YotpoIntegrationDetailComponent
-                    {...minProps}
-                    integration={fromJS({
-                        id: 1,
-                        meta: {
-                            oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
-                            sync_state: {is_initialized: false},
-                            enable_yotpo_tickets: true,
-                        },
-                    })}
-                />
-            )
-
-            fireEvent.click(getByRole('button', {name: /Delete app/i}))
-
-            expect(
-                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
-            ).toBeInTheDocument()
-            expect(
-                queryByText(INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT)
-            ).not.toBeInTheDocument()
-        })
-
         it('should check the warning message of removing the integration, it should contain the text related to saved filters', () => {
             const {getByRole, getByText} = render(
                 <YotpoIntegrationDetailComponent
                     {...{
                         ...minProps,
-                        flags: {[FeatureFlagKey.AnalyticsSavedFilters]: true},
                     }}
                     integration={fromJS({
                         id: 1,
@@ -459,9 +429,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
             fireEvent.click(getByRole('button', {name: /Delete app/i}))
 
             expect(
-                getByText(
-                    `${INTEGRATION_REMOVAL_CONFIGURATION_TEXT} ${INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT}`
-                )
+                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
             ).toBeInTheDocument()
         })
     })

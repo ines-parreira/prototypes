@@ -6,21 +6,16 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {Provider} from 'react-redux'
 import {BrowserRouter} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {integrationsState} from 'fixtures/integrations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {IntegrationType} from 'models/integration/constants'
 import {isValueInRange} from 'pages/integrations/integration/components/voice/utils'
 import VoiceIntegrationPreferences from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences'
-import {
-    INTEGRATION_REMOVAL_CONFIGURATION_TEXT,
-    INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT,
-} from 'pages/integrations/integration/constants'
+import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
 import * as actions from 'state/integrations/actions'
 import {UPDATE_INTEGRATION_ERROR} from 'state/integrations/constants'
 import {notify} from 'state/notifications/actions'
@@ -125,9 +120,6 @@ describe('<DEPRECATED_VoiceIntegrationPreferences />', () => {
     })
 
     beforeEach(() => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsSavedFilters]: false,
-        })
         dispatchMock.mockReset()
     })
 
@@ -210,27 +202,7 @@ describe('<DEPRECATED_VoiceIntegrationPreferences />', () => {
             })
         })
 
-        it('should display delete warning message and it should not contain text about "saved filters"', () => {
-            const {getByText, queryByText, getByRole} = renderComponent(props)
-
-            const titleInput = screen.getByLabelText('App title')
-            fireEvent.change(titleInput, {target: {value: 'New title'}})
-
-            fireEvent.click(getByRole('button', {name: /Delete integration/i}))
-
-            expect(
-                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
-            ).toBeInTheDocument()
-            expect(
-                queryByText(INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT)
-            ).not.toBeInTheDocument()
-        })
-
         it('should display delete warning message and it should contain text about "saved filters"', () => {
-            mockFlags({
-                [FeatureFlagKey.AnalyticsSavedFilters]: true,
-            })
-
             const {getByText, getByRole} = renderComponent(props)
 
             const titleInput = screen.getByLabelText('App title')
@@ -239,9 +211,7 @@ describe('<DEPRECATED_VoiceIntegrationPreferences />', () => {
             fireEvent.click(getByRole('button', {name: /Delete integration/i}))
 
             expect(
-                getByText(
-                    `${INTEGRATION_REMOVAL_CONFIGURATION_TEXT} ${INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT}`
-                )
+                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
             ).toBeInTheDocument()
         })
     })

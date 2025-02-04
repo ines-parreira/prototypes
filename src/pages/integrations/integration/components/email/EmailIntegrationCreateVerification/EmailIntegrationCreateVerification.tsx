@@ -1,6 +1,5 @@
 import classNames from 'classnames'
 import {Map} from 'immutable'
-import {LDFlagSet, withLDConsumer} from 'launchdarkly-react-client-sdk'
 import React, {Component, FormEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
@@ -12,7 +11,6 @@ import {
     Button as ReactstrapButton,
 } from 'reactstrap'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -23,8 +21,7 @@ import {
     isBaseEmailAddress,
     isSendgridEmailIntegration,
 } from 'pages/integrations/integration/components/email/helpers'
-import {INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT} from 'pages/integrations/integration/constants'
-import {getRemovalConfirmationMessageWithSavedFiltersText} from 'pages/integrations/integration/utils'
+import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
 import socketManager from 'services/socketManager/socketManager'
 import {JoinEventType} from 'services/socketManager/types'
@@ -43,7 +40,6 @@ import {RootState} from 'state/types'
 
 type OwnProps = {
     integration: Map<any, any>
-    flags?: LDFlagSet
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
@@ -130,7 +126,6 @@ export class EmailIntegrationCreateVerification extends Component<
             deleteIntegration,
             forwardingEmailAddress,
             emailForwardingActivated,
-            flags = {},
         } = this.props
         const isLoading = this.state.loading
         const isShowingManualEmailVerificationForm =
@@ -139,8 +134,6 @@ export class EmailIntegrationCreateVerification extends Component<
                 ['meta', 'email_forwarding_activated'],
                 false
             )
-        const isAnalyticsSavedFilters =
-            !!flags[FeatureFlagKey.AnalyticsSavedFilters]
 
         return (
             <div>
@@ -215,10 +208,7 @@ export class EmailIntegrationCreateVerification extends Component<
                 </Button>
                 <ConfirmButton
                     onConfirm={() => deleteIntegration(integration)}
-                    confirmationContent={getRemovalConfirmationMessageWithSavedFiltersText(
-                        isAnalyticsSavedFilters,
-                        INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT
-                    )}
+                    confirmationContent={INTEGRATION_REMOVAL_CONFIGURATION_TEXT}
                     isDisabled={this.state.isDisabled}
                     intent="destructive"
                     className="float-right"
@@ -311,4 +301,4 @@ const connector = connect(
     }
 )
 
-export default connector(withLDConsumer()(EmailIntegrationCreateVerification))
+export default connector(EmailIntegrationCreateVerification)

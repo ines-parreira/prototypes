@@ -49,7 +49,7 @@ describe('<TableActions />', () => {
         expect(
             screen.getByText(/You are about to delete 2 tags/).textContent
         ).toBe(
-            'You are about to delete 2 tags: refund and billing.They will be removed from all tickets.Historical Statistics for these tags will be lost.It will not be possible to add the tags back on the tickets they were on.'
+            'You are about to delete 2 tags: refund and billing.They will be removed from all tickets.Historical Statistics for these tags will be lost.It will not be possible to add the tags back on the tickets they were on.The tags will have to be removed from Saved Filters manually.'
         )
     })
 })

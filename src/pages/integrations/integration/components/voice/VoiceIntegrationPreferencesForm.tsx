@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+
 import React from 'react'
 import {useFormContext} from 'react-hook-form'
 import {Link} from 'react-router-dom'
@@ -15,7 +16,7 @@ import css from 'pages/integrations/integration/components/voice/VoiceIntegratio
 import VoiceIntegrationPreferencesCallRecordings from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferencesCallRecordings'
 import VoiceIntegrationPreferencesInboundCalls from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferencesInboundCalls'
 import VoiceIntegrationPreferencesTranscription from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferencesTranscription'
-import {useNotificationTextForRemovalMessage} from 'pages/integrations/integration/hooks/useNotificationTextForRemovalMessage'
+import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
 import settingsCss from 'pages/settings/settings.less'
 import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
@@ -48,8 +49,6 @@ export default function VoiceIntegrationPreferencesForm({
     const emoji = watch('meta.emoji')
     const phoneNumberId = integration.meta.phone_number_id
     const phoneNumber = useAppSelector(getNewPhoneNumber(phoneNumberId))
-
-    const confirmationContent = useNotificationTextForRemovalMessage()
 
     const isIvr = integration?.meta?.function === PhoneFunction.Ivr
 
@@ -121,7 +120,7 @@ export default function VoiceIntegrationPreferencesForm({
                     fillStyle="ghost"
                     isLoading={isDeleting}
                     onConfirm={handleDelete}
-                    confirmationContent={confirmationContent}
+                    confirmationContent={INTEGRATION_REMOVAL_CONFIGURATION_TEXT}
                     leadingIcon="delete"
                 >
                     Delete integration

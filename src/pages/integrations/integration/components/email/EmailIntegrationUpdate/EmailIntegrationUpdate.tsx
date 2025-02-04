@@ -25,7 +25,6 @@ import {
     GMAIL_IMPORTED_EMAILS_FOR_YEARS,
     OUTLOOK_IMPORTED_EMAILS_FOR_YEARS,
 } from 'config'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from 'constants/integration'
 import {EmailIntegrationDefaultProviderSetting} from 'models/integration/constants'
 import {IntegrationType} from 'models/integration/types'
@@ -44,8 +43,7 @@ import {
     getOutboundEmailProviderSettingKey,
     isBaseEmailAddress,
 } from 'pages/integrations/integration/components/email/helpers'
-import {INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT} from 'pages/integrations/integration/constants'
-import {getRemovalConfirmationMessageWithSavedFiltersText} from 'pages/integrations/integration/utils'
+import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
 import settingsCss from 'pages/settings/settings.less'
 import {
     deleteIntegration,
@@ -474,7 +472,6 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
             loading,
             deleteIntegration,
             gmailRedirectUri,
-            flags = {},
         } = this.props
 
         const isSubmitting =
@@ -485,8 +482,6 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         const isOutlook = integration.get('type') === IntegrationType.Outlook
         const {errors, name, use_gmail_categories, enable_gmail_threading} =
             this.state
-        const isAnalyticsSavedFilters =
-            !!flags[FeatureFlagKey.AnalyticsSavedFilters]
 
         const hasErrors = Object.values(errors).some((val) => val != null)
 
@@ -650,10 +645,9 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                         <ConfirmButton
                             className="float-right"
                             onConfirm={() => deleteIntegration(integration)}
-                            confirmationContent={getRemovalConfirmationMessageWithSavedFiltersText(
-                                isAnalyticsSavedFilters,
-                                INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT
-                            )}
+                            confirmationContent={
+                                INTEGRATION_REMOVAL_CONFIGURATION_TEXT
+                            }
                             intent="destructive"
                             fillStyle="ghost"
                             leadingIcon="delete"

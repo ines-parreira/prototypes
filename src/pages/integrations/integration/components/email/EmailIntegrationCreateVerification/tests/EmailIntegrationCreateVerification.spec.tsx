@@ -2,13 +2,9 @@ import {fireEvent, render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {EmailIntegrationCreateVerification} from 'pages/integrations/integration/components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification'
 import * as helpers from 'pages/integrations/integration/components/email/helpers'
-import {
-    INTEGRATION_REMOVAL_CONFIGURATION_TEXT,
-    INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT,
-} from 'pages/integrations/integration/constants'
+import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
 
 const isBaseEmailAddressSpy = jest.spyOn(helpers, 'isBaseEmailAddress')
 
@@ -78,7 +74,7 @@ describe('<EmailIntegrationCreateVerification/>', () => {
         it('should check the delete email message, it should not contain the text about "saved filters"', () => {
             isBaseEmailAddressSpy.mockImplementation(() => false)
 
-            const {getByText, queryByText} = render(
+            const {getByText} = render(
                 <EmailIntegrationCreateVerification
                     {...commonProps}
                     emailForwardingActivated
@@ -90,9 +86,6 @@ describe('<EmailIntegrationCreateVerification/>', () => {
             expect(
                 getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
             ).toBeInTheDocument()
-            expect(
-                queryByText(INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT)
-            ).not.toBeInTheDocument()
         })
 
         it('should check the delete email message, it should contain the text about "saved filters" when feature flag is enabled', () => {
@@ -102,7 +95,6 @@ describe('<EmailIntegrationCreateVerification/>', () => {
                 <EmailIntegrationCreateVerification
                     {...{
                         ...commonProps,
-                        flags: {[FeatureFlagKey.AnalyticsSavedFilters]: true},
                     }}
                     emailForwardingActivated
                 />
@@ -113,9 +105,7 @@ describe('<EmailIntegrationCreateVerification/>', () => {
             )
 
             expect(
-                getByText(
-                    `${INTEGRATION_REMOVAL_CONFIGURATION_TEXT} ${INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT}`
-                )
+                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
             ).toBeInTheDocument()
         })
     })
