@@ -5,6 +5,8 @@ import {AppNode} from 'appNode'
 
 import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import {NotificationsOverlay, NotificationsToasts} from 'common/notifications'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
 import {useApplyTheme} from 'core/theme'
 import useHasPhone from 'hooks/useHasPhone'
 import {AlertNotifications} from 'notifications'
@@ -34,6 +36,12 @@ type Props = {
 export default function App({children}: Props) {
     const hasGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const hasPhone = useHasPhone()
+    const bannerList: Record<string, boolean> = useFlag(
+        FeatureFlagKey.GlobalBannerRefactor,
+        {
+            scriptTagMigrationBanner: false,
+        }
+    )
 
     useApplyTheme()
     useAppShortcuts()
@@ -53,7 +61,9 @@ export default function App({children}: Props) {
                 <EmailMigrationBanner />
                 <EmailDisconnectedBanner />
                 <EmailDomainVerificationBanner />
-                <ScriptTagMigrationBanner />
+                {!bannerList?.scriptTagMigrationBanner && (
+                    <ScriptTagMigrationBanner />
+                )}
                 <ScriptTagMigrationModal />
                 <Spotlight />
                 <div className={css.content}>

@@ -90,6 +90,7 @@ export enum FeatureFlagKey {
     FlowsStepsShopperInput = 'flows-steps-shopper-input',
     FollowUpAiAgentPreviewMode = 'follow-up-ai-agent-preview-mode',
     GlobalNavigation = 'global-navigation',
+    GlobalBannerRefactor = 'global-banner-refactor',
     HelpCenterAnalytics = 'help-center-analytics',
     HelpCenterAutoEmbed = 'help-center-auto-embed',
     HelpCenterCreationWizard = 'help-center-creation-wizard',

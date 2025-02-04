@@ -2,6 +2,7 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import {useAccountNotVerifiedBanner} from '../useAccountNotVerifiedBanner'
 import {useImpersonatedBanner} from '../useImpersonatedBanner'
+import {useScriptTagMigrationBanner} from '../useScriptTagMigrationBanner'
 import {useSetBanners} from '../useSetBanners'
 import {useStatusPageManager} from '../useStatusPageManager'
 import {useUsageBanner} from '../useUsageBanner'
@@ -19,6 +20,10 @@ jest.mock('../useUsageBanner', () => ({
     useUsageBanner: jest.fn(),
 }))
 
+jest.mock('../useScriptTagMigrationBanner', () => ({
+    useScriptTagMigrationBanner: jest.fn(),
+}))
+
 describe('useSetBanners', () => {
     it('should call the correct underlying hooks', () => {
         renderHook(useSetBanners)
@@ -27,5 +32,6 @@ describe('useSetBanners', () => {
         expect(useImpersonatedBanner).toHaveBeenCalledTimes(1)
         expect(useStatusPageManager).toHaveBeenCalledTimes(1)
         expect(useUsageBanner).toHaveBeenCalledTimes(1)
+        expect(useScriptTagMigrationBanner).toHaveBeenCalledTimes(1)
     })
 })
