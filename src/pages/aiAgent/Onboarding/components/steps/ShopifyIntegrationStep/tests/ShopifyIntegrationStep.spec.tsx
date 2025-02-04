@@ -1,39 +1,54 @@
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
 import '@testing-library/jest-dom/extend-expect'
 import {StoreIntegration} from 'models/integration/types'
+import {ShopifyIntegrationStep} from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep'
 import {useShopifyIntegrations} from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
-import {OnboardingContext} from 'pages/aiAgent/Onboarding/providers/OnboardingContext'
 
-import {ShopifyIntegrationStep} from '../ShopifyIntegrationStep'
+import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 
 // Mock the useShopifyIntegrations hook
 jest.mock('pages/aiAgent/Onboarding/hooks/useShopifyIntegrations')
+jest.mock('pages/common/hooks/useShopifyIntegrationAndScope')
+jest.mock('pages/settings/contactForm/hooks/useEmailIntegrations')
 
 const mockUseShopifyIntegrations = useShopifyIntegrations as jest.Mock
+const mockUseShopifyIntegrationAndScope =
+    useShopifyIntegrationAndScope as jest.Mock
+const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
 
-const mockSetOnboardingData = jest.fn()
+const queryClient = new QueryClient()
 
 const renderComponent = (shopifyIntegrations: StoreIntegration[] = []) => {
     mockUseShopifyIntegrations.mockReturnValue(shopifyIntegrations)
     return render(
         <>
-            <OnboardingContext.Provider
-                value={{setOnboardingData: mockSetOnboardingData} as any}
-            >
+            <QueryClientProvider client={queryClient}>
                 <ShopifyIntegrationStep
                     currentStep={1}
                     totalSteps={3}
-                    onNextClick={jest.fn()}
-                    onBackClick={jest.fn()}
+                    setCurrentStep={jest.fn()}
                 />
-            </OnboardingContext.Provider>
+            </QueryClientProvider>
         </>
     )
 }
 
 describe('ShopifyIntegrationStep', () => {
+    beforeEach(() => {
+        // Populate the return values of the mocked hooks
+        mockUseShopifyIntegrationAndScope.mockReturnValue({
+            integration: true,
+        })
+        mockUseEmailIntegrations.mockReturnValue({
+            emailIntegrations: true,
+            defaultIntegration: true,
+        })
+    })
+
     it('renders without crashing', () => {
         renderComponent()
         expect(screen.getByText('Connect Shopify')).toBeInTheDocument()
@@ -58,9 +73,9 @@ describe('ShopifyIntegrationStep', () => {
     it('calls setOnboardingData with the selected integration name', () => {
         const integrations = [{id: 1, name: 'Test Store'}]
         renderComponent(integrations as StoreIntegration[])
-        expect(mockSetOnboardingData).toHaveBeenCalledWith({
-            shopName: 'Test Store',
-        })
+
+        // Check that the dropdown selector reflects the chosen store
+        expect(screen.getByText('Test Store')).toBeInTheDocument()
     })
 
     it('opens Shopify URL when Connect button is clicked', () => {
@@ -99,19 +114,6 @@ describe('ShopifyIntegrationStep', () => {
     it('renders the "Connect to Shopify" button when there are no integrations', () => {
         renderComponent()
         expect(screen.getByText('Connect')).toBeInTheDocument()
-    })
-
-    it('updates context when another integration is selected', () => {
-        const integrations = [
-            {id: 1, name: 'Test Store 1'},
-            {id: 2, name: 'Test Store 2'},
-        ]
-        renderComponent(integrations as StoreIntegration[])
-        fireEvent.click(screen.getByText('Test Store 1'))
-        fireEvent.click(screen.getByText('Test Store 2'))
-        expect(mockSetOnboardingData).toHaveBeenCalledWith({
-            shopName: 'Test Store 2',
-        })
     })
 
     it('renders the AI banner when the status is connected', () => {

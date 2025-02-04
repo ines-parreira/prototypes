@@ -1,12 +1,18 @@
-import {render, screen, fireEvent, act} from '@testing-library/react'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import {screen, fireEvent, act, waitFor} from '@testing-library/react'
 
 import React from 'react'
 
-import {OnboardingContext} from 'pages/aiAgent/Onboarding/providers/OnboardingContext'
+import SkillsetStep from 'pages/aiAgent/Onboarding/components/steps/SkillsetStep/SkillsetStep'
+import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
+import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 
-import SkillsetStep from '../SkillsetStep'
+import {renderWithRouter} from 'utils/testing'
 
-const mockSetOnboardingData = jest.fn()
+// Mock the hooks
+jest.mock('pages/common/hooks/useShopifyIntegrationAndScope')
+jest.mock('pages/settings/contactForm/hooks/useEmailIntegrations')
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview',
@@ -26,24 +32,38 @@ jest.mock(
     })
 )
 
+const mockUseShopifyIntegrationAndScope =
+    useShopifyIntegrationAndScope as jest.Mock
+const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
+
+const queryClient = new QueryClient()
+
+const setCurrentStep = jest.fn()
+
 const renderComponent = () => {
-    return render(
-        <>
-            <OnboardingContext.Provider
-                value={{setOnboardingData: mockSetOnboardingData} as any}
-            >
-                <SkillsetStep
-                    currentStep={1}
-                    totalSteps={3}
-                    onNextClick={jest.fn()}
-                    onBackClick={jest.fn()}
-                />
-            </OnboardingContext.Provider>
-        </>
+    return renderWithRouter(
+        <QueryClientProvider client={queryClient}>
+            <SkillsetStep
+                currentStep={1}
+                totalSteps={3}
+                setCurrentStep={setCurrentStep}
+            />
+        </QueryClientProvider>
     )
 }
 
 describe('<SkillsetStep />', () => {
+    beforeEach(() => {
+        // Populate the return values of the mocked hooks
+        mockUseShopifyIntegrationAndScope.mockReturnValue({
+            integration: true,
+        })
+        mockUseEmailIntegrations.mockReturnValue({
+            emailIntegrations: true,
+            defaultIntegration: true,
+        })
+    })
+
     it('renders', () => {
         renderComponent()
         expect(
@@ -51,14 +71,76 @@ describe('<SkillsetStep />', () => {
         ).toBeInTheDocument()
     })
 
-    it('user can select a goal', () => {
+    it('user can select a goal and click next when there is an integration', async () => {
         renderComponent()
+
+        await waitFor(
+            () => {
+                expect(
+                    screen.getByText('Automate support with AI')
+                ).toBeInTheDocument()
+            },
+            {timeout: 5000}
+        )
 
         act(() => {
             fireEvent.click(screen.getByText('Automate support with AI'))
         })
 
-        // click next
-        expect(mockSetOnboardingData).toHaveBeenCalledTimes(1)
+        fireEvent.click(screen.getByText(/Next/i))
+        expect(setCurrentStep).toHaveBeenCalledWith(WizardStepEnum.CHANNELS)
+    })
+
+    it('user can select a goal and click next when there is not an integration', async () => {
+        mockUseShopifyIntegrationAndScope.mockReturnValue({
+            integration: false,
+        })
+
+        renderComponent()
+
+        await waitFor(
+            () => {
+                expect(
+                    screen.getByText('Automate support with AI')
+                ).toBeInTheDocument()
+            },
+            {timeout: 5000}
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Automate support with AI'))
+        })
+
+        fireEvent.click(screen.getByText(/Next/i))
+        expect(setCurrentStep).toHaveBeenCalledWith(
+            WizardStepEnum.SHOPIFY_INTEGRATION
+        )
+    })
+
+    it('user can select a goal and click next when there is no email integration', async () => {
+        mockUseEmailIntegrations.mockReturnValue({
+            emailIntegrations: false,
+            defaultIntegration: false,
+        })
+
+        renderComponent()
+
+        await waitFor(
+            () => {
+                expect(
+                    screen.getByText('Automate support with AI')
+                ).toBeInTheDocument()
+            },
+            {timeout: 5000}
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Automate support with AI'))
+        })
+
+        fireEvent.click(screen.getByText(/Next/i))
+        expect(setCurrentStep).toHaveBeenCalledWith(
+            WizardStepEnum.EMAIL_INTEGRATION
+        )
     })
 })

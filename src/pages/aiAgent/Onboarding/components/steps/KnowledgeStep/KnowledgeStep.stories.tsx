@@ -8,8 +8,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {appQueryClient} from 'api/queryClient'
-
-import {KnowledgeStep} from './KnowledgeStep'
+import {KnowledgeStep} from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeStep'
 
 const storyConfig: Meta<typeof KnowledgeStep> = {
     title: 'AI Agent/Onboarding/Steps/KnowledgeStep',
@@ -19,8 +18,7 @@ const storyConfig: Meta<typeof KnowledgeStep> = {
 const defaultProps: ComponentProps<typeof KnowledgeStep> = {
     currentStep: 4,
     totalSteps: 8,
-    onBackClick: action('onBackClick'),
-    onNextClick: action('onNextClick'),
+    setCurrentStep: action('setCurrentStep'),
 }
 
 const Template: StoryFn<ComponentProps<typeof KnowledgeStep>> = (props) => (

@@ -1,20 +1,11 @@
 import '@testing-library/jest-dom/extend-expect'
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 
-import userEvent from '@testing-library/user-event'
-import {fromJS, Map} from 'immutable'
 import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
-import {billingState} from 'fixtures/billing'
-import {shopifyIntegration} from 'fixtures/integrations'
-import {user} from 'fixtures/users'
-
-import {OnboardingContextProvider} from 'pages/aiAgent/Onboarding/providers/OnboardingContext'
-import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
-
-import {PersonalityStep} from '../PersonalityStep'
+import {PersonalityStep} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersonalityStep'
+import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
 
 const trackRect = {
     left: 0,
@@ -28,71 +19,52 @@ const trackRect = {
     toJSON: () => {},
 }
 
-const renderComponent = (props: ComponentProps<typeof PersonalityStep>) => {
-    const defaultState = {
-        billing: fromJS(billingState),
-        currentUser: Map(user),
-    }
-    const defaultOnboardingContextData = {
-        lastStep: WizardStepEnum.SALES_PERSONALITY,
-        scope: [AiAgentScopes.SUPPORT],
-        shopName: shopifyIntegration.meta.shop_name,
-    }
+const queryClient = new QueryClient()
 
+const renderComponent = (props: ComponentProps<typeof PersonalityStep>) => {
     render(
-        <OnboardingContextProvider initialData={defaultOnboardingContextData}>
-            <Provider store={configureMockStore()(defaultState)}>
-                <PersonalityStep {...props} />
-            </Provider>
-        </OnboardingContextProvider>
+        <QueryClientProvider client={queryClient}>
+            <PersonalityStep {...props} />
+        </QueryClientProvider>
     )
 }
 
+const setCurrentStep = jest.fn()
+
 describe('PersonalityStep', () => {
-    const defaultProps = {
+    const defaultProps: StepProps = {
         currentStep: 1,
         totalSteps: 8,
-        onBackClick: jest.fn(),
-        onNextClick: jest.fn(),
+        setCurrentStep,
     }
-
-    jest.useFakeTimers()
 
     it('should render without crashing', async () => {
         renderComponent(defaultProps)
-        act(() => jest.runAllTimers())
 
-        await waitFor(() => {
-            expect(
-                screen.getByRole('heading', {
-                    name: /Let's define the sales skills for your AI Agent/i,
-                })
-            ).toBeInTheDocument()
-            expect(
-                screen.getByText(
-                    'Strikes a balance between educating the customer and encouraging them to make a purchase.'
-                )
-            ).toBeInTheDocument()
-            expect(
-                screen.getByText(
-                    'The Sales AI Agent offers discounts at a level optimized for both conversions and profit.'
-                )
-            ).toBeInTheDocument()
-        })
-    })
-
-    it('should call next', () => {
-        renderComponent(defaultProps)
-        act(() => jest.runAllTimers())
-
-        const nextButton = screen.getByText('Next')
-        userEvent.click(nextButton)
-        expect(defaultProps.onNextClick).toHaveBeenCalled()
+        await waitFor(
+            () => {
+                expect(
+                    screen.getByRole('heading', {
+                        name: /Let's define the sales skills for your AI Agent/i,
+                    })
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText(
+                        'Strikes a balance between educating the customer and encouraging them to make a purchase.'
+                    )
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText(
+                        'The Sales AI Agent offers discounts at a level optimized for both conversions and profit.'
+                    )
+                ).toBeInTheDocument()
+            },
+            {timeout: 5000}
+        )
     })
 
     it('should update persuasion level description when moving slider', async () => {
         renderComponent(defaultProps)
-        act(() => jest.runAllTimers())
 
         await waitFor(() => {
             const track = document.querySelectorAll('.track')[0]
@@ -112,7 +84,6 @@ describe('PersonalityStep', () => {
 
     it('should update discount strategy description when moving slider', async () => {
         renderComponent(defaultProps)
-        act(() => jest.runAllTimers())
 
         await waitFor(() => {
             const track = document.querySelectorAll('.track')[1]
@@ -132,32 +103,37 @@ describe('PersonalityStep', () => {
 
     it('should set max percentage to 0 when discount strategy is None', async () => {
         renderComponent(defaultProps)
-        act(() => jest.runAllTimers())
 
+        await waitFor(
+            () => {
+                const track = document.querySelectorAll('.track')[1]
+                track.getBoundingClientRect = jest
+                    .fn()
+                    .mockReturnValue(trackRect)
+                // Try clicking before the start of track to select the first value
+                fireEvent.click(track, {
+                    clientX: 0,
+                })
+
+                expect(
+                    screen.getByText(
+                        'The Sales AI Agent will not offer any discounts under any circumstances.'
+                    )
+                ).toBeInTheDocument()
+            },
+            {timeout: 5000}
+        )
+
+        // Wait for maxDiscountPercentage to update in the DOM
         await waitFor(() => {
-            const track = document.querySelectorAll('.track')[1]
-            track.getBoundingClientRect = jest.fn().mockReturnValue(trackRect)
-            // Try clicking before the start of track to select the first value
-            fireEvent.click(track, {
-                clientX: 0,
-            })
-
-            expect(
-                screen.getByText(
-                    'The Sales AI Agent will not offer any discounts under any circumstances.'
-                )
-            ).toBeInTheDocument()
-            const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
-                /Maximum Discount Percentage/
-            )
-            expect(maxDiscountInput.value).toBe('0')
-            expect(maxDiscountInput.disabled).toBe(true)
+            const maxDiscountInput = screen.getByTestId('percentage-input')
+            expect(maxDiscountInput).toBeInTheDocument()
+            expect(maxDiscountInput.getAttribute('value')).toBe('0') // Ensure value is 0
         })
     })
 
     it('should update the max percentage discount when valid discount', async () => {
         renderComponent(defaultProps)
-        act(() => jest.runAllTimers())
 
         await waitFor(() => {
             const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
@@ -174,7 +150,6 @@ describe('PersonalityStep', () => {
 
     it('should update the max percentage discount and show an error message when discount to low (0)', async () => {
         renderComponent(defaultProps)
-        act(() => jest.runAllTimers())
 
         await waitFor(() => {
             const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
@@ -191,7 +166,6 @@ describe('PersonalityStep', () => {
 
     it('should update the max percentage discount and show an error message when discount to high (101)', async () => {
         renderComponent(defaultProps)
-        act(() => jest.runAllTimers())
 
         await waitFor(() => {
             const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(

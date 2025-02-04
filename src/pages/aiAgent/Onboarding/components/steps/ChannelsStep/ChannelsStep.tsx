@@ -1,60 +1,52 @@
 import {Label} from '@gorgias/merchant-ui-kit'
+import {zodResolver} from '@hookform/resolvers/zod'
 import {fromJS} from 'immutable'
-import React, {useCallback, useMemo, useState} from 'react'
+import React, {useMemo, useState} from 'react'
 
-import {
-    GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
-    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
-    GORGIAS_CHAT_DEFAULT_COLOR,
-    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
-    GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT,
-    GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
-    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
-    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
-    GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-    GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT,
-    GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
-    GORGIAS_CHAT_WIDGET_TEXTS,
-} from 'config/integrations/gorgias_chat'
+import {FormProvider, useForm} from 'react-hook-form'
+
+import {GORGIAS_CHAT_DEFAULT_COLOR} from 'config/integrations/gorgias_chat'
 import {
     EMAIL_INTEGRATION_TYPES,
-    GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    GorgiasChatAvatarImageType,
-    GorgiasChatAvatarNameType,
-    GorgiasChatBackgroundColorStyle,
-    ShopifyIntegration,
-    StoreIntegration,
-} from 'models/integration/types'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import {ShopifyIntegration} from 'models/integration/types'
 import {ChatIntegrationListSelection} from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
 import {EmailIntegrationListSelection} from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import {Card, CardContent} from 'pages/aiAgent/Onboarding/components/Card'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
 import {Separator} from 'pages/aiAgent/Onboarding/components/Separator/Separator'
+import css from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep.less'
+import {
+    ChannelsFormValues,
+    useChannelsSchema,
+} from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useChannelsSchema'
+import {createChatConfiguration} from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/utils/createGorgiasConfiguration'
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
+import {
+    useGetOnboardingData,
+    useUpdateOnboardingCache,
+} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import {
     OnboardingBody,
     OnboardingContentContainer,
     OnboardingPreviewContainer,
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
-import {useOnboardingContext} from 'pages/aiAgent/Onboarding/providers/OnboardingContext'
 
 import {
     agentChatConversationSettings,
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding/settings'
 
-import {AiAgentScopes} from 'pages/aiAgent/Onboarding/types'
+import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import CheckBox from 'pages/common/forms/CheckBox'
 import ColorField from 'pages/common/forms/ColorField'
+import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import {createGorgiasChatIntegration} from 'state/integrations/actions'
 import {
@@ -65,71 +57,15 @@ import {
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
-import css from './ChannelsStep.less'
-
-const createChatConfiguration = (
-    storeIntegration: StoreIntegration,
-    color: string
-) => {
-    const language = GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
-    return {
-        type: GORGIAS_CHAT_INTEGRATION_TYPE,
-        name: storeIntegration.name,
-        decoration: {
-            conversation_color: color,
-            main_color: color,
-            introduction_text:
-                GORGIAS_CHAT_WIDGET_TEXTS[language].introductionText,
-            offline_introduction_text:
-                GORGIAS_CHAT_WIDGET_TEXTS[language].offlineIntroductionText,
-            avatar_type: GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
-            position: GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
-            avatar: {
-                image_type: GorgiasChatAvatarImageType.AGENT_PICTURE,
-                name_type: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
-            },
-            main_font_family: GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
-            background_color_style: GorgiasChatBackgroundColorStyle.Gradient,
-        },
-        meta: {
-            language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-            languages: GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT,
-            shop_name: getShopNameFromStoreIntegration(storeIntegration),
-            shop_type: storeIntegration.type,
-            shop_integration_id: storeIntegration.id,
-            preferences: {
-                email_capture_enabled:
-                    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
-                email_capture_enforcement:
-                    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
-                auto_responder: {
-                    enabled: GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
-                    reply: GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
-                },
-                offline_mode_enabled_datetime:
-                    GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT,
-            },
-        },
-    }
-}
-
 export const ChannelsStep: React.FC<StepProps> = ({
     currentStep,
     totalSteps,
-    onNextClick,
-    onBackClick,
+    setCurrentStep,
 }) => {
-    const {
-        setOnboardingData,
-        shopName,
-        scope,
-        emailChannelEnabled,
-        emailIntegrationIds,
-        chatChannelEnabled,
-        chatIntegrationIds,
-    } = useOnboardingContext()
+    const {data, isLoading} = useGetOnboardingData()
+    const updateOnboardingCache = useUpdateOnboardingCache()
 
-    const storeName = shopName || ''
+    const storeName = data?.shop || ''
     const storeIntegration: ShopifyIntegration = useAppSelector(
         getShopifyIntegrationByShopName(storeName)
     ).toJS()
@@ -141,7 +77,41 @@ export const ChannelsStep: React.FC<StepProps> = ({
         storeName
     )
 
+    const [newChatColor, setNewChatColor] = useState<string>(
+        GORGIAS_CHAT_DEFAULT_COLOR
+    )
+
+    const {integration} = useShopifyIntegrationAndScope(storeName)
+
     const createNewChat = chatChannels.length === 0
+
+    const schema = useChannelsSchema(createNewChat)
+
+    const methods = useForm<ChannelsFormValues>({
+        values: {
+            emailChannelEnabled: data?.emailChannelEnabled ?? false,
+            emailIntegrationIds: data?.emailIntegrationIds ?? [],
+            chatChannelEnabled: data?.chatChannelEnabled ?? false,
+            chatIntegrationIds: data?.chatIntegrationIds ?? [],
+        },
+        mode: 'onChange',
+        resolver: zodResolver(schema),
+    })
+
+    const {
+        watch,
+        setValue,
+        formState: {errors},
+        handleSubmit,
+    } = methods
+
+    // Watch form state values
+    const emailChannelEnabled = watch('emailChannelEnabled')
+    const emailIntegrationIds = watch('emailIntegrationIds')
+    const chatChannelEnabled = watch('chatChannelEnabled')
+    const chatIntegrationIds = watch('chatIntegrationIds')
+
+    const [isCreatingChat, setIsCreatingChat] = useState<boolean>(false)
 
     const emailIntegrations = useAppSelector(
         getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)
@@ -153,49 +123,21 @@ export const ChannelsStep: React.FC<StepProps> = ({
         }))
     }, [emailIntegrations])
 
-    const [isLoading, setIsLoading] = useState(false)
-    const [errorMessage, setErrorMessage] = useState<string>()
-    const [emailHasError, setEmailHasError] = useState(false)
-    const [chatHasError, setChatHasError] = useState(false)
-    const [newChatColor, setNewChatColor] = useState<string>(
-        GORGIAS_CHAT_DEFAULT_COLOR
-    )
+    // Handle selection change and update cache
+    const handleUpdate = (field: keyof ChannelsFormValues, value: any) => {
+        setValue(field, value, {shouldValidate: true})
+    }
 
-    const onNextClickWithValidation = useCallback(() => {
-        if (!emailChannelEnabled && !chatChannelEnabled) {
-            setErrorMessage('Please select at least one option to continue.')
-            return
-        }
-        setErrorMessage(undefined)
-
-        // no email integrations selected
-        if (!!emailChannelEnabled && !emailIntegrationIds) {
-            setEmailHasError(true)
-            return
-        }
-        setEmailHasError(false)
-
-        // no chat integrations selected
-        if (!!chatChannelEnabled && !createNewChat && !chatIntegrationIds) {
-            setChatHasError(true)
-            return
-        }
-        // no chat color selected
-        if (!!chatChannelEnabled && createNewChat && !newChatColor) {
-            setChatHasError(true)
-            return
-        }
-        setChatHasError(false)
-
-        if (!storeIntegration) {
-            return
-        }
-
+    // Handle form submission
+    const onNextClickWithValidation = () => {
         if (!!chatChannelEnabled && createNewChat) {
-            setIsLoading(true)
+            setIsCreatingChat(true)
+
             const form = createChatConfiguration(storeIntegration, newChatColor)
             dispatch(createGorgiasChatIntegration(fromJS(form), false))
-                .then(() => onNextClick())
+                .then(() => {
+                    onNextClick()
+                })
                 .catch(() =>
                     dispatch(
                         notify({
@@ -204,205 +146,221 @@ export const ChannelsStep: React.FC<StepProps> = ({
                         })
                     )
                 )
-                .finally(() => setIsLoading(false))
+                .finally(() => setIsCreatingChat(false))
         } else {
             onNextClick()
         }
-    }, [
-        chatChannelEnabled,
-        chatIntegrationIds,
-        createNewChat,
-        dispatch,
-        emailChannelEnabled,
-        emailIntegrationIds,
-        newChatColor,
-        onNextClick,
-        storeIntegration,
-    ])
+    }
+
+    const updateCacheData = () => {
+        updateOnboardingCache('emailChannelEnabled', emailChannelEnabled)
+        updateOnboardingCache('emailIntegrationIds', emailIntegrationIds)
+        updateOnboardingCache('chatChannelEnabled', chatChannelEnabled)
+        updateOnboardingCache('chatIntegrationIds', chatIntegrationIds)
+    }
+
+    const onNextClick = () => {
+        setCurrentStep?.(WizardStepEnum.PERSONALITY_PREVIEW)
+        updateCacheData()
+    }
+
+    const onBackClick = () => {
+        updateCacheData()
+        if (!emailIntegrations) {
+            setCurrentStep?.(WizardStepEnum.EMAIL_INTEGRATION)
+            return
+        }
+
+        if (!integration) {
+            setCurrentStep?.(WizardStepEnum.SHOPIFY_INTEGRATION)
+            return
+        }
+
+        setCurrentStep?.(WizardStepEnum.SKILLSET)
+    }
 
     return (
-        <OnboardingBody>
-            <OnboardingContentContainer
-                currentStep={currentStep}
-                totalSteps={totalSteps}
-                onNextClick={onNextClickWithValidation}
-                onBackClick={onBackClick}
-                isLoading={isLoading}
-            >
-                <MainTitle
-                    titleBlack="Choose which channels to use with "
-                    titleMagenta="AI Agent"
-                />
-                <Separator />
+        <FormProvider {...methods}>
+            <OnboardingBody>
+                <OnboardingContentContainer
+                    currentStep={currentStep}
+                    totalSteps={totalSteps}
+                    onNextClick={handleSubmit(onNextClickWithValidation)}
+                    onBackClick={onBackClick}
+                    isLoading={isLoading || isCreatingChat}
+                >
+                    <MainTitle
+                        titleBlack="Choose which channels to use with "
+                        titleMagenta="AI Agent"
+                    />
+                    <Separator />
 
-                {errorMessage && (
-                    <AIBanner
-                        hasError={true}
-                        fillStyle="fill"
-                        className={css.alert}
-                    >
-                        {errorMessage}
-                    </AIBanner>
-                )}
-
-                {scope.includes(AiAgentScopes.SUPPORT) && (
-                    <>
-                        <Card className={css.card}>
-                            <CardContent>
-                                <CheckBox
-                                    isChecked={emailChannelEnabled}
-                                    className={css.checkbox}
-                                    onChange={(nextValue) =>
-                                        setOnboardingData &&
-                                        setOnboardingData({
-                                            emailChannelEnabled: nextValue,
-                                        })
-                                    }
-                                >
-                                    Email
-                                </CheckBox>
-                                <p>
-                                    Enable your AI Agent to respond to customers
-                                    via email.
-                                </p>
-                                {emailChannelEnabled && (
-                                    <>
-                                        <Label
-                                            isRequired={true}
-                                            className={css.label}
-                                            id="monitored-email-channels"
-                                        >
-                                            AI agent will respond to the
-                                            following emails
-                                        </Label>
-                                        <EmailIntegrationListSelection
-                                            labelId="monitored-email-channels"
-                                            selectedIds={
-                                                emailIntegrationIds ?? []
-                                            }
-                                            onSelectionChange={(
-                                                nextSelectedIds
-                                            ) =>
-                                                setOnboardingData &&
-                                                setOnboardingData({
-                                                    emailIntegrationIds:
-                                                        nextSelectedIds,
-                                                })
-                                            }
-                                            emailItems={emailChannels}
-                                            hasError={emailHasError}
-                                            isDisabled={false}
-                                        />
-                                        <a className={css.link}>
-                                            Don’t see the email you want? Click
-                                            here
-                                        </a>
-                                    </>
-                                )}
-                            </CardContent>
-                        </Card>
-                        <Separator />
-                    </>
-                )}
-
-                <Card className={css.card}>
-                    <CardContent>
-                        <CheckBox
-                            isChecked={chatChannelEnabled}
-                            className={css.checkbox}
-                            onChange={(nextValue) =>
-                                setOnboardingData &&
-                                setOnboardingData({
-                                    chatChannelEnabled: nextValue,
-                                })
-                            }
+                    {(errors.emailChannelEnabled ||
+                        errors.chatChannelEnabled) && (
+                        <AIBanner
+                            hasError={true}
+                            fillStyle="fill"
+                            className={css.alert}
                         >
-                            Chat
-                        </CheckBox>
-                        <p>
-                            Enable your AI Agent to respond to customers via
-                            chat.
-                        </p>
-                        {chatChannelEnabled && (
-                            <>
-                                {createNewChat ? (
-                                    <>
-                                        <p>
-                                            Personalize your Chat widget to
-                                            match your brand’s style and start
-                                            connecting with a instantly. Once
-                                            the chat is created, you can
-                                            customize it further in your
-                                            settings.
-                                        </p>
-                                        <ColorField
-                                            value={newChatColor}
-                                            onChange={(nextValue) => {
-                                                if (
-                                                    /^#[0-9A-Fa-f]{0,6}$/.test(
-                                                        nextValue
-                                                    )
-                                                ) {
-                                                    setNewChatColor(nextValue)
+                            Please select at least one option to continue.
+                        </AIBanner>
+                    )}
+
+                    {data?.scope.includes(AiAgentScopes.SUPPORT) && (
+                        <>
+                            <Card className={css.card}>
+                                <CardContent>
+                                    <CheckBox
+                                        isChecked={emailChannelEnabled}
+                                        className={css.checkbox}
+                                        onChange={(nextValue) =>
+                                            handleUpdate(
+                                                'emailChannelEnabled',
+                                                nextValue
+                                            )
+                                        }
+                                    >
+                                        Email
+                                    </CheckBox>
+                                    <p>
+                                        Enable your AI Agent to respond to
+                                        customers via email.
+                                    </p>
+                                    {emailChannelEnabled && (
+                                        <>
+                                            <Label
+                                                isRequired={true}
+                                                className={css.label}
+                                                id="monitored-email-channels"
+                                            >
+                                                AI agent will respond to the
+                                                following emails
+                                            </Label>
+                                            <EmailIntegrationListSelection
+                                                labelId="monitored-email-channels"
+                                                selectedIds={
+                                                    emailIntegrationIds ?? []
                                                 }
-                                            }}
-                                            label="Pick you main colour"
-                                        />
-                                    </>
-                                ) : (
-                                    <>
-                                        <Label
-                                            isRequired={true}
-                                            className={css.label}
-                                            id="monitored-chat-channels"
-                                        >
-                                            AI Agent responds to tickets sent to
-                                            the following Chats
-                                        </Label>
-                                        <ChatIntegrationListSelection
-                                            labelId="monitored-chat-channels"
-                                            selectedIds={
-                                                chatIntegrationIds ?? []
-                                            }
-                                            onSelectionChange={(
-                                                nextSelectedIds
-                                            ) =>
-                                                setOnboardingData &&
-                                                setOnboardingData({
-                                                    chatIntegrationIds:
-                                                        nextSelectedIds,
-                                                })
-                                            }
-                                            chatItems={chatChannels}
-                                            hasError={chatHasError}
-                                            isDisabled={false}
-                                        />
-                                    </>
-                                )}
-                            </>
-                        )}
-                    </CardContent>
-                </Card>
-            </OnboardingContentContainer>
-            <OnboardingPreviewContainer isLoading={false} icon={''}>
-                <div className={css.previewContainer}>
-                    <div>
-                        <ChatIntegrationPreview
-                            {...{
-                                ...chatPreviewSettings,
-                                mainColor: newChatColor,
-                            }}
-                        >
-                            <AiAgentChatConversation
+                                                onSelectionChange={(
+                                                    nextSelectedIds
+                                                ) =>
+                                                    handleUpdate(
+                                                        'emailIntegrationIds',
+                                                        nextSelectedIds
+                                                    )
+                                                }
+                                                emailItems={emailChannels}
+                                                hasError={
+                                                    !!errors.emailIntegrationIds
+                                                }
+                                                isDisabled={false}
+                                            />
+                                            <a className={css.link}>
+                                                Don’t see the email you want?
+                                                Click here
+                                            </a>
+                                        </>
+                                    )}
+                                </CardContent>
+                            </Card>
+                            <Separator />
+                        </>
+                    )}
+
+                    <Card className={css.card}>
+                        <CardContent>
+                            <CheckBox
+                                isChecked={chatChannelEnabled}
+                                className={css.checkbox}
+                                onChange={(nextValue) =>
+                                    handleUpdate(
+                                        'chatChannelEnabled',
+                                        nextValue
+                                    )
+                                }
+                            >
+                                Chat
+                            </CheckBox>
+                            <p>
+                                Enable your AI Agent to respond to customers via
+                                chat.
+                            </p>
+                            {chatChannelEnabled && (
+                                <>
+                                    {createNewChat ? (
+                                        <>
+                                            <p>
+                                                Personalize your Chat widget to
+                                                match your brand’s style and
+                                                start connecting with a
+                                                instantly. Once the chat is
+                                                created, you can customize it
+                                                further in your settings.
+                                            </p>
+                                            <ColorField
+                                                value={newChatColor}
+                                                onChange={(nextValue) => {
+                                                    setNewChatColor(nextValue)
+                                                }}
+                                                label="Pick your main color"
+                                            />
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Label
+                                                isRequired={true}
+                                                className={css.label}
+                                                id="monitored-chat-channels"
+                                            >
+                                                AI Agent responds to tickets
+                                                sent to the following Chats
+                                            </Label>
+                                            <ChatIntegrationListSelection
+                                                labelId="monitored-chat-channels"
+                                                selectedIds={
+                                                    chatIntegrationIds ?? []
+                                                }
+                                                onSelectionChange={(
+                                                    nextSelectedIds
+                                                ) =>
+                                                    handleUpdate(
+                                                        'chatIntegrationIds',
+                                                        nextSelectedIds
+                                                    )
+                                                }
+                                                chatItems={chatChannels}
+                                                hasError={
+                                                    !!errors.chatIntegrationIds
+                                                }
+                                                isDisabled={false}
+                                            />
+                                        </>
+                                    )}
+                                </>
+                            )}
+                        </CardContent>
+                    </Card>
+                </OnboardingContentContainer>
+                <OnboardingPreviewContainer isLoading={false} icon={''}>
+                    <div className={css.previewContainer}>
+                        <div>
+                            <ChatIntegrationPreview
                                 {...{
-                                    ...agentChatConversationSettings,
-                                    conversationColor: newChatColor,
+                                    ...chatPreviewSettings,
+                                    mainColor: newChatColor,
                                 }}
-                            />
-                        </ChatIntegrationPreview>
+                            >
+                                <AiAgentChatConversation
+                                    {...{
+                                        ...agentChatConversationSettings,
+                                        conversationColor: newChatColor,
+                                    }}
+                                />
+                            </ChatIntegrationPreview>
+                        </div>
                     </div>
-                </div>
-            </OnboardingPreviewContainer>
-        </OnboardingBody>
+                </OnboardingPreviewContainer>
+            </OnboardingBody>
+        </FormProvider>
     )
 }

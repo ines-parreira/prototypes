@@ -7,8 +7,7 @@ import {
     KnowledgeStatus,
     TemporaryKnowledgeData,
 } from 'pages/aiAgent/Onboarding/components/steps/types'
-
-import {useGetKnowledgeStatusByShopName} from '../useGetKnowledgeStatusByShopName'
+import {useGetKnowledgeStatusByShopName} from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgeStatusByShopName'
 
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = useAppSelector as jest.Mock

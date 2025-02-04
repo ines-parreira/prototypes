@@ -40,7 +40,9 @@ export const OnboardingBody: React.FC = ({children}) => {
     return <div className={css.onboardingBody}>{children}</div>
 }
 
-const LoadingPulserIcon: React.FC<{icon: string | JSX.Element}> = ({icon}) => {
+export const LoadingPulserIcon: React.FC<{icon: string | JSX.Element}> = ({
+    icon,
+}) => {
     return (
         <div className={css.loadingPulserIcon}>
             <div>

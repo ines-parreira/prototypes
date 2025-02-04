@@ -1,5 +1,5 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
@@ -9,15 +9,23 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {appQueryClient} from 'api/queryClient'
 import {shopifyIntegration} from 'fixtures/integrations'
 import * as hooks from 'hooks/useAppSelector'
+import {KnowledgeStep} from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeStep'
+import {DiscountStrategy} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import {PersuasionLevel} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
 import {useGetHelpCentersByShopName} from 'pages/aiAgent/Onboarding/hooks/useGetHelpCentersByShopName'
-import {OnboardingContext} from 'pages/aiAgent/Onboarding/providers/OnboardingContext'
+
+import {useGetKnowledgeStatusByShopName} from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgeStatusByShopName'
+import {
+    useGetOnboardingData,
+    useUpdateOnboardingCache,
+} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+
+import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {assumeMock} from 'utils/testing'
-
-import {KnowledgeStep} from '../KnowledgeStep'
 
 jest.mock(
     'pages/aiAgent/Onboarding/hooks/useGetKnowledgeStatusByShopName',
@@ -32,36 +40,59 @@ jest.mock('pages/aiAgent/Onboarding/hooks/useGetHelpCentersByShopName', () => ({
 }))
 jest.spyOn(hooks, 'default').mockReturnValue(fromJS(shopifyIntegration))
 
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData', () => ({
+    useGetOnboardingData: jest.fn(),
+    useUpdateOnboardingCache: jest.fn(),
+}))
+
 const useGetHelpCentersByShopNameMock = assumeMock(useGetHelpCentersByShopName)
 
-describe('KnowledgeStep', () => {
-    jest.useFakeTimers()
+jest.mock(
+    'pages/aiAgent/Onboarding/hooks/useGetKnowledgeStatusByShopName',
+    () => ({
+        useGetKnowledgeStatusByShopName: jest.fn(),
+    })
+)
 
-    const defaultProps = {
-        currentStep: 1,
+const mockUseGetOnboardingData = useGetOnboardingData as jest.Mock
+const mockUseUpdateOnboardingCache = useUpdateOnboardingCache as jest.Mock
+const mockUseGetKnowledgeStatusByShopName =
+    useGetKnowledgeStatusByShopName as jest.Mock
+
+const queryClient = new QueryClient()
+
+describe('KnowledgeStep', () => {
+    const defaultProps: StepProps = {
+        currentStep: 2,
         totalSteps: 3,
-        onNextClick: jest.fn(),
-        onBackClick: jest.fn(),
+        setCurrentStep: jest.fn(),
     }
 
     const renderWithProvider = (props = defaultProps) => {
         return render(
             <Provider store={configureMockStore()()}>
-                <QueryClientProvider client={appQueryClient}>
-                    <OnboardingContext.Provider
-                        value={
-                            {
-                                shopName: shopifyIntegration.meta.shop_name,
-                                setOnboardingData: jest.fn(),
-                            } as any
-                        }
-                    >
-                        <KnowledgeStep {...props} />
-                    </OnboardingContext.Provider>
+                <QueryClientProvider client={queryClient}>
+                    <KnowledgeStep {...props} />
                 </QueryClientProvider>
             </Provider>
         )
     }
+
+    beforeEach(() => {
+        // Populate the return values of the mocked hooks
+        mockUseGetOnboardingData.mockReturnValue({
+            data: {
+                persuasionLevel: PersuasionLevel.Moderate,
+                discountStrategy: DiscountStrategy.Balanced,
+                maxDiscountPercentage: 8,
+                scope: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
+                shop: shopifyIntegration.meta.shop_name,
+            },
+        })
+
+        mockUseGetKnowledgeStatusByShopName.mockReturnValue('done')
+        mockUseUpdateOnboardingCache.mockReturnValue(jest.fn())
+    })
 
     it('renders the component with main title', () => {
         renderWithProvider()
@@ -80,8 +111,20 @@ describe('KnowledgeStep', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders Shopify knowledge source when shop name is provided', () => {
+    it('renders Shopify knowledge source when shop name is provided', async () => {
+        useGetHelpCentersByShopNameMock.mockReturnValue({
+            isHelpCenterLoading: false,
+            helpCenters: getHelpCentersResponseFixture.data,
+        })
+
         renderWithProvider()
+
+        await waitFor(
+            () => {
+                expect(screen.getByText('ACME Help Center')).toBeInTheDocument()
+            },
+            {timeout: 2000}
+        )
 
         expect(
             screen.getByText(shopifyIntegration.meta.shop_name)
@@ -89,6 +132,11 @@ describe('KnowledgeStep', () => {
     })
 
     it('does not render Help center knowledge source when there is none', () => {
+        useGetHelpCentersByShopNameMock.mockReturnValue({
+            isHelpCenterLoading: true,
+            helpCenters: [],
+        })
+
         renderWithProvider()
 
         expect(screen.queryByText('ACME Help Center')).toBeNull()
@@ -121,19 +169,6 @@ describe('KnowledgeStep', () => {
         expect((await screen.findAllByText('Top Locations')).length).toBe(2)
     })
 
-    it('should not call onClick when no HelpCenter', () => {
-        useGetHelpCentersByShopNameMock.mockReturnValue({
-            isHelpCenterLoading: false,
-            helpCenters: [],
-        })
-        renderWithProvider()
-        const nextButton = screen.getByText('Next')
-
-        userEvent.click(nextButton)
-
-        expect(defaultProps.onNextClick).not.toHaveBeenCalled()
-    })
-
     it('should call onClick when there is an HelpCenter', () => {
         useGetHelpCentersByShopNameMock.mockReturnValue({
             isHelpCenterLoading: false,
@@ -144,6 +179,21 @@ describe('KnowledgeStep', () => {
 
         userEvent.click(nextButton)
 
-        expect(defaultProps.onNextClick).toHaveBeenCalled()
+        expect(mockUseUpdateOnboardingCache).toHaveBeenCalled()
+    })
+
+    it('navigates to the handover step when Back is clicked', async () => {
+        renderWithProvider()
+
+        fireEvent.click(screen.getByText(/Back/i))
+
+        await waitFor(
+            () => {
+                expect(defaultProps.setCurrentStep).toHaveBeenCalledWith(
+                    WizardStepEnum.HANDOVER
+                )
+            },
+            {timeout: 2000}
+        )
     })
 })

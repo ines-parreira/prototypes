@@ -8,32 +8,33 @@ import {
 } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
 import {PersonalityPreviewGroup} from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/PersonalityPreviewGroup'
 import {Separator} from 'pages/aiAgent/Onboarding/components/Separator/Separator'
+import {useFetchPersonalityPreviewChatScenario} from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/mockedHooks'
+import css from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep.less'
+import {mapScopeToPreviewType} from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep.utils'
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
+import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import {
     OnboardingBody,
     OnboardingContentContainer,
     OnboardingPreviewContainer,
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
-import {useOnboardingContext} from 'pages/aiAgent/Onboarding/providers/OnboardingContext'
 import {
     agentChatConversationSettings,
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding/settings'
+import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-
-import {useFetchPersonalityPreviewChatScenario} from './mockedHooks'
-import css from './PersonalityPreviewStep.less'
-import {mapScopeToPreviewType} from './PersonalityPreviewStep.utils'
 
 export const PersonalityPreviewStep: React.FC<StepProps> = ({
     currentStep,
     totalSteps,
-    onNextClick,
-    onBackClick,
+    setCurrentStep,
 }) => {
-    const {scope} = useOnboardingContext()
-    const previewType = mapScopeToPreviewType(scope)
+    const {data} = useGetOnboardingData()
+
+    const previewType = mapScopeToPreviewType(data?.scope ?? [])
+
     const [selectedPreview, setSelectedPreview] = useState<{
         caption: string
         title: string
@@ -51,6 +52,18 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
 
     const {data: chatPreviewData, isLoading: isChatPreviewLoading} =
         useFetchPersonalityPreviewChatScenario(previewType, selectedPreview?.id)
+
+    const onNextClick = () => {
+        if (data?.scope.includes(AiAgentScopes.SALES)) {
+            setCurrentStep?.(WizardStepEnum.SALES_PERSONALITY)
+            return
+        }
+        setCurrentStep?.(WizardStepEnum.HANDOVER)
+    }
+
+    const onBackClick = () => {
+        setCurrentStep?.(WizardStepEnum.CHANNELS)
+    }
 
     return (
         <OnboardingBody>

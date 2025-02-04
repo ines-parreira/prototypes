@@ -1,8 +1,9 @@
+import {WizardStepEnum} from '../../types'
+
 export type StepProps = {
     totalSteps: number
     currentStep: number
-    onNextClick: () => void
-    onBackClick: () => void
+    setCurrentStep?: (step: WizardStepEnum) => void
 }
 
 export enum KnowledgeSourceType {

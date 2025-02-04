@@ -1,8 +1,9 @@
 import {render, screen} from '@testing-library/react'
+
 import React from 'react'
 
-import {KnowledgeSourceType} from '../../types'
-import {KnowledgeResourceLine} from '../KnowledgeResourceLine'
+import {KnowledgeResourceLine} from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeResourceLine'
+import {KnowledgeSourceType} from 'pages/aiAgent/Onboarding/components/steps/types'
 
 describe('KnowledgeResourceLine', () => {
     it('renders Shopify resource with ready status', () => {
