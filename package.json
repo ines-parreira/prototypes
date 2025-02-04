@@ -76,7 +76,7 @@
         "@gorgias/event-tracker-api": "1.0.6",
         "@gorgias/event-tracker-browser": "2.0.2",
         "@gorgias/merchant-ui-kit": "^0.6.1",
-        "@gorgias/realtime": "^0.4.6",
+        "@gorgias/realtime": "^0.4.13",
         "@knocklabs/react": "^0.2.23",
         "@reduxjs/toolkit": "^1.9.7",
         "@sentry/react": "7.119.1",

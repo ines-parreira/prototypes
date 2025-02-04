@@ -74,7 +74,6 @@ const Root = ({store}: Props) => {
                         <RealtimeProvider
                             publishKey={window.PUBNUB_PUBLISH_KEY}
                             subscribeKey={window.PUBNUB_SUBSCRIBE_KEY}
-                            presenceTimeout={20}
                         >
                             <Router history={history}>
                                 <CompatRouter>
