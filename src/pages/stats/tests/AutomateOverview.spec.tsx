@@ -404,7 +404,7 @@ describe('<AutomateOverview />', () => {
                 </Provider>
             )
 
-            expect(getByText(/^Top 10%/)).toBeInTheDocument()
+            expect(getByText(/^Top 5%/)).toBeInTheDocument()
         })
 
         it('should show tips and save the value to local storage on show tips button click', () => {
@@ -420,7 +420,7 @@ describe('<AutomateOverview />', () => {
 
             fireEvent.click(getByText(/Show tips/))
 
-            expect(getByText(/^Top 10%/)).toBeInTheDocument()
+            expect(getByText(/^Top 5%/)).toBeInTheDocument()
             expect(localStorage.getItem(AAO_TIPS_VISIBILITY_KEY)).toBe('true')
         })
 
@@ -437,7 +437,7 @@ describe('<AutomateOverview />', () => {
 
             fireEvent.click(getByText(/Hide tips/))
 
-            expect(queryAllByText(/^Top 10%/)).toHaveLength(0)
+            expect(queryAllByText(/^Top 5%/)).toHaveLength(0)
             expect(localStorage.getItem(AAO_TIPS_VISIBILITY_KEY)).toBe('false')
         })
 

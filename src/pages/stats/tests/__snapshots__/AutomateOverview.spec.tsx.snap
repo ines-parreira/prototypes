@@ -195,19 +195,19 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                         class="value"
                         id="tip-tooltip-success"
                       >
-                        12%
+                        14%
                       </span>
                     </div>
                     <div>
                       <span
                         class="label"
                       >
-                        Top 10%:
+                        Top 5%:
                       </span>
                       <span
                         class="value"
                       >
-                        31%
+                        48%
                       </span>
                     </div>
                   </div>
@@ -795,7 +795,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                     <div
                       class="wrapper heading-page-semibold"
                     >
-                      2%
+                      4%
                       <div>
                         TrendBadgeMock
                       </div>
@@ -819,19 +819,19 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                               class="value"
                               id="tip-tooltip-light-error"
                             >
-                              12%
+                              14%
                             </span>
                           </div>
                           <div>
                             <span
                               class="label"
                             >
-                              Top 10%:
+                              Top 5%:
                             </span>
                             <span
                               class="value"
                             >
-                              31%
+                              48%
                             </span>
                           </div>
                         </div>
@@ -1523,7 +1523,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   <div
                     class="wrapper heading-page-semibold"
                   >
-                    2%
+                    4%
                     <div>
                       TrendBadgeMock
                     </div>
@@ -1547,19 +1547,19 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                             class="value"
                             id="tip-tooltip-light-error"
                           >
-                            12%
+                            14%
                           </span>
                         </div>
                         <div>
                           <span
                             class="label"
                           >
-                            Top 10%:
+                            Top 5%:
                           </span>
                           <span
                             class="value"
                           >
-                            31%
+                            48%
                           </span>
                         </div>
                       </div>
@@ -2200,7 +2200,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                     <div
                       class="wrapper heading-page-semibold"
                     >
-                      21%
+                      38%
                       <div>
                         TrendBadgeMock
                       </div>
@@ -2224,19 +2224,19 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                               class="value"
                               id="tip-tooltip-light-success"
                             >
-                              12%
+                              14%
                             </span>
                           </div>
                           <div>
                             <span
                               class="label"
                             >
-                              Top 10%:
+                              Top 5%:
                             </span>
                             <span
                               class="value"
                             >
-                              31%
+                              48%
                             </span>
                           </div>
                         </div>
@@ -2928,7 +2928,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   <div
                     class="wrapper heading-page-semibold"
                   >
-                    21%
+                    38%
                     <div>
                       TrendBadgeMock
                     </div>
@@ -2952,19 +2952,19 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                             class="value"
                             id="tip-tooltip-light-success"
                           >
-                            12%
+                            14%
                           </span>
                         </div>
                         <div>
                           <span
                             class="label"
                           >
-                            Top 10%:
+                            Top 5%:
                           </span>
                           <span
                             class="value"
                           >
-                            31%
+                            48%
                           </span>
                         </div>
                       </div>
@@ -3605,7 +3605,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                     <div
                       class="wrapper heading-page-semibold"
                     >
-                      41%
+                      58%
                       <div>
                         TrendBadgeMock
                       </div>
@@ -3629,19 +3629,19 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                               class="value"
                               id="tip-tooltip-success"
                             >
-                              12%
+                              14%
                             </span>
                           </div>
                           <div>
                             <span
                               class="label"
                             >
-                              Top 10%:
+                              Top 5%:
                             </span>
                             <span
                               class="value"
                             >
-                              31%
+                              48%
                             </span>
                           </div>
                         </div>
@@ -4333,7 +4333,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   <div
                     class="wrapper heading-page-semibold"
                   >
-                    41%
+                    58%
                     <div>
                       TrendBadgeMock
                     </div>
@@ -4357,19 +4357,19 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                             class="value"
                             id="tip-tooltip-success"
                           >
-                            12%
+                            14%
                           </span>
                         </div>
                         <div>
                           <span
                             class="label"
                           >
-                            Top 10%:
+                            Top 5%:
                           </span>
                           <span
                             class="value"
                           >
-                            31%
+                            48%
                           </span>
                         </div>
                       </div>
@@ -5030,19 +5030,19 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                         class="value"
                         id="tip-tooltip-success"
                       >
-                        12%
+                        14%
                       </span>
                     </div>
                     <div>
                       <span
                         class="label"
                       >
-                        Top 10%:
+                        Top 5%:
                       </span>
                       <span
                         class="value"
                       >
-                        31%
+                        48%
                       </span>
                     </div>
                   </div>
@@ -5633,19 +5633,19 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                         class="value"
                         id="tip-tooltip-success"
                       >
-                        12%
+                        14%
                       </span>
                     </div>
                     <div>
                       <span
                         class="label"
                       >
-                        Top 10%:
+                        Top 5%:
                       </span>
                       <span
                         class="value"
                       >
-                        31%
+                        48%
                       </span>
                     </div>
                   </div>
@@ -6253,19 +6253,19 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                         class="value"
                         id="tip-tooltip-success"
                       >
-                        12%
+                        14%
                       </span>
                     </div>
                     <div>
                       <span
                         class="label"
                       >
-                        Top 10%:
+                        Top 5%:
                       </span>
                       <span
                         class="value"
                       >
-                        31%
+                        48%
                       </span>
                     </div>
                   </div>
@@ -6873,19 +6873,19 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                         class="value"
                         id="tip-tooltip-success"
                       >
-                        12%
+                        14%
                       </span>
                     </div>
                     <div>
                       <span
                         class="label"
                       >
-                        Top 10%:
+                        Top 5%:
                       </span>
                       <span
                         class="value"
                       >
-                        31%
+                        48%
                       </span>
                     </div>
                   </div>

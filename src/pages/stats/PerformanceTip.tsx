@@ -81,7 +81,7 @@ export default function PerformanceTip({
                             )}
                         </div>
                         <div>
-                            <span className={css.label}>Top 10%:</span>
+                            <span className={css.label}>Top 5%:</span>
                             <span className={css.value}>{topTen ?? '-'}</span>
                         </div>
                     </div>
