@@ -1,0 +1,80 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:root {
+    --accessory-magenta-25: #c34ced;
+    --accessory-magenta-25-h: 284;
+    --accessory-magenta-25-s: 82%;
+    --accessory-magenta-25-l: 61%;
+}
+
+:local {
+    @footerHeight: 30px;
+
+    .wrapperA {
+        text-decoration: inherit !important;
+        color: inherit !important;
+        height: 148px;
+        display: flex;
+
+        &:hover {
+            .card {
+                border-color: var(--main-primary-1);
+                background-color: var(--main-primary-0);
+            }
+
+            .pendingTaskType {
+                background-color: var(--accessory-blue-1);
+            }
+        }
+    }
+
+    .card {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+
+        // The style below overrides Card default style because we have divervence in the design
+        // we must sync to see if you need to align the styles or not
+        border-radius: 12px;
+        border: 1px solid var(--neutral-grey-3);
+        padding: 24px 16px @footerHeight 16px !important;
+        box-shadow: 0px 2px 4px 0px rgba(22, 22, 22, 0) !important;
+    }
+
+    .title {
+        .body-medium();
+    }
+
+    .caption {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        font-weight: 400;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .pendingTaskType {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: @footerHeight;
+        width: 100%;
+        font-size: 11px;
+
+        color: var(--neutral-grey-6);
+        background: var(--neutral-grey-1);
+
+        font-weight: 600;
+        text-align: center;
+        transition: ease-in-out 0.2s;
+    }
+}
