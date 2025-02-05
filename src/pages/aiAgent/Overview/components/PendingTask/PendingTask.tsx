@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import React from 'react'
 
 import {NavLink} from 'react-router-dom'
@@ -46,7 +47,7 @@ export const PendingTask: React.FC<Props> = ({
     return (
         <NavLink
             to={ctaUrl ?? ''}
-            className={css.wrapperA}
+            className={classNames(css.wrapperA, {[css.isLoading]: isLoading})}
             aria-label={title}
             tabIndex={0}
             role="link"

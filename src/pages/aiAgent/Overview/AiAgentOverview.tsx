@@ -17,8 +17,8 @@ export const AiAgentOverview = () => {
     const {state}: {state: {from: string}} = useLocation()
 
     useEffect(() => {
-        if (state.from) {
-            setIsOpen(state.from === '/app/ai-agent/onboarding')
+        if (state?.from) {
+            setIsOpen(state?.from === '/app/ai-agent/onboarding')
         }
     }, [state])
 

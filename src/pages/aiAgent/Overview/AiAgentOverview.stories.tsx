@@ -1,14 +1,27 @@
-import {Meta, StoryObj} from '@storybook/react'
+import {Meta, StoryFn} from '@storybook/react'
+import React, {ComponentProps} from 'react'
+
+import {MemoryRouter} from 'react-router-dom'
 
 import {AiAgentOverview} from './AiAgentOverview'
 
 const storyConfig: Meta<typeof AiAgentOverview> = {
     title: 'AI Agent/Overview',
     component: AiAgentOverview,
+    decorators: [
+        (Story) => (
+            <MemoryRouter initialEntries={['/']}>
+                <Story />
+            </MemoryRouter>
+        ),
+    ],
 }
 
-type Story = StoryObj<typeof AiAgentOverview>
+const Template: StoryFn<ComponentProps<typeof AiAgentOverview>> = () => {
+    return <AiAgentOverview />
+}
 
-export const Primary: Story = {}
+export const Default = Template.bind({})
+Default.args = {}
 
 export default storyConfig

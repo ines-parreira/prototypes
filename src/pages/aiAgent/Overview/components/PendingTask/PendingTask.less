@@ -17,7 +17,7 @@
         height: 148px;
         display: flex;
 
-        &:hover {
+        &:hover:not(.isLoading) {
             .card {
                 border-color: var(--main-primary-1);
                 background-color: var(--main-primary-0);
@@ -26,6 +26,10 @@
             .pendingTaskType {
                 background-color: var(--accessory-blue-1);
             }
+        }
+
+        &.isLoading .card {
+            cursor: wait;
         }
     }
 

@@ -1,0 +1,53 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .innerCard {
+        display: flex;
+        gap: 16px;
+        flex-direction: column;
+    }
+
+    .title {
+        background: linear-gradient(
+            90deg,
+            #222 21.5%,
+            #a48dff 73.5%,
+            #ff9466 100%
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 24px;
+    }
+
+    .titleIcon {
+        margin-left: 2px;
+        font-size: 18px;
+        vertical-align: -18%;
+    }
+
+    .pendingTaskInnerContainer {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 16px;
+    }
+
+    .expanderContainer {
+        text-align: center;
+        width: 100%;
+    }
+
+    .expander {
+        color: var(--main-primary);
+        .body-medium();
+        text-align: center;
+        background: none;
+        border: none;
+
+        > i {
+            margin-left: 4px;
+            vertical-align: -24%;
+        }
+    }
+}
