@@ -26,6 +26,7 @@ import {
 } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useChannelsSchema'
 import {createChatConfiguration} from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/utils/createGorgiasConfiguration'
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
+import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
 import {
     useGetOnboardingData,
     useUpdateOnboardingCache,
@@ -69,6 +70,8 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const storeIntegration: ShopifyIntegration = useAppSelector(
         getShopifyIntegrationByShopName(storeName)
     ).toJS()
+
+    useCheckStoreIntegration({storeName, isLoading, setCurrentStep})
 
     const dispatch = useAppDispatch()
 

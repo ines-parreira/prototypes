@@ -1,6 +1,7 @@
 import React, {FC} from 'react'
 
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
+import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
 import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import {
     OnboardingBody,
@@ -14,7 +15,11 @@ const HandoverStep: FC<StepProps> = ({
     totalSteps,
     setCurrentStep,
 }) => {
-    const {data} = useGetOnboardingData()
+    const {data, isLoading} = useGetOnboardingData()
+
+    const storeName = data?.shop || ''
+
+    useCheckStoreIntegration({storeName, isLoading, setCurrentStep})
 
     const onNextClick = () => {
         setCurrentStep?.(WizardStepEnum.KNOWLEDGE)

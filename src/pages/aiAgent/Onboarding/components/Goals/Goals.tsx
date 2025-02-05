@@ -13,10 +13,6 @@ type Props = {
 }
 
 const Goals: React.FC<Props> = ({value, onSelect}) => {
-    const handleGoalChange = (scope: AiAgentScopes[]) => {
-        onSelect(scope)
-    }
-
     return (
         <div className={css.goalsContainer}>
             {GoalOption.map((goal) => {
@@ -25,7 +21,7 @@ const Goals: React.FC<Props> = ({value, onSelect}) => {
                         key={goal.type}
                         goal={goal}
                         isSelected={isEqual(goal.scope, value)}
-                        onSelect={handleGoalChange}
+                        onSelect={onSelect}
                     />
                 )
             })}

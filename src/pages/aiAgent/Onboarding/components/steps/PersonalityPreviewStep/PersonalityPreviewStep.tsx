@@ -12,6 +12,7 @@ import {useFetchPersonalityPreviewChatScenario} from 'pages/aiAgent/Onboarding/c
 import css from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep.less'
 import {mapScopeToPreviewType} from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep.utils'
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
+import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
 import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import {
     OnboardingBody,
@@ -31,7 +32,11 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
     totalSteps,
     setCurrentStep,
 }) => {
-    const {data} = useGetOnboardingData()
+    const {data, isLoading} = useGetOnboardingData()
+
+    const storeName = data?.shop || ''
+
+    useCheckStoreIntegration({storeName, isLoading, setCurrentStep})
 
     const previewType = mapScopeToPreviewType(data?.scope ?? [])
 

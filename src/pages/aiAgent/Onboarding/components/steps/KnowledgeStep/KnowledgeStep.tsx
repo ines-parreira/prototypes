@@ -15,6 +15,7 @@ import {
     StepProps,
     TemporaryKnowledgeData,
 } from 'pages/aiAgent/Onboarding/components/steps/types'
+import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
 import {useGetHelpCentersByShopName} from 'pages/aiAgent/Onboarding/hooks/useGetHelpCentersByShopName'
 import {useGetKnowledgeStatusByShopName} from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgeStatusByShopName'
 import {
@@ -38,7 +39,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
     totalSteps,
     setCurrentStep,
 }) => {
-    const {data} = useGetOnboardingData()
+    const {data, isLoading} = useGetOnboardingData()
     const updateOnboardingCache = useUpdateOnboardingCache()
 
     const shopName = data?.shop ?? ''
@@ -47,6 +48,8 @@ export const KnowledgeStep: React.FC<StepProps> = ({
     const shopifyIntegration: ShopifyIntegration = useAppSelector(
         getShopifyIntegrationByShopName(shopName || '')
     ).toJS()
+
+    useCheckStoreIntegration({storeName: shopName, isLoading, setCurrentStep})
 
     const dummyKnowledgeData: TemporaryKnowledgeData[] = [
         {
