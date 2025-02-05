@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 
+import {useReportRestrictions} from 'hooks/reporting/custom-reports/useReportRestrictions'
+
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -71,8 +73,16 @@ const ChartsSelector = ({
     const [selectedReport, setSelectedReport] =
         useState<null | ReportConfig<string>>(null)
 
+    const {restrictionsMap} = useReportRestrictions()
+    const restrictedReports = REPORTS_MODAL_CONFIG.map((section) => ({
+        ...section,
+        children: section.children.filter(
+            (report) => !Boolean(restrictionsMap[report.config.reportPath])
+        ),
+    }))
+
     const [config, setConfig] = useState<ReportsModalConfig | null>(
-        REPORTS_MODAL_CONFIG
+        restrictedReports
     )
 
     return (
@@ -82,6 +92,7 @@ const ChartsSelector = ({
                 <div className={css.left}>
                     <p className={css.title}>{MODAL_TITLE}</p>
                     <ModalSearchBar
+                        config={restrictedReports}
                         setConfig={setConfig}
                         setSelectedReport={setSelectedReport}
                     />

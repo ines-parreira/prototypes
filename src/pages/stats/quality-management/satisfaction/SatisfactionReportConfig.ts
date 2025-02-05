@@ -21,6 +21,7 @@ export enum SatisfactionChart {
 }
 
 export const SATISFACTION_TITLE = 'Satisfaction'
+export const SATISFACTION_REPORT_PAGE_SLUG = 'quality-management-satisfaction'
 export const SATISFACTION_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.Period,
 ]
@@ -34,7 +35,7 @@ export const SATISFACTION_OPTIONAL_FILTERS = [
 
 export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {
     reportName: SATISFACTION_TITLE,
-    reportPath: 'quality-management-satisfaction',
+    reportPath: SATISFACTION_REPORT_PAGE_SLUG,
     reportFilters: {
         persistent: SATISFACTION_PERSISTENT_FILTERS,
         optional: SATISFACTION_OPTIONAL_FILTERS,

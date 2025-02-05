@@ -18,6 +18,7 @@ import {
 } from 'pages/stats/help-center/HelpCenterMetricsConfig'
 
 const PAGE_TITLE_HELP_CENTER = 'Help Center'
+export const HELP_CENTER_REPORT_PAGE_SLUG = 'help-center'
 
 export enum HelpCenterChart {
     ArticleViewsTrendCard = 'article_views_trend_card',
@@ -38,7 +39,7 @@ const HELP_CENTER_OPTIONAL_FILTERS: OptionalFilter[] = []
 
 export const HelpCenterReportConfig: ReportConfig<HelpCenterChart> = {
     reportName: PAGE_TITLE_HELP_CENTER,
-    reportPath: 'help-center',
+    reportPath: HELP_CENTER_REPORT_PAGE_SLUG,
     reportFilters: {
         persistent: HELP_CENTER_PERSISTENT_FILTERS,
         optional: HELP_CENTER_OPTIONAL_FILTERS,

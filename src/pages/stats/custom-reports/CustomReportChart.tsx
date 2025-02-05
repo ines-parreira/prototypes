@@ -1,5 +1,7 @@
 import React from 'react'
 
+import {useIsChartRestricted} from 'hooks/reporting/custom-reports/useReportRestrictions'
+
 import {useGridSize} from 'hooks/useGridSize'
 import {getComponentConfig} from 'pages/stats/custom-reports/config'
 import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
@@ -38,8 +40,8 @@ export const CustomReportChart = ({
 }: CustomReportChartProps) => {
     const getGridCellSize = useGridSize()
     const {reportConfig, chartConfig} = getComponentConfig(schema.config_id)
-
-    if (reportConfig === null || chartConfig === null) {
+    const restricted = useIsChartRestricted(schema.config_id)
+    if (reportConfig === null || chartConfig === null || restricted) {
         return null
     }
 

@@ -5,6 +5,7 @@ import {
     waitFor,
     waitForElementToBeRemoved,
 } from '@testing-library/react'
+
 import {fromJS} from 'immutable'
 
 import React from 'react'
@@ -13,6 +14,7 @@ import {useParams} from 'react-router-dom'
 import {AGENT_ROLE, BASIC_AGENT_ROLE} from 'config/user'
 import {user} from 'fixtures/users'
 import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
+import {useReportRestrictions} from 'hooks/reporting/custom-reports/useReportRestrictions'
 import {useUpdateDashboard} from 'hooks/reporting/custom-reports/useUpdateDashboard'
 import {useUpdateDashboardCache} from 'hooks/reporting/custom-reports/useUpdateDashboardCache'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -69,6 +71,9 @@ const CustomReportActionButtonMock = assumeMock(CustomReportActionButton)
 
 jest.mock('hooks/reporting/custom-reports/useDashboardNameValidation')
 const useDashboardNameValidationMock = assumeMock(useDashboardNameValidation)
+
+jest.mock('hooks/reporting/custom-reports/useReportRestrictions')
+const useReportRestrictionsMock = assumeMock(useReportRestrictions)
 
 describe('CustomReportPage', () => {
     const defaultState = {
@@ -144,6 +149,7 @@ describe('CustomReportPage', () => {
             isValid: true,
             isInvalid: false,
         } as any)
+        useReportRestrictionsMock.mockReturnValue({restrictionsMap: {}})
     })
 
     it('should render fallback when no charts are present', () => {

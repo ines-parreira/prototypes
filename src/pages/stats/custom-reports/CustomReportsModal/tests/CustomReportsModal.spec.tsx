@@ -1,9 +1,12 @@
 import {QueryClient, useQueryClient} from '@tanstack/react-query'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import React from 'react'
 
 import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
+import {useReportRestrictions} from 'hooks/reporting/custom-reports/useReportRestrictions'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as constants from 'pages/stats/custom-reports/config'
 import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
@@ -33,64 +36,67 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {assumeMock} from 'utils/testing'
 
-const charts: CustomReportSchema['children'] = [
-    {
-        type: CustomReportChildType.Row,
-        children: [
-            {
-                type: CustomReportChildType.Chart,
-                config_id: OverviewMetric.MedianFirstResponseTime,
-            },
-        ],
-    },
-    {
-        type: CustomReportChildType.Chart,
-        config_id: OverviewMetric.MedianResolutionTime,
-    },
-]
+jest.mock('hooks/useAppDispatch')
+const useAppDispatchMock = assumeMock(useAppDispatch)
 
-const props = {
-    onCancel: jest.fn(),
-    onSave: jest.fn(),
-    charts,
-    isOpen: true,
-}
-const dispatchMock = jest.fn()
-const mutateUpdateReportMock = jest.fn()
-const useQueryClientMock = assumeMock(useQueryClient)
-const updateMutateMock = jest.fn()
-
-jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('@gorgias/api-queries')
 jest.mock('state/notifications/actions')
 jest.mock('@tanstack/react-query')
+const useQueryClientMock = assumeMock(useQueryClient)
 
 jest.mock('hooks/reporting/custom-reports/useCustomReportActions')
 const useCustomReportActionsMock = assumeMock(useCustomReportActions)
-const useAppDispatchMock = assumeMock(useAppDispatch)
 
-const customerSatisfactionMetric = OverviewChart.CustomerSatisfactionTrendCard
-const firstChartDescription =
-    SupportPerformanceOverviewReportConfig.charts[customerSatisfactionMetric]
-        .label
-const mockConfig: ReportsModalConfig = [
-    {
-        category: 'Support Performance',
-        children: [
-            {
-                type: OverviewChart,
-                config: SupportPerformanceOverviewReportConfig,
-            },
-        ],
-    },
-]
+jest.mock('hooks/reporting/custom-reports/useReportRestrictions')
+const useReportRestrictionsMock = assumeMock(useReportRestrictions)
 
 describe('AddChartsModal', () => {
-    beforeEach(() => {
-        Object.defineProperty(constants, 'REPORTS_MODAL_CONFIG', {
-            value: mockConfig,
-        })
+    const dispatchMock = jest.fn()
+    const mutateUpdateReportMock = jest.fn()
+    const updateMutateMock = jest.fn()
 
+    const charts: CustomReportSchema['children'] = [
+        {
+            type: CustomReportChildType.Row,
+            children: [
+                {
+                    type: CustomReportChildType.Chart,
+                    config_id: OverviewMetric.MedianFirstResponseTime,
+                },
+            ],
+        },
+        {
+            type: CustomReportChildType.Chart,
+            config_id: OverviewMetric.MedianResolutionTime,
+        },
+    ]
+
+    const props = {
+        onCancel: jest.fn(),
+        onSave: jest.fn(),
+        charts,
+        isOpen: true,
+    }
+
+    const customerSatisfactionMetric =
+        OverviewChart.CustomerSatisfactionTrendCard
+    const firstChartDescription =
+        SupportPerformanceOverviewReportConfig.charts[
+            customerSatisfactionMetric
+        ].label
+    const mockConfig: ReportsModalConfig = [
+        {
+            category: 'Support Performance',
+            children: [
+                {
+                    type: OverviewChart,
+                    config: SupportPerformanceOverviewReportConfig,
+                },
+            ],
+        },
+    ]
+
+    beforeEach(() => {
         useAppDispatchMock.mockReturnValue(dispatchMock)
         useQueryClientMock.mockImplementation(
             () =>
@@ -98,9 +104,10 @@ describe('AddChartsModal', () => {
                     invalidateQueries: updateMutateMock,
                 }) as unknown as QueryClient
         )
-        return useCustomReportActionsMock.mockReturnValue({
+        useCustomReportActionsMock.mockReturnValue({
             updateDashboardHandler: mutateUpdateReportMock,
         } as any)
+        useReportRestrictionsMock.mockReturnValue({restrictionsMap: {}})
     })
 
     it('should render correctly', () => {
@@ -200,9 +207,7 @@ describe('AddChartsModal', () => {
     })
 
     it('should show a notification error if the number of selected charts is more than MAX_CHECKED_CHARTS', () => {
-        Object.defineProperty(constants, 'MAX_CHECKED_CHARTS', {
-            value: 1,
-        })
+        jest.replaceProperty(constants, 'MAX_CHECKED_CHARTS', 1 as any)
 
         render(<CustomReportsModal {...props} />, {})
 
@@ -221,7 +226,7 @@ describe('AddChartsModal', () => {
 
         userEvent.click(screen.getByText(String(secondChartDescription)))
 
-        expect(dispatchMock).toHaveBeenCalled()
+        expect(useAppDispatchMock).toHaveBeenCalled()
         expect(notify).toHaveBeenNthCalledWith(1, {
             message: 'You cannot select more than 1 charts',
             status: NotificationStatus.Error,
@@ -229,11 +234,27 @@ describe('AddChartsModal', () => {
     })
 
     it('should should not return selectableReports if config is null', () => {
-        Object.defineProperty(constants, 'REPORTS_MODAL_CONFIG', {
-            value: null,
-        })
+        const charts: CustomReportSchema['children'] = [
+            {
+                type: CustomReportChildType.Row,
+                children: [
+                    {
+                        type: CustomReportChildType.Chart,
+                        config_id: 'randomChartId',
+                    },
+                ],
+            },
+        ]
+        const localProps = {
+            ...props,
+            charts,
+        }
+        render(<CustomReportsModal {...localProps} />, {})
 
-        render(<CustomReportsModal {...props} />, {})
+        const searchInput = screen.getByLabelText('Search charts')
+        act(() => {
+            userEvent.paste(searchInput, 'randomChartName')
+        })
 
         expect(screen.getByText(NO_SEARCH_RESULT)).toBeInTheDocument()
         expect(screen.getByText(READ_MORE_ABOUT_CHARTS)).toBeInTheDocument()
@@ -243,12 +264,6 @@ describe('AddChartsModal', () => {
     })
 
     it('should have a separator if we have 2 or more elements', () => {
-        Object.defineProperty(
-            constants,
-            'REPORTS_MODAL_CONFIG',
-            constants.REPORTS_MODAL_CONFIG
-        )
-
         const {container} = render(<CustomReportsModal {...props} />, {})
 
         expect(container.getElementsByClassName('separator')).toBeTruthy()

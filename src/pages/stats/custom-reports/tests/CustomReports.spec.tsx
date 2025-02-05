@@ -1,9 +1,11 @@
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+
 import React from 'react'
 import {useHistory} from 'react-router-dom'
 
 import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
+import {useReportRestrictions} from 'hooks/reporting/custom-reports/useReportRestrictions'
 import {useNotify} from 'hooks/useNotify'
 import {CreateCustomReport} from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
 import {
@@ -38,6 +40,9 @@ const CreateCustomReportMock = assumeMock(CreateCustomReport)
 jest.mock('hooks/reporting/custom-reports/useCustomReportActions')
 const useCustomReportActionsMock = assumeMock(useCustomReportActions)
 
+jest.mock('hooks/reporting/custom-reports/useReportRestrictions')
+const useReportRestrictionsMock = assumeMock(useReportRestrictions)
+
 describe('CustomReports', () => {
     const createDashboardHandlerMock = jest.fn()
     const historyPushMock = jest.fn()
@@ -69,6 +74,7 @@ describe('CustomReports', () => {
         } as any)
 
         useNotifyMock.mockReturnValue({error: notifyMock} as any)
+        useReportRestrictionsMock.mockReturnValue({restrictionsMap: {}})
     })
 
     afterEach(() => {

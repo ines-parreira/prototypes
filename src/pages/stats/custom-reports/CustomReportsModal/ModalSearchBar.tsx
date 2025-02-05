@@ -2,7 +2,6 @@ import _get from 'lodash/get'
 import React from 'react'
 
 import {SearchBar} from 'pages/common/components/SearchBar/SearchBar'
-import {REPORTS_MODAL_CONFIG} from 'pages/stats/custom-reports/config'
 import {
     ChartConfig,
     ReportChildrenConfig,
@@ -13,16 +12,20 @@ import {
 const placeholder = 'Select a maximum of 20 charts to add'
 
 type Props = {
+    config: ReportsModalConfig
     setConfig: (config: ReportsModalConfig | null) => void
     setSelectedReport: (report: ReportConfig<string> | null) => void
 }
 
-export const getSearchConfig = (value: string): ReportsModalConfig | null => {
+export const getSearchConfig = (
+    config: ReportsModalConfig,
+    value: string
+): ReportsModalConfig | null => {
     const searchValue = value.toLowerCase()
 
-    const config: ReportsModalConfig = []
+    const filteredConfig: ReportsModalConfig = []
 
-    REPORTS_MODAL_CONFIG.forEach((reportConfig) => {
+    config.forEach((reportConfig) => {
         const filteredChildren: ReportChildrenConfig = []
 
         for (const report of reportConfig.children) {
@@ -48,25 +51,31 @@ export const getSearchConfig = (value: string): ReportsModalConfig | null => {
         }
 
         if (filteredChildren.length > 0) {
-            config.push({
+            filteredConfig.push({
                 category: reportConfig.category,
                 children: filteredChildren,
             })
         }
     })
 
-    return config.length ? config : null
+    return filteredConfig.length ? filteredConfig : null
 }
 
-export const ModalSearchBar = ({setConfig, setSelectedReport}: Props) => {
+export const ModalSearchBar = ({
+    config,
+    setConfig,
+    setSelectedReport,
+}: Props) => {
     const handleChange = (value: string) => {
         if (value) {
-            const config = getSearchConfig(value)
-            setConfig(config)
-            setSelectedReport(_get(config, '0.children.0.config') || null)
+            const updatedConfig = getSearchConfig(config, value)
+            setConfig(updatedConfig)
+            setSelectedReport(
+                _get(updatedConfig, '0.children.0.config') || null
+            )
         } else {
             setSelectedReport(null)
-            setConfig(REPORTS_MODAL_CONFIG)
+            setConfig(config)
         }
     }
 

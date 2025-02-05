@@ -1,5 +1,7 @@
 import React from 'react'
 
+import {useIsChartRestricted} from 'hooks/reporting/custom-reports/useReportRestrictions'
+
 import {CustomReportChart} from 'pages/stats/custom-reports/CustomReportChart'
 import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
 import {
@@ -19,10 +21,15 @@ jest.mock('pages/stats/custom-reports/CustomReportComponent', () => ({
 }))
 const CustomReportComponentMock = assumeMock(CustomReportComponent)
 
+jest.mock('hooks/reporting/custom-reports/useReportRestrictions')
+const useIsChartRestrictedMock = assumeMock(useIsChartRestricted)
+
 describe('CustomReportChart', () => {
     beforeEach(() => {
         CustomReportComponentMock.mockImplementation(() => <div />)
+        useIsChartRestrictedMock.mockReturnValue(false)
     })
+
     it('renders nothing if there is no config for element', () => {
         const schema: CustomReportChartSchema = {
             type: CustomReportChildType.Chart,

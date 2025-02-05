@@ -12,6 +12,7 @@ import {
 const setConfig = jest.fn()
 const setSelectedReport = jest.fn()
 const props = {
+    config: REPORTS_MODAL_CONFIG,
     setConfig,
     setSelectedReport,
 }
