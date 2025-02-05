@@ -40,7 +40,7 @@ export const SelectableCharts = ({
                     )
                 )
             } else {
-                if (checkedCharts.length <= MAX_CHECKED_CHARTS) {
+                if (checkedCharts.length < MAX_CHECKED_CHARTS) {
                     setCheckedCharts([...checkedCharts, String(chartId)])
                 } else {
                     void dispatch(

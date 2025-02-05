@@ -18,9 +18,9 @@ import {
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {isTeamLead} from 'utils'
 
-export const ADD_TO_DASHBOARD = 'Add to dashboard'
+export const ADD_TO_DASHBOARD = 'Create New Dashboard'
 export const ADD_TO_DASHBOARD_CTA = 'Add To Dashboard'
-export const REMOVE_FROM_DASHBOARD = 'Delete chart from dashboard'
+export const REMOVE_FROM_DASHBOARD = 'Remove chart from dashboard'
 export const NO_DASHBOARDS_LABEL = 'No existing dashboards'
 
 const ActionMenuItem = ({

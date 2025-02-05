@@ -19,7 +19,7 @@ export const CreateCustomReport = () => {
                 <h1 className={css.title}>{CREATE_CUSTOM_REPORT}</h1>
                 <p className={css.subtitle}>{CREATE_REPORT_DESCRIPTION}</p>
                 <p className={css.footNote}>
-                    {LEARN_ABOUT} <a href="#">{CUSTOM_REPORTS}</a>
+                    {LEARN_ABOUT} {CUSTOM_REPORTS}
                 </p>
             </div>
         </div>
