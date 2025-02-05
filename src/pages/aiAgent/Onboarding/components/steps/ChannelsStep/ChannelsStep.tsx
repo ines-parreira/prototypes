@@ -346,8 +346,8 @@ export const ChannelsStep: React.FC<StepProps> = ({
                     isLoading={isLoading || isCreatingChat}
                 >
                     <MainTitle
-                        titleBlack="Choose which channels to use with "
-                        titleMagenta="AI Agent"
+                        titleBlack="Next, which channels would you like "
+                        titleMagenta="to connect"
                     />
                     <Separator />
                     {renderContent()}

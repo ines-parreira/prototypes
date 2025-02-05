@@ -72,6 +72,8 @@ const queryClient = new QueryClient()
 
 const goToStep = jest.fn()
 
+const title = /Next, which channels would you like/
+
 describe('ChannelsStep', () => {
     beforeEach(() => {
         // Populate the return values of the mocked hooks
@@ -111,9 +113,7 @@ describe('ChannelsStep', () => {
         jest.runAllTimers()
 
         // Components are rendered
-        expect(
-            screen.getByText(/Choose which channels to use with/)
-        ).toBeInTheDocument()
+        expect(screen.getByText(title)).toBeInTheDocument()
 
         expect(
             screen.getByText(
@@ -186,9 +186,7 @@ describe('ChannelsStep', () => {
         jest.runAllTimers()
 
         // Components are rendered
-        expect(
-            screen.getByText(/Choose which channels to use with/)
-        ).toBeInTheDocument()
+        expect(screen.getByText(title)).toBeInTheDocument()
 
         expect(
             screen.getByText(
@@ -226,9 +224,7 @@ describe('ChannelsStep', () => {
         jest.runAllTimers()
 
         // Components are rendered
-        expect(
-            screen.getByText(/Choose which channels to use with/)
-        ).toBeInTheDocument()
+        expect(screen.getByText(title)).toBeInTheDocument()
 
         expect(
             screen.getByText(
@@ -258,9 +254,7 @@ describe('ChannelsStep', () => {
         jest.runAllTimers()
 
         // Components are rendered
-        expect(
-            screen.getByText(/Choose which channels to use with/)
-        ).toBeInTheDocument()
+        expect(screen.getByText(title)).toBeInTheDocument()
 
         expect(
             screen.getByText(
@@ -299,9 +293,7 @@ describe('ChannelsStep', () => {
         jest.runAllTimers()
 
         // Components are rendered
-        expect(
-            screen.getByText(/Choose which channels to use with/)
-        ).toBeInTheDocument()
+        expect(screen.getByText(title)).toBeInTheDocument()
 
         expect(
             screen.getByText(
