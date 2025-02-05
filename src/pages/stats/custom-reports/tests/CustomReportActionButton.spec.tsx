@@ -1,10 +1,8 @@
 import {render, screen, waitFor, within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
 import React from 'react'
 
 import {useDownloadCustomReportData} from 'hooks/reporting/custom-reports/useDownloadCustomReportData'
-
 import {
     CUSTOM_REPORT_ID_CTA,
     CustomReportActionButton,
@@ -37,13 +35,14 @@ jest.mock('react-router-dom', () => ({
 }))
 
 const mockDuplicateReport = jest.fn()
-const mockDeleteReport = jest.fn()
 const mockSetOpenModal = jest.fn()
 
 jest.mock('hooks/reporting/custom-reports/useCustomReportActions', () => ({
     useCustomReportActions: () => ({
         duplicateReportHandler: mockDuplicateReport,
-        deleteReportHandler: mockDeleteReport,
+        deleteReportHandler: ({onSuccess}: {onSuccess: () => void}) => {
+            onSuccess()
+        },
     }),
 }))
 jest.mock('hooks/reporting/custom-reports/useDownloadCustomReportData')
@@ -123,11 +122,26 @@ describe('CustomReportActionButton', () => {
             )
         )
 
-        expect(mockDeleteReport).toHaveBeenCalled()
+        expect(mockPush).toHaveBeenCalledWith(liveOverviewURL)
+    })
+
+    it('should not call delete mutation if customReport is undefined', async () => {
+        render(
+            <CustomReportActionButton
+                customReport={undefined}
+                setOpenModal={mockSetOpenModal}
+            />
+        )
+
+        userEvent.click(
+            screen.getByRole('button', {name: CUSTOM_REPORT_ID_CTA})
+        )
 
         await waitFor(() => {
-            expect(mockPush).toHaveBeenCalledWith(liveOverviewURL)
+            userEvent.click(screen.getByText(DELETE_REPORT_LABEL))
         })
+
+        expect(mockPush).not.toHaveBeenCalled()
     })
 
     it('should not call delete mutation on confirmation modal cancel', async () => {
@@ -159,6 +173,6 @@ describe('CustomReportActionButton', () => {
             )
         )
 
-        expect(mockDeleteReport).not.toHaveBeenCalled()
+        expect(mockPush).not.toHaveBeenCalled()
     })
 })

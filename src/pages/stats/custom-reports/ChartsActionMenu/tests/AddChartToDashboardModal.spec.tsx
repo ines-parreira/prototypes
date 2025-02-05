@@ -27,14 +27,8 @@ const useDashboardNameValidationMock = assumeMock(useDashboardNameValidation)
 describe('AddChartToDashboardModal', () => {
     beforeEach(() => {
         useCustomReportActionsMock.mockReturnValue({
-            addChartToDashboardHandler: jest.fn(),
-            getDashboardsHandler: jest.fn(),
-            duplicateReportHandler: jest.fn(),
-            deleteReportHandler: jest.fn(),
-            updateDashboardHandler: jest.fn(),
-            removeChartFromDashboardHandler: jest.fn(),
             createDashboardHandler: createDashboardMock,
-        })
+        } as any)
 
         useDashboardNameValidationMock.mockReturnValue({
             error: null,

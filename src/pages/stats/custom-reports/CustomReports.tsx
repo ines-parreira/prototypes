@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
-import {useCreateCustomReport} from 'hooks/reporting/custom-reports/useCreateCustomReport'
+import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
 import {useNotify} from 'hooks/useNotify'
 import Button from 'pages/common/components/button/Button'
@@ -12,7 +12,6 @@ import {
     DashboardNameValue,
 } from 'pages/stats/custom-reports/DashboardName'
 import {CustomReportChild} from 'pages/stats/custom-reports/types'
-import {getErrorMessage} from 'pages/stats/custom-reports/utils'
 import {
     StatsPageContent,
     StatsPageHeader,
@@ -45,24 +44,24 @@ export const CustomReports = () => {
 
     const {error, isInvalid} = useDashboardNameValidation(details.name)
 
-    const {createCustomReport, isLoading} = useCreateCustomReport()
+    const {createDashboardHandler, isCreateMutationLoading} =
+        useCustomReportActions()
 
     const handleCreateCustomReport = useCallback(
-        async (charts: CustomReportChild[]) => {
-            try {
-                const {data} = await createCustomReport({
+        (charts: CustomReportChild[]) => {
+            return createDashboardHandler({
+                dashboard: {
                     ...details,
-                    name: details.name.trim() || createDashboardName(),
                     children: charts,
-                })
-                history.push(`/app/stats/custom-reports/${data.id}`)
-            } catch (error) {
-                closeModal()
-
-                void notify.error(getErrorMessage(error))
-            }
+                    name: details.name.trim() || createDashboardName(),
+                },
+                onSuccess: (response) => {
+                    history.push(`/app/stats/custom-reports/${response?.id}`)
+                    closeModal()
+                },
+            })
         },
-        [closeModal, createCustomReport, details, notify, history]
+        [closeModal, createDashboardHandler, details, history]
     )
 
     return (
@@ -80,7 +79,10 @@ export const CustomReports = () => {
                     />
                 }
                 right={
-                    <Button onClick={openModal} isDisabled={isLoading}>
+                    <Button
+                        onClick={openModal}
+                        isDisabled={isCreateMutationLoading}
+                    >
                         {CUSTOM_REPORT_CTA}
                     </Button>
                 }
@@ -92,7 +94,7 @@ export const CustomReports = () => {
                 isOpen={isOpen}
                 onSave={handleCreateCustomReport}
                 onCancel={closeModal}
-                isLoading={isLoading}
+                isLoading={isCreateMutationLoading}
             />
         </StatsPageWrapper>
     )

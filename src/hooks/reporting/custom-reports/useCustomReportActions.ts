@@ -1,4 +1,5 @@
 import {
+    AnalyticsCustomReport,
     CreateAnalyticsCustomReportBody,
     getListAnalyticsCustomReportsQueryOptions,
     useCreateAnalyticsCustomReport,
@@ -7,9 +8,14 @@ import {
     useUpdateAnalyticsCustomReport,
 } from '@gorgias/api-queries'
 import {useQueryClient} from '@tanstack/react-query'
+import _sortBy from 'lodash/sortBy'
 import {useCallback} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import {
+    LIMIT_REACHED_MESSAGE,
+    MAX_DASHBOARDS_ALLOWED,
+} from 'pages/stats/custom-reports/constants'
 import {
     CustomReportSchema,
     DashboardInput,
@@ -77,10 +83,18 @@ export const useCustomReportActions = () => {
             onSuccess,
         }: {
             dashboard: DashboardInput
-            chartIds: string[]
-            onSuccess?: () => void
+            chartIds?: string[]
+            onSuccess?: (data: AnalyticsCustomReport) => void
         }) => {
-            const children = getGroupChartsIntoRows(chartIds)
+            const apiDashboards = listDashboardsQuery.data?.data?.data || []
+
+            if (apiDashboards.length >= MAX_DASHBOARDS_ALLOWED) {
+                return handleMutationError(dispatch, LIMIT_REACHED_MESSAGE)
+            }
+
+            const children = chartIds
+                ? getGroupChartsIntoRows(chartIds)
+                : dashboard?.children
 
             const apiDashboard = createDashboardPayload({
                 ...dashboard,
@@ -92,7 +106,7 @@ export const useCustomReportActions = () => {
                     data: apiDashboard,
                 },
                 {
-                    onSuccess: () => {
+                    onSuccess: ({data}: {data: AnalyticsCustomReport}) => {
                         const {queryKey: customReportsQueryKey} =
                             getListAnalyticsCustomReportsQueryOptions()
 
@@ -105,19 +119,24 @@ export const useCustomReportActions = () => {
                             `${dashboard.name} ${SUCCESSFULLY_CREATED}`
                         )
 
-                        onSuccess && onSuccess()
+                        onSuccess && onSuccess(data)
                     },
                     onError: (error) =>
                         handleMutationError(dispatch, getErrorMessage(error)),
                 }
             )
         },
-        [createMutation, dispatch, queryClient]
+        [
+            createMutation,
+            dispatch,
+            listDashboardsQuery.data?.data?.data,
+            queryClient,
+        ]
     )
 
     const duplicateReportHandler = useCallback(
         (data: CreateAnalyticsCustomReportBody) => {
-            createMutation.mutate(
+            return createMutation.mutate(
                 {
                     data,
                 },
@@ -144,10 +163,18 @@ export const useCustomReportActions = () => {
     )
 
     const deleteReportHandler = useCallback(
-        (data: {id: number; name: string}) => {
+        ({
+            name,
+            id,
+            onSuccess,
+        }: {
+            id: number
+            name: string
+            onSuccess?: () => void
+        }) => {
             deleteMutation.mutate(
                 {
-                    id: data.id,
+                    id,
                 },
                 {
                     onSuccess: () => {
@@ -157,13 +184,17 @@ export const useCustomReportActions = () => {
 
                         handleMutationSuccess(
                             dispatch,
-                            `${data.name} ${CUSTOM_REPORT_DELETED_SUCCESS_MESSAGE}`
+                            `${name} ${CUSTOM_REPORT_DELETED_SUCCESS_MESSAGE}`
                         )
+
+                        if (onSuccess) {
+                            onSuccess()
+                        }
                     },
                     onError: () =>
                         handleMutationError(
                             dispatch,
-                            `${data.name} ${CUSTOM_REPORT_DELETED_ERROR_MESSAGE}`
+                            `${name} ${CUSTOM_REPORT_DELETED_ERROR_MESSAGE}`
                         ),
                 }
             )
@@ -175,12 +206,12 @@ export const useCustomReportActions = () => {
         ({
             dashboard,
             chartIds,
-            onClose,
+            onSuccess,
             successMessage,
         }: {
             dashboard: CustomReportSchema | undefined
             chartIds?: string[]
-            onClose?: () => void
+            onSuccess?: () => void
             successMessage?: string
         }) => {
             if (dashboard) {
@@ -214,8 +245,8 @@ export const useCustomReportActions = () => {
                                     `Successfully added ${chartIds?.length} ${chartIds?.length === 1 ? 'chart' : 'charts'} to ${dashboard.name}`
                             )
 
-                            if (onClose) {
-                                onClose()
+                            if (onSuccess) {
+                                onSuccess()
                             }
                         },
                         onError: () =>
@@ -235,18 +266,18 @@ export const useCustomReportActions = () => {
         ({
             dashboard,
             chartId,
-            onClose,
+            onSuccess,
         }: {
             dashboard: CustomReportSchema
             chartId: string
-            onClose: () => void
+            onSuccess: () => void
         }) => {
             const childrenIds = getChildrenIds(dashboard?.children)
 
             updateDashboardHandler({
                 dashboard,
                 chartIds: [...childrenIds, chartId],
-                onClose,
+                onSuccess,
                 successMessage: `Successfully added chart to ${dashboard.name}`,
             })
         },
@@ -264,7 +295,7 @@ export const useCustomReportActions = () => {
             return acc
         }, [] as CustomReportSchema[])
 
-        return dashboards
+        return _sortBy(dashboards, (dashboard) => dashboard.name.toLowerCase())
     }, [listDashboardsQuery])
 
     const removeChartFromDashboardHandler = useCallback(
@@ -294,5 +325,7 @@ export const useCustomReportActions = () => {
         addChartToDashboardHandler,
         getDashboardsHandler,
         removeChartFromDashboardHandler,
+        isCreateMutationLoading: createMutation.isLoading,
+        isCreateMutationError: createMutation.isError,
     }
 }

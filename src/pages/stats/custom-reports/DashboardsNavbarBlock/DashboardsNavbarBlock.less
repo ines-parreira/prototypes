@@ -1,0 +1,35 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .navbar h4 {
+        padding-right: 14px;
+    }
+
+    .wrapper {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        gap: @layout-spacing-xs;
+    }
+
+    .name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .action {
+        color: var(--neutral-grey-4);
+        .body-regular();
+        width: 210px;
+        height: 90px;
+        text-overflow: inherit;
+        white-space: pre-line;
+        text-align: center;
+        &:hover {
+            color: var(--neutral-grey-4);
+            background: var(--white);
+        }
+    }
+}

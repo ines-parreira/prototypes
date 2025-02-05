@@ -1,3 +1,4 @@
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import _kebabCase from 'lodash/kebabCase'
 import React, {ReactNode, useRef, useState} from 'react'
@@ -7,6 +8,7 @@ import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 import navbarCss from 'assets/css/navbar.less'
 import {ViewCategoryNavbar} from 'models/view/types'
 import css from 'pages/common/components/navbar/NavbarBlock.less'
+import IconInput from 'pages/common/forms/input/IconInput'
 import TicketNavbarDropTarget from 'pages/tickets/navbar/TicketNavbarDropTarget'
 import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 
@@ -16,21 +18,38 @@ type Props = {
         onClick: () => void
     }[]
     children: ReactNode
-    className?: string
-    actionsClassName?: string
+    iconClassName?: string
     icon?: string
     title: string
+    className?: string
     value?: ViewCategoryNavbar
+    dropdownClassName?: string
+    actionsIcon?: {
+        name: string
+        isOutlined?: boolean
+        isDisabled?: boolean
+        tooltip?: string
+        className?: string
+    }
 }
+
+const actionsIconId = 'actions-icon'
 
 export default function NavbarBlock({
     actions,
     children,
     className,
-    actionsClassName,
     icon,
     title,
     value,
+    dropdownClassName,
+    actionsIcon = {
+        name: 'add',
+        isOutlined: false,
+        isDisabled: false,
+        tooltip: undefined,
+        className: '',
+    },
 }: Props) {
     const [isOpen, setOpen] = useState(false)
     const categoryRef = useRef<HTMLHeadingElement>(null)
@@ -84,6 +103,7 @@ export default function NavbarBlock({
                     {!!actions && (
                         <Dropdown
                             isOpen={isOpen}
+                            disabled={actionsIcon.isDisabled}
                             toggle={() => setOpen(!isOpen)}
                         >
                             <DropdownToggle
@@ -94,20 +114,29 @@ export default function NavbarBlock({
                                 color="secondary"
                                 type="button"
                             >
-                                <i
-                                    className={classnames(
-                                        'material-icons',
-                                        actionsClassName
-                                    )}
-                                >
-                                    add
-                                </i>
+                                <IconInput
+                                    id={actionsIconId}
+                                    icon={actionsIcon.name}
+                                    isOutlined={actionsIcon.isOutlined}
+                                    className={actionsIcon.className}
+                                />
+                                {actionsIcon.tooltip && (
+                                    <Tooltip
+                                        target={actionsIconId}
+                                        placement="bottom-end"
+                                    >
+                                        {actionsIcon.tooltip}
+                                    </Tooltip>
+                                )}
                             </DropdownToggle>
                             <DropdownMenu right>
                                 {actions.map((action) => {
                                     return (
                                         <DropdownItem
-                                            className={css.action}
+                                            className={classnames(
+                                                css.action,
+                                                dropdownClassName
+                                            )}
                                             key={action.label}
                                             onClick={action.onClick}
                                         >

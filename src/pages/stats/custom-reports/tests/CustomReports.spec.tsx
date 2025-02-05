@@ -2,7 +2,7 @@ import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 import {useHistory} from 'react-router-dom'
 
-import {useCreateCustomReport} from 'hooks/reporting/custom-reports/useCreateCustomReport'
+import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
 import {useNotify} from 'hooks/useNotify'
 import {CreateCustomReport} from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
@@ -10,11 +10,10 @@ import {
     CUSTOM_REPORT_CTA,
     CustomReports,
 } from 'pages/stats/custom-reports/CustomReports'
-import {
-    ADD_CHARTS_CTA,
-    MODAL_TITLE,
-} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
+import {MODAL_TITLE} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
 import {assumeMock} from 'utils/testing'
+
+import {DashboardInput} from '../types'
 
 jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
@@ -30,17 +29,17 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 
-jest.mock('hooks/reporting/custom-reports/useCreateCustomReport')
-const useCreateCustomReportMock = assumeMock(useCreateCustomReport)
-
 jest.mock('hooks/reporting/custom-reports/useDashboardNameValidation')
 const useDashboardNameValidationMock = assumeMock(useDashboardNameValidation)
 
 jest.mock('pages/stats/custom-reports/CreateCustomReport/CreateCustomReport')
 const CreateCustomReportMock = assumeMock(CreateCustomReport)
 
+jest.mock('hooks/reporting/custom-reports/useCustomReportActions')
+const useCustomReportActionsMock = assumeMock(useCustomReportActions)
+
 describe('CustomReports', () => {
-    const createCustomReportMock = jest.fn()
+    const createDashboardHandlerMock = jest.fn()
     const historyPushMock = jest.fn()
     const notifyMock = jest.fn()
 
@@ -54,9 +53,9 @@ describe('CustomReports', () => {
             <div>CreateCustomReport</div>
         ))
 
-        useCreateCustomReportMock.mockReturnValue({
+        useCustomReportActionsMock.mockReturnValue({
             isLoading: false,
-            createCustomReport: createCustomReportMock,
+            createDashboardHandler: createDashboardHandlerMock,
         } as any)
 
         useDashboardNameValidationMock.mockReturnValue({
@@ -123,19 +122,21 @@ describe('CustomReports', () => {
         fireEvent.click(saveButton)
 
         await waitFor(() => {
-            expect(createCustomReportMock).toHaveBeenCalledTimes(1)
-            expect(createCustomReportMock).toHaveBeenCalledWith(
+            expect(createDashboardHandlerMock).toHaveBeenCalledTimes(1)
+            expect(createDashboardHandlerMock).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    name: dashboardName,
-                    emoji: '',
-                    children: expect.arrayContaining([
-                        expect.objectContaining({
-                            children: expect.arrayContaining([
-                                expect.any(Object),
-                            ]),
-                            type: 'row',
-                        }),
-                    ]),
+                    dashboard: {
+                        name: dashboardName,
+                        emoji: '',
+                        children: expect.arrayContaining([
+                            expect.objectContaining({
+                                children: expect.arrayContaining([
+                                    expect.any(Object),
+                                ]),
+                                type: 'row',
+                            }),
+                        ]),
+                    },
                 })
             )
         })
@@ -159,9 +160,11 @@ describe('CustomReports', () => {
         fireEvent.click(saveButton)
 
         await waitFor(() => {
-            expect(createCustomReportMock).toHaveBeenCalledWith(
+            expect(createDashboardHandlerMock).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    name: 'Untitled-2025-01-15-12-10',
+                    dashboard: expect.objectContaining({
+                        name: 'Untitled-2025-01-15-12-10',
+                    }),
                 })
             )
         })
@@ -170,7 +173,19 @@ describe('CustomReports', () => {
     it('should redirect to the newly created dashboard on success', async () => {
         const id = 123
 
-        createCustomReportMock.mockResolvedValueOnce({data: {id}})
+        useCustomReportActionsMock.mockReturnValue({
+            isLoading: false,
+            createDashboardHandler: ({
+                onSuccess,
+                dashboard,
+            }: {
+                onSuccess?: (data: any) => void
+                dashboard: DashboardInput
+            }) => {
+                onSuccess && onSuccess({...dashboard, id})
+                createDashboardHandlerMock({dashboard, onSuccess})
+            },
+        } as any)
 
         render(<CustomReports />)
 
@@ -198,42 +213,6 @@ describe('CustomReports', () => {
             expect(historyPushMock).toHaveBeenCalledWith(
                 expect.stringContaining(String(id))
             )
-        })
-    })
-
-    it('should notify on error', async () => {
-        createCustomReportMock.mockRejectedValueOnce(new Error('Bad Request'))
-
-        render(<CustomReports />)
-
-        const addChartsButton = screen.getByText(CUSTOM_REPORT_CTA)
-        fireEvent.click(addChartsButton)
-
-        const saveButton = screen.getAllByRole('button', {
-            name: ADD_CHARTS_CTA,
-        })[1]
-        fireEvent.click(saveButton)
-
-        await waitFor(() => {
-            expect(notifyMock).toHaveBeenCalledTimes(1)
-        })
-    })
-
-    it('should display error on input blur when validation fails', async () => {
-        const validationError = 'Invalid dashboard name'
-        useDashboardNameValidationMock.mockReturnValue({
-            error: validationError,
-            isValid: false,
-            isInvalid: true,
-        } as any)
-
-        render(<CustomReports />)
-
-        const nameInput = screen.getByRole('textbox')
-        fireEvent.blur(nameInput)
-
-        await waitFor(() => {
-            expect(notifyMock).toHaveBeenCalledWith(validationError)
         })
     })
 

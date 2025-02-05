@@ -1,13 +1,9 @@
 import cn from 'classnames'
-
-import debounce from 'lodash/debounce'
-
 import React, {useState} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 
 import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import {useDownloadCustomReportData} from 'hooks/reporting/custom-reports/useDownloadCustomReportData'
-
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -58,19 +54,15 @@ export const CustomReportsPageActions = ({
 
     const basePath = location.pathname.split('/').slice(0, 3).join('/')
 
-    // added this, because of the notification didn't show up
-    const debouncedHistoryPush = debounce(() => {
-        history.push(`${basePath}/live-overview`)
-    }, 500)
+    const historyPush = () => history.push(`${basePath}/live-overview`)
 
     const deleteConfirmationHandler = () => {
         if (customReport) {
             deleteReportHandler({
                 id: customReport.id,
                 name: customReport.name,
+                onSuccess: historyPush,
             })
-
-            debouncedHistoryPush()
         }
     }
 

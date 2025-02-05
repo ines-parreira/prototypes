@@ -11,7 +11,7 @@ import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
 import ConvertStatsNavbar from 'pages/convert/common/components/ConvertStatsNavbar'
-import {CustomReportsNavbarBlock} from 'pages/stats/custom-reports/CustomReportsNavbarBlock/CustomReportsNavbarBlock'
+import {DashboardsNavbarBlock} from 'pages/stats/custom-reports/DashboardsNavbarBlock/DashboardsNavbarBlock'
 import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
 import VoiceStatsNavbarItem from 'pages/stats/voice/components/VoiceStatsNavbar/VoiceStatsNavbarItem'
 import {getHasAutomate} from 'state/billing/selectors'
@@ -85,7 +85,7 @@ export default function StatsNavbarView() {
             </NavbarBlock>
 
             {!!isAnalyticsCustomReports && (
-                <CustomReportsNavbarBlock
+                <DashboardsNavbarBlock
                     navBarLinkProps={COMMON_NAV_LINK_PROPS}
                 />
             )}

@@ -100,13 +100,7 @@ describe('AddChartsModal', () => {
         )
         return useCustomReportActionsMock.mockReturnValue({
             updateDashboardHandler: mutateUpdateReportMock,
-            getDashboardsHandler: jest.fn(),
-            duplicateReportHandler: jest.fn(),
-            deleteReportHandler: jest.fn(),
-            addChartToDashboardHandler: jest.fn(),
-            removeChartFromDashboardHandler: jest.fn(),
-            createDashboardHandler: jest.fn(),
-        })
+        } as any)
     })
 
     it('should render correctly', () => {

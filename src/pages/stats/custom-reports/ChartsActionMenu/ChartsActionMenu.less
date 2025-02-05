@@ -51,6 +51,17 @@
         }
     }
 
+    .disableAddToDashboardAction {
+        color: var(--neutral-grey-3);
+        &:hover:not(.disabled) {
+            background: var(--neutral-grey-2);
+            cursor: not-allowed;
+        }
+        i {
+            color: var(--neutral-grey-3);
+        }
+    }
+
     .dropdownLeftIcon {
         color: var(--neutral-grey-6);
     }

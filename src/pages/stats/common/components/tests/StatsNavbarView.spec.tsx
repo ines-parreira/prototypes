@@ -1,4 +1,3 @@
-import {useListAnalyticsCustomReports} from '@gorgias/api-queries'
 import {screen} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
@@ -15,6 +14,7 @@ import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
 } from 'fixtures/productPrices'
+import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import {IntegrationType} from 'models/integration/constants'
 import StatsNavbarView, {
     BUSIEST_TIMES_OF_DAYS_NAV_LABEL,
@@ -32,11 +32,9 @@ jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
     })
 })
 
-jest.mock('@gorgias/api-queries')
+jest.mock('hooks/reporting/custom-reports/useCustomReportActions')
 
-const useListAnalyticsCustomReportsMock = assumeMock(
-    useListAnalyticsCustomReports
-)
+const useCustomReportActionsMock = assumeMock(useCustomReportActions)
 
 function getIntegration(id: number, type: IntegrationType) {
     return {
@@ -240,17 +238,13 @@ describe('StatsNavbarView', () => {
             [FeatureFlagKey.AnalyticsCustomReports]: true,
         })
 
-        const mockData = {
-            data: {
-                data: [
-                    {id: '1', name: 'Report 1', emoji: '📊'},
-                    {id: '2', name: 'Report 2', emoji: 'plus'},
-                ],
-            },
-        }
+        const mockData = [
+            {id: '1', name: 'Report 1', emoji: '📊'},
+            {id: '2', name: 'Report 2', emoji: 'plus'},
+        ]
 
-        useListAnalyticsCustomReportsMock.mockReturnValue({
-            data: mockData,
+        useCustomReportActionsMock.mockReturnValue({
+            getDashboardsHandler: () => mockData,
         } as any)
 
         const {container} = renderWithRouterAndDnD(
