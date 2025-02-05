@@ -273,6 +273,7 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+          restock?: string;
         };
       } | {
         id: string;
@@ -1392,6 +1393,7 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+          restock?: string;
         };
       } | {
         id: string;
@@ -1873,6 +1875,7 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+          restock?: string;
         };
       } | {
         id: string;
@@ -4381,6 +4384,7 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+          restock?: string;
         };
       } | {
         id: string;
@@ -4920,6 +4924,7 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+          restock?: string;
         };
       } | {
         id: string;
@@ -5615,6 +5620,7 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+          restock?: string;
         };
       } | {
         id: string;
@@ -11333,6 +11339,7 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+          restock?: string;
         };
       } | {
         id: string;
@@ -12032,6 +12039,7 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+          restock?: string;
         };
       } | {
         id: string;
@@ -12732,6 +12740,7 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+          restock?: string;
         };
       } | {
         id: string;
@@ -13431,6 +13440,7 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+          restock?: string;
         };
       } | {
         id: string;
@@ -13911,6 +13921,7 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+          restock?: string;
         };
       } | {
         id: string;
@@ -14401,6 +14412,7 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+          restock?: string;
         };
       } | {
         id: string;

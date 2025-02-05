@@ -958,6 +958,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         customer_id: node.data.customerId,
                         order_external_id: node.data.orderExternalId,
                         integration_id: node.data.integrationId,
+                        restock: node.data.restock,
                     },
                 }
                 c.steps.push(step)

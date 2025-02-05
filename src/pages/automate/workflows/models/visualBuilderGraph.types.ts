@@ -406,6 +406,7 @@ export type CancelOrderNodeType = Node<
         customerId: string
         orderExternalId: string
         integrationId: string
+        restock?: string
         isGreyedOut?: boolean | null
         errors?: Record<string, never> | null
         touched?: Record<string, never> | null

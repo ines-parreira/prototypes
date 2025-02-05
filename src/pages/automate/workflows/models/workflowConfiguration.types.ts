@@ -140,6 +140,7 @@ export type WorkflowStepCancelOrder = {
         customer_id: string
         order_external_id: string
         integration_id: string
+        restock?: string
     }
 }
 

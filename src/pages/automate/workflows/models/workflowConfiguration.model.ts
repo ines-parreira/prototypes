@@ -506,6 +506,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
                     customerId: step.settings.customer_id,
                     orderExternalId: step.settings.order_external_id,
                     integrationId: step.settings.integration_id,
+                    restock: step.settings.restock,
                 },
             }
 
