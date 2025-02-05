@@ -5,25 +5,22 @@ import {AlertBannerTypes} from 'AlertBanners'
 import {isRecoverableError} from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {VoiceDeviceActions} from 'pages/integrations/integration/components/voice/types'
-import {VoiceDeviceContextState} from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import {notify} from 'state/notifications/actions'
 import {
     BannerNotification,
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
+import {State} from 'state/twilio/voiceDevice'
 import {assumeMock} from 'utils/testing'
 
 import {useErrorHandling} from '../useErrorHandling'
-import useVoiceDevice from '../useVoiceDevice'
 
 jest.mock('hooks/useAppDispatch')
-jest.mock('../useVoiceDevice')
 jest.mock('state/notifications/actions')
 jest.mock('hooks/integrations/phone/utils')
 
 const useAppDispatchMock = assumeMock(useAppDispatch)
-const useVoiceDeviceMock = assumeMock(useVoiceDevice)
 const notifyMock = assumeMock(notify)
 const isRecoverableErrorMock = assumeMock(isRecoverableError)
 
@@ -34,20 +31,20 @@ describe('useErrorHandling', () => {
     const actionsMock = {
         setWarning: jest.fn(),
     } as unknown as VoiceDeviceActions
+    let stateMock: State
 
     beforeEach(() => {
         useAppDispatchMock.mockReturnValue(dispatchMock)
+        stateMock = {
+            error: errorMock,
+            warning: warningMock,
+        } as State
     })
 
     it('should dispatch an error notification when there is an unrecoverable error', () => {
-        useVoiceDeviceMock.mockReturnValue({
-            error: errorMock,
-            warning: null,
-            actions: actionsMock,
-        } as VoiceDeviceContextState)
         isRecoverableErrorMock.mockReturnValue(false)
 
-        renderHook(() => useErrorHandling())
+        renderHook(() => useErrorHandling(stateMock, actionsMock))
 
         expect(notifyMock).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -59,13 +56,9 @@ describe('useErrorHandling', () => {
     })
 
     it('should dismiss the error notification when there is no error', () => {
-        useVoiceDeviceMock.mockReturnValue({
-            error: null,
-            warning: warningMock,
-            actions: actionsMock,
-        } as any)
+        stateMock.error = null
 
-        renderHook(() => useErrorHandling())
+        renderHook(() => useErrorHandling(stateMock, actionsMock))
 
         expect(dispatchMock).toHaveBeenCalledWith(
             dismissNotification('phone-error-banner')
@@ -79,14 +72,10 @@ describe('useErrorHandling', () => {
     })
 
     it('should dismiss the error notification when the error is recoverable', () => {
-        useVoiceDeviceMock.mockReturnValue({
-            error: errorMock,
-            warning: warningMock,
-            actions: actionsMock,
-        } as VoiceDeviceContextState)
+        stateMock.warning = null
         isRecoverableErrorMock.mockReturnValue(true)
 
-        renderHook(() => useErrorHandling())
+        renderHook(() => useErrorHandling(stateMock, actionsMock))
 
         expect(dispatchMock).toHaveBeenCalledWith(
             dismissNotification('phone-error-banner')
@@ -100,13 +89,7 @@ describe('useErrorHandling', () => {
     })
 
     it('should dispatch a warning notification when there is a warning', () => {
-        useVoiceDeviceMock.mockReturnValue({
-            error: errorMock,
-            warning: warningMock,
-            actions: actionsMock,
-        } as VoiceDeviceContextState)
-
-        renderHook(() => useErrorHandling())
+        renderHook(() => useErrorHandling(stateMock, actionsMock))
 
         expect(notifyMock).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -118,13 +101,9 @@ describe('useErrorHandling', () => {
     })
 
     it('should dismiss the warning notification when there is no warning', () => {
-        useVoiceDeviceMock.mockReturnValue({
-            error: errorMock,
-            warning: null,
-            actions: actionsMock,
-        } as any)
+        stateMock.warning = null
 
-        renderHook(() => useErrorHandling())
+        renderHook(() => useErrorHandling(stateMock, actionsMock))
 
         expect(dispatchMock).toHaveBeenCalledWith(
             dismissNotification('phone-warning-banner')
@@ -132,13 +111,9 @@ describe('useErrorHandling', () => {
     })
 
     it('should call setWarning when the warning notification is clicked', () => {
-        useVoiceDeviceMock.mockReturnValue({
-            error: null,
-            warning: warningMock,
-            actions: actionsMock,
-        } as any)
+        stateMock.error = null
 
-        renderHook(() => useErrorHandling())
+        renderHook(() => useErrorHandling(stateMock, actionsMock))
 
         const onClose = (notifyMock.mock.calls?.[0]?.[0] as BannerNotification)
             .onClose

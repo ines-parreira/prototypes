@@ -1,7 +1,7 @@
 import {EventEmitter} from 'events'
 
 import {waitFor} from '@testing-library/react'
-import {Call, Device} from '@twilio/voice-sdk'
+import {Call, Device, TwilioError} from '@twilio/voice-sdk'
 import {fromJS} from 'immutable'
 
 import {appQueryClient} from 'api/queryClient'
@@ -26,6 +26,7 @@ import {
     handleAcceptedCallEvent,
     logCallEnd,
 } from 'hooks/integrations/phone/utils'
+import {CALL_FAILED_MICROPHONE_PERMISSION_ERROR} from 'pages/common/components/PhoneIntegrationBar/constants'
 import {VoiceDeviceActions} from 'pages/integrations/integration/components/voice/types'
 import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
 import {ActivityEvents} from 'services/activityTracker'
@@ -733,5 +734,32 @@ describe('logCallEnd', () => {
                 entityId: 123456,
             }
         )
+    })
+})
+
+describe('errorMessage', () => {
+    it('should return michrophone permission error message for PermissionDeniedError', () => {
+        const error = new TwilioError.TwilioError()
+        error.code = TwilioErrorCode.UserMediaPermissionDenied
+        expect(utils.errorMessage(error)).toEqual(
+            CALL_FAILED_MICROPHONE_PERMISSION_ERROR
+        )
+    })
+})
+
+describe('isRecoverableError', () => {
+    it.each([TwilioErrorCode.UserMediaPermissionDenied])(
+        'should return false for unrecoverable %s error',
+        (code) => {
+            const error = new TwilioError.TwilioError()
+            error.code = code
+            expect(utils.isRecoverableError(error)).toBeFalsy()
+        }
+    )
+
+    it('should return true for recoverable errors', () => {
+        const error = new TwilioError.TwilioError()
+        error.code = TwilioErrorCode.GeneralTransport
+        expect(utils.isRecoverableError(error)).toBeTruthy()
     })
 })

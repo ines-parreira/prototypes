@@ -32,12 +32,12 @@ export default function VoiceDeviceProvider({
 
     const appDispatch = useAppDispatch()
 
-    useErrorHandling()
-
     const actions = useMemo(
         () => bindActionCreators(contextActions, dispatch as Dispatch),
         [dispatch]
     )
+
+    useErrorHandling(state, actions)
 
     useEffect(() => {
         if (state.error && !isRecoverableError(state.error)) {

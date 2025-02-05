@@ -22,6 +22,7 @@ import {
 } from 'hooks/integrations/phone/api'
 import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
 import {ListVoiceCallsParams} from 'models/voiceCall/types'
+import {CALL_FAILED_MICROPHONE_PERMISSION_ERROR} from 'pages/common/components/PhoneIntegrationBar/constants'
 import {VoiceDeviceActions} from 'pages/integrations/integration/components/voice/types'
 import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
 import socketManager from 'services/socketManager/socketManager'
@@ -457,7 +458,7 @@ export function errorMessage(error: Error): string {
     if (error instanceof TwilioError.TwilioError) {
         switch (error.code) {
             case TwilioErrorCode.UserMediaPermissionDenied:
-                return `Microphone access has not been granted. (Error code: ${error.code})`
+                return CALL_FAILED_MICROPHONE_PERMISSION_ERROR
             default:
                 return `${DEFAULT_ERROR_MESSAGE} (Error code: ${error.code})`
         }

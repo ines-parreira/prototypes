@@ -6,6 +6,7 @@ import {Provider} from 'react-redux'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import VoiceDeviceProvider from 'pages/integrations/integration/components/voice/VoiceDeviceProvider'
 import {RootState, StoreDispatch} from 'state/types'
 import {isDeviceReady} from 'utils/device'
 
@@ -16,6 +17,14 @@ import PhoneTicketSubmitButtons from '../PhoneTicketSubmitButtons'
 jest.mock('utils/device')
 
 const isDeviceReadyMock = assumeMock(isDeviceReady)
+
+const getWrapper =
+    (store: any) =>
+    ({children}: any) => (
+        <Provider store={store}>
+            <VoiceDeviceProvider>{children}</VoiceDeviceProvider>
+        </Provider>
+    )
 
 describe('<PhoneTicketSubmitButtons/>', () => {
     let store: MockStoreEnhanced
@@ -65,11 +74,9 @@ describe('<PhoneTicketSubmitButtons/>', () => {
         const state = getState()
         store = mockStore(state)
 
-        const {getByText} = render(
-            <Provider store={store}>
-                <PhoneTicketSubmitButtons />
-            </Provider>
-        )
+        const {getByText} = render(<PhoneTicketSubmitButtons />, {
+            wrapper: getWrapper(store),
+        })
 
         expect(getByText('Call')).toBeVisible()
     })
@@ -85,11 +92,9 @@ describe('<PhoneTicketSubmitButtons/>', () => {
         (invalidState) => {
             store = mockStore(invalidState)
 
-            const {getByRole} = render(
-                <Provider store={store}>
-                    <PhoneTicketSubmitButtons />
-                </Provider>
-            )
+            const {getByRole} = render(<PhoneTicketSubmitButtons />, {
+                wrapper: getWrapper(store),
+            })
 
             expect(getByRole('button', {name: 'Call'})).toBeAriaDisabled()
         }
@@ -100,11 +105,9 @@ describe('<PhoneTicketSubmitButtons/>', () => {
 
         isDeviceReadyMock.mockReturnValue(false)
 
-        const {getByRole} = render(
-            <Provider store={store}>
-                <PhoneTicketSubmitButtons />
-            </Provider>
-        )
+        const {getByRole} = render(<PhoneTicketSubmitButtons />, {
+            wrapper: getWrapper(store),
+        })
 
         expect(getByRole('button', {name: 'Call'})).toBeAriaDisabled()
     })

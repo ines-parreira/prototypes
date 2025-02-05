@@ -5,19 +5,20 @@ import {AlertBannerTypes} from 'AlertBanners'
 import {DEFAULT_WARNING_MESSAGE} from 'business/twilio'
 import {errorMessage, isRecoverableError} from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {VoiceDeviceActions} from 'pages/integrations/integration/components/voice/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStyle} from 'state/notifications/types'
 
-import useVoiceDevice from './useVoiceDevice'
+import {State} from 'state/twilio/voiceDevice'
 
 enum PhoneAlertBanner {
     Error = 'phone-error-banner',
     Warning = 'phone-warning-banner',
 }
 
-export function useErrorHandling() {
+export function useErrorHandling(state: State, actions: VoiceDeviceActions) {
     const dispatch = useAppDispatch()
-    const {error, warning, actions} = useVoiceDevice()
+    const {error, warning} = state
 
     useEffect(() => {
         if (error && !isRecoverableError(error)) {
