@@ -6,6 +6,7 @@ import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
 import {useDistributionTrendReportData} from 'hooks/reporting/common/useDistributionTrendReportData'
 import {LegacyStatsFilters} from 'models/stat/types'
+import {formatMetricValue} from 'pages/stats/common/utils'
 
 describe('useDistributionTrendReportData', () => {
     const defaultStatsFilters: LegacyStatsFilters = {
@@ -48,6 +49,7 @@ describe('useDistributionTrendReportData', () => {
                 .fn()
                 .mockResolvedValue({data: workloadPreviousData}),
             labelPrefix,
+            metricFormat: 'decimal' as const,
         }
 
         const {result} = renderHook(() =>
@@ -64,13 +66,15 @@ describe('useDistributionTrendReportData', () => {
                 data: [
                     {
                         label: `${labelPrefix} - ${emailResult.label}`,
-                        value: emailResult.value,
-                        prevValue: emailPreviousResult.value,
+                        value: formatMetricValue(emailResult.value),
+                        prevValue: formatMetricValue(emailPreviousResult.value),
                     },
                     {
                         label: `${labelPrefix} - ${facebookResult.label}`,
-                        value: facebookResult.value,
-                        prevValue: facebookPreviousResult.value,
+                        value: formatMetricValue(facebookResult.value),
+                        prevValue: formatMetricValue(
+                            facebookPreviousResult.value
+                        ),
                     },
                 ],
             })
@@ -84,6 +88,7 @@ describe('useDistributionTrendReportData', () => {
                 .mockResolvedValue({data: workloadData}),
             fetchPreviousDistribution: jest.fn().mockResolvedValue({data: []}),
             labelPrefix,
+            metricFormat: 'decimal' as const,
         }
 
         const {result} = renderHook(() =>
@@ -100,13 +105,13 @@ describe('useDistributionTrendReportData', () => {
                 data: [
                     {
                         label: `${labelPrefix} - ${emailResult.label}`,
-                        value: emailResult.value,
-                        prevValue: undefined,
+                        value: formatMetricValue(emailResult.value),
+                        prevValue: formatMetricValue(undefined),
                     },
                     {
                         label: `${labelPrefix} - ${facebookResult.label}`,
-                        value: facebookResult.value,
-                        prevValue: undefined,
+                        value: formatMetricValue(facebookResult.value),
+                        prevValue: formatMetricValue(undefined),
                     },
                 ],
             })
@@ -118,6 +123,7 @@ describe('useDistributionTrendReportData', () => {
             fetchCurrentDistribution: jest.fn().mockRejectedValue({}),
             fetchPreviousDistribution: jest.fn().mockRejectedValue({}),
             labelPrefix,
+            metricFormat: 'decimal' as const,
         }
         const {result} = renderHook(() =>
             useDistributionTrendReportData(

@@ -70,11 +70,17 @@ export const ServiceLevelAgreementsReportConfig: ReportConfig<ServiceLevelAgreem
                         type: DataExportFormat.Trend,
                         fetch: fetchTicketSlaAchievementRateTrend,
                         title: ACHIEVEMENT_RATE_LABEL,
+                        metricFormat:
+                            SlaMetricConfig[SlaMetric.AchievementRate]
+                                .metricFormat,
                     },
                     {
                         type: DataExportFormat.Trend,
                         fetch: fetchBreachedSlaTicketsTrend,
                         title: TICKETS_WITH_BREACHED_SLAS_LABEL,
+                        metricFormat:
+                            SlaMetricConfig[SlaMetric.AchievementRate]
+                                .metricFormat,
                     },
                 ],
                 chartType: ChartType.Card,
@@ -89,11 +95,17 @@ export const ServiceLevelAgreementsReportConfig: ReportConfig<ServiceLevelAgreem
                         type: DataExportFormat.Trend,
                         fetch: fetchBreachedSlaTicketsTrend,
                         title: BREACHED_SLA_LABEL,
+                        metricFormat:
+                            SlaMetricConfig[SlaMetric.BreachedTicketsRate]
+                                .metricFormat,
                     },
                     {
                         type: DataExportFormat.Trend,
                         fetch: fetchSatisfiedSlaTicketsTrend,
                         title: ACHIEVED_SLA_LABEL,
+                        metricFormat:
+                            SlaMetricConfig[SlaMetric.BreachedTicketsRate]
+                                .metricFormat,
                     },
                 ],
                 chartType: ChartType.Card,

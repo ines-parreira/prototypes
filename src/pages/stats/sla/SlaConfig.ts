@@ -14,7 +14,7 @@ export const SlaMetricConfig: Record<
         title: string
         useTrend: MetricTrendHook
         interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
-        metricFormat?: MetricTrendFormat
+        metricFormat: MetricTrendFormat
         drillDownMetric: SlaMetric
     }
 > = {

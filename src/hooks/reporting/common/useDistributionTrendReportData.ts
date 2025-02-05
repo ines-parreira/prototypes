@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react'
 
 import {MetricPerDimensionFetch} from 'hooks/reporting/distributions'
 import {StatsFilters} from 'models/stat/types'
-import {TrendDataWithLabel} from 'services/reporting/supportPerformanceReportingService'
+import {formatMetricValue, MetricTrendFormat} from 'pages/stats/common/utils'
 
 export type LabelledData = {
     label: string
@@ -12,12 +12,16 @@ export type LabelledData = {
 export const formatPerDimensionTrendData = (
     current: LabelledData,
     previous: LabelledData,
-    labelPrefix: string
+    labelPrefix: string,
+    metricFormat: MetricTrendFormat
 ) =>
     current.map((dataPoint) => ({
         label: `${labelPrefix} - ${dataPoint.label}`,
-        value: dataPoint.value,
-        prevValue: previous.find((row) => row.label === dataPoint.label)?.value,
+        value: formatMetricValue(dataPoint.value, metricFormat),
+        prevValue: formatMetricValue(
+            previous.find((row) => row.label === dataPoint.label)?.value,
+            metricFormat
+        ),
     }))
 
 export const useDistributionTrendReportData = (
@@ -27,11 +31,16 @@ export const useDistributionTrendReportData = (
         fetchCurrentDistribution: MetricPerDimensionFetch
         fetchPreviousDistribution: MetricPerDimensionFetch
         labelPrefix: string
+        metricFormat: MetricTrendFormat
     }
 ) => {
     const [perDimensionData, setPerDimensionData] = useState<{
         isFetching: boolean
-        data: TrendDataWithLabel[]
+        data: {
+            label: string
+            value: string
+            prevValue: string
+        }[]
     }>({
         isFetching: true,
         data: [],
@@ -55,7 +64,8 @@ export const useDistributionTrendReportData = (
                         data: formatPerDimensionTrendData(
                             currentPerDimensionData.data,
                             previousPerDimensionData.data,
-                            fetchDistributions.labelPrefix
+                            fetchDistributions.labelPrefix,
+                            fetchDistributions.metricFormat
                         ),
                     })
                 })

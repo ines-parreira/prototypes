@@ -55,6 +55,10 @@ export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {
                     fetch: SatisfactionMetricConfig[
                         SatisfactionMetric.SatisfactionScore
                     ].fetchTrend,
+                    metricFormat:
+                        SatisfactionMetricConfig[
+                            SatisfactionMetric.SatisfactionScore
+                        ].metricFormat,
                 },
             ],
             chartType: ChartType.Card,
@@ -72,6 +76,10 @@ export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {
                     fetch: SatisfactionMetricConfig[
                         SatisfactionMetric.ResponseRate
                     ].fetchTrend,
+                    metricFormat:
+                        SatisfactionMetricConfig[
+                            SatisfactionMetric.ResponseRate
+                        ].metricFormat,
                 },
             ],
             chartType: ChartType.Card,
@@ -89,6 +97,9 @@ export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {
                     fetch: SatisfactionMetricConfig[
                         SatisfactionMetric.SurveysSent
                     ].fetchTrend,
+                    metricFormat:
+                        SatisfactionMetricConfig[SatisfactionMetric.SurveysSent]
+                            .metricFormat,
                 },
             ],
             chartType: ChartType.Card,
@@ -107,6 +118,10 @@ export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {
                     fetch: SatisfactionMetricConfig[
                         SatisfactionMetric.AverageSurveyScore
                     ].fetchTrend,
+                    metricFormat:
+                        SatisfactionMetricConfig[
+                            SatisfactionMetric.AverageSurveyScore
+                        ].metricFormat,
                 },
                 {
                     type: DataExportFormat.Table,

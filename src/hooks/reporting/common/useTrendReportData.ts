@@ -2,38 +2,49 @@ import {useEffect, useState} from 'react'
 
 import {MetricTrendFetch} from 'hooks/reporting/useMetricTrend'
 import {StatsFilters} from 'models/stat/types'
-import {TrendDataWithLabel} from 'services/reporting/supportPerformanceReportingService'
+import {formatMetricValue, MetricValueFormat} from 'pages/stats/common/utils'
+import {FormattedTrendDataWithLabel} from 'services/reporting/supportPerformanceReportingService'
 
 export const useTrendReportData = (
     cleanStatsFilters: StatsFilters,
     userTimezone: string,
-    workloadReportSource: {fetchTrend: MetricTrendFetch; title: string}[]
+    trendsReportSource: {
+        fetchTrend: MetricTrendFetch
+        metricFormat: MetricValueFormat
+        title: string
+    }[]
 ) => {
-    const [workloadTrendData, setWorkloadTrendData] = useState<{
+    const [trendData, setTrendData] = useState<{
         isFetching: boolean
-        data: TrendDataWithLabel[]
+        data: FormattedTrendDataWithLabel[]
     }>({
         isFetching: true,
         data: [],
     })
 
     useEffect(() => {
-        const workloadTrendPromises = workloadReportSource.map((r) =>
+        const workloadTrendPromises = trendsReportSource.map((r) =>
             r.fetchTrend(cleanStatsFilters, userTimezone)
         )
         void Promise.all([...workloadTrendPromises])
             .then((results) => {
-                setWorkloadTrendData({
+                setTrendData({
                     isFetching: false,
-                    data: workloadReportSource.map((r, index) => ({
+                    data: trendsReportSource.map((r, index) => ({
                         label: r.title,
-                        value: results[index].data?.value,
-                        prevValue: results[index].data?.prevValue,
+                        value: formatMetricValue(
+                            results[index].data?.value,
+                            r.metricFormat
+                        ),
+                        prevValue: formatMetricValue(
+                            results[index].data?.prevValue,
+                            r.metricFormat
+                        ),
                     })),
                 })
             })
-            .catch(() => setWorkloadTrendData({isFetching: false, data: []}))
-    }, [cleanStatsFilters, userTimezone, workloadReportSource])
+            .catch(() => setTrendData({isFetching: false, data: []}))
+    }, [cleanStatsFilters, userTimezone, trendsReportSource])
 
-    return workloadTrendData
+    return trendData
 }

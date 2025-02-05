@@ -1,5 +1,4 @@
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {formatMetricValue} from 'pages/stats/common/utils'
 import {
     CURRENT_PERIOD_LABEL,
     EMPTY_LABEL,
@@ -8,10 +7,10 @@ import {
 } from 'services/reporting/constants'
 import {createCsv} from 'utils/file'
 
-export type TrendDataWithLabel = {
+export type FormattedTrendDataWithLabel = {
     label: string
-    value: number | null | undefined
-    prevValue: number | null | undefined
+    value: string
+    prevValue: string
 }
 
 export interface TimeSeriesDataWithLabels {
@@ -19,14 +18,10 @@ export interface TimeSeriesDataWithLabels {
     data?: TimeSeriesDataItem[][]
 }
 
-const getTrendDataReport = (data: TrendDataWithLabel[]) => {
+const getTrendDataReport = (data: FormattedTrendDataWithLabel[]) => {
     return [
         [EMPTY_LABEL, CURRENT_PERIOD_LABEL, PREVIOUS_PERIOD_LABEL],
-        ...data.map((row) => [
-            row.label,
-            formatMetricValue(row?.value),
-            formatMetricValue(row?.prevValue),
-        ]),
+        ...data.map((row) => [row.label, row.value, row.prevValue]),
     ]
 }
 
@@ -64,7 +59,7 @@ export const createTimeSeriesReport = (
 }
 
 export const createTrendReport = (
-    data: TrendDataWithLabel[],
+    data: FormattedTrendDataWithLabel[],
     fileName: string
 ) => {
     if (data.length === 0) {

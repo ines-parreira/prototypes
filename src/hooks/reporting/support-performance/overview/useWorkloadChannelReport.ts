@@ -19,6 +19,7 @@ export const useWorkloadChannelReport = (
             : () => Promise.resolve({data: []}),
         labelPrefix: WORKLOAD_BY_CHANNEL_LABEL,
         title: 'distributions',
+        metricFormat: 'decimal' as const,
     }
 
     const distributions = useDistributionTrendReportData(

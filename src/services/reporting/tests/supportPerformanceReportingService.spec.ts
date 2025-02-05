@@ -69,35 +69,37 @@ const timeSeriesData: TimeSeriesDataWithLabels[] = [
 const workloadDataSource = [
     {
         label: OPEN_TICKETS_LABEL,
-        value: exampleTrendReportResponse.data?.value,
-        prevValue: exampleTrendReportResponse.data?.prevValue,
+        value: String(exampleTrendReportResponse.data?.value),
+        prevValue: String(exampleTrendReportResponse.data?.prevValue),
     },
     {
         label: TICKETS_CREATED_LABEL,
-        value: exampleTrendReportResponse.data?.value,
-        prevValue: exampleTrendReportResponse.data?.prevValue,
+        value: String(exampleTrendReportResponse.data?.value),
+        prevValue: String(exampleTrendReportResponse.data?.prevValue),
     },
     {
         label: TICKETS_REPLIED_LABEL,
-        value: exampleTrendReportResponse.data?.value,
-        prevValue: exampleTrendReportResponse.data?.prevValue,
+        value: String(exampleTrendReportResponse.data?.value),
+        prevValue: String(exampleTrendReportResponse.data?.prevValue),
     },
     {
         label: TICKETS_CLOSED_LABEL,
-        value: exampleTrendReportResponse.data?.value,
-        prevValue: exampleTrendReportResponse.data?.prevValue,
+        value: String(exampleTrendReportResponse.data?.value),
+        prevValue: String(exampleTrendReportResponse.data?.prevValue),
     },
     {
         label: MESSAGES_SENT_LABEL,
-        value: exampleTrendReportResponse.data?.value,
-        prevValue: exampleTrendReportResponse.data?.prevValue,
+        value: String(exampleTrendReportResponse.data?.value),
+        prevValue: String(exampleTrendReportResponse.data?.prevValue),
     },
     ...(exampleWorkloadPerChannelData.data?.map((channelData) => ({
         label: `${WORKLOAD_BY_CHANNEL_LABEL} - ${channelData.label}`,
-        value: channelData.value,
-        prevValue: exampleWorkloadPerChannelData.data?.find(
-            (row) => row.label === channelData.label
-        )?.value,
+        value: String(channelData.value),
+        prevValue: String(
+            exampleWorkloadPerChannelData.data?.find(
+                (row) => row.label === channelData.label
+            )?.value
+        ),
     })) || []),
 ]
 

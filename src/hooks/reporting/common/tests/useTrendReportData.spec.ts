@@ -15,6 +15,7 @@ import {
 import {workloadReportSource} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {LegacyStatsFilters} from 'models/stat/types'
+import {formatMetricValue} from 'pages/stats/common/utils'
 import {
     MESSAGES_SENT_LABEL,
     OPEN_TICKETS_LABEL,
@@ -105,28 +106,48 @@ describe('useTrendReport', () => {
                 data: [
                     {
                         label: OPEN_TICKETS_LABEL,
-                        value: openTicketsMetricTrend.data.value,
-                        prevValue: openTicketsMetricTrend.data.prevValue,
+                        value: formatMetricValue(
+                            openTicketsMetricTrend.data.value
+                        ),
+                        prevValue: formatMetricValue(
+                            openTicketsMetricTrend.data.prevValue
+                        ),
                     },
                     {
                         label: TICKETS_CREATED_LABEL,
-                        value: createdTicketsMetricTrend.data.value,
-                        prevValue: createdTicketsMetricTrend.data.prevValue,
+                        value: formatMetricValue(
+                            createdTicketsMetricTrend.data.value
+                        ),
+                        prevValue: formatMetricValue(
+                            createdTicketsMetricTrend.data.prevValue
+                        ),
                     },
                     {
                         label: TICKETS_REPLIED_LABEL,
-                        value: repliedTicketsMetricTrend.data.value,
-                        prevValue: repliedTicketsMetricTrend.data.prevValue,
+                        value: formatMetricValue(
+                            repliedTicketsMetricTrend.data.value
+                        ),
+                        prevValue: formatMetricValue(
+                            repliedTicketsMetricTrend.data.prevValue
+                        ),
                     },
                     {
                         label: TICKETS_CLOSED_LABEL,
-                        value: closedTicketsMetricTrend.data.value,
-                        prevValue: closedTicketsMetricTrend.data.prevValue,
+                        value: formatMetricValue(
+                            closedTicketsMetricTrend.data.value
+                        ),
+                        prevValue: formatMetricValue(
+                            closedTicketsMetricTrend.data.prevValue
+                        ),
                     },
                     {
                         label: MESSAGES_SENT_LABEL,
-                        value: messagesSentMetricTrend.data.value,
-                        prevValue: messagesSentMetricTrend.data.prevValue,
+                        value: formatMetricValue(
+                            messagesSentMetricTrend.data.value
+                        ),
+                        prevValue: formatMetricValue(
+                            messagesSentMetricTrend.data.prevValue
+                        ),
                     },
                 ],
             })
@@ -135,6 +156,7 @@ describe('useTrendReport', () => {
 
     it('should return the labeled data', async () => {
         useOpenTicketsTrendMock.mockRejectedValue({})
+
         const {result} = renderHook(() =>
             useTrendReportData(defaultStatsFilters, 'UTC', workloadReportSource)
         )

@@ -9,9 +9,11 @@ import {useTrendReportData} from 'hooks/reporting/common/useTrendReportData'
 import {
     fetchWorkloadPerChannelDistribution,
     fetchWorkloadPerChannelDistributionForPreviousPeriod,
+    MetricPerDimensionFetch,
 } from 'hooks/reporting/distributions'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {Period} from 'models/stat/types'
+import {MetricTrendFormat} from 'pages/stats/common/utils'
 import {
     OverviewChartConfig,
     OverviewMetric,
@@ -90,12 +92,18 @@ export const useDownloadOverViewData = (fetchingEnabled = true) => {
         timeSeriesReportSource
     )
 
-    const workloadPerChannelDataSourceRuntime = useMemo(
+    const workloadPerChannelDataSourceRuntime: {
+        fetchCurrentDistribution: MetricPerDimensionFetch
+        fetchPreviousDistribution: MetricPerDimensionFetch
+        labelPrefix: string
+        metricFormat: MetricTrendFormat
+    } = useMemo(
         () => ({
             fetchCurrentDistribution: fetchWorkloadPerChannelDistribution,
             fetchPreviousDistribution: fetchingEnabled
                 ? fetchWorkloadPerChannelDistributionForPreviousPeriod
                 : () => Promise.resolve({data: []}),
+            metricFormat: 'decimal',
             labelPrefix: WORKLOAD_BY_CHANNEL_LABEL,
         }),
         [fetchingEnabled]

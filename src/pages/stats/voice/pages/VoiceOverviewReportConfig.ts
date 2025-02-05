@@ -71,6 +71,7 @@ export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
                 {
                     type: DataExportFormat.Trend,
                     fetch: fetchVoiceCallAverageTimeWaitTimeTrend,
+                    metricFormat: 'decimal',
                 },
             ],
         },
@@ -83,6 +84,7 @@ export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
                 {
                     type: DataExportFormat.Trend,
                     fetch: fetchVoiceCallAverageTimeTalkTimeTrend,
+                    metricFormat: 'decimal',
                 },
             ],
         },
@@ -95,6 +97,7 @@ export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
                 {
                     type: DataExportFormat.Trend,
                     fetch: fetchVoiceCallCountTrend,
+                    metricFormat: 'integer',
                 },
             ],
         },
@@ -107,6 +110,7 @@ export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
                 {
                     type: DataExportFormat.Trend,
                     fetch: fetchVoiceCallCountOutboundTrend,
+                    metricFormat: 'integer',
                 },
             ],
         },
@@ -119,6 +123,7 @@ export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
                 {
                     type: DataExportFormat.Trend,
                     fetch: fetchVoiceCallCountInboundTrend,
+                    metricFormat: 'integer',
                 },
             ],
         },
@@ -131,6 +136,7 @@ export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
                 {
                     type: DataExportFormat.Trend,
                     fetch: fetchVoiceCallCountMissedTrend,
+                    metricFormat: 'integer',
                 },
             ],
         },
@@ -140,12 +146,6 @@ export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
             description: CALL_LIST_HINT,
             chartType: ChartType.Table,
             csvProducer: null,
-            // csvProducer: [ // TODO
-            //     {
-            //         type: DataExportFormat.Table,
-            //         fetch: ,
-            //     },
-            // ],
         },
     },
     reportFilters: {

@@ -164,6 +164,9 @@ describe('useDownloadCustomReportData', () => {
                     title: SupportPerformanceOverviewReportConfig.charts[
                         trendChartId
                     ].label,
+                    metricFormat:
+                        OverviewMetricConfig[OverviewMetric.MessagesPerTicket]
+                            .metricFormat,
                 },
             ])
         )
@@ -221,6 +224,9 @@ describe('useDownloadCustomReportData', () => {
                     title: SupportPerformanceOverviewReportConfig.charts[
                         trendChartId
                     ].label,
+                    metricFormat:
+                        OverviewMetricConfig[OverviewMetric.MessagesPerTicket]
+                            .metricFormat,
                 },
             ])
         )

@@ -16,6 +16,7 @@ import {
     TimeSeriesFetch,
     TimeSeriesPerDimensionFetch,
 } from 'hooks/reporting/useTimeSeries'
+import {MetricTrendFormat, MetricValueFormat} from 'pages/stats/common/utils'
 import {
     ChartConfig,
     CustomReportChild,
@@ -57,20 +58,29 @@ const chartsLookupTable: Record<string, ChartConfig | undefined> = {
 }
 
 type Queries = {
-    timeSeries: {fetchTimeSeries: TimeSeriesFetch; title: string}[]
+    timeSeries: {
+        fetchTimeSeries: TimeSeriesFetch
+
+        title: string
+    }[]
     timeSeriesPerDimension: {
         fetchTimeSeries: TimeSeriesPerDimensionFetch
         title: string
         headers: string[]
         dimensions: string[]
     }[]
-    trends: {fetchTrend: MetricTrendFetch; title: string}[]
+    trends: {
+        fetchTrend: MetricTrendFetch
+        metricFormat: MetricValueFormat
+        title: string
+    }[]
     tables: {fetchTable: ReportFetch; title: string}[]
     distributions:
         | {
               fetchCurrentDistribution: MetricPerDimensionFetch
               fetchPreviousDistribution: MetricPerDimensionFetch
               labelPrefix: string
+              metricFormat: MetricTrendFormat
               title: string
           }
         | undefined
@@ -87,6 +97,7 @@ const reduceReport = (acc: Queries, child: CustomReportChild): Queries => {
             if (producer.type === DataExportFormat.Trend) {
                 acc.trends.push({
                     fetchTrend: producer.fetch,
+                    metricFormat: producer.metricFormat,
                     title: producer.title ?? String(config.label),
                 })
             }
@@ -107,6 +118,7 @@ const reduceReport = (acc: Queries, child: CustomReportChild): Queries => {
             if (producer.type === DataExportFormat.Distribution) {
                 acc.distributions = {
                     ...producer.fetch,
+                    metricFormat: 'decimal',
                     title: String(config.label),
                 }
             }

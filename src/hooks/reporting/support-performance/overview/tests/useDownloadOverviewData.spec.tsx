@@ -90,8 +90,8 @@ describe('useDownloadOverviewData', () => {
         const trendReportData = [
             {
                 label: 'string',
-                value: 23,
-                prevValue: 46,
+                value: '23',
+                prevValue: '46',
             },
         ]
         const timeSeriesReportData = [
@@ -100,13 +100,13 @@ describe('useDownloadOverviewData', () => {
         const workloadData = [
             {
                 label: 'email',
-                value: 1,
-                prevValue: 2,
+                value: '1',
+                prevValue: '2',
             },
             {
                 label: 'facebook',
-                value: 1,
-                prevValue: 2,
+                value: '1',
+                prevValue: '2',
             },
         ]
         useTrendReportDataMock.mockReturnValue({
@@ -163,6 +163,7 @@ describe('useDownloadOverviewData', () => {
                 fetchCurrentDistribution: fetchWorkloadPerChannelDistribution,
                 fetchPreviousDistribution: expect.any(Function),
                 labelPrefix: WORKLOAD_BY_CHANNEL_LABEL,
+                metricFormat: 'decimal',
             }
         )
         const previousFetchFunction =

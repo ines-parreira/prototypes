@@ -1,4 +1,5 @@
 import {Tag} from '@gorgias/api-queries'
+
 import {ReactNode} from 'react'
 
 import {User} from 'config/types/user'
@@ -13,6 +14,7 @@ import {Channel} from 'models/channel/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StaticFilter, StatsFilters} from 'models/stat/types'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
+import {MetricValueFormat} from 'pages/stats/common/utils'
 import {HelpCenterChart} from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
 import {SatisfactionChart} from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
 import {ServiceLevelAgreementsChart} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
@@ -122,7 +124,12 @@ export type ReportFetch = (
 }>
 
 export type DataExportFetch =
-    | {type: DataExportFormat.Trend; fetch: MetricTrendFetch; title?: string}
+    | {
+          type: DataExportFormat.Trend
+          fetch: MetricTrendFetch
+          metricFormat: MetricValueFormat
+          title?: string
+      }
     | {type: DataExportFormat.Table; fetch: ReportFetch}
     | {
           type: DataExportFormat.TimeSeries

@@ -82,7 +82,8 @@ describe('useWorkloadChannelReport', () => {
                 data: formatPerDimensionTrendData(
                     workloadDistribution.data,
                     workloadDistributionPrevious.data,
-                    WORKLOAD_BY_CHANNEL_LABEL
+                    WORKLOAD_BY_CHANNEL_LABEL,
+                    'decimal'
                 ),
             })
         })
@@ -102,7 +103,8 @@ describe('useWorkloadChannelReport', () => {
                 data: formatPerDimensionTrendData(
                     workloadDistribution.data,
                     [],
-                    WORKLOAD_BY_CHANNEL_LABEL
+                    WORKLOAD_BY_CHANNEL_LABEL,
+                    'decimal'
                 ),
             })
         })

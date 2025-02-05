@@ -57,6 +57,9 @@ export const AutoQAReportConfig: ReportConfig<AutoQAChart> = {
                     type: DataExportFormat.Trend,
                     fetch: TrendCardConfig[AutoQAMetric.ReviewedClosedTickets]
                         .fetchTrend,
+                    metricFormat:
+                        TrendCardConfig[AutoQAMetric.ReviewedClosedTickets]
+                            .metricFormat,
                 },
             ],
             chartType: ChartType.Card,
@@ -71,6 +74,9 @@ export const AutoQAReportConfig: ReportConfig<AutoQAChart> = {
                     type: DataExportFormat.Trend,
                     fetch: TrendCardConfig[AutoQAMetric.ResolutionCompleteness]
                         .fetchTrend,
+                    metricFormat:
+                        TrendCardConfig[AutoQAMetric.ResolutionCompleteness]
+                            .metricFormat,
                 },
             ],
             chartType: ChartType.Card,
@@ -85,6 +91,9 @@ export const AutoQAReportConfig: ReportConfig<AutoQAChart> = {
                     type: DataExportFormat.Trend,
                     fetch: TrendCardConfig[AutoQAMetric.CommunicationSkills]
                         .fetchTrend,
+                    metricFormat:
+                        TrendCardConfig[AutoQAMetric.CommunicationSkills]
+                            .metricFormat,
                 },
             ],
             chartType: ChartType.Card,
@@ -99,6 +108,9 @@ export const AutoQAReportConfig: ReportConfig<AutoQAChart> = {
                     type: DataExportFormat.Trend,
                     fetch: TrendCardConfig[AutoQAMetric.LanguageProficiency]
                         .fetchTrend,
+                    metricFormat:
+                        TrendCardConfig[AutoQAMetric.LanguageProficiency]
+                            .metricFormat,
                 },
             ],
             chartType: ChartType.Card,
@@ -111,6 +123,8 @@ export const AutoQAReportConfig: ReportConfig<AutoQAChart> = {
                 {
                     type: DataExportFormat.Trend,
                     fetch: TrendCardConfig[AutoQAMetric.Accuracy].fetchTrend,
+                    metricFormat:
+                        TrendCardConfig[AutoQAMetric.Accuracy].metricFormat,
                 },
             ],
             chartType: ChartType.Card,
@@ -123,6 +137,8 @@ export const AutoQAReportConfig: ReportConfig<AutoQAChart> = {
                 {
                     type: DataExportFormat.Trend,
                     fetch: TrendCardConfig[AutoQAMetric.Efficiency].fetchTrend,
+                    metricFormat:
+                        TrendCardConfig[AutoQAMetric.Efficiency].metricFormat,
                 },
             ],
             chartType: ChartType.Card,
@@ -137,6 +153,9 @@ export const AutoQAReportConfig: ReportConfig<AutoQAChart> = {
                     type: DataExportFormat.Trend,
                     fetch: TrendCardConfig[AutoQAMetric.InternalCompliance]
                         .fetchTrend,
+                    metricFormat:
+                        TrendCardConfig[AutoQAMetric.InternalCompliance]
+                            .metricFormat,
                 },
             ],
             chartType: ChartType.Card,
@@ -149,6 +168,8 @@ export const AutoQAReportConfig: ReportConfig<AutoQAChart> = {
                 {
                     type: DataExportFormat.Trend,
                     fetch: TrendCardConfig[AutoQAMetric.BrandVoice].fetchTrend,
+                    metricFormat:
+                        TrendCardConfig[AutoQAMetric.BrandVoice].metricFormat,
                 },
             ],
             chartType: ChartType.Card,

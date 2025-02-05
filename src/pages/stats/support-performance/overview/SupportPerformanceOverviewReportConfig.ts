@@ -72,6 +72,10 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                         fetch: OverviewMetricConfig[
                             OverviewMetric.CustomerSatisfaction
                         ].fetchTrend,
+                        metricFormat:
+                            OverviewMetricConfig[
+                                OverviewMetric.CustomerSatisfaction
+                            ].metricFormat,
                     },
                 ],
                 description:
@@ -90,6 +94,10 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                         fetch: OverviewMetricConfig[
                             OverviewMetric.MedianFirstResponseTime
                         ].fetchTrend,
+                        metricFormat:
+                            OverviewMetricConfig[
+                                OverviewMetric.MedianFirstResponseTime
+                            ].metricFormat,
                     },
                 ],
                 description:
@@ -107,6 +115,10 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                         fetch: OverviewMetricConfig[
                             OverviewMetric.MedianResolutionTime
                         ].fetchTrend,
+                        metricFormat:
+                            OverviewMetricConfig[
+                                OverviewMetric.MedianResolutionTime
+                            ].metricFormat,
                     },
                 ],
                 description:
@@ -124,6 +136,10 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                         fetch: OverviewMetricConfig[
                             OverviewMetric.MessagesPerTicket
                         ].fetchTrend,
+                        metricFormat:
+                            OverviewMetricConfig[
+                                OverviewMetric.MessagesPerTicket
+                            ].metricFormat,
                     },
                 ],
                 description:
@@ -141,6 +157,9 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                         fetch: OverviewMetricConfig[
                             OverviewMetric.TicketsCreated
                         ].fetchTrend,
+                        metricFormat:
+                            OverviewMetricConfig[OverviewMetric.TicketsCreated]
+                                .metricFormat,
                     },
                 ],
                 description:
@@ -157,6 +176,9 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                         fetch: OverviewMetricConfig[
                             OverviewMetric.TicketsClosed
                         ].fetchTrend,
+                        metricFormat:
+                            OverviewMetricConfig[OverviewMetric.TicketsClosed]
+                                .metricFormat,
                     },
                 ],
                 description:
@@ -172,6 +194,9 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                         type: DataExportFormat.Trend,
                         fetch: OverviewMetricConfig[OverviewMetric.OpenTickets]
                             .fetchTrend,
+                        metricFormat:
+                            OverviewMetricConfig[OverviewMetric.OpenTickets]
+                                .metricFormat,
                     },
                 ],
                 description:
@@ -230,6 +255,9 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                         fetch: OverviewMetricConfig[
                             OverviewMetric.TicketsReplied
                         ].fetchTrend,
+                        metricFormat:
+                            OverviewMetricConfig[OverviewMetric.TicketsReplied]
+                                .metricFormat,
                     },
                 ],
                 description:
@@ -245,6 +273,9 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                         type: DataExportFormat.Trend,
                         fetch: OverviewMetricConfig[OverviewMetric.MessagesSent]
                             .fetchTrend,
+                        metricFormat:
+                            OverviewMetricConfig[OverviewMetric.MessagesSent]
+                                .metricFormat,
                     },
                 ],
                 description:
@@ -262,6 +293,10 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                         fetch: OverviewMetricConfig[
                             OverviewMetric.TicketHandleTime
                         ].fetchTrend,
+                        metricFormat:
+                            OverviewMetricConfig[
+                                OverviewMetric.TicketHandleTime
+                            ].metricFormat,
                     },
                 ],
                 description:
@@ -279,6 +314,9 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                         fetch: OverviewMetricConfig[
                             OverviewMetric.OneTouchTickets
                         ].fetchTrend,
+                        metricFormat:
+                            OverviewMetricConfig[OverviewMetric.OneTouchTickets]
+                                .metricFormat,
                     },
                 ],
                 description:

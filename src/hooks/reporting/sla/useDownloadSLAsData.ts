@@ -11,6 +11,7 @@ import {fetchTicketSlaAchievementRateTrend} from 'hooks/reporting/sla/useTicketS
 import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
+import {SlaMetricConfig} from 'pages/stats/sla/SlaConfig'
 import {
     ACHIEVED_SLA_LABEL,
     ACHIEVEMENT_RATE_LABEL,
@@ -20,6 +21,7 @@ import {
 } from 'services/reporting/constants'
 import {createTimeSeriesPerDimensionReport} from 'services/reporting/SLAsReportingService'
 import {createTrendReport} from 'services/reporting/supportPerformanceReportingService'
+import {SlaMetric} from 'state/ui/stats/types'
 
 export const SLA_OVERVIEW_FILENAME = 'overview'
 export const SLA_TICKETS_IN_POLICY_FILENAME = 'tickets-in-policy'
@@ -30,15 +32,25 @@ const slaOverviewSource = [
     {
         fetchTrend: fetchTicketSlaAchievementRateTrend,
         title: ACHIEVEMENT_RATE_LABEL,
+        metricFormat: SlaMetricConfig[SlaMetric.AchievementRate].metricFormat,
     },
     {
         fetchTrend: fetchBreachedSlaTicketsTrend,
         title: TICKETS_WITH_BREACHED_SLAS_LABEL,
+        metricFormat: SlaMetricConfig[SlaMetric.AchievementRate].metricFormat,
     },
 ]
 const slaTicketsInPolicySource = [
-    {fetchTrend: fetchBreachedSlaTicketsTrend, title: BREACHED_SLA_LABEL},
-    {fetchTrend: fetchSatisfiedSlaTicketsTrend, title: ACHIEVED_SLA_LABEL},
+    {
+        fetchTrend: fetchBreachedSlaTicketsTrend,
+        metricFormat: SlaMetricConfig[SlaMetric.AchievementRate].metricFormat,
+        title: BREACHED_SLA_LABEL,
+    },
+    {
+        fetchTrend: fetchSatisfiedSlaTicketsTrend,
+        metricFormat: SlaMetricConfig[SlaMetric.AchievementRate].metricFormat,
+        title: ACHIEVED_SLA_LABEL,
+    },
 ]
 export const slaTrendSource = [
     {
