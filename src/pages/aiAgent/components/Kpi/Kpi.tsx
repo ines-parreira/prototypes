@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react'
 
 import {StatType} from 'models/stat/types'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {
@@ -13,7 +14,7 @@ import MetricCard from 'pages/stats/MetricCard'
 import css from './Kpi.less'
 
 type Props = {
-    title: string
+    title?: string
     isLoading?: boolean
     value?: number
     prevValue?: number
@@ -46,6 +47,14 @@ export const Kpi = ({
         }
     }, [metricType, value, currency])
 
+    const cardTitle = useMemo(() => {
+        if (title === undefined) {
+            return <Skeleton width={150} />
+        }
+
+        return <div>{title}</div>
+    }, [title])
+
     return (
         <>
             <MetricCard
@@ -53,7 +62,7 @@ export const Kpi = ({
                     isLoading,
                     className: css.card,
                     hint: hint ? {title: hint} : undefined,
-                    title,
+                    title: cardTitle,
                 }}
             >
                 <BigNumberMetric

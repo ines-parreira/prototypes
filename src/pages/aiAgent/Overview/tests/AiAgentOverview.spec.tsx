@@ -1,8 +1,10 @@
+import {QueryClientProvider} from '@tanstack/react-query'
 import {render} from '@testing-library/react'
 
 import React from 'react'
 import {useLocation} from 'react-router-dom'
 
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 
 import {AiAgentOverview} from '../AiAgentOverview'
@@ -19,8 +21,14 @@ const defaultLocation = {
 const useLocationMock = assumeMock(useLocation)
 useLocationMock.mockReturnValue(defaultLocation)
 
+const queryClient = mockQueryClient()
+
 const renderComponent = () => {
-    return render(<AiAgentOverview />)
+    return render(
+        <QueryClientProvider client={queryClient}>
+            <AiAgentOverview />
+        </QueryClientProvider>
+    )
 }
 
 describe('useAiAgentOverview', () => {

@@ -52,4 +52,9 @@ Zero.args = {
     metricType: StatType.Number,
 }
 
+export const Skeleton: Story = {}
+Skeleton.args = {
+    isLoading: true,
+}
+
 export default storyConfig

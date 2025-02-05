@@ -1,7 +1,10 @@
 import {Meta, StoryFn} from '@storybook/react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import React, {ComponentProps} from 'react'
 
 import {MemoryRouter} from 'react-router-dom'
+
+import {appQueryClient} from 'api/queryClient'
 
 import {AiAgentOverview} from './AiAgentOverview'
 
@@ -10,9 +13,11 @@ const storyConfig: Meta<typeof AiAgentOverview> = {
     component: AiAgentOverview,
     decorators: [
         (Story) => (
-            <MemoryRouter initialEntries={['/']}>
-                <Story />
-            </MemoryRouter>
+            <QueryClientProvider client={appQueryClient}>
+                <MemoryRouter initialEntries={['/']}>
+                    <Story />
+                </MemoryRouter>
+            </QueryClientProvider>
         ),
     ],
 }
