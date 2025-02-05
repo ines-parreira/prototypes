@@ -125,16 +125,22 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
                     />
                     <Separator />
                     {shopError && (
-                        <AIBanner hasError fillStyle="fill">
-                            {shopError}
-                        </AIBanner>
+                        <>
+                            <AIBanner hasError fillStyle="fill">
+                                {shopError}
+                            </AIBanner>
+                            <Separator />
+                        </>
                     )}
                     {selectedShop && (
-                        <AIBanner fillStyle="fill">
-                            {shopifyIntegrations.length > 1
-                                ? "You're already connected to Shopify. Select your store to proceed."
-                                : "You're already connected to Shopify. Click next to proceed."}
-                        </AIBanner>
+                        <>
+                            <AIBanner fillStyle="fill">
+                                {shopifyIntegrations.length > 1
+                                    ? "You're already connected to Shopify. Select your store to proceed."
+                                    : "You're already connected to Shopify. Click next to proceed."}
+                            </AIBanner>
+                            <Separator />
+                        </>
                     )}
                     <IntegrationCard
                         icon={<ShopifyIcon size="40px" />}
