@@ -3,14 +3,15 @@ import {renderHook} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+
 import {UserRole} from 'config/types/user'
 import {useFlag} from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+import useStoresRequiringScriptTagMigration from 'pages/common/components/ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {makeGetRedirectUri} from 'state/integrations/selectors'
 import {assumeMock} from 'utils/testing'
 
-import useStoresRequiringScriptTagMigration from '../../../../pages/common/components/ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'
 import {useScriptTagMigrationBanner} from '../useScriptTagMigrationBanner'
 
 jest.mock('core/flags')

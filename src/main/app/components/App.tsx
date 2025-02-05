@@ -40,6 +40,7 @@ export default function App({children}: Props) {
         FeatureFlagKey.GlobalBannerRefactor,
         {
             scriptTagMigrationBanner: false,
+            emailDomainVerificationBanner: false,
         }
     )
 
@@ -60,9 +61,11 @@ export default function App({children}: Props) {
                 <AlertBanners />
                 <EmailMigrationBanner />
                 <EmailDisconnectedBanner />
-                <EmailDomainVerificationBanner />
                 {!bannerList?.scriptTagMigrationBanner && (
                     <ScriptTagMigrationBanner />
+                )}
+                {!bannerList?.emailDomainVerificationBanner && (
+                    <EmailDomainVerificationBanner />
                 )}
                 <ScriptTagMigrationModal />
                 <Spotlight />
