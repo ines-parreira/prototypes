@@ -1,39 +1,74 @@
-import {RefObject, useEffect, useLayoutEffect, useMemo, useState} from 'react'
+import {
+    RefObject,
+    useEffect,
+    useLayoutEffect,
+    useMemo,
+    useCallback,
+    useState,
+} from 'react'
 
-const useHeight = (ref: RefObject<HTMLElement>) => {
-    const [height, setHeight] = useState<number>()
+const MIN_HEIGHT = 24
+export const MAX_HEIGHT = 500
+
+const useHeight = (
+    ref: RefObject<HTMLElement>,
+    amountOfTicketFieldsToRender: number,
+    isExpanded: boolean
+) => {
+    const [maxHeight, setMaxHeight] = useState<number>()
     const [last, setLast] = useState<DOMRect>()
 
+    const recalculateMaxHeight = useCallback(
+        (expanded: boolean): number | undefined => {
+            if (!ref.current) return
+
+            const scrollHeight = ref.current?.scrollHeight
+            const isRequiredHeightHigherThanMaximumHeight =
+                !!scrollHeight && scrollHeight > MAX_HEIGHT
+
+            return !expanded
+                ? MIN_HEIGHT
+                : isRequiredHeightHigherThanMaximumHeight
+                  ? MAX_HEIGHT
+                  : scrollHeight
+        },
+        [ref]
+    )
+
     useEffect(() => {
-        setHeight(ref.current?.scrollHeight)
-    }, [ref])
+        setMaxHeight(recalculateMaxHeight(isExpanded))
+    }, [ref, recalculateMaxHeight, amountOfTicketFieldsToRender, isExpanded])
 
     const observer = useMemo(
         () =>
             new ResizeObserver(() => {
-                const data = ref.current?.getBoundingClientRect()
+                const boundingRect = ref.current?.getBoundingClientRect()
+                const lastWidth = last?.width
+                const lastHeight = last?.height
+
                 if (
-                    data?.width !== last?.width &&
-                    data?.height === last?.height
+                    lastWidth !== boundingRect?.width &&
+                    lastHeight === boundingRect?.height
                 ) {
-                    setHeight(undefined)
-                    setHeight(ref.current?.scrollHeight)
+                    setMaxHeight(recalculateMaxHeight(isExpanded))
                 }
-                setLast(data)
+
+                setLast(boundingRect)
             }),
-        [last?.height, last?.width, ref]
+        [recalculateMaxHeight, last?.height, last?.width, isExpanded, ref]
     )
 
     useLayoutEffect(() => {
         if (!ref.current) return
         setLast(ref.current.getBoundingClientRect())
         observer.observe(ref.current)
+
         return () => {
             observer.disconnect()
         }
     }, [observer, ref])
 
-    return height
+    return maxHeight
 }
 
 export default useHeight

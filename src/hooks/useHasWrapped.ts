@@ -2,10 +2,9 @@ import {MutableRefObject, useLayoutEffect, useMemo, useState} from 'react'
 
 import useStatefulRef from 'hooks/useStatefulRef'
 
-export default function useHasWrapped<E extends Element = Element>(): [
-    MutableRefObject<E>,
-    boolean,
-] {
+export default function useHasWrapped<E extends Element = Element>(
+    amountOfChildrenToRender?: number
+): [MutableRefObject<E>, boolean] {
     const ref = useStatefulRef<E>()
     const [hasWrapped, setHasWrapped] = useState(false)
 
@@ -37,7 +36,7 @@ export default function useHasWrapped<E extends Element = Element>(): [
         }
         // useStatefulRef triggers rerenders when ref.current changes
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ref.current, observer])
+    }, [ref.current, observer, amountOfChildrenToRender])
 
     return [ref, hasWrapped]
 }

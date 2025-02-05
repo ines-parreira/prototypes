@@ -64,7 +64,7 @@ describe('useHeight', () => {
 
     it('should return default height', () => {
         const ref = createRef<HTMLDivElement>()
-        const {result} = renderHook(() => useHeight(ref))
+        const {result} = renderHook(() => useHeight(ref, 0, false))
 
         expect(result.current).toBeUndefined()
     })
@@ -73,7 +73,7 @@ describe('useHeight', () => {
         const spy = jest.spyOn(window, 'ResizeObserver')
         const ref = createRef<HTMLDivElement>()
 
-        renderHook(() => useHeight(ref))
+        renderHook(() => useHeight(ref, 1, false))
 
         expect(typeof spy.mock.lastCall?.[0]).toBe('function')
     })
@@ -81,7 +81,7 @@ describe('useHeight', () => {
     it('should set the initial value for the height', () => {
         const ref = createRef<HTMLDivElement>()
         render(<HookWrapper ref={ref} />)
-        const {result} = renderHook(() => useHeight(ref))
+        const {result} = renderHook(() => useHeight(ref, 5, true))
 
         expect(result.current).toBe(150)
     })
@@ -89,7 +89,7 @@ describe('useHeight', () => {
     it('should track the height value', () => {
         const ref = createRef<HTMLDivElement>()
         render(<HookWrapper ref={ref} />)
-        const {result} = renderHook(() => useHeight(ref))
+        const {result} = renderHook(() => useHeight(ref, 5, true))
 
         act(() => {
             resizeListener({})

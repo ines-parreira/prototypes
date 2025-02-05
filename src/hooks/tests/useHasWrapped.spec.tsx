@@ -1,4 +1,4 @@
-import {render} from '@testing-library/react'
+import {render, waitFor} from '@testing-library/react'
 import {renderHook, act} from '@testing-library/react-hooks/dom'
 import noop from 'lodash/noop'
 import React, {MutableRefObject, forwardRef} from 'react'
@@ -19,7 +19,7 @@ const HookWrapper = forwardRef<HTMLDivElement, Record<string, unknown>>(
 
 describe('useHasWrapped', () => {
     it('should return default state', () => {
-        const {result} = renderHook(useHasWrapped)
+        const {result} = renderHook(() => useHasWrapped())
 
         act(() => {
             const [ref] = result.current
@@ -34,7 +34,7 @@ describe('useHasWrapped', () => {
     it('should synchronously set up ResizeObserver listener', () => {
         const spy = jest.spyOn(window, 'ResizeObserver')
 
-        const {result} = renderHook(useHasWrapped)
+        const {result} = renderHook(() => useHasWrapped())
 
         act(() => {
             const [ref] = result.current
@@ -53,7 +53,7 @@ describe('useHasWrapped', () => {
             return resizeObserverMethods
         }) as MockedResizeObserver)
 
-        const {result} = renderHook(useHasWrapped)
+        const {result} = renderHook(() => useHasWrapped())
 
         act(() => {
             const [ref] = result.current
@@ -91,7 +91,7 @@ describe('useHasWrapped', () => {
             return resizeObserverMethods
         }) as MockedResizeObserver)
 
-        const {result} = renderHook(useHasWrapped)
+        const {result} = renderHook(() => useHasWrapped())
 
         act(() => {
             const [ref] = result.current
@@ -143,25 +143,21 @@ describe('useHasWrapped', () => {
         expect(result.current[1]).toBeTruthy()
     })
 
-    //unskip this when this is solved https://github.com/testing-library/react-hooks-testing-library/issues/847
-    it.skip('should call .disconnect() on ResizeObserver when component unmounts', () => {
+    it('should call .disconnect() on ResizeObserver when component unmounts', async () => {
         const disconnect = jest.fn()
         jest.spyOn(window, 'ResizeObserver').mockImplementation((() => {
             return {observe: noop, disconnect}
         }) as MockedResizeObserver)
 
-        const hook = renderHook(useHasWrapped)
+        const hook = renderHook(() => useHasWrapped())
 
-        act(() => {
-            const [ref] = hook.result.current
-            render(
-                <HookWrapper ref={ref as MutableRefObject<HTMLDivElement>} />
-            )
+        const [ref] = hook.result.current
+        render(<HookWrapper ref={ref as MutableRefObject<HTMLDivElement>} />)
+        expect(disconnect).toHaveBeenCalledTimes(0)
 
-            expect(disconnect).toHaveBeenCalledTimes(0)
-            hook.unmount()
+        hook.unmount()
+        await waitFor(() => {
+            expect(disconnect).toHaveBeenCalledTimes(1)
         })
-
-        expect(disconnect).toHaveBeenCalledTimes(1)
     })
 })

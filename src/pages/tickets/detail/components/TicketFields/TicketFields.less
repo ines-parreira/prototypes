@@ -5,8 +5,7 @@
         display: flex;
         box-sizing: content-box;
         padding: @layout-spacing-xs @layout-spacing-m;
-        max-height: 500px;
-        transition: height 0.2s ease-out;
+        transition: max-height 0.2s ease-out;
         overflow-y: hidden;
     }
 
@@ -17,7 +16,7 @@
         width: 100%;
         padding-top: 2px;
 
-        &.isExpanded {
+        &.isScrollable {
             overflow-y: auto;
         }
     }

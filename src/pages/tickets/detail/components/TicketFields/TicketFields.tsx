@@ -25,7 +25,9 @@ import {
     getTicket,
 } from 'state/ticket/selectors'
 
-import useHeight from './hooks/useHeight'
+import useHeight, {
+    MAX_HEIGHT as FIELDS_CONTAINER_MAX_HEIGHT,
+} from './hooks/useHeight'
 import TicketField from './TicketField'
 import css from './TicketFields.less'
 
@@ -48,8 +50,6 @@ function TicketFields() {
     const ticketState = useAppSelector(getTicket)
     const ticketFieldState = useAppSelector(getTicketFieldState)
     const [showAllFields, setShowAllFields] = useState(false)
-    const [ref, hasWrapped] = useHasWrapped<HTMLDivElement>()
-    const height = useHeight(ref)
     const hasAttemptedToCloseTicket = useAppSelector(
         getHasAttemptedToCloseTicket
     )
@@ -87,6 +87,58 @@ function TicketFields() {
             ),
         [ticketFieldDefinitions]
     )
+    const ticketFieldsToRender = useMemo(() => {
+        if (!conditionalFieldsSupported) {
+            return filteredTicketFieldDefinitions.map((fieldDefinition) => ({
+                fieldDefinition,
+                isRequired: fieldDefinition.required,
+            }))
+        }
+
+        return filteredTicketFieldDefinitions.reduce(
+            (acc, fieldDefinition) => {
+                const isRequired = isFieldRequired(
+                    fieldDefinition,
+                    ticketFieldConditionsEvaluationResults[fieldDefinition.id]
+                )
+
+                const isVisible =
+                    isRequired ||
+                    isFieldVisible(
+                        fieldDefinition,
+                        ticketFieldConditionsEvaluationResults[
+                            fieldDefinition.id
+                        ]
+                    )
+
+                if (isVisible) {
+                    return [
+                        ...acc,
+                        {
+                            fieldDefinition,
+                            isRequired,
+                        },
+                    ]
+                }
+
+                return acc
+            },
+            [] as {
+                fieldDefinition: CustomField
+                isRequired: boolean
+            }[]
+        )
+    }, [
+        conditionalFieldsSupported,
+        filteredTicketFieldDefinitions,
+        ticketFieldConditionsEvaluationResults,
+    ])
+
+    const [ref, hasWrapped] = useHasWrapped<HTMLDivElement>(
+        ticketFieldsToRender.length
+    )
+    const height = useHeight(ref, ticketFieldsToRender.length, showAllFields)
+
     const hasErroredTicketFields = filteredTicketFieldDefinitions.some(
         ({id}) => ticketFieldState[id]?.hasError
     )
@@ -119,56 +171,26 @@ function TicketFields() {
         <div
             className={css.wrapper}
             style={{
-                height: showAllFields ? height : 24,
+                maxHeight: height,
             }}
         >
             <div
                 ref={ref}
                 className={classNames(css.fields, {
-                    [css.isExpanded]: showAllFields,
+                    [css.isScrollable]:
+                        showAllFields &&
+                        ref.current?.scrollHeight > FIELDS_CONTAINER_MAX_HEIGHT,
                 })}
+                data-testid="fields-container"
             >
-                {filteredTicketFieldDefinitions.map((fieldDefinition) => {
-                    if (!conditionalFieldsSupported) {
-                        return (
-                            <TicketField
-                                key={fieldDefinition.id}
-                                fieldDefinition={fieldDefinition}
-                                fieldState={
-                                    ticketFieldState[fieldDefinition.id]
-                                }
-                                isRequired={fieldDefinition.required}
-                            />
-                        )
-                    }
-
-                    const isRequired = isFieldRequired(
-                        fieldDefinition,
-                        ticketFieldConditionsEvaluationResults[
-                            fieldDefinition.id
-                        ]
-                    )
-                    if (
-                        !isRequired &&
-                        !isFieldVisible(
-                            fieldDefinition,
-                            ticketFieldConditionsEvaluationResults[
-                                fieldDefinition.id
-                            ]
-                        )
-                    ) {
-                        return null
-                    }
-
-                    return (
-                        <TicketField
-                            key={fieldDefinition.id}
-                            fieldDefinition={fieldDefinition}
-                            fieldState={ticketFieldState[fieldDefinition.id]}
-                            isRequired={isRequired}
-                        />
-                    )
-                })}
+                {ticketFieldsToRender.map(({fieldDefinition, isRequired}) => (
+                    <TicketField
+                        key={fieldDefinition.id}
+                        fieldDefinition={fieldDefinition}
+                        fieldState={ticketFieldState[fieldDefinition.id]}
+                        isRequired={isRequired}
+                    />
+                ))}
             </div>
 
             <div className={css.buttonWrapper}>
