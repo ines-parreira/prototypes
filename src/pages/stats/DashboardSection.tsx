@@ -11,6 +11,10 @@ type Props = {
     titleExtra?: ReactNode
 }
 
+export const DashboardSectionWrapper = ({children, className}: Props) => {
+    return <div className={classnames(css.wrapper, className)}>{children}</div>
+}
+
 export default function DashboardSection({
     className,
     children,
@@ -18,7 +22,7 @@ export default function DashboardSection({
     titleExtra,
 }: Props) {
     return (
-        <div className={classnames(css.wrapper, className)}>
+        <DashboardSectionWrapper className={className}>
             {title && (
                 <div className={css.title}>
                     <div
@@ -35,6 +39,6 @@ export default function DashboardSection({
             )}
 
             <DashboardGrid>{children}</DashboardGrid>
-        </div>
+        </DashboardSectionWrapper>
     )
 }

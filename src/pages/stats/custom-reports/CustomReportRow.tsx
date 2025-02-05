@@ -1,7 +1,28 @@
-import React, {PropsWithChildren} from 'react'
+import React, {ReactNode} from 'react'
 
-import DashboardSection from 'pages/stats/DashboardSection'
+import {CustomReportChartSchema} from 'models/stat/types'
+import {
+    DroppableGridRow,
+    MoveHandler,
+} from 'pages/stats/custom-reports/DraggableGridCell'
+import {DashboardSectionWrapper} from 'pages/stats/DashboardSection'
 
-export const CustomReportRow = ({children}: PropsWithChildren<unknown>) => {
-    return <DashboardSection>{children}</DashboardSection>
+export type CustomReportRowProps = {
+    children: ReactNode
+    charts: CustomReportChartSchema[]
+    onMove: MoveHandler
+}
+
+export const CustomReportRow = ({
+    children,
+    charts,
+    onMove,
+}: CustomReportRowProps) => {
+    return (
+        <DashboardSectionWrapper>
+            <DroppableGridRow charts={charts} onMove={onMove}>
+                {children}
+            </DroppableGridRow>
+        </DashboardSectionWrapper>
+    )
 }

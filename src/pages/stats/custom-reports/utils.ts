@@ -163,24 +163,21 @@ export function getErrorMessage(
 }
 
 export const getGroupChartsIntoRows = (
-    charts: string[],
-    chartsByRow: number = 4
+    charts: string[]
 ): CustomReportChild[] => {
     if (!charts.length) {
         return []
     }
-    const rowsLength = Math.ceil(charts.length / chartsByRow)
-    return Array.from({
-        length: rowsLength,
-    }).map((_, index) => ({
-        children: charts
-            .slice(index * chartsByRow, (index + 1) * chartsByRow)
-            .map((chartId) => ({
+
+    return [
+        {
+            type: CustomReportChildType.Row,
+            children: charts.map((chartId) => ({
                 config_id: chartId,
                 type: CustomReportChildType.Chart,
             })),
-        type: CustomReportChildType.Row,
-    }))
+        },
+    ]
 }
 
 const createChildrenWithMetadata = (

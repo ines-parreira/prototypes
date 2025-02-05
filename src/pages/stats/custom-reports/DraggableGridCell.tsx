@@ -1,13 +1,25 @@
 import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {forwardRef, useRef} from 'react'
-import {useDrag, useDrop, useDragLayer, DropTargetMonitor} from 'react-dnd'
+import {
+    useDrag,
+    useDrop,
+    useDragLayer,
+    DropTargetMonitor,
+    DragSourceMonitor,
+} from 'react-dnd'
 import {getEmptyImage} from 'react-dnd-html5-backend'
 
 import useId from 'hooks/useId'
 import IconInput from 'pages/common/forms/input/IconInput'
 import css from 'pages/stats/custom-reports/DraggableGridCell.less'
-import {CustomReportChartSchema} from 'pages/stats/custom-reports/types'
+import {
+    ChartType,
+    CustomReportChartSchema,
+    CustomReportChild,
+    CustomReportChildType,
+} from 'pages/stats/custom-reports/types'
+import DashboardGrid from 'pages/stats/DashboardGrid'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 
 export const createDragItem = ({
@@ -23,7 +35,7 @@ export const createDragItem = ({
 }) => ({
     ...schema,
     size,
-    type: 'ChartType.Card',
+    type: ChartType.Card,
     element,
     rect,
 })
@@ -31,13 +43,19 @@ export const createDragItem = ({
 type DragItem = ReturnType<typeof createDragItem>
 
 export const createMoveHandler =
-    (node: HTMLElement | null, target: DragItem, handleMove: MoveHandler) =>
+    (
+        node: HTMLElement | null,
+        target: DragItem,
+        handleMove: MoveHandler,
+        findChartIndex: FindChartIndex
+    ) =>
     (item: DragItem, monitor: DropTargetMonitor) => {
         if (!node) return
 
         const dragItem = item
         const hoverItem = target
 
+        const dragSize = item.size
         const hoverSize = target.size
 
         if (dragItem.config_id === hoverItem.config_id) return
@@ -54,20 +72,32 @@ export const createMoveHandler =
 
         let position: 'before' | 'after' | null = null
 
-        if (hoverSize === 12) {
-            if (hoverClientY > hoverMiddleY) {
-                position = 'after'
-            } else if (hoverClientY < hoverMiddleY) {
-                position = 'before'
-            }
+        const isOverSmallerTarget = hoverSize <= dragSize
+        if (isOverSmallerTarget) {
+            position =
+                findChartIndex(dragItem.config_id) <
+                findChartIndex(hoverItem.config_id)
+                    ? 'after'
+                    : 'before'
         } else {
-            if (hoverClientX > hoverMiddleX || hoverClientY > hoverMiddleY) {
-                position = 'after'
-            } else if (
-                hoverClientX < hoverMiddleX ||
-                hoverClientY < hoverMiddleY
-            ) {
-                position = 'before'
+            if (hoverSize === 12) {
+                if (hoverClientY > hoverMiddleY) {
+                    position = 'after'
+                } else if (hoverClientY < hoverMiddleY) {
+                    position = 'before'
+                }
+            } else {
+                if (
+                    hoverClientX > hoverMiddleX ||
+                    hoverClientY > hoverMiddleY
+                ) {
+                    position = 'after'
+                } else if (
+                    hoverClientX < hoverMiddleX ||
+                    hoverClientY < hoverMiddleY
+                ) {
+                    position = 'before'
+                }
             }
         }
 
@@ -84,15 +114,23 @@ export type MoveHandler = (
 
 export type DropHandler = () => void
 
+export type FindChartIndex = (chartId: string) => number
+
 export type DraggableGridCellProps = {
     children: React.ReactNode
     size: number
     schema: CustomReportChartSchema
     onMove: MoveHandler
     onDrop: DropHandler
+    findChartIndex: FindChartIndex
 }
 
 const HANDLE_WIDTH = 40
+
+export const createIsDragging =
+    (item: DragItem) => (monitor: DragSourceMonitor) => {
+        return item.config_id === (monitor.getItem() as DragItem).config_id
+    }
 
 export const DraggableGridCell = ({
     children,
@@ -100,20 +138,32 @@ export const DraggableGridCell = ({
     schema,
     onDrop,
     onMove,
+    findChartIndex,
 }: DraggableGridCellProps) => {
     const previewRef = useRef<HTMLDivElement>(null)
 
     const rect = useMeasure(previewRef)
-    const item = createDragItem({element: children, schema, size, rect})
+    const item = createDragItem({
+        element: children,
+        schema,
+        size,
+        rect,
+    })
 
     const [{isDragging}, drag, preview] = useDrag({
         item,
         collect: (monitor) => ({isDragging: monitor.isDragging()}),
+        isDragging: createIsDragging(item),
     })
 
     const [, drop] = useDrop<typeof item, void, void>({
         accept: item.type,
-        hover: createMoveHandler(previewRef.current, item, onMove),
+        hover: createMoveHandler(
+            previewRef.current,
+            item,
+            onMove,
+            findChartIndex
+        ),
         drop: onDrop,
     })
 
@@ -135,6 +185,45 @@ export const DraggableGridCell = ({
             </div>
         </DashboardGridCell>
     )
+}
+
+function findFirstChartRecursive(children: CustomReportChild[]) {
+    for (const child of children) {
+        if (child.type === CustomReportChildType.Chart) {
+            return child
+        }
+
+        if (
+            child.type === CustomReportChildType.Row ||
+            child.type === CustomReportChildType.Section
+        ) {
+            return findFirstChartRecursive(child.children)
+        }
+    }
+}
+
+export const createDropzoneHoverHandler =
+    (schemas: CustomReportChild[], onMove: MoveHandler) => (item: DragItem) => {
+        const firstChart = findFirstChartRecursive(schemas)
+
+        if (!firstChart || item.config_id === firstChart.config_id) return
+
+        onMove(item.config_id, firstChart.config_id, 'before')
+    }
+
+export const Dropzone = ({
+    schemas,
+    onMove,
+}: {
+    schemas: CustomReportChild[]
+    onMove: MoveHandler
+}) => {
+    const [, drop] = useDrop<DragItem, void, void>({
+        accept: ChartType.Card,
+        hover: createDropzoneHoverHandler(schemas, onMove),
+    })
+
+    return <div ref={drop} style={{height: 4}} />
 }
 
 const Handle = forwardRef<HTMLSpanElement>((_, ref) => {
@@ -178,6 +267,38 @@ export const DraggablePreview = () => {
             {item.element}
         </div>
     )
+}
+
+const isSameRow = (charts: CustomReportChartSchema[], item: DragItem) => {
+    return charts.some((chart) => chart.config_id === item.config_id)
+}
+
+export const createMoveRawHandler =
+    (charts: CustomReportChartSchema[], onMove: MoveHandler) =>
+    (item: DragItem) => {
+        if (isSameRow(charts, item)) return
+
+        const lastChart = charts[charts.length - 1]
+        onMove(item.config_id, lastChart.config_id, 'after')
+    }
+
+export type DroppableGridRowProps = {
+    children: React.ReactNode
+    charts: CustomReportChartSchema[]
+    onMove: MoveHandler
+}
+
+export const DroppableGridRow = ({
+    children,
+    charts,
+    onMove,
+}: DroppableGridRowProps) => {
+    const [, drop] = useDrop<DragItem, void, void>({
+        accept: ChartType.Card,
+        hover: createMoveRawHandler(charts, onMove),
+    })
+
+    return <DashboardGrid ref={drop}>{children}</DashboardGrid>
 }
 
 const defaultState = {

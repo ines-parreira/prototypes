@@ -7,6 +7,7 @@ import {
     DraggableGridCell,
     MoveHandler,
     DropHandler,
+    FindChartIndex,
 } from 'pages/stats/custom-reports/DraggableGridCell'
 import {
     ChartType,
@@ -15,6 +16,7 @@ import {
 } from 'pages/stats/custom-reports/types'
 
 export type CustomReportChartProps = {
+    findChartIndex: FindChartIndex
     onMove: MoveHandler
     onDrop: DropHandler
     schema: CustomReportChartSchema
@@ -30,6 +32,7 @@ export const CHART_SIZE: Record<ChartType, number> = {
 export const CustomReportChart = ({
     onMove,
     onDrop,
+    findChartIndex,
     schema,
     dashboard,
 }: CustomReportChartProps) => {
@@ -48,6 +51,7 @@ export const CustomReportChart = ({
             schema={schema}
             onMove={onMove}
             onDrop={onDrop}
+            findChartIndex={findChartIndex}
         >
             <CustomReportComponent
                 chart={schema.config_id}

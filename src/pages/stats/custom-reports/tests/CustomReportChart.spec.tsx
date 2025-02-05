@@ -33,6 +33,7 @@ describe('CustomReportChart', () => {
             <CustomReportChart
                 onMove={jest.fn()}
                 onDrop={jest.fn()}
+                findChartIndex={jest.fn()}
                 schema={schema}
             />
         )
@@ -50,6 +51,7 @@ describe('CustomReportChart', () => {
             <CustomReportChart
                 onMove={jest.fn()}
                 onDrop={jest.fn()}
+                findChartIndex={jest.fn()}
                 schema={schema}
             />
         )

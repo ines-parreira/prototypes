@@ -1,15 +1,22 @@
 import {render, waitFor} from '@testing-library/react'
 import {renderHook, act} from '@testing-library/react-hooks'
 import React from 'react'
-import {DropTargetMonitor, useDragLayer} from 'react-dnd'
+import {DragSourceMonitor, DropTargetMonitor, useDragLayer} from 'react-dnd'
 
 import {
     useMeasure,
     createDragItem,
     createMoveHandler,
     DraggablePreview,
+    createIsDragging,
+    createDropzoneHoverHandler,
+    createMoveRawHandler,
 } from 'pages/stats/custom-reports/DraggableGridCell'
-import {CustomReportChildType} from 'pages/stats/custom-reports/types'
+import {
+    CustomReportChild,
+    CustomReportChildType,
+    CustomReportChartSchema,
+} from 'pages/stats/custom-reports/types'
 import {assumeMock} from 'utils/testing'
 
 const dummyRect = {
@@ -23,27 +30,43 @@ const dummyRect = {
     right: 100,
 }
 
-jest.mock('react-dnd', () => ({useDragLayer: jest.fn()}))
+jest.mock('react-dnd', () => ({useDragLayer: jest.fn(), useDrag: jest.fn()}))
 const mockUseDragLayer = assumeMock(useDragLayer)
 
+const createDummyDragItem = (configId: string = '1', size: number = 2) =>
+    createDragItem({
+        size,
+        schema: {
+            config_id: configId,
+            type: CustomReportChildType.Chart,
+        },
+        element: <div />,
+        rect: dummyRect,
+    })
+
 describe('createMoveHandler(node, target, handleMove)', () => {
-    const createDummyDragItem = (configId: string = '1', size: number = 2) =>
-        createDragItem({
-            size,
-            schema: {
-                config_id: configId,
-                type: CustomReportChildType.Chart,
-            },
-            element: <div />,
-            rect: dummyRect,
-        })
+    const mockFindChartIndex = jest.fn()
+    let node: HTMLElement
+
+    beforeEach(() => {
+        node = document.createElement('div')
+        node.getBoundingClientRect = jest.fn(
+            () =>
+                ({
+                    left: 0,
+                    right: 100,
+                    top: 0,
+                    bottom: 100,
+                }) as DOMRect
+        )
+        mockFindChartIndex.mockClear()
+    })
 
     it('returns a function', () => {
-        const node = document.createElement('div')
         const item = createDummyDragItem()
         const onMove = jest.fn()
 
-        const actual = createMoveHandler(node, item, onMove)
+        const actual = createMoveHandler(node, item, onMove, mockFindChartIndex)
 
         expect(typeof actual).toBe('function')
     })
@@ -56,7 +79,12 @@ describe('createMoveHandler(node, target, handleMove)', () => {
         } as DropTargetMonitor
         const onMove = jest.fn()
 
-        const handleMove = createMoveHandler(null, targetItem, onMove)
+        const handleMove = createMoveHandler(
+            null,
+            targetItem,
+            onMove,
+            mockFindChartIndex
+        )
 
         handleMove(srcItem, monitor)
 
@@ -64,218 +92,212 @@ describe('createMoveHandler(node, target, handleMove)', () => {
     })
 
     it('does nothing if hovering over itself', () => {
-        const node = document.createElement('div')
         const item = createDummyDragItem('1', 2)
         const monitor = {
             getClientOffset: () => ({x: 0, y: 0}),
         } as DropTargetMonitor
         const onMove = jest.fn()
 
-        const handleMove = createMoveHandler(node, item, onMove)
+        const handleMove = createMoveHandler(
+            node,
+            item,
+            onMove,
+            mockFindChartIndex
+        )
 
         handleMove(item, monitor)
 
         expect(onMove).not.toHaveBeenCalled()
     })
 
-    it('calls onMove if hovering over a card and moving it forward within the movement threshold on the X-axis', () => {
-        const node = document.createElement('div')
-        node.getBoundingClientRect = jest.fn(
-            () =>
-                ({
-                    left: 0,
-                    right: 100,
-                    top: 0,
-                    bottom: 100,
-                }) as DOMRect
-        )
-
-        const targetId = '1'
-        const srcId = '2'
-
-        const targetItem = createDummyDragItem(targetId, 2)
-        const srcItem = createDummyDragItem(srcId, 2)
-        const monitor = {
-            getClientOffset: () => ({x: 40, y: 0}),
-        } as DropTargetMonitor
-        const onMove = jest.fn()
-
-        const handleMove = createMoveHandler(node, targetItem, onMove)
-
-        handleMove(srcItem, monitor)
-
-        expect(onMove).toHaveBeenCalledWith(srcId, targetId, 'before')
-    })
-
-    it('calls onMove if hovering over a card and moving it upwards within the movement threshold on the Y-axis', () => {
-        const node = document.createElement('div')
-        node.getBoundingClientRect = jest.fn(
-            () =>
-                ({
-                    left: 0,
-                    right: 100,
-                    top: 0,
-                    bottom: 100,
-                }) as DOMRect
-        )
-
-        const targetId = '1'
-        const srcId = '2'
-
-        const targetItem = createDummyDragItem(targetId, 2)
-        const srcItem = createDummyDragItem(srcId, 2)
-        const monitor = {
-            getClientOffset: () => ({x: 0, y: 40}),
-        } as DropTargetMonitor
-        const onMove = jest.fn()
-
-        const handleMove = createMoveHandler(node, targetItem, onMove)
-
-        handleMove(srcItem, monitor)
-
-        expect(onMove).toHaveBeenCalledWith(srcId, targetId, 'before')
-    })
-
-    it('calls onMove if hovering over a card and moving it backward within the movement threshold on the X-axis', () => {
-        const node = document.createElement('div')
-        node.getBoundingClientRect = jest.fn(
-            () =>
-                ({
-                    left: 0,
-                    right: 100,
-                    top: 0,
-                    bottom: 100,
-                }) as DOMRect
-        )
-
-        const targetId = '1'
-        const srcId = '2'
-
-        const targetItem = createDummyDragItem(targetId, 2)
-        const srcItem = createDummyDragItem(srcId, 2)
-        const monitor = {
-            getClientOffset: () => ({x: 60, y: 0}),
-        } as DropTargetMonitor
-        const onMove = jest.fn()
-
-        const handleMove = createMoveHandler(node, targetItem, onMove)
-
-        handleMove(srcItem, monitor)
-
-        expect(onMove).toHaveBeenCalledWith(srcId, targetId, 'after')
-    })
-
-    it('calls onMove if hovering over a card and moving it downwards within the movement threshold on the Y-axis', () => {
-        const node = document.createElement('div')
-        node.getBoundingClientRect = jest.fn(
-            () =>
-                ({
-                    left: 0,
-                    right: 100,
-                    top: 0,
-                    bottom: 100,
-                }) as DOMRect
-        )
-
-        const targetId = '1'
-        const srcId = '2'
-
-        const targetItem = createDummyDragItem(targetId, 2)
-        const srcItem = createDummyDragItem(srcId, 2)
-        const monitor = {
-            getClientOffset: () => ({x: 0, y: 80}),
-        } as DropTargetMonitor
-        const onMove = jest.fn()
-
-        const handleMove = createMoveHandler(node, targetItem, onMove)
-
-        handleMove(srcItem, monitor)
-
-        expect(onMove).toHaveBeenCalledWith(srcId, targetId, 'after')
-    })
-
-    it('calls onMove if hovering over a big card and moving it forward within the vertical threshold', () => {
-        const node = document.createElement('div')
-        node.getBoundingClientRect = jest.fn(
-            () =>
-                ({
-                    left: 0,
-                    right: 100,
-                    top: 0,
-                    bottom: 100,
-                }) as DOMRect
-        )
-
-        const targetId = '1'
-        const srcId = '2'
-
-        const targetItem = createDummyDragItem(targetId, 12) // Big card
-        const srcItem = createDummyDragItem(srcId, 2)
-        const monitor = {
-            getClientOffset: () => ({x: 0, y: 20}), // Over half vertically
-        } as DropTargetMonitor
-        const onMove = jest.fn()
-
-        const handleMove = createMoveHandler(node, targetItem, onMove)
-
-        handleMove(srcItem, monitor)
-
-        expect(onMove).toHaveBeenCalledWith(srcId, targetId, 'before')
-    })
-
-    it('calls onMove if hovering over a big card and moving it backward within the vertical threshold', () => {
-        const node = document.createElement('div')
-        node.getBoundingClientRect = jest.fn(
-            () =>
-                ({
-                    left: 0,
-                    right: 100,
-                    top: 0,
-                    bottom: 100,
-                }) as DOMRect
-        )
-
-        const targetId = '1'
-        const srcId = '2'
-
-        const targetItem = createDummyDragItem(targetId, 12) // Big card
-        const srcItem = createDummyDragItem(srcId, 2)
-        const monitor = {
-            getClientOffset: () => ({x: 0, y: 80}), // Over half vertically
-        } as DropTargetMonitor
-        const onMove = jest.fn()
-
-        const handleMove = createMoveHandler(node, targetItem, onMove)
-
-        handleMove(srcItem, monitor)
-
-        expect(onMove).toHaveBeenCalledWith(srcId, targetId, 'after')
-    })
-
-    it('does not call onMove if not past the hover threshold', () => {
-        const node = document.createElement('div')
-        node.getBoundingClientRect = jest.fn(
-            () =>
-                ({
-                    left: 0,
-                    right: 100,
-                    top: 0,
-                    bottom: 100,
-                }) as DOMRect
-        )
-
-        const targetItem = createDummyDragItem('1', 2)
+    it('does nothing if not past the hover threshold', () => {
+        const targetItem = createDummyDragItem('1', 4)
         const srcItem = createDummyDragItem('2', 2)
         const monitor = {
-            getClientOffset: () => ({x: 50, y: 50}), // Not past the threshold
+            getClientOffset: () => ({x: 50, y: 50}),
         } as DropTargetMonitor
         const onMove = jest.fn()
 
-        const handleMove = createMoveHandler(node, targetItem, onMove)
+        const handleMove = createMoveHandler(
+            node,
+            targetItem,
+            onMove,
+            mockFindChartIndex
+        )
 
         handleMove(srcItem, monitor)
 
         expect(onMove).not.toHaveBeenCalled()
+    })
+
+    describe('when target is smaller or equal size', () => {
+        it('positions before when source index is higher', () => {
+            const targetId = '1'
+            const srcId = '2'
+            mockFindChartIndex.mockImplementation((id) =>
+                id === srcId ? 1 : 0
+            )
+
+            const targetItem = createDummyDragItem(targetId, 2)
+            const srcItem = createDummyDragItem(srcId, 2)
+            const monitor = {
+                getClientOffset: () => ({x: 50, y: 50}),
+            } as DropTargetMonitor
+            const onMove = jest.fn()
+
+            const handleMove = createMoveHandler(
+                node,
+                targetItem,
+                onMove,
+                mockFindChartIndex
+            )
+            handleMove(srcItem, monitor)
+
+            expect(onMove).toHaveBeenCalledWith(srcId, targetId, 'before')
+        })
+
+        it('positions after when source index is lower', () => {
+            const targetId = '1'
+            const srcId = '2'
+            mockFindChartIndex.mockImplementation((id) =>
+                id === srcId ? 0 : 1
+            )
+
+            const targetItem = createDummyDragItem(targetId, 2)
+            const srcItem = createDummyDragItem(srcId, 2)
+            const monitor = {
+                getClientOffset: () => ({x: 50, y: 50}),
+            } as DropTargetMonitor
+            const onMove = jest.fn()
+
+            const handleMove = createMoveHandler(
+                node,
+                targetItem,
+                onMove,
+                mockFindChartIndex
+            )
+            handleMove(srcItem, monitor)
+
+            expect(onMove).toHaveBeenCalledWith(srcId, targetId, 'after')
+        })
+    })
+
+    describe('when target is full width (size 12)', () => {
+        it('positions before when hovering above middle', () => {
+            const targetItem = createDummyDragItem('1', 12)
+            const srcItem = createDummyDragItem('2', 2)
+            const monitor = {
+                getClientOffset: () => ({x: 0, y: 30}),
+            } as DropTargetMonitor
+            const onMove = jest.fn()
+
+            const handleMove = createMoveHandler(
+                node,
+                targetItem,
+                onMove,
+                mockFindChartIndex
+            )
+            handleMove(srcItem, monitor)
+
+            expect(onMove).toHaveBeenCalledWith('2', '1', 'before')
+        })
+
+        it('positions after when hovering below middle', () => {
+            const targetItem = createDummyDragItem('1', 12)
+            const srcItem = createDummyDragItem('2', 2)
+            const monitor = {
+                getClientOffset: () => ({x: 0, y: 70}),
+            } as DropTargetMonitor
+            const onMove = jest.fn()
+
+            const handleMove = createMoveHandler(
+                node,
+                targetItem,
+                onMove,
+                mockFindChartIndex
+            )
+            handleMove(srcItem, monitor)
+
+            expect(onMove).toHaveBeenCalledWith('2', '1', 'after')
+        })
+    })
+
+    describe('when target is larger but not full width', () => {
+        it('positions before when hovering in top-left quadrant', () => {
+            const targetItem = createDummyDragItem('1', 6)
+            const srcItem = createDummyDragItem('2', 2)
+            const monitor = {
+                getClientOffset: () => ({x: 20, y: 20}),
+            } as DropTargetMonitor
+            const onMove = jest.fn()
+
+            const handleMove = createMoveHandler(
+                node,
+                targetItem,
+                onMove,
+                mockFindChartIndex
+            )
+            handleMove(srcItem, monitor)
+
+            expect(onMove).toHaveBeenCalledWith('2', '1', 'before')
+        })
+
+        it('positions after when hovering in bottom-right quadrant', () => {
+            const targetItem = createDummyDragItem('1', 6)
+            const srcItem = createDummyDragItem('2', 2)
+            const monitor = {
+                getClientOffset: () => ({x: 80, y: 80}),
+            } as DropTargetMonitor
+            const onMove = jest.fn()
+
+            const handleMove = createMoveHandler(
+                node,
+                targetItem,
+                onMove,
+                mockFindChartIndex
+            )
+            handleMove(srcItem, monitor)
+
+            expect(onMove).toHaveBeenCalledWith('2', '1', 'after')
+        })
+
+        it('positions after when hovering in top-right quadrant', () => {
+            const targetItem = createDummyDragItem('1', 6)
+            const srcItem = createDummyDragItem('2', 2)
+            const monitor = {
+                getClientOffset: () => ({x: 80, y: 20}),
+            } as DropTargetMonitor
+            const onMove = jest.fn()
+
+            const handleMove = createMoveHandler(
+                node,
+                targetItem,
+                onMove,
+                mockFindChartIndex
+            )
+            handleMove(srcItem, monitor)
+
+            expect(onMove).toHaveBeenCalledWith('2', '1', 'after')
+        })
+
+        it('positions after when hovering in bottom-left quadrant', () => {
+            const targetItem = createDummyDragItem('1', 6)
+            const srcItem = createDummyDragItem('2', 2)
+            const monitor = {
+                getClientOffset: () => ({x: 20, y: 80}),
+            } as DropTargetMonitor
+            const onMove = jest.fn()
+
+            const handleMove = createMoveHandler(
+                node,
+                targetItem,
+                onMove,
+                mockFindChartIndex
+            )
+            handleMove(srcItem, monitor)
+
+            expect(onMove).toHaveBeenCalledWith('2', '1', 'after')
+        })
     })
 })
 
@@ -451,5 +473,189 @@ describe('useMeasure', () => {
         unmount()
 
         expect(mockDisconnect).toHaveBeenCalled()
+    })
+})
+
+describe('createIsDragging', () => {
+    it('returns true when dragging item has matching config_id', () => {
+        const item = createDummyDragItem('test-123', 2)
+
+        const monitor = {
+            getItem: () => item,
+        } as DragSourceMonitor
+
+        const isDragging = createIsDragging(item)(monitor)
+
+        expect(isDragging).toBe(true)
+    })
+
+    it('returns false when dragging item has different config_id', () => {
+        const item = createDummyDragItem('test-123', 2)
+
+        const monitor = {
+            getItem: () => ({
+                config_id: 'different-id',
+            }),
+        } as DragSourceMonitor
+
+        const isDragging = createIsDragging(item)(monitor)
+
+        expect(isDragging).toBe(false)
+    })
+})
+
+describe('createDropzoneHoverHandler', () => {
+    const mockMoveHandler = jest.fn()
+
+    it('returns a function', () => {
+        const schemas: CustomReportChild[] = []
+
+        const actual = createDropzoneHoverHandler(schemas, mockMoveHandler)
+
+        expect(typeof actual).toBe('function')
+    })
+
+    it('does nothing if no chart is found', () => {
+        const schemas = [
+            {
+                type: CustomReportChildType.Section,
+                children: [],
+            },
+        ] as CustomReportChild[]
+        const item = createDummyDragItem('test-id')
+
+        const handler = createDropzoneHoverHandler(schemas, mockMoveHandler)
+        handler(item)
+
+        expect(mockMoveHandler).not.toHaveBeenCalled()
+    })
+
+    it('does nothing if dragged item is the same as first chart', () => {
+        const firstChartId = 'chart-1'
+        const schemas = [
+            {
+                type: CustomReportChildType.Chart,
+                config_id: firstChartId,
+            },
+        ] as CustomReportChild[]
+        const item = createDummyDragItem(firstChartId)
+
+        const handler = createDropzoneHoverHandler(schemas, mockMoveHandler)
+        handler(item)
+
+        expect(mockMoveHandler).not.toHaveBeenCalled()
+    })
+
+    it('moves chart before first chart when different charts', () => {
+        const firstChartId = 'chart-1'
+        const draggedChartId = 'chart-2'
+        const schemas = [
+            {
+                type: CustomReportChildType.Chart,
+                config_id: firstChartId,
+            },
+        ] as CustomReportChild[]
+        const item = createDummyDragItem(draggedChartId)
+
+        const handler = createDropzoneHoverHandler(schemas, mockMoveHandler)
+        handler(item)
+
+        expect(mockMoveHandler).toHaveBeenCalledWith(
+            draggedChartId,
+            firstChartId,
+            'before'
+        )
+    })
+
+    it('finds first chart in nested structure', () => {
+        const firstChartId = 'chart-1'
+        const draggedChartId = 'chart-2'
+        const schemas = [
+            {
+                type: CustomReportChildType.Section,
+                children: [
+                    {
+                        type: CustomReportChildType.Row,
+                        children: [
+                            {
+                                type: CustomReportChildType.Chart,
+                                config_id: firstChartId,
+                            },
+                        ],
+                    },
+                ],
+            },
+        ] as CustomReportChild[]
+        const item = createDummyDragItem(draggedChartId)
+
+        const handler = createDropzoneHoverHandler(schemas, mockMoveHandler)
+        handler(item)
+
+        expect(mockMoveHandler).toHaveBeenCalledWith(
+            draggedChartId,
+            firstChartId,
+            'before'
+        )
+    })
+})
+
+describe('createMoveRawHandler', () => {
+    const mockMoveHandler = jest.fn()
+
+    beforeEach(() => {
+        mockMoveHandler.mockClear()
+    })
+
+    it('returns a function', () => {
+        const charts: CustomReportChartSchema[] = []
+        const actual = createMoveRawHandler(charts, mockMoveHandler)
+        expect(typeof actual).toBe('function')
+    })
+
+    it('does nothing if dragged item is in the same row', () => {
+        const charts = [
+            {config_id: 'chart-1'},
+            {config_id: 'chart-2'},
+        ] as CustomReportChartSchema[]
+
+        const item = createDummyDragItem('chart-1')
+        const handler = createMoveRawHandler(charts, mockMoveHandler)
+
+        handler(item)
+
+        expect(mockMoveHandler).not.toHaveBeenCalled()
+    })
+
+    it('moves item after last chart when from different row', () => {
+        const charts = [
+            {config_id: 'chart-1'},
+            {config_id: 'chart-2'},
+        ] as CustomReportChartSchema[]
+
+        const item = createDummyDragItem('chart-3')
+        const handler = createMoveRawHandler(charts, mockMoveHandler)
+
+        handler(item)
+
+        expect(mockMoveHandler).toHaveBeenCalledWith(
+            'chart-3',
+            'chart-2',
+            'after'
+        )
+    })
+
+    it('works with single chart in row', () => {
+        const charts = [{config_id: 'chart-1'}] as CustomReportChartSchema[]
+
+        const item = createDummyDragItem('chart-2')
+        const handler = createMoveRawHandler(charts, mockMoveHandler)
+
+        handler(item)
+
+        expect(mockMoveHandler).toHaveBeenCalledWith(
+            'chart-2',
+            'chart-1',
+            'after'
+        )
     })
 })

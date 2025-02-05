@@ -12,7 +12,10 @@ import {
 } from 'pages/stats/custom-reports/CustomReportChart'
 import {CustomReportRow} from 'pages/stats/custom-reports/CustomReportRow'
 import {CustomReportSection} from 'pages/stats/custom-reports/CustomReportSection'
-import {DraggablePreview} from 'pages/stats/custom-reports/DraggableGridCell'
+import {
+    DraggablePreview,
+    Dropzone,
+} from 'pages/stats/custom-reports/DraggableGridCell'
 import {
     CustomReportChild,
     CustomReportChildType,
@@ -58,6 +61,9 @@ export const CustomReport = ({
         onChartMoveEnd()
     }
 
+    const _findChartIndex = (chartId: string): number =>
+        findChartIndex(dashboard, chartId)
+
     return (
         <>
             <DashboardSection>
@@ -75,18 +81,52 @@ export const CustomReport = ({
                     />
                 </DashboardGridCell>
             </DashboardSection>
+            <Dropzone schemas={dashboard.children} onMove={moveChart} />
             {renderDashboard(dashboard, {
                 onMove: moveChart,
                 onDrop: handleDrop,
+                findChartIndex: _findChartIndex,
             })}
             <DraggablePreview />
         </>
     )
 }
 
+export const findChartIndex = (
+    dashboard: CustomReportSchema,
+    chartId: string
+): number => {
+    const traverse = (children: CustomReportChild[]): number => {
+        for (let i = 0; i < children.length; i++) {
+            const node = children[i]
+
+            if (
+                node.type === CustomReportChildType.Chart &&
+                node.config_id === chartId
+            ) {
+                return i
+            }
+
+            if (
+                node.type === CustomReportChildType.Section ||
+                node.type === CustomReportChildType.Row
+            ) {
+                const result = traverse(node.children)
+                if (result !== -1) return result
+            }
+        }
+        return -1
+    }
+
+    return traverse(dashboard.children)
+}
+
 const renderDashboard = (
     dashboard: CustomReportSchema,
-    chartProps: Pick<CustomReportChartProps, 'onMove' | 'onDrop'>
+    chartProps: Pick<
+        CustomReportChartProps,
+        'onMove' | 'onDrop' | 'findChartIndex'
+    >
 ) => {
     const renderChildren = (children: CustomReportChild[]) =>
         children.map((child: CustomReportChild, index: number) => {
@@ -95,7 +135,11 @@ const renderDashboard = (
             switch (child.type) {
                 case CustomReportChildType.Row:
                     return (
-                        <CustomReportRow key={key}>
+                        <CustomReportRow
+                            key={key}
+                            charts={child.children}
+                            onMove={chartProps.onMove}
+                        >
                             {renderChildren(child.children)}
                         </CustomReportRow>
                     )

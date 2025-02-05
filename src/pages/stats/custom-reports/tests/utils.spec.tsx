@@ -211,7 +211,7 @@ describe('getGroupChartsIntoRows', () => {
         expect(result).toEqual([])
     })
 
-    it('should return a single row when the number of charts is less than or equal to chartsByRow', () => {
+    it('should wrap charts into a row', () => {
         const charts = ['chart1', 'chart2', 'chart3']
 
         const result = getGroupChartsIntoRows(charts)
@@ -221,90 +221,6 @@ describe('getGroupChartsIntoRows', () => {
                 {config_id: 'chart1', type: 'chart'},
                 {config_id: 'chart2', type: 'chart'},
                 {config_id: 'chart3', type: 'chart'},
-            ],
-            type: 'row',
-        })
-    })
-
-    it('should handle cases where the number of charts is exactly divisible by chartsByRow', () => {
-        const charts = [
-            'chart1',
-            'chart2',
-            'chart3',
-            'chart4',
-            'chart5',
-            'chart6',
-            'chart7',
-            'chart8',
-        ]
-        const result = getGroupChartsIntoRows(charts)
-
-        expect(result.length).toBe(2)
-        expect(result[0]).toEqual({
-            children: [
-                {config_id: 'chart1', type: 'chart'},
-                {config_id: 'chart2', type: 'chart'},
-                {config_id: 'chart3', type: 'chart'},
-                {config_id: 'chart4', type: 'chart'},
-            ],
-            type: 'row',
-        })
-        expect(result[1]).toEqual({
-            children: [
-                {config_id: 'chart5', type: 'chart'},
-                {config_id: 'chart6', type: 'chart'},
-                {config_id: 'chart7', type: 'chart'},
-                {config_id: 'chart8', type: 'chart'},
-            ],
-            type: 'row',
-        })
-    })
-
-    it('should return a row with a single chart if chartsByRow is greater than the number of charts', () => {
-        const charts = ['chart1']
-        const result = getGroupChartsIntoRows(charts, 10)
-
-        expect(result.length).toBe(1)
-        expect(result[0]).toEqual({
-            children: [{config_id: 'chart1', type: 'chart'}],
-            type: 'row',
-        })
-    })
-
-    it('should correctly group charts into rows with the given chartsByRow number', () => {
-        const charts = [
-            'chart1',
-            'chart2',
-            'chart3',
-            'chart4',
-            'chart5',
-            'chart6',
-            'chart7',
-            'chart8',
-        ]
-        const result = getGroupChartsIntoRows(charts, 3)
-
-        expect(result.length).toBe(3)
-        expect(result[0]).toEqual({
-            children: [
-                {config_id: 'chart1', type: 'chart'},
-                {config_id: 'chart2', type: 'chart'},
-                {config_id: 'chart3', type: 'chart'},
-            ],
-            type: 'row',
-        })
-        expect(result[1]).toEqual({
-            children: [
-                {config_id: 'chart4', type: 'chart'},
-                {config_id: 'chart5', type: 'chart'},
-                {config_id: 'chart6', type: 'chart'},
-            ],
-            type: 'row',
-        })
-        expect(result[2]).toEqual({
-            children: [
-                {config_id: 'chart7', type: 'chart'},
-                {config_id: 'chart8', type: 'chart'},
             ],
             type: 'row',
         })

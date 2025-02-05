@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
+import React, {forwardRef, ReactNode} from 'react'
 
 import css from './DashboardGrid.less'
 
@@ -8,6 +8,15 @@ type Props = {
     className?: string
 }
 
-export default function DashboardGrid({children, className}: Props) {
-    return <div className={classnames(css.wrapper, className)}>{children}</div>
+function DashboardGrid(
+    {children, className}: Props,
+    ref: React.Ref<HTMLDivElement>
+) {
+    return (
+        <div ref={ref} className={classnames(css.wrapper, className)}>
+            {children}
+        </div>
+    )
 }
+
+export default forwardRef<HTMLDivElement, Props>(DashboardGrid)
