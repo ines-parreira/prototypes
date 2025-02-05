@@ -15,6 +15,7 @@ const CLUSTER_LIST = [
     'us-east1-2607',
     'us-east1-635c',
     'us-east1-c94b',
+    'europe-west4-e7f4',
     'us-east4-65cd',
     'us-east4-5f09',
 ]

@@ -144,6 +144,7 @@ jobs:
         gorgias-helpdesk-production-us-east1-c94b
         gorgias-helpdesk-production-us-east4-5f09
         gorgias-helpdesk-production-us-east4-65cd
+        gorgias-helpdesk-production-europe-west4-e7f4
         gorgias-main-us-east1-635c
       bucket-path: ${{ needs.workspace-vars.outputs.bucket-path }}
       assets-dir: ${{ needs.workspace-vars.outputs.assets-dir }}
