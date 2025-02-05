@@ -1,7 +1,7 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import React, {useState, useMemo, useEffect, useCallback} from 'react'
+import {Label, Skeleton} from '@gorgias/merchant-ui-kit'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
-import {useParams, useHistory} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 
 import {ulid} from 'ulidx'
 
@@ -39,7 +39,6 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import css from './UseCaseTemplateModal.less'
 

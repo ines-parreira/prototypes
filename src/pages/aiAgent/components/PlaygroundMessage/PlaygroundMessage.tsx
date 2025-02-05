@@ -1,4 +1,4 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
+import {LoadingSpinner, Skeleton} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {ReactNode, useEffect, useState} from 'react'
 
@@ -11,7 +11,6 @@ import {
 } from 'models/aiAgentPlayground/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {assertUnreachable} from 'utils'
 import {sanitizeHtmlDefault} from 'utils/html'
 

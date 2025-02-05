@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Skeleton, Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {useMemo} from 'react'
 
 import {SegmentEvent} from 'common/segment'
@@ -13,7 +13,6 @@ import {
     Intent,
     IntentTableColumn,
 } from 'pages/aiAgent/insights/IntentTableWidget/types'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {DEFAULT_LOCALE, formatMetricValue} from 'pages/stats/common/utils'
 

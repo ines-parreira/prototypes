@@ -1,8 +1,6 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Skeleton, Tooltip} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React from 'react'
-
-import Skeleton from 'react-loading-skeleton'
 
 import aiAgentAvatarSrc from 'assets/img/ai-agent/ai-agent-avatar.png'
 import Avatar from 'pages/common/components/Avatar/Avatar'

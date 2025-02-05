@@ -29,9 +29,9 @@ const MOCK_WIZARD_VALUES = {
     },
 }
 
-jest.mock('react-loading-skeleton', () => ({
+jest.mock('@gorgias/merchant-ui-kit', () => ({
     __esModule: true,
-    default: () => <div>loading-skeleton</div>,
+    Skeleton: () => <div>loading-skeleton</div>,
 }))
 
 jest.mock('../../hooks/useWelcomePageAcknowledgedMutation', () => ({

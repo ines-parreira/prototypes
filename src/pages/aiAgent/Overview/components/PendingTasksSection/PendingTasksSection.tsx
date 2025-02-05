@@ -1,10 +1,9 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {useState} from 'react'
 
 import {CardTitle} from 'pages/aiAgent/Onboarding/components/Card'
 import {OverviewCard} from 'pages/aiAgent/Overview/components/OverviewCard/OverviewCard'
-
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import {usePendingTasks} from '../../hooks/usePendingTasks'
 import {PendingTask} from '../PendingTask/PendingTask'

@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import {Label, Skeleton} from '@gorgias/merchant-ui-kit'
 import {zodResolver} from '@hookform/resolvers/zod'
 import cn from 'classnames'
 import React from 'react'
@@ -39,7 +39,6 @@ import {
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding/settings'
 import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import IconInput from 'pages/common/forms/input/IconInput'
 import InputField from 'pages/common/forms/input/InputField'

@@ -1,3 +1,4 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -30,7 +31,6 @@ import {
 import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import {Separator} from 'pages/common/components/Separator/Separator'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import {getShopifyIntegrationByShopName} from 'state/integrations/selectors'
 

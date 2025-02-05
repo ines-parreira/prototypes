@@ -1,9 +1,8 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import cn from 'classnames'
 import React from 'react'
 
 import {Card, CardContent} from 'pages/aiAgent/Onboarding/components/Card'
-
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import {mixedPreviews} from './constants'
 import css from './PersonalityPreviewItem.less'

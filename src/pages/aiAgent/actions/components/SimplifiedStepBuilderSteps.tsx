@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import {Label, Skeleton} from '@gorgias/merchant-ui-kit'
 import _isEqual from 'lodash/isEqual'
 import React, {Dispatch, useCallback, useMemo, useRef, useState} from 'react'
 
@@ -15,8 +15,8 @@ import NodeMenu from 'pages/automate/workflows/editor/visualBuilder/components/N
 import NodeEditorDrawer from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawer'
 import {VisualBuilderGraphAction} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import {
-    walkVisualBuilderGraph,
     getReusableLLMPromptCallNodeStatuses,
+    walkVisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import {
     isReusableLLMPromptCallNodeType,
@@ -26,7 +26,6 @@ import {
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import {Separator} from 'pages/common/components/Separator/Separator'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import Caption from 'pages/common/forms/Caption/Caption'
 
 import css from './SimplifiedStepBuilderSteps.less'

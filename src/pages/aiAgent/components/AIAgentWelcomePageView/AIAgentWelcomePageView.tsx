@@ -1,7 +1,7 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {useCallback, useEffect, useRef} from 'react'
 
-import Skeleton from 'react-loading-skeleton'
 import {useHistory} from 'react-router-dom'
 
 import {AiAgentNotificationType} from 'automate/notifications/types'

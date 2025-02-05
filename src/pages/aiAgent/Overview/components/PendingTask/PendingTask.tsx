@@ -1,3 +1,4 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React from 'react'
 
@@ -5,13 +6,11 @@ import {NavLink} from 'react-router-dom'
 
 import {
     Card,
-    CardHeader,
     CardFooter,
+    CardHeader,
     CardTitle,
 } from 'pages/aiAgent/Onboarding/components/Card'
 import CardCaption from 'pages/aiAgent/Onboarding/components/Card/CardCaption'
-
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import css from './PendingTask.less'
 

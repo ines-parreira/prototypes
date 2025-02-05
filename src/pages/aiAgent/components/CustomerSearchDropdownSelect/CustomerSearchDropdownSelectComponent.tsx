@@ -1,8 +1,8 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {useCallback, useEffect} from 'react'
 
 import {CustomerList} from 'models/aiAgentPlayground/types'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {Value} from 'pages/common/forms/SelectField/types'
