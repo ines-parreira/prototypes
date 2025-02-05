@@ -1,5 +1,5 @@
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {render, fireEvent, act, waitFor} from '@testing-library/react'
+import {render, fireEvent, act} from '@testing-library/react'
 
 import {fromJS, Map} from 'immutable'
 import React from 'react'
@@ -37,7 +37,7 @@ const defaultState = {
 
 const queryClient = new QueryClient()
 
-const setCurrentStep = jest.fn()
+const goToStep = jest.fn()
 
 const renderComponent = (state?: RootState) => {
     return render(
@@ -46,7 +46,7 @@ const renderComponent = (state?: RootState) => {
                 <PersonalityPreviewStep
                     currentStep={2}
                     totalSteps={3}
-                    setCurrentStep={setCurrentStep}
+                    goToStep={goToStep}
                 />
             </Provider>
         </QueryClientProvider>
@@ -123,24 +123,17 @@ describe('<PersonalityPreviewStep />', () => {
             )
         })
 
-        it('navigates to the previous step when Back is clicked', async () => {
+        it('navigates to the previous step when Back is clicked', () => {
             const screen = renderComponent()
 
             const backButtons = screen.getAllByText(/Back/i)
 
             fireEvent.click(backButtons[1] || backButtons[0])
 
-            await waitFor(
-                () => {
-                    expect(setCurrentStep).toHaveBeenCalledWith(
-                        WizardStepEnum.CHANNELS
-                    )
-                },
-                {timeout: 2000}
-            )
+            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.CHANNELS)
         })
 
-        it('navigates to the next step when Next is clicked', async () => {
+        it('navigates to the next step when Next is clicked', () => {
             const screen = renderComponent()
 
             fireEvent.click(screen.getByText(/Next/i))
@@ -150,14 +143,7 @@ describe('<PersonalityPreviewStep />', () => {
                     ? WizardStepEnum.HANDOVER
                     : WizardStepEnum.SALES_PERSONALITY
 
-            await waitFor(
-                () => {
-                    expect(setCurrentStep).toHaveBeenCalledWith(
-                        expectedCalledWith
-                    )
-                },
-                {timeout: 2000}
-            )
+            expect(goToStep).toHaveBeenCalledWith(expectedCalledWith)
         })
     })
 })

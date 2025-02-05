@@ -12,28 +12,28 @@ import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
-const EmailIntegrationStep: FC<StepProps> = ({
+export const EmailIntegrationStep: FC<StepProps> = ({
     currentStep,
     totalSteps,
-    setCurrentStep,
+    goToStep,
 }) => {
     const {data, isLoading} = useGetOnboardingData()
     const storeName = data?.shop || ''
 
     const {integration} = useShopifyIntegrationAndScope(storeName)
 
-    useCheckStoreIntegration({storeName, isLoading, setCurrentStep})
+    useCheckStoreIntegration({storeName, isLoading, goToStep})
 
     const onNextClick = () => {
-        setCurrentStep?.(WizardStepEnum.CHANNELS)
+        goToStep(WizardStepEnum.CHANNELS)
     }
 
     const onBackClick = () => {
         if (!integration) {
-            setCurrentStep?.(WizardStepEnum.SHOPIFY_INTEGRATION)
+            goToStep(WizardStepEnum.SHOPIFY_INTEGRATION)
             return
         }
-        setCurrentStep?.(WizardStepEnum.SKILLSET)
+        goToStep(WizardStepEnum.SKILLSET)
     }
 
     return (

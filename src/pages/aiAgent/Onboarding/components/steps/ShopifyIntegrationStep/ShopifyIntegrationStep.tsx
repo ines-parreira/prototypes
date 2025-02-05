@@ -1,6 +1,8 @@
-import React, {useMemo, useState} from 'react'
+import React, {useMemo, useState, useCallback} from 'react'
 
 import {FormProvider, useForm} from 'react-hook-form'
+
+import {useHistory} from 'react-router-dom'
 
 import {z} from 'zod'
 
@@ -25,6 +27,7 @@ import {
     OnboardingBody,
     OnboardingContentContainer,
     OnboardingPreviewContainer,
+    LoadingPulserIcon,
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
 import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
@@ -42,6 +45,7 @@ const ShopifyIcon: React.FC<{size?: string}> = ({size}) => (
 
 const ShopifyFormSchema = z.object({
     shop: z.string().min(1, 'Please select a Shopify store'),
+    shopType: z.string().optional(),
 })
 
 type ShopifyFormValues = z.infer<typeof ShopifyFormSchema>
@@ -49,7 +53,7 @@ type ShopifyFormValues = z.infer<typeof ShopifyFormSchema>
 export const ShopifyIntegrationStep: React.FC<StepProps> = ({
     currentStep,
     totalSteps,
-    setCurrentStep,
+    goToStep,
 }) => {
     const {redirectToIntegration} = useOnboardingIntegrationRedirection()
     const shopifyIntegrations: StoreIntegration[] = useShopifyIntegrations()
@@ -57,6 +61,8 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
 
     const {data, isLoading} = useGetOnboardingData()
     const updateOnboardingCache = useUpdateOnboardingCache()
+
+    const history = useHistory()
 
     const [shopError, setShopError] = useState<string | null>(null)
 
@@ -68,34 +74,45 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
     )
 
     const methods = useForm<ShopifyFormValues>({
-        values: {shop: selectedIntegration?.name ?? ''},
+        values: {
+            shop: selectedIntegration?.name ?? '',
+            shopType: selectedIntegration?.type ?? '',
+        },
     })
 
     const {watch, setValue, handleSubmit} = methods
 
     // Watch form state
     const selectedShop = watch('shop')
+    const selectedShopType = watch('shopType')
 
     // Update shopName in cache when selection changes
-    const onSelectShop = (shopId: number | null) => {
-        const foundShop = shopifyIntegrations.find((shop) => shop.id === shopId)
-        if (foundShop) {
-            setValue('shop', foundShop.name)
-            updateOnboardingCache('shop', foundShop.name)
-            setShopError(null)
-        }
-    }
+    const onSelectShop = useCallback(
+        (shopId: number | null) => {
+            const foundShop = shopifyIntegrations.find(
+                (shop) => shop.id === shopId
+            )
+            if (foundShop) {
+                setValue('shop', foundShop.name)
+                updateOnboardingCache('shop', foundShop.name)
+                setValue('shopType', foundShop.type)
+                setShopError(null)
+            }
+        },
+        [shopifyIntegrations, setValue, updateOnboardingCache]
+    )
 
-    const redirectToShopify = () => {
+    const redirectToShopify = useCallback(() => {
         redirectToIntegration('https://apps.shopify.com/helpdesk')
-    }
+    }, [redirectToIntegration])
 
     const onBackClick = () => {
         updateOnboardingCache('shop', selectedShop)
-        setCurrentStep?.(WizardStepEnum.SKILLSET)
+        goToStep(WizardStepEnum.SKILLSET)
     }
 
     const onNextClick = () => {
+        let newPath = `/app/ai-agent/${selectedShopType}/${selectedShop}/onboarding/${WizardStepEnum.CHANNELS}`
         if (!shopifyIntegrations.length) {
             setShopError(
                 'No Shopify store connected. Please connect a store before proceeding.'
@@ -104,11 +121,84 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
         }
         updateOnboardingCache('shop', selectedShop)
         if (!emailIntegrations && !defaultIntegration) {
-            setCurrentStep?.(WizardStepEnum.EMAIL_INTEGRATION)
+            newPath = `app/ai-agent/${selectedShopType}/${selectedShop}/onboarding/${WizardStepEnum.EMAIL_INTEGRATION}`
+            history.push(newPath)
             return
         }
-        setCurrentStep?.(WizardStepEnum.CHANNELS)
+
+        history.push(newPath)
     }
+
+    const renderContent = useMemo(() => {
+        if (isLoading) {
+            return <LoadingPulserIcon icon={<ShopifyIcon size="40%" />} />
+        }
+
+        return (
+            <>
+                {shopError && (
+                    <>
+                        <AIBanner hasError fillStyle="fill">
+                            {shopError}
+                        </AIBanner>
+                        <Separator />
+                    </>
+                )}
+                {selectedShop && (
+                    <>
+                        <AIBanner fillStyle="fill">
+                            {shopifyIntegrations.length > 1
+                                ? "You're already connected to Shopify. Select your store to proceed."
+                                : "You're already connected to Shopify. Click next to proceed."}
+                        </AIBanner>
+                        <Separator />
+                    </>
+                )}
+                <IntegrationCard
+                    icon={<ShopifyIcon size="40px" />}
+                    title="Connect Shopify"
+                    description="Empower your AI Agent with access to customer orders and data, enabling it to answer questions and perform actions seamlessly."
+                    status={
+                        selectedShop ? (
+                            <StatusBadge status={StatusEnum.Connected} />
+                        ) : (
+                            <StatusBadge status={StatusEnum.Disconnected} />
+                        )
+                    }
+                    buttonLabel={
+                        shopifyIntegrations.length === 0 ? 'Connect' : undefined
+                    }
+                    onClick={redirectToShopify}
+                >
+                    {shopifyIntegrations.length > 0 && (
+                        <div className={css.content}>
+                            <DropdownSelector
+                                items={shopifyIntegrations}
+                                selectedKey={selectedIntegration.id}
+                                setSelectedKey={onSelectShop}
+                                selectedItem={selectedIntegration}
+                                getItemKey={(item: StoreIntegration) => item.id}
+                                getItemLabel={(item: StoreIntegration) =>
+                                    item.name
+                                }
+                            />
+                            <a className={css.link} onClick={redirectToShopify}>
+                                Need to create a new store? Click here
+                            </a>
+                        </div>
+                    )}
+                </IntegrationCard>
+            </>
+        )
+    }, [
+        isLoading,
+        shopError,
+        selectedShop,
+        shopifyIntegrations,
+        selectedIntegration,
+        onSelectShop,
+        redirectToShopify,
+    ])
 
     return (
         <FormProvider {...methods}>
@@ -124,68 +214,10 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
                         titleMagenta="Shopify account"
                     />
                     <Separator />
-                    {shopError && (
-                        <>
-                            <AIBanner hasError fillStyle="fill">
-                                {shopError}
-                            </AIBanner>
-                            <Separator />
-                        </>
-                    )}
-                    {selectedShop && (
-                        <>
-                            <AIBanner fillStyle="fill">
-                                {shopifyIntegrations.length > 1
-                                    ? "You're already connected to Shopify. Select your store to proceed."
-                                    : "You're already connected to Shopify. Click next to proceed."}
-                            </AIBanner>
-                            <Separator />
-                        </>
-                    )}
-                    <IntegrationCard
-                        icon={<ShopifyIcon size="40px" />}
-                        title="Connect Shopify"
-                        description="Empower your AI Agent with access to customer orders and data, enabling it to answer questions and perform actions seamlessly."
-                        status={
-                            selectedShop ? (
-                                <StatusBadge status={StatusEnum.Connected} />
-                            ) : (
-                                <StatusBadge status={StatusEnum.Disconnected} />
-                            )
-                        }
-                        buttonLabel={
-                            shopifyIntegrations.length === 0
-                                ? 'Connect'
-                                : undefined
-                        }
-                        onClick={redirectToShopify}
-                    >
-                        {shopifyIntegrations.length > 0 && (
-                            <div className={css.content}>
-                                <DropdownSelector
-                                    items={shopifyIntegrations}
-                                    selectedKey={selectedIntegration.id}
-                                    setSelectedKey={onSelectShop}
-                                    selectedItem={selectedIntegration}
-                                    getItemKey={(item: StoreIntegration) =>
-                                        item.id
-                                    }
-                                    getItemLabel={(item: StoreIntegration) =>
-                                        item.name
-                                    }
-                                />
-                                <a
-                                    className={css.link}
-                                    onClick={redirectToShopify}
-                                >
-                                    Need to create a new store? Click here
-                                </a>
-                            </div>
-                        )}
-                    </IntegrationCard>
+                    {renderContent}
                 </OnboardingContentContainer>
                 <OnboardingPreviewContainer
-                    isLoading={isLoading}
+                    isLoading={true}
                     icon={<ShopifyIcon size="40%" />}
                 />
             </OnboardingBody>

@@ -10,28 +10,28 @@ import {
 
 import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 
-const HandoverStep: FC<StepProps> = ({
+export const HandoverStep: FC<StepProps> = ({
     currentStep,
     totalSteps,
-    setCurrentStep,
+    goToStep,
 }) => {
     const {data, isLoading} = useGetOnboardingData()
 
     const storeName = data?.shop || ''
 
-    useCheckStoreIntegration({storeName, isLoading, setCurrentStep})
+    useCheckStoreIntegration({storeName, isLoading, goToStep})
 
     const onNextClick = () => {
-        setCurrentStep?.(WizardStepEnum.KNOWLEDGE)
+        goToStep(WizardStepEnum.KNOWLEDGE)
     }
 
     const onBackClick = () => {
         if (data?.scope.includes(AiAgentScopes.SALES)) {
-            setCurrentStep?.(WizardStepEnum.SALES_PERSONALITY)
+            goToStep(WizardStepEnum.SALES_PERSONALITY)
             return
         }
 
-        setCurrentStep?.(WizardStepEnum.PERSONALITY_PREVIEW)
+        goToStep(WizardStepEnum.PERSONALITY_PREVIEW)
     }
 
     return (

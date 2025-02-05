@@ -1,5 +1,5 @@
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
@@ -65,7 +65,7 @@ describe('KnowledgeStep', () => {
     const defaultProps: StepProps = {
         currentStep: 2,
         totalSteps: 3,
-        setCurrentStep: jest.fn(),
+        goToStep: jest.fn(),
     }
 
     const renderWithProvider = (props = defaultProps) => {
@@ -94,8 +94,18 @@ describe('KnowledgeStep', () => {
         mockUseUpdateOnboardingCache.mockReturnValue(jest.fn())
     })
 
+    beforeAll(() => {
+        jest.useFakeTimers()
+    })
+
+    afterAll(() => {
+        jest.useRealTimers()
+    })
+
     it('renders the component with main title', () => {
         renderWithProvider()
+
+        jest.runAllTimers()
 
         expect(screen.getByText(/Great, start building/)).toBeInTheDocument()
         expect(screen.getByText(/AI Agent's knowledge/)).toBeInTheDocument()
@@ -104,6 +114,8 @@ describe('KnowledgeStep', () => {
     it('renders AI Banner with correct text', () => {
         renderWithProvider()
 
+        jest.runAllTimers()
+
         expect(
             screen.getByText(
                 /Your AI Agent uses your knowledge to respond to customers/
@@ -111,7 +123,7 @@ describe('KnowledgeStep', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders Shopify knowledge source when shop name is provided', async () => {
+    it('renders Shopify knowledge source when shop name is provided', () => {
         useGetHelpCentersByShopNameMock.mockReturnValue({
             isHelpCenterLoading: false,
             helpCenters: getHelpCentersResponseFixture.data,
@@ -119,12 +131,9 @@ describe('KnowledgeStep', () => {
 
         renderWithProvider()
 
-        await waitFor(
-            () => {
-                expect(screen.getByText('ACME Help Center')).toBeInTheDocument()
-            },
-            {timeout: 2000}
-        )
+        jest.runAllTimers()
+
+        expect(screen.getByText('ACME Help Center')).toBeInTheDocument()
 
         expect(
             screen.getByText(shopifyIntegration.meta.shop_name)
@@ -139,6 +148,8 @@ describe('KnowledgeStep', () => {
 
         renderWithProvider()
 
+        jest.runAllTimers()
+
         expect(screen.queryByText('ACME Help Center')).toBeNull()
     })
 
@@ -148,6 +159,8 @@ describe('KnowledgeStep', () => {
             helpCenters: [],
         })
         renderWithProvider()
+
+        jest.runAllTimers()
 
         expect(screen.queryByText('ACME Help Center')).toBeNull()
     })
@@ -160,11 +173,15 @@ describe('KnowledgeStep', () => {
 
         renderWithProvider()
 
+        jest.runAllTimers()
+
         expect(screen.getByText('ACME Help Center')).toBeInTheDocument()
     })
 
     it('renders preview section', async () => {
         renderWithProvider()
+
+        jest.runAllTimers()
 
         expect((await screen.findAllByText('Top Locations')).length).toBe(2)
     })
@@ -175,6 +192,9 @@ describe('KnowledgeStep', () => {
             helpCenters: getHelpCentersResponseFixture.data,
         })
         renderWithProvider()
+
+        jest.runAllTimers()
+
         const nextButton = screen.getByText('Next')
 
         userEvent.click(nextButton)
@@ -182,18 +202,15 @@ describe('KnowledgeStep', () => {
         expect(mockUseUpdateOnboardingCache).toHaveBeenCalled()
     })
 
-    it('navigates to the handover step when Back is clicked', async () => {
+    it('navigates to the handover step when Back is clicked', () => {
         renderWithProvider()
+
+        jest.runAllTimers()
 
         fireEvent.click(screen.getByText(/Back/i))
 
-        await waitFor(
-            () => {
-                expect(defaultProps.setCurrentStep).toHaveBeenCalledWith(
-                    WizardStepEnum.HANDOVER
-                )
-            },
-            {timeout: 2000}
+        expect(defaultProps.goToStep).toHaveBeenCalledWith(
+            WizardStepEnum.HANDOVER
         )
     })
 })

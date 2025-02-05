@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect'
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 
 import {fromJS, Map} from 'immutable'
 import React from 'react'
@@ -12,7 +12,7 @@ import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {chatIntegrationFixtures} from 'fixtures/chat'
 import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
-import HandoverStep from 'pages/aiAgent/Onboarding/components/steps/HandoverStep/HandoverStep'
+import {HandoverStep} from 'pages/aiAgent/Onboarding/components/steps/HandoverStep/HandoverStep'
 import {DiscountStrategy} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import {PersuasionLevel} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
@@ -36,7 +36,7 @@ const defaultState = {
 
 const mockUseGetOnboardingData = useGetOnboardingData as jest.Mock
 
-const mockSetCurrentStep = jest.fn()
+const mockGoToStep = jest.fn()
 
 const queryClient = new QueryClient()
 
@@ -47,7 +47,7 @@ const renderComponent = (state?: RootState) => {
                 <HandoverStep
                     currentStep={2}
                     totalSteps={3}
-                    setCurrentStep={mockSetCurrentStep}
+                    goToStep={mockGoToStep}
                 />
             </Provider>
         </QueryClientProvider>
@@ -68,56 +68,48 @@ describe('HandoverStep', () => {
         })
     })
 
-    it('should render without crashing', async () => {
-        renderComponent()
-
-        await waitFor(
-            () => {
-                expect(screen.getByText('Handover step')).toBeInTheDocument()
-            },
-            {timeout: 5000}
-        )
+    beforeAll(() => {
+        jest.useFakeTimers()
     })
 
-    it('navigates to the Knowledge step when Next is clicked', async () => {
+    afterAll(() => {
+        jest.useRealTimers()
+    })
+
+    it('should render without crashing', () => {
         renderComponent()
 
-        await waitFor(
-            () => {
-                expect(screen.getByText('Handover step')).toBeInTheDocument()
-            },
-            {timeout: 5000}
-        )
+        jest.runAllTimers()
+
+        expect(screen.getByText('Handover step')).toBeInTheDocument()
+    })
+
+    it('navigates to the Knowledge step when Next is clicked', () => {
+        renderComponent()
+
+        jest.runAllTimers()
+
+        expect(screen.getByText('Handover step')).toBeInTheDocument()
 
         fireEvent.click(screen.getByText(/Next/i))
 
-        await waitFor(
-            () => {
-                expect(mockSetCurrentStep).toHaveBeenCalledWith(
-                    WizardStepEnum.KNOWLEDGE
-                )
-            },
-            {timeout: 5000}
-        )
+        expect(mockGoToStep).toHaveBeenCalledWith(WizardStepEnum.KNOWLEDGE)
     })
 
-    it('navigates back to SALES_PERSONALITY if agent includes SALES', async () => {
+    it('navigates back to SALES_PERSONALITY if agent includes SALES', () => {
         renderComponent()
 
-        await waitFor(
-            () => {
-                expect(screen.getByText('Handover step')).toBeInTheDocument()
-            },
-            {timeout: 5000}
-        )
+        jest.runAllTimers()
+
+        expect(screen.getByText('Handover step')).toBeInTheDocument()
 
         fireEvent.click(screen.getByText(/Back/i))
-        expect(mockSetCurrentStep).toHaveBeenCalledWith(
+        expect(mockGoToStep).toHaveBeenCalledWith(
             WizardStepEnum.SALES_PERSONALITY
         )
     })
 
-    it('navigates back to PERSONALITY_PREVIEW if agent does not include SALES', async () => {
+    it('navigates back to PERSONALITY_PREVIEW if agent does not include SALES', () => {
         mockUseGetOnboardingData.mockReturnValue({
             data: {
                 persuasionLevel: PersuasionLevel.Moderate,
@@ -130,15 +122,12 @@ describe('HandoverStep', () => {
 
         renderComponent()
 
-        await waitFor(
-            () => {
-                expect(screen.getByText('Handover step')).toBeInTheDocument()
-            },
-            {timeout: 5000}
-        )
+        jest.runAllTimers()
+
+        expect(screen.getByText('Handover step')).toBeInTheDocument()
 
         fireEvent.click(screen.getByText(/Back/i))
-        expect(mockSetCurrentStep).toHaveBeenCalledWith(
+        expect(mockGoToStep).toHaveBeenCalledWith(
             WizardStepEnum.PERSONALITY_PREVIEW
         )
     })

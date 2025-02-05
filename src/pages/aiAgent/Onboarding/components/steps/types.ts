@@ -1,9 +1,9 @@
-import {WizardStepEnum} from '../../types'
+import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 
 export type StepProps = {
     totalSteps: number
     currentStep: number
-    setCurrentStep?: (step: WizardStepEnum) => void
+    goToStep: (step: WizardStepEnum) => void
 }
 
 export enum KnowledgeSourceType {

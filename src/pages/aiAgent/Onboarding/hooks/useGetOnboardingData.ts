@@ -28,7 +28,7 @@ const fetchOnboardingData = async (): Promise<OnboardingData> => {
                 maxDiscountPercentage: 8,
                 scope: [AiAgentScopes.SUPPORT],
             })
-        }, 2000)
+        }, 500)
     })
 }
 

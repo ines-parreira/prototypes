@@ -79,13 +79,13 @@ const personalitySchema = z
 export const PersonalityStep: React.FC<StepProps> = ({
     currentStep,
     totalSteps,
-    setCurrentStep,
+    goToStep,
 }) => {
     const {isLoading, data} = useGetOnboardingData()
 
     const storeName = data?.shop || ''
 
-    useCheckStoreIntegration({storeName, isLoading, setCurrentStep})
+    useCheckStoreIntegration({storeName, isLoading, goToStep})
 
     const updateOnboardingCache = useUpdateOnboardingCache()
 
@@ -137,12 +137,12 @@ export const PersonalityStep: React.FC<StepProps> = ({
 
     const onNextClick = () => {
         updateCacheData()
-        setCurrentStep?.(WizardStepEnum.HANDOVER)
+        goToStep(WizardStepEnum.HANDOVER)
     }
 
     const onBackClick = () => {
         updateCacheData()
-        setCurrentStep?.(WizardStepEnum.PERSONALITY_PREVIEW)
+        goToStep(WizardStepEnum.PERSONALITY_PREVIEW)
     }
 
     return (

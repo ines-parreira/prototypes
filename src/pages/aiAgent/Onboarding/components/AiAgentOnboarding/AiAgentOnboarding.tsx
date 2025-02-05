@@ -1,141 +1,117 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useState} from 'react'
-
-import {Redirect, useParams} from 'react-router-dom'
+import React, {useMemo, useCallback} from 'react'
+import {Redirect, Route, Switch, useHistory, useParams} from 'react-router-dom'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import {ChannelsStep} from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
-import EmailIntegrationStep from 'pages/aiAgent/Onboarding/components/steps/EmailIntegrationStep/EmailIntegrationStep'
-import HandoverStep from 'pages/aiAgent/Onboarding/components/steps/HandoverStep/HandoverStep'
+import {EmailIntegrationStep} from 'pages/aiAgent/Onboarding/components/steps/EmailIntegrationStep/EmailIntegrationStep'
+import {HandoverStep} from 'pages/aiAgent/Onboarding/components/steps/HandoverStep/HandoverStep'
 import {KnowledgeStep} from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeStep'
 import {PersonalityPreviewStep} from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep'
 import {PersonalityStep} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersonalityStep'
 import {ShopifyIntegrationStep} from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep'
-import SkillsetStep from 'pages/aiAgent/Onboarding/components/steps/SkillsetStep/SkillsetStep'
+import {SkillsetStep} from 'pages/aiAgent/Onboarding/components/steps/SkillsetStep/SkillsetStep'
+import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
 import {useSteps} from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import {
     ConvAiOnboardingLayout,
     OnboardingHeader,
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
+
 import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 
-const renderStep = ({
-    currentStep,
-    setCurrentStep,
-    totalSteps,
-    currentIndex,
-}: {
-    currentStep: WizardStepEnum
-    setCurrentStep: (step: WizardStepEnum) => void
-    totalSteps: number
-    currentIndex: number
-}) => {
-    switch (currentStep) {
-        case WizardStepEnum.SHOPIFY_INTEGRATION:
-            return (
-                <ShopifyIntegrationStep
-                    currentStep={currentIndex}
-                    totalSteps={totalSteps}
-                    setCurrentStep={setCurrentStep}
-                />
-            )
-        case WizardStepEnum.EMAIL_INTEGRATION:
-            return (
-                <EmailIntegrationStep
-                    currentStep={currentIndex}
-                    totalSteps={totalSteps}
-                    setCurrentStep={setCurrentStep}
-                />
-            )
-        case WizardStepEnum.CHANNELS:
-            return (
-                <ChannelsStep
-                    currentStep={currentIndex}
-                    totalSteps={totalSteps}
-                    setCurrentStep={setCurrentStep}
-                />
-            )
-        case WizardStepEnum.PERSONALITY_PREVIEW:
-            return (
-                <PersonalityPreviewStep
-                    currentStep={currentIndex}
-                    totalSteps={totalSteps}
-                    setCurrentStep={setCurrentStep}
-                />
-            )
-        case WizardStepEnum.SALES_PERSONALITY:
-            return (
-                <PersonalityStep
-                    currentStep={currentIndex}
-                    totalSteps={totalSteps}
-                    setCurrentStep={setCurrentStep}
-                />
-            )
-
-        case WizardStepEnum.HANDOVER:
-            return (
-                <HandoverStep
-                    currentStep={currentIndex}
-                    totalSteps={totalSteps}
-                    setCurrentStep={setCurrentStep}
-                />
-            )
-        case WizardStepEnum.KNOWLEDGE:
-            return (
-                <KnowledgeStep
-                    currentStep={currentIndex}
-                    totalSteps={totalSteps}
-                    setCurrentStep={setCurrentStep}
-                />
-            )
-        default:
-            return (
-                <SkillsetStep
-                    currentStep={currentIndex}
-                    totalSteps={totalSteps}
-                    setCurrentStep={setCurrentStep}
-                />
-            )
-    }
-}
-
-export const AiAgentOnboarding = ({
-    onClose = () => {},
-}: {
-    onClose?: () => void
-}) => {
-    const {shopName} = useParams<{
+export const AiAgentOnboarding = () => {
+    const {shopName, step, shopType} = useParams<{
         shopName: string
+        step: string
+        shopType: string
     }>()
-
-    const {validSteps, totalSteps} = useSteps({shopName})
+    const {validSteps} = useSteps({shopName})
     const {routes} = useAiAgentNavigation({shopName})
-
-    const [currentStep, setCurrentStep] = useState<WizardStepEnum>(
-        WizardStepEnum.SKILLSET
-    )
+    const history = useHistory()
 
     const isConvAiOnboardingEnabled =
         useFlags()[FeatureFlagKey.ConvAiOnboarding]
+
+    const currentIndex = validSteps.findIndex(
+        (validStep) => validStep.step === step
+    )
+
+    const goToStep = useCallback(
+        (nextStep: WizardStepEnum) => {
+            if (shopType && shopName) {
+                history.push(
+                    `/app/ai-agent/${shopType}/${shopName}/onboarding/${nextStep}`
+                )
+            } else {
+                history.push(`/app/ai-agent/onboarding/${nextStep}`)
+            }
+        },
+        [history, shopName, shopType]
+    )
+
+    const stepProps: StepProps = useMemo(
+        () => ({
+            currentStep: currentIndex + 1,
+            totalSteps: validSteps.length,
+            goToStep,
+        }),
+        [currentIndex, validSteps.length, goToStep]
+    )
+
+    const isValidStep = useMemo(
+        () => validSteps.some((validStep) => validStep.step === step),
+        [validSteps, step]
+    )
 
     if (isConvAiOnboardingEnabled === false) {
         return <Redirect to={routes.main} />
     }
 
-    const currentIndex =
-        validSteps.findIndex((step) => step.step === currentStep) + 1
+    const renderStep = () => {
+        if (!isValidStep && validSteps.length > 0) {
+            return (
+                <Redirect
+                    to={`/app/ai-agent/onboarding/${validSteps[0].step}`}
+                />
+            )
+        }
+
+        switch (step) {
+            case WizardStepEnum.SHOPIFY_INTEGRATION:
+                return <ShopifyIntegrationStep {...stepProps} />
+            case WizardStepEnum.EMAIL_INTEGRATION:
+                return <EmailIntegrationStep {...stepProps} />
+            case WizardStepEnum.CHANNELS:
+                return <ChannelsStep {...stepProps} />
+            case WizardStepEnum.KNOWLEDGE:
+                return <KnowledgeStep {...stepProps} />
+            case WizardStepEnum.HANDOVER:
+                return <HandoverStep {...stepProps} />
+            case WizardStepEnum.PERSONALITY_PREVIEW:
+                return <PersonalityPreviewStep {...stepProps} />
+            case WizardStepEnum.SALES_PERSONALITY:
+                return <PersonalityStep {...stepProps} />
+            default:
+                return <SkillsetStep {...stepProps} />
+        }
+    }
 
     return (
         <ConvAiOnboardingLayout>
-            <OnboardingHeader onClose={onClose} />
-            {renderStep({
-                currentStep,
-                setCurrentStep,
-                totalSteps,
-                currentIndex,
-            })}
+            <OnboardingHeader onClose={() => {}} />
+            <Switch>
+                <Route
+                    path="/app/ai-agent/onboarding/:step"
+                    render={renderStep}
+                />
+                <Route
+                    path="/app/ai-agent/:shopType/:shopName/onboarding/:step"
+                    render={renderStep}
+                />
+            </Switch>
         </ConvAiOnboardingLayout>
     )
 }

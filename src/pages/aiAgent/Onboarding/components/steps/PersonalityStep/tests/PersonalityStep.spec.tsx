@@ -15,6 +15,7 @@ import {shopifyIntegration, integrationsState} from 'fixtures/integrations'
 import {PersonalityStep} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersonalityStep'
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
 
+import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import {RootState, StoreDispatch} from 'state/types'
 
 const trackRect = {
@@ -51,38 +52,43 @@ const renderComponent = (props: ComponentProps<typeof PersonalityStep>) => {
     )
 }
 
-const setCurrentStep = jest.fn()
+const goToStep = jest.fn()
 
 describe('PersonalityStep', () => {
     const defaultProps: StepProps = {
-        currentStep: 1,
+        currentStep: 2,
         totalSteps: 8,
-        setCurrentStep,
+        goToStep,
     }
 
-    it('should render without crashing', async () => {
+    beforeAll(() => {
+        jest.useFakeTimers()
+    })
+
+    afterAll(() => {
+        jest.useRealTimers()
+    })
+
+    it('should render without crashing', () => {
         renderComponent(defaultProps)
 
-        await waitFor(
-            () => {
-                expect(
-                    screen.getByRole('heading', {
-                        name: /Let's define the sales skills for your AI Agent/i,
-                    })
-                ).toBeInTheDocument()
-                expect(
-                    screen.getByText(
-                        'Strikes a balance between educating the customer and encouraging them to make a purchase.'
-                    )
-                ).toBeInTheDocument()
-                expect(
-                    screen.getByText(
-                        'The Sales AI Agent offers discounts at a level optimized for both conversions and profit.'
-                    )
-                ).toBeInTheDocument()
-            },
-            {timeout: 5000}
-        )
+        jest.runAllTimers()
+
+        expect(
+            screen.getByRole('heading', {
+                name: /Let's define the sales skills for your AI Agent/i,
+            })
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Strikes a balance between educating the customer and encouraging them to make a purchase.'
+            )
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'The Sales AI Agent offers discounts at a level optimized for both conversions and profit.'
+            )
+        ).toBeInTheDocument()
     })
 
     it('should update persuasion level description when moving slider', async () => {
@@ -126,25 +132,20 @@ describe('PersonalityStep', () => {
     it('should set max percentage to 0 when discount strategy is None', async () => {
         renderComponent(defaultProps)
 
-        await waitFor(
-            () => {
-                const track = document.querySelectorAll('.track')[1]
-                track.getBoundingClientRect = jest
-                    .fn()
-                    .mockReturnValue(trackRect)
-                // Try clicking before the start of track to select the first value
-                fireEvent.click(track, {
-                    clientX: 0,
-                })
+        await waitFor(() => {
+            const track = document.querySelectorAll('.track')[1]
+            track.getBoundingClientRect = jest.fn().mockReturnValue(trackRect)
+            // Try clicking before the start of track to select the first value
+            fireEvent.click(track, {
+                clientX: 0,
+            })
 
-                expect(
-                    screen.getByText(
-                        'The Sales AI Agent will not offer any discounts under any circumstances.'
-                    )
-                ).toBeInTheDocument()
-            },
-            {timeout: 5000}
-        )
+            expect(
+                screen.getByText(
+                    'The Sales AI Agent will not offer any discounts under any circumstances.'
+                )
+            ).toBeInTheDocument()
+        })
 
         // Wait for maxDiscountPercentage to update in the DOM
         await waitFor(() => {
@@ -199,6 +200,40 @@ describe('PersonalityStep', () => {
             expect(
                 screen.queryByText(/Must be a number between 1 and 100/i)
             ).toBeInTheDocument()
+        })
+    })
+
+    it('navigates to the personality preview step when Back is clicked', async () => {
+        renderComponent(defaultProps)
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText(/Maximum Discount Percentage/)
+            ).toBeInTheDocument()
+        })
+
+        fireEvent.click(screen.getByText(/Back/i))
+
+        await waitFor(() => {
+            expect(goToStep).toHaveBeenCalledWith(
+                WizardStepEnum.PERSONALITY_PREVIEW
+            )
+        })
+    })
+
+    it('navigates to the handover step when Next is clicked', async () => {
+        renderComponent(defaultProps)
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText(/Maximum Discount Percentage/)
+            ).toBeInTheDocument()
+        })
+
+        fireEvent.click(screen.getByText(/Next/i))
+
+        await waitFor(() => {
+            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.HANDOVER)
         })
     })
 })

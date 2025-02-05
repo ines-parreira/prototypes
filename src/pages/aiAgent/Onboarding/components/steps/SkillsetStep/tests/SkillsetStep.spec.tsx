@@ -1,9 +1,9 @@
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {screen, fireEvent, act, waitFor} from '@testing-library/react'
+import {screen, fireEvent, act} from '@testing-library/react'
 
 import React from 'react'
 
-import SkillsetStep from 'pages/aiAgent/Onboarding/components/steps/SkillsetStep/SkillsetStep'
+import {SkillsetStep} from 'pages/aiAgent/Onboarding/components/steps/SkillsetStep/SkillsetStep'
 import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
@@ -38,16 +38,12 @@ const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
 
 const queryClient = new QueryClient()
 
-const setCurrentStep = jest.fn()
+const goToStep = jest.fn()
 
 const renderComponent = () => {
     return renderWithRouter(
         <QueryClientProvider client={queryClient}>
-            <SkillsetStep
-                currentStep={1}
-                totalSteps={3}
-                setCurrentStep={setCurrentStep}
-            />
+            <SkillsetStep currentStep={1} totalSteps={3} goToStep={goToStep} />
         </QueryClientProvider>
     )
 }
@@ -64,60 +60,61 @@ describe('<SkillsetStep />', () => {
         })
     })
 
+    beforeAll(() => {
+        jest.useFakeTimers()
+    })
+
+    afterAll(() => {
+        jest.useRealTimers()
+    })
+
     it('renders', () => {
         renderComponent()
+
+        jest.runAllTimers()
+
         expect(
             screen.getByText('Welcome to Conversational AI')
         ).toBeInTheDocument()
     })
 
-    it('user can select a goal and click next when there is an integration', async () => {
+    it('user can select a goal and click next when there is an integration', () => {
         renderComponent()
 
-        await waitFor(
-            () => {
-                expect(
-                    screen.getByText('Automate support with AI')
-                ).toBeInTheDocument()
-            },
-            {timeout: 5000}
-        )
+        jest.runAllTimers()
+
+        expect(screen.getByText('Automate support with AI')).toBeInTheDocument()
 
         act(() => {
             fireEvent.click(screen.getByText('Automate support with AI'))
         })
 
         fireEvent.click(screen.getByText(/Next/i))
-        expect(setCurrentStep).toHaveBeenCalledWith(WizardStepEnum.CHANNELS)
+        expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.CHANNELS)
     })
 
-    it('user can select a goal and click next when there is not an integration', async () => {
+    it('user can select a goal and click next when there is not an integration', () => {
         mockUseShopifyIntegrationAndScope.mockReturnValue({
             integration: false,
         })
 
         renderComponent()
 
-        await waitFor(
-            () => {
-                expect(
-                    screen.getByText('Automate support with AI')
-                ).toBeInTheDocument()
-            },
-            {timeout: 5000}
-        )
+        jest.runAllTimers()
+
+        expect(screen.getByText('Automate support with AI')).toBeInTheDocument()
 
         act(() => {
             fireEvent.click(screen.getByText('Automate support with AI'))
         })
 
         fireEvent.click(screen.getByText(/Next/i))
-        expect(setCurrentStep).toHaveBeenCalledWith(
+        expect(goToStep).toHaveBeenCalledWith(
             WizardStepEnum.SHOPIFY_INTEGRATION
         )
     })
 
-    it('user can select a goal and click next when there is no email integration', async () => {
+    it('user can select a goal and click next when there is no email integration', () => {
         mockUseEmailIntegrations.mockReturnValue({
             emailIntegrations: false,
             defaultIntegration: false,
@@ -125,22 +122,15 @@ describe('<SkillsetStep />', () => {
 
         renderComponent()
 
-        await waitFor(
-            () => {
-                expect(
-                    screen.getByText('Automate support with AI')
-                ).toBeInTheDocument()
-            },
-            {timeout: 5000}
-        )
+        jest.runAllTimers()
+
+        expect(screen.getByText('Automate support with AI')).toBeInTheDocument()
 
         act(() => {
             fireEvent.click(screen.getByText('Automate support with AI'))
         })
 
         fireEvent.click(screen.getByText(/Next/i))
-        expect(setCurrentStep).toHaveBeenCalledWith(
-            WizardStepEnum.EMAIL_INTEGRATION
-        )
+        expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.EMAIL_INTEGRATION)
     })
 })

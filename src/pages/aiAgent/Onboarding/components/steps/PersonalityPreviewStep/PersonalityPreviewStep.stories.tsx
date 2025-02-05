@@ -23,7 +23,7 @@ const defaultState = {
 const defaultProps: ComponentProps<typeof PersonalityPreviewStep> = {
     currentStep: 1,
     totalSteps: 8,
-    setCurrentStep: () => {},
+    goToStep: () => {},
 }
 
 const Template: StoryFn<ComponentProps<typeof PersonalityPreviewStep>> = (

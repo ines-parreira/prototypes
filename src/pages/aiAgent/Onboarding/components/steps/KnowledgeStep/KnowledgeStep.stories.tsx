@@ -18,7 +18,7 @@ const storyConfig: Meta<typeof KnowledgeStep> = {
 const defaultProps: ComponentProps<typeof KnowledgeStep> = {
     currentStep: 4,
     totalSteps: 8,
-    setCurrentStep: action('setCurrentStep'),
+    goToStep: action('goToStep'),
 }
 
 const Template: StoryFn<ComponentProps<typeof KnowledgeStep>> = (props) => (

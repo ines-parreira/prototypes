@@ -1,5 +1,5 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, render, screen} from '@testing-library/react'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import {act, render, screen, waitFor} from '@testing-library/react'
 import {createBrowserHistory} from 'history'
 import {fromJS, Map} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
@@ -750,6 +750,64 @@ describe('<Routes/>', () => {
 
                 expect(mockHistory.location.pathname).toBe(to)
             })
+        })
+    })
+
+    describe('AiAgentBaseRoutes', () => {
+        jest.mock(
+            'pages/aiAgent/Onboarding/hooks/useGetOnboardingData',
+            () => ({
+                useGetOnboardingData: jest.fn(),
+            })
+        )
+
+        const defaultState: Partial<RootState> = {
+            currentUser: fromJS(user),
+            currentAccount: fromJS(account),
+            billing: fromJS(billingState),
+            integrations: fromJS({
+                integrations: [],
+            }),
+        } as unknown as RootState
+
+        const queryClient = new QueryClient()
+
+        it('should redirect /onboarding to /onboarding/skillset', async () => {
+            const screen = render(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <MemoryRouter
+                            initialEntries={['/app/ai-agent/onboarding']}
+                        >
+                            <Routes />
+                        </MemoryRouter>
+                    </Provider>
+                </QueryClientProvider>
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Welcome to Conversational AI')
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should render AiAgentOnboarding for valid onboarding steps', () => {
+            const screen = render(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <MemoryRouter
+                            initialEntries={[
+                                '/app/ai-agent/onboarding/handover',
+                            ]}
+                        >
+                            <Routes />
+                        </MemoryRouter>
+                    </Provider>
+                </QueryClientProvider>
+            )
+
+            expect(screen.getByText('Handover step')).toBeInTheDocument()
         })
     })
 })

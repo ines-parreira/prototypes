@@ -6,11 +6,11 @@ import {getShopifyIntegrationByShopName} from 'state/integrations/selectors'
 const useCheckStoreIntegration = ({
     storeName,
     isLoading,
-    setCurrentStep,
+    goToStep,
 }: {
     storeName: string
     isLoading: boolean
-    setCurrentStep?: (step: WizardStepEnum) => void
+    goToStep: (step: WizardStepEnum) => void
 }): null => {
     const storeIntegration: ShopifyIntegration = useAppSelector(
         getShopifyIntegrationByShopName(storeName)
@@ -23,7 +23,7 @@ const useCheckStoreIntegration = ({
 
     // If storeIntegration is empty, return the shopify integration step
     if (Object.keys(storeIntegration).length === 0) {
-        setCurrentStep?.(WizardStepEnum.SHOPIFY_INTEGRATION)
+        goToStep(WizardStepEnum.SHOPIFY_INTEGRATION)
     }
 
     return null

@@ -30,13 +30,13 @@ import ChatIntegrationPreview from 'pages/integrations/integration/components/go
 export const PersonalityPreviewStep: React.FC<StepProps> = ({
     currentStep,
     totalSteps,
-    setCurrentStep,
+    goToStep,
 }) => {
     const {data, isLoading} = useGetOnboardingData()
 
     const storeName = data?.shop || ''
 
-    useCheckStoreIntegration({storeName, isLoading, setCurrentStep})
+    useCheckStoreIntegration({storeName, isLoading, goToStep})
 
     const previewType = mapScopeToPreviewType(data?.scope ?? [])
 
@@ -60,14 +60,14 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
 
     const onNextClick = () => {
         if (data?.scope.includes(AiAgentScopes.SALES)) {
-            setCurrentStep?.(WizardStepEnum.SALES_PERSONALITY)
+            goToStep(WizardStepEnum.SALES_PERSONALITY)
             return
         }
-        setCurrentStep?.(WizardStepEnum.HANDOVER)
+        goToStep(WizardStepEnum.HANDOVER)
     }
 
     const onBackClick = () => {
-        setCurrentStep?.(WizardStepEnum.CHANNELS)
+        goToStep(WizardStepEnum.CHANNELS)
     }
 
     return (
@@ -96,23 +96,20 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
                 />
             </OnboardingContentContainer>
             <OnboardingPreviewContainer
-                isLoading={isChatPreviewLoading}
+                isLoading={isChatPreviewLoading || isLoading}
                 icon={''}
                 caption="Here’s a sample conversation with your AI Agent, reflecting your brand’s tone. You can adjust its personality in Settings anytime."
             >
-                {!isChatPreviewLoading && (
-                    <div className={css.previewContainer}>
-                        <div>
-                            {/* TODO: Having an async process to fetch chatPreviewSettings from the onboarding hook */}
-                            <ChatIntegrationPreview {...chatPreviewSettings}>
-                                <AiAgentChatConversation
-                                    {...agentChatConversationSettings}
-                                    messages={chatPreviewData.messages}
-                                />
-                            </ChatIntegrationPreview>
-                        </div>
+                <div className={css.previewContainer}>
+                    <div>
+                        <ChatIntegrationPreview {...chatPreviewSettings}>
+                            <AiAgentChatConversation
+                                {...agentChatConversationSettings}
+                                messages={chatPreviewData.messages}
+                            />
+                        </ChatIntegrationPreview>
                     </div>
-                )}
+                </div>
             </OnboardingPreviewContainer>
         </OnboardingBody>
     )

@@ -37,7 +37,7 @@ import {getShopifyIntegrationByShopName} from 'state/integrations/selectors'
 export const KnowledgeStep: React.FC<StepProps> = ({
     currentStep,
     totalSteps,
-    setCurrentStep,
+    goToStep,
 }) => {
     const {data, isLoading} = useGetOnboardingData()
     const updateOnboardingCache = useUpdateOnboardingCache()
@@ -49,7 +49,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
         getShopifyIntegrationByShopName(shopName || '')
     ).toJS()
 
-    useCheckStoreIntegration({storeName: shopName, isLoading, setCurrentStep})
+    useCheckStoreIntegration({storeName: shopName, isLoading, goToStep})
 
     const dummyKnowledgeData: TemporaryKnowledgeData[] = [
         {
@@ -79,7 +79,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
     }
 
     const onBackClick = () => {
-        setCurrentStep?.(WizardStepEnum.HANDOVER)
+        goToStep(WizardStepEnum.HANDOVER)
     }
 
     return (

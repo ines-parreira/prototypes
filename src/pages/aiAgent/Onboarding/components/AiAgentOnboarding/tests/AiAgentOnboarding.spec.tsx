@@ -1,21 +1,20 @@
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, screen} from '@testing-library/react'
+import {fireEvent, screen, waitFor} from '@testing-library/react'
 import {createMemoryHistory} from 'history'
 import {fromJS, Map} from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
-
 import '@testing-library/jest-dom/extend-expect'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {chatIntegrationFixtures} from 'fixtures/chat'
 import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
 import {AiAgentOnboarding} from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
+import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 
@@ -35,6 +34,11 @@ const defaultState = {
 // Mock the hooks
 jest.mock('pages/common/hooks/useShopifyIntegrationAndScope')
 jest.mock('pages/settings/contactForm/hooks/useEmailIntegrations')
+
+jest.mock('pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}))
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview',
@@ -60,29 +64,19 @@ const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
 
 const queryClient = new QueryClient()
 const history = createMemoryHistory()
-const onCloseMock = jest.fn()
 
-const renderComponent = (withHistory = false) => {
-    if (withHistory) {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ConvAiOnboarding]: false,
-        }))
+const renderComponent = (
+    initialRoute = '/app/ai-agent/onboarding/skillset'
+) => {
+    history.push(initialRoute)
 
-        return renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <AiAgentOnboarding onClose={onCloseMock} />
-                </Provider>
-            </QueryClientProvider>,
-            {history}
-        )
-    }
     return renderWithRouter(
-        <>
-            <QueryClientProvider client={queryClient}>
-                <AiAgentOnboarding onClose={onCloseMock} />
-            </QueryClientProvider>
-        </>
+        <QueryClientProvider client={queryClient}>
+            <Provider store={mockStore(defaultState)}>
+                <AiAgentOnboarding />
+            </Provider>
+        </QueryClientProvider>,
+        {history, path: '/app/ai-agent/onboarding/:step'}
     )
 }
 
@@ -96,18 +90,24 @@ describe('AiAgentOnboarding', () => {
             emailIntegrations: true,
             defaultIntegration: true,
         })
+
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.ConvAiOnboarding]: true,
         }))
     })
 
-    it('renders the Onboarding component', () => {
-        renderComponent()
-        expect(screen.getByAltText('Gorgias')).toBeInTheDocument()
+    beforeAll(() => {
+        jest.useFakeTimers()
     })
 
-    it('displays loading state correctly', () => {
+    afterAll(() => {
+        jest.useRealTimers()
+    })
+
+    it('renders the Onboarding component', () => {
         renderComponent()
+        jest.runAllTimers()
+
         expect(screen.getByAltText('Gorgias')).toBeInTheDocument()
     })
 
@@ -115,33 +115,49 @@ describe('AiAgentOnboarding', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.ConvAiOnboarding]: false,
         }))
-        renderComponent(true)
+
+        renderComponent()
+
+        jest.runAllTimers()
 
         expect(history.location.pathname).toEqual(
             '/app/automation/shopify/undefined/ai-agent'
         )
     })
 
-    it('should call onClose handler when OnboardingHeader is closed', () => {
-        renderComponent()
+    it('should navigate to the next step when Next button is clicked', async () => {
+        renderComponent(`/app/ai-agent/onboarding/${WizardStepEnum.HANDOVER}`)
+        jest.runAllTimers()
 
-        // Simulate the OnboardingHeader close action
-        const closeButton = screen.getByRole('button', {name: /close/i})
-
-        fireEvent.click(closeButton)
-
-        expect(onCloseMock).toHaveBeenCalled()
-    })
-
-    it('renders default step if no valid step is matched', () => {
-        mockUseShopifyIntegrationAndScope.mockReturnValue({
-            integration: true,
+        await waitFor(() => {
+            expect(screen.getByText('Handover step')).toBeInTheDocument()
         })
 
-        const {container} = renderComponent()
+        // Click Next
+        fireEvent.click(screen.getByText(/Next/i))
 
-        expect(container.textContent).toContain(
-            'Welcome to Conversational AI Select your agents below to get  started!'
-        )
+        await waitFor(() => {
+            expect(history.location.pathname).toContain(
+                WizardStepEnum.KNOWLEDGE
+            )
+        })
+    })
+
+    it('should navigate to the previous step when Back button is clicked', async () => {
+        renderComponent(`/app/ai-agent/onboarding/${WizardStepEnum.HANDOVER}`)
+        jest.runAllTimers()
+
+        await waitFor(() => {
+            expect(screen.getByText('Handover step')).toBeInTheDocument()
+        })
+
+        // Click Back
+        fireEvent.click(screen.getByText(/Back/i))
+
+        await waitFor(() => {
+            expect(history.location.pathname).toContain(
+                WizardStepEnum.PERSONALITY_PREVIEW
+            )
+        })
     })
 })

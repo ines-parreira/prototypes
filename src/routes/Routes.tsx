@@ -1,3 +1,4 @@
+import {History} from 'history'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useEffect} from 'react'
 import {
@@ -18,12 +19,12 @@ import {PageSection} from 'config/pages'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {useFlag} from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+
 // DON'T add 'pages/*' imports above to ensure CSS ordering is preserved. Placing this import elsewhere
 // may cause unexpected CSS precedence issues, breaking the intended design.
 //
 // cf. https://github.com/gorgias/helpdesk-web-app/pull/6154
 // eslint-disable-next-line import/order
-import App from 'pages/App'
 import ActionEventsViewContainer from 'pages/aiAgent/actions/ActionEventsViewContainer'
 import ActionsTemplatesViewContainer from 'pages/aiAgent/actions/ActionsTemplatesViewContainer'
 import ActionsViewContainer from 'pages/aiAgent/actions/ActionsViewContainer'
@@ -49,10 +50,12 @@ import {useAiAgentItemEnabled} from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import {Level2IntentsContainer} from 'pages/aiAgent/insights/Level2IntentsContainer/Level2IntentsContainer'
 import {OptimizeContainer} from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
 import {AiAgentOnboarding} from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
+import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import {AiAgentOverview} from 'pages/aiAgent/Overview/AiAgentOverview'
 import {AiAgentAccountConfigurationProvider} from 'pages/aiAgent/providers/AiAgentAccountConfigurationProvider'
 import {AiAgentErrorBoundary} from 'pages/aiAgent/providers/AiAgentErrorBoundary'
 import AiAgentStoreConfigurationProvider from 'pages/aiAgent/providers/AiAgentStoreConfigurationProvider'
+import App from 'pages/App'
 import ActionsPlatformAppsView from 'pages/automate/actionsPlatform/ActionsPlatformAppsView'
 import ActionsPlatformCreateAppFormView from 'pages/automate/actionsPlatform/ActionsPlatformCreateAppFormView'
 import ActionsPlatformCreateStepView from 'pages/automate/actionsPlatform/ActionsPlatformCreateStepView'
@@ -1514,29 +1517,63 @@ function AutomationContent() {
 }
 
 export function AiAgentBaseRoutes({match: {path}}: RouteComponentProps) {
+    const handleRedirect = (history: History, newPath: string) => {
+        history.replace(newPath)
+        return null
+    }
+
     return (
         <HelpCenterApiClientProvider>
             <Switch>
+                {/* Redirect `/onboarding` to `/onboarding/${WizardStepEnum.SKILLSET}` */}
                 <Route
+                    exact
                     path={`${path}/onboarding`}
-                    exact
-                    component={withUserRoleRequired(
-                        AiAgentOnboarding,
-                        AGENT_ROLE
-                    )}
+                    render={({history}) =>
+                        handleRedirect(
+                            history,
+                            `${path}/onboarding/${WizardStepEnum.SKILLSET}`
+                        )
+                    }
                 />
+
+                {/* Redirect `/shopType/shopName/onboarding` to `/shopType/shopName/onboarding/${WizardStepEnum.SKILLSET}` */}
                 <Route
+                    exact
                     path={`${path}/:shopType/:shopName/onboarding`}
-                    exact
-                    component={withUserRoleRequired(
-                        AiAgentOnboarding,
-                        AGENT_ROLE
-                    )}
+                    render={({history, match}) =>
+                        handleRedirect(
+                            history,
+                            `${path}/${match.params.shopType}/${match.params.shopName}/onboarding/${WizardStepEnum.SKILLSET}`
+                        )
+                    }
                 />
+
+                {/* Generic function to wrap AiAgentOnboarding with user role validation */}
+                {[
+                    `${path}/onboarding/:step`,
+                    `${path}/:shopType/:shopName/onboarding/:step`,
+                ].map((routePath, index) => (
+                    <Route
+                        key={index}
+                        path={routePath}
+                        exact
+                        component={withUserRoleRequired(
+                            AiAgentOnboarding,
+                            AGENT_ROLE
+                        )}
+                    />
+                ))}
+
                 <Route
-                    render={() => (
-                        <App content={AiAgentContent} navbar={AiAgentNavbar} />
-                    )}
+                    render={() => {
+                        return (
+                            <App
+                                content={AiAgentContent}
+                                navbar={AiAgentNavbar}
+                            />
+                        )
+                    }}
                 />
             </Switch>
         </HelpCenterApiClientProvider>

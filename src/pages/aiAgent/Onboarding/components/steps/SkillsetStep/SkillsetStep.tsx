@@ -1,4 +1,4 @@
-import React, {FC} from 'react'
+import React, {FC, useMemo, useCallback} from 'react'
 
 import {FormProvider, useForm} from 'react-hook-form'
 import {useParams} from 'react-router-dom'
@@ -37,15 +37,14 @@ type SkillsetFormValues = {
 export const SkillsetStep: FC<StepProps> = ({
     currentStep,
     totalSteps,
-    setCurrentStep,
+    goToStep,
 }) => {
-    const {shopName} = useParams<{
-        shopName: string
-    }>()
+    const {shopName} = useParams<{shopName: string}>()
     const {integration} = useShopifyIntegrationAndScope(shopName)
     const {emailIntegrations, defaultIntegration} = useEmailIntegrations()
 
     const {data, isLoading} = useGetOnboardingData()
+
     const updateOnboardingCache = useUpdateOnboardingCache()
 
     const methods = useForm<SkillsetFormValues>({
@@ -59,22 +58,33 @@ export const SkillsetStep: FC<StepProps> = ({
     // Watch form state changes
     const selectedScope = watch('scope')
 
-    const onSkillsetChange = (newSkillset: AiAgentScopes[]) => {
-        setValue('scope', newSkillset)
-        updateOnboardingCache('scope', newSkillset)
-    }
+    const onSkillsetChange = useCallback(
+        (newSkillset: AiAgentScopes[]) => {
+            setValue('scope', newSkillset)
+            updateOnboardingCache('scope', newSkillset)
+        },
+        [setValue, updateOnboardingCache]
+    )
 
     const onNextStep = () => {
         if (!integration) {
-            setCurrentStep?.(WizardStepEnum.SHOPIFY_INTEGRATION)
+            goToStep(WizardStepEnum.SHOPIFY_INTEGRATION)
             return
         }
         if (!emailIntegrations && !defaultIntegration) {
-            setCurrentStep?.(WizardStepEnum.EMAIL_INTEGRATION)
+            goToStep(WizardStepEnum.EMAIL_INTEGRATION)
             return
         }
-        setCurrentStep?.(WizardStepEnum.CHANNELS)
+        goToStep(WizardStepEnum.CHANNELS)
     }
+
+    const renderContent = useMemo(() => {
+        if (isLoading) {
+            return <LoadingPulserIcon icon="" />
+        }
+
+        return <Goals value={selectedScope} onSelect={onSkillsetChange} />
+    }, [isLoading, selectedScope, onSkillsetChange])
 
     return (
         <OnboardingBody>
@@ -86,23 +96,14 @@ export const SkillsetStep: FC<StepProps> = ({
             >
                 <MainTitle
                     titleBlack="Welcome to Conversational AI"
-                    titleMagenta="Select your agents below to get  started!"
+                    titleMagenta="Select your agents below to get started!"
                 />
 
                 <div className={css.skillSetContainer}>
-                    <FormProvider {...methods}>
-                        {isLoading ? (
-                            <LoadingPulserIcon icon={''} />
-                        ) : (
-                            <Goals
-                                value={selectedScope}
-                                onSelect={onSkillsetChange}
-                            />
-                        )}
-                    </FormProvider>
+                    <FormProvider {...methods}>{renderContent}</FormProvider>
                 </div>
             </OnboardingContentContainer>
-            <OnboardingPreviewContainer isLoading={isLoading} icon={''}>
+            <OnboardingPreviewContainer isLoading={isLoading} icon="">
                 <div className={css.previewContainer}>
                     <div>
                         <ChatIntegrationPreview {...chatPreviewSettings}>
