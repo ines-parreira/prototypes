@@ -1,8 +1,6 @@
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps, useEffect} from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {User} from 'config/types/user'
 import {RecentItems} from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
@@ -41,8 +39,6 @@ export default function TicketVoiceCallContainer({
     const {isRecordingOpened, toggleRecordingOpened} =
         useVoiceRecordingsContext()
     const {setRecentItem} = useRecentItems<VoiceCall>(RecentItems.Calls)
-
-    const useCallSummary = !!useFlags()[FeatureFlagKey.SummarizeCalls]
 
     useEffect(() => {
         void setRecentItem(voiceCall)
@@ -111,7 +107,7 @@ export default function TicketVoiceCallContainer({
                         />
                     </ControlledCollapsibleDetails>
                 )}
-                {useCallSummary && voiceCall.summaries && (
+                {voiceCall.summaries && (
                     <TicketVoiceCallSummary summaries={voiceCall.summaries} />
                 )}
             </div>

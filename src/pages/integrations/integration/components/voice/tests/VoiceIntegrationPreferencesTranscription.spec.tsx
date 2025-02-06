@@ -1,8 +1,6 @@
 import {render, RenderResult} from '@testing-library/react'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {FormField} from 'core/forms'
 import {assumeMock} from 'utils/testing'
 
@@ -22,29 +20,12 @@ describe('<VoiceIntegrationPreferencesTranscription />', () => {
         return render(<VoiceIntegrationPreferencesTranscription />)
     }
 
-    beforeEach(() => {
-        resetLDMocks()
-        mockFlags({[FeatureFlagKey.SummarizeCalls]: false})
-    })
-
-    it('should render transcription preferences', () => {
+    it('should render transcription preferences with summary', () => {
         const {getByText} = renderComponent()
 
         expect(getByText('Transcription')).toBeInTheDocument()
         expect(getByText('Call recording transcription')).toBeInTheDocument()
         expect(getByText('Voicemail transcription')).toBeInTheDocument()
-        expect(
-            getByText(
-                'Use speech-to-text to transcribe all recorded calls and/or voicemails'
-            )
-        ).toBeInTheDocument()
-    })
-
-    it('should render transcription preferences with summary', () => {
-        mockFlags({[FeatureFlagKey.SummarizeCalls]: true})
-        const {getByText} = renderComponent()
-
-        expect(getByText('Transcription')).toBeInTheDocument()
         expect(
             getByText(
                 'Automatically transcribes and summarizes recorded calls and/or voicemails for quick reference and easy follow-up. Transcriptions are generated for English, French, German and Spanish, summaries are only generated in English.'

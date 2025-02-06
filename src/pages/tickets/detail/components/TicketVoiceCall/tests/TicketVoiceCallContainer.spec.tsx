@@ -1,8 +1,6 @@
 import {render, fireEvent, RenderResult} from '@testing-library/react'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {User} from 'config/types/user'
 import {VoiceCall, VoiceCallRecordingType} from 'models/voiceCall/types'
 import {useVoiceRecordingsContext} from 'pages/common/hooks/useVoiceRecordingsContext'
@@ -78,11 +76,6 @@ describe('TicketVoiceCallContainer', () => {
         toggleRecordingOpened: mockToggleRecording,
     })
 
-    beforeEach(() => {
-        resetLDMocks()
-        mockFlags({[FeatureFlagKey.SummarizeCalls]: true})
-    })
-
     it('renders the component with all props', () => {
         const {getByText} = renderComponent({
             voiceCall: {
@@ -117,36 +110,6 @@ describe('TicketVoiceCallContainer', () => {
             voiceCall,
         })
 
-        expect(queryByText('Summary')).toBeNull()
-    })
-
-    it('renders the component with all props (summary FF off)', () => {
-        mockFlags({[FeatureFlagKey.SummarizeCalls]: false})
-        const {getByText, queryByText} = renderComponent({
-            voiceCall: {
-                ...voiceCall,
-                has_call_recording: true,
-                has_voicemail: true,
-                summaries: [
-                    {
-                        id: 1,
-                        summary: 'Summary',
-                        created_datetime: '2022-01-01T00:00:00.000Z',
-                        recording_id: 1,
-                    },
-                ],
-            },
-        })
-
-        expect(getByText('Header')).toBeInTheDocument()
-        expect(getByText('Avatar')).toBeInTheDocument()
-        expect(getByText('Call Status')).toBeInTheDocument()
-        expect(
-            getByText('DatetimeLabel 2022-01-01T00:00:00.000Z')
-        ).toBeInTheDocument()
-        expect(getByText('Duration')).toBeInTheDocument()
-        expect(getByText('Call Recording')).toBeInTheDocument()
-        expect(getByText('Voicemail left')).toBeInTheDocument()
         expect(queryByText('Summary')).toBeNull()
     })
 
