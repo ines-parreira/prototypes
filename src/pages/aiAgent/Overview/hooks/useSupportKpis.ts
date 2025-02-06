@@ -6,7 +6,7 @@ import {useCsat} from 'pages/aiAgent/Overview/hooks/useCsat'
 
 export const useSupportKpis = (filters: StatsFilters, timezone: string) => {
     const automationRate = useAutomationRate()
-    const automatedInteractions = useAutomatedInteractions()
+    const automatedInteractions = useAutomatedInteractions(filters, timezone)
     const csat = useCsat(filters, timezone)
     const coverageRate = useCoverageRate()
 

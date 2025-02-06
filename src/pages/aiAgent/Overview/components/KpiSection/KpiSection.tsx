@@ -83,10 +83,11 @@ const KpiForAiAgentType = ({
 }) => {
     const filters: StatsFilters = {
         period: {
-            start_datetime: moment().format('YYYY-MM-DDT00:00:00.000'),
-            end_datetime: moment()
+            start_datetime: moment()
                 .subtract(28, 'days')
-                .format('YYYY-MM-DDT23:59:59.999'),
+                .startOf('day')
+                .format(),
+            end_datetime: moment().format(),
         },
     }
     const {userTimezone} = useAppSelector(getCleanStatsFiltersWithTimezone)

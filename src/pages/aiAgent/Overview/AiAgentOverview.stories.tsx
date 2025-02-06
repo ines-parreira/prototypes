@@ -7,7 +7,6 @@ import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import {appQueryClient} from 'api/queryClient'
-
 import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
 import {initialState} from 'state/ui/stats/filtersSlice'
 
