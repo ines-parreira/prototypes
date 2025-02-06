@@ -1,16 +1,16 @@
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import {QueryClientProvider} from '@tanstack/react-query'
+import {act, renderHook} from '@testing-library/react-hooks'
 
 import React from 'react'
 
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import useMicrophonePermissions from '../useMicrophonePermissions'
 
-const queryClient = new QueryClient()
-
-const render = () =>
-    renderHook(() => useMicrophonePermissions(), {
+const render = (time?: number) =>
+    renderHook(() => useMicrophonePermissions(time), {
         wrapper: ({children}) => (
-            <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={mockQueryClient()}>
                 {children}
             </QueryClientProvider>
         ),
@@ -19,10 +19,10 @@ const render = () =>
 jest.useFakeTimers()
 
 describe('useMicrophonePermissions', () => {
-    it.skip('should check microphone permissions every 5 seconds', async () => {
+    it('should check microphone permissions every 5 seconds by default', async () => {
         const queryPermissionsMock = jest
             .fn()
-            .mockReturnValue(Promise.resolve({state: 'denied'}))
+            .mockReturnValue(Promise.resolve({state: 'prompt'}))
         Object.defineProperty(navigator, 'permissions', {
             value: {
                 query: queryPermissionsMock,
@@ -30,23 +30,42 @@ describe('useMicrophonePermissions', () => {
             writable: true,
         })
 
-        const {result, waitFor} = render()
-        jest.advanceTimersByTime(5000)
+        const {waitForNextUpdate} = render()
 
-        await waitFor(() => result.current.permissionDenied === true)
-        queryPermissionsMock.mockReturnValue(
-            Promise.resolve({state: 'granted'})
-        )
+        expect(queryPermissionsMock).toHaveBeenCalledTimes(1)
 
-        expect(queryPermissionsMock).toHaveBeenCalledWith({name: 'microphone'})
+        await act(async () => {
+            await waitForNextUpdate()
+            jest.advanceTimersByTime(5000)
+        })
+
         expect(queryPermissionsMock).toHaveBeenCalledTimes(2)
-
-        jest.advanceTimersByTime(5000)
-        expect(queryPermissionsMock).toHaveBeenCalledTimes(3)
-        await waitFor(() => result.current.permissionDenied === false)
     })
 
-    it('should return permissionDenied: false every time', () => {
+    it('should support custom refetch interval', async () => {
+        const queryPermissionsMock = jest
+            .fn()
+            .mockReturnValue(Promise.resolve({state: 'prompt'}))
+        Object.defineProperty(navigator, 'permissions', {
+            value: {
+                query: queryPermissionsMock,
+            },
+            writable: true,
+        })
+
+        const {waitForNextUpdate} = render(1000)
+
+        expect(queryPermissionsMock).toHaveBeenCalledTimes(1)
+
+        await act(async () => {
+            await waitForNextUpdate()
+            jest.advanceTimersByTime(1000)
+        })
+
+        expect(queryPermissionsMock).toHaveBeenCalledTimes(2)
+    })
+
+    it('should return permissionDenied when permission is denied', async () => {
         const queryPermissionsMock = jest
             .fn()
             .mockReturnValue(Promise.resolve({state: 'denied'}))
@@ -57,9 +76,52 @@ describe('useMicrophonePermissions', () => {
             writable: true,
         })
 
-        const {result} = render()
-        jest.advanceTimersByTime(5000)
+        const {result, waitForNextUpdate} = render()
 
-        expect(result.current.permissionDenied).toBe(false)
+        await waitForNextUpdate()
+
+        expect(result.current.permissionDenied).toBe(true)
     })
+
+    it('should not recheck permissions when permission is granted', async () => {
+        const queryPermissionsMock = jest
+            .fn()
+            .mockReturnValue(Promise.resolve({state: 'granted'}))
+        Object.defineProperty(navigator, 'permissions', {
+            value: {
+                query: queryPermissionsMock,
+            },
+            writable: true,
+        })
+
+        const {waitForNextUpdate} = render()
+
+        await act(async () => {
+            await waitForNextUpdate()
+            jest.advanceTimersByTime(5000)
+        })
+
+        expect(queryPermissionsMock).toHaveBeenCalledTimes(1)
+    })
+
+    it.each(['granted', 'prompt'])(
+        'should return permissionDenied: false when permission is %s',
+        async (state) => {
+            const queryPermissionsMock = jest
+                .fn()
+                .mockReturnValue(Promise.resolve({state}))
+            Object.defineProperty(navigator, 'permissions', {
+                value: {
+                    query: queryPermissionsMock,
+                },
+                writable: true,
+            })
+
+            const {result, waitForNextUpdate} = render()
+
+            await waitForNextUpdate()
+
+            expect(result.current.permissionDenied).toBe(false)
+        }
+    )
 })

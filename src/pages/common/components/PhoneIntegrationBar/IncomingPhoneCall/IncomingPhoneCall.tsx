@@ -31,7 +31,7 @@ export default function IncomingPhoneCall({
 }: Props): JSX.Element {
     const history = useHistory()
     const location = useLocation()
-    const {permissionDenied} = useMicrophonePermissions()
+    const {permissionDenied} = useMicrophonePermissions(1000)
 
     const {
         integrationId,
@@ -95,7 +95,6 @@ export default function IncomingPhoneCall({
                         intent="secondary"
                         className={css.accept}
                         onClick={() => call.accept()}
-                        isDisabled={permissionDenied}
                     >
                         <i className="material-icons mr-2">phone</i>
                         Accept

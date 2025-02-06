@@ -210,18 +210,23 @@ describe('<IncomingPhoneCall />', () => {
         expect(screen.getByText('Incoming call...')).toBeInTheDocument()
     })
 
-    it('should display error message and disable accept button when microphone permissions are not enabled', () => {
+    it('should display error message when microphone permissions are not enabled', () => {
         useMicrophonePermissionsMock.mockReturnValue({permissionDenied: true})
 
         const call = mockIncomingCall(integrationId) as Call
 
         renderComponent({call})
 
+        /* should check every second */
+        expect(useMicrophonePermissionsMock).toHaveBeenCalledWith(1000)
+
         expect(
             screen.getByText(MICROPHONE_PERMISSION_REQUIRED_MESSAGE)
         ).toBeInTheDocument()
 
-        expect(screen.getByRole('button', {name: /Accept/})).toBeAriaDisabled()
+        expect(
+            screen.getByRole('button', {name: /Accept/})
+        ).not.toBeAriaDisabled()
     })
 
     it('should not display error message when microphone permissions are enabled', () => {

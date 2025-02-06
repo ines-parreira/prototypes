@@ -1,10 +1,13 @@
+import {useQuery} from '@tanstack/react-query'
 import {useState} from 'react'
 
-import useEffectOnce from 'hooks/useEffectOnce'
-import useInterval from 'hooks/useInterval'
+const DEFAULT_CHECK_INTERVAL = 5000
 
-export default function useMicrophonePermissions() {
-    const [, setPermissionDenied] = useState(false)
+export default function useMicrophonePermissions(
+    refetchInterval = DEFAULT_CHECK_INTERVAL
+) {
+    const [permissionState, setPermissionState] =
+        useState<PermissionState | null>()
 
     const checkPermissions = async () => {
         try {
@@ -12,23 +15,20 @@ export default function useMicrophonePermissions() {
                 // @ts-ignore
                 name: 'microphone',
             })
-            if (permission.state === 'granted') {
-                setPermissionDenied(false)
-            } else {
-                setPermissionDenied(true)
-            }
-        } catch {
+
+            setPermissionState(permission.state)
+
+            return permission
+        } catch (error) {
             // Permission API not supported for older browser versions
+            return null
         }
     }
 
-    useEffectOnce(() => {
-        void checkPermissions()
+    useQuery(['checkMicrophonePermissions'], checkPermissions, {
+        enabled: permissionState !== 'granted',
+        refetchInterval,
     })
 
-    useInterval(() => {
-        void checkPermissions()
-    }, 5000)
-
-    return {permissionDenied: false}
+    return {permissionDenied: permissionState === 'denied'}
 }

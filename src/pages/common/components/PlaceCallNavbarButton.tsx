@@ -35,14 +35,18 @@ export default function PlaceCallNavbarButton() {
 
     const {permissionDenied} = useMicrophonePermissions()
 
-    useConditionalShortcuts(shouldDisplayButton && isDeviceActive, 'Dialpad', {
-        OPEN_DIALPAD: {
-            action: (e) => {
-                e.preventDefault()
-                setIsDeviceVisible(true)
+    useConditionalShortcuts(
+        shouldDisplayButton && isDeviceActive && !permissionDenied,
+        'Dialpad',
+        {
+            OPEN_DIALPAD: {
+                action: (e) => {
+                    e.preventDefault()
+                    setIsDeviceVisible(true)
+                },
             },
-        },
-    })
+        }
+    )
 
     useEffect(() => {
         if (!device) {
