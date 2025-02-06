@@ -1,3 +1,4 @@
+import {OrderDirection} from 'models/api/types'
 import {
     VoiceCallCube,
     VoiceCallDimension,
@@ -18,7 +19,9 @@ export const useVoiceCallList = (
     timezone: string,
     page = 1,
     perPage = CALL_LIST_PAGE_SIZE,
-    segment?: VoiceCallSegment
+    segment?: VoiceCallSegment,
+    order?: VoiceCallDimension,
+    sorting?: OrderDirection
 ) =>
     usePostReporting<
         VoiceCallStatListItem[],
@@ -31,7 +34,9 @@ export const useVoiceCallList = (
                 timezone,
                 segment,
                 perPage,
-                (page - 1) * perPage
+                (page - 1) * perPage,
+                order,
+                sorting
             ),
         ],
         {

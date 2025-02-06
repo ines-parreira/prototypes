@@ -1,6 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
+import {OrderDirection} from 'models/api/types'
 import {
     VoiceCallDimension,
     VoiceCallMeasure,
@@ -41,6 +42,37 @@ describe('useVoiceCallList', () => {
                     undefined,
                     CALL_LIST_PAGE_SIZE,
                     0
+                ),
+            ],
+            {
+                select: selectVoiceCallData,
+            },
+        ])
+    })
+
+    it('should usePostReporting with order and sorting', () => {
+        renderHook(() =>
+            useVoiceCallList(
+                statsFilters,
+                'UTC',
+                1,
+                5,
+                undefined,
+                VoiceCallDimension.Duration,
+                OrderDirection.Desc
+            )
+        )
+
+        expect(usePostReportingMock.mock.calls[0]).toEqual([
+            [
+                voiceCallListQueryFactory(
+                    statsFilters,
+                    'UTC',
+                    undefined,
+                    5,
+                    0,
+                    VoiceCallDimension.Duration,
+                    OrderDirection.Desc
                 ),
             ],
             {

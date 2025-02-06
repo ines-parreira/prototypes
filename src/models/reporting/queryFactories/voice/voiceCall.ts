@@ -218,14 +218,16 @@ export const voiceCallListQueryFactory = (
     timezone: string,
     segment?: VoiceCallSegment,
     limit?: number,
-    offset?: number
+    offset?: number,
+    order: VoiceCallDimension = VoiceCallDimension.CreatedAt,
+    sorting: OrderDirection = OrderDirection.Desc
 ): ReportingQuery<VoiceCallCube> => ({
     measures: [VoiceCallMeasure.VoiceCallCount],
     dimensions: voiceCallListDimensions,
     timezone,
     segments: segment ? [segment] : [],
     filters: voiceCallDefaultFilters(filters),
-    order: [[VoiceCallDimension.CreatedAt, OrderDirection.Desc]],
+    order: [[order, sorting]],
     limit: limit,
     offset: offset,
 })

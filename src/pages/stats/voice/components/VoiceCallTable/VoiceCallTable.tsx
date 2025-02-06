@@ -13,6 +13,7 @@ import {
     VoiceCallFilterOptions,
 } from 'pages/stats/voice/models/types'
 
+import useVoiceCallTableOrdering from './useVoiceCallTableOrdering'
 import css from './VoiceCallTable.less'
 import VoiceCallTableContent from './VoiceCallTableContent'
 
@@ -28,12 +29,18 @@ export const VoiceCallTable = ({
     filterOption,
 }: VoiceCallTableProps) => {
     const [currentPage, setCurrentPage] = useState(1)
+
+    const {onOrderChange, orderByColumnName, orderByDimension, orderDirection} =
+        useVoiceCallTableOrdering()
+
     const {data, isFetching} = useVoiceCallList(
         statsFilters,
         userTimezone,
         currentPage,
         CALL_LIST_PAGE_SIZE,
-        getVoiceSegmentFromFilter(filterOption)
+        getVoiceSegmentFromFilter(filterOption),
+        orderByDimension,
+        orderDirection
     )
     const {totalPages} = useVoiceCallCount(
         statsFilters,
@@ -47,7 +54,13 @@ export const VoiceCallTable = ({
 
     return (
         <>
-            <VoiceCallTableContent data={data} isFetching={isFetching} />
+            <VoiceCallTableContent
+                data={data}
+                isFetching={isFetching}
+                orderBy={orderByColumnName}
+                orderDirection={orderDirection}
+                onColumnClick={onOrderChange}
+            />
             {totalPages > 1 && (
                 <Pagination
                     currentPage={currentPage}

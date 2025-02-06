@@ -105,18 +105,56 @@ describe('voice queries factories', () => {
         }
     )
 
-    it.each([
-        [VoiceCallSegment.outboundCalls, 10, 0],
-        [undefined, 10, 10],
-    ])(
-        'voiceCallListQueryFactory should create a query',
-        (segment, limit, offset) => {
+    describe('voiceCallListQueryFactory', () => {
+        it.each([
+            [VoiceCallSegment.outboundCalls, 10, 0],
+            [undefined, 10, 10],
+        ])(
+            'voiceCallListQueryFactory should create a query',
+            (segment, limit, offset) => {
+                const query = voiceCallListQueryFactory(
+                    statsFilters,
+                    timezone,
+                    segment,
+                    limit,
+                    offset
+                )
+
+                expect(query).toEqual({
+                    measures: [VoiceCallMeasure.VoiceCallCount],
+                    dimensions: voiceCallListDimensions,
+                    filters: [
+                        {
+                            member: VoiceCallMember.PeriodStart,
+                            operator: ReportingFilterOperator.AfterDate,
+                            values: [periodStart],
+                        },
+                        {
+                            member: VoiceCallMember.PeriodEnd,
+                            operator: ReportingFilterOperator.BeforeDate,
+                            values: [periodEnd],
+                        },
+                    ],
+                    timezone,
+                    segments: segment ? [segment] : [],
+                    offset,
+                    limit,
+                    order: [
+                        [VoiceCallDimension.CreatedAt, OrderDirection.Desc],
+                    ],
+                })
+            }
+        )
+
+        it('should create query with custom order and sorting', () => {
             const query = voiceCallListQueryFactory(
                 statsFilters,
                 timezone,
-                segment,
-                limit,
-                offset
+                undefined,
+                undefined,
+                undefined,
+                VoiceCallDimension.Duration,
+                OrderDirection.Desc
             )
 
             expect(query).toEqual({
@@ -135,13 +173,11 @@ describe('voice queries factories', () => {
                     },
                 ],
                 timezone,
-                segments: segment ? [segment] : [],
-                offset,
-                limit,
-                order: [[VoiceCallDimension.CreatedAt, OrderDirection.Desc]],
+                segments: [],
+                order: [[VoiceCallDimension.Duration, OrderDirection.Desc]],
             })
-        }
-    )
+        })
+    })
 
     it('voiceCallTotalTalkTimeQueryFactory should create a query', () => {
         const query = voiceCallAverageTalkTimeQueryFactory(statsFilters, 'UTC')

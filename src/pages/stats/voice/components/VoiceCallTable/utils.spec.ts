@@ -1,7 +1,13 @@
+import {VoiceCallDimension} from 'models/reporting/cubes/VoiceCallCube'
 import {VoiceAgentsMetric, VoiceMetric} from 'state/ui/stats/types'
 
 import {VoiceCallTableColumnName} from './constants'
-import {filterAndOrderCells, getVoiceDrillDownColumns} from './utils'
+import {
+    filterAndOrderCells,
+    getVoiceDrillDownColumns,
+    isVoiceCallTableColumnSortable,
+    voiceCallTableColumnNameToDimension,
+} from './utils'
 
 describe('utils', () => {
     describe('filterAndOrderCells', () => {
@@ -107,6 +113,56 @@ describe('utils', () => {
                 VoiceCallTableColumnName.WaitTime,
                 VoiceCallTableColumnName.Ticket,
             ])
+        })
+    })
+
+    describe('voiceCallTableColumnNameToDimension', () => {
+        it.each([
+            [VoiceCallTableColumnName.Activity, undefined],
+            [
+                VoiceCallTableColumnName.Integration,
+                VoiceCallDimension.IntegrationId,
+            ],
+            [VoiceCallTableColumnName.Date, VoiceCallDimension.CreatedAt],
+            [VoiceCallTableColumnName.State, VoiceCallDimension.Status],
+            [VoiceCallTableColumnName.Duration, VoiceCallDimension.Duration],
+            [VoiceCallTableColumnName.WaitTime, VoiceCallDimension.WaitTime],
+            [VoiceCallTableColumnName.Ticket, VoiceCallDimension.TicketId],
+            [VoiceCallTableColumnName.TalkTime, VoiceCallDimension.TalkTime],
+            [VoiceCallTableColumnName.OngoingTime, VoiceCallDimension.Duration],
+        ])(
+            'should return the correct dimension for %s',
+            (columnName, dimension) => {
+                const result = voiceCallTableColumnNameToDimension(columnName)
+
+                expect(result).toBe(dimension)
+            }
+        )
+    })
+
+    describe('isVoiceCallTableColumnSortable', () => {
+        it.each([
+            VoiceCallTableColumnName.Activity,
+            VoiceCallTableColumnName.Integration,
+            VoiceCallTableColumnName.Recording,
+            VoiceCallTableColumnName.Ticket,
+            VoiceCallTableColumnName.State,
+        ])('should return false for %s', (columnName) => {
+            const result = isVoiceCallTableColumnSortable(columnName)
+
+            expect(result).toBe(false)
+        })
+
+        it.each([
+            VoiceCallTableColumnName.Date,
+            VoiceCallTableColumnName.Duration,
+            VoiceCallTableColumnName.WaitTime,
+            VoiceCallTableColumnName.TalkTime,
+            VoiceCallTableColumnName.OngoingTime,
+        ])('should return true for %s', (columnName) => {
+            const result = isVoiceCallTableColumnSortable(columnName)
+
+            expect(result).toBe(true)
         })
     })
 })
