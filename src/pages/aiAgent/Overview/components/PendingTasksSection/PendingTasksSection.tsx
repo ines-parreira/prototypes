@@ -1,42 +1,47 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {useState} from 'react'
 
 import {CardTitle} from 'pages/aiAgent/Onboarding/components/Card'
 import {OverviewCard} from 'pages/aiAgent/Overview/components/OverviewCard/OverviewCard'
 
-import {usePendingTasks} from '../../hooks/usePendingTasks'
 import {PendingTask} from '../PendingTask/PendingTask'
 import {PendingTasksCompletionBar} from '../PendingTasksCompletionBar/PendingTasksCompletionBar'
+import {Expander} from './Expander'
 import css from './PendingTasksSection.less'
+import {StorePicker} from './StorePicker'
 
-const Expander = ({
-    isLoading,
-    isExpanded,
-    onClick,
-}: {
+export const pendingTasksCollapsibleId = 'overview-pending-tasks-collapsible'
+
+type PendingTask = {
+    title: string
+    caption: string
+    featureUrl: string
+    type: 'BASIC' | 'RECOMMENDED'
+}
+type Store = {
+    name: string
+    id: number
+}
+type Props = {
+    selectedStore: Store
+    stores: Store[]
+    onStoreChange: (store: Store) => void
     isLoading: boolean
-    isExpanded: boolean
-    onClick: () => void
-}) => {
-    return isLoading ? (
-        <div className={css.expander}>
-            <Skeleton height={14} width={150} />
-        </div>
-    ) : (
-        <button className={css.expander} onClick={onClick}>
-            Show all tasks (9 total)
-            <i className={classNames('material-icons', css.titleIcon)}>
-                {isExpanded ? 'arrow_drop_up' : 'arrow_drop_down'}
-            </i>
-        </button>
-    )
+    pendingTasks: PendingTask[]
+    completedTasks: PendingTask[]
+    totalTasks: number
 }
 
-export const PendingTasksSection = () => {
+export const PendingTasksSection = ({
+    stores,
+    selectedStore,
+    onStoreChange,
+    completedTasks,
+    isLoading,
+    pendingTasks,
+    totalTasks,
+}: Props) => {
     const [isPendingTasksExpanded, setIsPendingTasksExpanded] = useState(false)
-    const {isLoading, pendingTasks, completedTasks, totalTasks} =
-        usePendingTasks()
 
     const loadingTasks = (
         <>
@@ -61,26 +66,37 @@ export const PendingTasksSection = () => {
     return (
         <OverviewCard>
             <div className={css.innerCard}>
-                <CardTitle>
-                    <span className={css.title}>
-                        Complete AI Agent Setup
-                        <i
-                            className={classNames(
-                                'material-icons',
-                                css.titleIcon
-                            )}
-                        >
-                            auto_awesome
-                        </i>
-                    </span>
-                </CardTitle>
+                <div className={css.titleContainer}>
+                    <CardTitle>
+                        <span className={css.title}>
+                            Complete AI Agent Setup
+                            <i
+                                className={classNames(
+                                    'material-icons',
+                                    css.titleIcon
+                                )}
+                            >
+                                auto_awesome
+                            </i>
+                        </span>
+                    </CardTitle>
+                    <StorePicker
+                        stores={stores}
+                        selectedStore={selectedStore}
+                        onStoreChange={onStoreChange}
+                    />
+                </div>
                 <PendingTasksCompletionBar
                     isLoading={isLoading}
                     totalTasks={totalTasks}
                     totalTasksCompleted={completedTasks?.length}
                 />
                 <div className={css.pendingTasksContainer}>
-                    <div className={css.pendingTaskInnerContainer}>
+                    <div
+                        className={css.pendingTaskInnerContainer}
+                        id={pendingTasksCollapsibleId}
+                        role="region"
+                    >
                         {isLoading && loadingTasks}
                         {!isLoading &&
                             tasksToDisplay?.map((task) => (
@@ -99,15 +115,21 @@ export const PendingTasksSection = () => {
                             ))}
                     </div>
                 </div>
-                <div className={css.expanderContainer}>
-                    <Expander
-                        isLoading={isLoading}
-                        isExpanded={isPendingTasksExpanded}
-                        onClick={() =>
-                            setIsPendingTasksExpanded(!isPendingTasksExpanded)
-                        }
-                    />
-                </div>
+                {pendingTasks.length > 3 && (
+                    <div className={css.expanderContainer}>
+                        <Expander
+                            controlId={pendingTasksCollapsibleId}
+                            tasksCount={pendingTasks?.length}
+                            isLoading={isLoading}
+                            isExpanded={isPendingTasksExpanded}
+                            onClick={() =>
+                                setIsPendingTasksExpanded(
+                                    !isPendingTasksExpanded
+                                )
+                            }
+                        />
+                    </div>
+                )}
             </div>
         </OverviewCard>
     )

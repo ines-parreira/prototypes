@@ -13,7 +13,7 @@ export const ResourcesSection = () => {
                     your AI Agent’s performance.
                 </Subtitle>
             </div>
-            <div>{/** div for Candu content **/}</div>
+            <div data-candu-id="ai-agent-overview-educational-resources"></div>
         </div>
     )
 }

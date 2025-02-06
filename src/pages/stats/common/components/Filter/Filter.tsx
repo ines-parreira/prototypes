@@ -62,6 +62,7 @@ type Props = {
         warningMessage?: string
     }
     isDisabled?: boolean
+    shouldCloseOnSelect?: boolean
 }
 
 type WithInfiniteScrollProps = PropsWithChildren<{
@@ -113,6 +114,7 @@ const Filter = ({
     showSearch = true,
     filterErrors,
     isDisabled,
+    shouldCloseOnSelect,
 }: Props) => {
     const ref = useRef<HTMLDivElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(initializeAsOpen)
@@ -226,7 +228,13 @@ const Filter = ({
                                             label: option.label,
                                             value: option.value,
                                         }}
-                                        onClick={() => onChangeOption(option)}
+                                        onClick={() => {
+                                            onChangeOption(option)
+                                            if (shouldCloseOnSelect) {
+                                                setIsDropdownOpen(false)
+                                                onDropdownClosed()
+                                            }
+                                        }}
                                     >
                                         <FilterDropdownItemLabel
                                             label={option.label}

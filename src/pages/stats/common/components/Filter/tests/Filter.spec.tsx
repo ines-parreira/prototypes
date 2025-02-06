@@ -328,4 +328,32 @@ describe('Filter', () => {
             ).toBeInTheDocument()
         })
     })
+
+    it('calls onDropdownClosed when an option is selected and shouldCloseOnSelect is true', () => {
+        const onDropdownClosedSpy = jest.fn()
+        render(
+            <Filter
+                isMultiple={false}
+                initializeAsOpen
+                shouldCloseOnSelect
+                filterName={filterName}
+                filterOptionGroups={filterOptionGroups}
+                selectedOptions={selectedOptions}
+                logicalOperators={logicalOperators}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+                onDropdownClosed={onDropdownClosedSpy}
+            />
+        )
+
+        userEvent.click(screen.getByText('Option 2'))
+
+        expect(onChangeOption).toHaveBeenCalledWith({
+            label: 'Option 2',
+            value: 'option2',
+        })
+        expect(onDropdownClosedSpy).toHaveBeenCalled()
+    })
 })

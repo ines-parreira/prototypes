@@ -2,12 +2,16 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {render} from '@testing-library/react'
 
 import React from 'react'
+import {Provider} from 'react-redux'
 import {useLocation} from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
 
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 
 import {AiAgentOverview} from '../AiAgentOverview'
+
+import {AiAgentOverviewRootStateFixture} from './AiAgentOverviewRootState.fixture'
 
 jest.mock('react-router')
 
@@ -21,13 +25,18 @@ const defaultLocation = {
 const useLocationMock = assumeMock(useLocation)
 useLocationMock.mockReturnValue(defaultLocation)
 
+const rootState = AiAgentOverviewRootStateFixture.start()
+    .with2ShopifyIntegrations()
+    .build()
 const queryClient = mockQueryClient()
 
 const renderComponent = () => {
     return render(
-        <QueryClientProvider client={queryClient}>
-            <AiAgentOverview />
-        </QueryClientProvider>
+        <Provider store={configureMockStore()(rootState)}>
+            <QueryClientProvider client={queryClient}>
+                <AiAgentOverview />
+            </QueryClientProvider>
+        </Provider>
     )
 }
 

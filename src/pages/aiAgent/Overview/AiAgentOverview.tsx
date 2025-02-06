@@ -6,11 +6,12 @@ import modalImage from 'assets/img/ai-agent/ai_agent_onboarding_thankyou.png'
 import ThankYouModal from 'pages/aiAgent/Onboarding/components/ThankYouModal/ThankYouModal'
 
 import {KpiSection} from 'pages/aiAgent/Overview/components/KpiSection/KpiSection'
-import {PendingTasksSection} from 'pages/aiAgent/Overview/components/PendingTasksSection/PendingTasksSection'
 import {ResourcesSection} from 'pages/aiAgent/Overview/components/ResourcesSection/ResourcesSection'
 import {Separator} from 'pages/aiAgent/Overview/components/Separator/Separator'
 import {Title} from 'pages/aiAgent/Overview/components/Title/Title'
 import {AiAgentOverviewLayout} from 'pages/aiAgent/Overview/layout/AiAgentOverviewLayout'
+
+import {PendingTasksSectionConnected} from './components/PendingTasksSection/PendingTasksSectionConnected'
 
 export const AiAgentOverview = () => {
     const [isOpen, setIsOpen] = useState(false)
@@ -26,7 +27,7 @@ export const AiAgentOverview = () => {
         <AiAgentOverviewLayout>
             <Title firstName="Taylor" />
             <KpiSection />
-            <PendingTasksSection />
+            <PendingTasksSectionConnected />
             <Separator />
             <ResourcesSection />
             <ThankYouModal
