@@ -36,10 +36,6 @@ const FormMock = assumeMock(Form)
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
 
-jest.mock('../DEPRECATED_VoiceIntegrationPreferences', () => () => (
-    <div>DEPRECATED_VoiceIntegrationPreferences</div>
-))
-
 jest.mock('../VoiceIntegrationPreferencesForm', () => () => (
     <div>VoiceIntegrationPreferencesForm</div>
 ))
@@ -86,16 +82,6 @@ describe('<VoiceIntegrationPreferences />', () => {
 
         expect(
             screen.getByText('VoiceIntegrationPreferencesForm')
-        ).toBeInTheDocument()
-    })
-
-    it('should render DEPRECATED_VoiceIntegrationPreferences when isNewVoicePreferencesFormEnabled is false', () => {
-        useFlagMock.mockReturnValue(false)
-
-        const {getByText} = renderComponent(props)
-
-        expect(
-            getByText('DEPRECATED_VoiceIntegrationPreferences')
         ).toBeInTheDocument()
     })
 
