@@ -15,9 +15,18 @@ jest.mock('../useCsat', () => ({
     useCsat: jest.fn(() => 'mockCsat'),
 }))
 
+const timezone = 'UTC'
+
+const filters = {
+    period: {
+        start_datetime: '',
+        end_datetime: '',
+    },
+}
+
 describe('useSupportKpis', () => {
     it('should return metrics from individual hooks', () => {
-        const {result} = renderHook(() => useSupportKpis())
+        const {result} = renderHook(() => useSupportKpis(filters, timezone))
 
         expect(result.current.metrics).toEqual([
             'mockAutomationRate',

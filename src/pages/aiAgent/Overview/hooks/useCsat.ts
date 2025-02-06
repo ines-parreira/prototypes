@@ -1,27 +1,28 @@
-import {useQuery} from '@tanstack/react-query'
-
-import {StatType} from 'models/stat/types'
-import {getRealisticResponseTime} from 'pages/aiAgent/Overview/getRealisticResponseTime'
+import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
+import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import {customerSatisfactionMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import {StatsFilters, StatType} from 'models/stat/types'
 import {KpiMetric} from 'pages/aiAgent/Overview/types'
 
-export const useCsat = (): KpiMetric => {
-    // TODO: replace with Cube hook
-    const result = useQuery({
-        queryKey: ['csat'],
-        queryFn: (): Promise<{value: number; prevValue: number}> =>
-            new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve({value: 3.1, prevValue: 3.5})
-                }, getRealisticResponseTime())
-            }),
-    })
+import {getPreviousPeriod} from 'utils/reporting'
+
+export const useCsat = (filters: StatsFilters, timezone: string): KpiMetric => {
+    const result = useMultipleMetricsTrends(
+        customerSatisfactionMetricPerAgentQueryFactory(filters, timezone),
+        customerSatisfactionMetricPerAgentQueryFactory(
+            {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone
+        )
+    )
 
     return {
         title: 'CSAT (Customer Satisfaction Score)',
         hint: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
         metricType: StatType.Number,
-        value: result.data?.value,
-        prevValue: result.data?.prevValue,
-        isLoading: result.isLoading,
+        isLoading: result.isFetching,
+        ...result.data?.[TicketSatisfactionSurveyMeasure.AvgSurveyScore],
     }
 }

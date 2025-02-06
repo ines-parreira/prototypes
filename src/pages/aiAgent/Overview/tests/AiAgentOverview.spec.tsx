@@ -6,6 +6,10 @@ import {Provider} from 'react-redux'
 import {useLocation} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
+import {RootState, StoreDispatch, StoreState} from 'state/types'
+import {initialState} from 'state/ui/stats/filtersSlice'
+
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 
@@ -29,10 +33,19 @@ const rootState = AiAgentOverviewRootStateFixture.start()
     .with2ShopifyIntegrations()
     .build()
 const queryClient = mockQueryClient()
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+
+const defaultStore = {
+    ...rootState,
+    ui: {
+        stats: {filters: initialState},
+    },
+    stats: initialStatsFiltersState,
+} as StoreState
 
 const renderComponent = () => {
     return render(
-        <Provider store={configureMockStore()(rootState)}>
+        <Provider store={mockStore(defaultStore)}>
             <QueryClientProvider client={queryClient}>
                 <AiAgentOverview />
             </QueryClientProvider>

@@ -1,5 +1,8 @@
+import moment from 'moment'
 import React from 'react'
 
+import useAppSelector from 'hooks/useAppSelector'
+import {StatsFilters} from 'models/stat/types'
 import {Kpi} from 'pages/aiAgent/components/Kpi/Kpi'
 import {CardTitle} from 'pages/aiAgent/Onboarding/components/Card'
 import {Subtitle} from 'pages/aiAgent/Onboarding/components/Subtitle/Subtitle'
@@ -12,7 +15,14 @@ import {useSupportKpis} from 'pages/aiAgent/Overview/hooks/useSupportKpis'
 
 import {KpiMetric} from 'pages/aiAgent/Overview/types'
 
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+
 import css from './KpiSection.less'
+
+type KpiProps = {
+    filters: StatsFilters
+    timezone: string
+}
 
 const KpiContainer = ({
     isLoading = false,
@@ -39,8 +49,8 @@ const KpiContainer = ({
                     <Kpi
                         key={metric.title}
                         isLoading={metric.isLoading}
-                        value={metric.value}
-                        prevValue={metric.prevValue}
+                        value={metric.value ?? 0}
+                        prevValue={metric.prevValue ?? 0}
                         title={metric.title}
                         hint={metric.hint}
                         metricType={metric.metricType}
@@ -51,16 +61,16 @@ const KpiContainer = ({
     )
 }
 
-const SalesKpi = () => {
-    const {metrics} = useSalesKpis()
+const SalesKpi = ({filters, timezone}: KpiProps) => {
+    const {metrics} = useSalesKpis(filters, timezone)
     return <KpiContainer metrics={metrics} />
 }
-const SupportKpi = () => {
-    const {metrics} = useSupportKpis()
+const SupportKpi = ({filters, timezone}: KpiProps) => {
+    const {metrics} = useSupportKpis(filters, timezone)
     return <KpiContainer metrics={metrics} />
 }
-const MixedKpi = () => {
-    const {metrics} = useMixedKpis()
+const MixedKpi = ({filters, timezone}: KpiProps) => {
+    const {metrics} = useMixedKpis(filters, timezone)
     return <KpiContainer metrics={metrics} />
 }
 
@@ -71,17 +81,27 @@ const KpiForAiAgentType = ({
     isLoading: boolean
     aiAgentType?: 'sales' | 'support' | 'mixed'
 }) => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: moment().format('YYYY-MM-DDT00:00:00.000'),
+            end_datetime: moment()
+                .subtract(28, 'days')
+                .format('YYYY-MM-DDT23:59:59.999'),
+        },
+    }
+    const {userTimezone} = useAppSelector(getCleanStatsFiltersWithTimezone)
+
     if (isLoading || !aiAgentType) {
         return <KpiContainer isLoading />
     }
 
     switch (aiAgentType) {
         case 'sales':
-            return <SalesKpi />
+            return <SalesKpi filters={filters} timezone={userTimezone} />
         case 'support':
-            return <SupportKpi />
+            return <SupportKpi filters={filters} timezone={userTimezone} />
         case 'mixed':
-            return <MixedKpi />
+            return <MixedKpi filters={filters} timezone={userTimezone} />
     }
 }
 

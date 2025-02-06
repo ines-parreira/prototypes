@@ -15,9 +15,18 @@ jest.mock('../useCsat', () => ({
     useCsat: jest.fn(() => 'mockCsat'),
 }))
 
+const timezone = 'UTC'
+
+const filters = {
+    period: {
+        start_datetime: '',
+        end_datetime: '',
+    },
+}
+
 describe('useSalesKpis', () => {
     it('should return metrics containing correct KPIs', () => {
-        const {result} = renderHook(() => useSalesKpis())
+        const {result} = renderHook(() => useSalesKpis(filters, timezone))
 
         expect(result.current.metrics).toEqual([
             'mockCoverageRate',

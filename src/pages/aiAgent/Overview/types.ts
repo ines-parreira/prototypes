@@ -4,8 +4,8 @@ export type KpiMetric = {
     isLoading: boolean
     title: string
     hint: string
-    value?: number
-    prevValue?: number
+    value?: number | null
+    prevValue?: number | null
     metricType: StatType.Number | StatType.Percent | StatType.Currency
     currency?: string
 }

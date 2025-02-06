@@ -2,11 +2,20 @@ import {UseQueryResult} from '@tanstack/react-query'
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 
+import {Provider} from 'react-redux'
+
+import configureMockStore from 'redux-mock-store'
+
 import {StatType} from 'models/stat/types'
+
 import {useAiAgentType} from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import {useMixedKpis} from 'pages/aiAgent/Overview/hooks/useMixedKpis'
 import {useSalesKpis} from 'pages/aiAgent/Overview/hooks/useSalesKpis'
 import {useSupportKpis} from 'pages/aiAgent/Overview/hooks/useSupportKpis'
+import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
+import {RootState, StoreDispatch, StoreState} from 'state/types'
+import {initialState} from 'state/ui/stats/filtersSlice'
+
 import {assumeMock} from 'utils/testing'
 
 import {KpiSection} from '../KpiSection'
@@ -24,6 +33,23 @@ const useSupportKpisMock = assumeMock(useSupportKpis)
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid="skeleton" />
 ))
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+
+const defaultStore = {
+    ui: {
+        stats: {filters: initialState},
+    },
+    stats: initialStatsFiltersState,
+} as StoreState
+
+const renderComponent = () => {
+    return render(
+        <Provider store={mockStore(defaultStore)}>
+            <KpiSection />
+        </Provider>
+    )
+}
 
 describe('KpiSection', () => {
     describe.each([
@@ -52,7 +78,7 @@ describe('KpiSection', () => {
                 ],
             })
 
-            render(<KpiSection />)
+            renderComponent()
             expect(
                 screen.queryByText(`My ${aiAgentType} metric`)
             ).toBeInTheDocument()
@@ -73,7 +99,7 @@ describe('KpiSection', () => {
                 ],
             })
 
-            render(<KpiSection />)
+            renderComponent()
             expect(
                 screen.queryByText(`My ${aiAgentType} metric`)
             ).toBeInTheDocument()
@@ -88,7 +114,7 @@ describe('KpiSection', () => {
             aiAgentType: 'sales' | 'support' | 'mixed'
         }>)
 
-        render(<KpiSection />)
+        renderComponent()
 
         // 8 because 2 skeletons by KPIs (title + metric)
         expect(screen.queryAllByTestId('skeleton')).toHaveLength(8)
