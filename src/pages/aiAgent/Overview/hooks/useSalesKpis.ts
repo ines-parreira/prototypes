@@ -5,7 +5,7 @@ import {useGmvInfluenced} from 'pages/aiAgent/Overview/hooks/useGmvInfluenced'
 import {useTotalConversations} from 'pages/aiAgent/Overview/hooks/useTotalConversations'
 
 export const useSalesKpis = (filters: StatsFilters, timezone: string) => {
-    const coverageRate = useCoverageRate()
+    const coverageRate = useCoverageRate(filters, timezone)
     const gmvInfluenced = useGmvInfluenced()
     const totalConversations = useTotalConversations(filters, timezone)
     const csat = useCsat(filters, timezone)

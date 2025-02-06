@@ -71,4 +71,20 @@ describe('Kpi', () => {
         expect(screen.getByText('Rate KPI')).toBeInTheDocument()
         expect(screen.getByText('87.5%')).toBeInTheDocument()
     })
+
+    it('should format value with 2 numbers after the comma when it is a really long number', () => {
+        render(
+            <Kpi
+                title="Rate KPI"
+                value={87.55555555}
+                prevValue={85}
+                metricType={StatType.Percent}
+                hint="Conversion hint"
+                isLoading={false}
+            />
+        )
+
+        expect(screen.getByText('Rate KPI')).toBeInTheDocument()
+        expect(screen.getByText('87.56%')).toBeInTheDocument()
+    })
 })

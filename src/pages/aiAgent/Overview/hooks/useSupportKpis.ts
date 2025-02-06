@@ -8,7 +8,7 @@ export const useSupportKpis = (filters: StatsFilters, timezone: string) => {
     const automationRate = useAutomationRate()
     const automatedInteractions = useAutomatedInteractions(filters, timezone)
     const csat = useCsat(filters, timezone)
-    const coverageRate = useCoverageRate()
+    const coverageRate = useCoverageRate(filters, timezone)
 
     return {
         metrics: [automationRate, automatedInteractions, csat, coverageRate],

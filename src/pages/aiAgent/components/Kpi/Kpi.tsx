@@ -37,13 +37,15 @@ export const Kpi = ({
             return ''
         }
 
+        const fixedValue = +value.toFixed(2)
+
         switch (metricType) {
             case StatType.Number:
-                return formatNumber(value)
+                return formatNumber(fixedValue)
             case StatType.Currency:
-                return formatCurrency(value, currency ?? 'USD')
+                return formatCurrency(fixedValue, currency ?? 'USD')
             case StatType.Percent:
-                return formatPercent(value)
+                return formatPercent(fixedValue)
         }
     }, [metricType, value, currency])
 

@@ -5,7 +5,7 @@ import {useCsat} from 'pages/aiAgent/Overview/hooks/useCsat'
 import {useGmvInfluenced} from 'pages/aiAgent/Overview/hooks/useGmvInfluenced'
 
 export const useMixedKpis = (filters: StatsFilters, timezone: string) => {
-    const coverageRate = useCoverageRate()
+    const coverageRate = useCoverageRate(filters, timezone)
     const gmvInfluenced = useGmvInfluenced()
     const automationRate = useAutomationRate()
     const csat = useCsat(filters, timezone)
