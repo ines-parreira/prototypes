@@ -145,7 +145,7 @@ describe('CustomReportPage', () => {
         useAppDispatchMock.mockReturnValue(dispatchMock)
 
         useDashboardNameValidationMock.mockReturnValue({
-            error: null,
+            error: undefined,
             isValid: true,
             isInvalid: false,
         } as any)

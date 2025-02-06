@@ -55,7 +55,7 @@ export const AddChartToDashboardModal = ({
                 <DashboardName
                     value={dashboard}
                     onChange={setDashboard}
-                    error={error || false}
+                    error={error}
                     autoFocus
                 />
             </ModalBody>

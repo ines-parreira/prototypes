@@ -42,7 +42,7 @@ export const CustomReports = () => {
         emoji: '',
     })
 
-    const {error, isInvalid} = useDashboardNameValidation(details.name)
+    const {error} = useDashboardNameValidation(details.name)
 
     const {createDashboardHandler, isCreateMutationLoading} =
         useCustomReportActions()
@@ -74,7 +74,7 @@ export const CustomReports = () => {
                         onBlur={() => {
                             if (error) void notify.error(error)
                         }}
-                        error={isInvalid}
+                        error={error}
                         autoFocus
                     />
                 }

@@ -179,16 +179,16 @@ describe('AddChartsModal', () => {
                 {
                     children: [
                         {
+                            config_id: customerSatisfactionMetric,
+                            type: CustomReportChildType.Chart,
+                        },
+                        {
                             config_id: OverviewMetric.MedianFirstResponseTime,
                             type: CustomReportChildType.Chart,
                         },
                         {
                             type: CustomReportChildType.Chart,
                             config_id: OverviewMetric.MedianResolutionTime,
-                        },
-                        {
-                            config_id: customerSatisfactionMetric,
-                            type: CustomReportChildType.Chart,
                         },
                     ],
                     type: CustomReportChildType.Row,

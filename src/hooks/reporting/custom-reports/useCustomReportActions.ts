@@ -276,7 +276,7 @@ export const useCustomReportActions = () => {
 
             updateDashboardHandler({
                 dashboard,
-                chartIds: [...childrenIds, chartId],
+                chartIds: [chartId, ...childrenIds],
                 onSuccess,
                 successMessage: `Successfully added chart to ${dashboard.name}`,
             })

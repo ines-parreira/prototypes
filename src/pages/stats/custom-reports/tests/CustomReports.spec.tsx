@@ -64,7 +64,7 @@ describe('CustomReports', () => {
         } as any)
 
         useDashboardNameValidationMock.mockReturnValue({
-            error: null,
+            error: undefined,
             isValid: true,
             isInvalid: false,
         } as any)
@@ -224,7 +224,7 @@ describe('CustomReports', () => {
 
     it('should not display error on input blur when validation passes', () => {
         useDashboardNameValidationMock.mockReturnValue({
-            error: null,
+            error: undefined,
             isValid: true,
             isInvalid: false,
         } as any)

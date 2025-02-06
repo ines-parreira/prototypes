@@ -509,12 +509,12 @@ describe('useCustomReportActions', () => {
                 {
                     children: [
                         {
-                            config_id: secondChartId,
+                            config_id: firstChartId,
                             metadata: {},
                             type: CustomReportChildType.Chart,
                         },
                         {
-                            config_id: firstChartId,
+                            config_id: secondChartId,
                             metadata: {},
                             type: CustomReportChildType.Chart,
                         },

@@ -54,7 +54,7 @@ describe('useValidateDashboardName', () => {
             useDashboardNameValidation('New Valid Dashboard')
         )
 
-        expect(result.current.error).toBeNull()
+        expect(result.current.error).toBeUndefined()
         expect(result.current.isValid).toBe(true)
         expect(result.current.isInvalid).toBe(false)
     })
@@ -68,7 +68,7 @@ describe('useValidateDashboardName', () => {
             useDashboardNameValidation('New Dashboard')
         )
 
-        expect(result.current.error).toBeNull()
+        expect(result.current.error).toBeUndefined()
     })
 
     it('should handle no dashboards data', () => {
@@ -80,7 +80,7 @@ describe('useValidateDashboardName', () => {
             useDashboardNameValidation('New Dashboard')
         )
 
-        expect(result.current.error).toBeNull()
+        expect(result.current.error).toBeUndefined()
     })
 
     it('should allow the same name if it matches the initialName', () => {
@@ -91,7 +91,7 @@ describe('useValidateDashboardName', () => {
             )
         )
 
-        expect(result.current.error).toBeNull()
+        expect(result.current.error).toBeUndefined()
         expect(result.current.isValid).toBe(true)
         expect(result.current.isInvalid).toBe(false)
     })
@@ -104,7 +104,7 @@ describe('useValidateDashboardName', () => {
             )
         )
 
-        expect(result.current.error).toBeNull()
+        expect(result.current.error).toBeUndefined()
         expect(result.current.isValid).toBe(true)
         expect(result.current.isInvalid).toBe(false)
     })

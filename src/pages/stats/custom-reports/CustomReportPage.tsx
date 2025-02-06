@@ -92,20 +92,17 @@ const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
         emoji: dashboard.emoji || '',
     })
 
-    const {isValid, isInvalid} = useDashboardNameValidation(
-        details.name,
-        dashboard.name
-    )
+    const {error} = useDashboardNameValidation(details.name, dashboard.name)
 
     const handleUpdateName = async () => {
         try {
-            if (isValid) {
-                await updateDashboard({
-                    ...dashboard,
-                    name: details.name,
-                    emoji: details.emoji,
-                })
-            }
+            if (error) throw new Error(error)
+
+            await updateDashboard({
+                ...dashboard,
+                name: details.name,
+                emoji: details.emoji,
+            })
         } catch (error) {
             void notify.error(getErrorMessage(error))
         }
@@ -131,7 +128,7 @@ const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
                         value={details}
                         onChange={setDetails}
                         onBlur={handleUpdateName}
-                        error={isInvalid}
+                        error={error}
                     />
                 }
                 right={
