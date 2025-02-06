@@ -7,7 +7,7 @@ import {useTotalConversations} from 'pages/aiAgent/Overview/hooks/useTotalConver
 export const useSalesKpis = (filters: StatsFilters, timezone: string) => {
     const coverageRate = useCoverageRate()
     const gmvInfluenced = useGmvInfluenced()
-    const totalConversations = useTotalConversations()
+    const totalConversations = useTotalConversations(filters, timezone)
     const csat = useCsat(filters, timezone)
 
     return {
