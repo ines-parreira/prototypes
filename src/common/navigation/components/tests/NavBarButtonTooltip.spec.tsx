@@ -26,7 +26,7 @@ describe('NavBarButtonTooltip', () => {
     it('should render the expand message when nav bar is not visible', () => {
         mockUseNavBar.mockReturnValue({
             ...mockNavBarContextValues,
-            isNavBarVisible: false,
+            navBarDisplay: NavBarDisplayMode.Collapsed,
         })
 
         render(<NavBarButtonTooltip />)
@@ -38,7 +38,7 @@ describe('NavBarButtonTooltip', () => {
     it('should render collapse message when nav bar is visible', () => {
         mockUseNavBar.mockReturnValue({
             ...mockNavBarContextValues,
-            isNavBarVisible: true,
+            navBarDisplay: NavBarDisplayMode.Open,
         })
 
         render(<NavBarButtonTooltip />)
