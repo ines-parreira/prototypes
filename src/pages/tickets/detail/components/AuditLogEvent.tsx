@@ -158,6 +158,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
         [CONTENTFUL_EVENT_TYPES.TicketExcludedFromAutoMerge]: ['close'],
         [CONTENTFUL_EVENT_TYPES.TicketExcludedFromCSAT]: ['star'],
         [CONTENTFUL_EVENT_TYPES.TicketSatisfactionSurveySkipped]: ['star'],
+        [CONTENTFUL_EVENT_TYPES.SatisfactionSurveySent]: ['star'],
     }
 
     state: State = {
@@ -239,6 +240,9 @@ export class AuditLogEventContainer extends Component<Props, State> {
         ),
         [CONTENTFUL_EVENT_TYPES.TicketSatisfactionSurveySkipped]: () =>
             this._renderTicketSatisfactionSurveySkipped(),
+        [CONTENTFUL_EVENT_TYPES.SatisfactionSurveySent]: () => (
+            <ActionName>CSAT survey sent</ActionName>
+        ),
     }
 
     _DETAILS_RENDERERS: Partial<Record<TicketEventType, () => ReactNode>> = {

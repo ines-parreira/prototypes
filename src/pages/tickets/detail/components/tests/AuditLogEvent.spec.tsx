@@ -140,6 +140,7 @@ describe('<AuditLogEvent/>', () => {
                     SATISFACTION_SURVEY_EVENT_TYPES.SatisfactionSurveyResponded,
                     {score: 5, body_text: 'Great service!'},
                 ],
+                [SATISFACTION_SURVEY_EVENT_TYPES.SatisfactionSurveySent, null],
             ])('with event type %s', (eventType, eventData) => {
                 const event = getEvent(eventType, eventData)
                 const {container} = render(

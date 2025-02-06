@@ -121,6 +121,7 @@ export enum EventType {
     RuleUpdated = 'rule-updated',
     RuleSuggestionSuggested = 'rule-suggestion-suggested',
     SatisfactionSurveyResponded = 'satisfaction-survey-responded',
+    SatisfactionSurveySent = 'satisfaction-survey-sent',
     TagCreated = 'tag-created',
     TagDeleted = 'tag-deleted',
     TagMerged = 'tag-merged',
@@ -255,7 +256,10 @@ export const TICKET_EVENT_TYPES = Object.freeze({
 export type TicketEventType = ValueOf<typeof TICKET_EVENT_TYPES>
 
 export const SATISFACTION_SURVEY_EVENT_TYPES = Object.freeze({
-    ..._pick(EventType, ['SatisfactionSurveyResponded']),
+    ..._pick(EventType, [
+        'SatisfactionSurveyResponded',
+        'SatisfactionSurveySent',
+    ]),
 } as const)
 
 export type SatisfactionSurveyEventType = ValueOf<
