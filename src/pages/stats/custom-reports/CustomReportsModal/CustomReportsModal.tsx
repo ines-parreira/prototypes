@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
+
 import {useReportRestrictions} from 'hooks/reporting/custom-reports/useReportRestrictions'
 
 import Button from 'pages/common/components/button/Button'
@@ -85,6 +87,11 @@ const ChartsSelector = ({
         restrictedReports
     )
 
+    const handleAddCharts = () => {
+        onSave(getGroupChartsIntoRows(checkedCharts), checkedCharts.length)
+        logEvent(SegmentEvent.StatDashboardModalAddChartsClicked)
+    }
+
     return (
         <>
             <ModalHeader title={ADD_CHARTS_CTA} />
@@ -121,15 +128,7 @@ const ChartsSelector = ({
                 <Button onClick={onCancel} intent="secondary">
                     Cancel
                 </Button>
-                <Button
-                    onClick={() => {
-                        onSave(
-                            getGroupChartsIntoRows(checkedCharts),
-                            checkedCharts.length
-                        )
-                    }}
-                    isLoading={isLoading}
-                >
+                <Button onClick={handleAddCharts} isLoading={isLoading}>
                     {ADD_CHARTS_CTA}
                     {checkedCharts.length ? ` (${checkedCharts.length})` : ''}
                 </Button>

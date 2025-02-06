@@ -5,6 +5,8 @@ import {
     CREATE_CUSTOM_REPORT,
     CREATE_REPORT_DESCRIPTION,
     CreateCustomReport,
+    CUSTOM_REPORTS,
+    DASHBOARDS_DOCUMENTATION_URL,
     LEARN_ABOUT,
 } from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
 
@@ -18,5 +20,10 @@ describe('CreateCustomReport', () => {
         expect(
             screen.getByText(LEARN_ABOUT, {exact: false})
         ).toBeInTheDocument()
+        expect(screen.getByRole('link')).toHaveAttribute(
+            'href',
+            DASHBOARDS_DOCUMENTATION_URL
+        )
+        expect(screen.getByRole('link')).toHaveTextContent(CUSTOM_REPORTS)
     })
 })

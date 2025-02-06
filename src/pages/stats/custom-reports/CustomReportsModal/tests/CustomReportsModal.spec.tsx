@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event'
 
 import React from 'react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
+
 import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import {useReportRestrictions} from 'hooks/reporting/custom-reports/useReportRestrictions'
 
@@ -49,6 +51,9 @@ const useCustomReportActionsMock = assumeMock(useCustomReportActions)
 
 jest.mock('hooks/reporting/custom-reports/useReportRestrictions')
 const useReportRestrictionsMock = assumeMock(useReportRestrictions)
+
+jest.mock('common/segment')
+const logEventMock = assumeMock(logEvent)
 
 describe('AddChartsModal', () => {
     const dispatchMock = jest.fn()
@@ -195,6 +200,9 @@ describe('AddChartsModal', () => {
                 },
             ],
             3
+        )
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.StatDashboardModalAddChartsClicked
         )
     })
 

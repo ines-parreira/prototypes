@@ -1,8 +1,10 @@
 import classnames from 'classnames'
+
 import React, {useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import cssNavbar from 'assets/css/navbar.less'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import useAppSelector from 'hooks/useAppSelector'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
@@ -24,6 +26,10 @@ type Props = {
 export const DASHBOARDS_NAV_TITLE = 'DASHBOARDS'
 export const CREATE_DASHBOARD = 'Create new dashboard'
 export const RESTRICTION_MESSAGE = 'Reach out to your admin for dashboard setup'
+
+const logStatDashboardNavCreateChartClicked = () => {
+    logEvent(SegmentEvent.StatDashboardNavCreateChartClicked)
+}
 
 export const DashboardsNavbarBlock = ({navBarLinkProps}: Props) => {
     const history = useHistory()
@@ -47,6 +53,9 @@ export const DashboardsNavbarBlock = ({navBarLinkProps}: Props) => {
                       label: CREATE_DASHBOARD,
                       onClick: () => {
                           history.push('/app/stats/custom-reports/new')
+                          logEvent(
+                              SegmentEvent.StatDashboardNavCreateChartClicked
+                          )
                       },
                   },
         ],
@@ -58,6 +67,7 @@ export const DashboardsNavbarBlock = ({navBarLinkProps}: Props) => {
         isOutlined: !isCurrentUserTeamLead,
         isDisabled: !isCurrentUserTeamLead,
         tooltip: isCurrentUserTeamLead ? undefined : RESTRICTION_MESSAGE,
+        callback: logStatDashboardNavCreateChartClicked,
     }
 
     return (

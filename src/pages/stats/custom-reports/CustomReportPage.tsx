@@ -1,7 +1,10 @@
 import {useGetAnalyticsCustomReport} from '@gorgias/api-queries'
 import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
+
 import React, {useCallback, useState} from 'react'
 import {useParams} from 'react-router-dom'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 
 import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
 import {useUpdateDashboard} from 'hooks/reporting/custom-reports/useUpdateDashboard'
@@ -120,6 +123,11 @@ const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
         }
     }
 
+    const handleActionButtonClick = (isOpen: boolean) => {
+        setIsOpen(isOpen)
+        logEvent(SegmentEvent.StatDashboardActionsMenuClicked)
+    }
+
     return (
         <StatsPageWrapper>
             <StatsPageHeader
@@ -134,7 +142,7 @@ const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
                 right={
                     isCurrentUserTeamLead && (
                         <CustomReportActionButton
-                            setOpenModal={setIsOpen}
+                            setOpenModal={handleActionButtonClick}
                             customReport={dashboard}
                         />
                     )

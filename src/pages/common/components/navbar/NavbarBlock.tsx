@@ -30,6 +30,7 @@ type Props = {
         isDisabled?: boolean
         tooltip?: string
         className?: string
+        callback?: () => void
     }
 }
 
@@ -68,6 +69,11 @@ export default function NavbarBlock({
         drag(categoryRef)
     }
 
+    const handleActionsIconClick = () => {
+        setOpen(!isOpen)
+        actionsIcon.callback?.()
+    }
+
     return (
         <TicketNavbarDropTarget
             accept={TicketNavbarElementType.Category}
@@ -104,7 +110,7 @@ export default function NavbarBlock({
                         <Dropdown
                             isOpen={isOpen}
                             disabled={actionsIcon.isDisabled}
-                            toggle={() => setOpen(!isOpen)}
+                            toggle={handleActionsIconClick}
                         >
                             <DropdownToggle
                                 className={classnames(

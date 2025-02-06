@@ -9,6 +9,9 @@ export const CREATE_REPORT_DESCRIPTION =
 export const LEARN_ABOUT = 'Learn about'
 export const CUSTOM_REPORTS = 'Dashboards'
 
+export const DASHBOARDS_DOCUMENTATION_URL =
+    'https://docs.gorgias.com/en-US/1093828-b36482f1d68142c992b27c2fd1fd9ec3'
+
 export const CreateCustomReport = () => {
     return (
         <div className={css.root}>
@@ -19,7 +22,14 @@ export const CreateCustomReport = () => {
                 <h1 className={css.title}>{CREATE_CUSTOM_REPORT}</h1>
                 <p className={css.subtitle}>{CREATE_REPORT_DESCRIPTION}</p>
                 <p className={css.footNote}>
-                    {LEARN_ABOUT} {CUSTOM_REPORTS}
+                    {LEARN_ABOUT}{' '}
+                    <a
+                        href={DASHBOARDS_DOCUMENTATION_URL}
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        {CUSTOM_REPORTS}
+                    </a>
                 </p>
             </div>
         </div>

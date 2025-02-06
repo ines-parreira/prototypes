@@ -1,5 +1,8 @@
 import classNames from 'classnames'
+
 import React, {ReactNode, useRef, useState} from 'react'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 
 import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import useAppSelector from 'hooks/useAppSelector'
@@ -18,8 +21,8 @@ import {
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {isTeamLead} from 'utils'
 
-export const ADD_TO_DASHBOARD = 'Create New Dashboard'
-export const ADD_TO_DASHBOARD_CTA = 'Add To Dashboard'
+export const ADD_TO_DASHBOARD = 'Add To Dashboard'
+export const CREATE_NEW_DASHBOARD_LABEL = 'Create New Dashboard'
 export const REMOVE_FROM_DASHBOARD = 'Remove chart from dashboard'
 export const NO_DASHBOARDS_LABEL = 'No existing dashboards'
 
@@ -95,6 +98,7 @@ export const ChartsActionMenu = ({
     const handleToggleDropdown = () => {
         setShowDropdown(!showDropdown)
         setShowActions(false)
+        logEvent(SegmentEvent.StatDashboardChartMenuAddToChartClicked)
     }
 
     const handleOpenModal = () => {
@@ -163,15 +167,15 @@ export const ChartsActionMenu = ({
                                     isDisabled={limitReached}
                                     shouldCloseOnSelect
                                     option={{
-                                        label: ADD_TO_DASHBOARD_CTA,
-                                        value: ADD_TO_DASHBOARD_CTA,
+                                        label: CREATE_NEW_DASHBOARD_LABEL,
+                                        value: CREATE_NEW_DASHBOARD_LABEL,
                                     }}
                                 >
                                     <IconInput
                                         icon="add"
                                         className={css.dropdownLeftIcon}
                                     />
-                                    {ADD_TO_DASHBOARD_CTA}
+                                    {CREATE_NEW_DASHBOARD_LABEL}
                                 </DropdownItem>
                             </>
                         ) : (

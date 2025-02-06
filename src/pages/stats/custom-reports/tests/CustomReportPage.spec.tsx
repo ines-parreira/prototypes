@@ -11,6 +11,8 @@ import {fromJS} from 'immutable'
 import React from 'react'
 import {useParams} from 'react-router-dom'
 
+import {logEvent, SegmentEvent} from 'common/segment'
+
 import {AGENT_ROLE, BASIC_AGENT_ROLE} from 'config/user'
 import {user} from 'fixtures/users'
 import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
@@ -74,6 +76,9 @@ const useDashboardNameValidationMock = assumeMock(useDashboardNameValidation)
 
 jest.mock('hooks/reporting/custom-reports/useReportRestrictions')
 const useReportRestrictionsMock = assumeMock(useReportRestrictions)
+
+jest.mock('common/segment')
+const logEventMock = assumeMock(logEvent)
 
 describe('CustomReportPage', () => {
     const defaultState = {
@@ -281,6 +286,18 @@ describe('CustomReportPage', () => {
                 })
             )
         })
+    })
+
+    it('should report Event when Actions menu clicked', () => {
+        renderWithStore(<CustomReportPage />, defaultState)
+
+        const actionButton = screen.getByText(CUSTOM_REPORT_ID_CTA)
+
+        fireEvent.click(actionButton)
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.StatDashboardActionsMenuClicked
+        )
     })
 
     it('should update charts when modal is saved', async () => {

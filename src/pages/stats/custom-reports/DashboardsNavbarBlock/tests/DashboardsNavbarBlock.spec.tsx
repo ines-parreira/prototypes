@@ -1,8 +1,11 @@
 import {screen, fireEvent, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import React from 'react'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 
 import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import {LIMIT_REACHED_MESSAGE} from 'pages/stats/custom-reports/constants'
@@ -42,7 +45,21 @@ jest.mock('state/currentUser/selectors', () => ({
 jest.mock('utils')
 const isTeamLeadMock = assumeMock(isTeamLead)
 
+jest.mock('common/segment')
+const logEventMock = assumeMock(logEvent)
+
 describe('DashboardsNavbarBlock', () => {
+    const defaultMockData = [
+        {id: '1', name: 'Report 1', emoji: '📊'},
+        {id: '2', name: 'Report 2', emoji: 'plus'},
+    ]
+
+    beforeEach(() => {
+        useCustomReportActionsMock.mockReturnValue({
+            getDashboardsHandler: () => defaultMockData,
+        } as any)
+    })
+
     describe('Admin', () => {
         beforeEach(() => {
             isTeamLeadMock.mockReturnValueOnce(true)
@@ -75,15 +92,6 @@ describe('DashboardsNavbarBlock', () => {
         })
 
         it('should display the list of custom reports when data is available', () => {
-            const mockData = [
-                {id: '1', name: 'Report 1', emoji: '📊'},
-                {id: '2', name: 'Report 2', emoji: 'plus'},
-            ]
-
-            useCustomReportActionsMock.mockReturnValue({
-                getDashboardsHandler: () => mockData,
-            } as any)
-
             renderWithQueryClientAndRouter(
                 <DndProvider backend={HTML5Backend}>
                     <DashboardsNavbarBlock navBarLinkProps={{exact: true}} />
@@ -147,15 +155,6 @@ describe('DashboardsNavbarBlock', () => {
         })
 
         it('should not show the info icon when the user is an Admin', () => {
-            const mockData = [
-                {id: '1', name: 'Report 1', emoji: '📊'},
-                {id: '2', name: 'Report 2', emoji: 'plus'},
-            ]
-
-            useCustomReportActionsMock.mockReturnValue({
-                getDashboardsHandler: () => mockData,
-            } as any)
-
             renderWithQueryClientAndRouter(
                 <DndProvider backend={HTML5Backend}>
                     <DashboardsNavbarBlock navBarLinkProps={{exact: true}} />
@@ -165,6 +164,21 @@ describe('DashboardsNavbarBlock', () => {
             expect(screen.getByText('add')).toBeInTheDocument()
             expect(screen.queryByText('info')).not.toBeInTheDocument()
         })
+
+        it('should report clicks on add icon clicked', () => {
+            renderWithQueryClientAndRouter(
+                <DndProvider backend={HTML5Backend}>
+                    <DashboardsNavbarBlock navBarLinkProps={{exact: true}} />
+                </DndProvider>
+            )
+            const addIcon = screen.getByText('add')
+            expect(addIcon).toBeEnabled()
+            userEvent.click(addIcon)
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.StatDashboardNavCreateChartClicked
+            )
+        })
     })
 
     describe('Lite Agent', () => {
@@ -173,15 +187,6 @@ describe('DashboardsNavbarBlock', () => {
         })
 
         it('should show the info icon when the user is a LiteAgent', async () => {
-            const mockData = [
-                {id: '1', name: 'Report 1', emoji: '📊'},
-                {id: '2', name: 'Report 2', emoji: 'plus'},
-            ]
-
-            useCustomReportActionsMock.mockReturnValue({
-                getDashboardsHandler: () => mockData,
-            } as any)
-
             renderWithQueryClientAndRouter(
                 <DndProvider backend={HTML5Backend}>
                     <DashboardsNavbarBlock navBarLinkProps={{exact: true}} />

@@ -1,7 +1,10 @@
 import {act, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import {fromJS} from 'immutable'
 import React from 'react'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 
 import {UserRole} from 'config/types/user'
 import {user} from 'fixtures/users'
@@ -9,7 +12,7 @@ import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomRe
 import {AddChartToDashboardModal} from 'pages/stats/custom-reports/ChartsActionMenu/AddChartToDashboardModal'
 import {
     ADD_TO_DASHBOARD,
-    ADD_TO_DASHBOARD_CTA,
+    CREATE_NEW_DASHBOARD_LABEL,
     ChartsActionMenu,
     NO_DASHBOARDS_LABEL,
     REMOVE_FROM_DASHBOARD,
@@ -27,25 +30,26 @@ jest.mock(
     'pages/stats/custom-reports/ChartsActionMenu/AddChartToDashboardModal'
 )
 const AddChartToDashboardModalMock = assumeMock(AddChartToDashboardModal)
-
-const updateCustomReportMock = jest.fn()
-const removeChartFromDashboardMock = jest.fn()
-const createDashboardMock = jest.fn()
-const chartName = 'chartName'
-
-const dashboard: CustomReportSchema = {
-    id: 1,
-    name: 'Test Report',
-    emoji: '📊',
-    children: [],
-    analytics_filter_id: 123,
-}
-
-const defaultState = {
-    currentUser: fromJS({...user, role: {name: UserRole.Agent}}),
-}
+jest.mock('common/segment')
+const logEventMock = assumeMock(logEvent)
 
 describe('<ChartsActionMenu />', () => {
+    const updateCustomReportMock = jest.fn()
+    const removeChartFromDashboardMock = jest.fn()
+    const createDashboardMock = jest.fn()
+    const chartName = 'chartName'
+    const dashboard: CustomReportSchema = {
+        id: 1,
+        name: 'Test Report',
+        emoji: '📊',
+        children: [],
+        analytics_filter_id: 123,
+    }
+
+    const defaultState = {
+        currentUser: fromJS({...user, role: {name: UserRole.Agent}}),
+    }
+
     const chartId = OverviewChart.MedianResolutionTimeTrendCard
 
     const dashboardWithANestedChart: CustomReportSchema = {
@@ -128,6 +132,9 @@ describe('<ChartsActionMenu />', () => {
             })
         )
         expect(screen.queryByText(mockData[0].name)).not.toBeInTheDocument()
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.StatDashboardChartMenuAddToChartClicked
+        )
     })
 
     it('should filter out Dashboards that already contain the Chart', () => {
@@ -162,7 +169,7 @@ describe('<ChartsActionMenu />', () => {
 
         expect(screen.getByText(mockData[0].name)).toBeInTheDocument()
         expect(screen.getByText(mockData[1].name)).toBeInTheDocument()
-        expect(screen.getByText(ADD_TO_DASHBOARD_CTA)).toBeInTheDocument()
+        expect(screen.getByText(CREATE_NEW_DASHBOARD_LABEL)).toBeInTheDocument()
     })
 
     it('should disable the add to dashboards action if there are 10 dashboards', () => {
@@ -194,7 +201,7 @@ describe('<ChartsActionMenu />', () => {
             userEvent.click(screen.getByText(ADD_TO_DASHBOARD))
         })
 
-        const button = screen.getByText(ADD_TO_DASHBOARD_CTA)
+        const button = screen.getByText(CREATE_NEW_DASHBOARD_LABEL)
 
         expect(button).toHaveClass('disabled')
 
@@ -260,7 +267,7 @@ describe('<ChartsActionMenu />', () => {
         })
 
         act(() => {
-            userEvent.click(screen.getByText(ADD_TO_DASHBOARD_CTA))
+            userEvent.click(screen.getByText(CREATE_NEW_DASHBOARD_LABEL))
         })
 
         expect(AddChartToDashboardModalMock).toHaveBeenCalledWith(
