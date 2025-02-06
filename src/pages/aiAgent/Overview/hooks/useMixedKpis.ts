@@ -7,7 +7,7 @@ import {useGmvInfluenced} from 'pages/aiAgent/Overview/hooks/useGmvInfluenced'
 export const useMixedKpis = (filters: StatsFilters, timezone: string) => {
     const coverageRate = useCoverageRate(filters, timezone)
     const gmvInfluenced = useGmvInfluenced()
-    const automationRate = useAutomationRate()
+    const automationRate = useAutomationRate(filters, timezone)
     const csat = useCsat(filters, timezone)
 
     return {

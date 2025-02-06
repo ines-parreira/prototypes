@@ -1,5 +1,3 @@
-import {AI_MANAGED_TYPES} from 'custom-fields/constants'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {getAiAgentCoverageRate} from 'hooks/reporting/automate/automateStatsCalculatedTrends'
 import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
@@ -7,22 +5,15 @@ import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFiel
 import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {customFieldsTicketTotalCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {StatsFilters, StatType} from 'models/stat/types'
+import {useCustomFieldOutcome} from 'pages/aiAgent/Overview/hooks/useCustomFieldOutcome'
 import {KpiMetric} from 'pages/aiAgent/Overview/types'
-import {activeParams} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {getPreviousPeriod} from 'utils/reporting'
 
 export const useCoverageRate = (
     filters: StatsFilters,
     timezone: string
 ): KpiMetric => {
-    const {data: {data: activeFields = []} = {}} =
-        useCustomFieldDefinitions(activeParams)
-
-    const customFieldOutcome = activeFields.find(
-        (field) => field.managed_type === AI_MANAGED_TYPES.AI_OUTCOME
-    )
-
-    const customField = String(customFieldOutcome?.id || -1)
+    const customField = useCustomFieldOutcome()
 
     const allTickets = useMultipleMetricsTrends(
         ticketsCreatedQueryFactory(filters, timezone),

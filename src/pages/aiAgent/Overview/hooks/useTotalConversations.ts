@@ -1,25 +1,16 @@
-import {AI_MANAGED_TYPES} from 'custom-fields/constants'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
 import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {customFieldsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {StatsFilters, StatType} from 'models/stat/types'
+import {useCustomFieldOutcome} from 'pages/aiAgent/Overview/hooks/useCustomFieldOutcome'
 import {KpiMetric} from 'pages/aiAgent/Overview/types'
-import {activeParams} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {getPreviousPeriod} from 'utils/reporting'
 
 export const useTotalConversations = (
     filters: StatsFilters,
     timezone: string
 ): KpiMetric => {
-    const {data: {data: activeFields = []} = {}} =
-        useCustomFieldDefinitions(activeParams)
-
-    const customFieldOutcome = activeFields.find(
-        (field) => field.managed_type === AI_MANAGED_TYPES.AI_OUTCOME
-    )
-
-    const customField = String(customFieldOutcome?.id || -1)
+    const customField = useCustomFieldOutcome()
 
     const result = useMultipleMetricsTrends(
         customFieldsTicketCountQueryFactory(filters, timezone, customField),
