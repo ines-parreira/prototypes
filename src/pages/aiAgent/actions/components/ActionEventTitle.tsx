@@ -1,9 +1,10 @@
 import React from 'react'
 
 import webhooksIcon from 'assets/img/icons/webhooks.svg'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
+import {LlmTriggeredExecution} from '../types'
 import css from './ActionEventTitle.less'
+import ActionStatus from './ActionsStatus'
 
 export type ActionEventTitleProps = {
     isCustomAction?: boolean
@@ -13,6 +14,7 @@ export type ActionEventTitleProps = {
     badgeText?: string
     badgeSuccess?: boolean
     hideFiller?: boolean
+    status?: LlmTriggeredExecution['status']
 }
 
 const ActionEventTitle = ({
@@ -23,6 +25,7 @@ const ActionEventTitle = ({
     badgeText,
     badgeSuccess,
     hideFiller,
+    status,
 }: ActionEventTitleProps) => {
     return (
         <div className={css.actionInfo}>
@@ -49,15 +52,7 @@ const ActionEventTitle = ({
             {!!badgeText && (
                 <div className={css.status}>
                     <p>Status</p>
-                    <Badge
-                        type={
-                            badgeSuccess
-                                ? ColorType.LightSuccess
-                                : ColorType.LightError
-                        }
-                    >
-                        {badgeText}
-                    </Badge>
+                    <ActionStatus status={status} successFlag={badgeSuccess} />
                 </div>
             )}
         </div>

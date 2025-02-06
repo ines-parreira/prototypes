@@ -57,6 +57,7 @@ export default function ActionExecutionsView() {
             from: moment().subtract(1, 'week').toDate(),
             to: moment().toDate(),
             success: undefined,
+            status: undefined,
             orderBy: 'DESC',
             page: 1,
         }
@@ -97,6 +98,7 @@ export default function ActionExecutionsView() {
                 page: filterState.page,
                 to: filterState.to,
                 success: filterState.success,
+                status: filterState.status,
             },
             {
                 enabled: !!actionConfiguration?.internal_id,
@@ -127,7 +129,7 @@ export default function ActionExecutionsView() {
         )
 
     const handleFilterChange = useCallback(
-        (filter: Pick<Filter, 'from' | 'to' | 'success'>) => {
+        (filter: Pick<Filter, 'from' | 'to' | 'success' | 'status'>) => {
             dispatchFilter(filter)
         },
         [dispatchFilter]

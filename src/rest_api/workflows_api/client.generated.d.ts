@@ -1129,6 +1129,7 @@ declare namespace Components {
         max_history_index?: number | null;
         needs_auth?: boolean | null;
         success?: boolean | null;
+        status?: "success" | "error" | "partial_success";
       }[];
     }
     export interface GetWfConfigurationResponseDto {
@@ -2713,6 +2714,7 @@ declare namespace Components {
       max_history_index?: number | null;
       needs_auth?: boolean | null;
       success?: boolean | null;
+      status?: "success" | "error" | "partial_success";
     }
     export type GetWfExecutionResponseDto = {
       trigger: "llm-prompt";
@@ -6471,6 +6473,7 @@ declare namespace Components {
       })[];
       done?: boolean | null;
       success?: boolean | null;
+      status?: "success" | "error" | "partial_success";
       state: {
         store?: {
           type: "shopify";
@@ -8331,6 +8334,7 @@ declare namespace Components {
       })[];
       done?: boolean | null;
       success?: boolean | null;
+      status?: "success" | "error" | "partial_success";
       state: {
         store?: {
           type: "shopify";
@@ -15196,6 +15200,7 @@ declare namespace Paths {
       export type OrderBy = "ASC" | "DESC";
       export type Page = number;
       export type StartDate = string; // date-time
+      export type Status = any[];
       export type Success = "0" | "1" | "true" | "false";
     }
     export interface PathParameters {
@@ -15205,6 +15210,7 @@ declare namespace Paths {
       order_by?: Parameters.OrderBy;
       page?: Parameters.Page;
       success?: Parameters.Success;
+      status?: Parameters.Status;
       end_date: Parameters.EndDate; // date-time
       start_date: Parameters.StartDate; // date-time
     }

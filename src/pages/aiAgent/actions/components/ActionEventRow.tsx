@@ -3,7 +3,6 @@ import moment from 'moment'
 import React from 'react'
 import {useHistory} from 'react-router-dom'
 
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -11,6 +10,7 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import {LlmTriggeredExecution} from '../types'
 
 import css from './ActionEventRow.less'
+import ActionStatus from './ActionsStatus'
 
 type Props = {
     execution: LlmTriggeredExecution
@@ -24,6 +24,7 @@ export default function ActionsRow({execution, onClick, isSelected}: Props) {
     const handleTicketClick = () => {
         history.push(`/app/ticket/${execution.state.user_journey_id}`)
     }
+
     return (
         <TableBodyRow
             className={classnames(css.container, {
@@ -35,12 +36,10 @@ export default function ActionsRow({execution, onClick, isSelected}: Props) {
                 {moment(execution.updated_datetime).calendar()}
             </BodyCell>
             <BodyCell className={css.statusCell}>
-                {execution.success === true && (
-                    <Badge type={ColorType.LightSuccess}>SUCCESS</Badge>
-                )}
-                {execution.success === false && (
-                    <Badge type={ColorType.LightError}>ERROR</Badge>
-                )}
+                <ActionStatus
+                    status={execution.status}
+                    successFlag={execution.success}
+                />
             </BodyCell>
             <BodyCell>
                 {execution.state?.user_journey_id && (

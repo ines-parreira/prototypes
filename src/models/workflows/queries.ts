@@ -92,6 +92,7 @@ export const executionsDefinitionKeys = {
         to: string
         orderBy: string
         success: boolean | undefined
+        status?: string[]
     }) => [...executionsDefinitionKeys.all(), params] as const,
 }
 
@@ -558,6 +559,7 @@ export const useGetConfigurationExecutions = (
         page,
         to,
         success,
+        status,
     }: {
         configurationInternalId: string
         from: Date
@@ -565,6 +567,7 @@ export const useGetConfigurationExecutions = (
         orderBy: 'ASC' | 'DESC'
         page: number
         success?: boolean
+        status?: string[]
     },
     overrides?: UseQueryOptions<
         Awaited<Paths.WfConfigurationControllerGetExecutions.Responses.$200>
@@ -578,6 +581,7 @@ export const useGetConfigurationExecutions = (
             to: to.toString(),
             orderBy,
             success,
+            status,
         }),
         queryFn: async () => {
             const client = await getGorgiasWfApiClient()
@@ -588,14 +592,23 @@ export const useGetConfigurationExecutions = (
                       ? 'false'
                       : undefined
             const response =
-                await client.WfConfigurationController_getExecutions({
-                    internal_id: configurationInternalId,
-                    end_date: to.toISOString(),
-                    start_date: from.toISOString(),
-                    order_by: orderBy,
-                    page,
-                    success: successQueryParam,
-                })
+                await client.WfConfigurationController_getExecutions(
+                    {
+                        internal_id: configurationInternalId,
+                        end_date: to.toISOString(),
+                        start_date: from.toISOString(),
+                        order_by: orderBy,
+                        page,
+                        success: successQueryParam,
+                        status,
+                    },
+                    {},
+                    {
+                        paramsSerializer: {
+                            indexes: false,
+                        },
+                    }
+                )
             return response.data
         },
         staleTime: STALE_TIME_MS,

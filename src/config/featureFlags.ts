@@ -2,6 +2,7 @@
 export enum FeatureFlagKey {
     Actions3plObjects = 'actions-3pl-objects',
     ActionEventsLogs = 'action-events-logs',
+    ActionEventLogsWIthPartialSuccess = 'action-event-logs-w-ith-partial-success',
     ActionsInputsProduct = 'actions-inputs-product',
     ActionsInternalPlatform = 'actions-internal-platform',
     ActionsMultiStep = 'actions-multi-step',

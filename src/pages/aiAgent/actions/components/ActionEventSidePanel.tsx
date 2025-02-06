@@ -119,6 +119,7 @@ export default function ActionEventSidePanel({
                     badgeText={execution?.success ? 'success' : 'error'}
                     badgeSuccess={!!execution?.success}
                     hideFiller
+                    status={execution?.status}
                 />
                 {hasVariables && (
                     <div className={css.variablesContainer}>

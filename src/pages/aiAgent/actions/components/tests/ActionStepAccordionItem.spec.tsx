@@ -306,7 +306,7 @@ describe('<ActionStepAccordionItem />', () => {
 
         expect(screen.getByText('Cancel order.')).toBeInTheDocument()
         expect(screen.getByText('Status')).toBeInTheDocument()
-        expect(screen.getByText('success')).toBeInTheDocument()
+        expect(screen.getByText('SUCCESS')).toBeInTheDocument()
     })
 
     it('should display execution logs', () => {
@@ -324,7 +324,7 @@ describe('<ActionStepAccordionItem />', () => {
         expect(
             screen.getByText('https://jsonplaceholder.typicode.com/users')
         ).toBeInTheDocument()
-        expect(screen.getByText('success')).toBeInTheDocument()
+        expect(screen.getByText('SUCCESS')).toBeInTheDocument()
     })
 
     it('should handle nested template configurations', () => {
@@ -362,6 +362,6 @@ describe('<ActionStepAccordionItem />', () => {
         )
 
         fireEvent.click(screen.getByText('Cancel order.'))
-        expect(screen.getByText('error')).toBeInTheDocument()
+        expect(screen.getByText('ERROR')).toBeInTheDocument()
     })
 })

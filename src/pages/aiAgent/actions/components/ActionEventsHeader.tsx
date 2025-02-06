@@ -1,8 +1,10 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import _noop from 'lodash/noop'
 import moment from 'moment'
 import React, {useEffect, useState} from 'react'
 import {useDispatch} from 'react-redux'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import Filter from 'pages/stats/common/components/Filter'
@@ -17,7 +19,12 @@ import BackToActionFormButton from './BackToActionFormButton'
 type Props = {
     initialStartDate: Date
     initialEndDate: Date
-    onChange: (filter: {from: Date; to: Date; success?: boolean}) => void
+    onChange: (filter: {
+        from: Date
+        to: Date
+        success?: boolean
+        status?: string[]
+    }) => void
 }
 
 export default function ActionEventsHeader({
@@ -27,18 +34,13 @@ export default function ActionEventsHeader({
 }: Props) {
     const dispatch = useDispatch()
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
-    const [successFilterOptions, setSuccessFilterOptions] = useState<
+    const isActionEventLogsWIthPartialSuccess =
+        useFlags()[FeatureFlagKey.ActionEventLogsWIthPartialSuccess]
+
+    const [statusValues, setStatusValues] = useState<DropdownOption[]>([])
+    const [statusFilterOptions, setStatusFilterOptions] = useState<
         DropdownOption[]
-    >([
-        {
-            label: 'Success',
-            value: 'success',
-        },
-        {
-            label: 'Error',
-            value: 'error',
-        },
-    ])
+    >([])
     const [startDateFilter, setStartDate] = useState(initialStartDate)
     const [endDateFilter, setEndDateFilter] = useState(initialEndDate)
     const [isPeriodFilterSet, setIsPeriodFilterSet] = useState(false)
@@ -66,30 +68,67 @@ export default function ActionEventsHeader({
     ])
 
     useEffect(() => {
-        onChange({
-            from: startDateFilter,
-            to: endDateFilter,
-            success:
-                successFilterOptions.length === 2
-                    ? undefined
-                    : successFilterOptions.some(
-                          (option) => option.value === 'success'
-                      ),
-        })
-    }, [endDateFilter, onChange, startDateFilter, successFilterOptions])
+        const statusFilters = [
+            {
+                label: 'Success',
+                value: 'success',
+            },
+            {
+                label: 'Error',
+                value: 'error',
+            },
+        ]
+
+        if (isActionEventLogsWIthPartialSuccess) {
+            statusFilters.push({
+                label: 'Partial Success',
+                value: 'partial_success',
+            })
+        }
+        setStatusValues(statusFilters)
+        setStatusFilterOptions(statusFilters)
+    }, [isActionEventLogsWIthPartialSuccess])
+
+    useEffect(() => {
+        if (isActionEventLogsWIthPartialSuccess) {
+            onChange({
+                from: startDateFilter,
+                to: endDateFilter,
+                status: statusFilterOptions.map(
+                    (dropDownValue) => dropDownValue.value
+                ),
+            })
+        } else {
+            onChange({
+                from: startDateFilter,
+                to: endDateFilter,
+                success:
+                    statusFilterOptions.length === statusValues.length
+                        ? undefined
+                        : statusFilterOptions.some(
+                              (option) => option.value === 'success'
+                          ),
+            })
+        }
+    }, [
+        endDateFilter,
+        isActionEventLogsWIthPartialSuccess,
+        onChange,
+        startDateFilter,
+        statusValues,
+        statusFilterOptions,
+    ])
 
     const handleFilterChange = (option: DropdownOption) => {
-        if (successFilterOptions.some((opt) => opt.value === option.value)) {
-            const newOptions = successFilterOptions.filter(
-                (opt) => opt.value !== option.value
+        if (statusFilterOptions.find((opt) => opt.value === option.value)) {
+            setStatusFilterOptions(
+                statusFilterOptions.filter(
+                    (statusFilterOption) =>
+                        statusFilterOption.value !== option.value
+                )
             )
-            if (newOptions.length === 0) {
-                return
-            }
-
-            setSuccessFilterOptions(newOptions)
         } else {
-            setSuccessFilterOptions([...successFilterOptions, option])
+            setStatusFilterOptions([...statusFilterOptions, option])
         }
     }
 
@@ -112,35 +151,14 @@ export default function ActionEventsHeader({
                     filterName="Status"
                     filterOptionGroups={[
                         {
-                            options: [
-                                {
-                                    label: 'Success',
-                                    value: 'success',
-                                },
-                                {
-                                    label: 'Error',
-                                    value: 'error',
-                                },
-                            ],
+                            options: statusValues,
                         },
                     ]}
                     onChangeOption={handleFilterChange}
-                    onRemove={() => {
-                        setSuccessFilterOptions([
-                            {
-                                label: 'Success',
-                                value: 'success',
-                            },
-                            {
-                                label: 'Error',
-                                value: 'error',
-                            },
-                        ])
-                    }}
                     onRemoveAll={_noop}
                     onSelectAll={_noop}
                     onChangeLogicalOperator={_noop}
-                    selectedOptions={successFilterOptions}
+                    selectedOptions={statusFilterOptions}
                     selectedLogicalOperator={null}
                     isMultiple={true}
                     showQuickSelect={false}
