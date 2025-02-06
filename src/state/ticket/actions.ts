@@ -1173,10 +1173,16 @@ export const displayAuditLogEvents =
         let allEvents: List<Event> = fromJS([])
 
         const generators = [client.getTicketEvents(ticketId)]
-        if (satisfactionSurveyId) {
-            generators.push(
-                client.getSatisfactionSurveyEvents(satisfactionSurveyId)
-            )
+
+        /*
+          The ticket API does not return the satisfaction survey id when the survey is not scored.
+          If the satisfactionSurveyId is missing, search for the un-scored survey using the /api/satisfaction-surveys API.
+        */
+        const surveyId =
+            satisfactionSurveyId ||
+            (await client.getSatisfactionSurvey(ticketId))?.id
+        if (surveyId) {
+            generators.push(client.getSatisfactionSurveyEvents(surveyId))
         }
 
         // Run generators in parallel and merge results
