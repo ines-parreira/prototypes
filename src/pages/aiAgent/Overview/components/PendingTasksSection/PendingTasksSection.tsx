@@ -4,6 +4,7 @@ import React, {useState} from 'react'
 import {CardTitle} from 'pages/aiAgent/Onboarding/components/Card'
 import {OverviewCard} from 'pages/aiAgent/Overview/components/OverviewCard/OverviewCard'
 
+import {Task} from '../../hooks/pendingTasks/tasks/Task'
 import {PendingTask} from '../PendingTask/PendingTask'
 import {PendingTasksCompletionBar} from '../PendingTasksCompletionBar/PendingTasksCompletionBar'
 import {Expander} from './Expander'
@@ -12,12 +13,6 @@ import {StorePicker} from './StorePicker'
 
 export const pendingTasksCollapsibleId = 'overview-pending-tasks-collapsible'
 
-type PendingTask = {
-    title: string
-    caption: string
-    featureUrl: string
-    type: 'BASIC' | 'RECOMMENDED'
-}
 type Store = {
     name: string
     id: number
@@ -27,9 +22,8 @@ type Props = {
     stores: Store[]
     onStoreChange: (store: Store) => void
     isLoading: boolean
-    pendingTasks: PendingTask[]
-    completedTasks: PendingTask[]
-    totalTasks: number
+    pendingTasks: Task[]
+    completedTasks: Task[]
 }
 
 export const PendingTasksSection = ({
@@ -39,7 +33,6 @@ export const PendingTasksSection = ({
     completedTasks,
     isLoading,
     pendingTasks,
-    totalTasks,
 }: Props) => {
     const [isPendingTasksExpanded, setIsPendingTasksExpanded] = useState(false)
 
@@ -88,7 +81,7 @@ export const PendingTasksSection = ({
                 </div>
                 <PendingTasksCompletionBar
                     isLoading={isLoading}
-                    totalTasks={totalTasks}
+                    totalTasks={pendingTasks.length + completedTasks.length}
                     totalTasksCompleted={completedTasks?.length}
                 />
                 <div className={css.pendingTasksContainer}>

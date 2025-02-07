@@ -7,8 +7,6 @@ import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import {appQueryClient} from 'api/queryClient'
-import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
-import {initialState} from 'state/ui/stats/filtersSlice'
 
 import {AiAgentOverview} from './AiAgentOverview'
 import {AiAgentOverviewRootStateFixture} from './tests/AiAgentOverviewRootState.fixture'
@@ -17,20 +15,12 @@ const rootState = AiAgentOverviewRootStateFixture.start()
     .with2ShopifyIntegrations()
     .build()
 
-const defaultState = {
-    ...rootState,
-    ui: {
-        stats: {filters: initialState},
-    },
-    stats: initialStatsFiltersState,
-}
-
 const storyConfig: Meta<typeof AiAgentOverview> = {
     title: 'AI Agent/Overview',
     component: AiAgentOverview,
     decorators: [
         (Story) => (
-            <Provider store={configureMockStore()(defaultState)}>
+            <Provider store={configureMockStore()(rootState)}>
                 <QueryClientProvider client={appQueryClient}>
                     <MemoryRouter initialEntries={['/']}>
                         <Story />

@@ -44,6 +44,10 @@ export const getAiAgentNavigationRoutes = (
         ? 'settings/preview'
         : 'preview-mode'
 
+    const settingsChannelsPath = isStandaloneMenuEnabled
+        ? 'settings/channels'
+        : 'settings'
+
     return {
         automation: `${automationBasePath}`,
         automationOrderManagement: `${automationBasePath}/shopify/${shopName}/order-management`,
@@ -64,7 +68,7 @@ export const getAiAgentNavigationRoutes = (
             `${basePath}/${guidancePath}/library/${aiGuidanceId}`,
         configuration: (section?: 'knowledge' | 'email') =>
             `${basePath}/settings${section ? `?section=${section}` : ''}`,
-        settingsChannels: `${basePath}/settings/channels`,
+        settingsChannels: `${basePath}/${settingsChannelsPath}`,
         actions: `${basePath}/${actionsPath}`,
         newAction: (templateId?: string) =>
             `${basePath}/${actionsPath}/new${templateId ? `?template_id=${templateId}` : ''}`,

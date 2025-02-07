@@ -1,6 +1,8 @@
 import {fromJS} from 'immutable'
 
+import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
+import {initialState} from 'state/ui/stats/filtersSlice'
 
 import {IntegrationFixture} from './Integration.fixture'
 
@@ -17,7 +19,14 @@ export class AiAgentOverviewRootStateFixture {
 
     private constructor() {
         this.rootState = {
+            currentAccount: fromJS({
+                domain: 'storybookaccountdomain',
+            }),
             integrations: fromJS({integrations: []}),
+            ui: {
+                stats: {filters: initialState},
+            },
+            stats: initialStatsFiltersState,
         } as Partial<RootState> as RootState
     }
 
@@ -27,6 +36,7 @@ export class AiAgentOverviewRootStateFixture {
 
     with2ShopifyIntegrations() {
         this.rootState = {
+            ...this.rootState,
             integrations: fromJS({
                 integrations: [
                     IntegrationFixture.start()
