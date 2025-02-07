@@ -2,13 +2,16 @@ import type {Language, Macro} from '@gorgias/api-queries'
 import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
-import React, {SyntheticEvent, useEffect, useState} from 'react'
+import React, {MouseEvent, SyntheticEvent, useEffect, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Link, useParams} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Form, FormGroup} from 'reactstrap'
+import {Link, useLocation, useParams} from 'react-router-dom'
+import {Breadcrumb, BreadcrumbItem, Form} from 'reactstrap'
 
 import {useAppNode} from 'appNode'
 import {DEFAULT_ACTIONS} from 'config'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
+import {useBulkArchiveMacros, useBulkUnarchiveMacros} from 'hooks/macros'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {
@@ -54,6 +57,16 @@ export function MacrosSettingsFormContainer({
     const appNode = useAppNode()
     const hasAgentPrivileges = useHasAgentPrivileges()
     const {macroId} = useParams<{macroId?: string}>()
+    const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives)
+    const location = useLocation<{
+        isArchived?: boolean
+    }>()
+    const {isArchived} = location.state ?? {}
+
+    const {mutateAsync: bulkArchiveMacros, isLoading: isArchivingPending} =
+        useBulkArchiveMacros()
+    const {mutateAsync: bulkUnarchiveMacros, isLoading: isUnarchivingPending} =
+        useBulkUnarchiveMacros()
 
     const [macroForm, setMacroForm] = useState<MacroDraft>(
         getDefaultMacro().toJS()
@@ -173,6 +186,29 @@ export function MacrosSettingsFormContainer({
             }
         }, [macros, macroId])
 
+    const handleMacroArchiveOrUnarchive = async (
+        e: MouseEvent<HTMLButtonElement>
+    ) => {
+        e.preventDefault()
+        e.stopPropagation()
+        if (!!macroId) {
+            try {
+                if (isArchived) {
+                    await bulkUnarchiveMacros({
+                        data: {ids: [parseInt(macroId)]},
+                    })
+                } else {
+                    await bulkArchiveMacros({data: {ids: [parseInt(macroId)]}})
+                }
+                history.push(
+                    `/app/settings/macros${isArchived ? '/archived' : ''}`
+                )
+            } catch (error) {
+                // handled in hooks
+            }
+        }
+    }
+
     const [{loading: isDeletePending}, handleDelete] = useAsyncFn(async () => {
         if (!macroId) {
             return
@@ -217,7 +253,11 @@ export function MacrosSettingsFormContainer({
     const hasInputError = !macroForm.name
 
     const isActionDisabled =
-        isSubmitPending || isDeletePending || isDuplicatePending
+        isSubmitPending ||
+        isDeletePending ||
+        isDuplicatePending ||
+        isArchivingPending ||
+        isUnarchivingPending
 
     return (
         <div className="full-width">
@@ -274,45 +314,67 @@ export function MacrosSettingsFormContainer({
                             }
                             container={appNode ?? undefined}
                         />
-                        <FormGroup className="mt-5">
-                            <Button
-                                type="submit"
-                                className="mr-2"
-                                isLoading={isSubmitPending}
-                                isDisabled={
-                                    !hasAgentPrivileges ||
-                                    isActionDisabled ||
-                                    hasInputError
-                                }
-                            >
-                                {macroId ? 'Update macro' : 'Create macro'}
-                            </Button>
-                            {macroId && (
+                        <div className={css.footer}>
+                            <div className={css.sub}>
                                 <Button
-                                    intent="secondary"
-                                    isLoading={isDuplicatePending}
+                                    type="submit"
+                                    isLoading={isSubmitPending}
                                     isDisabled={
-                                        !hasAgentPrivileges || isActionDisabled
+                                        !hasAgentPrivileges ||
+                                        isActionDisabled ||
+                                        hasInputError
                                     }
-                                    onClick={handleMacroDuplicate}
                                 >
-                                    Duplicate macro
+                                    {macroId ? 'Update macro' : 'Create macro'}
                                 </Button>
-                            )}
-                            {macroId && (
-                                <ConfirmButton
-                                    className="float-right"
-                                    intent="destructive"
-                                    confirmationContent="You are about to delete this macro."
-                                    onConfirm={handleDelete}
-                                    isLoading={isDeletePending}
-                                    isDisabled={!hasAgentPrivileges}
-                                    leadingIcon="delete"
-                                >
-                                    Delete macro
-                                </ConfirmButton>
-                            )}
-                        </FormGroup>
+                                {macroId && (
+                                    <Button
+                                        intent="secondary"
+                                        isLoading={isDuplicatePending}
+                                        isDisabled={
+                                            !hasAgentPrivileges ||
+                                            isActionDisabled
+                                        }
+                                        onClick={handleMacroDuplicate}
+                                    >
+                                        Duplicate macro
+                                    </Button>
+                                )}
+                            </div>
+                            <div className={css.sub}>
+                                {isArchivingAvailable && !!macroId && (
+                                    <Button
+                                        type="submit"
+                                        intent="secondary"
+                                        isLoading={
+                                            isArchivingPending ||
+                                            isUnarchivingPending
+                                        }
+                                        onClick={handleMacroArchiveOrUnarchive}
+                                        isDisabled={
+                                            !hasAgentPrivileges ||
+                                            isActionDisabled ||
+                                            hasInputError
+                                        }
+                                    >
+                                        {isArchived ? 'Unarchive ' : 'Archive '}
+                                        macro
+                                    </Button>
+                                )}
+                                {macroId && (
+                                    <ConfirmButton
+                                        intent="destructive"
+                                        confirmationContent="You are about to delete this macro."
+                                        onConfirm={handleDelete}
+                                        isLoading={isDeletePending}
+                                        isDisabled={!hasAgentPrivileges}
+                                        leadingIcon="delete"
+                                    >
+                                        Delete macro
+                                    </ConfirmButton>
+                                )}
+                            </div>
+                        </div>
                     </Form>
                 )}
             </div>

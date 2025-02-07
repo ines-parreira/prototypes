@@ -1,10 +1,13 @@
 import {Macro} from '@gorgias/api-queries'
 import {waitFor, render, screen} from '@testing-library/react'
+import {Location} from 'history'
 import {fromJS, Map} from 'immutable'
 import React, {ComponentProps} from 'react'
-import * as ReactRouterDom from 'react-router-dom'
+import {useLocation, useParams} from 'react-router-dom'
 
+import {useFlag} from 'core/flags'
 import {macros as macrosFixtures} from 'fixtures/macro'
+import {useBulkArchiveMacros, useBulkUnarchiveMacros} from 'hooks/macros'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {
     createMacro,
@@ -18,6 +21,7 @@ import history from 'pages/history'
 import MacroEdit from 'pages/tickets/common/macros/components/MacroEdit'
 import {getDefaultMacro} from 'state/macro/utils'
 import {NotificationStatus} from 'state/notifications/types'
+import {assumeMock} from 'utils/testing'
 
 import {MacrosSettingsFormContainer} from '../MacrosSettingsForm'
 
@@ -72,7 +76,26 @@ jest.mock(
 const useHasAgentPrivilegesMock = useHasAgentPrivileges as jest.MockedFunction<
     typeof useHasAgentPrivileges
 >
-const mockUseParams = jest.spyOn(ReactRouterDom, 'useParams')
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = useFlag as jest.Mock
+
+jest.mock('hooks/macros')
+const useBulkArchiveMacrosMock = assumeMock(useBulkArchiveMacros)
+const mockMutateAsyncBulkArchive = jest.fn()
+const useBulkUnarchiveMacrosMock = assumeMock(useBulkUnarchiveMacros)
+const mockMutateAsyncBulkUnarchive = jest.fn()
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
+    Link: () => <div>Link Mock</div>,
+    useLocation: jest.fn(),
+    useParams: jest.fn(),
+}))
+const mockedUseLocation = assumeMock(useLocation)
+const mockedUseParams = assumeMock(useParams)
 
 describe('<MacrosSettingsForm/>', () => {
     useHasAgentPrivilegesMock.mockReturnValue(true)
@@ -121,17 +144,28 @@ describe('<MacrosSettingsForm/>', () => {
     mockDeleteMacro.mockResolvedValue()
     mockFetchMacro.mockResolvedValue(macrosFixtures[0])
     mockUpdateMacro.mockResolvedValue(macrosFixtures[0])
+    useBulkArchiveMacrosMock.mockReturnValue({
+        mutateAsync: mockMutateAsyncBulkArchive,
+    } as unknown as ReturnType<typeof useBulkArchiveMacros>)
+    useBulkUnarchiveMacrosMock.mockReturnValue({
+        mutateAsync: mockMutateAsyncBulkUnarchive,
+    } as unknown as ReturnType<typeof useBulkUnarchiveMacros>)
 
     beforeEach(() => {
-        mockUseParams.mockReturnValue({macroId: '1'})
+        mockUseFlag.mockReturnValue(false)
+        mockedUseParams.mockReturnValue({macroId: '1'})
+        mockedUseLocation.mockReturnValue({
+            state: {},
+        } as Location<unknown>)
     })
 
     it('should render an empty form when no macro id', () => {
-        mockUseParams.mockReturnValue({})
+        mockedUseParams.mockReturnValue({})
         render(<MacrosSettingsFormContainer {...minProps} />)
 
         expect(screen.getByText('Add macro')).toBeInTheDocument()
         expect(screen.getByText('Create macro')).toBeInTheDocument()
+        expect(screen.queryByText('Archive macro')).not.toBeInTheDocument()
     })
 
     it('should display a loader when fetching a macro', () => {
@@ -154,6 +188,7 @@ describe('<MacrosSettingsForm/>', () => {
         expect(screen.getByText('Update macro')).toBeInTheDocument()
         expect(screen.getByText('Duplicate macro')).toBeInTheDocument()
         expect(screen.getByText('Delete macro')).toBeInTheDocument()
+        expect(screen.queryByText('Archive macro')).not.toBeInTheDocument()
     })
 
     it('should notify the user when failed to fetch the macro', async () => {
@@ -166,15 +201,12 @@ describe('<MacrosSettingsForm/>', () => {
                 message: 'Failed to fetch macro',
                 status: NotificationStatus.Error,
             })
-            expect(history.push).toHaveBeenNthCalledWith(
-                1,
-                '/app/settings/macros'
-            )
+            expect(history.push).toHaveBeenCalledWith('/app/settings/macros')
         })
     })
 
     it('should create macro and redirect to /app/settings/macros', async () => {
-        mockUseParams.mockReturnValue({})
+        mockedUseParams.mockReturnValue({})
         render(<MacrosSettingsFormContainer {...minProps} />)
 
         screen.getByText('Create macro').click()
@@ -188,10 +220,7 @@ describe('<MacrosSettingsForm/>', () => {
                 message: 'Successfully created macro.',
                 status: NotificationStatus.Success,
             })
-            expect(history.push).toHaveBeenNthCalledWith(
-                1,
-                '/app/settings/macros'
-            )
+            expect(history.push).toHaveBeenCalledWith('/app/settings/macros')
         })
     })
 
@@ -220,10 +249,7 @@ describe('<MacrosSettingsForm/>', () => {
                 message: 'Successfully updated macro.',
                 status: NotificationStatus.Success,
             })
-            expect(history.push).toHaveBeenNthCalledWith(
-                1,
-                '/app/settings/macros'
-            )
+            expect(history.push).toHaveBeenCalledWith('/app/settings/macros')
         })
     })
 
@@ -313,7 +339,7 @@ describe('<MacrosSettingsForm/>', () => {
                 },
             },
         })
-        mockUseParams.mockReturnValue({})
+        mockedUseParams.mockReturnValue({})
         render(<MacrosSettingsFormContainer {...minProps} />)
 
         await waitFor(() => {
@@ -350,7 +376,7 @@ describe('<MacrosSettingsForm/>', () => {
     })
 
     it('should disable submit button when submitting form', () => {
-        mockUseParams.mockReturnValue({})
+        mockedUseParams.mockReturnValue({})
         render(<MacrosSettingsFormContainer {...minProps} />)
 
         screen.getByText('Create macro').click()
@@ -379,7 +405,7 @@ describe('<MacrosSettingsForm/>', () => {
             message: 'Successfully deleted macro',
             status: NotificationStatus.Success,
         })
-        expect(history.push).toHaveBeenNthCalledWith(1, '/app/settings/macros')
+        expect(history.push).toHaveBeenCalledWith('/app/settings/macros')
     })
 
     it('should notify when failing to delete macro', async () => {
@@ -444,10 +470,7 @@ describe('<MacrosSettingsForm/>', () => {
                 message: 'Successfully duplicated macro.',
                 status: NotificationStatus.Success,
             })
-            expect(history.push).toHaveBeenNthCalledWith(
-                2,
-                '/app/settings/macros/5'
-            )
+            expect(history.push).toHaveBeenCalledWith('/app/settings/macros/5')
         })
     })
 
@@ -488,5 +511,52 @@ describe('<MacrosSettingsForm/>', () => {
         expect(
             screen.getByText(MacroActionName.AddAttachments)
         ).toBeInTheDocument()
+    })
+
+    it('should archive macro', async () => {
+        mockUseFlag.mockReturnValue(true)
+        render(
+            <MacrosSettingsFormContainer
+                {...minProps}
+                macros={{
+                    '1': macrosFixtures[0],
+                }}
+            />
+        )
+
+        await waitFor(() => {
+            screen.getByText('Archive macro').click()
+            expect(mockMutateAsyncBulkArchive).toHaveBeenCalledWith({
+                data: {ids: [1]},
+            })
+            expect(history.push).toHaveBeenCalledWith('/app/settings/macros')
+        })
+    })
+
+    it('should unarchive macro', async () => {
+        mockUseFlag.mockReturnValue(true)
+        mockedUseLocation.mockReturnValue({
+            state: {
+                isArchived: true,
+            },
+        } as Location<unknown>)
+        render(
+            <MacrosSettingsFormContainer
+                {...minProps}
+                macros={{
+                    '1': macrosFixtures[0],
+                }}
+            />
+        )
+
+        await waitFor(() => {
+            screen.getByText('Unarchive macro').click()
+            expect(mockMutateAsyncBulkUnarchive).toHaveBeenCalledWith({
+                data: {ids: [1]},
+            })
+            expect(history.push).toHaveBeenCalledWith(
+                '/app/settings/macros/archived'
+            )
+        })
     })
 })

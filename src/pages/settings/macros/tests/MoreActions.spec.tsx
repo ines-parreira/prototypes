@@ -4,13 +4,13 @@ import React from 'react'
 import {useRouteMatch} from 'react-router-dom'
 
 import {macros as macrosFixtures} from 'fixtures/macro'
+import {useBulkArchiveMacros, useBulkUnarchiveMacros} from 'hooks/macros'
 import {MacrosState} from 'state/entities/macros/types'
 import {assumeMock} from 'utils/testing'
 
-import {useBulkArchiveMacros, useBulkUnarchiveMacros} from '../hooks'
 import MoreActions from '../MoreActions'
 
-jest.mock('../hooks')
+jest.mock('hooks/macros')
 const useBulkArchiveMacrosMock = assumeMock(useBulkArchiveMacros)
 const useBulkUnarchiveMacrosMock = assumeMock(useBulkUnarchiveMacros)
 

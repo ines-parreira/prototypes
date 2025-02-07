@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import React, {useRef, useState} from 'react'
 import {useRouteMatch} from 'react-router-dom'
 
+import {useBulkArchiveMacros, useBulkUnarchiveMacros} from 'hooks/macros'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -10,7 +11,6 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 
-import {useBulkArchiveMacros, useBulkUnarchiveMacros} from './hooks'
 import css from './MoreActions.less'
 
 type Props = {

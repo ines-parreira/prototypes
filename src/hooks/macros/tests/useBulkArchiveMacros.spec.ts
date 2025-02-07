@@ -1,7 +1,4 @@
-import {
-    useBulkArchiveMacros as useBulkArchiveMacrosPrimitive,
-    useBulkUnarchiveMacros as useBulkUnarchiveMacrosPrimitive,
-} from '@gorgias/api-queries'
+import {useBulkArchiveMacros as useBulkArchiveMacrosPrimitive} from '@gorgias/api-queries'
 import {QueryClient, useQueryClient} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
 
@@ -11,12 +8,11 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {assumeMock} from 'utils/testing'
 
-import {useBulkArchiveMacros, useBulkUnarchiveMacros} from '../hooks'
+import {useBulkArchiveMacros} from '../useBulkArchiveMacros'
 
 jest.mock('@gorgias/api-queries', () => ({
     __esModule: true,
     useBulkArchiveMacros: jest.fn(),
-    useBulkUnarchiveMacros: jest.fn(),
     queryKeys: {
         macros: {
             listMacros: () => ({pop: () => null}),
@@ -25,9 +21,7 @@ jest.mock('@gorgias/api-queries', () => ({
 }))
 
 const useBulkArchiveMacrosMock = assumeMock(useBulkArchiveMacrosPrimitive)
-const useBulkUnarchiveMacrosMock = assumeMock(useBulkUnarchiveMacrosPrimitive)
 const mockMutateAsyncBulkArchive = jest.fn()
-const mockMutateAsyncBulkUnarchive = jest.fn()
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const useAppDispatchMock = assumeMock(useAppDispatch)
@@ -37,7 +31,7 @@ const useQueryClientMock = assumeMock(useQueryClient)
 
 jest.mock('state/notifications/actions')
 
-describe('settings > macros > hooks', () => {
+describe('useBulkArchiveMacros', () => {
     const invalidateQueriesMock = jest.fn()
     const dispatchMock = jest.fn()
 
@@ -46,9 +40,6 @@ describe('settings > macros > hooks', () => {
         useBulkArchiveMacrosMock.mockReturnValue({
             mutateAsync: mockMutateAsyncBulkArchive,
         } as unknown as ReturnType<typeof useBulkArchiveMacros>)
-        useBulkUnarchiveMacrosMock.mockReturnValue({
-            mutateAsync: mockMutateAsyncBulkUnarchive,
-        } as unknown as ReturnType<typeof useBulkUnarchiveMacros>)
         useQueryClientMock.mockImplementation(
             () =>
                 ({
@@ -110,63 +101,9 @@ describe('settings > macros > hooks', () => {
         expect(invalidateQueriesMock).toHaveBeenCalled()
     })
 
-    it('should handle successsful request with useBulkUnarchiveMacros with a single macro', () => {
-        const onSuccess = jest.fn()
-        const {result} = renderHook(() => useBulkUnarchiveMacros())
-        void result.current.mutateAsync(
-            {data: {ids: [1]}},
-            {
-                onSuccess,
-            }
-        )
-        ;(
-            useBulkUnarchiveMacrosMock.mock.calls[0][0]
-                ?.mutation as unknown as {
-                onSuccess: () => void
-            }
-        )?.onSuccess()
-
-        expect(dispatchMock).toHaveBeenCalled()
-        expect(notify).toHaveBeenCalledWith({
-            message: 'Successfully unarchived macro',
-            status: NotificationStatus.Success,
-        })
-        expect(invalidateQueriesMock).toHaveBeenCalled()
-    })
-
-    it('should handle successsful request with useBulkUnarchiveMacros with multiple macros', () => {
-        const onSuccess = jest.fn()
-        const {result} = renderHook(() => useBulkUnarchiveMacros())
-        void result.current.mutateAsync(
-            {data: {ids: [1, 2]}},
-            {
-                onSuccess,
-            }
-        )
-        ;(
-            useBulkUnarchiveMacrosMock.mock.calls[0][0]
-                ?.mutation as unknown as {
-                onSuccess: (args: unknown) => void
-            }
-        )?.onSuccess({
-            data: {
-                data: {
-                    data: [{id: 1}, {id: 2}],
-                },
-            },
-        })
-
-        expect(dispatchMock).toHaveBeenCalled()
-        expect(notify).toHaveBeenCalledWith({
-            message: 'Successfully unarchived macros',
-            status: NotificationStatus.Success,
-        })
-        expect(invalidateQueriesMock).toHaveBeenCalled()
-    })
-
-    it('should handle failed request with useBulkUnarchiveMacros', () => {
+    it('should handle failed request with useBulkArchiveMacros', () => {
         const onError = jest.fn()
-        const {result} = renderHook(() => useBulkUnarchiveMacros())
+        const {result} = renderHook(() => useBulkArchiveMacros())
         void result.current.mutateAsync(
             {data: {ids: [1, 2]}},
             {
@@ -174,8 +111,7 @@ describe('settings > macros > hooks', () => {
             }
         )
         ;(
-            useBulkUnarchiveMacrosMock.mock.calls[0][0]
-                ?.mutation as unknown as {
+            useBulkArchiveMacrosMock.mock.calls[0][0]?.mutation as unknown as {
                 onError: (argss: unknown) => void
             }
         )?.onError({
@@ -188,7 +124,7 @@ describe('settings > macros > hooks', () => {
 
         expect(dispatchMock).toHaveBeenCalled()
         expect(notify).toHaveBeenCalledWith({
-            title: 'Failed to unarchive macro(s). Please try again in a few seconds.',
+            title: 'Failed to archive macro(s). Please try again in a few seconds.',
             message: undefined,
             allowHTML: true,
             status: NotificationStatus.Error,

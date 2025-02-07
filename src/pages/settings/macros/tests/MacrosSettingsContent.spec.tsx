@@ -15,6 +15,7 @@ import configureMockStore from 'redux-mock-store'
 import {useFlag} from 'core/flags'
 import {macros as macrosFixtures} from 'fixtures/macro'
 import {user} from 'fixtures/users'
+import {useBulkArchiveMacros, useBulkUnarchiveMacros} from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {OrderDirection} from 'models/api/types'
 import {MacroSortableProperties} from 'models/macro/types'
@@ -23,7 +24,6 @@ import {notify} from 'state/notifications/actions'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
 
-import {useBulkArchiveMacros, useBulkUnarchiveMacros} from '../hooks'
 import {MacrosSettingsContent} from '../MacrosSettingsContent'
 
 const mockProperty = MacroSortableProperties.CreatedDatetime
@@ -96,7 +96,7 @@ const mockUseListMacros = assumeMock(useListMacros)
 const mockUseCreateMacro = assumeMock(useCreateMacro)
 const mockUseDeleteMacro = assumeMock(useDeleteMacro)
 
-jest.mock('../hooks')
+jest.mock('hooks/macros')
 const useBulkArchiveMacrosMock = assumeMock(useBulkArchiveMacros)
 const useBulkUnarchiveMacrosMock = assumeMock(useBulkUnarchiveMacros)
 const mockMutateAsyncBulkArchive = jest.fn()

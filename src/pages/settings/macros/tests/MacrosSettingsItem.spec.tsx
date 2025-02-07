@@ -12,7 +12,6 @@ import {macros} from 'fixtures/macro'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {OrderDirection} from 'models/api/types'
 import {MacroSortableProperties} from 'models/macro/types'
-
 import {assumeMock} from 'utils/testing'
 
 import {MacrosSettingsItem} from '../MacrosSettingsItem'
@@ -139,5 +138,12 @@ describe('<MacrosSettingsItem />', () => {
         render(<MacrosSettingsItem {...minProps} isArchivingAvailable />)
 
         expect(screen.getByText('archive')).toBeInTheDocument()
+    })
+
+    it('should display new UI for active macros', () => {
+        mockUseRouteMatch.mockReturnValue(true)
+        render(<MacrosSettingsItem {...minProps} isArchivingAvailable />)
+
+        expect(screen.getByText('unarchive')).toBeInTheDocument()
     })
 })

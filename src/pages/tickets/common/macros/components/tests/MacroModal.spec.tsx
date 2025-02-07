@@ -3,6 +3,8 @@ import {fromJS, List, Map} from 'immutable'
 import MockDate from 'mockdate'
 import React, {ComponentProps, ReactNode} from 'react'
 
+import {useFlag} from 'core/flags'
+import {useBulkArchiveMacros} from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {MacroActionName} from 'models/macroAction/types'
@@ -39,6 +41,10 @@ const mockCreateViewJob = assumeMock(createViewJob)
 mockCreateViewJob.mockImplementation(
     (() => new Promise((resolve) => resolve(null))) as any
 )
+
+jest.mock('hooks/macros')
+const useBulkArchiveMacrosMock = assumeMock(useBulkArchiveMacros)
+const mockMutateAsyncBulkArchive = jest.fn()
 
 jest.mock('../MacroModalList', () => () => <div>MacroModalListMock</div>)
 const mockActions = fromJS([
@@ -84,6 +90,11 @@ jest.mock('pages/common/components/modal/ModalBody', () => {
         <div>{children}ModalBodyMock</div>
     )
 })
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = useFlag as jest.Mock
 
 const date = '2021-01-24T17:30:00.000Z'
 
@@ -131,6 +142,10 @@ describe('<MacroModal />', () => {
         mockCreateViewJob.mockImplementation(
             () => () => Promise.resolve({id: 1})
         )
+        mockUseFlag.mockImplementation(() => false)
+        useBulkArchiveMacrosMock.mockReturnValue({
+            mutateAsync: mockMutateAsyncBulkArchive,
+        } as unknown as ReturnType<typeof useBulkArchiveMacros>)
     })
 
     afterEach(() => {
@@ -354,5 +369,22 @@ describe('<MacroModal />', () => {
         expect(
             screen.getByText(new RegExp(actionName, 'i'))
         ).toBeInTheDocument()
+    })
+
+    it('should archive macro', async () => {
+        mockUseFlag.mockImplementation(() => true)
+        render(<MacroModal {...props} />)
+
+        screen.getByText(/Archive macro/i).click()
+
+        expect(mockMutateAsyncBulkArchive).toHaveBeenCalledWith({
+            data: {ids: [props.currentMacro.get('id')]},
+        })
+        await waitFor(() =>
+            expect(props.fetchMacros).toHaveBeenCalledWith(
+                {search: undefined},
+                false
+            )
+        )
     })
 })

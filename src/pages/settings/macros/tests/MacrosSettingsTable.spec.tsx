@@ -6,13 +6,13 @@ import {useRouteMatch} from 'react-router-dom'
 
 import {useFlag} from 'core/flags'
 import {macros} from 'fixtures/macro'
+import {useBulkArchiveMacros, useBulkUnarchiveMacros} from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {OrderDirection} from 'models/api/types'
 import {MacroSortableProperties} from 'models/macro/types'
 import {assumeMock} from 'utils/testing'
 
-import {useBulkArchiveMacros, useBulkUnarchiveMacros} from '../hooks'
 import {MacrosSettingsTable} from '../MacrosSettingsTable'
 
 jest.mock('@gorgias/merchant-ui-kit', () => {
@@ -60,7 +60,7 @@ jest.mock('core/flags', () => ({
 }))
 const mockUseFlag = useFlag as jest.Mock
 
-jest.mock('../hooks')
+jest.mock('hooks/macros')
 const useBulkArchiveMacrosMock = assumeMock(useBulkArchiveMacros)
 const useBulkUnarchiveMacrosMock = assumeMock(useBulkUnarchiveMacros)
 const mockMutateAsyncBulkArchive = jest.fn()

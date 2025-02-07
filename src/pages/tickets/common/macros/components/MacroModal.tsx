@@ -8,6 +8,9 @@ import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actio
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {DEFAULT_ACTIONS} from 'config'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {useFlag} from 'core/flags'
+import {useBulkArchiveMacros} from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
@@ -85,6 +88,8 @@ const MacroModal = ({
     updateMacros,
 }: Props) => {
     const dispatch = useAppDispatch()
+    const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives)
+    const {mutateAsync: bulkArchiveMacros} = useBulkArchiveMacros()
 
     const modalRef = useRef<HTMLDivElement>(null)
     // We don't use directly `currentMacro` to avoid an out-of-sync state between
@@ -269,6 +274,20 @@ const MacroModal = ({
         )
     }
 
+    const handlArchiveMacro = async () => {
+        try {
+            await bulkArchiveMacros({data: {ids: [currentMacro.get('id')]}})
+            void fetchMacros(
+                {
+                    search: searchParams.search,
+                },
+                false
+            )
+        } catch (error) {
+            // handled in hooks
+        }
+    }
+
     const updateActions = (actions?: List<any> | null) => {
         // filter actions that exist in configuration
         const filteredActions = actions?.filter((action: Map<any, any>) =>
@@ -393,6 +412,15 @@ const MacroModal = ({
                                 ) : (
                                     <div>
                                         <div className="d-inline-block">
+                                            {isArchivingAvailable && (
+                                                <Button
+                                                    onClick={handlArchiveMacro}
+                                                    intent="secondary"
+                                                    className="d-inline-block mr-1"
+                                                >
+                                                    Archive macro
+                                                </Button>
+                                            )}
                                             {!isCreatingMacro && (
                                                 <ConfirmButton
                                                     intent="destructive"
