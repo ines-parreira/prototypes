@@ -84,6 +84,14 @@ export default function ActionEventSidePanel({
 
     const closeButtonId = 'close-button'
 
+    const sortedSteps = useMemo(
+        () =>
+            steps.sort((a, b) => {
+                return new Date(a.at).getTime() - new Date(b.at).getTime()
+            }),
+        [steps]
+    )
+
     return (
         <Drawer
             className={css.drawer}
@@ -148,7 +156,7 @@ export default function ActionEventSidePanel({
                 <div className={css.actionStepsContainer}>
                     <p>Action steps</p>
                     <Accordion>
-                        {steps?.map((step) => {
+                        {sortedSteps?.map((step) => {
                             return (
                                 <ActionStepAccordionItem
                                     key={step.at}
