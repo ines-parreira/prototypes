@@ -1,3 +1,4 @@
+import {ListSatisfactionSurveys200} from '@gorgias/api-types'
 import axios, {
     AxiosInstance,
     AxiosRequestConfig,
@@ -175,6 +176,13 @@ export default class GorgiasApi {
         for await (const events of pages) {
             yield fromJS(events) as List<Event>
         }
+    }
+
+    async getSatisfactionSurvey(ticketId: number) {
+        const response = await this._api.get(`/api/satisfaction-surveys/`, {
+            params: {ticket_id: ticketId, limit: 1},
+        })
+        return (response.data as ListSatisfactionSurveys200).data[0] ?? null
     }
 
     async *getSatisfactionSurveyEvents(

@@ -1,3 +1,4 @@
+import {ListSatisfactionSurveys200} from '@gorgias/api-types'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS, Map} from 'immutable'
 
@@ -18,7 +19,12 @@ import {
     shopperFixture,
     shopperOrderFixture,
 } from 'models/customerEcommerceData/fixtures'
-import {Event, EventObjectType, TICKET_EVENT_TYPES} from 'models/event/types'
+import {
+    Event,
+    EventObjectType,
+    SATISFACTION_SURVEY_EVENT_TYPES,
+    TICKET_EVENT_TYPES,
+} from 'models/event/types'
 import {Ticket, TicketMessage} from 'models/ticket/types'
 import {ViewType} from 'models/view/types'
 import history from 'pages/history'
@@ -1326,7 +1332,18 @@ describe('ticket actions', () => {
             context: 'foo',
             type: TICKET_EVENT_TYPES.TicketReopened,
             created_datetime: '2019-11-15 19:00:00.000000',
-            uri: '/api/events/3265847/',
+            uri: '/api/events/',
+        })
+        const getSurveyEvent = (id: number): Event => ({
+            id,
+            user_id: 1,
+            object_type: EventObjectType.SatisfactionSurvey,
+            object_id: 1,
+            data: null,
+            context: 'bar',
+            type: SATISFACTION_SURVEY_EVENT_TYPES.SatisfactionSurveyResponded,
+            created_datetime: '2019-11-15 19:00:00.000000',
+            uri: '/api/events/',
         })
 
         beforeEach(() => {
@@ -1361,7 +1378,7 @@ describe('ticket actions', () => {
 
             const surveyMocks: ApiListResponseCursorPagination<Event[]>[] = [
                 {
-                    data: [getEvent(5), getEvent(6)],
+                    data: [getSurveyEvent(5), getSurveyEvent(6)],
                     meta: {
                         next_cursor: 'survey_page_2',
                         prev_cursor: null,
@@ -1370,7 +1387,7 @@ describe('ticket actions', () => {
                     uri: 'api/events',
                 },
                 {
-                    data: [getEvent(7), getEvent(8)],
+                    data: [getSurveyEvent(7), getSurveyEvent(8)],
                     meta: {
                         next_cursor: null,
                         prev_cursor: 'survey_page_1',
@@ -1418,6 +1435,140 @@ describe('ticket actions', () => {
 
             await store.dispatch(
                 actions.displayAuditLogEvents(ticketId, surveyId)
+            )
+            expect(store.getActions()).toMatchSnapshot()
+        })
+
+        it('should fetch un-scored satisfaction survey of ticket', async () => {
+            const ticketId = 123
+            const surveyId = 456
+            const satisfactionSurveysPath = 'api/satisfaction-surveys/'
+            const eventsPath = '/api/events/'
+
+            const satisfactionSurveyMock: ListSatisfactionSurveys200 = {
+                data: [
+                    {
+                        id: surveyId,
+                        ticket_id: ticketId,
+                        body_text: null,
+                        customer_id: 5,
+                        meta: null,
+                        score: null,
+                        scored_datetime: null,
+                        sent_datetime: '2025-02-05T00:00:00+00:00',
+                        should_send_datetime: '2025-02-05T00:00:00+00:00',
+                        created_datetime: '2025-02-04T00:00:00+00:00',
+                    },
+                ],
+                object: 'list',
+                uri: '',
+                meta: {
+                    prev_cursor: null,
+                    next_cursor: null,
+                },
+            }
+
+            const ticketMocks: ApiListResponseCursorPagination<Event[]>[] = [
+                {
+                    data: [],
+                    meta: {
+                        next_cursor: null,
+                        prev_cursor: null,
+                    },
+                    object: 'list',
+                    uri: 'api/events',
+                },
+            ]
+
+            const surveyMocks: ApiListResponseCursorPagination<Event[]>[] = [
+                {
+                    data: [getSurveyEvent(1), getSurveyEvent(2)],
+                    meta: {
+                        next_cursor: null,
+                        prev_cursor: null,
+                    },
+                    object: 'list',
+                    uri: 'api/events',
+                },
+            ]
+
+            mockServerGorgiasApi
+                .onGet(satisfactionSurveysPath, {
+                    params: {
+                        ticket_id: ticketId,
+                        limit: 1,
+                    },
+                })
+                .replyOnce(200, satisfactionSurveyMock)
+                .onGet(eventsPath, {
+                    params: {
+                        object_type: EventObjectType.Ticket,
+                        object_id: ticketId,
+                        limit: 30,
+                    },
+                })
+                .replyOnce(200, ticketMocks[0])
+                .onGet(eventsPath, {
+                    params: {
+                        object_type: EventObjectType.SatisfactionSurvey,
+                        object_id: surveyId,
+                        limit: 30,
+                    },
+                })
+                .replyOnce(200, surveyMocks[0])
+
+            await store.dispatch(
+                actions.displayAuditLogEvents(ticketId, undefined)
+            )
+            expect(store.getActions()).toMatchSnapshot()
+        })
+
+        it('should skip satisfaction survey events if there is no survey', async () => {
+            const ticketId = 123
+            const satisfactionSurveysPath = 'api/satisfaction-surveys/'
+            const eventsPath = '/api/events/'
+
+            const satisfactionSurveyMock: ListSatisfactionSurveys200 = {
+                data: [],
+                object: 'list',
+                uri: '',
+                meta: {
+                    prev_cursor: null,
+                    next_cursor: null,
+                },
+            }
+
+            const ticketMocks: ApiListResponseCursorPagination<Event[]>[] = [
+                {
+                    data: [],
+                    meta: {
+                        next_cursor: null,
+                        prev_cursor: null,
+                    },
+                    object: 'list',
+                    uri: 'api/events',
+                },
+            ]
+
+            mockServerGorgiasApi
+                .onGet(satisfactionSurveysPath, {
+                    params: {
+                        ticket_id: ticketId,
+                        limit: 1,
+                    },
+                })
+                .replyOnce(200, satisfactionSurveyMock)
+                .onGet(eventsPath, {
+                    params: {
+                        object_type: EventObjectType.Ticket,
+                        object_id: ticketId,
+                        limit: 30,
+                    },
+                })
+                .replyOnce(200, ticketMocks[0])
+
+            await store.dispatch(
+                actions.displayAuditLogEvents(ticketId, undefined)
             )
             expect(store.getActions()).toMatchSnapshot()
         })
