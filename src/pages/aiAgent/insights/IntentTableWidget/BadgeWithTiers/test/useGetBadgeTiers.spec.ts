@@ -9,7 +9,7 @@ describe('useGetBadgeTiers Hook', () => {
         expect(result.current).toEqual([
             {
                 range: [0, 0],
-                background: '#FDF6FF',
+                background: 'var(--accessory-magenta-1)',
                 color: 'var(--accessory-magenta-3)',
             },
         ])
@@ -21,28 +21,23 @@ describe('useGetBadgeTiers Hook', () => {
         expect(result.current).toEqual([
             {
                 range: [50, 50],
-                background: '#FDF6FF',
+                background: 'var(--accessory-magenta-1)',
                 color: 'var(--accessory-magenta-3)',
             },
         ])
     })
 
     test('should return three tiers when values array has multiple elements', () => {
-        const {result} = renderHook(() => useGetBadgeTiers([10, 50, 90]))
+        const {result} = renderHook(() => useGetBadgeTiers([10, 50]))
 
         expect(result.current).toEqual([
             {
-                range: [10, 36.66666666666667],
-                background: '#FDF6FF',
-                color: 'var(--accessory-magenta-3)',
-            },
-            {
-                range: [36.66666666666667, 63.333333333333336],
+                range: [10, 30],
                 background: 'var(--accessory-magenta-1)',
                 color: 'var(--accessory-magenta-3)',
             },
             {
-                range: [63.333333333333336, 90],
+                range: [30, 50],
                 background: 'var(--accessory-magenta-2)',
                 color: 'var(--accessory-magenta-3)',
             },
@@ -54,17 +49,12 @@ describe('useGetBadgeTiers Hook', () => {
 
         expect(result.current).toEqual([
             {
-                range: [-10, -3.333333333333333],
-                background: '#FDF6FF',
-                color: 'var(--accessory-magenta-3)',
-            },
-            {
-                range: [-3.333333333333333, 3.333333333333334],
+                range: [-10, 0],
                 background: 'var(--accessory-magenta-1)',
                 color: 'var(--accessory-magenta-3)',
             },
             {
-                range: [3.333333333333334, 10],
+                range: [0, 10],
                 background: 'var(--accessory-magenta-2)',
                 color: 'var(--accessory-magenta-3)',
             },
@@ -77,7 +67,7 @@ describe('useGetBadgeTiers Hook', () => {
         expect(result.current).toEqual([
             {
                 range: [50, 50],
-                background: '#FDF6FF',
+                background: 'var(--accessory-magenta-1)',
                 color: 'var(--accessory-magenta-3)',
             },
         ])

@@ -6,14 +6,13 @@ export interface BadgeTiers {
     color: string
 }
 
-const LOW_TIERS_BACKGROUND_COLOR = '#FDF6FF'
-const LOW_TIERS_COLOR = 'var(--accessory-magenta-3)'
-
 const MID_TIRES_BACKGROUND_COLOR = 'var(--accessory-magenta-1)'
 const MID_TIRES_COLOR = 'var(--accessory-magenta-3)'
 
 const HIGH_TIRES_BACKGROUND_COLOR = 'var(--accessory-magenta-2)'
 const HIGH_TIRES_COLOR = 'var(--accessory-magenta-3)'
+
+const DEFAULT_TIER_LENGTH = 2
 
 const calculateTierRange = (
     min: number,
@@ -43,8 +42,8 @@ const createTier = (
 const createSingleTier = (value: number): BadgeTiers[] => {
     const singleTier = createTier(
         [value, value],
-        LOW_TIERS_BACKGROUND_COLOR,
-        LOW_TIERS_COLOR
+        MID_TIRES_BACKGROUND_COLOR,
+        MID_TIRES_COLOR
     )
     return [singleTier]
 }
@@ -63,7 +62,7 @@ const useGetBadgeTiers = (values: number[]) => {
         const minRate = Math.min(...values)
         const maxRate = Math.max(...values)
 
-        const tiersCount = Math.min(uniqueValues.length, 3)
+        const tiersCount = Math.min(uniqueValues.length, DEFAULT_TIER_LENGTH)
         const tiers = Array.from({length: tiersCount}, (_, tierIndex) => {
             const range = calculateTierRange(
                 minRate,
@@ -72,13 +71,10 @@ const useGetBadgeTiers = (values: number[]) => {
                 tiersCount
             )
             const background = [
-                LOW_TIERS_BACKGROUND_COLOR,
                 MID_TIRES_BACKGROUND_COLOR,
                 HIGH_TIRES_BACKGROUND_COLOR,
             ][tierIndex]
-            const color = [LOW_TIERS_COLOR, MID_TIRES_COLOR, HIGH_TIRES_COLOR][
-                tierIndex
-            ]
+            const color = [MID_TIRES_COLOR, HIGH_TIRES_COLOR][tierIndex]
             return createTier(range, background, color)
         })
 
