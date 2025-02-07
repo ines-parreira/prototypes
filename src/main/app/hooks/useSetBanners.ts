@@ -3,6 +3,7 @@ import {useDisplayAiAgentMovedBanner} from 'pages/automate/common/hooks/useDispl
 import {
     useEmailDomainVerificationBanner,
     useScriptTagMigrationBanner,
+    useEmailDisconnectedBanner,
 } from './banners'
 import {useAccountNotVerifiedBanner} from './useAccountNotVerifiedBanner'
 import {useImpersonatedBanner} from './useImpersonatedBanner'
@@ -16,6 +17,7 @@ export function useSetBanners() {
     useUsageBanner()
     useScriptTagMigrationBanner()
     useEmailDomainVerificationBanner()
+    useEmailDisconnectedBanner()
 
     // TMP: Remove this when the new AI Agent location will be adopted enough
     useDisplayAiAgentMovedBanner()
