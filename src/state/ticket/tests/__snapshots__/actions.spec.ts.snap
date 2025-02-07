@@ -264,7 +264,7 @@ exports[`ticket actions displayAuditLogEvents() should dispatch audit logs event
     "payload": Immutable.List [
       Immutable.Map {
         "data": null,
-        "uri": "/api/events/",
+        "uri": "/api/events/3265847/",
         "context": "foo",
         "user_id": 1,
         "created_datetime": "2019-11-15 19:00:00.000000",
@@ -275,7 +275,7 @@ exports[`ticket actions displayAuditLogEvents() should dispatch audit logs event
       },
       Immutable.Map {
         "data": null,
-        "uri": "/api/events/",
+        "uri": "/api/events/3265847/",
         "context": "foo",
         "user_id": 1,
         "created_datetime": "2019-11-15 19:00:00.000000",
@@ -286,29 +286,29 @@ exports[`ticket actions displayAuditLogEvents() should dispatch audit logs event
       },
       Immutable.Map {
         "data": null,
-        "uri": "/api/events/",
-        "context": "bar",
+        "uri": "/api/events/3265847/",
+        "context": "foo",
         "user_id": 1,
         "created_datetime": "2019-11-15 19:00:00.000000",
-        "object_type": "SatisfactionSurvey",
-        "type": "satisfaction-survey-responded",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
         "id": 5,
         "object_id": 1,
       },
       Immutable.Map {
         "data": null,
-        "uri": "/api/events/",
-        "context": "bar",
+        "uri": "/api/events/3265847/",
+        "context": "foo",
         "user_id": 1,
         "created_datetime": "2019-11-15 19:00:00.000000",
-        "object_type": "SatisfactionSurvey",
-        "type": "satisfaction-survey-responded",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
         "id": 6,
         "object_id": 1,
       },
       Immutable.Map {
         "data": null,
-        "uri": "/api/events/",
+        "uri": "/api/events/3265847/",
         "context": "foo",
         "user_id": 1,
         "created_datetime": "2019-11-15 19:00:00.000000",
@@ -319,7 +319,7 @@ exports[`ticket actions displayAuditLogEvents() should dispatch audit logs event
       },
       Immutable.Map {
         "data": null,
-        "uri": "/api/events/",
+        "uri": "/api/events/3265847/",
         "context": "foo",
         "user_id": 1,
         "created_datetime": "2019-11-15 19:00:00.000000",
@@ -330,74 +330,28 @@ exports[`ticket actions displayAuditLogEvents() should dispatch audit logs event
       },
       Immutable.Map {
         "data": null,
-        "uri": "/api/events/",
-        "context": "bar",
+        "uri": "/api/events/3265847/",
+        "context": "foo",
         "user_id": 1,
         "created_datetime": "2019-11-15 19:00:00.000000",
-        "object_type": "SatisfactionSurvey",
-        "type": "satisfaction-survey-responded",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
         "id": 7,
         "object_id": 1,
       },
       Immutable.Map {
         "data": null,
-        "uri": "/api/events/",
-        "context": "bar",
+        "uri": "/api/events/3265847/",
+        "context": "foo",
         "user_id": 1,
         "created_datetime": "2019-11-15 19:00:00.000000",
-        "object_type": "SatisfactionSurvey",
-        "type": "satisfaction-survey-responded",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
         "id": 8,
         "object_id": 1,
       },
     ],
     "type": "ADD_TICKET_AUDIT_LOG_EVENTS",
-  },
-]
-`;
-
-exports[`ticket actions displayAuditLogEvents() should fetch un-scored satisfaction survey of ticket 1`] = `
-[
-  {
-    "type": "DISPLAY_TICKET_AUDIT_LOG_EVENTS",
-  },
-  {
-    "payload": Immutable.List [
-      Immutable.Map {
-        "data": null,
-        "uri": "/api/events/",
-        "context": "bar",
-        "user_id": 1,
-        "created_datetime": "2019-11-15 19:00:00.000000",
-        "object_type": "SatisfactionSurvey",
-        "type": "satisfaction-survey-responded",
-        "id": 1,
-        "object_id": 1,
-      },
-      Immutable.Map {
-        "data": null,
-        "uri": "/api/events/",
-        "context": "bar",
-        "user_id": 1,
-        "created_datetime": "2019-11-15 19:00:00.000000",
-        "object_type": "SatisfactionSurvey",
-        "type": "satisfaction-survey-responded",
-        "id": 2,
-        "object_id": 1,
-      },
-    ],
-    "type": "ADD_TICKET_AUDIT_LOG_EVENTS",
-  },
-]
-`;
-
-exports[`ticket actions displayAuditLogEvents() should skip satisfaction survey events if there is no survey 1`] = `
-[
-  {
-    "type": "DISPLAY_TICKET_AUDIT_LOG_EVENTS",
-  },
-  {
-    "type": "HIDE_TICKET_AUDIT_LOG_EVENTS",
   },
 ]
 `;
