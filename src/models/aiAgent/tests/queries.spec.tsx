@@ -9,9 +9,12 @@ import {CreatePlaygroundBody} from 'models/aiAgentPlayground/types'
 import {getAIGuidanceFixture} from 'pages/aiAgent/fixtures/aiGuidance.fixture'
 import {customToneOfVoicePreviewFixture} from 'pages/aiAgent/fixtures/customToneOfVoicePreview.fixture'
 import {getOnboardingNotificationStateFixture} from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
+import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {HelpCenterClient} from 'rest_api/help_center_api/client'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
+import {assumeMock} from 'utils/testing'
 
 import {
     getWelcomePageAcknowledgedKey,
@@ -23,11 +26,13 @@ import {
     useCreateOnboardingNotificationState,
     CACHE_TIME_MS,
     useUpsertOnboardingNotificationState,
+    useGetStoreConfigurationPure,
 } from '../queries'
 import {
     createOnboardingNotificationState,
     createWelcomePageAcknowledged,
     getOnboardingNotificationState,
+    getStoreConfiguration,
     getWelcomePageAcknowledged,
     upsertOnboardingNotificationState,
 } from '../resources/configuration'
@@ -39,12 +44,18 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
 }))
 
 jest.mock('models/aiAgent/resources/configuration', () => ({
+    getStoreConfiguration: jest.fn(),
     createWelcomePageAcknowledged: jest.fn(),
     getWelcomePageAcknowledged: jest.fn(),
     getOnboardingNotificationState: jest.fn(),
     createOnboardingNotificationState: jest.fn(),
     upsertOnboardingNotificationState: jest.fn(),
 }))
+
+const mockGetStoreConfiguration = assumeMock(getStoreConfiguration)
+const mockGetOnboardingNotificationState = assumeMock(
+    getOnboardingNotificationState
+)
 
 jest.mock('models/aiAgent/resources/message-processing', () => ({
     createContextAndGenerateCustomToneOfVoicePreview: jest.fn(),
@@ -83,6 +94,65 @@ describe('queries', () => {
         queryClient.clear()
         useQuerySpy.mockClear()
         useMutationSpy.mockClear()
+    })
+
+    describe('useGetStoreConfigurationPure', () => {
+        const accountDomain = 'test-account'
+        const storeName = 'test-store'
+
+        const mockData = getStoreConfigurationFixture({storeName})
+        const overrides = {staleTime: 2000}
+        it('should call useQuery with the correct parameters', async () => {
+            mockGetStoreConfiguration.mockResolvedValue({
+                data: {storeConfiguration: mockData},
+                status: 200,
+            } as unknown as ReturnType<typeof getStoreConfiguration>)
+
+            renderHook(
+                () =>
+                    useGetStoreConfigurationPure(
+                        {accountDomain, storeName, withWizard: true},
+                        overrides
+                    ),
+                {wrapper}
+            )
+
+            expect(useQuerySpy).toHaveBeenCalledWith({
+                queryKey: [
+                    'aiAgentStoreConfigurations',
+                    'detail',
+                    {accountDomain, storeName, withWizard: true},
+                ],
+                queryFn: expect.any(Function),
+                staleTime: 2000,
+                cacheTime: CACHE_TIME_MS,
+                enabled: true,
+            })
+
+            const queryFn = (
+                useQuerySpy.mock.calls[0][0] as unknown as {
+                    queryFn: () => any
+                }
+            ).queryFn
+
+            await expect(queryFn()).resolves.toEqual({
+                data: {storeConfiguration: mockData},
+                status: 200,
+            })
+        })
+
+        it('should not fetch data if overrides.enabled is false', () => {
+            renderHook(
+                () =>
+                    useGetStoreConfigurationPure(
+                        {accountDomain, storeName, withWizard: true},
+                        {enabled: false}
+                    ),
+                {wrapper}
+            )
+
+            expect(getStoreConfiguration).not.toHaveBeenCalled()
+        })
     })
 
     describe('useGetAIGeneratedGuidances', () => {
@@ -301,6 +371,67 @@ describe('queries', () => {
             ).queryFn
 
             await expect(queryFn()).resolves.toEqual(mockData)
+        })
+    })
+
+    describe('useGetOrCreateOnboardingNotificationState', () => {
+        const accountDomain = 'test-account'
+        const storeName = 'test-store'
+        const mockData = getOnboardingNotificationStateFixture({
+            shopName: storeName,
+        })
+        const overrides = {staleTime: 2000}
+        it('should return onboardingNotificationState if it exists', async () => {
+            mockGetOnboardingNotificationState.mockResolvedValue({
+                data: {onboardingNotificationState: mockData},
+                status: 200,
+            } as unknown as ReturnType<typeof getOnboardingNotificationState>)
+
+            renderHook(
+                () =>
+                    useGetOnboardingNotificationState(
+                        {accountDomain, storeName},
+                        overrides
+                    ),
+                {wrapper}
+            )
+
+            expect(useQuerySpy).toHaveBeenCalledWith({
+                queryKey: [
+                    'aiAgentOnboardingNotificationState',
+                    'detail',
+                    {accountDomain, storeName},
+                ],
+                queryFn: expect.any(Function),
+                staleTime: 2000,
+                cacheTime: CACHE_TIME_MS,
+                enabled: true,
+            })
+
+            const queryFn = (
+                useQuerySpy.mock.calls[0][0] as unknown as {
+                    queryFn: () => any
+                }
+            ).queryFn
+
+            await expect(queryFn()).resolves.toEqual({
+                data: {onboardingNotificationState: mockData},
+                status: 200,
+            })
+        })
+
+        it('should not fetch data if overrides.enabled is false', () => {
+            renderHook(
+                () =>
+                    useGetOnboardingNotificationState(
+                        {accountDomain, storeName},
+                        {enabled: false}
+                    ),
+                {wrapper}
+            )
+
+            expect(getOnboardingNotificationState).not.toHaveBeenCalled()
+            expect(createOnboardingNotificationState).not.toHaveBeenCalled()
         })
     })
 

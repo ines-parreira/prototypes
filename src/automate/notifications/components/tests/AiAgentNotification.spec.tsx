@@ -10,6 +10,7 @@ import {getNotificationReceivedDatetimePayload} from 'automate/notifications/uti
 import type {Notification} from 'common/notifications'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {getOnboardingNotificationStateFixture} from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import {getLDClient} from 'utils/launchDarkly'
 
@@ -17,7 +18,8 @@ import {assumeMock} from 'utils/testing'
 
 import AiAgentNotification from '../AiAgentNotification'
 
-const mockAiAgentTicketViewId = 123
+const TICKET_VIEW_ID = 123
+const SHOP_NAME = 'store_1'
 
 jest.mock(
     'common/segment',
@@ -30,7 +32,7 @@ jest.mock(
 
 jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
     useAccountStoreConfiguration: jest.fn(() => ({
-        aiAgentTicketViewId: mockAiAgentTicketViewId,
+        aiAgentTicketViewId: TICKET_VIEW_ID,
     })),
 }))
 
@@ -42,7 +44,9 @@ const mockUseAiAgentOnboardingNotification = assumeMock(
 
 const defaultUseAiAgentOnboardingNotification = {
     isAdmin: true,
-    onboardingNotificationState: undefined,
+    onboardingNotificationState: getOnboardingNotificationStateFixture({
+        shopName: SHOP_NAME,
+    }),
     handleOnSave: jest.fn(),
     handleOnSendOrCancelNotification: jest.fn(),
     handleOnEnablementPostReceivedNotification: jest.fn(),
@@ -67,7 +71,7 @@ describe('AiAgentNotification', () => {
     })
 
     const basePayload = {
-        shop_name: 'store_1',
+        shop_name: SHOP_NAME,
         shop_type: 'shopify',
     }
 
@@ -110,7 +114,7 @@ describe('AiAgentNotification', () => {
             title: 'AI Agent answered it’s first ticket',
             subtitle:
                 'Review AI Agent’s response and leave feedback in the ticket to improve it’s performance.',
-            redirectTo: `/app/views/${mockAiAgentTicketViewId}/12345`,
+            redirectTo: `/app/views/${TICKET_VIEW_ID}/12345`,
         },
     ]
 

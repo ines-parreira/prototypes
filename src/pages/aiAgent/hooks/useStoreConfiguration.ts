@@ -4,10 +4,12 @@ export const useStoreConfiguration = ({
     shopName,
     accountDomain,
     withWizard,
+    enabled,
 }: {
     shopName: string
     accountDomain: string
     withWizard?: boolean
+    enabled?: boolean
 }) => {
     const {
         isLoading: isStoreConfigurationLoading,
@@ -18,7 +20,7 @@ export const useStoreConfiguration = ({
             storeName: shopName,
             withWizard,
         },
-        {retry: 1, refetchOnWindowFocus: false}
+        {retry: 1, refetchOnWindowFocus: false, enabled: enabled ?? true}
     )
 
     return {

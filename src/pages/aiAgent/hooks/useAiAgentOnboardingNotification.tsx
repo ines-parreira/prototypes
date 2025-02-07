@@ -40,9 +40,13 @@ const NUMBER_OF_DAYS_TO_TRACK = 14
 
 type Params = {
     shopName: string | undefined
+    hasAutomateSubscription?: boolean
 }
 
-export const useAiAgentOnboardingNotification = ({shopName}: Params) => {
+export const useAiAgentOnboardingNotification = ({
+    shopName,
+    hasAutomateSubscription,
+}: Params) => {
     const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
@@ -53,6 +57,7 @@ export const useAiAgentOnboardingNotification = ({shopName}: Params) => {
         useOnboardingNotificationState({
             accountDomain,
             shopName,
+            enabled: hasAutomateSubscription,
         })
 
     const {

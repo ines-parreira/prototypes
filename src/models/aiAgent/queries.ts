@@ -87,7 +87,10 @@ export const useGetStoreConfigurationPure = (
         queryFn: () => getStoreConfiguration(params),
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
-        enabled: !!params.accountDomain && !!params.storeName,
+        enabled:
+            !!params.accountDomain &&
+            !!params.storeName &&
+            (overrides?.enabled ?? true),
         ...overrides,
     })
 }
@@ -302,7 +305,7 @@ export const useGetOrCreateOnboardingNotificationState = (
         },
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
-        enabled: !!accountDomain && !!storeName,
+        enabled: !!accountDomain && !!storeName && (overrides?.enabled ?? true),
         ...overrides,
     })
 }

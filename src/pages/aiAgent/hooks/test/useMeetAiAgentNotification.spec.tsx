@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 
 import {AiAgentNotificationType} from 'automate/notifications/types'
 import {account} from 'fixtures/account'
+import {useGetOrCreateAccountConfiguration} from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import {AiAgentOnboardingState} from 'models/aiAgent/types'
 import {getOnboardingNotificationStateFixture} from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
@@ -24,8 +25,12 @@ import {useStoreConfiguration} from '../useStoreConfiguration'
 jest.mock('state/billing/selectors')
 jest.mock('../useAiAgentOnboardingNotification')
 jest.mock('../useStoreConfiguration')
+jest.mock('hooks/aiAgent/useGetOrCreateAccountConfiguration')
 
 const mockGetHasAutomate = assumeMock(getHasAutomate)
+const mockUseGetOrCreateAccountConfiguration = assumeMock(
+    useGetOrCreateAccountConfiguration
+)
 const mockUseAiAgentOnboardingNotification = assumeMock(
     useAiAgentOnboardingNotification
 )
@@ -87,6 +92,10 @@ describe('useMeetAiAgentNotifications', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockGetHasAutomate.mockReturnValue(true)
+        mockUseGetOrCreateAccountConfiguration.mockReturnValue({
+            status: 'success',
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetOrCreateAccountConfiguration>)
         mockUseAiAgentOnboardingNotification.mockReturnValue(
             defaultUseAiAgentOnboardingNotification
         )
@@ -104,9 +113,11 @@ describe('useMeetAiAgentNotifications', () => {
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledTimes(2)
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledWith({
             shopName: 'test-shop1',
+            hasAutomateSubscription: true,
         })
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledWith({
             shopName: 'test-shop2',
+            hasAutomateSubscription: true,
         })
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
@@ -131,13 +142,14 @@ describe('useMeetAiAgentNotifications', () => {
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledTimes(1)
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledWith({
             shopName: 'test-shop1',
+            hasAutomateSubscription: true,
         })
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
         ).not.toHaveBeenCalled()
     })
 
-    it('should not trigger notification if isLoading is true', () => {
+    it('should not trigger notification if isLoadingOnboardingNotification is true', () => {
         mockUseAiAgentOnboardingNotification.mockReturnValue({
             ...defaultUseAiAgentOnboardingNotification,
             isLoading: true,
@@ -150,7 +162,38 @@ describe('useMeetAiAgentNotifications', () => {
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledTimes(1)
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledWith({
             shopName: 'test-shop1',
+            hasAutomateSubscription: true,
         })
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+        ).not.toHaveBeenCalled()
+    })
+
+    it('should not trigger notification if isLoadingAccountConfiguration is true', () => {
+        mockUseGetOrCreateAccountConfiguration.mockReturnValue({
+            status: 'loading',
+            isLoading: true,
+        } as unknown as ReturnType<typeof useGetOrCreateAccountConfiguration>)
+
+        renderHook(() => useMeetAiAgentNotifications(), {
+            wrapper: getDependencyWrapper(),
+        })
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+        ).not.toHaveBeenCalled()
+    })
+
+    it('should not trigger notification if accountConfigRetrievalStatus is error', () => {
+        mockUseGetOrCreateAccountConfiguration.mockReturnValue({
+            status: 'error',
+            isLoading: true,
+        } as unknown as ReturnType<typeof useGetOrCreateAccountConfiguration>)
+
+        renderHook(() => useMeetAiAgentNotifications(), {
+            wrapper: getDependencyWrapper(),
+        })
+
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
         ).not.toHaveBeenCalled()
@@ -169,6 +212,7 @@ describe('useMeetAiAgentNotifications', () => {
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledTimes(1)
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledWith({
             shopName: 'test-shop1',
+            hasAutomateSubscription: true,
         })
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
@@ -190,9 +234,11 @@ describe('useMeetAiAgentNotifications', () => {
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledTimes(2)
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledWith({
             shopName: 'test-shop1',
+            hasAutomateSubscription: true,
         })
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledWith({
             shopName: 'test-shop2',
+            hasAutomateSubscription: true,
         })
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
@@ -214,9 +260,11 @@ describe('useMeetAiAgentNotifications', () => {
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledTimes(2)
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledWith({
             shopName: 'test-shop1',
+            hasAutomateSubscription: true,
         })
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledWith({
             shopName: 'test-shop2',
+            hasAutomateSubscription: true,
         })
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
@@ -236,13 +284,52 @@ describe('useMeetAiAgentNotifications', () => {
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledTimes(2)
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledWith({
             shopName: 'test-shop1',
+            hasAutomateSubscription: true,
         })
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledWith({
             shopName: 'test-shop2',
+            hasAutomateSubscription: true,
         })
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
         ).not.toHaveBeenCalled()
+    })
+
+    it('should call the custom hooks with enabled false if account does not have Automate subscription', () => {
+        mockGetHasAutomate.mockReturnValue(false)
+
+        renderHook(() => useMeetAiAgentNotifications(), {
+            wrapper: getDependencyWrapper(),
+        })
+
+        expect(mockUseGetOrCreateAccountConfiguration).toHaveBeenCalledWith(
+            {
+                accountId: 1,
+                accountDomain: 'test-account',
+                storeNames: ['test-shop1', 'test-shop2'],
+            },
+            {
+                refetchOnWindowFocus: false,
+                enabled: false,
+            }
+        )
+
+        expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledTimes(2)
+        expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledWith({
+            shopName: 'test-shop1',
+            hasAutomateSubscription: false,
+        })
+        expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledWith({
+            shopName: 'test-shop2',
+            hasAutomateSubscription: false,
+        })
+
+        expect(mockUseStoreConfiguration).toHaveBeenCalledWith({
+            shopName: 'test-shop1',
+            accountDomain: 'test-account',
+            withWizard: true,
+            enabled: false,
+        })
     })
 
     it('should not trigger notification if account does not have Automate subscription', () => {
@@ -252,13 +339,6 @@ describe('useMeetAiAgentNotifications', () => {
             wrapper: getDependencyWrapper(),
         })
 
-        expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledTimes(2)
-        expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledWith({
-            shopName: 'test-shop1',
-        })
-        expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledWith({
-            shopName: 'test-shop2',
-        })
         expect(
             defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
         ).not.toHaveBeenCalled()

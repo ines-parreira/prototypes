@@ -25,6 +25,7 @@ import {
     VOICE_PRODUCT_ID,
     voicePlan1,
 } from 'fixtures/productPrices'
+import {useGetOrCreateAccountConfiguration} from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import {ProductType} from 'models/billing/types'
 import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
@@ -54,7 +55,11 @@ jest.mock('pages/settings/new_billing/components/ProductCard', () =>
 
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification')
 jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
+jest.mock('hooks/aiAgent/useGetOrCreateAccountConfiguration')
 
+const mockUseGetOrCreateAccountConfiguration = assumeMock(
+    useGetOrCreateAccountConfiguration
+)
 const mockUseAiAgentOnboardingNotification = assumeMock(
     useAiAgentOnboardingNotification
 )
@@ -118,6 +123,10 @@ describe('UsageAndPlansView', () => {
         mockFlags({
             [FeatureFlagKey.BillingVoiceSmsSelfServe]: false,
         })
+        mockUseGetOrCreateAccountConfiguration.mockReturnValue({
+            status: 'success',
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetOrCreateAccountConfiguration>)
         mockUseAiAgentOnboardingNotification.mockReturnValue(
             mockedUseAiAgentOnboardingNotification
         )
@@ -728,6 +737,7 @@ describe('UsageAndPlansView', () => {
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledTimes(1)
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledWith({
             shopName: 'shopify-store',
+            hasAutomateSubscription: true,
         })
         expect(
             mockedUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification

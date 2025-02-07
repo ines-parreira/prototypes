@@ -36,7 +36,8 @@ export default function AiAgentNotification({notification, ...props}: Props) {
             isLoading ||
             !payload ||
             !payload.shop_name ||
-            !payload.ai_agent_notification_type
+            !payload.ai_agent_notification_type ||
+            !onboardingNotificationState
         )
             return
 
