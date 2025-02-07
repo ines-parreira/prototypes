@@ -16,7 +16,6 @@ import {
     AppDetail as AppDetailType,
     TrialPeriod,
 } from 'models/integration/types/app'
-import {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import Modal from 'pages/common/components/modal/Modal'
@@ -121,7 +120,7 @@ export default function AppDetail() {
         }
         detailProps.categories?.push({
             label: trialLabel,
-            type: ColorType.Success,
+            type: 'success',
         })
     }
 

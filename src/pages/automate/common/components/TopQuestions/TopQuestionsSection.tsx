@@ -1,10 +1,10 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React, {useMemo} from 'react'
 
 import {Link} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {IntegrationType} from 'models/integration/constants'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {getIconFromType} from 'state/integrations/helpers'
 
@@ -169,7 +169,7 @@ const Header = ({
                     {newQuestionsCount && (
                         <Badge
                             className={css.headerNewBadge}
-                            type={ColorType.LightSuccess}
+                            type={'light-success'}
                         >
                             {newQuestionsCount} new
                         </Badge>

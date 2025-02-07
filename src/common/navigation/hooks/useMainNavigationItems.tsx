@@ -1,9 +1,9 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import {Map} from 'immutable'
 import React, {ReactNode, useMemo} from 'react'
 
 import {UserRole} from 'config/types/user'
 import {useAiAgentItemEnabled} from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
-import Badge, {ColorType} from 'pages/common/components/Badge'
 
 import {hasRole} from 'utils'
 
@@ -58,10 +58,7 @@ export const useMainNavigationItems = (
                 icon: 'auto_awesome',
                 name: MenuItemName.AiAgent,
                 addon: (
-                    <Badge
-                        className={mainNavigationCSS.badge}
-                        type={ColorType.Magenta}
-                    >
+                    <Badge className={mainNavigationCSS.badge} type={'magenta'}>
                         NEW
                     </Badge>
                 ),

@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import React, {useState} from 'react'
@@ -7,7 +7,6 @@ import {Collapse} from 'reactstrap'
 import {ActionTemplateExecution} from 'config'
 import useAppSelector from 'hooks/useAppSelector'
 import {MacroActionName} from 'models/macroAction/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {hasContent} from 'state/newMessage/selectors'
 import {getActionTemplate} from 'utils'
 
@@ -66,7 +65,7 @@ export default function TicketReplyActions({
                 >
                     bolt
                 </i>
-                <Badge type={ColorType.Classic} className="mr-2">
+                <Badge type={'classic'} className="mr-2">
                     {backendActions.size}
                 </Badge>
                 <span className={css.title}>

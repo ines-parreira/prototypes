@@ -52,7 +52,7 @@ exports[`Subscription TitleWrapper customer context should render custom link be
   />
   <div>
     <div
-      class="badge mt-2 upperCase"
+      class="ui-badge-badge-7025 mt-2 ui-badge-uppercase-7025"
       style="border-radius: 100px;"
     />
   </div>
@@ -68,7 +68,7 @@ exports[`Subscription TitleWrapper customer context should render default link b
   />
   <div>
     <div
-      class="badge mt-2 upperCase"
+      class="ui-badge-badge-7025 mt-2 ui-badge-uppercase-7025"
       style="border-radius: 100px;"
     />
   </div>
@@ -83,7 +83,7 @@ exports[`Subscription TitleWrapper should not render any link because no custome
   />
   <div>
     <div
-      class="badge mt-2 upperCase"
+      class="ui-badge-badge-7025 mt-2 ui-badge-uppercase-7025"
       style="border-radius: 100px;"
     />
   </div>
@@ -98,7 +98,7 @@ exports[`Subscription TitleWrapper should not render any provided link when no c
   />
   <div>
     <div
-      class="badge mt-2 upperCase"
+      class="ui-badge-badge-7025 mt-2 ui-badge-uppercase-7025"
       style="border-radius: 100px;"
     />
   </div>
@@ -114,7 +114,7 @@ exports[`Subscription TitleWrapper ticket context should render custom link beca
   />
   <div>
     <div
-      class="badge mt-2 upperCase"
+      class="ui-badge-badge-7025 mt-2 ui-badge-uppercase-7025"
       style="border-radius: 100px;"
     />
   </div>
@@ -130,7 +130,7 @@ exports[`Subscription TitleWrapper ticket context should render default link bec
   />
   <div>
     <div
-      class="badge mt-2 upperCase"
+      class="ui-badge-badge-7025 mt-2 ui-badge-uppercase-7025"
       style="border-radius: 100px;"
     />
   </div>

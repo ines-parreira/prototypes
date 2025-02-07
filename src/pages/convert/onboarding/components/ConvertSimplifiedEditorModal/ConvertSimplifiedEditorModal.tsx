@@ -1,3 +1,4 @@
+import {Badge, BadgeIcon} from '@gorgias/merchant-ui-kit'
 import {produce} from 'immer'
 import {Map, fromJS} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -13,7 +14,6 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {GorgiasChatIntegration} from 'models/integration/types'
-import Badge, {BadgeIcon, ColorType} from 'pages/common/components/Badge'
 import Button from 'pages/common/components/button/Button'
 
 import Modal from 'pages/common/components/modal/Modal'
@@ -305,7 +305,7 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
                         <div className={css.leftSide}>
                             <div className={css.labelContainer}>
                                 <Badge
-                                    type={ColorType.LightWarning}
+                                    type={'light-warning'}
                                     corner="square"
                                     upperCase={false}
                                 >
@@ -313,7 +313,7 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
                                 </Badge>
                                 <Badge
                                     className={css.estimationLabel}
-                                    type={ColorType.LightSuccess}
+                                    type={'light-success'}
                                     corner="square"
                                     upperCase={false}
                                 >

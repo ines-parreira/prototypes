@@ -181,7 +181,7 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                             style="order: -1; display: none;"
                           >
                             <div
-                              class="badge displayMore"
+                              class="ui-badge-badge-7025 displayMore"
                               id="expand-tags-badge-1"
                               style="border-radius: 4px;"
                             >
@@ -430,7 +430,7 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                             style="order: -1; display: none;"
                           >
                             <div
-                              class="badge displayMore"
+                              class="ui-badge-badge-7025 displayMore"
                               id="expand-tags-badge-4"
                               style="border-radius: 4px;"
                             >

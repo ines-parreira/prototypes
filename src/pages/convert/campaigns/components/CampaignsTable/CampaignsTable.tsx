@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -21,7 +21,6 @@ import {
 import {Language} from 'constants/languages'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {GorgiasChatIntegration} from 'models/integration/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import IconButton from 'pages/common/components/button/IconButton'
 
@@ -286,7 +285,7 @@ export const CampaignsTable = ({
                                         {campaign.ab_group && (
                                             <Badge
                                                 className={css.abBadge}
-                                                type={ColorType.LightDark}
+                                                type={'light-dark'}
                                             >
                                                 A/B Test
                                             </Badge>

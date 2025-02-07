@@ -6,9 +6,9 @@ import {ConfigurationSection} from './ConfigurationSection'
 // Mock CSS module
 jest.mock('./ConfigurationSection.less', () => ({}))
 
-jest.mock('pages/common/components/Badge/Badge', () => ({
+jest.mock('@gorgias/merchant-ui-kit', () => ({
     __esModule: true,
-    default: ({
+    Badge: ({
         children,
         className,
     }: {

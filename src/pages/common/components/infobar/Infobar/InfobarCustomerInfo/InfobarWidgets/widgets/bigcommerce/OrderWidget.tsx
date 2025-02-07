@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Badge, ColorType} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
 import {Map} from 'immutable'
@@ -11,7 +11,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {getBigCommerceDraftOrderUrl} from 'models/integration/resources/bigcommerce'
 import {BigCommerceActionType} from 'models/integration/types/index'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
@@ -294,21 +293,21 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
 }
 
 const statusColors: Record<string, ColorType> = {
-    incomplete: ColorType.LightWarning,
-    pending: ColorType.Warning,
-    shipped: ColorType.Classic,
-    partially_shipped: ColorType.Classic,
-    refunded: ColorType.LightWarning,
-    cancelled: ColorType.Error,
-    declined: ColorType.Error,
-    awaiting_payment: ColorType.Warning,
-    awaiting_pickup: ColorType.Warning,
-    awaiting_shipment: ColorType.Warning,
-    completed: ColorType.Success,
-    awaiting_fulfillment: ColorType.Warning,
-    manual_verification_required: ColorType.Warning,
-    disputed: ColorType.Error,
-    partially_refunded: ColorType.LightWarning,
+    incomplete: 'light-warning',
+    pending: 'warning',
+    shipped: 'classic',
+    partially_shipped: 'classic',
+    refunded: 'light-warning',
+    cancelled: 'error',
+    declined: 'error',
+    awaiting_payment: 'warning',
+    awaiting_pickup: 'warning',
+    awaiting_shipment: 'warning',
+    completed: 'success',
+    awaiting_fulfillment: 'warning',
+    manual_verification_required: 'warning',
+    disputed: 'error',
+    partially_refunded: 'light-warning',
 }
 
 type TitleWrapperProps = {

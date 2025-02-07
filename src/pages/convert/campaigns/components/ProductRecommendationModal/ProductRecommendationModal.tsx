@@ -1,8 +1,8 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 import {Modal, ModalBody, ModalHeader} from 'reactstrap'
 
 import {useAppNode} from 'appNode'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
@@ -101,7 +101,7 @@ const ProductRecommendationModal = (props: Props) => {
             <ModalHeader toggle={onCloseClick}>{title}</ModalHeader>
             <ModalBody className={css.modalBody}>
                 <>
-                    <Badge type={ColorType.Magenta} className={css.badge}>
+                    <Badge type={'magenta'} className={css.badge}>
                         <i className="material-icons">auto_awesome</i>ai powered
                     </Badge>
                     {description}

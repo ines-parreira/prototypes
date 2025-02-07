@@ -1,3 +1,4 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {isValidElement, ReactNode, useState} from 'react'
 import Lightbox from 'react-images'
@@ -5,7 +6,6 @@ import {Col, Row} from 'reactstrap'
 
 import {PaywallConfig} from 'config/paywalls'
 import {PLAN_NAME_TO_BADGE_COLOR} from 'models/billing/utils'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import PageHeader from '../PageHeader'
 import UpgradeButton from '../UpgradeButton'
@@ -116,7 +116,7 @@ const Paywall = ({
                                 <div className="flex align-items-center">
                                     {requiredUpgrade && shouldKeepPrice && (
                                         <>
-                                            <Badge type={ColorType.Error}>
+                                            <Badge type={'error'}>
                                                 <i className="material-icons mr-1">
                                                     warning
                                                 </i>

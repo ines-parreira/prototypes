@@ -1,3 +1,4 @@
+import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
 import {fromJS, Map} from 'immutable'
 import React, {
     ContextType,
@@ -14,7 +15,6 @@ import {
     RECHARGE_DEFAULT_CANCELLATION_REASON,
 } from 'config/integrations/constants/recharge'
 import useAppSelector from 'hooks/useAppSelector'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import type {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
@@ -51,8 +51,8 @@ type AfterTitleProps = {
 }
 
 const statusColors: Record<string, ColorType> = {
-    active: ColorType.Success,
-    cancelled: ColorType.Error,
+    active: 'success',
+    cancelled: 'error',
 }
 
 export class AfterTitle extends React.Component<AfterTitleProps> {

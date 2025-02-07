@@ -1,3 +1,4 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React, {memo} from 'react'
 import {NodeProps} from 'reactflow'
 
@@ -6,7 +7,6 @@ import {
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import {ReusableLLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import VisualBuilderNode from './VisualBuilderNode'
 
@@ -24,7 +24,7 @@ const ReusableLLMPromptTriggerNode = memo(
                 height={48}
                 source={false}
             >
-                <Badge type={ColorType.Light}>start</Badge>
+                <Badge type={'light'}>start</Badge>
             </VisualBuilderNode>
         )
     }

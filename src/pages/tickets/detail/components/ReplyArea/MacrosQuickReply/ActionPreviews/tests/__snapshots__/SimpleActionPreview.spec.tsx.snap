@@ -64,7 +64,7 @@ exports[`<SimpleActionPreview/> should render set status action 1`] = `
     class="propsColumnWrapper"
   >
     <div
-      class="badge smallTag upperCase"
+      class="ui-badge-badge-7025 smallTag ui-badge-uppercase-7025"
       style="border-radius: 100px;"
     >
       open
@@ -107,7 +107,7 @@ exports[`<SimpleActionPreview/> should render snooze action 1`] = `
     class="propsColumnWrapper"
   >
     <div
-      class="badge text-center smallTag upperCase"
+      class="ui-badge-badge-7025 text-center smallTag ui-badge-uppercase-7025"
       style="border-radius: 100px;"
     >
       1 day(s)

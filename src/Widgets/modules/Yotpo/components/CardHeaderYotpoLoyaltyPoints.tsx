@@ -1,6 +1,5 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
-
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import css from './CardHeaderYotpoLoyaltyPoints.less'
 
@@ -15,7 +14,7 @@ export function CardHeaderYotpoLoyaltyPoints({value}: Props) {
             <span className={`material-icons ${css.star}`}>stars</span>
             <span>Loyalty Points</span>
 
-            <Badge className={css.pill} type={ColorType.DarkGrey}>
+            <Badge className={css.pill} type="dark-grey">
                 {parseFloat(value).toLocaleString()}
             </Badge>
         </span>

@@ -1,3 +1,4 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -12,7 +13,6 @@ import {isPreviewModeActivated} from 'pages/aiAgent/components/StoreConfigForm/S
 import {AI_AGENT} from 'pages/aiAgent/constants'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import NavbarSectionBlock from 'pages/common/components/navbar/NavbarSectionBlock'
 import {getHasAutomate} from 'state/billing/selectors'
@@ -94,13 +94,13 @@ const AutomateNavbarSectionBlock = ({
     }
 
     const PreviewBadge: React.FC = () => (
-        <Badge type={ColorType.Magenta} className={cssNavbar.badge}>
+        <Badge type={'magenta'} className={cssNavbar.badge}>
             PREVIEW
         </Badge>
     )
 
     const LiveBadge: React.FC = () => (
-        <Badge type={ColorType.LightSuccess} className={cssNavbar.badge}>
+        <Badge type={'light-success'} className={cssNavbar.badge}>
             LIVE
         </Badge>
     )

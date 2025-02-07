@@ -1,18 +1,12 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import React, {useRef} from 'react'
-
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 function DefaultIntegrationBadge() {
     const badgeRef = useRef<HTMLDivElement>(null)
 
     return (
         <>
-            <Badge
-                ref={badgeRef}
-                id="default-address-badge"
-                type={ColorType.Blue}
-            >
+            <Badge ref={badgeRef} id="default-address-badge" type={'blue'}>
                 DEFAULT
             </Badge>
             <Tooltip target={badgeRef}>

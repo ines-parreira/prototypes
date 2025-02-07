@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
@@ -8,7 +8,6 @@ import {SegmentEvent, logEvent} from 'common/segment'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {CustomField, isCustomFieldAIManagedType} from 'custom-fields/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import IconButton from 'pages/common/components/button/IconButton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
@@ -110,7 +109,7 @@ export default function Row({
             </td>
             <BodyCell>
                 {customField.required && !customField.deactivated_datetime && (
-                    <Badge type={ColorType.Warning}>REQUIRED</Badge>
+                    <Badge type={'warning'}>REQUIRED</Badge>
                 )}
             </BodyCell>
             <BodyCell>

@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import {Map, List} from 'immutable'
 import _isFunction from 'lodash/isFunction'
@@ -28,7 +28,6 @@ import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import {LegacyStatsFilters} from 'models/stat/types'
 import {WorkflowConfigurationShallow} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import withRouter from 'pages/common/utils/withRouter'
@@ -239,13 +238,7 @@ export class TableStat extends Component<
 
                 return (
                     <div>
-                        <Badge
-                            type={
-                                isOnlineOrOffline
-                                    ? ColorType.Success
-                                    : ColorType.Grey
-                            }
-                        >
+                        <Badge type={isOnlineOrOffline ? 'success' : 'grey'}>
                             {isOnlineOrOffline ? 'Online' : 'Offline'}
                         </Badge>
                     </div>

@@ -106,14 +106,14 @@ exports[`<TicketTags /> should display current tags 1`] = `
         style="order: 5; display: flex;"
       >
         <div
-          class="badge displayMore"
+          class="ui-badge-badge-7025 displayMore"
           id="expand-tags-badge-42"
           style="border-radius: 4px;"
         >
           + 
           3
           <span
-            class="icon material-icons-round displayMoreIcon"
+            class="ui-badgeicon-icon-23dd material-icons-round displayMoreIcon"
           >
             arrow_drop_down
           </span>

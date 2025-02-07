@@ -1,3 +1,4 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import _isArray from 'lodash/isArray'
 import _isBoolean from 'lodash/isBoolean'
 import _isInteger from 'lodash/isInteger'
@@ -10,7 +11,6 @@ import React from 'react'
 
 import {isImmutable} from 'common/utils'
 import {SENTIMENT_TYPE_LOWER_BOUND, SENTIMENT_TYPE_UPPER_BOUND} from 'config'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import StarRating from 'pages/common/components/StarRating'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {isUrl, isEmail} from 'utils'
@@ -108,7 +108,7 @@ export function getValueFromData(
             }
 
             return (
-                <Badge type={isTrue ? ColorType.Success : ColorType.Error}>
+                <Badge type={isTrue ? 'success' : 'error'}>
                     {isTrue ? 'True' : 'False'}
                 </Badge>
             )
@@ -187,11 +187,7 @@ export function getValueFromData(
         case 'points': {
             const value = Number(data)
             if (!Number.isNaN(value)) {
-                return (
-                    <Badge type={ColorType.Grey}>
-                        {value.toLocaleString()}
-                    </Badge>
-                )
+                return <Badge type="grey">{value.toLocaleString()}</Badge>
             }
 
             break

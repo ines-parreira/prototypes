@@ -1,6 +1,5 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
-
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import css from './ConfigurationSection.less'
 
@@ -40,7 +39,7 @@ export const ConfigurationSection = ({
                     )}
                 </h2>
                 {isBeta && (
-                    <Badge type={ColorType.Magenta} className={css.betaBadge}>
+                    <Badge type={'magenta'} className={css.betaBadge}>
                         BETA
                     </Badge>
                 )}

@@ -1,9 +1,9 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {useState} from 'react'
 
 import keymap from 'config/shortcuts'
 import useShortcuts from 'hooks/useShortcuts'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
@@ -55,7 +55,7 @@ export default function KeyboardHelp() {
                                     return (
                                         <div key={j} className="mb-2">
                                             <Badge
-                                                type={ColorType.Grey}
+                                                type="grey"
                                                 className={classnames(
                                                     css.combo,
                                                     'mr-2'

@@ -1,10 +1,10 @@
+import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import {
     FinancialStatus,
     FulfillmentStatus,
 } from 'constants/integrations/types/shopify'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {humanizeString} from 'utils'
 
 type FulfillmentBadgeProps = {
@@ -24,20 +24,20 @@ type FulfillmentValues = Map<FulfillmentStatus | null, [ColorType, string]>
 type FinancialValues = Map<FinancialStatus, ColorType>
 
 const fulfillmentValues: FulfillmentValues = new Map([
-    [FulfillmentStatus.Fulfilled, [ColorType.Success, 'Fulfilled']],
-    [FulfillmentStatus.Partial, [ColorType.Grey, 'Partially fulfilled']],
-    [FulfillmentStatus.Restocked, [ColorType.Warning, 'Restocked']],
-    [null, [ColorType.Grey, 'Unfulfilled']],
+    [FulfillmentStatus.Fulfilled, ['success', 'Fulfilled']],
+    [FulfillmentStatus.Partial, ['grey', 'Partially fulfilled']],
+    [FulfillmentStatus.Restocked, ['warning', 'Restocked']],
+    [null, ['grey', 'Unfulfilled']],
 ])
 
 const financialValues: FinancialValues = new Map([
-    [FinancialStatus.Pending, ColorType.Grey],
-    [FinancialStatus.Authorized, ColorType.Grey],
-    [FinancialStatus.PartiallyPaid, ColorType.Classic],
-    [FinancialStatus.Paid, ColorType.Success],
-    [FinancialStatus.PartiallyRefunded, ColorType.Warning],
-    [FinancialStatus.Refunded, ColorType.Warning],
-    [FinancialStatus.Voided, ColorType.Error],
+    [FinancialStatus.Pending, 'grey'],
+    [FinancialStatus.Authorized, 'grey'],
+    [FinancialStatus.PartiallyPaid, 'classic'],
+    [FinancialStatus.Paid, 'success'],
+    [FinancialStatus.PartiallyRefunded, 'warning'],
+    [FinancialStatus.Refunded, 'warning'],
+    [FinancialStatus.Voided, 'error'],
 ])
 
 export default function OrderStatus({
@@ -73,5 +73,5 @@ function FinancialBadge({financialStatus}: FinancialBadgeProps) {
 }
 
 function CancelledBadge() {
-    return <Badge type={ColorType.Error}>Cancelled</Badge>
+    return <Badge type={'error'}>Cancelled</Badge>
 }

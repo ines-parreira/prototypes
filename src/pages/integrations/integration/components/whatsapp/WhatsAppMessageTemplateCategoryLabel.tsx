@@ -1,7 +1,7 @@
+import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import {WhatsAppMessageTemplateCategory} from 'models/whatsAppMessageTemplates/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 type Props = {
     category: WhatsAppMessageTemplateCategory
@@ -15,17 +15,24 @@ export default function WhatsAppMessageTemplateCategoryLabel({
     return <Badge type={type}>{label ?? category}</Badge>
 }
 
-const templateCategoryToBadgeProps = {
+type TemplateCategoryToBadgeProps = {
+    [key in WhatsAppMessageTemplateCategory]: {
+        type: ColorType
+        label: string
+    }
+}
+
+const templateCategoryToBadgeProps: TemplateCategoryToBadgeProps = {
     [WhatsAppMessageTemplateCategory.Utility]: {
-        type: ColorType.Blue,
+        type: 'blue',
         label: 'Utility',
     },
     [WhatsAppMessageTemplateCategory.Marketing]: {
-        type: ColorType.Light,
+        type: 'light',
         label: 'Marketing',
     },
     [WhatsAppMessageTemplateCategory.Authentication]: {
-        type: ColorType.Grey,
+        type: 'grey',
         label: 'Authentication',
     },
 }

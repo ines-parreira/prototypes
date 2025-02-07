@@ -1,10 +1,9 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import React, {useState} from 'react'
 
 import {EmailProvider} from 'models/integration/constants'
 import {EmailIntegration} from 'models/integration/types'
 import Alert from 'pages/common/components/Alert/Alert'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
@@ -88,7 +87,7 @@ export default function EmailVerification({
                     <div className="d-flex align-items-center">
                         <h3>Domain Verification</h3>
                         {!isDomainVerified && (
-                            <Badge className="ml-2" type={ColorType.LightError}>
+                            <Badge className="ml-2" type={'light-error'}>
                                 Required
                             </Badge>
                         )}

@@ -1,7 +1,7 @@
+import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
 import React, {useEffect} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {setAgentFeedbackMessageStatus} from 'state/agents/actions'
 
 import css from './FeedbackStatusBadge.less'
@@ -26,7 +26,11 @@ const FeedbackStatusBadge = ({status, resourceSection}: Props) => {
         }
     }, [dispatch, status, resourceSection])
 
-    const getStatusContent = () => {
+    const getStatusContent = (): {
+        text: string
+        icon: React.ReactNode
+        colorType: ColorType
+    } => {
         switch (status) {
             case FeedbackStatus.SAVING:
                 return {
@@ -34,22 +38,22 @@ const FeedbackStatusBadge = ({status, resourceSection}: Props) => {
                     icon: (
                         <i className="icon-custom icon-circle-o-notch md-spin" />
                     ),
-                    colorType: ColorType.LightGrey,
+                    colorType: 'light-grey',
                 }
             case FeedbackStatus.ERROR:
                 return {
                     text: 'error',
                     icon: <i className="material-icons">warning</i>,
-                    colorType: ColorType.LightError,
+                    colorType: 'light-error',
                 }
             case FeedbackStatus.SAVED:
                 return {
                     text: 'saved',
                     icon: <i className="material-icons">check_circle</i>,
-                    colorType: ColorType.LightSuccess,
+                    colorType: 'light-success',
                 }
             default:
-                return {text: '', icon: '', colorType: ColorType.LightSuccess}
+                return {text: '', icon: '', colorType: 'light-success'}
         }
     }
 

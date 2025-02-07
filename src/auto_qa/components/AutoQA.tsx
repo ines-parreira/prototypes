@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import cn from 'classnames'
 import moment from 'moment'
 import React, {useMemo} from 'react'
@@ -6,7 +6,6 @@ import {Link} from 'react-router-dom'
 
 import {TicketStatus} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {getTicket} from 'state/ticket/selectors'
 
 import {dimensionConfig} from '../config'
@@ -44,7 +43,7 @@ export default function AutoQA() {
                         can adjust both the scores and feedback to improve the
                         AI model.
                     </Tooltip>
-                    <Badge type={ColorType.Magenta}>BETA</Badge>
+                    <Badge type={'magenta'}>BETA</Badge>
                 </div>
                 <SaveBadge state={saveState} />
             </header>

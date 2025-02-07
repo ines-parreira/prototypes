@@ -1,7 +1,7 @@
+import {ColorType} from '@gorgias/merchant-ui-kit'
 import {ReactNode} from 'react'
 
 import {AlertBannerProps} from 'AlertBanners'
-import {ColorType} from 'pages/common/components/Badge/Badge'
 
 export type Infocard = {
     isHidden?: boolean

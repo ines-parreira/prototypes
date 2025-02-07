@@ -1,4 +1,4 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
+import {Label, Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import {Location} from 'history'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {cloneDeep, pick, set} from 'lodash'
@@ -14,7 +14,6 @@ import {
     isCustomField,
     isCustomFieldAIManagedType,
 } from 'custom-fields/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import Caption from 'pages/common/forms/Caption/Caption'
@@ -164,8 +163,8 @@ export default function FieldForm(props: FieldFormProps) {
                     <Badge
                         type={
                             props.field.deactivated_datetime
-                                ? ColorType.Classic
-                                : ColorType.Success
+                                ? 'classic'
+                                : 'success'
                         }
                     >
                         {props.field.deactivated_datetime

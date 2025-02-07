@@ -1,7 +1,6 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import Badge, {ColorType} from 'pages/common/components/Badge'
 import TicketTag from 'pages/common/components/TicketTag'
 
 import css from './MacrosSettingsItem.less'
@@ -18,7 +17,7 @@ export function MacrosSettingsItemTag({id, tags}: Props) {
             {tags.length > 1 && (
                 <>
                     <Tooltip target={id}>{tags.join(', ')}</Tooltip>
-                    <Badge type={ColorType.LightDark} corner="square">
+                    <Badge type={'light-dark'} corner="square">
                         +{tags.length - 1}
                     </Badge>
                 </>

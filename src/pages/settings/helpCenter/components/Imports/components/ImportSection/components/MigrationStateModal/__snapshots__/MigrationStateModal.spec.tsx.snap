@@ -91,7 +91,7 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
                   class="entryStats"
                 >
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-12-0-exported"
                     style="border-radius: 100px;"
                   >
@@ -103,7 +103,7 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
                     12
                   </div>
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-12-0-failed"
                     style="border-radius: 100px;"
                   >
@@ -128,7 +128,7 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
                   class="entryStats"
                 >
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-12-1-exported"
                     style="border-radius: 100px;"
                   >
@@ -140,7 +140,7 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
                     7
                   </div>
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-12-1-failed"
                     style="border-radius: 100px;"
                   >
@@ -165,7 +165,7 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
               class="header"
             >
               <div
-                class="badge headerCountBadge upperCase"
+                class="ui-badge-badge-7025 headerCountBadge ui-badge-uppercase-7025"
                 style="border-radius: 100px;"
               >
                 <i
@@ -741,7 +741,7 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
                   class="entryStats"
                 >
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-6-0-exported"
                     style="border-radius: 100px;"
                   >
@@ -753,7 +753,7 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
                     11
                   </div>
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-6-0-imported"
                     style="border-radius: 100px;"
                   >
@@ -765,7 +765,7 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
                     4
                   </div>
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-6-0-failed"
                     style="border-radius: 100px;"
                   >
@@ -790,7 +790,7 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
                   class="entryStats"
                 >
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-6-1-exported"
                     style="border-radius: 100px;"
                   >
@@ -802,7 +802,7 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
                     6
                   </div>
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-6-1-failed"
                     style="border-radius: 100px;"
                   >
@@ -827,7 +827,7 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
               class="header"
             >
               <div
-                class="badge headerCountBadge upperCase"
+                class="ui-badge-badge-7025 headerCountBadge ui-badge-uppercase-7025"
                 style="border-radius: 100px;"
               >
                 <i
@@ -1161,7 +1161,7 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
                   class="entryStats"
                 >
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-4-0-exported"
                     style="border-radius: 100px;"
                   >
@@ -1173,7 +1173,7 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
                     11
                   </div>
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-4-0-imported"
                     style="border-radius: 100px;"
                   >
@@ -1198,7 +1198,7 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
                   class="entryStats"
                 >
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-4-1-exported"
                     style="border-radius: 100px;"
                   >
@@ -1210,7 +1210,7 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
                     6
                   </div>
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-4-1-imported"
                     style="border-radius: 100px;"
                   >
@@ -1537,7 +1537,7 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
                   class="entryStats"
                 >
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-10-0-exported"
                     style="border-radius: 100px;"
                   >
@@ -1549,7 +1549,7 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
                     12
                   </div>
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-10-0-imported"
                     style="border-radius: 100px;"
                   >
@@ -1561,7 +1561,7 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
                     10
                   </div>
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-10-0-failed"
                     style="border-radius: 100px;"
                   >
@@ -1586,7 +1586,7 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
                   class="entryStats"
                 >
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-10-1-exported"
                     style="border-radius: 100px;"
                   >
@@ -1598,7 +1598,7 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
                     7
                   </div>
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-10-1-imported"
                     style="border-radius: 100px;"
                   >
@@ -1610,7 +1610,7 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
                     5
                   </div>
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-10-1-failed"
                     style="border-radius: 100px;"
                   >
@@ -1635,7 +1635,7 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
               class="header"
             >
               <div
-                class="badge headerCountBadge upperCase"
+                class="ui-badge-badge-7025 headerCountBadge ui-badge-uppercase-7025"
                 style="border-radius: 100px;"
               >
                 <i
@@ -1924,7 +1924,7 @@ exports[`<MigrationStateModal /> snapshots Succeeded 1`] = `
                   class="entryStats"
                 >
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-8-0-exported"
                     style="border-radius: 100px;"
                   >
@@ -1936,7 +1936,7 @@ exports[`<MigrationStateModal /> snapshots Succeeded 1`] = `
                     11
                   </div>
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-8-0-imported"
                     style="border-radius: 100px;"
                   >
@@ -1961,7 +1961,7 @@ exports[`<MigrationStateModal /> snapshots Succeeded 1`] = `
                   class="entryStats"
                 >
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-8-1-exported"
                     style="border-radius: 100px;"
                   >
@@ -1973,7 +1973,7 @@ exports[`<MigrationStateModal /> snapshots Succeeded 1`] = `
                     6
                   </div>
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     id="quick-summary-tooltip-8-1-imported"
                     style="border-radius: 100px;"
                   >

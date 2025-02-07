@@ -1,3 +1,4 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import {
     Expression,
     CallExpression as ESCallExpression,
@@ -12,7 +13,6 @@ import React, {useCallback, useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {BASIC_OPERATORS, UNARY_OPERATORS} from 'config'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {RootState} from 'state/types'
 import {updateFieldFilter} from 'state/views/actions'
 import * as viewsSelectors from 'state/views/selectors'
@@ -156,7 +156,7 @@ export const CallExpression = ({
                 field={field}
                 empty={Object.keys(UNARY_OPERATORS).includes(operator.name)}
             />
-            {!field && <Badge type={ColorType.Error}>System condition</Badge>}
+            {!field && <Badge type={'error'}>System condition</Badge>}
             <RemoveCallExpression onClick={removeCondition} index={index} />
         </div>
     )

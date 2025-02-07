@@ -1,10 +1,10 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React from 'react'
 import {Link} from 'react-router-dom'
 
 import imgSrc from 'assets/img/ai-agent/guidance-empty-state.png'
 import {SegmentEvent, logEvent} from 'common/segment'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 
@@ -44,7 +44,7 @@ export const GuidanceEmptyState = ({shopName}: Props) => {
                 <div className={css.innerContainer}>
                     <div className={css.content}>
                         <div>
-                            <Badge type={ColorType.Magenta}>
+                            <Badge type={'magenta'}>
                                 <i
                                     className={classNames(
                                         'material-icons',

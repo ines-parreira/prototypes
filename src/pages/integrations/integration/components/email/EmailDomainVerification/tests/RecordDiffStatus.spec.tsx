@@ -3,8 +3,6 @@ import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {ColorType} from 'pages/common/components/Badge'
-
 import RecordDiffStatus from '../components/RecordDiffStatus'
 
 jest.mock(
@@ -33,7 +31,7 @@ describe('EmailDomainVerificationDiffStatus', () => {
         const badge = screen.getByText('Missing value')
 
         expect(badge).toBeInTheDocument()
-        expect(badge).toHaveStyle({color: new RegExp(ColorType.LightDark)})
+        expect(badge).toHaveStyle({color: new RegExp('light-dark')})
     })
 
     it('renders Verified badge when isVerified is true', () => {
@@ -46,7 +44,7 @@ describe('EmailDomainVerificationDiffStatus', () => {
         const badge = screen.getByText('Verified')
 
         expect(badge).toBeInTheDocument()
-        expect(badge).toHaveStyle({color: new RegExp(ColorType.Success)})
+        expect(badge).toHaveStyle({color: new RegExp('success')})
     })
 
     it('joins currentValues before comparing', () => {
@@ -72,7 +70,7 @@ describe('EmailDomainVerificationDiffStatus', () => {
             const badge = screen.getByText('Mismatch')
 
             expect(badge).toBeInTheDocument()
-            expect(badge).toHaveStyle({color: new RegExp(ColorType.LightError)})
+            expect(badge).toHaveStyle({color: new RegExp('light-error')})
             expect(screen.getByText('example.com')).toBeInTheDocument()
             expect(screen.getByText('example.org')).toBeInTheDocument()
         })

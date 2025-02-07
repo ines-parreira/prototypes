@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React from 'react'
 
@@ -6,7 +6,6 @@ import {SegmentEvent, logEvent} from 'common/segment'
 import {OBJECT_TYPES} from 'custom-fields/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import useId from 'hooks/useId'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {isAdmin} from 'utils'
@@ -63,7 +62,7 @@ export function Heading() {
                     </span>
                 </>
             )}
-            <Badge type={ColorType.Blue} className="">
+            <Badge type={'blue'} className="">
                 BETA
             </Badge>
         </div>

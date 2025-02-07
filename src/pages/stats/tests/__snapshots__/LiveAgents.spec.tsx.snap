@@ -401,7 +401,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
               >
                 <div>
                   <div
-                    class="badge upperCase"
+                    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
                     style="border-radius: 100px;"
                   >
                     Online

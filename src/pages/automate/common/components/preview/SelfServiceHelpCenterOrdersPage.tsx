@@ -1,10 +1,10 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React from 'react'
 import {useHistory} from 'react-router-dom'
 
 import {HELP_CENTER_TEXTS} from 'config/helpCenter'
 import {HelpCenter} from 'models/helpCenter/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import MousePointer from './components/MousePointer'
 import {LINE_ITEMS} from './constants'
@@ -50,7 +50,7 @@ const SelfServiceHelpCenterOrdersPage = ({helpCenter}: Props) => {
             <div className={css.fulfillmentContainer}>
                 <div className={css.fulfillmentStatus}>
                     {orderManagementFlow === 'trackOrderPolicy' && (
-                        <Badge className={css.badge} type={ColorType.Success}>
+                        <Badge className={css.badge} type={'success'}>
                             {helpCenterTexts['fulfillmentStatus.in_transit']}
                         </Badge>
                     )}

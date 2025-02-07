@@ -1,9 +1,9 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import {screen, render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import moment from 'moment'
 import React, {ReactElement, ReactNode} from 'react'
 
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {assumeMock, getLastMockCall} from 'utils/testing'
 
@@ -14,11 +14,11 @@ import {getStringFromData, getValueFromData} from '../fieldDataMappers'
 jest.mock('pages/common/utils/DatetimeLabel', () => {
     return jest.fn(() => null)
 })
-jest.mock('pages/common/components/Badge/Badge', () => {
+jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
         __esModule: true,
-        ...jest.requireActual('pages/common/components/Badge/Badge'),
-        default: jest.fn(({children}: {children: ReactNode}) => children),
+        ...jest.requireActual('@gorgias/merchant-ui-kit'),
+        Badge: jest.fn(({children}: {children: ReactNode}) => children),
     } as Record<string, unknown>
 })
 jest.mock('pages/common/components/StarRating', () => {
@@ -132,7 +132,7 @@ describe('getValueFromData()', () => {
         (data) => {
             render(<>{getValueFromData(data, 'boolean')}</>)
             expect(getLastMockCall(BadgeMock)[0]).toEqual({
-                type: ColorType.Success,
+                type: 'success',
                 children: 'True',
             })
         }
@@ -143,7 +143,7 @@ describe('getValueFromData()', () => {
         (data) => {
             render(<>{getValueFromData(data, 'boolean')}</>)
             expect(getLastMockCall(BadgeMock)[0]).toEqual({
-                type: ColorType.Error,
+                type: 'error',
                 children: 'False',
             })
         }

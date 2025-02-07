@@ -1,7 +1,5 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
+import {LoadingSpinner, Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
-
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import {KnowledgeSourceType} from '../types'
 import ChatIcon from './icons/ChatIcon'
@@ -37,14 +35,14 @@ export const KnowledgeResourceLine: React.FC<Props> = ({
             <div className={css.resource}>{name}</div>
             <div className={css.status}>
                 {isReady ? (
-                    <Badge type={ColorType.LightSuccess}>
+                    <Badge type={'light-success'}>
                         <React.Fragment key=".0">
                             <i className="material-icons">check_circle</i>
                             <div>Ready</div>
                         </React.Fragment>
                     </Badge>
                 ) : (
-                    <Badge type={ColorType.LightGrey}>
+                    <Badge type={'light-grey'}>
                         <React.Fragment key=".0">
                             <LoadingSpinner
                                 className={css.spinner}

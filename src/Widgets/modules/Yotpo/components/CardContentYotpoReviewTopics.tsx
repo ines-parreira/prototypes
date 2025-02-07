@@ -1,6 +1,5 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React, {ReactNode} from 'react'
-
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import css from './CardContentYotpoReviewTopics.less'
 
@@ -14,7 +13,7 @@ export function CardContentYotpoReviewTopics({children}: Props) {
     if (children) {
         Object.keys(children).forEach((key) => {
             topics.push(
-                <Badge key={key} className={css.topic} type={ColorType.Light}>
+                <Badge key={key} className={css.topic} type={'light'}>
                     {children[key]}
                 </Badge>
             )

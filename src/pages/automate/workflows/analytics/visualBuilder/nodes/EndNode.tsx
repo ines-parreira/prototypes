@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {memo} from 'react'
 import {Handle, NodeProps, Position, useNodeId} from 'reactflow'
@@ -17,7 +17,6 @@ import useWorkflowDropoffMetricTiers from 'pages/automate/workflows/hooks/useWor
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {getDropoffColor} from 'pages/automate/workflows/utils/getDropOffColor'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import EdgeBlock from '../components/EdgeBlock'
 
@@ -54,7 +53,7 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
             <div className={classNames(css.node, css.endNode)}>
                 <div className={css.endNodeHeader}>
                     <div>
-                        <Badge type={ColorType.Light}>end</Badge>
+                        <Badge type={'light'}>end</Badge>
                     </div>
                     <div className={css.endNodeTitle}>
                         <div>

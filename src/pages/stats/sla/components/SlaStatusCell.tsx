@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import React, {Fragment} from 'react'
 
 import useId from 'hooks/useId'
@@ -6,7 +6,6 @@ import {
     TicketSLADimension,
     TicketSLAStatus,
 } from 'models/reporting/cubes/sla/TicketSLACube'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {formatDuration} from 'pages/stats/common/utils'
 import {SlaStatusLabel} from 'services/reporting/constants'
 
@@ -60,8 +59,8 @@ export const SLAStatusCell = ({
                 id={badgeId}
                 type={
                     ticketStatus === TicketSLAStatus.Satisfied
-                        ? ColorType.LightSuccess
-                        : ColorType.LightWarning
+                        ? 'light-success'
+                        : 'light-warning'
                 }
             >
                 {SlaStatusLabel[ticketStatus]}

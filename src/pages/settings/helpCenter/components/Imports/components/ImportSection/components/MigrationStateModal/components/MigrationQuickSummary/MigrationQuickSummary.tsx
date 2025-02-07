@@ -1,8 +1,7 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import React, {useMemo} from 'react'
 
 import useId from 'hooks/useId'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import css from './MigrationQuickSummary.less'
 
@@ -56,7 +55,7 @@ const MigrationQuickSummary: React.FC<Props> = ({
                                 {/* Always show exported, even if 0 */}
                                 <Badge
                                     id={getBadgeId(idx, 'exported')}
-                                    type={ColorType.Blue}
+                                    type={'blue'}
                                 >
                                     <i className="material-icons mr-2">
                                         upload
@@ -66,7 +65,7 @@ const MigrationQuickSummary: React.FC<Props> = ({
                                 {entry.imported > 0 && (
                                     <Badge
                                         id={getBadgeId(idx, 'imported')}
-                                        type={ColorType.LightSuccess}
+                                        type={'light-success'}
                                     >
                                         <i className="material-icons mr-2">
                                             check_circle
@@ -77,7 +76,7 @@ const MigrationQuickSummary: React.FC<Props> = ({
                                 {entry.failed > 0 && (
                                     <Badge
                                         id={getBadgeId(idx, 'failed')}
-                                        type={ColorType.LightError}
+                                        type={'light-error'}
                                     >
                                         <i className="material-icons mr-2">
                                             error_outline

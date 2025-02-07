@@ -1,14 +1,11 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
-
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import {LlmTriggeredExecution} from '../types'
 
-const success = <Badge type={ColorType.LightSuccess}>SUCCESS</Badge>
-const error = <Badge type={ColorType.LightError}>ERROR</Badge>
-const partial_success = (
-    <Badge type={ColorType.LightWarning}>PARTIAL SUCCESS</Badge>
-)
+const success = <Badge type={'light-success'}>SUCCESS</Badge>
+const error = <Badge type={'light-error'}>ERROR</Badge>
+const partial_success = <Badge type={'light-warning'}>PARTIAL SUCCESS</Badge>
 
 export default function ActionStatus({
     status,

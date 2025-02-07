@@ -1,3 +1,4 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React from 'react'
 
@@ -6,7 +7,6 @@ import {SegmentEvent, logEvent} from 'common/segment'
 import {GuidanceAiSuggestionsList} from 'pages/aiAgent/components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {AIGuidance} from 'pages/aiAgent/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 
@@ -36,7 +36,7 @@ const AiGuidanceEmptyState = ({aiGuidances, shopName}: Props) => {
                 <div className={css.innerContainer}>
                     <div className={css.content}>
                         <div>
-                            <Badge type={ColorType.Magenta}>
+                            <Badge type={'magenta'}>
                                 <i
                                     className={classNames(
                                         'material-icons',

@@ -1,9 +1,8 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import {Label, Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 import {Link} from 'react-router-dom'
 
 import {CustomFieldRequirementType} from 'custom-fields/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import css from 'pages/settings/customFields/components/RequirementTypeInput.less'
 
@@ -18,7 +17,7 @@ export default function RequirementTypeInput(props: RequirementTypeInputProps) {
         <div className={props.className}>
             <div className={css.visibilityHeader}>
                 <Label>Field visibility</Label>
-                <Badge type={ColorType.Blue}>BETA</Badge>
+                <Badge type={'blue'}>BETA</Badge>
             </div>
             <p className="mb-2">
                 Configure fields to always appear, or only when specific

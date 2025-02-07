@@ -1,10 +1,10 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import _get from 'lodash/get'
 import moment from 'moment'
 import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
 
 import {ABGroup} from 'models/convert/campaign/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -222,7 +222,7 @@ const VariantsList: React.FC<Props> = ({
                                         </Link>
                                         {variant.isWinner && (
                                             <div className={css.winnerBadge}>
-                                                <Badge type={ColorType.Blue}>
+                                                <Badge type={'blue'}>
                                                     Winner
                                                 </Badge>
                                             </div>

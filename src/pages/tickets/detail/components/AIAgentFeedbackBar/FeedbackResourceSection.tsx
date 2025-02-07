@@ -1,11 +1,9 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React from 'react'
 import {useCookies} from 'react-cookie'
 
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import {SegmentEvent} from '../../../../../common/segment'
 import {logEventWithSampling} from '../../../../../common/segment/segment'
@@ -178,8 +176,8 @@ export const FeedbackResourceSection: React.FC<
                     style={{textTransform: 'capitalize', flexShrink: 0}}
                     type={
                         resource.status === ActionStatus.CONFIRMED
-                            ? ColorType.LightSuccess
-                            : ColorType.Error
+                            ? 'light-success'
+                            : 'error'
                     }
                 >
                     <div>{resource.status}</div>

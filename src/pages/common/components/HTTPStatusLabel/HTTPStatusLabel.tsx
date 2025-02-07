@@ -1,7 +1,6 @@
+import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
 import HTTPStatus from 'httpstatus'
 import React from 'react'
-
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 type Props = {
     hasNoRequest?: boolean
@@ -11,13 +10,13 @@ type Props = {
 const getHTTPStatusColor = (status: HTTPStatus) => {
     switch (true) {
         case status.isClientError || status.isServerError:
-            return ColorType.Error
+            return 'error'
         case status.isSuccess:
-            return ColorType.Success
+            return 'success'
         case status.isRedirection:
-            return ColorType.Classic
+            return 'classic'
         default:
-            return ColorType.Grey
+            return 'grey'
     }
 }
 
@@ -25,13 +24,14 @@ export default function HTTPStatusLabel({
     statusCode,
     hasNoRequest = false,
 }: Props) {
-    let desc, color
+    let desc = ''
+    let color: ColorType = 'grey'
     if (hasNoRequest) {
         desc = 'FAILED TO BUILD REQUEST'
-        color = ColorType.Error
+        color = 'error'
     } else if (!statusCode) {
         desc = 'HTTP REQUEST FAILED'
-        color = ColorType.Error
+        color = 'error'
     } else {
         const status = new HTTPStatus(statusCode)
         desc =

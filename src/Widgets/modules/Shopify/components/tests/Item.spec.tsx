@@ -6,12 +6,12 @@ import {itemCustomization} from '../Item'
 import {OrderContext} from '../Order'
 
 // Mock Badge component
-jest.mock('pages/common/components/Badge/Badge', () => ({
+jest.mock('@gorgias/merchant-ui-kit', () => ({
     __esModule: true,
     ColorType: {
         Warning: 'warning',
     },
-    default: ({children}: {children: React.ReactNode}) => (
+    Badge: ({children}: {children: React.ReactNode}) => (
         <div data-testid="badge">{children}</div>
     ),
 }))

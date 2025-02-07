@@ -1,7 +1,6 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import React, {useCallback, useState} from 'react'
 
-import Badge, {ColorType} from './Badge/Badge'
 import css from './LegacyPlanBadge.less'
 
 export default function LegacyPlanBadge() {
@@ -16,7 +15,7 @@ export default function LegacyPlanBadge() {
 
     return (
         <div className="d-inline-flex cursor-pointer" ref={handleRef}>
-            <Badge type={ColorType.Error}>
+            <Badge type={'error'}>
                 <i className="material-icons">warning</i>
                 <div className="ml-1">LEGACY PLAN</div>
             </Badge>

@@ -1,8 +1,8 @@
+import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
 import {fromJS, List, Map} from 'immutable'
 import React, {Component, ContextType, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
@@ -40,13 +40,13 @@ function getIntegrationData(
 }
 
 export const statusColors: Record<string, ColorType> = {
-    new: ColorType.Classic,
-    pending: ColorType.Classic,
-    processing: ColorType.Classic,
-    complete: ColorType.Success,
-    on_hold: ColorType.Warning,
-    canceled: ColorType.Error,
-    closed: ColorType.Error,
+    new: 'classic',
+    pending: 'classic',
+    processing: 'classic',
+    complete: 'success',
+    on_hold: 'warning',
+    canceled: 'error',
+    closed: 'error',
 }
 
 type BeforeContentProps = ConnectedProps<typeof connectorBeforeContent> & {

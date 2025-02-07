@@ -1,7 +1,7 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import cn from 'classnames'
 import React, {Fragment, useMemo, useState} from 'react'
 
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Collapse from 'pages/common/components/Collapse/Collapse'
 
 import css from './MigrationFailuresDetails.less'
@@ -45,10 +45,7 @@ const MigrationFailuresDetails: React.FC<Props> = ({title, sections}) => {
                 })}
                 onClick={handleToggle}
             >
-                <Badge
-                    className={css.headerCountBadge}
-                    type={ColorType.LightError}
-                >
+                <Badge className={css.headerCountBadge} type={'light-error'}>
                     <i className="material-icons mr-2">error_outline</i>
                     {totalCount}
                 </Badge>

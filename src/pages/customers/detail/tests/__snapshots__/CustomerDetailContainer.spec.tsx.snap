@@ -59,7 +59,7 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
             class="meta"
           >
             <div
-              class="badge statusLabel upperCase"
+              class="ui-badge-badge-7025 statusLabel ui-badge-uppercase-7025"
               style="border-radius: 100px;"
             >
               open

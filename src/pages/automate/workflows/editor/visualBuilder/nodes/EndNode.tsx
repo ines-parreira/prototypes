@@ -1,3 +1,4 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React, {memo, useMemo} from 'react'
 import {NodeProps} from 'reactflow'
 
@@ -11,7 +12,6 @@ import {
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import EdgeBlock from '../components/EdgeBlock'
 import VisualBuilderNode from './VisualBuilderNode'
@@ -39,7 +39,7 @@ const EndNode = memo(function EndNode({
                 target={false}
                 height={74}
             >
-                <Badge type={ColorType.Light}>end</Badge>
+                <Badge type={'light'}>end</Badge>
                 <VisualBuilderNodeIconContent
                     icon={endNodeActionIconByAction[action]}
                 >

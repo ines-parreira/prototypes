@@ -1,10 +1,10 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import {Map} from 'immutable'
 import React, {ReactNode, useContext} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
 import useAppSelector from 'hooks/useAppSelector'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {EditionContext} from 'providers/infobar/EditionContext'
@@ -47,13 +47,13 @@ const AfterTitle = ({isEditing, source}: AfterTitleProps) => {
 }
 
 const OpenStatus = () => (
-    <Badge className={css.badge} type={ColorType.Grey}>
+    <Badge className={css.badge} type="grey">
         Open
     </Badge>
 )
 
 const InvoiceSentStatus = () => (
-    <Badge className={css.badge} type={ColorType.LightYellow}>
+    <Badge className={css.badge} type={'light-yellow'}>
         Invoice Sent
     </Badge>
 )

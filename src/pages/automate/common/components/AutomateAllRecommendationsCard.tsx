@@ -1,7 +1,7 @@
 import {Card} from '@gorgias/analytics-ui-kit'
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import {TooltipData} from 'pages/stats/types'
@@ -85,7 +85,7 @@ const AutomateAllRecommendationsCard = ({
                 <div className={css.title}>
                     <span>Top questions from customers</span>
                     {!isLoading && displayNewBadge && (
-                        <Badge type={ColorType.LightSuccess}>
+                        <Badge type={'light-success'}>
                             {`${totalItemsCount} `}NEW
                         </Badge>
                     )}

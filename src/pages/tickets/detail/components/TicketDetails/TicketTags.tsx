@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Badge, Tooltip, BadgeIcon} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import {List, Map} from 'immutable'
 import _uniqueId from 'lodash/uniqueId'
@@ -7,7 +7,6 @@ import React, {ComponentProps, useMemo, useState} from 'react'
 import {getElementWrapInfo} from 'common/utils'
 import useCallbackRef from 'hooks/useCallbackRef'
 import useElementSize from 'hooks/useElementSize'
-import Badge, {BadgeIcon, ColorType} from 'pages/common/components/Badge'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import TicketTag from 'pages/common/components/TicketTag'
@@ -148,7 +147,7 @@ const TicketTags = ({
                         <Badge
                             id={`expand-tags-badge-${uniqueId}`}
                             className={css.displayMore}
-                            type={ColorType.LightDark}
+                            type={'light-dark'}
                             corner="square"
                             upperCase={false}
                             onClick={() => setShowAllTags(!showAllTags)}

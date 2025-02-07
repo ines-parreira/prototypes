@@ -1,3 +1,4 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React, {useState} from 'react'
 
 import useInterval from 'hooks/useInterval'
@@ -7,7 +8,6 @@ import {
     getFormattedDurationOngoingCall,
     isFinalVoiceCallStatus,
 } from 'models/voiceCall/utils'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 interface TicketVoiceCallDurationProps {
     voiceCall: VoiceCall
@@ -57,7 +57,7 @@ export default function TicketVoiceCallDuration({
 
     return (
         <Badge
-            type={isFinalStatus ? ColorType.LightGrey : ColorType.LightSuccess}
+            type={isFinalStatus ? 'light-grey' : 'light-success'}
             upperCase={false}
         >
             {isFinalStatus

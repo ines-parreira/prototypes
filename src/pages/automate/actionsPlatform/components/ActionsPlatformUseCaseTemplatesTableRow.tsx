@@ -1,8 +1,8 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import {DateAndTimeFormatting} from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -38,7 +38,7 @@ const ActionsPlatformUseCaseTemplatesTableRow = ({
     return (
         <TableBodyRow onClick={isDisabled ? undefined : onClick}>
             <BodyCell innerClassName={css.nameCell}>
-                <Badge type={ColorType.LightPurple}>{template.category}</Badge>
+                <Badge type={'light-purple'}>{template.category}</Badge>
                 <img
                     src={app?.icon}
                     alt={app?.name}

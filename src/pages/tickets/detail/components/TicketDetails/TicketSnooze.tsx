@@ -1,9 +1,8 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import React, {useRef} from 'react'
 
 import {DateAndTimeFormatting} from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {formatDatetime} from 'utils'
 
 import css from './TicketSnooze.less'
@@ -24,7 +23,7 @@ const TicketSnooze = ({datetime, timezone}: Props) => {
     return (
         <>
             <span ref={badgeRef} className={css.badge}>
-                <Badge type={ColorType.Blue}>Snoozed</Badge>
+                <Badge type={'blue'}>Snoozed</Badge>
             </span>
             <Tooltip placement="bottom" target={badgeRef}>
                 {'Snoozed until '}

@@ -95,7 +95,7 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
             Status
           </label>
           <div
-            class="badge upperCase"
+            class="ui-badge-badge-7025 ui-badge-uppercase-7025"
             style="border-radius: 100px;"
           >
             ACTIVE
@@ -351,7 +351,7 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
             Status
           </label>
           <div
-            class="badge upperCase"
+            class="ui-badge-badge-7025 ui-badge-uppercase-7025"
             style="border-radius: 100px;"
           >
             ACTIVE

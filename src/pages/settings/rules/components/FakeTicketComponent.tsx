@@ -1,6 +1,5 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
-
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import css from './FakeTicketComponent.less'
 
@@ -15,7 +14,7 @@ const FakeTicket = ({title, description, closed}: FakeTicketProps) => (
             <span className={css.fakeTicketTitle}>{title}</span>
             {closed && (
                 <Badge
-                    type={ColorType.Error}
+                    type={'error'}
                     className={css.fakeTicketClosed}
                     style={{
                         backgroundColor: '#ffeaea',

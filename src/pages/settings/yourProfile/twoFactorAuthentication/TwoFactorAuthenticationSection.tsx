@@ -1,10 +1,10 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {useEffect, useMemo, useState} from 'react'
 
 import {DateAndTimeFormatting} from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import css from 'pages/settings/settings.less'
@@ -57,7 +57,7 @@ export default function TwoFactorAuthenticationSection() {
                 Two-Factor Authentication (2FA)
                 <Badge
                     className="ml-3 "
-                    type={has2FAEnabled ? ColorType.Success : ColorType.Error}
+                    type={has2FAEnabled ? 'success' : 'error'}
                 >
                     {has2FAEnabled ? '2FA Enabled' : '2FA Disabled'}
                 </Badge>

@@ -1,8 +1,8 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React from 'react'
 
 import {useGetHTTPEvent} from 'models/integration/queries/http'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import HTTPStatusLabel from 'pages/common/components/HTTPStatusLabel/HTTPStatusLabel'
 import Loader from 'pages/common/components/Loader/Loader'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
@@ -143,7 +143,7 @@ export function Event({integrationId, eventId}: Props) {
                         {requestJSONParams && (
                             <>
                                 {request.method.toLowerCase() === 'get' && (
-                                    <Badge type={ColorType.Warning}>
+                                    <Badge type={'warning'}>
                                         JSON Params are not compatible with the
                                         GET HTTP Method.
                                     </Badge>

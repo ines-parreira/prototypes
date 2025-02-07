@@ -220,7 +220,7 @@ exports[`Charge BeforeContent should display default color if there's no matchin
       class="fieldValue"
     >
       <div
-        class="badge upperCase"
+        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
         style="border-radius: 100px;"
       >
         Foobar
@@ -245,7 +245,7 @@ exports[`Charge BeforeContent should display the appropriate color if there's a 
       class="fieldValue"
     >
       <div
-        class="badge upperCase"
+        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
         style="border-radius: 100px;"
       >
         Error

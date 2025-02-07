@@ -1,11 +1,10 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React from 'react'
 import {Card, CardBody, CardTitle} from 'reactstrap'
 
 import {Customer} from 'models/customer/types'
 import {PickedCustomerWithHighlights} from 'models/search/types'
-
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import css from 'pages/common/components/infobar/Infobar.less'
 import {customerHighlightsTransform} from 'pages/common/components/Spotlight/helpers'
@@ -71,7 +70,7 @@ export const InfobarSearchResultsList = ({
                                         <span>
                                             {isDefaultCustomer && (
                                                 <Badge
-                                                    type={ColorType.Grey}
+                                                    type="grey"
                                                     className="ml-2"
                                                 >
                                                     Current Customer

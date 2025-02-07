@@ -1,7 +1,7 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React, {useState} from 'react'
 import {ListGroup, ListGroupItem} from 'reactstrap'
 
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import css from 'pages/common/components/ProductAutomations/ProductAutomations.less'
 import ProductRecommendationScenarioPicker from 'pages/convert/campaigns/components/ProductRecommendationScenarioPicker/ProductRecommendationScenarioPicker'
@@ -31,7 +31,7 @@ const ProductAutomations = ({
     }
 
     const AiBadgeElement = (
-        <Badge type={ColorType.Magenta} className={css.badge}>
+        <Badge type={'magenta'} className={css.badge}>
             <i className="material-icons">auto_awesome</i>ai powered
         </Badge>
     )

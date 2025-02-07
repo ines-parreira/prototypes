@@ -1,3 +1,4 @@
+import {ColorType} from '@gorgias/merchant-ui-kit'
 import _capitalize from 'lodash/capitalize'
 import _minBy from 'lodash/minBy'
 
@@ -10,7 +11,6 @@ import {
     ProductType,
     SMSOrVoicePlan,
 } from 'models/billing/types'
-import {ColorType} from 'pages/common/components/Badge/Badge'
 
 import {
     formatAmount,
@@ -18,12 +18,12 @@ import {
 } from '../../pages/settings/new_billing/utils/formatAmount'
 
 export const PLAN_NAME_TO_BADGE_COLOR: Record<string, ColorType> = {
-    Basic: ColorType.Classic,
-    Pro: ColorType.Indigo,
-    Advanced: ColorType.Success,
-    Custom: ColorType.Warning,
-    Enterprise: ColorType.Warning,
-    Free: ColorType.Purple,
+    Basic: 'classic',
+    Pro: 'indigo',
+    Advanced: 'success',
+    Custom: 'warning',
+    Enterprise: 'warning',
+    Free: 'purple',
 }
 
 export function isHelpdesk(plan: Plan): plan is HelpdeskPlan {

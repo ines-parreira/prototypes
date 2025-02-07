@@ -1,8 +1,8 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React, {useState} from 'react'
 import {Container, Collapse, Row, Col} from 'reactstrap'
 
 import {ProductDetails} from 'models/ticket/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import StarRating from 'pages/common/components/StarRating'
 import {getIconFromUrl} from 'utils'
 
@@ -87,7 +87,7 @@ export default function ProductEmbeddedCard(props: Props) {
                                             Category:
                                         </td>
                                         <th>
-                                            <Badge type={ColorType.Grey}>
+                                            <Badge type="grey">
                                                 {product.category.name}
                                             </Badge>
                                         </th>

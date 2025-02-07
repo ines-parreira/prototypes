@@ -3,9 +3,12 @@ import React from 'react'
 
 import SaveBadge from '../SaveBadge'
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
-    LoadingSpinner: () => <div>Spinner</div>,
-}))
+jest.mock('@gorgias/merchant-ui-kit', () => {
+    return {
+        ...jest.requireActual('@gorgias/merchant-ui-kit'),
+        LoadingSpinner: () => <div>Spinner</div>,
+    } as Record<string, unknown>
+})
 
 describe('SaveBadge', () => {
     it('should return null if the state is idle', () => {

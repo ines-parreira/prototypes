@@ -1,3 +1,4 @@
+import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
 import {fromJS, Map, List} from 'immutable'
 import React, {
     ContextType,
@@ -10,7 +11,6 @@ import {connect, ConnectedProps} from 'react-redux'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import type {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
@@ -192,12 +192,12 @@ const connectorAfterTitle = connect(makeGetIntegrationData)
 const ConnectedAfterTitle = connectorAfterTitle(AfterTitle)
 
 const chargeStatusColors: Record<string, ColorType> = {
-    success: ColorType.Success,
-    error: ColorType.Error,
-    queued: ColorType.Grey,
-    partially_refunded: ColorType.Warning,
-    refunded: ColorType.Warning,
-    skipped: ColorType.Classic,
+    success: 'success',
+    error: 'error',
+    queued: 'grey',
+    partially_refunded: 'warning',
+    refunded: 'warning',
+    skipped: 'classic',
 }
 
 type BeforeContentProps = {

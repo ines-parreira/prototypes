@@ -1,7 +1,7 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React from 'react'
 
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {assetsUrl} from 'utils'
 
 import css from './Detail.less'
@@ -42,7 +42,7 @@ export default function Header(props: ProductDetail) {
                                 type={
                                     typeof category !== 'string'
                                         ? category.type
-                                        : ColorType.Grey
+                                        : 'grey'
                                 }
                                 className={css.badge}
                             >

@@ -77,7 +77,7 @@ exports[`components utils: labels <TeamLabel/> render() should render without av
 
 exports[`components utils: labels <TimedeltaLabel/> render() should render with day duration 1`] = `
 <div
-  class="badge text-center upperCase"
+  class="ui-badge-badge-7025 text-center ui-badge-uppercase-7025"
   style="border-radius: 100px;"
 >
   1 day(s)
@@ -86,7 +86,7 @@ exports[`components utils: labels <TimedeltaLabel/> render() should render with 
 
 exports[`components utils: labels <TimedeltaLabel/> render() should render with hour duration 1`] = `
 <div
-  class="badge text-center upperCase"
+  class="ui-badge-badge-7025 text-center ui-badge-uppercase-7025"
   style="border-radius: 100px;"
 >
   1 hour(s)
@@ -95,7 +95,7 @@ exports[`components utils: labels <TimedeltaLabel/> render() should render with 
 
 exports[`components utils: labels <TimedeltaLabel/> render() should render with minute duration 1`] = `
 <div
-  class="badge text-center upperCase"
+  class="ui-badge-badge-7025 text-center ui-badge-uppercase-7025"
   style="border-radius: 100px;"
 >
   1 minute(s)
@@ -225,7 +225,7 @@ exports[`components utils: labels RenderLabel distribution integrations label 1`
 
 exports[`components utils: labels RenderLabel distribution status label 1`] = `
 <div
-  class="badge text-center upperCase"
+  class="ui-badge-badge-7025 text-center ui-badge-uppercase-7025"
   style="border-radius: 100px;"
 >
   open

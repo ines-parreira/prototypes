@@ -1,3 +1,4 @@
+import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import {Emoji} from 'emoji-mart'
 import {Map} from 'immutable'
@@ -10,7 +11,6 @@ import useAppSelector from 'hooks/useAppSelector'
 
 import {SourceType} from 'models/ticket/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import TicketTag from 'pages/common/components/TicketTag'
 import {getHumanAgents} from 'state/agents/selectors'
@@ -189,10 +189,7 @@ export const TimedeltaLabel = ({
         : null
 
     return (
-        <Badge
-            className={classnames('text-center', className)}
-            type={ColorType.Grey}
-        >
+        <Badge className={classnames('text-center', className)} type="grey">
             {durationArray.join(',')}
         </Badge>
     )
@@ -205,14 +202,14 @@ export const StatusLabel = ({
     className?: string
     status: string
 }) => {
-    let color: ColorType = ColorType.Modern
+    let color: ColorType = 'modern'
 
     switch (status) {
         case 'open':
-            color = ColorType.Classic
+            color = 'classic'
             break
         case 'closed':
-            color = ColorType.Grey
+            color = 'grey'
             break
         default:
     }
@@ -272,19 +269,19 @@ export const RoleLabel = ({role}: {role: {id?: number; name: UserRole}}) => {
     let label = null
 
     if (role.name === UserRole.Admin) {
-        color = ColorType.LightError
+        color = 'light-error'
         label = 'Admin'
     } else if (role.name === UserRole.Agent) {
-        color = ColorType.LightWarning
+        color = 'light-warning'
         label = 'Lead'
     } else if (role.name === UserRole.BasicAgent) {
-        color = ColorType.Teal
+        color = 'teal'
         label = 'Basic'
     } else if (role.name === UserRole.LiteAgent) {
-        color = ColorType.LightPurple
+        color = 'light-purple'
         label = 'Lite'
     } else if (role.name === UserRole.ObserverAgent) {
-        color = ColorType.LightGrey
+        color = 'light-grey'
         label = 'Observer'
     }
 

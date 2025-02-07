@@ -1,7 +1,7 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 import {useHistory} from 'react-router-dom'
 
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import {assetsUrl} from 'utils'
@@ -16,7 +16,7 @@ const AILibraryBanner = () => {
         <div className={css.container}>
             <div className={css.wrapper}>
                 <div className={css.bannerContent}>
-                    <Badge type={ColorType.Magenta} className={css.badge}>
+                    <Badge type={'magenta'} className={css.badge}>
                         <i className="material-icons">auto_awesome</i>ai powered
                     </Badge>
                     <div className={css.bannerTitle}>

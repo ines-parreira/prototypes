@@ -1,8 +1,8 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React, {useEffect, useState} from 'react'
 
 import useInterval from 'hooks/useInterval'
 import {getFormattedDurationOngoingCall} from 'models/voiceCall/utils'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import css from './VoiceCallTimerBadge.less'
 
@@ -24,7 +24,7 @@ export default function VoiceCallTimerBadge({datetime}: Props) {
     }, 1000)
 
     return (
-        <Badge type={ColorType.LightGrey} className={css.badge}>
+        <Badge type={'light-grey'} className={css.badge}>
             <i className="icon material-icons-outlined">timer</i>
             <div>{displayedDuration}</div>
         </Badge>

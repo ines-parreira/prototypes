@@ -1,6 +1,5 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React, {ReactNode} from 'react'
-
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import css from './CardHeaderYotpoReviewStatistics.less'
 
@@ -14,7 +13,7 @@ export function CardHeaderYotpoReviewStatistics({children}: Props) {
         <span className={css.container}>
             <span className={`material-icons ${css.star}`}>chat_bubble</span>
             <span>Reviews</span>
-            <Badge className={css.pill} type={ColorType.DarkGrey}>
+            <Badge className={css.pill} type="dark-grey">
                 {children}
             </Badge>
         </span>

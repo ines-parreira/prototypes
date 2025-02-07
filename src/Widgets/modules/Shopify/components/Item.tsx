@@ -1,7 +1,6 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import {fromJS, List, Map} from 'immutable'
 import React, {createContext, FunctionComponent, useContext} from 'react'
-
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import {StaticField} from 'Widgets/modules/Template/modules/Field'
 
@@ -22,7 +21,7 @@ const BeforeContent = () => {
 
     return (
         <StaticField label="Refunded">
-            <Badge type={ColorType.Warning}>
+            <Badge type={'warning'}>
                 {refundedQuantity} item{refundedQuantity > 1 && 's'}
             </Badge>
         </StaticField>

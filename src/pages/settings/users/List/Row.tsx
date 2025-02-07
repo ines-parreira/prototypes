@@ -1,10 +1,10 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import cs from 'classnames'
 import React from 'react'
 import {Link} from 'react-router-dom'
 
 import {AvailabilityStatusTag, User} from 'config/types/user'
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {RoleLabel} from 'pages/common/utils/labels'
 import {toJS} from 'utils'
 
@@ -43,18 +43,14 @@ const Row = ({agent, isAccountOwner = false}: Props) => {
                 <span className={cs(css.cell, css.email)}>{agent.email}</span>
                 <span className={cs(css.cell, css.role)}>
                     {isAccountOwner ? (
-                        <Badge type={ColorType.Blue}>Account Owner</Badge>
+                        <Badge type={'blue'}>Account Owner</Badge>
                     ) : (
                         <RoleLabel role={toJS(agent.role)} />
                     )}
                 </span>
                 <span className={cs(css.cell, css.twoFA)}>
                     <Badge
-                        type={
-                            has2FaEnabled
-                                ? ColorType.LightSuccess
-                                : ColorType.LightError
-                        }
+                        type={has2FaEnabled ? 'light-success' : 'light-error'}
                     >
                         {has2FaEnabled ? 'Enabled' : 'Disabled'}
                     </Badge>

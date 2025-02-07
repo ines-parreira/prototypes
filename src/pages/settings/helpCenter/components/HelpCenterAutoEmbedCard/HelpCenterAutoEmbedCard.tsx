@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 import React from 'react'
@@ -7,7 +7,6 @@ import {Link, useHistory} from 'react-router-dom'
 import {SegmentEvent, logEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {HelpCenterPageEmbedment} from 'models/helpCenter/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import {EmbeddablePage} from 'pages/common/components/PageEmbedmentForm/types'
 import {linkToShopifyIntegration} from 'pages/settings/contactForm/utils/navigation'
@@ -39,11 +38,7 @@ const CardContent = (props: {
                 {!hasEmbeddedPages && (
                     <Badge
                         className={css.badge}
-                        type={
-                            isDisabled
-                                ? ColorType.Light
-                                : ColorType.LightSuccess
-                        }
+                        type={isDisabled ? 'light' : 'light-success'}
                     >
                         RECOMMENDED
                     </Badge>

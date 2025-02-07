@@ -1,8 +1,6 @@
 import {EmailDNSRecord} from '@gorgias/api-queries'
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
-
-import Badge, {ColorType} from 'pages/common/components/Badge'
 
 import CharDiff from './CharDiff'
 import css from './EmailDomainVerificationDiffStatus.less'
@@ -28,16 +26,16 @@ export default function RecordDiffStatus({record}: Props) {
     const truncatedCurrentValue = currentValue.slice(0, MAX_CHARS)
 
     if (verified) {
-        return <Badge type={ColorType.Success}>Verified</Badge>
+        return <Badge type={'success'}>Verified</Badge>
     }
 
     if (!currentValue) {
-        return <Badge type={ColorType.LightDark}>Missing value</Badge>
+        return <Badge type={'light-dark'}>Missing value</Badge>
     }
 
     return (
         <div className={css.container}>
-            <Badge type={ColorType.LightError}>
+            <Badge type={'light-error'}>
                 Mismatch{' '}
                 <>
                     <i id="mismatch-icon" className="material-icons">

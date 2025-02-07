@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import {Label, Badge} from '@gorgias/merchant-ui-kit'
 import {JSONPath} from 'jsonpath-plus'
 import _isString from 'lodash/isString'
 import _noop from 'lodash/noop'
@@ -6,7 +6,6 @@ import React, {useMemo, useRef, useState} from 'react'
 
 import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
 import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -39,12 +38,12 @@ type Props = {
 
 const getBadgeType = (status: number) => {
     if (status >= 200 && status < 300) {
-        return ColorType.LightSuccess
+        return 'light-success'
     }
     if (status >= 400) {
-        return ColorType.LightError
+        return 'light-error'
     }
-    return ColorType.Grey
+    return 'grey'
 }
 
 // [...] HTTP/2 does not support status messages.

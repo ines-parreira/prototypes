@@ -1,3 +1,4 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import cssNavbar from 'assets/css/navbar.less'
@@ -5,7 +6,6 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {OBJECT_TYPES} from 'custom-fields/constants'
 import {IntegrationType} from 'models/integration/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {CONTACT_FORM_PAGE_TITLE} from 'pages/settings/contactForm/constants'
 
 import {
@@ -81,7 +81,7 @@ export const NavbarConfig: Category[] = [
                 to: CUSTOM_FIELD_ROUTES[OBJECT_TYPES.CUSTOMER],
                 text: 'Customer Fields',
                 extra: (
-                    <Badge type={ColorType.Blue} className={cssNavbar.badge}>
+                    <Badge type={'blue'} className={cssNavbar.badge}>
                         BETA
                     </Badge>
                 ),
@@ -97,7 +97,7 @@ export const NavbarConfig: Category[] = [
                 text: 'Field Conditions',
                 requiredFeatureFlags: [FeatureFlagKey.TicketConditionalFields],
                 extra: (
-                    <Badge type={ColorType.Blue} className={cssNavbar.badge}>
+                    <Badge type={'blue'} className={cssNavbar.badge}>
                         BETA
                     </Badge>
                 ),

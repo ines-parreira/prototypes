@@ -1,3 +1,4 @@
+import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
 import {fromJS, Map} from 'immutable'
 import _groupBy from 'lodash/groupBy'
 import _lowerCase from 'lodash/lowerCase'
@@ -11,7 +12,6 @@ import React, {
 import {connect, ConnectedProps} from 'react-redux'
 
 import {LineItem} from 'constants/integrations/types/shopify'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import type {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import {renderTemplate} from 'pages/common/utils/template'
@@ -171,12 +171,12 @@ export class SubscriptionAfterTitle extends React.Component<{
 }
 
 const statusColors: Record<string, ColorType> = {
-    success: ColorType.Success,
-    error: ColorType.Error,
-    queued: ColorType.Grey,
-    partially_refunded: ColorType.Warning,
-    refunded: ColorType.Warning,
-    skipped: ColorType.Classic,
+    success: 'success',
+    error: 'error',
+    queued: 'grey',
+    partially_refunded: 'warning',
+    refunded: 'warning',
+    skipped: 'classic',
 }
 
 class BeforeContent extends React.Component<{

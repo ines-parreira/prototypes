@@ -1,3 +1,4 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {ReactNode} from 'react'
 import Skeleton from 'react-loading-skeleton'
@@ -7,7 +8,6 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/types'
 import {AppListItem, isAppListItem} from 'models/integration/types/app'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 
 import {getApplicationById} from 'services/applications'
@@ -103,7 +103,7 @@ export function Pills({
 }) {
     return (
         <div className={css.pillsContainer}>
-            {isFeatured && <Badge type={ColorType.Warning}>Featured</Badge>}
+            {isFeatured && <Badge type={'warning'}>Featured</Badge>}
             {item.requiredPriceName ? (
                 <UpgradeButton
                     size="small"

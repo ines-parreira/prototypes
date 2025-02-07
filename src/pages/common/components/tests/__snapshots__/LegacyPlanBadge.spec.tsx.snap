@@ -5,7 +5,7 @@ exports[`<LegacyPlanBadge /> should render a badge 1`] = `
   class="d-inline-flex cursor-pointer"
 >
   <div
-    class="badge upperCase"
+    class="ui-badge-badge-7025 ui-badge-uppercase-7025"
     style="border-radius: 100px;"
   >
     <i

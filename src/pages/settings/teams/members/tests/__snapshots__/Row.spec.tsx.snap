@@ -56,7 +56,7 @@ exports[`<Row /> should render 1`] = `
       class="role"
     >
       <div
-        class="badge upperCase"
+        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
         style="border-radius: 100px;"
       >
         Admin

@@ -1,9 +1,9 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import {fromJS} from 'immutable'
 import React from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {EmailIntegration} from 'models/integration/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Pagination from 'pages/common/components/Pagination'
@@ -40,7 +40,7 @@ export default function StartMigrationIntegrationsTable({integrations}: Props) {
                 <div className={css.subtitle}>
                     <h2>Migration status</h2>
                     {hasIntegrationsToMigrate && (
-                        <Badge type={ColorType.LightWarning}>
+                        <Badge type={'light-warning'}>
                             0/{integrations.length} emails migrated
                         </Badge>
                     )}

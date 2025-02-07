@@ -1,7 +1,7 @@
+import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
 import {Map} from 'immutable'
 import React from 'react'
 
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {humanizeString} from 'utils'
 
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
@@ -12,15 +12,15 @@ type BeforeContentProps = {
 }
 
 const shipmentStatusColors: Record<string, ColorType> = {
-    label_printed: ColorType.Classic,
-    label_purchased: ColorType.Classic,
-    attempted_delivery: ColorType.Warning,
-    ready_for_pickup: ColorType.Classic,
-    confirmed: ColorType.Classic,
-    in_transit: ColorType.Classic,
-    out_for_delivery: ColorType.Classic,
-    delivered: ColorType.Success,
-    failure: ColorType.Error,
+    label_printed: 'classic',
+    label_purchased: 'classic',
+    attempted_delivery: 'warning',
+    ready_for_pickup: 'classic',
+    confirmed: 'classic',
+    in_transit: 'classic',
+    out_for_delivery: 'classic',
+    delivered: 'success',
+    failure: 'error',
 }
 
 const BeforeContent = ({source}: BeforeContentProps) => {

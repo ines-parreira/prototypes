@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import {Label, Badge, BadgeIcon} from '@gorgias/merchant-ui-kit'
 import React, {useCallback, useRef, useState} from 'react'
 
 import {SegmentEvent} from 'common/segment'
@@ -7,8 +7,6 @@ import {
     ReportIssueLabels,
     ReportIssueOption,
 } from 'models/aiAgentFeedback/constants'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import BadgeIcon from 'pages/common/components/Badge/BadgeIcon'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import SelectInputBox, {
@@ -134,7 +132,7 @@ const ReportIssueSelect: React.FC<Props> = ({
                         <Badge
                             key={option.value}
                             corner="square"
-                            type={ColorType.LightDark}
+                            type={'light-dark'}
                             upperCase={false}
                         >
                             {option.label}

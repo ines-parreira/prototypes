@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import {Label, Badge} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {memo} from 'react'
 import {Handle, Position, NodeProps} from 'reactflow'
@@ -8,7 +8,6 @@ import {
     useVisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import {ChannelTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import css from './Node.less'
 
@@ -27,7 +26,7 @@ const ChannelTriggerNode = memo(function ChannelTriggerNode({label}: Props) {
                 />
                 <div className={css.nodeContainer}>
                     <div className={'w-100'}>
-                        <Badge type={ColorType.Light}>start</Badge>
+                        <Badge type={'light'}>start</Badge>
                     </div>
                     <Label className={css.nodeTitle}>{label}</Label>
                 </div>

@@ -1,10 +1,10 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {Component, SyntheticEvent} from 'react'
 import {Link} from 'react-router-dom'
 
 import {Member} from 'models/team/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import IconButton from 'pages/common/components/button/IconButton'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {RoleLabel} from 'pages/common/utils/labels'
@@ -64,7 +64,7 @@ export default class Row extends Component<Props, State> {
                     <span className={css.role}>
                         {member.role && <RoleLabel role={member.role} />}
                         {isAccountOwner && (
-                            <Badge type={ColorType.Dark}>Account Owner</Badge>
+                            <Badge type="dark">Account Owner</Badge>
                         )}
                     </span>
                     <span className={css.delete}>

@@ -1,10 +1,10 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React from 'react'
 
 import cssNavbar from 'assets/css/navbar.less'
 import useAppSelector from 'hooks/useAppSelector'
 import {ProductType} from 'models/billing/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
@@ -34,10 +34,7 @@ function VoiceStatsNavbarItem({to, title, commonNavLinkProps, isNew}: Props) {
                 {title}
                 {hasVoiceFeature ? (
                     isNew ? (
-                        <Badge
-                            type={ColorType.Blue}
-                            className={cssNavbar.badge}
-                        >
+                        <Badge type={'blue'} className={cssNavbar.badge}>
                             NEW
                         </Badge>
                     ) : null

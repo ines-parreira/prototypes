@@ -263,7 +263,7 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
       class="fieldValue"
     >
       <div
-        class="badge upperCase"
+        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
         style="border-radius: 100px;"
       >
         New
@@ -501,7 +501,7 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
       class="fieldValue"
     >
       <div
-        class="badge upperCase"
+        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
         style="border-radius: 100px;"
       >
         New
@@ -739,7 +739,7 @@ exports[`Order <BeforeContent/> render() should render the state and an empty cr
       class="fieldValue"
     >
       <div
-        class="badge upperCase"
+        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
         style="border-radius: 100px;"
       >
         New
@@ -779,7 +779,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the canc
       class="fieldValue"
     >
       <div
-        class="badge upperCase"
+        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
         style="border-radius: 100px;"
       >
         Canceled
@@ -821,7 +821,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the clos
       class="fieldValue"
     >
       <div
-        class="badge upperCase"
+        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
         style="border-radius: 100px;"
       >
         Closed
@@ -863,7 +863,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the comp
       class="fieldValue"
     >
       <div
-        class="badge upperCase"
+        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
         style="border-radius: 100px;"
       >
         Complete
@@ -905,7 +905,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the new 
       class="fieldValue"
     >
       <div
-        class="badge upperCase"
+        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
         style="border-radius: 100px;"
       >
         New
@@ -947,7 +947,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the on_h
       class="fieldValue"
     >
       <div
-        class="badge upperCase"
+        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
         style="border-radius: 100px;"
       >
         On hold
@@ -989,7 +989,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the pend
       class="fieldValue"
     >
       <div
-        class="badge upperCase"
+        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
         style="border-radius: 100px;"
       >
         Pending
@@ -1031,7 +1031,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the proc
       class="fieldValue"
     >
       <div
-        class="badge upperCase"
+        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
         style="border-radius: 100px;"
       >
         Processing

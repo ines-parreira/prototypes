@@ -1,7 +1,7 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React, {useState} from 'react'
 
 import {User} from 'config/types/user'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import TwoFactorAuthenticationDisableModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationDisableModal'
 
@@ -33,11 +33,7 @@ export const Statuses = ({
                 <div className={css.alignCenter}>
                     <Badge
                         className="mr-2"
-                        type={
-                            has2FA
-                                ? ColorType.LightSuccess
-                                : ColorType.LightError
-                        }
+                        type={has2FA ? 'light-success' : 'light-error'}
                     >
                         2FA {has2FA ? 'Enabled' : 'Disabled'}
                     </Badge>
@@ -53,7 +49,7 @@ export const Statuses = ({
                         </Button>
                     )}
                     {isViewingAccountOwner && (
-                        <Badge className="ml-2" type={ColorType.Blue}>
+                        <Badge className="ml-2" type={'blue'}>
                             Account Owner
                         </Badge>
                     )}

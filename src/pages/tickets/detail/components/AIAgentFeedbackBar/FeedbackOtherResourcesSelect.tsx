@@ -1,4 +1,4 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
+import {Label, Tooltip, Badge, BadgeIcon} from '@gorgias/merchant-ui-kit'
 import React, {Fragment, useCallback, useEffect, useMemo, useState} from 'react'
 
 import {SegmentEvent} from 'common/segment'
@@ -8,7 +8,6 @@ import {
     FeedbackOnMessage,
     ResourceFeedbackOnMessage,
 } from 'models/aiAgentFeedback/types'
-import Badge, {BadgeIcon, ColorType} from 'pages/common/components/Badge'
 import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
 import {useAIAgentGetOtherResources} from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
 import {addTags, removeTag} from 'state/ticket/actions'
@@ -320,7 +319,7 @@ const FeedbackOtherResourcesSelect = ({
                     return (
                         <Fragment key={option}>
                             <Badge
-                                type={ColorType.LightDark}
+                                type={'light-dark'}
                                 className={css.tag}
                                 upperCase={false}
                                 corner="square"

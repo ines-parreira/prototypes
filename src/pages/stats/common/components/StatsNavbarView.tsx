@@ -1,3 +1,4 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo} from 'react'
@@ -5,7 +6,6 @@ import React, {useMemo} from 'react'
 import cssNavbar from 'assets/css/navbar.less'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
 import NavbarLink, {
     NavbarLinkProps,
@@ -286,7 +286,7 @@ export default function StatsNavbarView() {
                             >
                                 Satisfaction
                                 <Badge
-                                    type={ColorType.Blue}
+                                    type={'blue'}
                                     className={cssNavbar.badge}
                                 >
                                     {NEW_NAV_LABEL}
@@ -338,7 +338,7 @@ function AutoQANavBarLink({isAvailable}: AutoQANavBarLinkProps) {
         >
             <NavbarLink {...COMMON_NAV_LINK_PROPS} to="/app/stats/auto-qa">
                 Auto QA
-                <Badge type={ColorType.Blue} className={cssNavbar.badge}>
+                <Badge type={'blue'} className={cssNavbar.badge}>
                     {NEW_NAV_LABEL}
                 </Badge>
             </NavbarLink>

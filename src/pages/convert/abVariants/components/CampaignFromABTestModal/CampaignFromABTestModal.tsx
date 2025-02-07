@@ -1,8 +1,8 @@
+import {Badge} from '@gorgias/merchant-ui-kit'
 import React, {useCallback, useMemo, useState} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {CampaignCreatePayload} from 'models/convert/campaign/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -120,11 +120,7 @@ const CampaignFromABTestModal: React.FC<Props> = (props) => {
                                                 {variant.variantName}{' '}
                                                 {variant.isWinner && (
                                                     <div className="ml-2">
-                                                        <Badge
-                                                            type={
-                                                                ColorType.Blue
-                                                            }
-                                                        >
+                                                        <Badge type={'blue'}>
                                                             Winner
                                                         </Badge>
                                                     </div>
