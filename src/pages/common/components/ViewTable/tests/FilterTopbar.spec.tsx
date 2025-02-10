@@ -7,6 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useFlag} from 'core/flags'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {mockSearchRank} from 'fixtures/searchRank'
@@ -695,5 +696,61 @@ describe('<FilterTopbar />', () => {
         fireEvent.click(addFilterButton)
 
         expect(getByText('Ticket field')).toBeInTheDocument()
+    })
+
+    it('should render total resource count when in search mode', () => {
+        mockUseFlag.mockImplementation(
+            (flag) => flag === FeatureFlagKey.TrackTotalSearchHits
+        )
+        const {getByText} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    views: defaultState.views?.setIn(
+                        ['_internal', 'navigation'],
+                        fromJS({
+                            total_resources: 1,
+                        })
+                    ),
+                })}
+            >
+                <FilterTopbar {...minProps} isSearch={true} />
+            </Provider>
+        )
+
+        expect(getByText('1 ticket')).toBeInTheDocument()
+    })
+
+    it('should render custom total resource when resource count is >= 5000, and in search mode', () => {
+        mockUseFlag.mockImplementation(
+            (flag) => flag === FeatureFlagKey.TrackTotalSearchHits
+        )
+        const {getByText} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    views: defaultState.views?.setIn(
+                        ['_internal', 'navigation'],
+                        fromJS({
+                            total_resources: 8000,
+                        })
+                    ),
+                })}
+            >
+                <FilterTopbar {...minProps} isSearch={true} />
+            </Provider>
+        )
+
+        expect(getByText('5000+ tickets')).toBeInTheDocument()
+    })
+
+    it('should not render total resource count when not in search mode', () => {
+        const {queryByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <FilterTopbar {...minProps} />
+            </Provider>
+        )
+
+        expect(queryByText('1 tickets')).not.toBeInTheDocument()
     })
 })

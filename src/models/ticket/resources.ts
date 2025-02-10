@@ -43,6 +43,7 @@ export const searchTickets = async ({
     filters,
     cancelToken,
     withHighlights,
+    trackTotalHits,
     cursor,
     ...rest
 }: TicketSearchOptions) => {
@@ -56,6 +57,7 @@ export const searchTickets = async ({
                 ...rest,
                 ...(cursor ? {cursor} : {}),
                 ...(withHighlights === true ? {withHighlights: true} : {}),
+                ...(trackTotalHits === true ? {trackTotalHits: true} : {}),
             }),
         },
         {

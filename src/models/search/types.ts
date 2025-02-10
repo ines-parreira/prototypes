@@ -65,6 +65,7 @@ export type TicketSearchOptions = ApiPaginationParams &
         filters?: string
         cancelToken?: CancelToken
         withHighlights?: boolean
+        trackTotalHits?: boolean
     }
 
 export const pickedTicketFields = [

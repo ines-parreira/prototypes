@@ -1,6 +1,7 @@
 import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 
+import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import _isArray from 'lodash/isArray'
 import {parse, stringify} from 'qs'
@@ -8,6 +9,7 @@ import React, {Component, ComponentType, ContextType, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {RouteComponentProps} from 'react-router-dom'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {getConfigByName} from 'config/views'
 import {EntityType, ViewType, ViewVisibility} from 'models/view/types'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -55,6 +57,7 @@ type OwnProps = {
     urlViewId: Maybe<string>
     ActionsComponent: Maybe<ComponentType>
     viewButtons: ReactNode
+    flags?: LDFlagSet
 }
 
 type Props = OwnProps &
@@ -297,9 +300,20 @@ export class ViewTableContainer extends Component<Props> {
                 null,
                 null,
                 this.context,
-                undefined
+                this._getSearchParams()
             )
         }
+    }
+
+    _getSearchParams = () => {
+        const {flags, isSearch} = this.props
+        const isTrackTotalHitsEnabled =
+            !!flags?.[FeatureFlagKey.TrackTotalSearchHits]
+        return isSearch && isTrackTotalHitsEnabled
+            ? {
+                  trackTotalHits: true,
+              }
+            : undefined
     }
 
     _getItemUrl = (item: Map<any, any>): string => {

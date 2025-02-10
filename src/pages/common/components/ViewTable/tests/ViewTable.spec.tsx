@@ -5,6 +5,7 @@ import _identity from 'lodash/identity'
 import {stringify} from 'qs'
 import React, {ComponentProps} from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {defaultTicketView} from 'config/views'
 import {mockSearchRank} from 'fixtures/searchRank'
 import * as ticketFixtures from 'fixtures/ticket'
@@ -80,7 +81,7 @@ const minProps = {
     ActionsComponent: null,
     viewButtons: null,
     activeViewIdSet,
-    flags: {},
+    flags: {[FeatureFlagKey.TrackTotalSearchHits]: true},
 } as unknown as ComponentProps<typeof ViewTableContainer>
 
 beforeEach(() => {
@@ -492,7 +493,7 @@ describe('<ViewTable />', () => {
                 null,
                 null,
                 null,
-                undefined
+                {trackTotalHits: true}
             )
         })
 
@@ -714,7 +715,7 @@ describe('<ViewTable />', () => {
                 null,
                 null,
                 null,
-                undefined
+                {trackTotalHits: true}
             )
         })
 
@@ -741,7 +742,7 @@ describe('<ViewTable />', () => {
                 null,
                 null,
                 mockSearchRank,
-                undefined
+                {trackTotalHits: true}
             )
         })
     })

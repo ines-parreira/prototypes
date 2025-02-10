@@ -2,6 +2,8 @@ import {Tooltip} from '@gorgias/merchant-ui-kit'
 import * as Sentry from '@sentry/react'
 import classnames from 'classnames'
 import {List, Map} from 'immutable'
+import _isNumber from 'lodash/isNumber'
+import pluralize from 'pluralize'
 import React, {
     MouseEvent,
     useCallback,
@@ -78,6 +80,7 @@ import {
 import {
     areFiltersValid as getAreFiltersValid,
     getLastViewId,
+    getNavigation,
     getPristineActiveView,
     getViewIdToDisplay,
     isDirty as getIsViewDirty,
@@ -129,10 +132,12 @@ export const FilterTopbar = ({
     const suggestedPreviousViewId = useAppSelector((state) =>
         getViewIdToDisplay(state)(ViewType.TicketList, lastViewId?.toString())
     )
+    const navigationMeta = useAppSelector(getNavigation)
     const customFields = useCustomFieldDefinitions({
         archived: false,
         object_type: 'Ticket',
     })
+    const isTrackTotalHitsEnabled = useFlag(FeatureFlagKey.TrackTotalSearchHits)
 
     const activeCustomFields = useMemo(() => {
         return (
@@ -159,6 +164,17 @@ export const FilterTopbar = ({
                 : undefined,
         [activeView, orderBy]
     ) as FetchViewItemsOptions
+    const searchOptions = useMemo(
+        () =>
+            isTrackTotalHitsEnabled && isSearch && type === EntityType.Ticket
+                ? {trackTotalHits: true}
+                : {},
+        [isTrackTotalHitsEnabled, isSearch, type]
+    )
+    const combinedFetchParams = useMemo(
+        () => ({...fetchParams, ...searchOptions}),
+        [fetchParams, searchOptions]
+    )
     const {
         setIsEnabled: setSplitTicketView,
         shouldRedirectToSplitView,
@@ -195,7 +211,7 @@ export const FilterTopbar = ({
                 undefined,
                 undefined,
                 searchRank,
-                fetchParams
+                combinedFetchParams
             )
         }
     }, [activeView, areFiltersValid, previousActiveView])
@@ -378,6 +394,10 @@ export const FilterTopbar = ({
         )
         .sortBy((field: Map<any, any>) => field.get('title') as string)
 
+    const totalSearchResources = useMemo(() => {
+        return navigationMeta.get('total_resources') as number | undefined
+    }, [navigationMeta])
+
     return (
         <Card className={css.component}>
             <CardBody className={css.filterTopbarContent}>
@@ -397,6 +417,13 @@ export const FilterTopbar = ({
                         <ViewSharingButton view={activeView} />
                     </div>
                 )}
+                {isTrackTotalHitsEnabled &&
+                    _isNumber(totalSearchResources) &&
+                    isSearch && (
+                        <p className={css.searchResourceCount}>
+                            {`${totalSearchResources >= 5000 ? '5000+' : totalSearchResources} ${pluralize('ticket', totalSearchResources)}`}
+                        </p>
+                    )}
                 <p className={css.subtitle}>ADVANCED FILTERS</p>
                 <div className={css.advancedFilters}>
                     <Filters />

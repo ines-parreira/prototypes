@@ -104,6 +104,23 @@ describe('ticket resources', () => {
                 {}
             )
         })
+
+        it('should add track_total_hits prop', async () => {
+            const options = {
+                search: 'foo',
+            }
+            const params = {
+                trackTotalHits: true,
+            }
+
+            await searchTickets({...options, ...params})
+
+            expect(searchTicketsMock).toHaveBeenCalledWith(
+                {...options, filters: ''},
+                {track_total_hits: params.trackTotalHits},
+                {}
+            )
+        })
     })
 
     describe('searchTicketsWithHighlights', () => {
