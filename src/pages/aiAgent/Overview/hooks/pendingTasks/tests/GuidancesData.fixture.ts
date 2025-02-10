@@ -23,7 +23,7 @@ export class GuidancesDataFixture {
 
     static start() {
         return new GuidancesDataFixture() as ConfiguredGuidancesDataFixture<
-            'withoutGuidance' | 'withGuidance'
+            'withoutGuidance' | 'withPublicGuidance' | 'withUnlistedGuidance'
         >
     }
 
@@ -32,11 +32,24 @@ export class GuidancesDataFixture {
         return this as GuidancesDataFixtureFullyConfigured
     }
 
-    withGuidance() {
+    withPublicGuidance() {
         this.guidancesData.push({
             id: this.internalData.guidanceId++,
+            visibility: 'PUBLIC',
         } as any)
-        return this as GuidancesDataFixtureFullyConfigured
+        return this as ConfiguredGuidancesDataFixture<
+            'withPublicGuidance' | 'withUnlistedGuidance' | 'build'
+        >
+    }
+
+    withUnlistedGuidance() {
+        this.guidancesData.push({
+            id: this.internalData.guidanceId++,
+            visibility: 'UNLISTED',
+        } as any)
+        return this as ConfiguredGuidancesDataFixture<
+            'withPublicGuidance' | 'withUnlistedGuidance' | 'build'
+        >
     }
 
     build(): GuidancesData {

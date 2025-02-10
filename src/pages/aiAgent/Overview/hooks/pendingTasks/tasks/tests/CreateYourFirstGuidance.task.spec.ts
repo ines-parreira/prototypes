@@ -15,15 +15,29 @@ describe('CreateYourFirstGuidance', () => {
         expect(task.display).toBe(true)
     })
 
-    it('should display the task if any guidance exists', () => {
-        const guidances = GuidancesDataFixture.start().withGuidance().build()
-
-        const task = new CreateYourFirstGuidanceTask(
-            buildRuleEngineData({
-                guidances,
-            }),
-            buildRuleEngineRoutes()
-        )
-        expect(task.display).toBe(false)
-    })
+    it.each([
+        {
+            type: 'PUBLIC',
+            guidances: GuidancesDataFixture.start()
+                .withPublicGuidance()
+                .build(),
+        },
+        {
+            type: 'UNLISTED',
+            guidances: GuidancesDataFixture.start()
+                .withUnlistedGuidance()
+                .build(),
+        },
+    ])(
+        'should display the task if any $type guidance exists',
+        ({guidances}) => {
+            const task = new CreateYourFirstGuidanceTask(
+                buildRuleEngineData({
+                    guidances,
+                }),
+                buildRuleEngineRoutes()
+            )
+            expect(task.display).toBe(false)
+        }
+    )
 })

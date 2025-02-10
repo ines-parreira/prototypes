@@ -56,7 +56,7 @@ describe('usePendingTasksRuleEngine', () => {
 
     useFetchGuidancesDataMock.mockReturnValue({
         isLoading: false,
-        data: GuidancesDataFixture.start().withGuidance().build(),
+        data: GuidancesDataFixture.start().withPublicGuidance().build(),
     })
 
     it('should return valid tasks', () => {
@@ -69,6 +69,6 @@ describe('usePendingTasksRuleEngine', () => {
 
         expect(hook.result.current.isLoading).toBe(false)
         expect(hook.result.current.pendingTasks).toHaveLength(0)
-        expect(hook.result.current.completedTasks).toHaveLength(5)
+        expect(hook.result.current.completedTasks).toHaveLength(6)
     })
 })

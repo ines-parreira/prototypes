@@ -4,6 +4,7 @@ import {ConnectAHelpCenterTask} from './tasks/ConnectAHelpCenter.task'
 import {CreateYourFirstGuidanceTask} from './tasks/CreateYourFirstGuidance.task'
 import {EnableAIAgentOnChatTask} from './tasks/EnableAIAgentOnChat.task'
 import {EnableAIAgentOnEmailTask} from './tasks/EnableAIAgentOnEmail.task'
+import {PublishYourFirstGuidanceTask} from './tasks/PublishYourFirstGuidance.task'
 import {UploadAnExternalDocTask} from './tasks/UploadAnExternalDoc.task'
 import {type AiAgentStoreConfigurationData} from './useFetchAiAgentStoreConfigurationData'
 import {type FaqHelpCentersData} from './useFetchFaqHelpCentersData'
@@ -31,6 +32,7 @@ export const runRuleEngine = (
         new ConnectAHelpCenterTask(data, routes),
         new UploadAnExternalDocTask(data, routes),
         new CreateYourFirstGuidanceTask(data, routes),
+        new PublishYourFirstGuidanceTask(data, routes),
     ]
     const completedTasks = tasks.filter((task) => !task.display)
     const pendingTasks = tasks.filter((task) => task.display)
