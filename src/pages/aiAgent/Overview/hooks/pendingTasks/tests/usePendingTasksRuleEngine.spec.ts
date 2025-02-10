@@ -3,14 +3,17 @@ import {renderHook} from '@testing-library/react-hooks'
 import {assumeMock} from 'utils/testing'
 
 import {useFetchAiAgentStoreConfigurationData} from '../useFetchAiAgentStoreConfigurationData'
+import {useFetchFaqHelpCentersData} from '../useFetchFaqHelpCentersData'
 import {useFetchFileIngestionData} from '../useFetchFileIngestionData'
-import {useFetchHelpCenterData} from '../useFetchHelpCenterData'
 import {usePendingTasksRuleEngine} from '../usePendingTasksRuleEngine'
+import {AiAgentStoreConfigurationFixture} from './AiAgentStoreConfiguration.fixture'
+import {FileIngestionDataFixture} from './FileIngestionData.fixture'
+import {HelpCenterDataFixture} from './HelpCenterData.fixture'
 
-jest.mock('../useFetchHelpCenterData', () => ({
-    useFetchHelpCenterData: jest.fn(),
+jest.mock('../useFetchFaqHelpCentersData', () => ({
+    useFetchFaqHelpCentersData: jest.fn(),
 }))
-const useFetchHelpCenterDataMock = assumeMock(useFetchHelpCenterData)
+const useFetchFaqHelpCentersDataMock = assumeMock(useFetchFaqHelpCentersData)
 jest.mock('../useFetchAiAgentStoreConfigurationData', () => ({
     useFetchAiAgentStoreConfigurationData: jest.fn(),
 }))
@@ -24,22 +27,23 @@ const useFetchFileIngestionDataMock = assumeMock(useFetchFileIngestionData)
 
 // Will implements better testing after extracting the list of tasks from the ruleEngine
 describe('usePendingTasksRuleEngine', () => {
-    useFetchHelpCenterDataMock.mockReturnValue({
+    useFetchFaqHelpCentersDataMock.mockReturnValue({
         isLoading: false,
-        data: [],
+        data: HelpCenterDataFixture.start().withNoHelpCenter().build(),
     })
 
     useFetchAiAgentStoreConfigurationDataMock.mockReturnValue({
         isLoading: false,
-        data: {
-            chatChannelDeactivatedDatetime: null,
-            emailChannelDeactivatedDatetime: null,
-        } as any,
+        data: AiAgentStoreConfigurationFixture.start()
+            .withoutConnectedHelpCenter()
+            .withChatChannelEnabled()
+            .withEmailChannelEnabled()
+            .build(),
     })
 
     useFetchFileIngestionDataMock.mockReturnValue({
         isLoading: false,
-        data: [] as any,
+        data: FileIngestionDataFixture.start().withNoIngestedFile().build(),
     })
 
     it('should return valid tasks', () => {

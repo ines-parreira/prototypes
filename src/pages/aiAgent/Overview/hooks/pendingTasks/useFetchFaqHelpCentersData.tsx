@@ -5,7 +5,7 @@ type Args = {
     enabled: boolean
 }
 /** Fetch all help-centers and filter out only the one that are  */
-export const useFetchHelpCenterData = ({enabled}: Args) => {
+export const useFetchFaqHelpCentersData = ({enabled}: Args) => {
     const {isLoading, data} = useGetHelpCenterList(
         {type: 'faq', per_page: HELP_CENTER_MAX_CREATION},
         {
@@ -21,7 +21,7 @@ export const useFetchHelpCenterData = ({enabled}: Args) => {
     }
 }
 
-export type HelpCenterData = Exclude<
-    Awaited<ReturnType<typeof useFetchHelpCenterData>>['data'],
+export type FaqHelpCentersData = Exclude<
+    Awaited<ReturnType<typeof useFetchFaqHelpCentersData>>['data'],
     null | undefined
 >

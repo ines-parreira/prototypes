@@ -5,8 +5,8 @@ import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {runRuleEngine} from './ruleEngine'
 import {Task} from './tasks/Task'
 import {useFetchAiAgentStoreConfigurationData} from './useFetchAiAgentStoreConfigurationData'
+import {useFetchFaqHelpCentersData} from './useFetchFaqHelpCentersData'
 import {useFetchFileIngestionData} from './useFetchFileIngestionData'
-import {useFetchHelpCenterData} from './useFetchHelpCenterData'
 
 // Until we have the full implementation of usePendingTasksRuleEngine
 // we decided to fake the tasks in storybook to prevent having to mock things
@@ -29,19 +29,19 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
         enabled: !shouldFakeTasks,
     })
 
-    const {isLoading: helpCenterDataIsLoading, data: helpCenterData} =
-        useFetchHelpCenterData({enabled: !shouldFakeTasks})
+    const {isLoading: faqHelpCentersDataIsLoading, data: faqHelpCentersData} =
+        useFetchFaqHelpCentersData({enabled: !shouldFakeTasks})
 
     const {isLoading: fileIngestionDataIsLoading, data: fileIngestionData} =
         useFetchFileIngestionData(storeName, !shouldFakeTasks)
 
     const isLoading =
         aiAgentStoreConfigurationIsLoading ||
-        helpCenterDataIsLoading ||
+        faqHelpCentersDataIsLoading ||
         fileIngestionDataIsLoading
     const isReady =
         !!aiAgentStoreConfigurationData &&
-        !!helpCenterData &&
+        !!faqHelpCentersData &&
         !!fileIngestionData
 
     // Use memo instead of useEffect
@@ -58,7 +58,7 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
             setTasks(
                 runRuleEngine(
                     {
-                        helpCenters: helpCenterData,
+                        faqHelpCenters: faqHelpCentersData,
                         aiAgentStoreConfiguration:
                             aiAgentStoreConfigurationData,
                         fileIngestion: fileIngestionData,
@@ -70,7 +70,7 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
             )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [aiAgentStoreConfigurationData, helpCenterData, fileIngestionData])
+    }, [aiAgentStoreConfigurationData, faqHelpCentersData, fileIngestionData])
 
     if (shouldFakeTasks) {
         return {

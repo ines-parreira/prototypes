@@ -1,7 +1,7 @@
 import {RuleEngineDataContext, RuleEngineRoutesContext} from '../ruleEngine'
 import {Task} from './Task'
 
-export class UploadAnExternalDoc extends Task {
+export class UploadAnExternalDocTask extends Task {
     constructor(data: RuleEngineDataContext, routes: RuleEngineRoutesContext) {
         super(
             'Upload an external doc',
