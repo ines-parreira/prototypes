@@ -5,9 +5,6 @@ import {useMixedKpis} from '../useMixedKpis'
 jest.mock('../useCoverageRate', () => ({
     useCoverageRate: jest.fn(() => 'mockCoverageRate'),
 }))
-jest.mock('../useGmvInfluenced', () => ({
-    useGmvInfluenced: jest.fn(() => 'mockGmvInfluenced'),
-}))
 jest.mock('../useAutomationRate', () => ({
     useAutomationRate: jest.fn(() => 'mockAutomationRate'),
 }))
@@ -30,7 +27,6 @@ describe('useMixedKpis', () => {
 
         expect(result.current.metrics).toEqual([
             'mockCoverageRate',
-            'mockGmvInfluenced',
             'mockAutomationRate',
             'mockCsat',
         ])

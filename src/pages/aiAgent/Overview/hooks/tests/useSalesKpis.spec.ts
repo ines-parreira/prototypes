@@ -5,9 +5,6 @@ import {useSalesKpis} from '../useSalesKpis'
 jest.mock('../useCoverageRate', () => ({
     useCoverageRate: jest.fn(() => 'mockCoverageRate'),
 }))
-jest.mock('../useGmvInfluenced', () => ({
-    useGmvInfluenced: jest.fn(() => 'mockGmvInfluenced'),
-}))
 jest.mock('../useTotalConversations', () => ({
     useTotalConversations: jest.fn(() => 'mockTotalConversations'),
 }))
@@ -30,7 +27,6 @@ describe('useSalesKpis', () => {
 
         expect(result.current.metrics).toEqual([
             'mockCoverageRate',
-            'mockGmvInfluenced',
             'mockTotalConversations',
             'mockCsat',
         ])
