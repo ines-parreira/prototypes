@@ -1,6 +1,7 @@
 import {AiAgentStoreConfigurationFixture} from '../../tests/AiAgentStoreConfiguration.fixture'
 import {HelpCenterDataFixture} from '../../tests/HelpCenterData.fixture'
 import {ConnectAHelpCenterTask} from '../ConnectAHelpCenter.task'
+import {buildRuleEngineData, buildRuleEngineRoutes} from './utils'
 
 describe('ConnectAHelpCenter', () => {
     it('should display the task if no help center is connected and at least 1 helpcenter exists', () => {
@@ -14,14 +15,11 @@ describe('ConnectAHelpCenter', () => {
                 .build()
 
         const task = new ConnectAHelpCenterTask(
-            {
+            buildRuleEngineData({
                 faqHelpCenters,
                 aiAgentStoreConfiguration,
-                fileIngestion: [],
-            },
-            {
-                aiAgentRoutes: {} as any,
-            }
+            }),
+            buildRuleEngineRoutes()
         )
         expect(task.display).toBe(true)
     })
@@ -37,14 +35,11 @@ describe('ConnectAHelpCenter', () => {
                 .build()
 
         const task = new ConnectAHelpCenterTask(
-            {
-                aiAgentStoreConfiguration,
+            buildRuleEngineData({
                 faqHelpCenters,
-                fileIngestion: [],
-            },
-            {
-                aiAgentRoutes: {} as any,
-            }
+                aiAgentStoreConfiguration,
+            }),
+            buildRuleEngineRoutes()
         )
         expect(task.display).toBe(false)
     })

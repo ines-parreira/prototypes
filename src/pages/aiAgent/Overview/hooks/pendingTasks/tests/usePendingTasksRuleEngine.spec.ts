@@ -5,9 +5,11 @@ import {assumeMock} from 'utils/testing'
 import {useFetchAiAgentStoreConfigurationData} from '../useFetchAiAgentStoreConfigurationData'
 import {useFetchFaqHelpCentersData} from '../useFetchFaqHelpCentersData'
 import {useFetchFileIngestionData} from '../useFetchFileIngestionData'
+import {useFetchGuidancesData} from '../useFetchGuidancesData'
 import {usePendingTasksRuleEngine} from '../usePendingTasksRuleEngine'
 import {AiAgentStoreConfigurationFixture} from './AiAgentStoreConfiguration.fixture'
 import {FileIngestionDataFixture} from './FileIngestionData.fixture'
+import {GuidancesDataFixture} from './GuidancesData.fixture'
 import {HelpCenterDataFixture} from './HelpCenterData.fixture'
 
 jest.mock('../useFetchFaqHelpCentersData', () => ({
@@ -24,6 +26,10 @@ jest.mock('../useFetchFileIngestionData', () => ({
     useFetchFileIngestionData: jest.fn(),
 }))
 const useFetchFileIngestionDataMock = assumeMock(useFetchFileIngestionData)
+jest.mock('../useFetchGuidancesData', () => ({
+    useFetchGuidancesData: jest.fn(),
+}))
+const useFetchGuidancesDataMock = assumeMock(useFetchGuidancesData)
 
 // Will implements better testing after extracting the list of tasks from the ruleEngine
 describe('usePendingTasksRuleEngine', () => {
@@ -43,7 +49,14 @@ describe('usePendingTasksRuleEngine', () => {
 
     useFetchFileIngestionDataMock.mockReturnValue({
         isLoading: false,
-        data: FileIngestionDataFixture.start().withNoIngestedFile().build(),
+        data: FileIngestionDataFixture.start()
+            .withSuccessfulIngestedFile()
+            .build(),
+    })
+
+    useFetchGuidancesDataMock.mockReturnValue({
+        isLoading: false,
+        data: GuidancesDataFixture.start().withGuidance().build(),
     })
 
     it('should return valid tasks', () => {
@@ -55,7 +68,7 @@ describe('usePendingTasksRuleEngine', () => {
         )
 
         expect(hook.result.current.isLoading).toBe(false)
-        expect(hook.result.current.completedTasks).toHaveLength(3)
-        expect(hook.result.current.pendingTasks).toHaveLength(1)
+        expect(hook.result.current.pendingTasks).toHaveLength(0)
+        expect(hook.result.current.completedTasks).toHaveLength(5)
     })
 })

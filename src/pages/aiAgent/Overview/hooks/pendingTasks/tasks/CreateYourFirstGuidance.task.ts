@@ -1,29 +1,26 @@
 import {RuleEngineData, RuleEngineRoutes} from '../ruleEngine'
 import {Task} from './Task'
 
-export class EnableAIAgentOnChatTask extends Task {
+export class CreateYourFirstGuidanceTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
-            'Enable AI Agent on Chat',
-            'Boost GMV through automated sales.',
-            'BASIC',
+            'Create your first Guidance',
+            'Tell AI Agent how to handle specific topics or inquiries',
+            'RECOMMENDED',
             data,
             routes
         )
     }
 
-    // Email channel should be deactivated in ai agent store configuration
+    // No guidances including draft ones
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
-        return (
-            data.aiAgentStoreConfiguration.chatChannelDeactivatedDatetime !==
-            null
-        )
+        return data.guidances.length === 0
     }
 
     protected getFeatureUrl(
         _data: RuleEngineData,
         routes: RuleEngineRoutes
     ): string {
-        return routes.aiAgentRoutes.settingsChannels
+        return routes.aiAgentRoutes.guidance
     }
 }

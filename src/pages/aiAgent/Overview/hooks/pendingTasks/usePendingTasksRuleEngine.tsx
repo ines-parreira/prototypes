@@ -7,6 +7,7 @@ import {Task} from './tasks/Task'
 import {useFetchAiAgentStoreConfigurationData} from './useFetchAiAgentStoreConfigurationData'
 import {useFetchFaqHelpCentersData} from './useFetchFaqHelpCentersData'
 import {useFetchFileIngestionData} from './useFetchFileIngestionData'
+import {useFetchGuidancesData} from './useFetchGuidancesData'
 
 // Until we have the full implementation of usePendingTasksRuleEngine
 // we decided to fake the tasks in storybook to prevent having to mock things
@@ -17,7 +18,6 @@ type Args = {
     storeName: string
 }
 export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
-    // FeatureUrl part
     const {routes} = useAiAgentNavigation({shopName: storeName})
 
     const {
@@ -35,14 +35,19 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
     const {isLoading: fileIngestionDataIsLoading, data: fileIngestionData} =
         useFetchFileIngestionData(storeName, !shouldFakeTasks)
 
+    const {isLoading: guidancesDataIsLoading, data: guidancesData} =
+        useFetchGuidancesData({storeName, enabled: !shouldFakeTasks})
+
     const isLoading =
         aiAgentStoreConfigurationIsLoading ||
         faqHelpCentersDataIsLoading ||
-        fileIngestionDataIsLoading
+        fileIngestionDataIsLoading ||
+        guidancesDataIsLoading
     const isReady =
         !!aiAgentStoreConfigurationData &&
         !!faqHelpCentersData &&
-        !!fileIngestionData
+        !!fileIngestionData &&
+        !!guidancesData
 
     // Use memo instead of useEffect
     const [{completedTasks, pendingTasks}, setTasks] = useState<{
@@ -62,6 +67,7 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
                         aiAgentStoreConfiguration:
                             aiAgentStoreConfigurationData,
                         fileIngestion: fileIngestionData,
+                        guidances: guidancesData,
                     },
                     {
                         aiAgentRoutes: routes,
@@ -70,7 +76,12 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
             )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [aiAgentStoreConfigurationData, faqHelpCentersData, fileIngestionData])
+    }, [
+        aiAgentStoreConfigurationData,
+        faqHelpCentersData,
+        fileIngestionData,
+        guidancesData,
+    ])
 
     if (shouldFakeTasks) {
         return {

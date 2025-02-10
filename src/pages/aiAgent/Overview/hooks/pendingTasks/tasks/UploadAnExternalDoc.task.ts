@@ -1,8 +1,8 @@
-import {RuleEngineDataContext, RuleEngineRoutesContext} from '../ruleEngine'
+import {RuleEngineData, RuleEngineRoutes} from '../ruleEngine'
 import {Task} from './Task'
 
 export class UploadAnExternalDocTask extends Task {
-    constructor(data: RuleEngineDataContext, routes: RuleEngineRoutesContext) {
+    constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Upload an external doc',
             'Help AI Agent give accurate answers by accessing your documents.',
@@ -13,13 +13,13 @@ export class UploadAnExternalDocTask extends Task {
     }
 
     // Email channel should be deactivated in ai agent store configuration
-    protected shouldBeDisplayed(data: RuleEngineDataContext): boolean {
+    protected shouldBeDisplayed(data: RuleEngineData): boolean {
         return data.fileIngestion.length === 0
     }
 
     protected getFeatureUrl(
-        _data: RuleEngineDataContext,
-        routes: RuleEngineRoutesContext
+        _data: RuleEngineData,
+        routes: RuleEngineRoutes
     ): string {
         return routes.aiAgentRoutes.knowledge
     }

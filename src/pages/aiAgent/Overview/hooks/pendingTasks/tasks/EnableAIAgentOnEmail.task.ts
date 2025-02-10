@@ -1,8 +1,8 @@
-import {RuleEngineDataContext, RuleEngineRoutesContext} from '../ruleEngine'
+import {RuleEngineData, RuleEngineRoutes} from '../ruleEngine'
 import {Task} from './Task'
 
 export class EnableAIAgentOnEmailTask extends Task {
-    constructor(data: RuleEngineDataContext, routes: RuleEngineRoutesContext) {
+    constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Enable AI Agent on Email',
             'Automates up to 60% of support tickets',
@@ -13,7 +13,7 @@ export class EnableAIAgentOnEmailTask extends Task {
     }
 
     // Email channel should be deactivated in ai agent store configuration
-    protected shouldBeDisplayed(data: RuleEngineDataContext): boolean {
+    protected shouldBeDisplayed(data: RuleEngineData): boolean {
         return (
             data.aiAgentStoreConfiguration.emailChannelDeactivatedDatetime !==
             null
@@ -21,8 +21,8 @@ export class EnableAIAgentOnEmailTask extends Task {
     }
 
     protected getFeatureUrl(
-        _data: RuleEngineDataContext,
-        routes: RuleEngineRoutesContext
+        _data: RuleEngineData,
+        routes: RuleEngineRoutes
     ): string {
         return routes.aiAgentRoutes.settingsChannels
     }

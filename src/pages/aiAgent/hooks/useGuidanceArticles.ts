@@ -13,12 +13,16 @@ export const GUIDANCE_ARTICLES_QUERY_PARAMS: Paths.ListArticles.QueryParameters 
         per_page: GUIDANCE_ARTICLE_LIMIT, // Temp limit until pagination is implemented
     }
 
-export const useGuidanceArticles = (guidanceHelpCenterId: number) => {
+export const useGuidanceArticles = (
+    guidanceHelpCenterId: number,
+    overrides?: Parameters<typeof useGetHelpCenterArticleList>[2]
+) => {
     const {data, isLoading: isGuidanceArticleListLoading} =
         useGetHelpCenterArticleList(
             guidanceHelpCenterId,
             GUIDANCE_ARTICLES_QUERY_PARAMS,
             {
+                ...overrides,
                 refetchOnWindowFocus: false,
             }
         )

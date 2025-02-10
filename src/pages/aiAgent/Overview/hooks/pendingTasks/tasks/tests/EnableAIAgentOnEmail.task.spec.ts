@@ -1,5 +1,6 @@
 import {AiAgentStoreConfigurationFixture} from '../../tests/AiAgentStoreConfiguration.fixture'
 import {EnableAIAgentOnEmailTask} from '../EnableAIAgentOnEmail.task'
+import {buildRuleEngineData, buildRuleEngineRoutes} from './utils'
 
 describe('EnableAIAgentOnEmail', () => {
     it('should display the task if ai agent store configuration email disabled', () => {
@@ -9,14 +10,10 @@ describe('EnableAIAgentOnEmail', () => {
                 .build()
 
         const task = new EnableAIAgentOnEmailTask(
-            {
-                faqHelpCenters: [],
+            buildRuleEngineData({
                 aiAgentStoreConfiguration,
-                fileIngestion: [],
-            },
-            {
-                aiAgentRoutes: {} as any,
-            }
+            }),
+            buildRuleEngineRoutes()
         )
         expect(task.display).toBe(true)
     })
@@ -29,14 +26,10 @@ describe('EnableAIAgentOnEmail', () => {
                 .build()
 
         const task = new EnableAIAgentOnEmailTask(
-            {
-                faqHelpCenters: [],
+            buildRuleEngineData({
                 aiAgentStoreConfiguration,
-                fileIngestion: [],
-            },
-            {
-                aiAgentRoutes: {} as any,
-            }
+            }),
+            buildRuleEngineRoutes()
         )
         expect(task.display).toBe(false)
     })
