@@ -11,7 +11,6 @@ export class AlwaysDisplayedTask extends Task {
         )
     }
 
-    // Email channel should be deactivated in ai agent store configuration
     protected shouldBeDisplayed(): boolean {
         return true
     }

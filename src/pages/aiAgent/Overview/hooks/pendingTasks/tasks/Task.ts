@@ -1,15 +1,15 @@
 import {RuleEngineDataContext, RuleEngineRoutesContext} from '../ruleEngine'
 
 export abstract class Task {
-    public display: boolean
-    public featureUrl: string
+    public readonly display: boolean
+    public readonly featureUrl: string
 
     constructor(
-        public title: string,
-        public caption: string,
-        public type: 'BASIC' | 'RECOMMENDED',
-        protected data: RuleEngineDataContext,
-        protected routes: RuleEngineRoutesContext
+        public readonly title: string,
+        public readonly caption: string,
+        public readonly type: 'BASIC' | 'RECOMMENDED',
+        protected readonly data: RuleEngineDataContext,
+        protected readonly routes: RuleEngineRoutesContext
     ) {
         this.display = this.shouldBeDisplayed(data)
         this.featureUrl = this.getFeatureUrl(data, routes)

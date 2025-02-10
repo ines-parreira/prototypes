@@ -24,8 +24,10 @@ export const PendingTasksSectionConnected = () => {
     const [selectedStore, setSelectedStore] = useState(stores[0])
 
     const {isLoading, pendingTasks, completedTasks} = usePendingTasksRuleEngine(
-        accountDomain,
-        selectedStore.name
+        {
+            accountDomain,
+            storeName: selectedStore.name,
+        }
     )
 
     return (

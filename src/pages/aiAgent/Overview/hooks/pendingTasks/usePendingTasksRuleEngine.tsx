@@ -1,36 +1,39 @@
 import {useEffect, useState} from 'react'
 
-import {useGetStoreConfigurationPure} from 'models/aiAgent/queries'
-
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import {runRuleEngine} from './ruleEngine'
 import {Task} from './tasks/Task'
+import {useFetchAiAgentStoreConfigurationData} from './useFetchAiAgentStoreConfigurationData'
+import {useFetchHelpCenterData} from './useFetchHelpCenterData'
 
 // Until we have the full implementation of usePendingTasksRuleEngine
 // we decided to fake the tasks in storybook to prevent having to mock things
 const shouldFakeTasks = !!process.env.STORYBOOK
 
-export const usePendingTasksRuleEngine = (
-    accountDomain: string,
+type Args = {
+    accountDomain: string
     storeName: string
-) => {
+}
+export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
     // FeatureUrl part
     const {routes} = useAiAgentNavigation({shopName: storeName})
 
     const {
         data: aiAgentStoreConfigurationData,
         isLoading: aiAgentStoreConfigurationIsLoading,
-    } = useGetStoreConfigurationPure(
-        {
-            accountDomain,
-            storeName,
-        },
-        {enabled: !shouldFakeTasks}
-    )
+    } = useFetchAiAgentStoreConfigurationData({
+        accountDomain,
+        storeName,
+        enabled: !shouldFakeTasks,
+    })
 
-    const isLoading = aiAgentStoreConfigurationIsLoading
-    const isReady = !!aiAgentStoreConfigurationData?.data
+    const {isLoading: helpCenterDataIsLoading, data: helpCenterData} =
+        useFetchHelpCenterData({enabled: !shouldFakeTasks})
+
+    const isLoading =
+        aiAgentStoreConfigurationIsLoading || helpCenterDataIsLoading
+    const isReady = !!aiAgentStoreConfigurationData && !!helpCenterData
 
     // Use memo instead of useEffect
     const [{completedTasks, pendingTasks}, setTasks] = useState<{
@@ -46,9 +49,9 @@ export const usePendingTasksRuleEngine = (
             setTasks(
                 runRuleEngine(
                     {
+                        helpCenters: helpCenterData,
                         aiAgentStoreConfiguration:
-                            aiAgentStoreConfigurationData.data
-                                .storeConfiguration,
+                            aiAgentStoreConfigurationData,
                     },
                     {
                         aiAgentRoutes: routes,
@@ -57,7 +60,7 @@ export const usePendingTasksRuleEngine = (
             )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [aiAgentStoreConfigurationData, routes])
+    }, [aiAgentStoreConfigurationData])
 
     if (shouldFakeTasks) {
         return {
