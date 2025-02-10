@@ -24,6 +24,12 @@ export type GetStoreConfigurationParams = {
     withWizard?: boolean
 }
 
+export type GetStoreConfigurationForAccountParams = {
+    accountDomain: string
+    storesName: string[]
+    withWizard?: boolean
+}
+
 export type StoreConfigurationResponse = {
     storeConfiguration: StoreConfiguration
 }
@@ -61,6 +67,8 @@ export type StoreConfiguration = {
     emailChannelDeactivatedDatetime: string | null
     previewModeValidUntilDatetime: string | null
     isPreviewModeActive?: boolean
+
+    scopes: AiAgentScope[]
 }
 
 export type CreateStoreConfigurationPayload = Pick<
@@ -110,6 +118,11 @@ export enum AiAgentOnboardingWizardStep {
 export enum AiAgentOnboardingWizardType {
     TwoSteps = '2-steps',
     ThreeSteps = '3-steps',
+}
+
+export enum AiAgentScope {
+    Support = 'support',
+    Sales = 'sales',
 }
 
 export type WizardStepData = {

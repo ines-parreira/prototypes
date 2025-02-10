@@ -27,6 +27,7 @@ import {
     CACHE_TIME_MS,
     useUpsertOnboardingNotificationState,
     useGetStoreConfigurationPure,
+    useGetStoresConfigurationForAccount,
 } from '../queries'
 import {
     createOnboardingNotificationState,
@@ -152,6 +153,58 @@ describe('queries', () => {
             )
 
             expect(getStoreConfiguration).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('useGetStoresConfigurationForAccount', () => {
+        const accountDomain = 'test-account'
+        const storeName = 'test-store'
+
+        const mockData = getStoreConfigurationFixture({storeName})
+        const overrides = {staleTime: 2000}
+        it('should call useQuery with the correct parameters', async () => {
+            mockGetStoreConfiguration.mockResolvedValue({
+                data: {storeConfiguration: mockData},
+                status: 200,
+            } as unknown as ReturnType<typeof getStoreConfiguration>)
+
+            renderHook(
+                () =>
+                    useGetStoresConfigurationForAccount(
+                        {
+                            accountDomain,
+                            storesName: [storeName],
+                            withWizard: true,
+                        },
+                        overrides
+                    ),
+                {wrapper}
+            )
+
+            expect(useQuerySpy).toHaveBeenCalledWith({
+                queryKey: [
+                    'aiAgentStoreConfigurations',
+                    'account',
+                    {accountDomain, storesName: [storeName], withWizard: true},
+                ],
+                queryFn: expect.any(Function),
+                staleTime: 2000,
+                cacheTime: CACHE_TIME_MS,
+                enabled: true,
+            })
+
+            const queryFn = (
+                useQuerySpy.mock.calls[0][0] as unknown as {
+                    queryFn: () => any
+                }
+            ).queryFn
+
+            await expect(queryFn()).resolves.toEqual([
+                {
+                    data: {storeConfiguration: mockData},
+                    status: 200,
+                },
+            ])
         })
     })
 

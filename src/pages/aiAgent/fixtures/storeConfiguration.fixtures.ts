@@ -1,4 +1,4 @@
-import {StoreConfiguration} from 'models/aiAgent/types'
+import {AiAgentScope, StoreConfiguration} from 'models/aiAgent/types'
 
 import {ToneOfVoice} from '../constants'
 
@@ -37,5 +37,6 @@ export const getStoreConfigurationFixture = (
     silentHandover: false,
     ticketSampleRate: 0.5,
     wizardId: null,
+    scopes: [AiAgentScope.Support],
     ...props,
 })

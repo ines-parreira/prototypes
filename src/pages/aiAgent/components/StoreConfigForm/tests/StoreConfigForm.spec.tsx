@@ -15,7 +15,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {billingState} from 'fixtures/billing'
 import * as useLocalStorageImports from 'hooks/useLocalStorage'
 import {useSearchParam} from 'hooks/useSearchParam'
-import {StoreConfiguration} from 'models/aiAgent/types'
+import {AiAgentScope, StoreConfiguration} from 'models/aiAgent/types'
 import {HelpCenter} from 'models/helpCenter/types'
 import {IntegrationType} from 'models/integration/types'
 import {applicationsAutomationSettingsAiAgentEnabledFixture} from 'pages/aiAgent/fixtures/applicationAutomationSettings.fixture'
@@ -246,6 +246,7 @@ describe('<StoreConfigForm />', () => {
         isDraft: false,
         monitoredChatIntegrations: [],
         wizardId: null,
+        scopes: [AiAgentScope.Support],
     }
 
     const initialFormValues: FormValues = {

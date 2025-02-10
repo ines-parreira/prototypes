@@ -7,7 +7,10 @@ import {Kpi} from 'pages/aiAgent/components/Kpi/Kpi'
 import {CardTitle} from 'pages/aiAgent/Onboarding/components/Card'
 import {Subtitle} from 'pages/aiAgent/Onboarding/components/Subtitle/Subtitle'
 import {OverviewCard} from 'pages/aiAgent/Overview/components/OverviewCard/OverviewCard'
-import {useAiAgentType} from 'pages/aiAgent/Overview/hooks/useAiAgentType'
+import {
+    AiAgentType,
+    useAiAgentTypeForAccount,
+} from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 
 import {useMixedKpis} from 'pages/aiAgent/Overview/hooks/useMixedKpis'
 import {useSalesKpis} from 'pages/aiAgent/Overview/hooks/useSalesKpis'
@@ -79,7 +82,7 @@ const KpiForAiAgentType = ({
     aiAgentType,
 }: {
     isLoading: boolean
-    aiAgentType?: 'sales' | 'support' | 'mixed'
+    aiAgentType?: AiAgentType
 }) => {
     const filters: StatsFilters = {
         period: {
@@ -107,7 +110,7 @@ const KpiForAiAgentType = ({
 }
 
 export const KpiSection = () => {
-    const {isLoading, data} = useAiAgentType()
+    const {isLoading, aiAgentType} = useAiAgentTypeForAccount()
 
     return (
         <OverviewCard>
@@ -117,7 +120,7 @@ export const KpiSection = () => {
             </div>
 
             <KpiForAiAgentType
-                aiAgentType={data?.aiAgentType}
+                aiAgentType={aiAgentType}
                 isLoading={isLoading}
             />
         </OverviewCard>

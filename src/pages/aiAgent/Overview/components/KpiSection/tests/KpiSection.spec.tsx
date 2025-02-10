@@ -1,4 +1,3 @@
-import {UseQueryResult} from '@tanstack/react-query'
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 
@@ -8,7 +7,10 @@ import configureMockStore from 'redux-mock-store'
 
 import {StatType} from 'models/stat/types'
 
-import {useAiAgentType} from 'pages/aiAgent/Overview/hooks/useAiAgentType'
+import {
+    AiAgentType,
+    useAiAgentTypeForAccount,
+} from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import {useMixedKpis} from 'pages/aiAgent/Overview/hooks/useMixedKpis'
 import {useSalesKpis} from 'pages/aiAgent/Overview/hooks/useSalesKpis'
 import {useSupportKpis} from 'pages/aiAgent/Overview/hooks/useSupportKpis'
@@ -21,7 +23,7 @@ import {assumeMock} from 'utils/testing'
 import {KpiSection} from '../KpiSection'
 
 jest.mock('pages/aiAgent/Overview/hooks/useAiAgentType')
-const useAiAgentTypeMock = assumeMock(useAiAgentType)
+const useAiAgentTypeMock = assumeMock(useAiAgentTypeForAccount)
 
 jest.mock('pages/aiAgent/Overview/hooks/useMixedKpis')
 const useMixedKpisMock = assumeMock(useMixedKpis)
@@ -53,17 +55,15 @@ const renderComponent = () => {
 
 describe('KpiSection', () => {
     describe.each([
-        ['sales', useSalesKpisMock],
-        ['support', useSupportKpisMock],
-        ['mixed', useMixedKpisMock],
+        ['sales' as AiAgentType, useSalesKpisMock],
+        ['support' as AiAgentType, useSupportKpisMock],
+        ['mixed' as AiAgentType, useMixedKpisMock],
     ])('when AI Agent type is %s', (aiAgentType, mockFn) => {
         beforeEach(() => {
             useAiAgentTypeMock.mockReturnValue({
                 isLoading: false,
-                data: {aiAgentType},
-            } as UseQueryResult<{
-                aiAgentType: 'sales' | 'support' | 'mixed'
-            }>)
+                aiAgentType,
+            })
         })
 
         it('renders sales KPIs correctly when not loading', () => {
@@ -110,9 +110,7 @@ describe('KpiSection', () => {
     it('when AI Agent type is loading', () => {
         useAiAgentTypeMock.mockReturnValue({
             isLoading: true,
-        } as UseQueryResult<{
-            aiAgentType: 'sales' | 'support' | 'mixed'
-        }>)
+        })
 
         renderComponent()
 

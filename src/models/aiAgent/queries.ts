@@ -29,6 +29,7 @@ import {
 } from './resources/message-processing'
 import {
     GetOnboardingNotificationStateParams,
+    GetStoreConfigurationForAccountParams,
     GetStoreConfigurationParams,
 } from './types'
 
@@ -74,6 +75,8 @@ export const storeConfigurationKeys = {
     details: () => [...storeConfigurationKeys.all(), 'detail'] as const,
     detail: (params: GetStoreConfigurationParams) =>
         [...storeConfigurationKeys.details(), params] as const,
+    account: (params: GetStoreConfigurationForAccountParams) =>
+        [...storeConfigurationKeys.all(), 'account', params] as const,
 }
 
 export const useGetStoreConfigurationPure = (
@@ -90,6 +93,40 @@ export const useGetStoreConfigurationPure = (
         enabled:
             !!params.accountDomain &&
             !!params.storeName &&
+            (overrides?.enabled ?? true),
+        ...overrides,
+    })
+}
+
+// TODO: expose a new API that returns the configuration for each stores in the account. In the meantime we need to pass a list of stores.
+export const useGetStoresConfigurationForAccount = (
+    params: GetStoreConfigurationForAccountParams,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getStoreConfiguration>>[]
+    >
+) => {
+    const queryFn = () => {
+        const getAllStoreConfigurationPromise: Promise<
+            Awaited<ReturnType<typeof getStoreConfiguration>>
+        >[] = []
+
+        for (const storeName of params.storesName) {
+            getAllStoreConfigurationPromise.push(
+                getStoreConfiguration({...params, storeName})
+            )
+        }
+
+        return Promise.all(getAllStoreConfigurationPromise)
+    }
+
+    return useQuery({
+        queryKey: storeConfigurationKeys.account(params),
+        queryFn,
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        enabled:
+            !!params.accountDomain &&
+            !!params.storesName.length &&
             (overrides?.enabled ?? true),
         ...overrides,
     })
