@@ -16,7 +16,7 @@ export function AddButton({onClick}: {onClick: () => void}) {
             intent="secondary"
             onClick={onClick}
             isDisabled={lastRuleField === 0}
-            trailingIcon="add"
+            trailingIcon="arrow_drop_down"
         >
             Add requirements
         </Button>
