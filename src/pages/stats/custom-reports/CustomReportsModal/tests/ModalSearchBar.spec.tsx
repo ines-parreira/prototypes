@@ -2,7 +2,10 @@ import {fireEvent, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {REPORTS_MODAL_CONFIG} from 'pages/stats/custom-reports/config'
+import {
+    REPORTS_MODAL_CONFIG,
+    ReportsIDs,
+} from 'pages/stats/custom-reports/config'
 import {ModalSearchBar} from 'pages/stats/custom-reports/CustomReportsModal/ModalSearchBar'
 import {
     OverviewChart,
@@ -51,6 +54,7 @@ describe('ModalSearchBar', () => {
                     {
                         type: OverviewChart,
                         config: calledCharts,
+                        id: ReportsIDs.SupportPerformanceOverviewReportConfig,
                     },
                 ],
             },

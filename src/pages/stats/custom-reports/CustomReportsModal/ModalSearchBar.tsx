@@ -46,6 +46,7 @@ export const getSearchConfig = (
                         ...report.config,
                         charts: filteredCharts,
                     },
+                    id: report.id,
                 })
             }
         }

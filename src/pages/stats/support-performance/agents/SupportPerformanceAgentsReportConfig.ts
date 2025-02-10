@@ -36,9 +36,12 @@ export enum AgentsChart {
     TopClosedTicketsPerformers = 'agents_top_closed_tickets_performers',
 }
 
+export const SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH =
+    'support-performance-agents'
+
 export const SupportPerformanceAgentsReportConfig: ReportConfig<AgentsChart> = {
     reportName: AGENT_PERFORMANCE_SECTION_TITLE,
-    reportPath: 'support-performance-agents',
+    reportPath: SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH,
     charts: {
         [AgentsChart.Table]: {
             chartComponent: AgentsTableChart,

@@ -13,6 +13,7 @@ import NavbarLink, {
 import ConvertStatsNavbar from 'pages/convert/common/components/ConvertStatsNavbar'
 import {DashboardsNavbarBlock} from 'pages/stats/custom-reports/DashboardsNavbarBlock/DashboardsNavbarBlock'
 import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
+import {SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import VoiceStatsNavbarItem from 'pages/stats/voice/components/VoiceStatsNavbar/VoiceStatsNavbarItem'
 import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
@@ -29,6 +30,7 @@ type AutoQANavBarLinkProps = {
 
 export const BUSIEST_TIMES_OF_DAYS_NAV_LABEL = 'Busiest times'
 export const NEW_NAV_LABEL = 'NEW'
+export const STATS_ROUTE_PREFIX = '/app/stats/'
 
 export default function StatsNavbarView() {
     const user = useAppSelector(getCurrentUser)
@@ -58,7 +60,7 @@ export default function StatsNavbarView() {
                     >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/live-overview"
+                            to={`${STATS_ROUTE_PREFIX}live-overview`}
                         >
                             Overview
                         </NavbarLink>
@@ -71,13 +73,13 @@ export default function StatsNavbarView() {
                     >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/live-agents"
+                            to={`${STATS_ROUTE_PREFIX}live-agents`}
                         >
                             Agents
                         </NavbarLink>
                     </div>
                     <VoiceStatsNavbarItem
-                        to="/app/stats/live-voice"
+                        to={`${STATS_ROUTE_PREFIX}live-voice`}
                         title="Voice"
                         commonNavLinkProps={COMMON_NAV_LINK_PROPS}
                     />
@@ -100,7 +102,7 @@ export default function StatsNavbarView() {
                     >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/support-performance-overview"
+                            to={`${STATS_ROUTE_PREFIX}support-performance-overview`}
                         >
                             Overview
                         </NavbarLink>
@@ -113,7 +115,7 @@ export default function StatsNavbarView() {
                     >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/support-performance-agents"
+                            to={`${STATS_ROUTE_PREFIX}${SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH}`}
                         >
                             Agents
                         </NavbarLink>
@@ -128,7 +130,7 @@ export default function StatsNavbarView() {
                     >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/busiest-times-of-days"
+                            to={`${STATS_ROUTE_PREFIX}busiest-times-of-days`}
                         >
                             {BUSIEST_TIMES_OF_DAYS_NAV_LABEL}
                         </NavbarLink>
@@ -141,7 +143,7 @@ export default function StatsNavbarView() {
                     >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/channels"
+                            to={`${STATS_ROUTE_PREFIX}channels`}
                         >
                             Channels
                         </NavbarLink>
@@ -155,7 +157,7 @@ export default function StatsNavbarView() {
                     >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/satisfaction"
+                            to={`${STATS_ROUTE_PREFIX}satisfaction`}
                         >
                             Satisfaction
                         </NavbarLink>
@@ -168,7 +170,7 @@ export default function StatsNavbarView() {
                     >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/revenue"
+                            to={`${STATS_ROUTE_PREFIX}revenue`}
                         >
                             Revenue
                         </NavbarLink>
@@ -183,7 +185,7 @@ export default function StatsNavbarView() {
                         >
                             <NavbarLink
                                 {...COMMON_NAV_LINK_PROPS}
-                                to="/app/stats/help-center"
+                                to={`${STATS_ROUTE_PREFIX}help-center`}
                             >
                                 Help Center
                             </NavbarLink>
@@ -197,7 +199,7 @@ export default function StatsNavbarView() {
                     >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/slas"
+                            to={`${STATS_ROUTE_PREFIX}slas`}
                         >
                             SLAs
                         </NavbarLink>
@@ -219,7 +221,7 @@ export default function StatsNavbarView() {
                     >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/ticket-fields"
+                            to={`${STATS_ROUTE_PREFIX}ticket-fields`}
                         >
                             Ticket Fields
                         </NavbarLink>
@@ -233,7 +235,7 @@ export default function StatsNavbarView() {
                     >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/tags"
+                            to={`${STATS_ROUTE_PREFIX}tags`}
                         >
                             Tags
                         </NavbarLink>
@@ -247,7 +249,7 @@ export default function StatsNavbarView() {
                     >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/macros"
+                            to={`${STATS_ROUTE_PREFIX}macros`}
                         >
                             Macros
                         </NavbarLink>
@@ -260,7 +262,7 @@ export default function StatsNavbarView() {
                     >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/intents"
+                            to={`${STATS_ROUTE_PREFIX}intents`}
                             data-candu-id="statistics-link-intents"
                         >
                             Intents
@@ -282,7 +284,7 @@ export default function StatsNavbarView() {
                         >
                             <NavbarLink
                                 {...COMMON_NAV_LINK_PROPS}
-                                to="/app/stats/quality-management-satisfaction"
+                                to={`${STATS_ROUTE_PREFIX}quality-management-satisfaction`}
                             >
                                 Satisfaction
                                 <Badge
@@ -310,12 +312,12 @@ export default function StatsNavbarView() {
             </NavbarBlock>
             <NavbarBlock title={'Voice'} icon={'phone'}>
                 <VoiceStatsNavbarItem
-                    to={'/app/stats/voice-overview'}
+                    to={`${STATS_ROUTE_PREFIX}voice-overview`}
                     title={'Overview'}
                     commonNavLinkProps={COMMON_NAV_LINK_PROPS}
                 />
                 <VoiceStatsNavbarItem
-                    to={'/app/stats/voice-agents'}
+                    to={`${STATS_ROUTE_PREFIX}voice-agents`}
                     title={'Agents'}
                     commonNavLinkProps={COMMON_NAV_LINK_PROPS}
                 />
@@ -336,7 +338,10 @@ function AutoQANavBarLink({isAvailable}: AutoQANavBarLinkProps) {
                 cssNavbar.isNested
             )}
         >
-            <NavbarLink {...COMMON_NAV_LINK_PROPS} to="/app/stats/auto-qa">
+            <NavbarLink
+                {...COMMON_NAV_LINK_PROPS}
+                to={`${STATS_ROUTE_PREFIX}auto-qa`}
+            >
                 Auto QA
                 <Badge type={'blue'} className={cssNavbar.badge}>
                     {NEW_NAV_LABEL}

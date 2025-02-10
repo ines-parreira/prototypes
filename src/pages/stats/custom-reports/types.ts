@@ -1,9 +1,7 @@
 import {Tag} from '@gorgias/api-queries'
-
 import {ReactNode} from 'react'
 
 import {User} from 'config/types/user'
-
 import {MetricPerDimensionFetch} from 'hooks/reporting/distributions'
 import {MetricTrendFetch} from 'hooks/reporting/useMetricTrend'
 import {
@@ -15,6 +13,7 @@ import {ReportingGranularity} from 'models/reporting/types'
 import {StaticFilter, StatsFilters} from 'models/stat/types'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
 import {MetricValueFormat} from 'pages/stats/common/utils'
+import {ReportsIDs} from 'pages/stats/custom-reports/config'
 import {HelpCenterChart} from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
 import {SatisfactionChart} from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
 import {ServiceLevelAgreementsChart} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
@@ -182,6 +181,7 @@ export type AvailableChartIds =
 export type ReportChildrenConfig = {
     type: AvailableChartIds
     config: ReportConfig<string>
+    id: ReportsIDs
 }[]
 
 export type ReportsModalConfig = {

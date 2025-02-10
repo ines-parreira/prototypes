@@ -18,8 +18,10 @@ import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomRe
 import {IntegrationType} from 'models/integration/constants'
 import StatsNavbarView, {
     BUSIEST_TIMES_OF_DAYS_NAV_LABEL,
+    STATS_ROUTE_PREFIX,
 } from 'pages/stats/common/components/StatsNavbarView'
 import {SERVICE_LEVEL_AGREEMENT_PAGE_TITLE} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
+import {SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import {AUTO_QA_PAGE_TITLE} from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock, renderWithRouterAndDnD} from 'utils/testing'
@@ -94,7 +96,7 @@ describe('StatsNavbarView', () => {
                 .find(
                     (el) =>
                         el.getAttribute('href') ===
-                        '/app/stats/support-performance-agents'
+                        `${STATS_ROUTE_PREFIX}${SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH}`
                 )
 
             expect(agentsPerformanceLink).toBeInTheDocument()

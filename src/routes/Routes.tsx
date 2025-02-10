@@ -148,6 +148,7 @@ import {
 import SelfServiceStatsPage from 'pages/stats/self-service/SelfServiceStatsPage'
 import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
 import SupportPerformanceAgentsReport from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReport'
+import {SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
 import {BusiestTimesOfDays} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
 import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsReport'
@@ -656,7 +657,7 @@ export function StatsRoutes() {
 
                 <Route
                     exact
-                    path={`${path}/support-performance-agents`}
+                    path={`${path}/${SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH}`}
                     render={() => (
                         <App
                             content={SupportPerformanceAgentsReport}

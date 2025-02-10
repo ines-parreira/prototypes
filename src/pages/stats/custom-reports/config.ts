@@ -56,6 +56,25 @@ import {
 
 export const MAX_CHECKED_CHARTS = 20
 
+export const SUPPORT_PERFORMANCE_OVERVIEW_ID =
+    'SupportPerformanceOverviewReportConfig'
+export const AGENT_PERFORMANCE_ID = 'SupportPerformanceAgentsReportConfig'
+
+export enum ReportsIDs {
+    SupportPerformanceOverviewReportConfig = 'SupportPerformanceOverviewReportConfig',
+    SupportPerformanceAgentsReportConfig = 'SupportPerformanceAgentsReportConfig',
+    BusiestTimesReportConfig = 'BusiestTimesReportConfig',
+    ChannelsReportConfig = 'ChannelsReportConfig',
+    ServiceLevelAgreementsReportConfig = 'ServiceLevelAgreementsReportConfig',
+    HelpCenterReportConfig = 'HelpCenterReportConfig',
+    TicketFieldsReportConfig = 'TicketFieldsReportConfig',
+    TicketInsightsTagsReportConfig = 'TicketInsightsTagsReportConfig',
+    AutoQAReportConfig = 'AutoQAReportConfig',
+    SatisfactionReportConfig = 'SatisfactionReportConfig',
+    VoiceAgentsReportConfig = 'VoiceAgentsReportConfig',
+    VoiceOverviewReportConfig = 'VoiceOverviewReportConfig',
+}
+
 export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
     {
         category: 'Support Performance',
@@ -63,26 +82,32 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
             {
                 type: OverviewChart,
                 config: SupportPerformanceOverviewReportConfig,
+                id: ReportsIDs.SupportPerformanceOverviewReportConfig,
             },
             {
                 type: AgentsChart,
                 config: SupportPerformanceAgentsReportConfig,
+                id: ReportsIDs.SupportPerformanceAgentsReportConfig,
             },
             {
                 type: BusiestTimesChart,
                 config: BusiestTimesReportConfig,
+                id: ReportsIDs.BusiestTimesReportConfig,
             },
             {
                 type: ChannelsChart,
                 config: ChannelsReportConfig,
+                id: ReportsIDs.ChannelsReportConfig,
             },
             {
                 type: ServiceLevelAgreementsChart,
                 config: ServiceLevelAgreementsReportConfig,
+                id: ReportsIDs.ServiceLevelAgreementsReportConfig,
             },
             {
                 type: HelpCenterChart,
                 config: HelpCenterReportConfig,
+                id: ReportsIDs.HelpCenterReportConfig,
             },
         ],
     },
@@ -92,10 +117,12 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
             {
                 type: TicketFieldsChart,
                 config: TicketFieldsReportConfig,
+                id: ReportsIDs.TicketFieldsReportConfig,
             },
             {
                 type: TicketInsightsTagsChart,
                 config: TicketInsightsTagsReportConfig,
+                id: ReportsIDs.TicketInsightsTagsReportConfig,
             },
         ],
     },
@@ -105,10 +132,12 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
             {
                 type: AutoQAChart,
                 config: AutoQAReportConfig,
+                id: ReportsIDs.AutoQAReportConfig,
             },
             {
                 type: SatisfactionChart,
                 config: SatisfactionReportConfig,
+                id: ReportsIDs.SatisfactionReportConfig,
             },
         ],
     },
@@ -118,32 +147,46 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
             {
                 type: VoiceOverviewChart,
                 config: VoiceOverviewReportConfig,
+                id: ReportsIDs.VoiceOverviewReportConfig,
             },
             {
                 type: VoiceAgentsChart,
                 config: VoiceAgentsReportConfig,
+                id: ReportsIDs.VoiceAgentsReportConfig,
             },
         ],
     },
 ]
 
 export const getComponentConfig = (
-    configId: string
+    chartId: string
 ): {
     reportConfig: ReportConfig<string> | null
     chartConfig: ChartConfig | null
 } => {
-    const availableCharts = _flatten(
+    const availableReports = _flatten(
         REPORTS_MODAL_CONFIG.map((report) => report.children)
     )
-    for (const chart of availableCharts) {
-        if (Object.values(chart.type).includes(configId)) {
+    for (const report of availableReports) {
+        if (Object.values(report.type).includes(chartId)) {
             return {
-                reportConfig: chart.config,
-                chartConfig: chart.config.charts[configId],
+                reportConfig: report.config,
+                chartConfig: report.config.charts[chartId],
             }
         }
     }
 
     return {reportConfig: null, chartConfig: null}
+}
+
+export const getReportConfig = (
+    reportId: string
+): ReportConfig<string> | null => {
+    const availableReports = _flatten(
+        REPORTS_MODAL_CONFIG.map((report) => report.children)
+    )
+
+    const report = availableReports.find((report) => report.id === reportId)
+
+    return report?.config || null
 }

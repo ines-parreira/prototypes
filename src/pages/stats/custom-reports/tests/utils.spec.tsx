@@ -10,10 +10,12 @@ import {
     AnalyticsCustomReportType,
 } from '@gorgias/api-types'
 import {AxiosError} from 'axios'
-
 import React from 'react'
 
-import {REPORTS_MODAL_CONFIG} from 'pages/stats/custom-reports/config'
+import {
+    REPORTS_MODAL_CONFIG,
+    ReportsIDs,
+} from 'pages/stats/custom-reports/config'
 import {getSearchConfig} from 'pages/stats/custom-reports/CustomReportsModal/ModalSearchBar'
 import {
     ChartConfig,
@@ -47,6 +49,7 @@ import {
     AGENT_PERSISTENT_FILTERS,
     AGENTS_OPTIONAL_FILTERS,
     AgentsChart,
+    SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH,
 } from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import {TopCsatPerformers} from 'pages/stats/support-performance/agents/TopCsatPerformers'
 import {
@@ -300,6 +303,7 @@ describe('getSearchConfig', () => {
                 category: 'Support Performance',
                 children: [
                     {
+                        id: ReportsIDs.SupportPerformanceOverviewReportConfig,
                         type: OverviewChart,
                         config: {
                             ...SupportPerformanceOverviewReportConfig,
@@ -314,6 +318,7 @@ describe('getSearchConfig', () => {
                         },
                     },
                     {
+                        id: ReportsIDs.SupportPerformanceAgentsReportConfig,
                         config: {
                             charts: {
                                 [AgentsChart.TopCSATPerformers]: {
@@ -334,7 +339,7 @@ describe('getSearchConfig', () => {
                                 optional: AGENTS_OPTIONAL_FILTERS,
                             },
                             reportName: AGENT_PERFORMANCE_SECTION_TITLE,
-                            reportPath: 'support-performance-agents',
+                            reportPath: SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH,
                         },
                         type: AgentsChart,
                     },
@@ -344,6 +349,7 @@ describe('getSearchConfig', () => {
                 category: 'Quality management',
                 children: [
                     {
+                        id: ReportsIDs.SatisfactionReportConfig,
                         type: SatisfactionChart,
                         config: {
                             ...SatisfactionReportConfig,
@@ -378,6 +384,7 @@ describe('getSearchConfig', () => {
                 children: [
                     {
                         type: OverviewChart,
+                        id: ReportsIDs.SupportPerformanceOverviewReportConfig,
                         config: {
                             ...SupportPerformanceOverviewReportConfig,
                             charts: {
