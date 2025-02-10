@@ -11,6 +11,7 @@ import {
 } from 'hooks/reporting/common/useTimeSeriesReportData'
 import {useTrendReportData} from 'hooks/reporting/common/useTrendReportData'
 import {useCustomReportData} from 'hooks/reporting/custom-reports/useCustomReportData'
+import {useSanitizedDashboard} from 'hooks/reporting/custom-reports/useSanitizedDashboard'
 import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
@@ -39,6 +40,9 @@ import {
 } from 'services/reporting/supportPerformanceReportingService'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
+
+jest.mock('hooks/reporting/custom-reports/useSanitizedDashboard')
+const useSanitizedDashboardMock = assumeMock(useSanitizedDashboard)
 
 jest.mock('hooks/reporting/common/useTrendReportData')
 const useTrendReportDataMock = assumeMock(useTrendReportData)
@@ -120,6 +124,7 @@ describe('useDownloadCustomReportData', () => {
     const granularity = ReportingGranularity.Day
 
     beforeEach(() => {
+        useSanitizedDashboardMock.mockImplementation((dash) => dash)
         useAgentsTableConfigSettingMock.mockReturnValue({
             columnsOrder: [],
         } as unknown as ReturnType<typeof useAgentsTableConfigSetting>)

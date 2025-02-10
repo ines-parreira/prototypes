@@ -8,6 +8,7 @@ import {
     useTimeSeriesReportData,
 } from 'hooks/reporting/common/useTimeSeriesReportData'
 import {useTrendReportData} from 'hooks/reporting/common/useTrendReportData'
+import {useSanitizedDashboard} from 'hooks/reporting/custom-reports/useSanitizedDashboard'
 import {MetricPerDimensionFetch} from 'hooks/reporting/distributions'
 import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
@@ -164,9 +165,11 @@ const DISTRIBUTIONS_FILE_SUFFIX = 'distributions'
 export const useCustomReportData = (customReport: CustomReportSchema) => {
     const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
 
+    const sanitizedDashboard = useSanitizedDashboard(customReport)
+
     const queryGroups = useMemo(
-        () => getQueryGroupsFromCustomReport(customReport),
-        [customReport]
+        () => getQueryGroupsFromCustomReport(sanitizedDashboard),
+        [sanitizedDashboard]
     )
 
     const trends = useTrendReportData(

@@ -14,6 +14,8 @@ import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {isTeamLead} from 'utils'
 
+export type RestrictionsMap = Record<string, boolean | undefined>
+
 export const useReportRestrictions = () => {
     const isNewSatisfactionReportEnabled =
         useFlags()[FeatureFlagKey.NewSatisfactionReport]
@@ -26,7 +28,7 @@ export const useReportRestrictions = () => {
         () => isTeamLeadOrAdmin && hasAutomate,
         [hasAutomate, isTeamLeadOrAdmin]
     )
-    const restrictionsMap: Record<string, boolean | undefined> = useMemo(
+    const restrictionsMap: RestrictionsMap = useMemo(
         () => ({
             [HELP_CENTER_REPORT_PAGE_SLUG]: !isHelpCenterAnalyticsEnabled,
             [SATISFACTION_REPORT_PAGE_SLUG]: !isNewSatisfactionReportEnabled,
@@ -43,15 +45,16 @@ export const useReportRestrictions = () => {
     }
 }
 
+export const isChartRestricted = (
+    restrictionsMap: RestrictionsMap,
+    chartId: string
+) => {
+    const {reportConfig} = getComponentConfig(chartId)
+    if (!reportConfig) return false
+    return !!restrictionsMap[reportConfig.reportPath]
+}
+
 export const useIsChartRestricted = (chartId: string) => {
     const {restrictionsMap} = useReportRestrictions()
-
-    const {reportConfig} = getComponentConfig(chartId)
-    if (!reportConfig) {
-        return false
-    }
-    const parentReportSlug = reportConfig.reportPath
-    const isRestricted = restrictionsMap[parentReportSlug]
-
-    return Boolean(isRestricted)
+    return isChartRestricted(restrictionsMap, chartId)
 }
