@@ -35,6 +35,16 @@ export const sortOrderOptions = [
         label: '↓ Created',
         tooltipText: 'Newest created tickets appear first',
     },
+    {
+        value: 'updated_datetime:asc',
+        label: '↑ Updated',
+        tooltipText: 'Oldest updated tickets appear first',
+    },
+    {
+        value: 'updated_datetime:desc',
+        label: '↓ Updated',
+        tooltipText: 'Newest updated tickets appear first',
+    },
 ] as const
 
 const sortOrderValues = sortOrderOptions.map((o) => o.value)
