@@ -282,7 +282,8 @@ export const HelpCenterInstallationView: React.FC = () => {
         return () => checkSubdomainAvailability.cancel()
     }, [subdomainValue, checkSubdomainAvailability])
 
-    const deleteBtnDisabled = deleteModalConfirmation !== helpCenter.name
+    const deleteBtnDisabled =
+        deleteModalConfirmation?.trim() !== helpCenter.name?.trim() // Trim to avoid being blocked in the deletion because of a trailing space in Help Center name.
 
     useEffect(() => {
         if (helpCenter.subdomain) {
