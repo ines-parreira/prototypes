@@ -55,6 +55,7 @@ describe('PendingTasksSection', () => {
         )
 
         expect(screen.getAllByRole('link')[0]).not.toHaveAttribute('aria-busy')
+        expect(screen.getByText('Show all tasks (6 total)')).toBeInTheDocument()
     })
 
     it('should expand when clicking on expand button', () => {
@@ -81,5 +82,6 @@ describe('PendingTasksSection', () => {
         expect(screen.getByRole('region').childNodes).toHaveLength(
             pendingTasks.length
         )
+        expect(screen.getByText('Collapse')).toBeInTheDocument()
     })
 })

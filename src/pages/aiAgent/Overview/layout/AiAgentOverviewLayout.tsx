@@ -6,5 +6,9 @@ type Props = {
     children: React.ReactNode
 }
 export const AiAgentOverviewLayout = ({children}: Props) => {
-    return <div className={css.container}>{children}</div>
+    return (
+        <div className={css.container} data-overflow="visible">
+            {children}
+        </div>
+    )
 }

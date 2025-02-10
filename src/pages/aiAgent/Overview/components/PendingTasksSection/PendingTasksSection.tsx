@@ -61,7 +61,7 @@ export const PendingTasksSection = ({
             <div className={css.innerCard}>
                 <div className={css.titleContainer}>
                     <CardTitle>
-                        <span className={css.title}>
+                        <div className={css.title}>
                             Complete AI Agent Setup
                             <i
                                 className={classNames(
@@ -71,7 +71,7 @@ export const PendingTasksSection = ({
                             >
                                 auto_awesome
                             </i>
-                        </span>
+                        </div>
                     </CardTitle>
                     <StorePicker
                         stores={stores}

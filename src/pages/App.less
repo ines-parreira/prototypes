@@ -34,6 +34,10 @@
         width: 100%;
         padding: 0;
 
+        &:has([data-overflow='visible']) {
+            overflow: visible;
+        }
+
         @media @mobiles {
             width: 100vw;
         }

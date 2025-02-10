@@ -4,7 +4,7 @@ import React from 'react'
 
 import css from './PendingTasksSection.less'
 
-type Props = {
+export type ExpanderProps = {
     isLoading: boolean
     isExpanded: boolean
     onClick: () => void
@@ -17,7 +17,7 @@ export const Expander = ({
     tasksCount,
     onClick,
     controlId,
-}: Props) => {
+}: ExpanderProps) => {
     return isLoading ? (
         <div className={css.expander}>
             <Skeleton height={14} width={150} />
@@ -29,7 +29,9 @@ export const Expander = ({
             aria-expanded={isExpanded}
             aria-controls={controlId}
         >
-            Show all tasks ({tasksCount ?? 0} total)
+            {isExpanded
+                ? 'Collapse'
+                : `Show all tasks (${tasksCount ?? 0} total)`}
             <i className={classNames('material-icons', css.titleIcon)}>
                 {isExpanded ? 'arrow_drop_up' : 'arrow_drop_down'}
             </i>

@@ -5,7 +5,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import {StatsFilters} from 'models/stat/types'
 import {Kpi} from 'pages/aiAgent/components/Kpi/Kpi'
 import {CardTitle} from 'pages/aiAgent/Onboarding/components/Card'
-import {Subtitle} from 'pages/aiAgent/Onboarding/components/Subtitle/Subtitle'
 import {OverviewCard} from 'pages/aiAgent/Overview/components/OverviewCard/OverviewCard'
 import {
     AiAgentType,
@@ -116,7 +115,7 @@ export const KpiSection = () => {
         <OverviewCard>
             <div>
                 <CardTitle>AI Agent Performance</CardTitle>
-                <Subtitle>Data from last 28 days</Subtitle>
+                <div className={css.subtitle}>Data from last 28 days</div>
             </div>
 
             <KpiForAiAgentType
