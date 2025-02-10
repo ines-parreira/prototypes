@@ -23,3 +23,8 @@ export const useFetchAiAgentStoreConfigurationData = ({
         isLoading,
     }
 }
+
+export type AiAgentStoreConfigurationData = Exclude<
+    ReturnType<typeof useFetchAiAgentStoreConfigurationData>['data'],
+    null | undefined
+>

@@ -3,6 +3,7 @@ import {renderHook} from '@testing-library/react-hooks'
 import {assumeMock} from 'utils/testing'
 
 import {useFetchAiAgentStoreConfigurationData} from '../useFetchAiAgentStoreConfigurationData'
+import {useFetchFileIngestionData} from '../useFetchFileIngestionData'
 import {useFetchHelpCenterData} from '../useFetchHelpCenterData'
 import {usePendingTasksRuleEngine} from '../usePendingTasksRuleEngine'
 
@@ -16,6 +17,10 @@ jest.mock('../useFetchAiAgentStoreConfigurationData', () => ({
 const useFetchAiAgentStoreConfigurationDataMock = assumeMock(
     useFetchAiAgentStoreConfigurationData
 )
+jest.mock('../useFetchFileIngestionData', () => ({
+    useFetchFileIngestionData: jest.fn(),
+}))
+const useFetchFileIngestionDataMock = assumeMock(useFetchFileIngestionData)
 
 // Will implements better testing after extracting the list of tasks from the ruleEngine
 describe('usePendingTasksRuleEngine', () => {
@@ -31,6 +36,12 @@ describe('usePendingTasksRuleEngine', () => {
             emailChannelDeactivatedDatetime: null,
         } as any,
     })
+
+    useFetchFileIngestionDataMock.mockReturnValue({
+        isLoading: false,
+        data: [] as any,
+    })
+
     it('should return valid tasks', () => {
         const hook = renderHook(() =>
             usePendingTasksRuleEngine({
@@ -41,6 +52,6 @@ describe('usePendingTasksRuleEngine', () => {
 
         expect(hook.result.current.isLoading).toBe(false)
         expect(hook.result.current.completedTasks).toHaveLength(3)
-        expect(hook.result.current.pendingTasks).toHaveLength(0)
+        expect(hook.result.current.pendingTasks).toHaveLength(1)
     })
 })

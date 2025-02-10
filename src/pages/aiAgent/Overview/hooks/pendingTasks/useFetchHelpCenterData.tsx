@@ -20,3 +20,8 @@ export const useFetchHelpCenterData = ({enabled}: Args) => {
         isLoading,
     }
 }
+
+export type HelpCenterData = Exclude<
+    Awaited<ReturnType<typeof useFetchHelpCenterData>>['data'],
+    null | undefined
+>

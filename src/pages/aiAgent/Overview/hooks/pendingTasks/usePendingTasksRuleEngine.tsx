@@ -5,6 +5,7 @@ import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {runRuleEngine} from './ruleEngine'
 import {Task} from './tasks/Task'
 import {useFetchAiAgentStoreConfigurationData} from './useFetchAiAgentStoreConfigurationData'
+import {useFetchFileIngestionData} from './useFetchFileIngestionData'
 import {useFetchHelpCenterData} from './useFetchHelpCenterData'
 
 // Until we have the full implementation of usePendingTasksRuleEngine
@@ -20,8 +21,8 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
     const {routes} = useAiAgentNavigation({shopName: storeName})
 
     const {
-        data: aiAgentStoreConfigurationData,
         isLoading: aiAgentStoreConfigurationIsLoading,
+        data: aiAgentStoreConfigurationData,
     } = useFetchAiAgentStoreConfigurationData({
         accountDomain,
         storeName,
@@ -31,9 +32,17 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
     const {isLoading: helpCenterDataIsLoading, data: helpCenterData} =
         useFetchHelpCenterData({enabled: !shouldFakeTasks})
 
+    const {isLoading: fileIngestionDataIsLoading, data: fileIngestionData} =
+        useFetchFileIngestionData(storeName, !shouldFakeTasks)
+
     const isLoading =
-        aiAgentStoreConfigurationIsLoading || helpCenterDataIsLoading
-    const isReady = !!aiAgentStoreConfigurationData && !!helpCenterData
+        aiAgentStoreConfigurationIsLoading ||
+        helpCenterDataIsLoading ||
+        fileIngestionDataIsLoading
+    const isReady =
+        !!aiAgentStoreConfigurationData &&
+        !!helpCenterData &&
+        !!fileIngestionData
 
     // Use memo instead of useEffect
     const [{completedTasks, pendingTasks}, setTasks] = useState<{
@@ -52,6 +61,7 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
                         helpCenters: helpCenterData,
                         aiAgentStoreConfiguration:
                             aiAgentStoreConfigurationData,
+                        fileIngestion: fileIngestionData,
                     },
                     {
                         aiAgentRoutes: routes,
@@ -60,7 +70,7 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
             )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [aiAgentStoreConfigurationData])
+    }, [aiAgentStoreConfigurationData, helpCenterData, fileIngestionData])
 
     if (shouldFakeTasks) {
         return {

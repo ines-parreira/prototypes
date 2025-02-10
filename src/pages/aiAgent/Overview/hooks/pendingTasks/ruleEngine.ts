@@ -3,18 +3,15 @@ import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {ConnectAHelpCenterTask} from './tasks/ConnectAHelpCenter.task'
 import {EnableAIAgentOnChatTask} from './tasks/EnableAIAgentOnChat.task'
 import {EnableAIAgentOnEmailTask} from './tasks/EnableAIAgentOnEmail.task'
-import {useFetchAiAgentStoreConfigurationData} from './useFetchAiAgentStoreConfigurationData'
-import {useFetchHelpCenterData} from './useFetchHelpCenterData'
+import {UploadAnExternalDoc} from './tasks/UploadAnExternalDoc.task'
+import {type AiAgentStoreConfigurationData} from './useFetchAiAgentStoreConfigurationData'
+import {type FileIngestionData} from './useFetchFileIngestionData'
+import {type HelpCenterData} from './useFetchHelpCenterData'
 
 export type RuleEngineDataContext = {
-    aiAgentStoreConfiguration: Exclude<
-        ReturnType<typeof useFetchAiAgentStoreConfigurationData>['data'],
-        undefined
-    >
-    helpCenters: Exclude<
-        ReturnType<typeof useFetchHelpCenterData>['data'],
-        undefined
-    >
+    aiAgentStoreConfiguration: AiAgentStoreConfigurationData
+    helpCenters: HelpCenterData
+    fileIngestion: FileIngestionData
 }
 
 export type RuleEngineRoutesContext = {
@@ -29,6 +26,7 @@ export const runRuleEngine = (
         new EnableAIAgentOnChatTask(data, routes),
         new EnableAIAgentOnEmailTask(data, routes),
         new ConnectAHelpCenterTask(data, routes),
+        new UploadAnExternalDoc(data, routes),
     ]
     const completedTasks = tasks.filter((task) => !task.display)
     const pendingTasks = tasks.filter((task) => task.display)
