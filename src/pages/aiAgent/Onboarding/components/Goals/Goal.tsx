@@ -1,7 +1,6 @@
 import cn from 'classnames'
 import React from 'react'
 
-import Badge from 'gorgias-design-system/Badge/Badge'
 import {Card, CardContent} from 'pages/aiAgent/Onboarding/components/Card'
 import {AiAgentScopes} from 'pages/aiAgent/Onboarding/types'
 
@@ -31,13 +30,6 @@ const Goal: React.FC<Props> = ({goal, isSelected, onSelect}) => {
                             {goal.description}
                         </p>
                     </div>
-                </div>
-                <div>
-                    <Badge
-                        color="accessoryGrey"
-                        label={goal.subDescription}
-                        className={css.badge}
-                    />
                 </div>
             </CardContent>
         </Card>

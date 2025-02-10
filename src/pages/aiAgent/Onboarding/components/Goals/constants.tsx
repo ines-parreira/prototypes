@@ -15,7 +15,6 @@ export const GoalOption: GoalData[] = [
         image: <StarIcon />,
         title: 'Automate support with AI',
         description: 'Simplify customer support with AI-powered responses.',
-        subDescription: 'Resolve 1,000 support requests in seconds',
     },
     {
         type: GoalType.BoostSales,
@@ -23,7 +22,6 @@ export const GoalOption: GoalData[] = [
         image: <CursorClickIcon />,
         title: 'Boost Sales with a Personal Shopping Assistant',
         description: 'Increase your sales with a tailored shopping experience.',
-        subDescription: 'Resolve 1,000 support requests in seconds',
     },
     {
         type: GoalType.Both,
@@ -31,6 +29,5 @@ export const GoalOption: GoalData[] = [
         image: <RocketIcon />,
         title: 'Do both: Automate Support and Boost Sales',
         description: 'Use our duo AI Agents to handle common customer queries.',
-        subDescription: 'Resolve 1,000 support requests in seconds',
     },
 ]

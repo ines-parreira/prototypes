@@ -14,5 +14,4 @@ export type GoalData = {
     title: string
     image: ReactNode
     description: string
-    subDescription: string
 }
