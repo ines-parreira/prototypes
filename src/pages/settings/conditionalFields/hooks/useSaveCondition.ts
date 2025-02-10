@@ -36,7 +36,10 @@ export default function useSaveCondition(conditionId?: number) {
                     ? await createCondition({
                           data: data as CreateCustomFieldCondition,
                       })
-                    : await updateCondition({id: conditionId, data: data})
+                    : await updateCondition({
+                          id: conditionId,
+                          data: data as UpdateCustomFieldCondition,
+                      })
 
                 void dispatch(
                     notify({

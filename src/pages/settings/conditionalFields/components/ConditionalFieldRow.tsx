@@ -8,8 +8,9 @@ import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import {TableBodyRowDraggable} from 'pages/common/components/table/TableBodyRowDraggable'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+import {Callbacks} from 'pages/common/hooks/useReorderDnD'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import history from 'pages/history'
 
@@ -21,11 +22,17 @@ import {DeletionPopover} from './DeletionPopover'
 type ConditionalFieldRowProps = {
     condition: CustomFieldCondition
     canDuplicate?: boolean
+    position: number
+    onMoveEntity: Callbacks['onHover']
+    onDropEntity: Callbacks['onDrop']
 }
 
 export default function ConditionalFieldRow({
     condition,
     canDuplicate,
+    position,
+    onMoveEntity,
+    onDropEntity,
 }: ConditionalFieldRowProps) {
     const {mutateAsync: updateCondition, isLoading: isUpdating} =
         useUpdateCustomFieldCondition()
@@ -78,7 +85,15 @@ export default function ConditionalFieldRow({
     }
 
     return (
-        <TableBodyRow>
+        <TableBodyRowDraggable
+            dragItem={{
+                id: condition.id,
+                position,
+                type: 'conditional-fields-row',
+            }}
+            onMoveEntity={onMoveEntity}
+            onDropEntity={onDropEntity}
+        >
             <BodyCell>
                 <ConfirmationPopover
                     buttonProps={{
@@ -150,6 +165,6 @@ export default function ConditionalFieldRow({
                     )}
                 </DeletionPopover>
             </BodyCell>
-        </TableBodyRow>
+        </TableBodyRowDraggable>
     )
 }

@@ -1,6 +1,6 @@
 import {CustomFieldCondition} from '@gorgias/api-queries'
 import classNames from 'classnames'
-import React, {useMemo, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Container} from 'reactstrap'
 
@@ -27,6 +27,7 @@ import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
 
 import ConditionalFieldRow from './components/ConditionalFieldRow'
 import css from './ConditionalFields.less'
+import useUpdateCustomFieldConditions from './hooks/useUpdateCustomFieldConditions'
 
 export const MAX_CONDITIONS = 70
 
@@ -196,6 +197,38 @@ const ExistingConditions = ({
     conditions: CustomFieldCondition[]
     isLimitReached?: boolean
 }) => {
+    const [draggedConditions, setDraggedConditions] = useState<
+        CustomFieldCondition[]
+    >([])
+    const {mutate: updateCustomFieldConditions} =
+        useUpdateCustomFieldConditions()
+
+    useEffect(() => {
+        setDraggedConditions(conditions)
+    }, [conditions])
+
+    const handleMoveEntity = (dragIndex: number, hoverIndex: number) => {
+        const newDraggedConditions = [...draggedConditions]
+
+        const original = newDraggedConditions[dragIndex]
+        newDraggedConditions.splice(dragIndex, 1)
+        newDraggedConditions.splice(hoverIndex, 0, original)
+
+        setDraggedConditions(newDraggedConditions)
+    }
+
+    const handleDropEntity = () => {
+        const sortedOrders = draggedConditions
+            .map((condition) => condition.sort_order)
+            .sort((a, b) => b - a)
+        const updatedSortOrders = draggedConditions.map((condition) => ({
+            id: condition.id,
+            sort_order: sortedOrders.pop(),
+        }))
+
+        updateCustomFieldConditions({data: updatedSortOrders})
+    }
+
     return (
         <div className="p-0">
             {isLimitReached && (
@@ -208,7 +241,7 @@ const ExistingConditions = ({
             <TableWrapper>
                 <TableHead>
                     <HeaderCell size="smallest" />
-                    <HeaderCell className={css.headerCell}>
+                    <HeaderCell className={css.headerCell} colSpan={2}>
                         Condition Name
                     </HeaderCell>
                     <HeaderCell size="smallest" className={css.headerCell}>
@@ -217,11 +250,14 @@ const ExistingConditions = ({
                     <HeaderCell size="smallest" />
                 </TableHead>
                 <TableBody>
-                    {conditions.map((condition) => (
+                    {draggedConditions.map((condition, index) => (
                         <ConditionalFieldRow
                             key={condition.id}
                             condition={condition}
                             canDuplicate={!isLimitReached}
+                            position={index}
+                            onMoveEntity={handleMoveEntity}
+                            onDropEntity={handleDropEntity}
                         />
                     ))}
                 </TableBody>

@@ -1,5 +1,7 @@
 import {fireEvent, screen} from '@testing-library/react'
 import React from 'react'
+import {DndProvider} from 'react-dnd'
+import {HTML5Backend} from 'react-dnd-html5-backend'
 
 import {customFieldCondition} from 'fixtures/customFieldCondition'
 import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
@@ -31,10 +33,21 @@ jest.mock(
         }) as Record<string, unknown>
 )
 
+const baseProps = {
+    position: 0,
+    onMoveEntity: jest.fn(),
+    onDropEntity: jest.fn(),
+}
+
 describe('<CustomFieldRow />', () => {
     it('should render', () => {
         renderWithStoreAndQueryClientProvider(
-            <ConditionalFieldRow condition={customFieldCondition} />
+            <DndProvider backend={HTML5Backend}>
+                <ConditionalFieldRow
+                    {...baseProps}
+                    condition={customFieldCondition}
+                />
+            </DndProvider>
         )
 
         expect(screen.getByText(customFieldCondition.name)).toBeDefined()
@@ -42,10 +55,13 @@ describe('<CustomFieldRow />', () => {
 
     it('should create a new condition when clicking the duplicate button', () => {
         renderWithStoreAndQueryClientProvider(
-            <ConditionalFieldRow
-                condition={customFieldCondition}
-                canDuplicate
-            />
+            <DndProvider backend={HTML5Backend}>
+                <ConditionalFieldRow
+                    {...baseProps}
+                    condition={customFieldCondition}
+                    canDuplicate
+                />
+            </DndProvider>
         )
 
         fireEvent.click(screen.getByTitle('Duplicate Condition'))
@@ -54,7 +70,12 @@ describe('<CustomFieldRow />', () => {
 
     it('should delete the condition with confirmation when clicking the delete button', () => {
         renderWithStoreAndQueryClientProvider(
-            <ConditionalFieldRow condition={customFieldCondition} />
+            <DndProvider backend={HTML5Backend}>
+                <ConditionalFieldRow
+                    {...baseProps}
+                    condition={customFieldCondition}
+                />
+            </DndProvider>
         )
 
         fireEvent.click(screen.getByTitle('Delete Condition'))
@@ -72,7 +93,12 @@ describe('<CustomFieldRow />', () => {
             deactivated_datetime: '2024-07-29T09:09:41.626092+00:00',
         }
         renderWithStoreAndQueryClientProvider(
-            <ConditionalFieldRow condition={deactivatedCondition} />
+            <DndProvider backend={HTML5Backend}>
+                <ConditionalFieldRow
+                    {...baseProps}
+                    condition={deactivatedCondition}
+                />
+            </DndProvider>
         )
 
         fireEvent.click(screen.getByRole('switch'))
@@ -86,7 +112,12 @@ describe('<CustomFieldRow />', () => {
 
     it('should disable the condition with confirmation when clicking the OFF toggle', () => {
         renderWithStoreAndQueryClientProvider(
-            <ConditionalFieldRow condition={customFieldCondition} />
+            <DndProvider backend={HTML5Backend}>
+                <ConditionalFieldRow
+                    {...baseProps}
+                    condition={customFieldCondition}
+                />
+            </DndProvider>
         )
 
         fireEvent.click(screen.getByRole('switch'))

@@ -1,4 +1,4 @@
-import {ArchiveMacroAsUser, Macro} from '@gorgias/api-queries'
+import {ArchiveMacroAsUserResult, Macro} from '@gorgias/api-queries'
 import classNames from 'classnames'
 import React, {useRef, useState} from 'react'
 import {useRouteMatch} from 'react-router-dom'
@@ -49,7 +49,7 @@ export default function MoreActions({
                 {
                     onSettled: (resp) => {
                         const msg = resp?.data.data as unknown as {
-                            data?: ArchiveMacroAsUser[]
+                            data?: ArchiveMacroAsUserResult[]
                         }
                         const error = msg?.data?.[0]?.error
 

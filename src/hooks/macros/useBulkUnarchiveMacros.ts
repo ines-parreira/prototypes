@@ -1,5 +1,5 @@
 import {
-    ArchiveMacroAsUser,
+    ArchiveMacroAsUserResult,
     queryKeys,
     useBulkUnarchiveMacros as useBulkUnarchiveMacrosPrimitive,
 } from '@gorgias/api-queries'
@@ -26,7 +26,7 @@ export function useBulkUnarchiveMacros() {
                 })
                 const macroCount = (
                     resp?.data.data as unknown as {
-                        data?: ArchiveMacroAsUser[]
+                        data?: ArchiveMacroAsUserResult[]
                     }
                 )?.data?.length
                 void dispatch(

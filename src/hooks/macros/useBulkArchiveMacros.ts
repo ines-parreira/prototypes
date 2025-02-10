@@ -1,5 +1,5 @@
 import {
-    ArchiveMacroAsUser,
+    ArchiveMacroAsUserResult,
     Macro,
     queryKeys,
     useBulkArchiveMacros as useBulkArchiveMacrosPrimitive,
@@ -22,11 +22,11 @@ export function useBulkArchiveMacros(macros?: Macro[]) {
     return useBulkArchiveMacrosPrimitive({
         mutation: {
             onSettled: (resp) => {
-                const errors: ArchiveMacroAsUser[] = []
+                const errors: ArchiveMacroAsUserResult[] = []
                 const successes: string[] = []
                 ;(
                     resp?.data.data as unknown as {
-                        data?: ArchiveMacroAsUser[]
+                        data?: ArchiveMacroAsUserResult[]
                     }
                 )?.data?.forEach((data) => {
                     if (data.error) {

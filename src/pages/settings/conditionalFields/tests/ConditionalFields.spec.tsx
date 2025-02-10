@@ -1,12 +1,15 @@
-import {render, screen, waitFor} from '@testing-library/react'
+import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+import {DndProvider} from 'react-dnd'
+import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Link} from 'react-router-dom'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import {useCustomFieldConditions} from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import {customFieldCondition} from 'fixtures/customFieldCondition'
 import useDebouncedValue from 'hooks/useDebouncedValue'
+import useUpdateCustomFieldConditions from 'pages/settings/conditionalFields/hooks/useUpdateCustomFieldConditions'
 import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
 import {assumeMock, getLastMockCall} from 'utils/testing'
 
@@ -31,14 +34,27 @@ jest.mock(
         }) as Record<string, unknown>
 )
 jest.mock('custom-fields/hooks/queries/useCustomFieldConditions')
+jest.mock(
+    'pages/settings/conditionalFields/hooks/useUpdateCustomFieldConditions'
+)
 jest.mock('hooks/useDebouncedValue')
 
 const useDebouncedValueMock = assumeMock(useDebouncedValue)
 const mockedLogEvent = assumeMock(logEvent)
 const mockedLink = assumeMock(Link)
 const useCustomFieldConditionsMock = assumeMock(useCustomFieldConditions)
+const useUpdateCustomFieldConditionsMock = assumeMock(
+    useUpdateCustomFieldConditions
+)
 
-describe('<CustomFields/>', () => {
+const updateConditions = jest.fn()
+useUpdateCustomFieldConditionsMock.mockReturnValue({
+    mutate: updateConditions,
+    isLoading: false,
+    isSuccess: false,
+} as any)
+
+describe('<ConditionalFields/>', () => {
     beforeEach(() => {
         useDebouncedValueMock.mockReturnValue('')
 
@@ -86,7 +102,11 @@ describe('<CustomFields/>', () => {
             isError: false,
         })
 
-        renderWithStoreAndQueryClientProvider(<ConditionalFields />)
+        renderWithStoreAndQueryClientProvider(
+            <DndProvider backend={HTML5Backend}>
+                <ConditionalFields />
+            </DndProvider>
+        )
 
         expect(screen.getByText(/You can only have/)).toBeDefined()
         expect(
@@ -130,5 +150,45 @@ describe('<CustomFields/>', () => {
                 'Unexpected error happened when trying to load existing conditions. Please try again later.'
             )
         ).toBeInTheDocument()
+    })
+
+    it('should update conditions on drag and drop', () => {
+        useCustomFieldConditionsMock.mockReturnValue({
+            customFieldConditions: Array.from({length: 3}, (_, i) => ({
+                ...customFieldCondition,
+                id: i + 1,
+                sort_order: i + 1,
+            })),
+            isLoading: false,
+            isError: false,
+        })
+
+        renderWithStoreAndQueryClientProvider(
+            <DndProvider backend={HTML5Backend}>
+                <ConditionalFields />
+            </DndProvider>
+        )
+
+        // Drag the last row to the first row
+        const dragHandles = screen.getAllByText(/drag_indicator/i)
+        const from = dragHandles[2]
+        const dest = dragHandles[0]
+        act(() => {
+            fireEvent.dragStart(from)
+            fireEvent.dragEnter(dest)
+            fireEvent.dragOver(dest)
+        })
+        act(() => {
+            fireEvent.drop(dest)
+        })
+
+        // The new order should have the last row at first
+        expect(updateConditions).toHaveBeenCalledWith({
+            data: [
+                {id: 3, sort_order: 1},
+                {id: 1, sort_order: 2},
+                {id: 2, sort_order: 3},
+            ],
+        })
     })
 })
