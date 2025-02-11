@@ -23,12 +23,15 @@ export default function VoiceIntegrationDetails(): JSX.Element | null {
             infocard={{
                 ...detailProps.infocard,
                 CTA: (
-                    <ConnectLink
-                        connectUrl={'/app/settings/channels/phone/new'}
-                        integrationTitle={IntegrationType.Phone}
-                    >
-                        <Button>Add Voice</Button>
-                    </ConnectLink>
+                    <>
+                        <ConnectLink
+                            connectUrl={'/app/settings/channels/phone/new'}
+                            integrationTitle={IntegrationType.Phone}
+                        >
+                            <Button>Add Voice</Button>
+                        </ConnectLink>
+                        <div data-candu-id="voice-settings-product-tour" />
+                    </>
                 ),
             }}
         />
