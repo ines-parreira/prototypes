@@ -17,11 +17,11 @@ describe('CreateAnAction', () => {
 
     it.each([
         {
-            type: 'PUBLIC',
+            type: 'PUBLISHED',
             actions: ActionsDataFixture.start().withPublishedAction().build(),
         },
         {
-            type: 'UNLISTED',
+            type: 'DRAFT',
             actions: ActionsDataFixture.start().withDraftAction().build(),
         },
     ])(

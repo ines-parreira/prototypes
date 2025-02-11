@@ -86,6 +86,6 @@ describe('usePendingTasksRuleEngine', () => {
         expect(
             // Mapping on title to ease reading error report
             hook.result.current.completedTasks.map((t) => t.title)
-        ).toHaveLength(7)
+        ).toHaveLength(8)
     })
 })

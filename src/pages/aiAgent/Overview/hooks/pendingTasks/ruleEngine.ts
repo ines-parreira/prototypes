@@ -8,12 +8,14 @@ import {EnableAIAgentOnChatTask} from './tasks/EnableAIAgentOnChat.task'
 import {EnableAIAgentOnEmailTask} from './tasks/EnableAIAgentOnEmail.task'
 import {PublishYourFirstGuidanceTask} from './tasks/PublishYourFirstGuidance.task'
 import {ReviewAIGeneratedGuidancesTask} from './tasks/ReviewAIGeneratedGuidances.task'
+import {SetYourActionsLiveTask} from './tasks/SetYourActionsLive.task'
 import {UploadAnExternalDocTask} from './tasks/UploadAnExternalDoc.task'
-import {ActionsData} from './useFetchActionsData'
+
+import {type ActionsData} from './useFetchActionsData'
 import {type AiAgentStoreConfigurationData} from './useFetchAiAgentStoreConfigurationData'
 import {type FaqHelpCentersData} from './useFetchFaqHelpCentersData'
 import {type FileIngestionData} from './useFetchFileIngestionData'
-import {GuidancesData} from './useFetchGuidancesData'
+import {type GuidancesData} from './useFetchGuidancesData'
 
 export type RuleEngineData = {
     aiAgentStoreConfiguration: AiAgentStoreConfigurationData
@@ -40,6 +42,7 @@ export const runRuleEngine = (
         new EnableAIAgentOnEmailTask(data, routes),
         new PublishYourFirstGuidanceTask(data, routes),
         new ReviewAIGeneratedGuidancesTask(data, routes),
+        new SetYourActionsLiveTask(data, routes),
         new UploadAnExternalDocTask(data, routes),
     ]
     const completedTasks = tasks.filter((task) => !task.display)
