@@ -8,6 +8,7 @@ import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {NavBarProvider} from 'common/navigation/components/NavBarProvider'
 import {NotificationsProvider} from 'common/notifications'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
@@ -71,9 +72,11 @@ const storyConfig: Meta = {
                     <DndProvider backend={HTML5Backend}>
                         <MemoryRouter>
                             <NotificationsProvider>
-                                <div>
-                                    <Component />
-                                </div>
+                                <NavBarProvider>
+                                    <div>
+                                        <Component />
+                                    </div>
+                                </NavBarProvider>
                             </NotificationsProvider>
                         </MemoryRouter>
                     </DndProvider>
