@@ -1,15 +1,21 @@
 import {renderHook} from '@testing-library/react-hooks'
-
 import moment from 'moment'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
+import {useTables} from 'hooks/reporting/common/useTableReportData'
 import {useSatisfactionMetrics} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
 import {fetchSurveyScores} from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
 import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 
 import {formatMetricValue} from 'pages/stats/common/utils'
+import {getFormattedInfo} from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/utils'
 import {formatSurveyScores} from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
 import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
+
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {
     fetchSurveyScoresReportData,
@@ -29,6 +35,16 @@ jest.mock(
 const useSatisfactionMetricsMock = assumeMock(useSatisfactionMetrics)
 jest.mock('hooks/reporting/quality-management/satisfaction/useSurveyScores')
 const fetchSurveyScoresMock = assumeMock(fetchSurveyScores)
+
+jest.mock(
+    'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/utils'
+)
+const getLineChartFormattedInfoMock = assumeMock(getFormattedInfo)
+
+jest.mock('hooks/reporting/common/useTableReportData')
+const useTablesMock = assumeMock(useTables)
+
+const mockStore = configureMockStore([thunk])
 
 describe('satisfactionReportingService', () => {
     const period = {
@@ -92,6 +108,45 @@ describe('satisfactionReportingService', () => {
         exampleSurveyScoresData,
         '- star count'
     ).map(({value, label}) => [label, value])
+
+    const defaultState = {
+        stats: {
+            filters: {
+                period: {
+                    start_datetime: '2023-08-01',
+                    end_datetime: '2023-08-31',
+                },
+            },
+        },
+        ui: {
+            stats: {
+                filters: {
+                    granularity: 'hour',
+                    cleanStatsFilters: {
+                        period: {
+                            start_datetime: '2023-08-01',
+                            end_datetime: '2023-08-31',
+                        },
+                    },
+                    userTimezone: 'UTC',
+                },
+            },
+        },
+    }
+
+    beforeEach(() => {
+        getLineChartFormattedInfoMock.mockReturnValue({
+            dataToRender: [
+                [
+                    {dateTime: '2023-08-01', value: 4.5},
+                    {dateTime: '2023-08-02', value: 4.7},
+                ],
+            ],
+            labels: ['Agent 1'],
+            initialVisibility: {},
+            tooltips: [],
+        })
+    })
 
     describe('saveReport', () => {
         it('should format data', () => {
@@ -222,20 +277,34 @@ describe('satisfactionReportingService', () => {
     })
 
     describe('useSatisfactionReportData', () => {
-        useSatisfactionMetricsMock.mockReturnValue({
-            reportData: defaultData,
-            isLoading: false,
-            period,
+        beforeEach(() => {
+            useSatisfactionMetricsMock.mockReturnValue({
+                reportData: defaultData,
+                isLoading: false,
+                period,
+            })
+            useTablesMock.mockReturnValue({
+                files: {},
+                isFetching: false,
+            })
         })
 
-        const {result} = renderHook(() => useSatisfactionReportData())
+        it('should return formatted report data', () => {
+            const {result} = renderHook(() => useSatisfactionReportData(), {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            })
 
-        expect(result.current).toEqual({
-            files: {
-                [trendsFileName]: saveReport(defaultData, period),
-            },
-            fileName,
-            isLoading: false,
+            expect(result.current).toEqual({
+                files: {
+                    [trendsFileName]: saveReport(defaultData, period),
+                },
+                fileName,
+                isLoading: false,
+            })
         })
     })
 })

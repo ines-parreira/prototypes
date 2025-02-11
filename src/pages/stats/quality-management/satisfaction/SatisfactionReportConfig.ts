@@ -7,6 +7,7 @@ import {
 import CommentHighlightsChart, {
     COMMENT_HIGHLIGHTS,
 } from 'pages/stats/quality-management/satisfaction//CommentHighlightsChart/CommentHighlightsChart'
+import {AverageScorePerDimensionTrendChart} from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart'
 import AverageSurveyScoreDonutChart from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
 import {ResponseRateTrendCard} from 'pages/stats/quality-management/satisfaction/ResponseRateTrendCard'
 import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
@@ -21,6 +22,7 @@ export enum SatisfactionChart {
     SurveysSentTrendCard = 'surveys-sent-trend-card',
     AverageSurveyScoreDonutChart = 'average-survey-score-donut-chart',
     CommentHighlightsChart = 'comment-highlights-chart',
+    AverageCSATPerDimensionTrendChart = 'average-csat-per-dimension-trend-chart',
 }
 
 export const SATISFACTION_TITLE = 'Satisfaction'
@@ -140,5 +142,32 @@ export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {
             csvProducer: null,
             chartType: ChartType.Graph,
         },
+        [SatisfactionChart.AverageCSATPerDimensionTrendChart]: {
+            chartComponent: AverageScorePerDimensionTrendChart,
+            label: 'Average CSAT over time',
+            description:
+                'Overall average CSAT, as well as average CSAT score per dimensions over the period.',
+            csvProducer: [
+                {
+                    type: DataExportFormat.Table,
+                    fetch: SatisfactionMetricConfig[
+                        SatisfactionMetric.AverageCSATPerChannel
+                    ].fetchTable,
+                },
+                {
+                    type: DataExportFormat.Table,
+                    fetch: SatisfactionMetricConfig[
+                        SatisfactionMetric.AverageCSATPerAssignee
+                    ].fetchTable,
+                },
+                {
+                    type: DataExportFormat.Table,
+                    fetch: SatisfactionMetricConfig[
+                        SatisfactionMetric.AverageCSATPerIntegration
+                    ].fetchTable,
+                },
+            ],
+            chartType: ChartType.Graph,
+        },
     },
-}
+} as const

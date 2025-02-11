@@ -399,6 +399,8 @@ describe('voiceAgentsPerformanceReportingService', () => {
                         direction: OrderDirection.Asc,
                         column: 1,
                     },
+                    integrations: [],
+                    getAgentDetails: () => undefined,
                 }
 
                 const report = await fetchVoiceAgentsReportData(
@@ -440,6 +442,8 @@ describe('voiceAgentsPerformanceReportingService', () => {
                     direction: OrderDirection.Asc,
                     column: 1,
                 },
+                integrations: [],
+                getAgentDetails: () => undefined,
             }
 
             const report = await fetchVoiceAgentsReportData(
@@ -475,6 +479,8 @@ describe('voiceAgentsPerformanceReportingService', () => {
                     direction: OrderDirection.Asc,
                     column: 1,
                 },
+                integrations: [],
+                getAgentDetails: () => undefined,
             }
 
             const report = await fetchVoiceAgentsReportData(

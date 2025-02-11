@@ -27,9 +27,11 @@ export const isHumanOrAutomationBotAgent = (agent: Map<any, any>) =>
 export const getState = (state: RootState): AgentsState =>
     state.agents || fromJS({})
 
-const getAllAgents = createImmutableSelector(getState, (agents) => {
+export const getAllAgents = createImmutableSelector(getState, (agents) => {
     return agents.get('all') as List<any>
 })
+
+export const getAllAgentsJS = makeGetPlainJS<User[]>(getAllAgents)
 
 export const getHumanAgents = createImmutableSelector(
     getAllAgents,
@@ -105,7 +107,7 @@ export const getAgent = (id?: number) =>
 
 export const makeGetAgent =
     (state: RootState) =>
-    (id: number): Map<any, any> =>
+    (id: number): Agent =>
         getAgent(id)(state)
 
 // Location of agents in the app (ticket, view, etc.) by their ids

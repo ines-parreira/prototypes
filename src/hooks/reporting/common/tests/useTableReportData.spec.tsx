@@ -150,6 +150,9 @@ describe('useTable hooks', () => {
 
         it('should return empty on error', async () => {
             const state = {
+                agents: fromJS({
+                    all: agents,
+                }),
                 entities: {
                     tags: _keyBy(tags, 'id'),
                 },

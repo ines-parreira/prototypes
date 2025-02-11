@@ -29,6 +29,7 @@ import {
     interactionsByEventTypeTimeSeriesQueryFactory,
     interactionsTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/automate_v2/timeseries'
+import {averageCSATScorePerDimensionTimeSeriesFactory} from 'models/reporting/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
 import {closedTicketsTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {messagesSentTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {ticketsCreatedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
@@ -38,6 +39,8 @@ import {tagsTicketCountTimeSeriesFactory} from 'models/reporting/queryFactories/
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
+
+import {useAverageCSATScorePerDimensionTimeSeries} from '../quality-management/satisfaction/useAverageScorePerDimensionTimeSeries'
 
 jest.mock('hooks/reporting/useTimeSeries')
 const useTimeSeriesMock = assumeMock(useTimeSeries)
@@ -294,6 +297,36 @@ describe('time series', () => {
                         granularity
                     ),
                 ])
+            })
+        })
+        describe('useAverageCSATScorePerDimensionTimeSeries', () => {
+            it('should pass the query to the useTimeSeriesHook', () => {
+                const dimension = 'some-dimension'
+                renderHook(
+                    ({statsFilters, timezone, granularity}) =>
+                        useAverageCSATScorePerDimensionTimeSeries(
+                            dimension,
+                            statsFilters,
+                            timezone,
+                            granularity
+                        ),
+                    {
+                        initialProps: {
+                            statsFilters,
+                            timezone,
+                            granularity,
+                        },
+                    }
+                )
+
+                expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
+                    averageCSATScorePerDimensionTimeSeriesFactory(
+                        dimension,
+                        statsFilters,
+                        timezone,
+                        granularity
+                    )
+                )
             })
         })
     })

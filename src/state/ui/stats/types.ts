@@ -43,6 +43,9 @@ export enum SatisfactionMetric {
     SatisfactionScore = 'satisfaction_survey_satisfaction_score',
     SurveysSent = 'satisfaction_survey_surveys_sent',
     AverageSurveyScore = 'satisfaction_average_survey_score',
+    AverageCSATPerChannel = 'satisfaction_average_csat_per_channel',
+    AverageCSATPerAssignee = 'satisfaction_average_csat_per_assignee',
+    AverageCSATPerIntegration = 'satisfaction_average_csat_per_integration',
 }
 
 export enum TicketFieldsMetric {

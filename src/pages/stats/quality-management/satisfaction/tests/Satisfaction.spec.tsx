@@ -6,6 +6,7 @@ import React, {ComponentProps} from 'react'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {billingState} from 'fixtures/billing'
 import {FiltersPanelWrapper} from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import {AverageScorePerDimensionTrendChart} from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart'
 import AverageSurveyScoreDonutChart from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
 import CommentHighlightsChart from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsChart'
 import {ResponseRateTrendCard} from 'pages/stats/quality-management/satisfaction/ResponseRateTrendCard'
@@ -55,8 +56,18 @@ const SurveysSentTrendCardMock = assumeMock(SurveysSentTrendCard)
 jest.mock(
     'pages/stats/quality-management/satisfaction/SatisfactionDownloadDataButton'
 )
+jest.mock(
+    'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart'
+)
 const SatisfactionDownloadDataButtonMock = assumeMock(
     SatisfactionDownloadDataButton
+)
+const AverageScorePerDimensionTrendChartMock = assumeMock(
+    AverageScorePerDimensionTrendChart
+)
+
+jest.mock(
+    'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
 )
 
 jest.mock(
@@ -97,6 +108,7 @@ describe('<Satisfaction>', () => {
         AverageSurveyScoreDonutChartMock.mockImplementation(componentMock)
         SatisfactionDownloadDataButtonMock.mockImplementation(componentMock)
         CommentHighlightsChartMock.mockImplementation(componentMock)
+        AverageScorePerDimensionTrendChartMock.mockImplementation(componentMock)
     })
 
     it('should render new satisfaction report page', () => {
@@ -111,6 +123,7 @@ describe('<Satisfaction>', () => {
         expect(SurveysSentTrendCardMock).toHaveBeenCalled()
         expect(AverageSurveyScoreDonutChartMock).toHaveBeenCalled()
         expect(CommentHighlightsChartMock).toHaveBeenCalled()
+        expect(AverageScorePerDimensionTrendChartMock).toHaveBeenCalled()
     })
 
     it('should contain filters panel component', () => {
@@ -126,6 +139,7 @@ describe('<Satisfaction>', () => {
             expect(SurveysSentTrendCardMock).toHaveBeenCalled()
             expect(AverageSurveyScoreDonutChartMock).toHaveBeenCalled()
             expect(CommentHighlightsChartMock).toHaveBeenCalled()
+            expect(AverageScorePerDimensionTrendChartMock).toHaveBeenCalled()
         })
     })
 })

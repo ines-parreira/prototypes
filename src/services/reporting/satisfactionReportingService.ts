@@ -1,11 +1,15 @@
 import moment from 'moment/moment'
 
+import {useTables} from 'hooks/reporting/common/useTableReportData'
 import {useSatisfactionMetrics} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
 import {fetchSurveyScores} from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
 import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
 import {Period, StatsFilters} from 'models/stat/types'
 
 import {
@@ -27,9 +31,26 @@ export interface SatisfactionReportData {
     surveyScores: MetricWithDecile
 }
 
+const tables = [
+    SatisfactionMetric.AverageCSATPerAssignee,
+    SatisfactionMetric.AverageCSATPerChannel,
+    SatisfactionMetric.AverageCSATPerIntegration,
+] as const
+export const tablesReportSource = tables.map((metric) => ({
+    ...SatisfactionMetricConfig[metric],
+    dimension:
+        metric === SatisfactionMetric.AverageCSATPerAssignee
+            ? TicketDimension.AssigneeUserId
+            : metric === SatisfactionMetric.AverageCSATPerChannel
+              ? TicketDimension.Channel
+              : TicketMessagesDimension.Integration,
+    metric,
+}))
+
 export const SATISFACTION_TRENDS_METRICS_FILE_NAME =
     'satisfaction-trends-metrics'
 export const SATISFACTION_METRICS_FILE_NAME = 'satisfaction-metrics'
+export const SATISFACTION_AVERAGE_CSAT_OVER_TIME = '{metric}-over-time'
 
 const formatTrendMetric = (column: SatisfactionMetric, value?: number | null) =>
     formatMetricValue(
@@ -119,6 +140,7 @@ export const saveReport = (data: SatisfactionReportData, period: Period) => {
 }
 
 export const useSatisfactionReportData = () => {
+    const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
     const {reportData, isLoading, period} = useSatisfactionMetrics()
 
     const fileName = getCsvFileNameWithDates(
@@ -130,12 +152,20 @@ export const useSatisfactionReportData = () => {
         SATISFACTION_TRENDS_METRICS_FILE_NAME
     )
 
+    const {files, isFetching} = useTables(
+        cleanStatsFilters,
+        userTimezone,
+        granularity,
+        tablesReportSource
+    )
+
     return {
         files: {
             [trendsFileName]: saveReport(reportData, period),
+            ...files,
         },
         fileName,
-        isLoading,
+        isLoading: isLoading || isFetching,
     }
 }
 

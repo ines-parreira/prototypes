@@ -23,6 +23,7 @@ export type TwoDimensionalDataItem = {
         x: string
         y: number
     }[]
+    isDashed?: boolean
 }
 
 export type TooltipData = {

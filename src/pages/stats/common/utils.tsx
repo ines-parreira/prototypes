@@ -348,13 +348,15 @@ export const formatLabeledTimeSeriesData = (
 export const formatLabeledTooltipTimeSeriesData = (
     data: TimeSeriesDataItem[][] = [],
     legendInfo: {labels: string[]; tooltips: string[]},
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
+    dashedItems?: Array<boolean>
 ) => {
     const format = getFormat(granularity)
 
     return data.map((items, index) => ({
         ...formatTimeSeries(legendInfo.labels[index], items, format),
         tooltip: legendInfo.tooltips[index],
+        isDashed: dashedItems?.[index],
     }))
 }
 

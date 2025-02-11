@@ -225,6 +225,9 @@ describe('getDrillDownQuery', () => {
         },
         {metricName: SatisfactionMetric.ResponseRate},
         {metricName: SatisfactionMetric.SurveysSent},
+        {metricName: SatisfactionMetric.AverageCSATPerAssignee},
+        {metricName: SatisfactionMetric.AverageCSATPerChannel},
+        {metricName: SatisfactionMetric.AverageCSATPerIntegration},
     ]
     const tagsMetrics: TagsFieldsMetrics[] = [
         {

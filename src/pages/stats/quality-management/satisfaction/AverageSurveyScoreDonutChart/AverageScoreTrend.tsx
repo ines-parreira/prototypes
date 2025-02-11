@@ -12,6 +12,7 @@ import {
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
+import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {AutoQAMetric, SatisfactionMetric, SlaMetric} from 'state/ui/stats/types'
 
 type Props = {
@@ -67,10 +68,12 @@ export const AverageScoreTrend = ({
             {drillDownMetric ? (
                 <DrillDownModalTrigger
                     enabled={!!trend.data?.value}
-                    metricData={{
-                        title,
-                        metricName: drillDownMetric,
-                    }}
+                    metricData={
+                        {
+                            title,
+                            metricName: drillDownMetric,
+                        } as DrillDownMetric
+                    }
                     useNewFilterData={isAnalyticsNewFilters}
                 >
                     {formattedMetric}

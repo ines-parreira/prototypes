@@ -401,7 +401,10 @@ export const getDrillDownMetricColumn = (
         metricData.metricName === SatisfactionMetric.SatisfactionScore ||
         metricData.metricName === SatisfactionMetric.ResponseRate ||
         metricData.metricName === SatisfactionMetric.SurveysSent ||
-        metricData.metricName === SatisfactionMetric.AverageSurveyScore
+        metricData.metricName === SatisfactionMetric.AverageSurveyScore ||
+        metricData.metricName === SatisfactionMetric.AverageCSATPerAssignee ||
+        metricData.metricName === SatisfactionMetric.AverageCSATPerChannel ||
+        metricData.metricName === SatisfactionMetric.AverageCSATPerIntegration
     ) {
         metricTitle = SatisfactionTrendCardConfig[metricData.metricName].title
         metricValueFormat =

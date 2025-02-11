@@ -178,6 +178,8 @@ describe('ticketFieldsReportingService', () => {
                         direction: OrderDirection.Asc,
                         column: 1,
                     },
+                    integrations: [],
+                    getAgentDetails: () => undefined,
                 }
             )
 
@@ -210,6 +212,8 @@ describe('ticketFieldsReportingService', () => {
                         direction: OrderDirection.Asc,
                         column: 1,
                     },
+                    integrations: [],
+                    getAgentDetails: () => undefined,
                 }
             )
 
@@ -239,6 +243,8 @@ describe('ticketFieldsReportingService', () => {
                         direction: OrderDirection.Asc,
                         column: 1,
                     },
+                    integrations: [],
+                    getAgentDetails: () => undefined,
                 }
             )
 
@@ -270,6 +276,8 @@ describe('ticketFieldsReportingService', () => {
                         direction: OrderDirection.Asc,
                         column: 1,
                     },
+                    integrations: [],
+                    getAgentDetails: () => undefined,
                 }
             )
 

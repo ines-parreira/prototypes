@@ -222,6 +222,8 @@ describe('useDownloadAgentsPerformanceData', () => {
                 direction: OrderDirection.Asc,
                 column: 1,
             },
+            integrations: [],
+            getAgentDetails: () => undefined,
         }
 
         it('Should return report file name', async () => {

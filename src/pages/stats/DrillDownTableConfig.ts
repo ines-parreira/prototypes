@@ -1,5 +1,7 @@
 import {OrderDirection} from 'models/api/types'
 import {DrillDownReportingQuery} from 'models/job/types'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {ticketHandleTimePerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {accuracyDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/accuracyQueryFactory'
@@ -10,11 +12,11 @@ import {internalComplianceDrillDownQueryFactory} from 'models/reporting/queryFac
 import {languageProficiencyDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/languageProficiencyQueryFactory'
 import {resolutionCompletenessDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
 import {reviewedClosedTicketsDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
+import {averageCSATScorePerDimensionDrillDownQueryFactory} from 'models/reporting/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
 import {averageScoreDrillDownQueryFactory} from 'models/reporting/queryFactories/satisfaction/averageScoreQueryFactory'
 import {responseRateDrillDownQueryFactory} from 'models/reporting/queryFactories/satisfaction/responseRateQueryFactory'
 import {satisfactionScoreDrillDownQueryFactory} from 'models/reporting/queryFactories/satisfaction/satisfactionScoreQueryFactory'
 import {surveysSentDrillDownQueryFactory} from 'models/reporting/queryFactories/satisfaction/surveysSentQueryFactory'
-
 import {
     breachedTicketsDrillDownQueryFactory,
     satisfiedOrBreachedTicketsDrillDownQueryFactory,
@@ -268,6 +270,18 @@ export const getDrillDownQuery = (
             return responseRateDrillDownQueryFactory
         case SatisfactionMetric.SurveysSent:
             return surveysSentDrillDownQueryFactory
+        case SatisfactionMetric.AverageCSATPerAssignee:
+            return averageCSATScorePerDimensionDrillDownQueryFactory(
+                TicketDimension.AssigneeUserId
+            )
+        case SatisfactionMetric.AverageCSATPerChannel:
+            return averageCSATScorePerDimensionDrillDownQueryFactory(
+                TicketDimension.Channel
+            )
+        case SatisfactionMetric.AverageCSATPerIntegration:
+            return averageCSATScorePerDimensionDrillDownQueryFactory(
+                TicketMessagesDimension.Integration
+            )
         case AutoQAMetric.Accuracy:
             return accuracyDrillDownQueryFactory
         case AutoQAMetric.Efficiency:

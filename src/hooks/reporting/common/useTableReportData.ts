@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from 'react'
+import {useCallback, useEffect, useMemo, useState} from 'react'
 
 import {User} from 'config/types/user'
 import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
@@ -11,7 +11,9 @@ import {ReportingGranularity} from 'models/reporting/types'
 
 import {StatsFilters} from 'models/stat/types'
 import {ReportFetch} from 'pages/stats/custom-reports/types'
+import {getAllAgentsJS} from 'state/agents/selectors'
 import {getEntitiesTags} from 'state/entities/tags/selectors'
+import {getIntegrations} from 'state/integrations/selectors'
 import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
 import {getSortedAutoQAAgents} from 'state/ui/stats/autoQAAgentPerformanceSlice'
 import {getSelectedMetric} from 'state/ui/stats/busiestTimesSlice'
@@ -55,6 +57,12 @@ export const useTables = (
     const selectedBTODMetric = useAppSelector(getSelectedMetric)
     const tags = useAppSelector(getEntitiesTags)
     const tagsTableOrder = useAppSelector(getTagsOrder)
+    const allAgents = useAppSelector(getAllAgentsJS)
+    const getAgentDetails = useCallback(
+        (id: number) => allAgents.find((agent) => agent.id === id),
+        [allAgents]
+    )
+    const integrations = useAppSelector(getIntegrations)
     const context = useMemo(
         () => ({
             agents,
@@ -70,6 +78,8 @@ export const useTables = (
             selectedBTODMetric,
             tags,
             tagsTableOrder,
+            getAgentDetails,
+            integrations,
         }),
         [
             agents,
@@ -82,6 +92,8 @@ export const useTables = (
             selectedBTODMetric,
             tags,
             tagsTableOrder,
+            getAgentDetails,
+            integrations,
         ]
     )
 

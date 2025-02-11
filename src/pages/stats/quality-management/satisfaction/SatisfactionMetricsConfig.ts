@@ -1,4 +1,12 @@
 import {
+    fetchAverageCSATPerAssigneeTable,
+    fetchAverageCSATPerChannelTable,
+    fetchAverageCSATPerIntegrationTable,
+    useAverageCSATPerAssigneeTimeseries,
+    useAverageCSATPerChannelTimeseries,
+    useAverageCSATPerIntegrationTimeseries,
+} from 'hooks/reporting/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries'
+import {
     fetchAverageScoreTrend,
     useAverageScoreTrend,
 } from 'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
@@ -14,9 +22,6 @@ import {
     fetchSurveysSentTrend,
     useSurveysSentTrend,
 } from 'hooks/reporting/quality-management/satisfaction/useSurveysSentTrend'
-import {MetricTrendFetch, MetricTrendHook} from 'hooks/reporting/useMetricTrend'
-import {MetricTrendFormat} from 'pages/stats/common/utils'
-import {TooltipData} from 'pages/stats/types'
 import {SatisfactionMetric} from 'state/ui/stats/types'
 
 export const SATISFACTION_SCORE_LABEL = 'Satisfaction score'
@@ -24,18 +29,10 @@ export const RESPONSE_RATE_LABEL = 'Response rate'
 export const SURVEYS_SENT_LABEL = 'Surveys sent'
 export const AVERAGE_SURVEY_SCORE = 'Average CSAT'
 
-export const SatisfactionMetricConfig: Record<
-    SatisfactionMetric,
-    {
-        hint: TooltipData
-        title: string
-        useTrend: MetricTrendHook
-        fetchTrend: MetricTrendFetch
-        interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
-        metricFormat: MetricTrendFormat
-        drillDownMetric: SatisfactionMetric
-    }
-> = {
+const AVERAGE_CSAT_PER_DIMENSION_DESCRIPTION =
+    'Average from 1 to 5 stars in satisfaction per {dimension} over time.'
+
+export const SatisfactionMetricConfig = {
     [SatisfactionMetric.SatisfactionScore]: {
         title: SATISFACTION_SCORE_LABEL,
         hint: {
@@ -82,4 +79,46 @@ export const SatisfactionMetricConfig: Record<
         fetchTrend: fetchAverageScoreTrend,
         drillDownMetric: SatisfactionMetric.AverageSurveyScore,
     },
-}
+    [SatisfactionMetric.AverageCSATPerChannel]: {
+        title: 'Average CSAT per Channel',
+        hint: {
+            title: AVERAGE_CSAT_PER_DIMENSION_DESCRIPTION.replace(
+                '{dimension}',
+                'channel'
+            ),
+        },
+        interpretAs: 'more-is-better',
+        drillDownMetric: SatisfactionMetric.AverageCSATPerChannel,
+        metricFormat: 'decimal',
+        useTrend: useAverageCSATPerChannelTimeseries,
+        fetchTable: fetchAverageCSATPerChannelTable,
+    },
+    [SatisfactionMetric.AverageCSATPerAssignee]: {
+        title: 'Average CSAT per Assignee',
+        hint: {
+            title: AVERAGE_CSAT_PER_DIMENSION_DESCRIPTION.replace(
+                '{dimension}',
+                'assignee'
+            ),
+        },
+        interpretAs: 'more-is-better',
+        drillDownMetric: SatisfactionMetric.AverageCSATPerAssignee,
+        metricFormat: 'decimal',
+        useTrend: useAverageCSATPerAssigneeTimeseries,
+        fetchTable: fetchAverageCSATPerAssigneeTable,
+    },
+    [SatisfactionMetric.AverageCSATPerIntegration]: {
+        title: 'Average CSAT per Integration',
+        hint: {
+            title: AVERAGE_CSAT_PER_DIMENSION_DESCRIPTION.replace(
+                '{dimension}',
+                'integration'
+            ),
+        },
+        interpretAs: 'more-is-better',
+        drillDownMetric: SatisfactionMetric.AverageCSATPerIntegration,
+        metricFormat: 'decimal',
+        useTrend: useAverageCSATPerIntegrationTimeseries,
+        fetchTable: fetchAverageCSATPerIntegrationTable,
+    },
+} as const

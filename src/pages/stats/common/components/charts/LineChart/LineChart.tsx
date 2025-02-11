@@ -145,6 +145,7 @@ export function LineChart({
                 return {
                     borderColor: color,
                     fill: 'origin',
+                    borderDash: item.isDashed ? [5, 5] : undefined,
                     backgroundColor: background,
                     label: item.label,
                     data: item.values.map((value) => value.y),

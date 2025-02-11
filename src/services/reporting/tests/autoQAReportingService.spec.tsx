@@ -457,6 +457,8 @@ describe('autoQAReportingService', () => {
                 direction: OrderDirection.Asc,
                 column: 1,
             },
+            integrations: [],
+            getAgentDetails: () => undefined,
         }
 
         beforeEach(() => {

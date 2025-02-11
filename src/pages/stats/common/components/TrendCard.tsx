@@ -15,6 +15,7 @@ import MetricCard from 'pages/stats/MetricCard'
 import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {TooltipData} from 'pages/stats/types'
 import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
+import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {AutoQAMetric, SatisfactionMetric, SlaMetric} from 'state/ui/stats/types'
 
 export const TrendCard = ({
@@ -79,10 +80,12 @@ export const TrendCard = ({
                 {drillDownMetric ? (
                     <DrillDownModalTrigger
                         enabled={!!trend.data?.value}
-                        metricData={{
-                            title,
-                            metricName: drillDownMetric,
-                        }}
+                        metricData={
+                            {
+                                title,
+                                metricName: drillDownMetric,
+                            } as DrillDownMetric
+                        }
                         useNewFilterData={isAnalyticsNewFilters}
                     >
                         {formattedMetric}

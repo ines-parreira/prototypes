@@ -9,6 +9,7 @@ import {
     TimeSeriesPerDimensionFetch,
 } from 'hooks/reporting/useTimeSeries'
 import {Channel} from 'models/channel/types'
+import {Integration} from 'models/integration/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StaticFilter, StatsFilters} from 'models/stat/types'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
@@ -115,6 +116,8 @@ export type ReportFetch = (
         selectedCustomFieldId: string | null
         tags: Record<string, Tag | undefined>
         tagsTableOrder: TagsTableOrder
+        integrations: Integration[]
+        getAgentDetails: (id: number) => User | undefined
     }
 ) => Promise<{
     isLoading: boolean

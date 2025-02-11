@@ -15,6 +15,7 @@ export enum TicketSatisfactionSurveyDimension {
     SurveyComment = 'TicketSatisfactionSurveyEnriched.surveyComment',
     SurveyCommentLength = 'TicketSatisfactionSurveyEnriched.surveyCommentLength',
     SurveyCustomerId = 'TicketSatisfactionSurveyEnriched.surveyCustomerId',
+    SurveySentDatetime = 'TicketSatisfactionSurveyEnriched.surveySentDatetime',
 }
 
 export enum TicketSatisfactionSurveySegment {

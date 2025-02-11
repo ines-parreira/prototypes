@@ -26,7 +26,6 @@ export default function SatisfactionReport() {
     const getGridCellSize = useGridSize()
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-
     return (
         <div className="full-width">
             <StatsPage
@@ -95,6 +94,14 @@ export default function SatisfactionReport() {
                     <DashboardGridCell size={getGridCellSize(6)}>
                         <CustomReportComponent
                             chart={SatisfactionChart.CommentHighlightsChart}
+                            config={SatisfactionReportConfig}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={getGridCellSize(12)}>
+                        <CustomReportComponent
+                            chart={
+                                SatisfactionChart.AverageCSATPerDimensionTrendChart
+                            }
                             config={SatisfactionReportConfig}
                         />
                     </DashboardGridCell>

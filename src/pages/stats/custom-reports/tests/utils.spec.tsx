@@ -359,6 +359,11 @@ describe('getSearchConfig', () => {
                                         SatisfactionChart
                                             .AverageSurveyScoreDonutChart
                                     ],
+                                [SatisfactionChart.AverageCSATPerDimensionTrendChart]:
+                                    SatisfactionReportConfig.charts[
+                                        SatisfactionChart
+                                            .AverageCSATPerDimensionTrendChart
+                                    ],
                             },
                         },
                     },

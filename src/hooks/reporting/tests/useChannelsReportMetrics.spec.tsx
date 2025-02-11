@@ -192,6 +192,8 @@ describe('useChannelsReportMetrics', () => {
                     direction: OrderDirection.Asc,
                     column: 1,
                 },
+                integrations: [],
+                getAgentDetails: () => undefined,
             }
             const fileName = getCsvFileNameWithDates(
                 statsFilters.period,
@@ -238,6 +240,8 @@ describe('useChannelsReportMetrics', () => {
                     direction: OrderDirection.Asc,
                     column: 1,
                 },
+                integrations: [],
+                getAgentDetails: () => undefined,
             }
             const fileName = getCsvFileNameWithDates(
                 statsFilters.period,
