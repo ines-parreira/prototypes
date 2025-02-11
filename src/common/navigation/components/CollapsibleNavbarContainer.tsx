@@ -26,7 +26,8 @@ export const CollapsibleNavbarContainer = forwardRef<
                 {...props}
                 data-name="navbar-collapsible-container"
                 data-display={navBarDisplay}
-                onMouseEnter={onNavHover}
+                onMouseOver={onNavHover}
+                onFocus={onNavHover}
                 className={css.container}
             >
                 {children}

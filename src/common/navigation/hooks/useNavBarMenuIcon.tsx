@@ -12,7 +12,9 @@ export function useNavBarMenuIcon() {
 
     switch (navBarDisplay) {
         case NavBarDisplayMode.Open:
-            return NavBarMenuIcons.DoubleLeft
+            return isNavHovered
+                ? NavBarMenuIcons.DoubleLeft
+                : NavBarMenuIcons.Menu
         case NavBarDisplayMode.Hover:
             return isNavHovered
                 ? NavBarMenuIcons.DoubleRight

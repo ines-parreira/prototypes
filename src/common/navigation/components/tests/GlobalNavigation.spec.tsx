@@ -63,9 +63,9 @@ describe('GlobalNavigation', () => {
         useActiveItemMock.mockReturnValue('tickets')
     })
 
-    it('should render the double left arrow icon when the nav is pinned', () => {
+    it('should render the menu icon when the nav is pinned', () => {
         const {getByText} = renderWithContext()
-        expect(getByText('keyboard_double_arrow_left')).toBeInTheDocument()
+        expect(getByText('menu')).toBeInTheDocument()
     })
 
     it('should render the home icon', () => {

@@ -17,12 +17,19 @@ type Props = {
 }
 
 export default function NavbarPanel({children}: Props) {
-    const {navBarDisplay} = useNavBar()
+    const {navBarDisplay, onNavHover, onNavLeave} = useNavBar()
 
     if (navBarDisplay === NavBarDisplayMode.Open) {
         return (
             <Panel name="navigation" config={panelConfig}>
-                {children}
+                <div
+                    data-name="navbar-open-container"
+                    onMouseOver={onNavHover}
+                    onFocus={onNavHover}
+                    onMouseLeave={onNavLeave}
+                >
+                    {children}
+                </div>
             </Panel>
         )
     }

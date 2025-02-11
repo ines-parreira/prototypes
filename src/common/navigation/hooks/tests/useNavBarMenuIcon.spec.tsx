@@ -18,7 +18,7 @@ const mockNavBarContextValues: NavBarContextType = {
 }
 
 describe('useNavBarMenuIcon', () => {
-    it('should return double left arrow when Open regardless of hover state', () => {
+    it('should return menu icon when Open', () => {
         mockUseNavBar.mockReturnValue({
             ...mockNavBarContextValues,
             isNavHovered: false,
@@ -26,17 +26,18 @@ describe('useNavBarMenuIcon', () => {
         })
 
         const {result} = renderHook(useNavBarMenuIcon)
-        expect(result.current).toBe(NavBarMenuIcons.DoubleLeft)
+        expect(result.current).toBe(NavBarMenuIcons.Menu)
+    })
 
-        // Test with hover true as well
+    it('should return double left arrow when Open and hovered', () => {
         mockUseNavBar.mockReturnValue({
             ...mockNavBarContextValues,
             isNavHovered: true,
             navBarDisplay: NavBarDisplayMode.Open,
         })
 
-        const {result: result2} = renderHook(useNavBarMenuIcon)
-        expect(result2.current).toBe(NavBarMenuIcons.DoubleLeft)
+        const {result} = renderHook(useNavBarMenuIcon)
+        expect(result.current).toBe(NavBarMenuIcons.DoubleLeft)
     })
 
     it('should return double right arrow when Hover and hovered', () => {

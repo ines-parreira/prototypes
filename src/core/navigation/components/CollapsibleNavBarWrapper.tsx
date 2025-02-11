@@ -10,10 +10,19 @@ type Props = {
 }
 
 export function CollapsibleNavBarWrapper({children}: Props) {
-    const {navBarDisplay} = useNavBar()
+    const {navBarDisplay, onNavHover, onNavLeave} = useNavBar()
 
     if (navBarDisplay === NavBarDisplayMode.Open) {
-        return <>{children}</>
+        return (
+            <div
+                data-name="navbar-open-container"
+                onMouseOver={onNavHover}
+                onFocus={onNavHover}
+                onMouseLeave={onNavLeave}
+            >
+                {children}
+            </div>
+        )
     }
 
     return <CollapsibleNavbarContainer>{children}</CollapsibleNavbarContainer>
