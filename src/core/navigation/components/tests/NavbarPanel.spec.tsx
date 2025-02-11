@@ -24,6 +24,7 @@ const mockNavBarContextValues: NavBarContextType = {
     onNavLeave: jest.fn(),
     onOverlayHover: jest.fn(),
     onMenuToggle: jest.fn(),
+    onHomeButtonClick: jest.fn(),
 }
 
 describe('NavbarPanel', () => {

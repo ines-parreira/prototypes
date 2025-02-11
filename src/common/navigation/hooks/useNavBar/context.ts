@@ -25,6 +25,7 @@ export type NavBarContextType = {
     onOverlayHover: () => void
     onMenuToggle: () => void
     isNavBarVisible: boolean
+    onHomeButtonClick: () => void
 }
 
 export const NavBarContext = createContext<NavBarContextType | undefined>(

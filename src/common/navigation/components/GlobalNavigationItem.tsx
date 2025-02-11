@@ -12,8 +12,10 @@ import css from './GlobalNavigationItem.less'
 
 export type GlobalNavigationItemTooltipTrigger = ('hover' | 'focus')[]
 
-type CommonGlobalNavigationItemProps = {
+type GlobalNavigationItemProps = {
     'data-candu-id'?: string
+    onClick?: () => void
+    url?: string
     children?: ReactNode
     icon: string
     isActive?: boolean
@@ -22,19 +24,9 @@ type CommonGlobalNavigationItemProps = {
     tooltipTrigger?: GlobalNavigationItemTooltipTrigger
 }
 
-type GlobalNavigationItemLinkProps = CommonGlobalNavigationItemProps & {
-    url: string
-}
-
-type GlobalNavigationItemButtonProps = CommonGlobalNavigationItemProps & {
-    onClick: () => void
-}
-
-type GlobalNavigationItemProps =
-    | GlobalNavigationItemLinkProps
-    | GlobalNavigationItemButtonProps
-
 export default function GlobalNavigationItem({
+    onClick,
+    url,
     children,
     icon,
     isActive,
@@ -46,8 +38,7 @@ export default function GlobalNavigationItem({
     const id = useId()
     const scopedId = `global-navigation-item-${id}`
 
-    if ('url' in props) {
-        const {url} = props
+    if (typeof url === 'string') {
         return (
             <>
                 <Link
@@ -57,6 +48,7 @@ export default function GlobalNavigationItem({
                     className={cn(css.icon, {[css.active]: !!isActive})}
                     data-candu-id={props['data-candu-id']}
                     to={url}
+                    onClick={onClick}
                 >
                     <i className="material-icons-round">{icon}</i>
                     {children}
@@ -73,8 +65,6 @@ export default function GlobalNavigationItem({
             </>
         )
     }
-
-    const {onClick} = props
 
     return (
         <>

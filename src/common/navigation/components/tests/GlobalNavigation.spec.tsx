@@ -47,6 +47,7 @@ describe('GlobalNavigation', () => {
         onNavLeave: jest.fn(),
         onOverlayHover: jest.fn(),
         onMenuToggle: jest.fn(),
+        onHomeButtonClick: jest.fn(),
     }
 
     const renderWithContext = () =>
