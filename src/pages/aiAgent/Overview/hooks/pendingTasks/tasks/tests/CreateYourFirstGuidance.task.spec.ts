@@ -29,7 +29,7 @@ describe('CreateYourFirstGuidance', () => {
                 .build(),
         },
     ])(
-        'should display the task if any $type guidance exists',
+        'should not display the task if any $type guidance exists',
         ({guidances}) => {
             const task = new CreateYourFirstGuidanceTask(
                 buildRuleEngineData({
