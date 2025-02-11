@@ -106,7 +106,8 @@ export const ValueField = forwardRef(function ValueField(
                         inputId={`expression-value-${pickedDefinition.id}-${index}`}
                         placeholder="Select field value(s)"
                         choices={
-                            pickedDefinition.definition.input_settings.choices
+                            pickedDefinition.definition.input_settings
+                                .choices || []
                         }
                         allowMultiValues
                         value={value ? value : []}

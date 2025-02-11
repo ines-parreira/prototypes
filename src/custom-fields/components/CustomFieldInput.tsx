@@ -96,7 +96,7 @@ export default function CustomFieldInput({
                     hasError={hasError}
                     onFocus={onFocus}
                     placeholder={placeholder}
-                    choices={field.definition.input_settings.choices}
+                    choices={field.definition.input_settings.choices || []}
                     isDisabled={isDisabled}
                     onChange={onChange}
                     value={value}

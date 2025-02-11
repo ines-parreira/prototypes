@@ -89,7 +89,7 @@ function CustomFieldInput({
                     ? value
                     : undefined,
             placeholder: 'Select an option',
-            choices,
+            choices: choices || [],
             id: customField.id,
             label: customField.label,
             showFullValue: true,

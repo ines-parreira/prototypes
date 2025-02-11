@@ -112,6 +112,7 @@ export default function DropdownField(props: Props) {
                 onChange={handleChange}
                 onFocus={handleFocus}
                 {...props}
+                choices={props.choices || []}
             />
         </div>
     )
