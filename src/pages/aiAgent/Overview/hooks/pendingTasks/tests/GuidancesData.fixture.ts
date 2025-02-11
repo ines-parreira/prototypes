@@ -1,3 +1,5 @@
+import {GuidanceArticle} from 'pages/aiAgent/types'
+
 import {GuidancesData} from '../useFetchGuidancesData'
 
 type AllKeys = keyof GuidancesDataFixture
@@ -8,6 +10,10 @@ type ConfiguredGuidancesDataFixture<
 export type GuidancesDataFixtureFullyConfigured =
     ConfiguredGuidancesDataFixture<'build'>
 
+type WithGuidanceArgs = {
+    aiGenerated: boolean
+    visibility: 'PUBLIC' | 'UNLISTED'
+}
 type InternalData = {
     guidanceId: number
 }
@@ -32,21 +38,24 @@ export class GuidancesDataFixture {
         return this as GuidancesDataFixtureFullyConfigured
     }
 
-    withPublicGuidance() {
+    private withGuidance({aiGenerated, visibility}: WithGuidanceArgs) {
+        const id = this.internalData.guidanceId++
         this.guidancesData.push({
-            id: this.internalData.guidanceId++,
-            visibility: 'PUBLIC',
-        } as any)
+            id,
+            visibility,
+            templateKey: aiGenerated ? `ai_guidance_id_${id}` : 'none',
+        } as Partial<GuidanceArticle> as any)
+    }
+
+    withPublicGuidance({aiGenerated = false} = {}) {
+        this.withGuidance({aiGenerated, visibility: 'PUBLIC'})
         return this as ConfiguredGuidancesDataFixture<
             'withPublicGuidance' | 'withUnlistedGuidance' | 'build'
         >
     }
 
-    withUnlistedGuidance() {
-        this.guidancesData.push({
-            id: this.internalData.guidanceId++,
-            visibility: 'UNLISTED',
-        } as any)
+    withUnlistedGuidance({aiGenerated = false} = {}) {
+        this.withGuidance({aiGenerated, visibility: 'UNLISTED'})
         return this as ConfiguredGuidancesDataFixture<
             'withPublicGuidance' | 'withUnlistedGuidance' | 'build'
         >
