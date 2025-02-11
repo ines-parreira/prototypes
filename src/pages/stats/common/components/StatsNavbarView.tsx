@@ -343,9 +343,6 @@ function AutoQANavBarLink({isAvailable}: AutoQANavBarLinkProps) {
                 to={`${STATS_ROUTE_PREFIX}auto-qa`}
             >
                 Auto QA
-                <Badge type={'blue'} className={cssNavbar.badge}>
-                    {NEW_NAV_LABEL}
-                </Badge>
             </NavbarLink>
         </div>
     )
