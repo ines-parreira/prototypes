@@ -13,6 +13,7 @@ import css from './GlobalNavigationItem.less'
 export type GlobalNavigationItemTooltipTrigger = ('hover' | 'focus')[]
 
 type CommonGlobalNavigationItemProps = {
+    'data-candu-id'?: string
     children?: ReactNode
     icon: string
     isActive?: boolean
@@ -54,6 +55,7 @@ export default function GlobalNavigationItem({
                         id: scopedId,
                     })}
                     className={cn(css.icon, {[css.active]: !!isActive})}
+                    data-candu-id={props['data-candu-id']}
                     to={url}
                 >
                     <i className="material-icons-round">{icon}</i>
@@ -81,6 +83,7 @@ export default function GlobalNavigationItem({
                     id: scopedId,
                 })}
                 className={cn(css.icon, {[css.active]: !!isActive})}
+                data-candu-id={props['data-candu-id']}
                 onClick={onClick}
             >
                 <i className="material-icons-round">{icon}</i>

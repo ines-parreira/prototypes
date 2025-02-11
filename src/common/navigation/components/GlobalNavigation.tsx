@@ -41,12 +41,14 @@ export default function GlobalNavigation() {
                         icon={navBarMenuIcon}
                         onClick={onMenuToggle}
                         tooltip={<NavBarButtonTooltip />}
+                        data-candu-id="global-navigation-menu-toggle"
                     />
                     <Item
                         icon="home"
                         isActive={activeItem === 'home'}
                         tooltip={<span>Home</span>}
                         url="/app/home"
+                        data-candu-id="global-navigation-menu-home-page"
                     />
                     <GlobalNavigationSpotlight />
                     <NotificationsItem />
@@ -58,6 +60,7 @@ export default function GlobalNavigation() {
                         isActive={activeItem === 'tickets'}
                         tooltip={<span>Tickets</span>}
                         url="/app/tickets"
+                        data-candu-id="global-navigation-menu-tickets-page"
                     />
                     {hasRole(currentUser, UserRole.Agent) && (
                         <Item
@@ -65,6 +68,7 @@ export default function GlobalNavigation() {
                             isActive={activeItem === 'automate'}
                             tooltip={<span>Automate</span>}
                             url="/app/automation"
+                            data-candu-id="global-navigation-menu-automation-page"
                         />
                     )}
                     {isAiAgentItemEnabled &&
@@ -74,6 +78,7 @@ export default function GlobalNavigation() {
                                 isActive={activeItem === 'ai-agent'}
                                 tooltip={<span>AI Agent</span>}
                                 url="/app/ai-agent"
+                                data-candu-id="global-navigation-menu-ai-agent-page"
                             />
                         )}
                     {hasRole(currentUser, UserRole.Admin) && (
@@ -82,6 +87,7 @@ export default function GlobalNavigation() {
                             isActive={activeItem === 'convert'}
                             tooltip={<span>Convert</span>}
                             url="/app/convert"
+                            data-candu-id="global-navigation-menu-convert-page"
                         />
                     )}
                     <Item
@@ -89,12 +95,14 @@ export default function GlobalNavigation() {
                         isActive={activeItem === 'customers'}
                         tooltip={<span>Customers</span>}
                         url="/app/customers"
+                        data-candu-id="global-navigation-menu-customers-page"
                     />
                     <Item
                         icon="bar_chart"
                         isActive={activeItem === 'statistics'}
                         tooltip={<span>Statistics</span>}
                         url="/app/stats"
+                        data-candu-id="global-navigation-menu-statistics-page"
                     />
                 </div>
             </section>
@@ -105,6 +113,7 @@ export default function GlobalNavigation() {
                         isActive={activeItem === 'settings'}
                         tooltip={<span>Settings</span>}
                         url="/app/settings"
+                        data-candu-id="global-navigation-menu-settings-page"
                     />
                     <UserItem />
                 </div>

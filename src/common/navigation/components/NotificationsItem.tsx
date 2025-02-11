@@ -13,6 +13,7 @@ export default function NotificationsItem() {
             icon="notifications"
             onClick={onToggle}
             tooltip={<span>Notifications</span>}
+            data-candu-id="global-navigation-menu-notifications"
         >
             <GlobalNavigationNotificationBadge />
         </Item>

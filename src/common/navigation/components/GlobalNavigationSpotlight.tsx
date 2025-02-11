@@ -43,6 +43,7 @@ export function GlobalNavigationSpotlight() {
             isActive={false}
             onClick={handleClick}
             tooltipTrigger={tooltipTriggers}
+            data-candu-id="global-navigation-menu-spotlight"
             tooltip={
                 <>
                     <span>Global search</span>
