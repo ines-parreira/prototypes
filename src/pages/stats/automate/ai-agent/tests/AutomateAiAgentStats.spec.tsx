@@ -10,6 +10,7 @@ import {UserRole} from 'config/types/user'
 
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {agents} from 'fixtures/agents'
+import {GreyArea} from 'hooks/reporting/automate/types'
 import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
 import {useAutomateMetricsTrendV2} from 'hooks/reporting/automate/useAutomationDatasetV2'
 import {calculateGreyArea} from 'hooks/reporting/automate/utils'
@@ -19,6 +20,7 @@ import {AutomatedInteractionsMetric} from 'pages/automate/automate-metrics/Autom
 import {useTimeSeriesFormattedData} from 'pages/stats/AutomateOverviewContent'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import {TicketDistributionChart} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
+import {TwoDimensionalDataItem} from 'pages/stats/types'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
@@ -132,14 +134,14 @@ jest.mock(
 )
 const AutomatedInteractionsMetricMock = AutomatedInteractionsMetric as jest.Mock
 
-jest.mock('pages/stats/common/components/charts/LineChart/LineChart', () =>
-    jest.fn(() => <div>line-chart</div>)
-)
-const LineChartMock = LineChart as jest.Mock
+jest.mock('pages/stats/common/components/charts/LineChart/LineChart')
+const LineChartMock = assumeMock(LineChart)
 
 jest.mock('pages/stats/AnalyticsFooter', () => ({
     AnalyticsFooter: () => <div>analytics-footer</div>,
 }))
+
+LineChartMock.mockImplementation(() => <div>line-chart</div>)
 
 describe('AutomateAiAgentStats', () => {
     const renderComponent = ({
@@ -164,6 +166,13 @@ describe('AutomateAiAgentStats', () => {
         ],
         customFieldsIsLoading = false,
         aiAgentUserId = '5',
+        automatedInteractionByEventTypesTimeSeriesData = [
+            {label: 'AI Agent', values: [{x: '5', y: 10}]},
+        ],
+        greyArea = {
+            from: moment(new Date('2024-09-17')),
+            to: moment(new Date('2024-09-20')),
+        },
     }: {
         statsFilters?: StatsFiltersWithLogicalOperator
         automatedInteractionTrend?: MetricTrend
@@ -173,6 +182,8 @@ describe('AutomateAiAgentStats', () => {
         }>
         customFieldsIsLoading?: boolean
         aiAgentUserId?: string
+        automatedInteractionByEventTypesTimeSeriesData?: TwoDimensionalDataItem[]
+        greyArea?: GreyArea | null
     } = {}) => {
         getCurrentUserMock.mockReturnValue(
             fromJS({
@@ -184,10 +195,7 @@ describe('AutomateAiAgentStats', () => {
             aiAgentUserId === null ? undefined : aiAgentUserId
         )
 
-        calculateGreyAreaMock.mockReturnValue({
-            from: moment(new Date('2024-09-17')),
-            to: moment(new Date('2024-09-20')),
-        })
+        calculateGreyAreaMock.mockReturnValue(greyArea)
 
         getStatsFiltersWithLogicalOperatorsMock.mockReturnValue(statsFilters)
 
@@ -209,9 +217,7 @@ describe('AutomateAiAgentStats', () => {
         )
 
         useTimeSeriesFormattedDataMock.mockReturnValue({
-            automatedInteractionByEventTypesTimeSeriesData: [
-                {label: 'AI Agent', values: {x: 5, y: 10}},
-            ],
+            automatedInteractionByEventTypesTimeSeriesData,
             exportableData: {},
         })
 
@@ -261,7 +267,7 @@ describe('AutomateAiAgentStats', () => {
             {
                 isCurvedLine: false,
                 yAxisBeginAtZero: true,
-                data: [{label: 'AI Agent', values: {x: 5, y: 10}}],
+                data: [{label: 'AI Agent', values: [{x: '5', y: 10}]}],
                 _displayLegacyTooltip: true,
                 greyArea: {
                     start: 'Sep 17th, 2024',
@@ -329,5 +335,41 @@ describe('AutomateAiAgentStats', () => {
                 'There is no activity during the selected time period. AI Agent may have been disabled or not set up during this time.'
             )
         ).not.toBeInTheDocument()
+    })
+
+    it('should not show the automated interactions over time chart if there is no data', () => {
+        renderComponent({
+            automatedInteractionTrend: {
+                isFetching: false,
+                isError: false,
+                data: {value: 0, prevValue: 0},
+            },
+            automatedInteractionByEventTypesTimeSeriesData: [],
+        })
+
+        const lineChart = screen.queryByText('line-chart')
+
+        expect(lineChart).not.toBeInTheDocument()
+    })
+
+    it('should render the chart without grey area when calculateGreyArea returns undefined', () => {
+        renderComponent({
+            greyArea: null,
+            automatedInteractionByEventTypesTimeSeriesData: [
+                {label: 'AI Agent', values: [{x: '5', y: 10}]},
+            ],
+        })
+
+        expect(screen.queryByText('line-chart')).toBeInTheDocument()
+        expect(LineChartMock).toHaveBeenCalledWith(
+            {
+                isCurvedLine: false,
+                yAxisBeginAtZero: true,
+                data: [{label: 'AI Agent', values: [{x: '5', y: 10}]}],
+                _displayLegacyTooltip: true,
+                greyArea: undefined,
+            },
+            {}
+        )
     })
 })
