@@ -1,9 +1,9 @@
 import React from 'react'
 
-import {Badge, useNotificationsOverlay} from 'common/notifications'
+import {useNotificationsOverlay} from 'common/notifications'
 
 import Item from './GlobalNavigationItem'
-import css from './NotificationsItem.less'
+import {GlobalNavigationNotificationBadge} from './GlobalNavigationNotificationBadge'
 
 export default function NotificationsItem() {
     const [, onToggle] = useNotificationsOverlay()
@@ -14,7 +14,7 @@ export default function NotificationsItem() {
             onClick={onToggle}
             tooltip={<span>Notifications</span>}
         >
-            <Badge className={css.badge} />
+            <GlobalNavigationNotificationBadge />
         </Item>
     )
 }

@@ -8,9 +8,15 @@ import {assumeMock} from 'utils/testing'
 import NotificationsItem from '../NotificationsItem'
 
 jest.mock('common/notifications', () => ({
-    Badge: () => <div>Badge</div>,
     useNotificationsOverlay: jest.fn(),
 }))
+
+jest.mock('../GlobalNavigationNotificationBadge', () => ({
+    GlobalNavigationNotificationBadge: () => (
+        <div data-testid="notification-badge" />
+    ),
+}))
+
 const useNotificationsOverlayMock = assumeMock(useNotificationsOverlay)
 
 describe('NotificationsItem', () => {
