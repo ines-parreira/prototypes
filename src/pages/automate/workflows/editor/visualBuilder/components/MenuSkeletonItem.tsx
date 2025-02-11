@@ -1,9 +1,9 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import _noop from 'lodash/noop'
 import React from 'react'
 
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 const MenuSkeletonItem = () => {
     return (

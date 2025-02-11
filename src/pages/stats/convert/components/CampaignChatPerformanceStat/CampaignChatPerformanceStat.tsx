@@ -1,8 +1,8 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import {TooltipItem} from 'chart.js'
 import React, {useMemo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {formatPercentage} from 'pages/common/utils/numbers'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'

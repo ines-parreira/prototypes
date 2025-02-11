@@ -67,7 +67,9 @@ describe('<ArticleViewsGraphComponent />', () => {
 
         renderComponent()
 
-        expect(document.querySelector('.skeleton')).toBeInTheDocument()
+        expect(
+            document.querySelector('.react-loading-skeleton')
+        ).toBeInTheDocument()
     })
 
     describe('renderXTickLabel', () => {

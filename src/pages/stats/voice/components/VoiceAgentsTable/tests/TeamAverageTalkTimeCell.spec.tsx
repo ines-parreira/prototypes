@@ -112,7 +112,9 @@ describe('TeamAverageTalkTimeCell', () => {
         })
 
         const {container} = renderComponent()
-        expect(container.getElementsByClassName('skeleton')).toHaveLength(1)
+        expect(
+            container.getElementsByClassName('react-loading-skeleton')
+        ).toHaveLength(1)
     })
 })
 

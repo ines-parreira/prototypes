@@ -1,4 +1,5 @@
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
@@ -6,7 +7,6 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
 import useAppSelector from 'hooks/useAppSelector'
 import {useWidthBasedOnScreen} from 'hooks/useWidthBasedOnScreen'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -26,8 +26,8 @@ import GaugeAddon from 'pages/stats/GaugeAddon'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import css from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable.less'
 import {
-    TicketInsightsFieldsMetricConfig,
     TicketInsightsFieldsMetric,
+    TicketInsightsFieldsMetricConfig,
 } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 import {TicketFieldsMetric} from 'state/ui/stats/types'

@@ -1,3 +1,4 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import {
     Chart,
     ChartArea,
@@ -13,7 +14,6 @@ import {fromJS, Map} from 'immutable'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Line} from 'react-chartjs-2'
 
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {GreyArea} from 'pages/stats/ChartPluginGreyArea'
 import {ChartTooltip} from 'pages/stats/ChartTooltip'
 import css from 'pages/stats/common/components/charts/Chart.less'
@@ -24,8 +24,8 @@ import {
     OPTIONS,
 } from 'pages/stats/common/components/charts/config'
 import {ChartColors} from 'pages/stats/common/components/charts/types'
-import {withAnalyticsTheme} from 'pages/stats/common/theme'
 import type {AnalyticsTheme} from 'pages/stats/common/theme'
+import {withAnalyticsTheme} from 'pages/stats/common/theme'
 import {useCustomTooltip} from 'pages/stats/common/useCustomTooltip'
 import {TwoDimensionalDataItem} from 'pages/stats/types'
 import {getGradient, renderTickLabelAsNumber} from 'pages/stats/utils'

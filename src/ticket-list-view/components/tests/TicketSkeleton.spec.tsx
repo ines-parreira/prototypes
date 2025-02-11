@@ -3,9 +3,9 @@ import React from 'react'
 
 import TicketSkeleton from '../TicketSkeleton'
 
-jest.mock('pages/common/components/Skeleton/Skeleton', () => () => {
-    return <div>skeleton</div>
-})
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    Skeleton: () => <div>skeleton</div>,
+}))
 
 describe('<TicketSkeleton/>', () => {
     it('should render a ticket skeleton', () => {

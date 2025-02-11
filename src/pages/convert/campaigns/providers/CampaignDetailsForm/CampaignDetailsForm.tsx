@@ -1,7 +1,8 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import cn from 'classnames'
 import {EditorState} from 'draft-js'
 import {produce} from 'immer'
-import {Map, fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import _isEmpty from 'lodash/isEmpty'
@@ -27,7 +28,6 @@ import {
     GorgiasChatIntegration,
 } from 'models/integration/types'
 import Accordion from 'pages/common/components/accordion/Accordion'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {findContactCaptureForm} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'

@@ -1,6 +1,6 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React, {ReactNode} from 'react'
 
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {formatMetricValue} from 'pages/stats/common/utils'

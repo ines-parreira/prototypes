@@ -9,8 +9,8 @@ import {formatMetricValue} from 'pages/stats/common/utils'
 import {ChannelsCellContent} from 'pages/stats/support-performance/channels/ChannelsCellContent'
 import {ChannelColumnConfig} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {
-    statsSlice,
     initialState as statsInitialState,
+    statsSlice,
 } from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {channelsSlice, initialState} from 'state/ui/stats/channelsSlice'
@@ -87,7 +87,9 @@ describe('<ChannelsCellContent />', () => {
             defaultState
         )
 
-        expect(document.querySelector('.skeleton')).toBeInTheDocument()
+        expect(
+            document.querySelector('.react-loading-skeleton')
+        ).toBeInTheDocument()
     })
 
     it('should render formatted results', () => {

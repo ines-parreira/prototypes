@@ -6,9 +6,14 @@ import {ReportingGranularity} from 'models/reporting/types'
 import {TagsTrendChart} from 'pages/stats/ticket-insights/tags/TagsTrendChart'
 import {assumeMock} from 'utils/testing'
 
-jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
-    <div data-testid="skeleton" />
-))
+jest.mock(
+    '@gorgias/merchant-ui-kit',
+    () =>
+        ({
+            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            Skeleton: () => <div data-testid="skeleton" />,
+        }) as typeof import('@gorgias/merchant-ui-kit')
+)
 
 jest.mock('hooks/reporting/ticket-insights/useTagsTimeSeries')
 const useTagsTrendMock = assumeMock(useTagsTimeSeries)

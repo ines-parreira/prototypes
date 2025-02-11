@@ -26,7 +26,7 @@ describe('AiAgentView', () => {
                 <div>Content</div>
             </AiAgentView>
         )
-        screen.debug()
+
         expect(screen.getByText('Test Title')).toBeInTheDocument()
         expect(screen.getByRole('button', {name: 'Action'})).toBeInTheDocument()
     })

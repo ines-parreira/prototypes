@@ -8,9 +8,14 @@ import TrendBadge, {
 } from 'pages/stats/common/components/TrendBadge/TrendBadge'
 import {formatMetricValue} from 'pages/stats/common/utils'
 
-jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
-    <div data-testid="skeleton" />
-))
+jest.mock(
+    '@gorgias/merchant-ui-kit',
+    () =>
+        ({
+            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            Skeleton: () => <div data-testid="skeleton" />,
+        }) as typeof import('@gorgias/merchant-ui-kit')
+)
 
 describe('<TrendBadge />', () => {
     it('should render the badge with default value when no values provided', () => {

@@ -29,9 +29,9 @@ jest.mock('pages/stats/DrillDownModalTrigger.tsx')
 const DrillDownModalTriggerMock = assumeMock(DrillDownModalTrigger)
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
-jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
-    <div data-testid={MOCK_SKELETON_TEST_ID} />
-))
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    Skeleton: () => <div data-testid={MOCK_SKELETON_TEST_ID} />,
+}))
 
 describe('<AgentsCellContent />', () => {
     const agent = {

@@ -1,3 +1,4 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {useEffect, useRef, useState} from 'react'
 
@@ -10,7 +11,6 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import css from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect.less'
 import {

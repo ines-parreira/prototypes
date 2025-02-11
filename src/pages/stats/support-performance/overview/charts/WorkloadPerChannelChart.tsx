@@ -1,3 +1,4 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useEffect, useState} from 'react'
 
@@ -5,7 +6,6 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {useWorkloadPerChannelDistribution} from 'hooks/reporting/distributions'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import IconButton from 'pages/common/components/button/IconButton'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import ChartCard from 'pages/stats/ChartCard'
 import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import GaugeChart from 'pages/stats/GaugeChart'

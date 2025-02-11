@@ -181,7 +181,9 @@ describe('MultiSelectAsyncField component', () => {
             userEvent.paste(screen.getByRole('textbox'), 'john')
         })
 
-        expect(document.getElementsByClassName('skeleton').length).toEqual(3)
+        expect(
+            document.getElementsByClassName('react-loading-skeleton').length
+        ).toEqual(3)
     })
 
     it('should render no results when the query returns no result', () => {

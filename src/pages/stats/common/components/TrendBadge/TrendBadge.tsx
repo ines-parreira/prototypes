@@ -1,10 +1,8 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Skeleton, Tooltip} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React from 'react'
 
 import useId from 'hooks/useId'
-
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import {getTrendColorFromSign} from 'pages/stats/common/components/TrendBadge/helper'
 import css from 'pages/stats/common/components/TrendBadge/TrendBadge.less'

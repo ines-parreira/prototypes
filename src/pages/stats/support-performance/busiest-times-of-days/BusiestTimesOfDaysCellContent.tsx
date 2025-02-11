@@ -1,7 +1,7 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React from 'react'
 
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {
     formatMetricValue,

@@ -1,8 +1,8 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {useShoutoutTopResults} from 'hooks/reporting/useShoutoutTopResults'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import Shoutout, {
     SHOUTOUT_HEIGHT_PX,
 } from 'pages/stats/common/components/Shoutout/Shoutout'

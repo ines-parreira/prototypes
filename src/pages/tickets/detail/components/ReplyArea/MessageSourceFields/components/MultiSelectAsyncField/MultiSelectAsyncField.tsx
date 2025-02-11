@@ -1,3 +1,4 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import _cloneDeep from 'lodash/cloneDeep'
 import _debounce from 'lodash/debounce'
@@ -17,7 +18,6 @@ import React, {
 } from 'react'
 import {findDOMNode} from 'react-dom'
 
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {ReceiverValue} from 'state/ticket/utils'
 
 import css from './MultiSelectAsyncField.less'

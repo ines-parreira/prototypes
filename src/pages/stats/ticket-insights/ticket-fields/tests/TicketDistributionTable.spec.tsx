@@ -171,6 +171,8 @@ describe('<TicketDistributionTable>', () => {
         )
 
         expect(screen.getByRole('table')).toBeInTheDocument()
-        expect(container.getElementsByClassName('skeleton')).not.toHaveLength(0)
+        expect(
+            container.getElementsByClassName('react-loading-skeleton')
+        ).not.toHaveLength(0)
     })
 })

@@ -1,20 +1,25 @@
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import {render, waitFor, fireEvent} from '@testing-library/react'
+import {fireEvent, render, waitFor} from '@testing-library/react'
 import * as chartjs from 'chart.js'
 import React from 'react'
 
 import {ThemeProvider} from 'core/theme'
 import {ticketsCreatedDataItem} from 'fixtures/chart'
 import BarChart, {
-    CHART_TOOLTIP_TARGET,
     BarChart as BarChartWithoutTheme,
+    CHART_TOOLTIP_TARGET,
 } from 'pages/stats/common/components/charts/BarChart/BarChart'
 import {useCustomTooltip} from 'pages/stats/common/useCustomTooltip'
 import {assumeMock} from 'utils/testing'
 
-jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
-    <div data-testid="skeleton" />
-))
+jest.mock(
+    '@gorgias/merchant-ui-kit',
+    () =>
+        ({
+            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            Skeleton: () => <div data-testid="skeleton" />,
+        }) as typeof import('@gorgias/merchant-ui-kit')
+)
 jest.mock('pages/stats/common/useCustomTooltip')
 const useCustomTooltipMock = assumeMock(useCustomTooltip)
 const chartSpy = jest.spyOn(chartjs, 'Chart')

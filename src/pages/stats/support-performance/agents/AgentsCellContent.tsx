@@ -1,10 +1,10 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 
 import React, {PropsWithRef} from 'react'
 
 import {User} from 'config/types/user'
 import {StatsFilters} from 'models/stat/types'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'

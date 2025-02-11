@@ -1,3 +1,4 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import {isObject} from 'lodash'
 import React from 'react'
 
@@ -6,7 +7,6 @@ import useIsIntersectingWithBrowserViewport from 'pages/common/hooks/useIsInters
 
 import {AnimatedFadeInOut} from 'pages/settings/helpCenter/components/HelpCenterCreationWizard/components/AnimatedFadeInOut/AnimatedFadeInOut'
 
-import Skeleton from '../Skeleton/Skeleton'
 import css from './WizardStepSkeleton.less'
 
 type Props = {

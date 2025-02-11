@@ -1,8 +1,8 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React from 'react'
 
 import {UserSearchResult} from 'models/search/types'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import DialPad from './DialPad'
 import css from './PhoneDevice.less'

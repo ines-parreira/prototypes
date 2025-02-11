@@ -1,16 +1,16 @@
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import typography from '@gorgias/design-tokens/dist/tokens/typography.json'
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import {
-    Plugin,
     ChartData,
     ChartMeta,
     ChartOptions,
+    Plugin,
     TooltipModel,
 } from 'chart.js'
 import React, {ReactNode, useCallback, useMemo} from 'react'
 import {Doughnut} from 'react-chartjs-2'
 
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {ChartTooltip} from 'pages/stats/ChartTooltip'
 import css from 'pages/stats/common/components/charts/Chart.less'
 import {useCustomTooltip} from 'pages/stats/common/useCustomTooltip'

@@ -1,3 +1,4 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import _truncate from 'lodash/truncate'
 import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
@@ -11,7 +12,6 @@ import {
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import IconButton from 'pages/common/components/button/IconButton'
 import {Separator} from 'pages/common/components/Separator/Separator'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import StarRating from 'pages/common/components/StarRating'
 import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
 import css from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel.less'

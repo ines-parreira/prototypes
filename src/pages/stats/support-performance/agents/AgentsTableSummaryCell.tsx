@@ -1,7 +1,7 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import {StatsFilters} from 'models/stat/types'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
 import {
     formatMetricValue,
@@ -9,8 +9,8 @@ import {
 } from 'pages/stats/common/utils'
 import {
     AgentsColumnConfig,
-    MetricQueryHook,
     averageTooltip,
+    MetricQueryHook,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 

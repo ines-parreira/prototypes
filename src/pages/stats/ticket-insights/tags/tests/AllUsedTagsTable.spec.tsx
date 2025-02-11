@@ -172,7 +172,9 @@ describe('<AllUsedTagsTable />', () => {
             defaultState
         )
 
-        expect(document.querySelector('.skeleton')).toBeInTheDocument()
+        expect(
+            document.querySelector('.react-loading-skeleton')
+        ).toBeInTheDocument()
     })
 
     it('should render heatmap mode', () => {

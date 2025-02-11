@@ -32,9 +32,14 @@ const useSalesKpisMock = assumeMock(useSalesKpis)
 jest.mock('pages/aiAgent/Overview/hooks/useSupportKpis')
 const useSupportKpisMock = assumeMock(useSupportKpis)
 
-jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
-    <div data-testid="skeleton" />
-))
+jest.mock(
+    '@gorgias/merchant-ui-kit',
+    () =>
+        ({
+            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            Skeleton: () => <div data-testid="skeleton" />,
+        }) as typeof import('@gorgias/merchant-ui-kit')
+)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 

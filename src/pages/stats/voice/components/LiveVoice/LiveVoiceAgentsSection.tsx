@@ -1,9 +1,9 @@
 import {useListLiveCallQueueAgents} from '@gorgias/api-queries'
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import Button from 'pages/common/components/button/Button'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'

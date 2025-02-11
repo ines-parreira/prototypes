@@ -1,8 +1,8 @@
 import {QueryClientProvider} from '@tanstack/react-query'
 import {render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
-import React from 'react'
 import type {ReactNode} from 'react'
+import React from 'react'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
@@ -36,9 +36,14 @@ jest.mock('common/notifications/components/Button', () => ({
     default: () => <div>NotificationsButton</div>,
 }))
 
-jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
-    <div data-testid={MOCK_SKELETON_TEST_ID} />
-))
+jest.mock(
+    '@gorgias/merchant-ui-kit',
+    () =>
+        ({
+            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            Skeleton: () => <div data-testid={MOCK_SKELETON_TEST_ID} />,
+        }) as typeof import('@gorgias/merchant-ui-kit')
+)
 
 jest.mock('pages/convert/common/hooks/useContactFormFlag')
 

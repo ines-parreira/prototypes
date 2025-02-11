@@ -24,9 +24,9 @@ jest.mock(
         )
 )
 
-jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
-    <div data-testid="skeleton" />
-))
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    Skeleton: () => <div data-testid="skeleton" />,
+}))
 
 jest.mock('pages/common/components/Avatar/Avatar', () => () => (
     <div data-testid="avatar" />

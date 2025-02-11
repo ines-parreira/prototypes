@@ -1,8 +1,6 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
+import {LoadingSpinner, Skeleton} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {ReactNode} from 'react'
-
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import css from './TopQuestionCard.less'
 

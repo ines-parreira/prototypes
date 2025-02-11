@@ -45,9 +45,14 @@ import {assumeMock} from 'utils/testing'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
-jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
-    <div data-testid={MOCK_SKELETON_TEST_ID} />
-))
+jest.mock(
+    '@gorgias/merchant-ui-kit',
+    () =>
+        ({
+            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            Skeleton: () => <div data-testid={MOCK_SKELETON_TEST_ID} />,
+        }) as typeof import('@gorgias/merchant-ui-kit')
+)
 jest.mock('pages/common/components/Paginations')
 const numberedPaginationMock = assumeMock(NumberedPagination)
 

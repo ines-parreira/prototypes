@@ -1,10 +1,8 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
 import CommentHighlightsCarousel from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel'
-import {assumeMock} from 'utils/testing'
 
 const VIEW_TICKET = 'View Ticket'
 const NO_DATA_COMMENT = 'No data available for the selected filters.'
@@ -19,14 +17,11 @@ const dummyData = [
     },
 ]
 
-jest.mock('pages/common/components/Skeleton/Skeleton')
-const SkeletonMock = assumeMock(Skeleton)
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    Skeleton: () => <div>Skeleton</div>,
+}))
 
 describe('CommentHighlightsCarousel', () => {
-    beforeEach(() => {
-        SkeletonMock.mockImplementation(() => <div>Skeleton</div>)
-    })
-
     it('renders skeletons when fetching', () => {
         const {getAllByText} = render(
             <CommentHighlightsCarousel

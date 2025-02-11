@@ -117,7 +117,9 @@ describe('<WorkloadPerChannelChart />', () => {
             </Provider>
         )
 
-        expect(document.querySelector('.skeleton')).toBeInTheDocument()
+        expect(
+            document.querySelector('.react-loading-skeleton')
+        ).toBeInTheDocument()
     })
 
     it('should defer loading with a feature flag', () => {
@@ -134,7 +136,9 @@ describe('<WorkloadPerChannelChart />', () => {
             </Provider>
         )
 
-        expect(document.querySelector('.skeleton')).toBeInTheDocument()
+        expect(
+            document.querySelector('.react-loading-skeleton')
+        ).toBeInTheDocument()
         expect(useWorkloadPerChannelDistributionMock).toHaveBeenCalledWith(
             expect.anything(),
             expect.anything(),
@@ -157,7 +161,9 @@ describe('<WorkloadPerChannelChart />', () => {
             </Provider>
         )
 
-        expect(document.querySelector('.skeleton')).toBeInTheDocument()
+        expect(
+            document.querySelector('.react-loading-skeleton')
+        ).toBeInTheDocument()
         expect(useWorkloadPerChannelDistributionMock).toHaveBeenCalledWith(
             expect.anything(),
             expect.anything(),

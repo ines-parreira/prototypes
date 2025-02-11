@@ -99,7 +99,9 @@ describe('<AchievedAndBreachedTicketsChart />', () => {
             </Provider>
         )
 
-        expect(document.querySelector('.skeleton')).toBeInTheDocument()
+        expect(
+            document.querySelector('.react-loading-skeleton')
+        ).toBeInTheDocument()
     })
 
     it('should render the title and hint', async () => {
@@ -164,7 +166,9 @@ describe('<AchievedAndBreachedTicketsChart /> with AnalyticsNewFilters', () => {
             </Provider>
         )
 
-        expect(document.querySelector('.skeleton')).toBeInTheDocument()
+        expect(
+            document.querySelector('.react-loading-skeleton')
+        ).toBeInTheDocument()
     })
 
     it('should render the title and hint', async () => {

@@ -78,7 +78,9 @@ describe('<TopUsedTagsChart/>', () => {
         })
         const {container} = renderWithStore(<TopUsedTagsChart />, mockStore)
         expect(screen.getByRole('table')).toBeInTheDocument()
-        expect(container.getElementsByClassName('skeleton')).not.toHaveLength(0)
+        expect(
+            container.getElementsByClassName('react-loading-skeleton')
+        ).not.toHaveLength(0)
     })
 
     it('should render no data', () => {

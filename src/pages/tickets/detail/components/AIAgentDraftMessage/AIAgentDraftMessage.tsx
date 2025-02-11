@@ -1,3 +1,4 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import {fromJS} from 'immutable'
 import React, {useMemo, useState} from 'react'
 
@@ -9,7 +10,6 @@ import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 import {MacroActionName, MacroActionType} from 'models/macroAction/types'
 import {TicketMessage} from 'models/ticket/types'
 import Button from 'pages/common/components/button/Button'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {
     applyMacro,

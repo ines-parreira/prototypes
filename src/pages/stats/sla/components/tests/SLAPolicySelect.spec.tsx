@@ -109,7 +109,9 @@ describe('<SLAPolicySelect />', () => {
         )
 
         await waitFor(() => {
-            expect(document.querySelector('.skeleton')).toBeInTheDocument()
+            expect(
+                document.querySelector('.react-loading-skeleton')
+            ).toBeInTheDocument()
         })
     })
 

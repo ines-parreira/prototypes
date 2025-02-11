@@ -1,9 +1,9 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import {DateAndTimeFormatting} from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {formatPercentage} from 'pages/common/utils/numbers'
 import {ABGroupValueFormat} from 'pages/convert/abVariants/components/VariantsList/types'
 

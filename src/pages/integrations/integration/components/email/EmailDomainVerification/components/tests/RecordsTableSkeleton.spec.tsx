@@ -1,11 +1,11 @@
-import {screen, render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import React from 'react'
 
 import RecordsTableSkeleton from '../RecordsTableSkeleton'
 
-jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
-    <div>Skeleton</div>
-))
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    Skeleton: () => <div> Skeleton</div>,
+}))
 
 describe('RecordsTableSkeleton', () => {
     const renderComponent = () => render(<RecordsTableSkeleton />)

@@ -1,3 +1,4 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
@@ -6,7 +7,6 @@ import Badge, {BadgeColor} from 'gorgias-design-system/Badge/Badge'
 import {InferredCampaignStatus} from 'models/convert/campaign/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {formatPercentage} from 'pages/common/utils/numbers'
 

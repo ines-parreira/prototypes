@@ -1,9 +1,9 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
 import {ReportingGranularity} from 'models/reporting/types'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
@@ -12,8 +12,8 @@ import CampaignRevenueChart from 'pages/stats/convert/components/CampaignRevenue
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {OverviewMetricConfig} from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
 import {
-    ORDER_COUNT_LABEL,
     IMPRESSIONS_LABEL,
+    ORDER_COUNT_LABEL,
 } from 'pages/stats/convert/constants/labels'
 import useCampaignPerformanceTimeSeries from 'pages/stats/convert/hooks/stats/useCampaignPerformanceTimeSeries'
 import {useGetTotalsStat} from 'pages/stats/convert/hooks/stats/useGetTotalsStat'

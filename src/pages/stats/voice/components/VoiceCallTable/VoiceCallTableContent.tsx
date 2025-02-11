@@ -1,9 +1,9 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {UIEventHandler, useMemo, useState} from 'react'
 
 import useMeasure from 'hooks/useMeasure'
 import {OrderDirection} from 'models/api/types'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'

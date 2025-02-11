@@ -67,7 +67,9 @@ describe('<OverviewCard />', () => {
     it('should show loader when component loading', () => {
         renderComponent({isLoading: true})
 
-        expect(document.querySelector('.skeleton')).toBeInTheDocument()
+        expect(
+            document.querySelector('.react-loading-skeleton')
+        ).toBeInTheDocument()
     })
 
     it('should hide tip when showTip is false', () => {

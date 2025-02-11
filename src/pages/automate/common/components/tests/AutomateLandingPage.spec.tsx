@@ -42,7 +42,7 @@ describe('AutomateLandingPage', () => {
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.ImprovedAutomateNavigation]: true,
         })
-        screen.debug()
+
         renderWithQueryClientProvider(
             <Provider store={store}>
                 <AutomateLandingPage />

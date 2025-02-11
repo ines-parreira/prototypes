@@ -1,7 +1,7 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React, {useMemo} from 'react'
 
 import {StatType} from 'models/stat/types'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {

@@ -1,7 +1,7 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import {DRILL_DOWN_PER_PAGE} from 'hooks/reporting/useDrillDownData'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 

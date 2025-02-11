@@ -11,7 +11,7 @@ exports[`<SkeletonLoader /> should render 1`] = `
       class="container icon"
     >
       <span
-        class="react-loading-skeleton skeleton"
+        class="react-loading-skeleton ui-skeleton-skeleton-ee26"
         style="--animation-duration: 1.3s; height: 24px; border-radius: 4px;"
       >
         ‌
@@ -24,7 +24,7 @@ exports[`<SkeletonLoader /> should render 1`] = `
       class="container line"
     >
       <span
-        class="react-loading-skeleton skeleton"
+        class="react-loading-skeleton ui-skeleton-skeleton-ee26"
         style="--animation-duration: 1.3s; height: 24px; border-radius: 4px;"
       >
         ‌
@@ -41,7 +41,7 @@ exports[`<SkeletonLoader /> should render 1`] = `
       class="container icon"
     >
       <span
-        class="react-loading-skeleton skeleton"
+        class="react-loading-skeleton ui-skeleton-skeleton-ee26"
         style="--animation-duration: 1.3s; height: 24px; border-radius: 4px;"
       >
         ‌
@@ -54,7 +54,7 @@ exports[`<SkeletonLoader /> should render 1`] = `
       class="container line"
     >
       <span
-        class="react-loading-skeleton skeleton"
+        class="react-loading-skeleton ui-skeleton-skeleton-ee26"
         style="--animation-duration: 1.3s; height: 24px; border-radius: 4px;"
       >
         ‌
@@ -71,7 +71,7 @@ exports[`<SkeletonLoader /> should render 1`] = `
       class="container icon"
     >
       <span
-        class="react-loading-skeleton skeleton"
+        class="react-loading-skeleton ui-skeleton-skeleton-ee26"
         style="--animation-duration: 1.3s; height: 24px; border-radius: 4px;"
       >
         ‌
@@ -84,7 +84,7 @@ exports[`<SkeletonLoader /> should render 1`] = `
       class="container line"
     >
       <span
-        class="react-loading-skeleton skeleton"
+        class="react-loading-skeleton ui-skeleton-skeleton-ee26"
         style="--animation-duration: 1.3s; height: 24px; border-radius: 4px;"
       >
         ‌

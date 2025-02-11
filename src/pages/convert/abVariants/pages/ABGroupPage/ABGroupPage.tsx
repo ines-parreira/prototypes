@@ -1,24 +1,24 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import {produce} from 'immer'
 import {Map} from 'immutable'
-import React, {useCallback, useState, useEffect, useMemo} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Route, Switch, useParams} from 'react-router-dom'
 import {Container} from 'reactstrap'
 
 import {useGetCampaign} from 'models/convert/campaign/queries'
 import {CampaignUpdatePayload} from 'models/convert/campaign/types'
 
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 
 import {ABGroupContainer} from 'pages/convert/abVariants/containers/ABGroupContainer'
 import ABTestSettingsPage from 'pages/convert/abVariants/pages/ABTestSettingsPage'
 import ABTestVariantEditPage from 'pages/convert/abVariants/pages/ABTestVariantEditPage'
 import {
-    abVariantsControlVersionPath,
     abVariantAddPath,
     abVariantEditorPath,
-    abVariantsPath,
     abVariantEditorUrl,
+    abVariantsControlVersionPath,
+    abVariantsPath,
 } from 'pages/convert/abVariants/urls'
 
 import {createVariant} from 'pages/convert/abVariants/utils/createVariant'

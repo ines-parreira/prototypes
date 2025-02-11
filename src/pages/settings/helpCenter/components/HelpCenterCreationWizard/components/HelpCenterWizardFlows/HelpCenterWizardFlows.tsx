@@ -1,3 +1,4 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {useState} from 'react'
 
@@ -11,7 +12,6 @@ import useWorkflowChannelSupport, {
 } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import {useHelpCenterFlows} from '../../hooks/useHelpCenterFlows'
 import {AnimatedFadeInOut} from '../AnimatedFadeInOut/AnimatedFadeInOut'

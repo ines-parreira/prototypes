@@ -1,7 +1,6 @@
 import {useListShopifyOrderMetafields} from '@gorgias/api-queries'
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
-
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import {
     Metafield,

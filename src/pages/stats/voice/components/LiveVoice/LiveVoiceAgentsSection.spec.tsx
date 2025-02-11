@@ -7,9 +7,9 @@ import {assumeMock} from 'utils/testing'
 
 import LiveVoiceAgentsSection from './LiveVoiceAgentsSection'
 
-jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
-    <div>Skeleton</div>
-))
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    Skeleton: () => <div>Skeleton</div>,
+}))
 jest.mock('@gorgias/api-queries')
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 

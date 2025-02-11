@@ -16,7 +16,9 @@ describe('WithSlaEmptyState', () => {
 
         render(<WithSlaEmptyState>something</WithSlaEmptyState>)
 
-        expect(document.querySelector('.skeleton')).toBeInTheDocument()
+        expect(
+            document.querySelector('.react-loading-skeleton')
+        ).toBeInTheDocument()
     })
 
     it('should render Empty state when no policies', () => {

@@ -1,10 +1,10 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React from 'react'
 
 import {DateAndTimeFormatting} from 'constants/datetime'
 import {useListVoiceCallEvents} from 'models/voiceCall/queries'
 import {processEvents} from 'models/voiceCall/utils'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'

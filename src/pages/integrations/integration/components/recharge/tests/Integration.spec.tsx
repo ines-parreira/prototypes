@@ -102,7 +102,7 @@ describe('<RechargeIntegration/>', () => {
                     <Integration {...minProps} />
                 </Provider>
             )
-            screen.debug()
+
             expect(container).toMatchSnapshot()
         })
 

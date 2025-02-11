@@ -1,13 +1,13 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {UIEventHandler, useState} from 'react'
 
 import {
-    DateTimeResultFormatType,
     DateAndTimeFormatting,
+    DateTimeResultFormatType,
 } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {NumberedPagination} from 'pages/common/components/Paginations'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'

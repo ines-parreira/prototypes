@@ -3,9 +3,9 @@ import React from 'react'
 
 import AutoQASkeleton from '../AutoQASkeleton'
 
-jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
-    <div>Skeleton</div>
-))
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    Skeleton: () => <div> Skeleton</div>,
+}))
 
 describe('AutoQASkeleton', () => {
     it('should render 3 skeletons', () => {

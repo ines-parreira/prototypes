@@ -7,9 +7,9 @@ import TicketVoiceCallEvents from '../TicketVoiceCallEvents'
 
 const useListVoiceCallEventsSpy = jest.spyOn(queries, 'useListVoiceCallEvents')
 
-jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
-    <div>Loading</div>
-))
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    Skeleton: () => <div> Loading</div>,
+}))
 
 jest.mock('../Timeline', () => ({children}: any) => (
     <div data-testid="timeline">{children}</div>

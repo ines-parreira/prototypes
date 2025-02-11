@@ -102,7 +102,9 @@ describe('<AgentsTableSummaryCell', () => {
             </Provider>
         )
 
-        expect(document.querySelector('.skeleton')).toBeInTheDocument()
+        expect(
+            document.querySelector('.react-loading-skeleton')
+        ).toBeInTheDocument()
     })
 
     it('should call the useMetric hook and render formatted value', () => {

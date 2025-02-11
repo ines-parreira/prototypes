@@ -1,7 +1,7 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {METRICS} from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'

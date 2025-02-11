@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {Tooltip, Skeleton} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {useMemo, useState} from 'react'
 
@@ -9,7 +9,6 @@ import {
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import CheckBox from 'pages/common/forms/CheckBox'
 
 import {ARTICLE_TEMPLATE_CATEGORIES} from '../../../CategoriesView/components/ArticleTemplateCard/constants'

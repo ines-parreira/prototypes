@@ -1,8 +1,8 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import {useListRecordings} from 'models/voiceCall/queries'
 import {VoiceCall, VoiceCallRecordingType} from 'models/voiceCall/types'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import css from './TicketVoiceCallContainer.less'
 import VoiceCallAudio from './VoiceCallAudio'

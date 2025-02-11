@@ -1,3 +1,4 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React, {useCallback} from 'react'
 import {useHistory, useLocation, useParams} from 'react-router-dom'
 
@@ -5,7 +6,6 @@ import {SegmentEvent, logEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'

@@ -1,3 +1,4 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React, {useMemo} from 'react'
 import {useRouteMatch} from 'react-router-dom'
 
@@ -6,7 +7,6 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {useGetOnboardingStatusMap} from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
 import {
     CONVERT_NAVBAR_COLLAPSED_SECTIONS_KEY,

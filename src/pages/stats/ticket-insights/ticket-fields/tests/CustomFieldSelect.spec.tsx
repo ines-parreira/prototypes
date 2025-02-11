@@ -71,7 +71,9 @@ describe('<CustomFieldSelect />', () => {
                 isLoading: true,
             })
         )
-        expect(document.querySelector('.skeleton')).toBeInTheDocument()
+        expect(
+            document.querySelector('.react-loading-skeleton')
+        ).toBeInTheDocument()
     })
 
     it('should select first of the active fields ', () => {

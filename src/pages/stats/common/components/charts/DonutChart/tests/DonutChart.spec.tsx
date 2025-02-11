@@ -27,7 +27,9 @@ describe('<DonutChart />', () => {
         renderComponent({isLoading: true})
 
         expect(mockDoughnutProps).not.toHaveBeenCalled()
-        expect(document.querySelector('.skeleton')).toBeInTheDocument()
+        expect(
+            document.querySelector('.react-loading-skeleton')
+        ).toBeInTheDocument()
     })
 
     it('should pass correct data and config', () => {

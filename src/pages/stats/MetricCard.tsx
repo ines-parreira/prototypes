@@ -1,8 +1,8 @@
 import {Card} from '@gorgias/analytics-ui-kit'
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {ReactNode} from 'react'
 
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
 import {ChartsActionMenu} from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
 import {DashboardChartProps} from 'pages/stats/custom-reports/types'

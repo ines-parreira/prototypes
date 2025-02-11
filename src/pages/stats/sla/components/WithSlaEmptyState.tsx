@@ -1,7 +1,7 @@
 import {useListSlaPolicies} from '@gorgias/api-queries'
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React, {PropsWithChildren} from 'react'
 
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {ServiceLevelAgreementsEmptyState} from 'pages/stats/sla/ServiceLevelAgreementsEmptyState'
 
 export const WithSlaEmptyState = ({children}: PropsWithChildren<unknown>) => {

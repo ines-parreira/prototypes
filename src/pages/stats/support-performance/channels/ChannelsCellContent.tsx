@@ -1,3 +1,4 @@
+import {Skeleton} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 
 import React from 'react'
@@ -6,7 +7,6 @@ import {MetricPerChannelQueryHook} from 'hooks/reporting/metricsPerChannel'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {Channel} from 'models/channel/types'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import css from 'pages/stats/AnalyticsTable.less'
 import {
