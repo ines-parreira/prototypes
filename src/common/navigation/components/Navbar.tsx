@@ -57,6 +57,8 @@ export default function Navbar({
         return true
     }, [disableResize, navBarDisplay, showGlobalNav])
 
+    const hasHeaderContent = !showGlobalNav || !!headerContent
+
     return (
         <div
             ref={navbarRef}
@@ -76,18 +78,25 @@ export default function Navbar({
                     )}
                     {splitTicketViewToggle}
                 </div>
-                <div className={css['navbar-cta-group']}>
-                    {!showGlobalNav && (
-                        <>
-                            <HomePageLink />
-                            <SpotlightButton />
-                            <NotificationsButton />
-                        </>
-                    )}
-                    {headerContent}
-                </div>
+                {hasHeaderContent && (
+                    <div className={css['navbar-cta-group']}>
+                        {!showGlobalNav && (
+                            <>
+                                <HomePageLink />
+                                <SpotlightButton />
+                                <NotificationsButton />
+                            </>
+                        )}
+                        {headerContent}
+                    </div>
+                )}
 
-                <div ref={navbarContentRef} className={css['navbar-content']}>
+                <div
+                    ref={navbarContentRef}
+                    className={cn(css['navbar-content'], {
+                        [css.noHeader]: !hasHeaderContent,
+                    })}
+                >
                     {children}
                 </div>
 
