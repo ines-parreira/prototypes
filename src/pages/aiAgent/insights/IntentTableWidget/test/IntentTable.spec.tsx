@@ -34,6 +34,14 @@ const useAppSelectorMock = jest.mocked(useAppSelector)
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
 const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
+    useParams: jest.fn(() => ({
+        shopType: 'shopify',
+        shopName: 'shopName',
+    })),
+}))
+
 const mockStore = configureMockStore([thunk])
 const defaultPaginatedIntents = {
     intents: [

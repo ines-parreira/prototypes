@@ -36,7 +36,7 @@ export const customFieldsTicketCountQueryFactory = (
     timezone: string,
     customFieldId: string,
     sorting?: OrderDirection,
-    additionalFilter?: ReportingFilter
+    additionalFilters?: ReportingFilter[]
 ): ReportingQuery<TicketCustomFieldsCube> => ({
     measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
     dimensions: [TicketCustomFieldsDimension.TicketCustomFieldsValueString],
@@ -58,7 +58,7 @@ export const customFieldsTicketCountQueryFactory = (
                 formatReportingQueryDate(filters.period.end_datetime),
             ],
         },
-        ...(additionalFilter ? [additionalFilter] : []),
+        ...(additionalFilters ? additionalFilters : []),
     ],
     ...(sorting
         ? {

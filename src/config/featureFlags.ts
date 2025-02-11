@@ -20,6 +20,7 @@ export enum FeatureFlagKey {
     AiAgentOnboardingWizardEducationalStep = 'ai-agent-onboarding-wizard-educational-step',
     AiAgentOnboardingWizardKnowledgeRedirect = 'ai-agent-onboarding-wizard-knowledge-redirect',
     AiAgentOptimizeTab = 'ai-agent-optimize-tab',
+    AiAgentOptimizeTabL2Drilldown = 'ai-agent-optimize-tab-l2-drilldown',
     AIAgentPreviewModeAllowed = 'ai-agent-preview-mode-allowed',
     AiAgentSnippetsFromExternalFiles = 'ai-agent-snippets-from-external-files',
     AIAgentStatsPage = 'ai-agent-stats-page',

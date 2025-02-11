@@ -162,11 +162,13 @@ describe('aiAgentMetrics', () => {
                     timezone,
                     String(customField.id),
                     sorting,
-                    {
-                        member: TicketDimension.TicketId,
-                        operator: ReportingFilterOperator.In,
-                        values: ['1', '2'],
-                    }
+                    [
+                        {
+                            member: TicketDimension.TicketId,
+                            operator: ReportingFilterOperator.In,
+                            values: ['1', '2'],
+                        },
+                    ]
                 )
             )
         })
@@ -190,11 +192,7 @@ describe('aiAgentMetrics', () => {
                     filters,
                     timezone,
                     sorting,
-                    {
-                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-                        operator: ReportingFilterOperator.Equals,
-                        values: [String(customField.id)],
-                    }
+                    customField
                 )
             )
         })

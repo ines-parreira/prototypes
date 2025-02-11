@@ -131,6 +131,20 @@ describe('IntentsPerformance', () => {
         expect(screen.getByText('3.5')).toBeInTheDocument()
     })
 
+    it('renders subtitle correctly if subtitle is provided and display tips CTA is not set', () => {
+        render(
+            <IntentsPerformance
+                sectionTitle="Title of the section"
+                shouldDisplayTipsCTA={false}
+                period={period}
+                metrics={[metric1, metric2, metric3, metric4]}
+                sectionSubtitle="Subtitle of the section"
+            />
+        )
+
+        expect(screen.getByText('Subtitle of the section')).toBeInTheDocument()
+    })
+
     it('shows hints correctly', () => {
         mockUseLocalStorage.mockReturnValue([true, jest.fn()])
 

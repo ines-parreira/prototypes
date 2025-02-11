@@ -178,7 +178,8 @@ export const useAIAgentMetrics = (
 export const useAutomationOpportunityPerIntent = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
+    intentId?: string
 ) => {
     const {data: {data: activeFields = []} = {}} =
         useCustomFieldDefinitions(activeParams)
@@ -214,7 +215,9 @@ export const useAutomationOpportunityPerIntent = (
             filters,
             timezone,
             customFieldAiIntent,
-            ticketIds
+            ticketIds,
+            sorting,
+            intentId
         )
 
     const enrichedTickets = useMemo(() => {
@@ -247,7 +250,8 @@ export const useAutomationOpportunityPerIntent = (
 export const useAIAgentTicketsPerIntent = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
+    intentId?: string
 ) => {
     const {data: {data: activeFields = []} = {}} =
         useCustomFieldDefinitions(activeParams)
@@ -275,7 +279,8 @@ export const useAIAgentTicketsPerIntent = (
         timezone,
         customFieldAiIntent,
         ticketIds,
-        sorting
+        sorting,
+        intentId
     )
 
     return aiAgentTicketsGroupedByIntent
@@ -285,7 +290,8 @@ export const useAIAgentTicketsPerIntent = (
 export const useSuccessRatePerIntent = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
+    intentId?: string
 ) => {
     const {data: {data: activeFields = []} = {}} =
         useCustomFieldDefinitions(activeParams)
@@ -306,7 +312,12 @@ export const useSuccessRatePerIntent = (
         CUSTOM_FIELD_AI_AGENT_HANDOVER
     )
 
-    const ticketsPerIntent = useAIAgentTicketsPerIntent(filters, timezone)
+    const ticketsPerIntent = useAIAgentTicketsPerIntent(
+        filters,
+        timezone,
+        sorting,
+        intentId
+    )
 
     const automatedTicketIds = aiAgentAutomatedTicketsData.data?.allData
         .map((item) => item[TicketDimension.TicketId])
@@ -317,7 +328,9 @@ export const useSuccessRatePerIntent = (
             filters,
             timezone,
             customFieldAiIntent,
-            automatedTicketIds
+            automatedTicketIds,
+            sorting,
+            intentId
         )
 
     const enrichedTickets = useMemo(() => {
@@ -399,7 +412,8 @@ export const useAiAgentKnowledgeResourcePerIntent = (
 export const useCustomerSatisfactionPerIntent = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
+    intentId?: string
 ) => {
     const {data: {data: activeFields = []} = {}} =
         useCustomFieldDefinitions(activeParams)
@@ -412,7 +426,8 @@ export const useCustomerSatisfactionPerIntent = (
         filters,
         timezone,
         customFieldAiIntent,
-        sorting
+        sorting,
+        intentId
     )
 
     return csatPerIntent
@@ -485,6 +500,7 @@ export const convertResultToTableArrayFormat = (
         ([key, value]: [string, IntentMetrics]) => ({
             ...value,
             name: transformIntentName(key),
+            id: key,
         })
     )
     return convertedArray

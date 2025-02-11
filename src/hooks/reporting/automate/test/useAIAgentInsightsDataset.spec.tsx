@@ -618,13 +618,22 @@ describe('useAiAgentInsightsDataset', () => {
     })
 
     describe('convertResultToTableArrayFormat', () => {
+        enum intentFixture {
+            IntentAL1L2 = 'intentA::subIntentA',
+            IntentBL1L2 = 'intentB::subIntentB',
+            IntentAL1 = 'intentA',
+            IntentBL1 = 'intentB',
+            IntentAL2 = 'subIntentA',
+            IntentBL2 = 'subIntentB',
+        }
+
         it('converts results object to array format with transformed names', () => {
             const results = {
-                'intentA::subIntentA': {
+                [intentFixture.IntentAL1L2]: {
                     [IntentTableColumn.AutomationOpportunities]: 10,
                     [IntentTableColumn.Tickets]: 20,
                 },
-                'intentB::subIntentB': {
+                [intentFixture.IntentBL1L2]: {
                     [IntentTableColumn.AutomationOpportunities]: 15,
                     [IntentTableColumn.Tickets]: 25,
                 },
@@ -636,12 +645,14 @@ describe('useAiAgentInsightsDataset', () => {
                 {
                     [IntentTableColumn.AutomationOpportunities]: 10,
                     [IntentTableColumn.Tickets]: 20,
-                    [IntentTableColumn.IntentName]: 'intentA/subIntentA',
+                    [IntentTableColumn.IntentName]: `${intentFixture.IntentAL1}/${intentFixture.IntentAL2}`,
+                    id: intentFixture.IntentAL1L2,
                 },
                 {
                     [IntentTableColumn.AutomationOpportunities]: 15,
                     [IntentTableColumn.Tickets]: 25,
-                    [IntentTableColumn.IntentName]: 'intentB/subIntentB',
+                    [IntentTableColumn.IntentName]: `${intentFixture.IntentBL1}/${intentFixture.IntentBL2}`,
+                    id: intentFixture.IntentBL1L2,
                 },
             ])
         })
@@ -660,6 +671,7 @@ describe('useAiAgentInsightsDataset', () => {
                     [IntentTableColumn.AutomationOpportunities]: 5,
                     [IntentTableColumn.Tickets]: 10,
                     [IntentTableColumn.SuccessRate]: 15,
+                    id: intentFixture.IntentAL1,
                 },
             } as unknown as Record<string, IntentMetrics>
 
@@ -670,7 +682,8 @@ describe('useAiAgentInsightsDataset', () => {
                     [IntentTableColumn.AutomationOpportunities]: 5,
                     [IntentTableColumn.Tickets]: 10,
                     [IntentTableColumn.SuccessRate]: 15,
-                    [IntentTableColumn.IntentName]: 'intentA',
+                    [IntentTableColumn.IntentName]: intentFixture.IntentAL1,
+                    id: intentFixture.IntentAL1,
                 },
             ])
         })

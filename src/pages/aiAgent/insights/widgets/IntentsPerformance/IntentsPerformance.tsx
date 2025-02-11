@@ -36,11 +36,13 @@ import css from './IntentPerformance.less'
 
 export const IntentsPerformance = ({
     sectionTitle,
+    sectionSubtitle,
     shouldDisplayTipsCTA,
     period,
     metrics,
 }: {
     sectionTitle: string
+    sectionSubtitle?: string
     shouldDisplayTipsCTA: boolean
     period: Period
     metrics: Array<{
@@ -95,17 +97,24 @@ export const IntentsPerformance = ({
         }
     })
 
+    let titleExtra
+    if (shouldDisplayTipsCTA) {
+        titleExtra = (
+            <TipsToggle
+                isVisible={!!areTipsVisible}
+                onClick={() => setAreTipsVisible(!areTipsVisible)}
+            />
+        )
+    } else if (sectionSubtitle) {
+        titleExtra = (
+            <div className={css.sectionSubtitle}>{sectionSubtitle}</div>
+        )
+    }
+
     return (
         <DashboardSection
             title={sectionTitle}
-            titleExtra={
-                shouldDisplayTipsCTA && (
-                    <TipsToggle
-                        isVisible={!!areTipsVisible}
-                        onClick={() => setAreTipsVisible(!areTipsVisible)}
-                    />
-                )
-            }
+            titleExtra={titleExtra}
             className="p-0"
         >
             {metricsConfig.map((config, index) => (

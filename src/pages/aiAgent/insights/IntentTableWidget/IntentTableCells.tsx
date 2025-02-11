@@ -1,8 +1,13 @@
 import {Skeleton, Tooltip} from '@gorgias/merchant-ui-kit'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo} from 'react'
 
+import {useHistory, useParams} from 'react-router-dom'
+
 import {SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useId from 'hooks/useId'
+import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {BadgeWithTiers} from 'pages/aiAgent/insights/IntentTableWidget/BadgeWithTiers/BadgeWithTiers'
 import {
     getColumnWidth,
@@ -28,9 +33,29 @@ type TableCellProps = {
     allIntents?: Intent[]
 }
 export const IntentNameCellContent = ({intent, column}: TableCellProps) => {
+    const history = useHistory()
+    const {shopName} = useParams<{
+        shopName: string
+    }>()
+    const {routes} = useAiAgentNavigation({shopName})
+    const hasL2Drilldown =
+        useFlags()[FeatureFlagKey.AiAgentOptimizeTabL2Drilldown]
+    const goToIntent = () => {
+        if (hasL2Drilldown) {
+            history.push(routes.optimizeIntent(String(intent.id)))
+        }
+    }
+
     return (
-        <BodyCellWrapper bodyCellProps={{width: getColumnWidth(column)}}>
-            <div className="body-medium">{intent[column]}</div>
+        <BodyCellWrapper
+            bodyCellProps={{
+                width: getColumnWidth(column),
+                showCursor: hasL2Drilldown,
+            }}
+        >
+            <div className="body-medium" onClick={goToIntent}>
+                {intent[column]}
+            </div>
         </BodyCellWrapper>
     )
 }
@@ -175,12 +200,18 @@ export const BodyCellWrapper = ({
 }: {
     children?: React.ReactNode
     isLoading?: boolean
-    bodyCellProps: {width: number; justifyContent?: 'right'}
+    bodyCellProps: {
+        width: number
+        justifyContent?: 'right'
+        showCursor?: boolean
+    }
 }) => {
     return (
         <BodyCell
             justifyContent={bodyCellProps.justifyContent}
-            innerClassName={intentTableCss.cellCursor}
+            innerClassName={
+                bodyCellProps.showCursor ? undefined : intentTableCss.cellCursor
+            }
         >
             {isLoading ? (
                 <Skeleton

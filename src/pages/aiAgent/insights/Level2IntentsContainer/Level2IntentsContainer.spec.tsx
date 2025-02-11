@@ -17,6 +17,26 @@ jest.mock('pages/aiAgent/hooks/useAiAgentEnabled', () => ({
     useAiAgentEnabled: jest.fn().mockReturnValue(true),
 }))
 
+jest.mock('pages/stats/DrillDownModal', () => ({
+    DrillDownModal: jest.fn(() => <></>),
+}))
+
+jest.mock(
+    'pages/aiAgent/insights/widgets/AdjustedPeriodFilter/AdjustedPeriodFilter',
+    () => ({
+        AdjustedPeriodFilter: jest.fn(() => <></>),
+    })
+)
+
+jest.mock('../Level2IntentsPerformance/Level2IntentsPerformance', () => ({
+    Level2IntentsPerformance: jest.fn(() => <></>),
+}))
+
+jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
+    useAccountStoreConfiguration: jest.fn(() => ({
+        aiAgentTicketViewId: 1,
+    })),
+}))
 const mockHistoryPush = jest.fn()
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
@@ -24,6 +44,7 @@ jest.mock('react-router-dom', () => ({
         push: mockHistoryPush,
     }),
 }))
+jest.mock('hooks/useAppSelector')
 
 const SHOP_NAME = 'shopify-store'
 const SHOP_TYPE = 'shopify'
@@ -58,17 +79,16 @@ describe('Level2IntentsContainer', () => {
             renderComponent()
 
             expect(
-                screen.getByText('Level2IntentsContainer')
+                screen.getByText('Back To AI Agent Performance')
             ).toBeInTheDocument()
-            expect(screen.getByText('Back to Optimize')).toBeInTheDocument()
-            expect(screen.getByText(title)).toBeInTheDocument()
+            expect(screen.getAllByText(title).length).toBeGreaterThan(0)
         })
     })
 
     it('calls history.push with the correct route on BackLink click', () => {
         renderComponent()
 
-        const backLink = screen.getByText('Back to Optimize')
+        const backLink = screen.getByText('Back To AI Agent Performance')
         fireEvent.click(backLink)
 
         expect(mockHistoryPush).toHaveBeenCalledWith(
