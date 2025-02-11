@@ -4,10 +4,12 @@ import {
     DataExportFormat,
     ReportConfig,
 } from 'pages/stats/custom-reports/types'
+import CommentHighlightsChart, {
+    COMMENT_HIGHLIGHTS,
+} from 'pages/stats/quality-management/satisfaction//CommentHighlightsChart/CommentHighlightsChart'
 import AverageSurveyScoreDonutChart from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
 import {ResponseRateTrendCard} from 'pages/stats/quality-management/satisfaction/ResponseRateTrendCard'
 import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
-
 import {SatisfactionScoreTrendCard} from 'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard'
 import {SurveysSentTrendCard} from 'pages/stats/quality-management/satisfaction/SurveysSentTrendCard'
 import {fetchSurveyScoresReportData} from 'services/reporting/satisfactionReportingService'
@@ -18,6 +20,7 @@ export enum SatisfactionChart {
     ResponseRateTrendCard = 'response-rate-trend-card',
     SurveysSentTrendCard = 'surveys-sent-trend-card',
     AverageSurveyScoreDonutChart = 'average-survey-score-donut-chart',
+    CommentHighlightsChart = 'comment-highlights-chart',
 }
 
 export const SATISFACTION_TITLE = 'Satisfaction'
@@ -128,6 +131,13 @@ export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {
                     fetch: fetchSurveyScoresReportData,
                 },
             ],
+            chartType: ChartType.Graph,
+        },
+        [SatisfactionChart.CommentHighlightsChart]: {
+            chartComponent: CommentHighlightsChart,
+            label: COMMENT_HIGHLIGHTS.TITLE,
+            description: COMMENT_HIGHLIGHTS.DESCRIPTION,
+            csvProducer: null,
             chartType: ChartType.Graph,
         },
     },

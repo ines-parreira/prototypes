@@ -14,6 +14,7 @@ type Props = {
     filledIcon?: React.ReactNode
     color?: string
     activeColor?: string
+    classNames?: string
 }
 
 export default function StarRating({
@@ -25,6 +26,7 @@ export default function StarRating({
     filledIcon = <span className={`material-icons`}>star</span>,
     color = STAR_COLORS.DEFAULT,
     activeColor = STAR_COLORS.ACTIVE,
+    classNames,
 }: Props) {
     return (
         <ReactStars
@@ -36,6 +38,7 @@ export default function StarRating({
             filledIcon={filledIcon}
             color={color}
             activeColor={activeColor}
+            classNames={classNames}
         />
     )
 }

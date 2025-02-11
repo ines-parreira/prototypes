@@ -139,3 +139,8 @@ export enum ValueMode {
     TotalCount = 'totalCount',
     Percentage = 'percentage',
 }
+
+export enum CsatSentiment {
+    Positive = 'positive',
+    Negative = 'negative',
+}

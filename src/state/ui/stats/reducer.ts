@@ -15,6 +15,10 @@ import {
     FetchingMapSliceState,
 } from 'state/ui/stats/fetchingMapSlice'
 import {filtersSlice, FiltersSliceState} from 'state/ui/stats/filtersSlice'
+import {
+    qualityManagementSlice,
+    QualityManagementState,
+} from 'state/ui/stats/qualityManagementSlice'
 import {statsTablesReducer} from 'state/ui/stats/statsTablesReducer'
 import {tagsReportSlice, TagsReportState} from 'state/ui/stats/tagsReportSlice'
 import {
@@ -33,6 +37,7 @@ export type StatsState = {
     [drillDownSlice.name]: DrillDownState
     [busiestTimesSlice.name]: BusiestTimesState
     [customReportsSlice.name]: CustomReportsSliceState
+    [qualityManagementSlice.name]: QualityManagementState
 }
 
 const statsReducer = combineReducers({
@@ -45,6 +50,7 @@ const statsReducer = combineReducers({
     [ticketInsightsSlice.name]: ticketInsightsSlice.reducer,
     statsTables: statsTablesReducer,
     [customReportsSlice.name]: customReportsSlice.reducer,
+    [qualityManagementSlice.name]: qualityManagementSlice.reducer,
 })
 
 export default statsReducer

@@ -7,6 +7,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {billingState} from 'fixtures/billing'
 import {FiltersPanelWrapper} from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import AverageSurveyScoreDonutChart from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
+import CommentHighlightsChart from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsChart'
 import {ResponseRateTrendCard} from 'pages/stats/quality-management/satisfaction/ResponseRateTrendCard'
 import {SatisfactionDownloadDataButton} from 'pages/stats/quality-management/satisfaction/SatisfactionDownloadDataButton'
 import SatisfactionReport from 'pages/stats/quality-management/satisfaction/SatisfactionReport'
@@ -21,6 +22,10 @@ import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState} from 'state/types'
 import {drillDownSlice, initialState} from 'state/ui/stats/drillDownSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
+import {
+    qualityManagementSlice,
+    initialState as qmInitialState,
+} from 'state/ui/stats/qualityManagementSlice'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
 const componentMock = () => <div />
@@ -61,6 +66,11 @@ const AverageSurveyScoreDonutChartMock = assumeMock(
     AverageSurveyScoreDonutChart
 )
 
+jest.mock(
+    'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsChart'
+)
+const CommentHighlightsChartMock = assumeMock(CommentHighlightsChart)
+
 describe('<Satisfaction>', () => {
     const defaultState = {
         stats: {
@@ -70,6 +80,7 @@ describe('<Satisfaction>', () => {
             stats: {
                 filters: uiStatsInitialState,
                 [drillDownSlice.name]: initialState,
+                [qualityManagementSlice.name]: qmInitialState,
             },
         },
         billing: fromJS(billingState),
@@ -85,6 +96,7 @@ describe('<Satisfaction>', () => {
         SurveysSentTrendCardMock.mockImplementation(componentMock)
         AverageSurveyScoreDonutChartMock.mockImplementation(componentMock)
         SatisfactionDownloadDataButtonMock.mockImplementation(componentMock)
+        CommentHighlightsChartMock.mockImplementation(componentMock)
     })
 
     it('should render new satisfaction report page', () => {
@@ -98,6 +110,7 @@ describe('<Satisfaction>', () => {
         expect(ResponseRateTrendCardMock).toHaveBeenCalled()
         expect(SurveysSentTrendCardMock).toHaveBeenCalled()
         expect(AverageSurveyScoreDonutChartMock).toHaveBeenCalled()
+        expect(CommentHighlightsChartMock).toHaveBeenCalled()
     })
 
     it('should contain filters panel component', () => {
@@ -112,6 +125,7 @@ describe('<Satisfaction>', () => {
             expect(ResponseRateTrendCardMock).toHaveBeenCalled()
             expect(SurveysSentTrendCardMock).toHaveBeenCalled()
             expect(AverageSurveyScoreDonutChartMock).toHaveBeenCalled()
+            expect(CommentHighlightsChartMock).toHaveBeenCalled()
         })
     })
 })

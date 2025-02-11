@@ -92,6 +92,12 @@ export default function SatisfactionReport() {
                             config={SatisfactionReportConfig}
                         />
                     </DashboardGridCell>
+                    <DashboardGridCell size={getGridCellSize(6)}>
+                        <CustomReportComponent
+                            chart={SatisfactionChart.CommentHighlightsChart}
+                            config={SatisfactionReportConfig}
+                        />
+                    </DashboardGridCell>
                 </DashboardSection>
                 <AnalyticsFooter />
             </StatsPage>

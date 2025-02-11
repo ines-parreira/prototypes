@@ -39,7 +39,7 @@ export const SatisfactionMetricConfig: Record<
     [SatisfactionMetric.SatisfactionScore]: {
         title: SATISFACTION_SCORE_LABEL,
         hint: {
-            title: 'Total of "very satisfied" (5) or "satisfied" (4) divided by the total number of responses x 100 for Satisfaction Percentage',
+            title: 'Percentage of CSAT surveys rated 4 or 5 out of all surveys rated, for surveys sent within the timeframe; surveys are sent following ticket resolution.',
         },
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-to-percent',
@@ -50,7 +50,7 @@ export const SatisfactionMetricConfig: Record<
     [SatisfactionMetric.ResponseRate]: {
         title: RESPONSE_RATE_LABEL,
         hint: {
-            title: 'Total percentage of responses from surveys sent',
+            title: 'Percentage of surveys that were scored out of all the surveys sent during the timeframe; surveys are sent following ticket resolution.',
             link: 'https://link.gorgias.com/oau',
         },
         interpretAs: 'more-is-better',
@@ -62,7 +62,7 @@ export const SatisfactionMetricConfig: Record<
     [SatisfactionMetric.SurveysSent]: {
         title: SURVEYS_SENT_LABEL,
         hint: {
-            title: 'Total number of surveys sent',
+            title: 'Number of surveys sent during the timeframe; surveys are sent following ticket resolution.',
             link: 'https://link.gorgias.com/oau',
         },
         interpretAs: 'more-is-better',
@@ -74,7 +74,7 @@ export const SatisfactionMetricConfig: Record<
     [SatisfactionMetric.AverageSurveyScore]: {
         title: AVERAGE_SURVEY_SCORE,
         hint: {
-            title: 'Average calculated score from 1-5 stars given by customers',
+            title: 'Average CSAT score and rating distribution for surveys sent within the timeframe; surveys are sent following ticket resolution.',
         },
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
