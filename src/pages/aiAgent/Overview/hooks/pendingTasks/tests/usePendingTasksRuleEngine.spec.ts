@@ -2,11 +2,13 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import {assumeMock} from 'utils/testing'
 
+import {useFetchActionsData} from '../useFetchActionsData'
 import {useFetchAiAgentStoreConfigurationData} from '../useFetchAiAgentStoreConfigurationData'
 import {useFetchFaqHelpCentersData} from '../useFetchFaqHelpCentersData'
 import {useFetchFileIngestionData} from '../useFetchFileIngestionData'
 import {useFetchGuidancesData} from '../useFetchGuidancesData'
 import {usePendingTasksRuleEngine} from '../usePendingTasksRuleEngine'
+import {ActionsDataFixture} from './ActionsData.fixture'
 import {AiAgentStoreConfigurationFixture} from './AiAgentStoreConfiguration.fixture'
 import {FileIngestionDataFixture} from './FileIngestionData.fixture'
 import {GuidancesDataFixture} from './GuidancesData.fixture'
@@ -30,6 +32,10 @@ jest.mock('../useFetchGuidancesData', () => ({
     useFetchGuidancesData: jest.fn(),
 }))
 const useFetchGuidancesDataMock = assumeMock(useFetchGuidancesData)
+jest.mock('../useFetchActionsData', () => ({
+    useFetchActionsData: jest.fn(),
+}))
+const useFetchActionsDataMock = assumeMock(useFetchActionsData)
 
 // Will implements better testing after extracting the list of tasks from the ruleEngine
 describe('usePendingTasksRuleEngine', () => {
@@ -59,6 +65,11 @@ describe('usePendingTasksRuleEngine', () => {
         data: GuidancesDataFixture.start().withPublicGuidance().build(),
     })
 
+    useFetchActionsDataMock.mockReturnValue({
+        isLoading: false,
+        data: ActionsDataFixture.start().withoutAction().build(),
+    })
+
     it('should return valid tasks', () => {
         const hook = renderHook(() =>
             usePendingTasksRuleEngine({
@@ -68,7 +79,13 @@ describe('usePendingTasksRuleEngine', () => {
         )
 
         expect(hook.result.current.isLoading).toBe(false)
-        expect(hook.result.current.pendingTasks).toHaveLength(0)
-        expect(hook.result.current.completedTasks).toHaveLength(6)
+        expect(
+            // Mapping on title to ease reading error report
+            hook.result.current.pendingTasks.map((t) => t.title)
+        ).toHaveLength(2)
+        expect(
+            // Mapping on title to ease reading error report
+            hook.result.current.completedTasks.map((t) => t.title)
+        ).toHaveLength(7)
     })
 })

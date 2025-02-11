@@ -4,6 +4,7 @@ import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import {runRuleEngine} from './ruleEngine'
 import {Task} from './tasks/Task'
+import {useFetchActionsData} from './useFetchActionsData'
 import {useFetchAiAgentStoreConfigurationData} from './useFetchAiAgentStoreConfigurationData'
 import {useFetchFaqHelpCentersData} from './useFetchFaqHelpCentersData'
 import {useFetchFileIngestionData} from './useFetchFileIngestionData'
@@ -38,16 +39,21 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
     const {isLoading: guidancesDataIsLoading, data: guidancesData} =
         useFetchGuidancesData({storeName, enabled: !shouldFakeTasks})
 
+    const {isLoading: actionsDataIsLoading, data: actionsData} =
+        useFetchActionsData({storeName, enabled: !shouldFakeTasks})
+
     const isLoading =
         aiAgentStoreConfigurationIsLoading ||
         faqHelpCentersDataIsLoading ||
         fileIngestionDataIsLoading ||
-        guidancesDataIsLoading
+        guidancesDataIsLoading ||
+        actionsDataIsLoading
     const isReady =
         !!aiAgentStoreConfigurationData &&
         !!faqHelpCentersData &&
         !!fileIngestionData &&
-        !!guidancesData
+        !!guidancesData &&
+        !!actionsData
 
     // Use memo instead of useEffect
     const [{completedTasks, pendingTasks}, setTasks] = useState<{
@@ -68,6 +74,7 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
                             aiAgentStoreConfigurationData,
                         fileIngestion: fileIngestionData,
                         guidances: guidancesData,
+                        actions: actionsData,
                     },
                     {
                         aiAgentRoutes: routes,
@@ -81,6 +88,7 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
         faqHelpCentersData,
         fileIngestionData,
         guidancesData,
+        actionsData,
     ])
 
     if (shouldFakeTasks) {

@@ -330,15 +330,20 @@ export const useGetWorkflowConfigurations = (
     })
 }
 
-export const useGetStoreWorkflowsConfigurations = ({
-    storeName,
-    storeType,
-    triggers,
-}: {
-    storeName: string
-    storeType: string
-    triggers: ['llm-prompt'] | ['reusable-llm-prompt']
-}) => {
+export const useGetStoreWorkflowsConfigurations = (
+    {
+        storeName,
+        storeType,
+        triggers,
+    }: {
+        storeName: string
+        storeType: string
+        triggers: ['llm-prompt'] | ['reusable-llm-prompt']
+    },
+    overrides: UseQueryOptions<
+        Awaited<Paths.StoreWfConfigurationControllerList.Responses.$200>
+    > = {}
+) => {
     return useQuery({
         queryKey: storeWorkflowsConfigurationDefinitionKeys.list({
             storeName,
@@ -368,6 +373,7 @@ export const useGetStoreWorkflowsConfigurations = ({
         keepPreviousData: true,
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
+        ...overrides,
     })
 }
 

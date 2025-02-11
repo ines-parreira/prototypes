@@ -7,6 +7,7 @@ export const buildRuleEngineData = (
     fileIngestion: [],
     faqHelpCenters: [],
     guidances: [],
+    actions: [],
     ...data,
 })
 
