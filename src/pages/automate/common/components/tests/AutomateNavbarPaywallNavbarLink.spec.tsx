@@ -2,10 +2,27 @@ import {render, screen} from '@testing-library/react'
 import React from 'react'
 import {BrowserRouter as Router} from 'react-router-dom'
 
+import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import {assumeMock} from 'utils/testing'
+
 import AutomateNavbarPaywallNavbarLink from '../AutomateNavbarPaywallNavbarLink'
 
+jest.mock(
+    'pages/stats/report-chart-restrictions/useReportChartRestrictions',
+    () => ({
+        useReportChartRestrictions: jest.fn(),
+    })
+)
+const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
+
 describe('AutomateNavbarPaywallNavbarLink', () => {
-    test('renders children correctly', () => {
+    beforeEach(() => {
+        useReportChartRestrictionsMock.mockReturnValue({
+            isRouteRestrictedToCurrentUser: () => false,
+        } as any)
+    })
+
+    it('renders children correctly', () => {
         render(
             <Router>
                 <AutomateNavbarPaywallNavbarLink to="/test">
@@ -16,7 +33,7 @@ describe('AutomateNavbarPaywallNavbarLink', () => {
         expect(screen.getByText('Test Link')).toBeInTheDocument()
     })
 
-    test('applies nested class when isNested is true', () => {
+    it('applies nested class when isNested is true', () => {
         render(
             <Router>
                 <AutomateNavbarPaywallNavbarLink to="/test" isNested>

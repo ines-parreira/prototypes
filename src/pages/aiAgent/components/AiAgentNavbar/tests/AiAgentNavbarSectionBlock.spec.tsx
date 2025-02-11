@@ -6,22 +6,28 @@ import {BrowserRouter} from 'react-router-dom'
 
 import {IntegrationType} from 'models/integration/constants'
 import {ShopType} from 'models/selfServiceConfiguration/types'
+import {AiAgentNavbarSectionBlock} from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbarSectionBlock'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
-
 import {
     OnboardingState,
     useAiAgentOnboardingState,
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
-
+import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import {assumeMock} from 'utils/testing'
-
-import {AiAgentNavbarSectionBlock} from '../AiAgentNavbarSectionBlock'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingState')
 
 const mockUseAiAgentNavigation = assumeMock(useAiAgentNavigation)
 const mockUseAiAgentOnboardingState = assumeMock(useAiAgentOnboardingState)
+
+jest.mock(
+    'pages/stats/report-chart-restrictions/useReportChartRestrictions',
+    () => ({
+        useReportChartRestrictions: jest.fn(),
+    })
+)
+const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 describe('AiAgentNavbarSectionBlock', () => {
     const defaultProps = {
@@ -42,6 +48,9 @@ describe('AiAgentNavbarSectionBlock', () => {
             ],
         })
         mockUseAiAgentOnboardingState.mockReturnValue(OnboardingState.Onboarded)
+        useReportChartRestrictionsMock.mockReturnValue({
+            isRouteRestrictedToCurrentUser: () => false,
+        } as any)
     })
 
     test('renders the component with onboarded state', () => {

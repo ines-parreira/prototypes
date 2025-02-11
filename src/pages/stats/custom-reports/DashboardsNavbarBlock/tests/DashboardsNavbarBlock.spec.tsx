@@ -1,12 +1,10 @@
 import {screen, fireEvent, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
 import React from 'react'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-
 import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import {LIMIT_REACHED_MESSAGE} from 'pages/stats/custom-reports/constants'
 import {
@@ -15,6 +13,7 @@ import {
     CREATE_DASHBOARD,
     RESTRICTION_MESSAGE,
 } from 'pages/stats/custom-reports/DashboardsNavbarBlock/DashboardsNavbarBlock'
+import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import {renderWithQueryClientAndRouter} from 'tests/renderWIthQueryClientAndRouter'
 import {isTeamLead} from 'utils'
 import {assumeMock} from 'utils/testing'
@@ -48,6 +47,14 @@ const isTeamLeadMock = assumeMock(isTeamLead)
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
 
+jest.mock(
+    'pages/stats/report-chart-restrictions/useReportChartRestrictions',
+    () => ({
+        useReportChartRestrictions: jest.fn(),
+    })
+)
+const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
+
 describe('DashboardsNavbarBlock', () => {
     const defaultMockData = [
         {id: '1', name: 'Report 1', emoji: '📊'},
@@ -57,6 +64,10 @@ describe('DashboardsNavbarBlock', () => {
     beforeEach(() => {
         useCustomReportActionsMock.mockReturnValue({
             getDashboardsHandler: () => defaultMockData,
+        } as any)
+
+        useReportChartRestrictionsMock.mockReturnValue({
+            isRouteRestrictedToCurrentUser: () => false,
         } as any)
     })
 

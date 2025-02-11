@@ -3,9 +3,9 @@ import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
+import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
 import {assumeMock, renderWithRouter} from 'utils/testing'
-
-import AutomateStatsNavbar from '../AutomateStatsNavbar'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const mockUseAppSelector = assumeMock(useAppSelector)
@@ -14,12 +14,26 @@ jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 
+jest.mock(
+    'pages/stats/report-chart-restrictions/useReportChartRestrictions',
+    () => ({
+        useReportChartRestrictions: jest.fn(),
+    })
+)
+const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
+
 describe('<AutomateStatsNavbar />', () => {
     const defaultProps = {
         commonNavLinkProps: {
             exact: true,
         },
     }
+
+    beforeEach(() => {
+        useReportChartRestrictionsMock.mockReturnValue({
+            isRouteRestrictedToCurrentUser: () => false,
+        } as any)
+    })
 
     it('should render with upgrade icon when automate is not enabled', () => {
         mockUseAppSelector.mockReturnValue(false)

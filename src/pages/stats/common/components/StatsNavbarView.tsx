@@ -11,6 +11,7 @@ import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
 import ConvertStatsNavbar from 'pages/convert/common/components/ConvertStatsNavbar'
+import {STATS_ROUTE_PREFIX} from 'pages/stats/common/components/constants'
 import {DashboardsNavbarBlock} from 'pages/stats/custom-reports/DashboardsNavbarBlock/DashboardsNavbarBlock'
 import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
 import {SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
@@ -30,7 +31,6 @@ type AutoQANavBarLinkProps = {
 
 export const BUSIEST_TIMES_OF_DAYS_NAV_LABEL = 'Busiest times'
 export const NEW_NAV_LABEL = 'NEW'
-export const STATS_ROUTE_PREFIX = '/app/stats/'
 
 export default function StatsNavbarView() {
     const user = useAppSelector(getCurrentUser)

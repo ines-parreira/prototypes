@@ -1,12 +1,19 @@
 import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
+import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import VoiceStatsNavbarItem from 'pages/stats/voice/components/VoiceStatsNavbar/VoiceStatsNavbarItem'
 import {assumeMock, renderWithRouter} from 'utils/testing'
-
-import VoiceStatsNavbarItem from './VoiceStatsNavbarItem'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const mockUseAppSelector = assumeMock(useAppSelector)
+jest.mock(
+    'pages/stats/report-chart-restrictions/useReportChartRestrictions',
+    () => ({
+        useReportChartRestrictions: jest.fn(),
+    })
+)
+const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 describe('<VoiceStatsNavbarItem />', () => {
     const defaultProps = {
@@ -16,6 +23,12 @@ describe('<VoiceStatsNavbarItem />', () => {
             exact: true,
         },
     }
+
+    beforeEach(() => {
+        useReportChartRestrictionsMock.mockReturnValue({
+            isRouteRestrictedToCurrentUser: () => false,
+        } as any)
+    })
 
     it('should render with upgrade icon', () => {
         mockUseAppSelector.mockReturnValue(false)

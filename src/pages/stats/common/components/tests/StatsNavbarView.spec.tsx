@@ -16,9 +16,9 @@ import {
 } from 'fixtures/productPrices'
 import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import {IntegrationType} from 'models/integration/constants'
+import {STATS_ROUTE_PREFIX} from 'pages/stats/common/components/constants'
 import StatsNavbarView, {
     BUSIEST_TIMES_OF_DAYS_NAV_LABEL,
-    STATS_ROUTE_PREFIX,
 } from 'pages/stats/common/components/StatsNavbarView'
 import {SERVICE_LEVEL_AGREEMENT_PAGE_TITLE} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
 import {SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
