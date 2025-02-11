@@ -19,6 +19,7 @@ export function CollapsibleNavBarWrapper({children}: Props) {
                 onMouseOver={onNavHover}
                 onFocus={onNavHover}
                 onMouseLeave={onNavLeave}
+                style={{height: '100%'}}
             >
                 {children}
             </div>
