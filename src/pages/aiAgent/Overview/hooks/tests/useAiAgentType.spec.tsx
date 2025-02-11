@@ -11,7 +11,7 @@ import {IntegrationType} from 'models/integration/constants'
 import {useStoreConfigurationForAccount} from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import {
     useAiAgentTypeForAccount,
-    useAiAgentTypeFromScopes,
+    getAiAgentTypeFromScopes,
 } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/utils'
 import {RootState} from 'state/types'
@@ -23,30 +23,30 @@ const useStoreConfigurationForAccountMock = assumeMock(
 )
 
 describe('useAiAgentType', () => {
-    describe('useAiAgentTypeFromScopes', () => {
+    describe('getAiAgentTypeFromScopes', () => {
         it('should return undefined when empty scope list', () => {
-            expect(useAiAgentTypeFromScopes([])).toBeUndefined()
+            expect(getAiAgentTypeFromScopes([])).toBeUndefined()
         })
 
         it('should return undefined when no scope', () => {
-            expect(useAiAgentTypeFromScopes()).toBeUndefined()
+            expect(getAiAgentTypeFromScopes()).toBeUndefined()
         })
 
         it('should return sales when scope is sales', () => {
-            expect(useAiAgentTypeFromScopes([AiAgentScope.Sales])).toEqual(
+            expect(getAiAgentTypeFromScopes([AiAgentScope.Sales])).toEqual(
                 'sales'
             )
         })
 
         it('should return support when scope is support', () => {
-            expect(useAiAgentTypeFromScopes([AiAgentScope.Support])).toEqual(
+            expect(getAiAgentTypeFromScopes([AiAgentScope.Support])).toEqual(
                 'support'
             )
         })
 
         it('should return mixed when scope is sales and support', () => {
             expect(
-                useAiAgentTypeFromScopes([
+                getAiAgentTypeFromScopes([
                     AiAgentScope.Sales,
                     AiAgentScope.Support,
                 ])

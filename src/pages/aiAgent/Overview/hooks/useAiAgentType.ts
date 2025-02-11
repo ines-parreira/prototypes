@@ -7,7 +7,7 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getStoreIntegrations} from 'state/integrations/selectors'
 
 export type AiAgentType = 'sales' | 'support' | 'mixed'
-export const useAiAgentTypeFromScopes = (
+export const getAiAgentTypeFromScopes = (
     scopes?: AiAgentScope[]
 ): AiAgentType | undefined => {
     if (!scopes?.length) {
@@ -59,6 +59,6 @@ export const useAiAgentTypeForAccount = (): {
 
     return {
         isLoading,
-        aiAgentType: useAiAgentTypeFromScopes(scopes),
+        aiAgentType: getAiAgentTypeFromScopes(scopes),
     }
 }

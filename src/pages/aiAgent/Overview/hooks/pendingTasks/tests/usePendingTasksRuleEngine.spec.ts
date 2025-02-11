@@ -1,5 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 
+import {AiAgentScope} from 'models/aiAgent/types'
 import {assumeMock} from 'utils/testing'
 
 import {useFetchActionsData} from '../useFetchActionsData'
@@ -44,16 +45,6 @@ describe('usePendingTasksRuleEngine', () => {
         data: HelpCenterDataFixture.start().withNoHelpCenter().build(),
     })
 
-    useFetchAiAgentStoreConfigurationDataMock.mockReturnValue({
-        isLoading: false,
-        data: AiAgentStoreConfigurationFixture.start()
-            .withoutConnectedHelpCenter()
-            .withChatChannelEnabled()
-            .withEmailChannelEnabled()
-            .withoutHandoverTopic()
-            .build(),
-    })
-
     useFetchFileIngestionDataMock.mockReturnValue({
         isLoading: false,
         data: FileIngestionDataFixture.start()
@@ -71,22 +62,52 @@ describe('usePendingTasksRuleEngine', () => {
         data: ActionsDataFixture.start().withoutAction().build(),
     })
 
-    it('should return valid tasks', () => {
-        const hook = renderHook(() =>
-            usePendingTasksRuleEngine({
-                accountDomain: 'test',
-                storeName: 'test',
+    it.each([
+        {
+            scopes: [AiAgentScope.Support, AiAgentScope.Sales],
+            pendingTasks: 3,
+            completedTasks: 8,
+        },
+        {
+            scopes: [AiAgentScope.Support],
+            pendingTasks: 3,
+            completedTasks: 8,
+        },
+        {
+            scopes: [AiAgentScope.Sales],
+            pendingTasks: 2,
+            completedTasks: 6,
+        },
+    ])(
+        'should return valid tasks for scopes $scopes',
+        ({scopes, completedTasks, pendingTasks}) => {
+            useFetchAiAgentStoreConfigurationDataMock.mockReturnValue({
+                isLoading: false,
+                data: AiAgentStoreConfigurationFixture.start()
+                    .withScopes(scopes)
+                    .withoutConnectedHelpCenter()
+                    .withChatChannelEnabled()
+                    .withEmailChannelEnabled()
+                    .withoutHandoverTopic()
+                    .build(),
             })
-        )
 
-        expect(hook.result.current.isLoading).toBe(false)
-        expect(
-            // Mapping on title to ease reading error report
-            hook.result.current.pendingTasks.map((t) => t.title)
-        ).toHaveLength(3)
-        expect(
-            // Mapping on title to ease reading error report
-            hook.result.current.completedTasks.map((t) => t.title)
-        ).toHaveLength(8)
-    })
+            const hook = renderHook(() =>
+                usePendingTasksRuleEngine({
+                    accountDomain: 'test',
+                    storeName: 'test',
+                })
+            )
+
+            expect(hook.result.current.isLoading).toBe(false)
+            expect(
+                // Mapping on title to ease reading error report
+                hook.result.current.pendingTasks.map((t) => t.title)
+            ).toHaveLength(pendingTasks)
+            expect(
+                // Mapping on title to ease reading error report
+                hook.result.current.completedTasks.map((t) => t.title)
+            ).toHaveLength(completedTasks)
+        }
+    )
 })

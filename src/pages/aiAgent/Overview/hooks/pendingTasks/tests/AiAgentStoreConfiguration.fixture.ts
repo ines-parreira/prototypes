@@ -1,3 +1,5 @@
+import {AiAgentScope} from 'models/aiAgent/types'
+
 import {AiAgentStoreConfigurationData} from '../useFetchAiAgentStoreConfigurationData'
 
 type AllKeys = keyof AiAgentStoreConfigurationFixture
@@ -20,7 +22,9 @@ export class AiAgentStoreConfigurationFixture {
 
     static start() {
         return new AiAgentStoreConfigurationFixture() as ConfiguredAiAgentStoreConfigurationFixture<
-            'withConnectedHelpCenter' | 'withoutConnectedHelpCenter'
+            | 'withConnectedHelpCenter'
+            | 'withoutConnectedHelpCenter'
+            | 'withScopes'
         >
     }
 
@@ -76,6 +80,17 @@ export class AiAgentStoreConfigurationFixture {
         this.aiAgentStoreConfigurationData.excludedTopics = topics
 
         return this as AiAgentStoreConfigurationFixtureFullyConfigured
+    }
+
+    withScopes(scopes: AiAgentScope[]) {
+        this.aiAgentStoreConfigurationData.scopes = scopes
+        return this as ConfiguredAiAgentStoreConfigurationFixture<
+            | 'withConnectedHelpCenter'
+            | 'withoutConnectedHelpCenter'
+            | 'withChatChannelEnabled'
+            | 'withEmailChannelEnabled'
+            | 'build'
+        >
     }
 
     build(): AiAgentStoreConfigurationData {
