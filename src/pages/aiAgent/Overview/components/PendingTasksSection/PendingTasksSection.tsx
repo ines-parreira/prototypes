@@ -1,6 +1,8 @@
 import classNames from 'classnames'
 import React, {useState} from 'react'
 
+import partyPopperImg from 'assets/img/ai-agent/ai-agent_party-popper.svg'
+
 import {CardTitle} from 'pages/aiAgent/Onboarding/components/Card'
 import {OverviewCard} from 'pages/aiAgent/Overview/components/OverviewCard/OverviewCard'
 
@@ -35,6 +37,9 @@ export const PendingTasksSection = ({
     pendingTasks,
 }: Props) => {
     const [isPendingTasksExpanded, setIsPendingTasksExpanded] = useState(false)
+
+    const allTasksCompleted =
+        completedTasks.length === pendingTasks.length + completedTasks.length
 
     const loadingTasks = (
         <>
@@ -84,43 +89,54 @@ export const PendingTasksSection = ({
                     totalTasks={pendingTasks.length + completedTasks.length}
                     totalTasksCompleted={completedTasks?.length}
                 />
-                <div className={css.pendingTasksContainer}>
-                    <div
-                        className={css.pendingTaskInnerContainer}
-                        id={pendingTasksCollapsibleId}
-                        role="region"
-                    >
-                        {isLoading && loadingTasks}
-                        {!isLoading &&
-                            tasksToDisplay?.map((task) => (
-                                <div
-                                    className={css.pendingTaskWrapper}
-                                    key={task.title}
-                                >
-                                    <PendingTask
-                                        title={task.title}
-                                        caption={task.caption}
-                                        type={task.type}
-                                        ctaUrl={task.featureUrl}
-                                        isLoading={isLoading}
-                                    />
-                                </div>
-                            ))}
-                    </div>
-                </div>
-                {pendingTasks.length > 3 && (
-                    <div className={css.expanderContainer}>
-                        <Expander
-                            controlId={pendingTasksCollapsibleId}
-                            tasksCount={pendingTasks?.length}
-                            isLoading={isLoading}
-                            isExpanded={isPendingTasksExpanded}
-                            onClick={() =>
-                                setIsPendingTasksExpanded(
-                                    !isPendingTasksExpanded
-                                )
-                            }
-                        />
+                {!allTasksCompleted || isLoading ? (
+                    <>
+                        <div className={css.pendingTasksContainer}>
+                            <div
+                                className={css.pendingTaskInnerContainer}
+                                id={pendingTasksCollapsibleId}
+                                role="region"
+                            >
+                                {isLoading && loadingTasks}
+                                {!isLoading &&
+                                    tasksToDisplay?.map((task) => (
+                                        <div
+                                            className={css.pendingTaskWrapper}
+                                            key={task.title}
+                                        >
+                                            <PendingTask
+                                                title={task.title}
+                                                caption={task.caption}
+                                                type={task.type}
+                                                ctaUrl={task.featureUrl}
+                                                isLoading={isLoading}
+                                            />
+                                        </div>
+                                    ))}
+                            </div>
+                        </div>
+                        {pendingTasks.length > 3 && (
+                            <div className={css.expanderContainer}>
+                                <Expander
+                                    controlId={pendingTasksCollapsibleId}
+                                    tasksCount={pendingTasks?.length}
+                                    isLoading={isLoading}
+                                    isExpanded={isPendingTasksExpanded}
+                                    onClick={() =>
+                                        setIsPendingTasksExpanded(
+                                            !isPendingTasksExpanded
+                                        )
+                                    }
+                                />
+                            </div>
+                        )}
+                    </>
+                ) : (
+                    <div className={css.completed}>
+                        <img src={partyPopperImg} alt="Party popper" />{' '}
+                        <div className={css.completedText}>
+                            Congrats! You’ve finished all tasks for this store.
+                        </div>
                     </div>
                 )}
             </div>

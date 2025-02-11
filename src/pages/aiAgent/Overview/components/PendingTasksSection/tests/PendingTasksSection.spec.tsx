@@ -58,6 +58,26 @@ describe('PendingTasksSection', () => {
         expect(screen.getByText('Show all tasks (6 total)')).toBeInTheDocument()
     })
 
+    it('render the component after loading when all tasks are completed', () => {
+        jest.useFakeTimers()
+        render(
+            <PendingTasksSection
+                completedTasks={completedTasks}
+                pendingTasks={[]}
+                isLoading={false}
+                onStoreChange={() => {}}
+                selectedStore={{id: 1, name: 'test store'}}
+                stores={[{id: 1, name: 'test store'}]}
+            />
+        )
+
+        expect(
+            screen.getByText(
+                'Congrats! You’ve finished all tasks for this store.'
+            )
+        ).toBeInTheDocument()
+    })
+
     it('should expand when clicking on expand button', () => {
         const rendered = render(
             <PendingTasksSection
