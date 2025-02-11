@@ -1,6 +1,7 @@
 import React from 'react'
 import {Route, Switch, useRouteMatch} from 'react-router-dom'
 
+import {OnboardingPanel} from 'common/onboarding'
 import {Handle, PanelGroup, Panels} from 'core/layout/panels'
 import {GlobalNavigationPanel} from 'core/navigation'
 import {useIsMobileResolution} from 'hooks/useIsMobileResolution'
@@ -49,18 +50,23 @@ export default function PanelRoutes() {
                 <Switch>
                     <Route exact path="/app">
                         <ViewPanel key="view-panel" />
+                        <OnboardingPanel key="onboarding-panel" />
                     </Route>
                     <Route exact path="/app/tickets">
                         <ViewPanel key="view-panel" />
+                        <OnboardingPanel key="onboarding-panel" />
                     </Route>
                     <Route exact path="/app/tickets/new/:visibility?">
                         <ViewPanel key="view-panel" />
+                        <OnboardingPanel key="onboarding-panel" />
                     </Route>
                     <Route exact path="/app/tickets/search">
                         <ViewPanel key="view-panel" />
+                        <OnboardingPanel key="onboarding-panel" />
                     </Route>
                     <Route exact path="/app/tickets/:viewId/:viewSlug?">
                         <ViewPanel key="view-panel" />
+                        <OnboardingPanel key="onboarding-panel" />
                     </Route>
                     <Route exact path="/app/ticket/:ticketId">
                         <TicketDetailPanel key="ticket-detail-panel" />

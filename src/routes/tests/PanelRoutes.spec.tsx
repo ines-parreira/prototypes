@@ -8,6 +8,9 @@ import {assumeMock} from 'utils/testing'
 
 import PanelRoutes from '../PanelRoutes'
 
+jest.mock('common/onboarding', () => ({
+    OnboardingPanel: () => <div>OnboardingPanel</div>,
+}))
 jest.mock('core/navigation', () => ({
     GlobalNavigationPanel: () => <div>GlobalNavigationPanel</div>,
 }))
@@ -81,6 +84,7 @@ describe('PanelRoutes', () => {
             </StaticRouter>
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
+        expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/tickets', () => {
@@ -90,6 +94,7 @@ describe('PanelRoutes', () => {
             </StaticRouter>
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
+        expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/tickets/new/:visibility?', () => {
@@ -99,6 +104,7 @@ describe('PanelRoutes', () => {
             </StaticRouter>
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
+        expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/tickets/search', () => {
@@ -108,6 +114,7 @@ describe('PanelRoutes', () => {
             </StaticRouter>
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
+        expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/tickets/:viewId/:viewSlug?', () => {
@@ -117,6 +124,7 @@ describe('PanelRoutes', () => {
             </StaticRouter>
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
+        expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/ticket/:ticketId', () => {

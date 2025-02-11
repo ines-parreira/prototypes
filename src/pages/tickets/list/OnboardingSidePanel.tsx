@@ -79,7 +79,7 @@ export default function OnboardingSidePanel({
     }
 
     return (
-        <InfobarLayout isOnNewLayout={isOnNewLayout}>
+        <InfobarLayout className={css.container} isOnNewLayout={isOnNewLayout}>
             <div className={css.page}>
                 <div className={css.content}>
                     <h1>
