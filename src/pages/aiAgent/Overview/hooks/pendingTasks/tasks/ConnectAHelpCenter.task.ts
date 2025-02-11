@@ -5,7 +5,7 @@ export class ConnectAHelpCenterTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Connect a Help-Center',
-            'Help AI Agent give accurate answers by accessing your knowledge.',
+            'Help AI Agent give accurate answers by accessing your knowledge',
             'RECOMMENDED',
             data,
             routes

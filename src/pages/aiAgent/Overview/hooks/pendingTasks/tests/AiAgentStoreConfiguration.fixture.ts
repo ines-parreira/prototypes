@@ -20,40 +20,62 @@ export class AiAgentStoreConfigurationFixture {
 
     static start() {
         return new AiAgentStoreConfigurationFixture() as ConfiguredAiAgentStoreConfigurationFixture<
-            | 'withConnectedHelpCenter'
-            | 'withoutConnectedHelpCenter'
-            | 'withChatChannelEnabled'
-            | 'withEmailChannelEnabled'
+            'withConnectedHelpCenter' | 'withoutConnectedHelpCenter'
         >
     }
 
     withConnectedHelpCenter(helpCenterId: number) {
         this.aiAgentStoreConfigurationData.helpCenterId = helpCenterId
-        return this as ConfiguredAiAgentStoreConfigurationFixture<
-            'withChatChannelEnabled' | 'withEmailChannelEnabled' | 'build'
-        >
+        return this as AiAgentStoreConfigurationFixtureFullyConfigured &
+            ConfiguredAiAgentStoreConfigurationFixture<
+                | 'withChatChannelEnabled'
+                | 'withEmailChannelEnabled'
+                | 'withHandoverTopics'
+                | 'withoutHandoverTopic'
+            >
     }
 
     withoutConnectedHelpCenter() {
         this.aiAgentStoreConfigurationData.helpCenterId = null
-        return this as ConfiguredAiAgentStoreConfigurationFixture<
-            'withChatChannelEnabled' | 'withEmailChannelEnabled' | 'build'
-        >
+        return this as AiAgentStoreConfigurationFixtureFullyConfigured &
+            ConfiguredAiAgentStoreConfigurationFixture<
+                | 'withChatChannelEnabled'
+                | 'withEmailChannelEnabled'
+                | 'withHandoverTopics'
+                | 'withoutHandoverTopic'
+            >
     }
 
     withChatChannelEnabled() {
         this.aiAgentStoreConfigurationData.chatChannelDeactivatedDatetime = null
-        return this as ConfiguredAiAgentStoreConfigurationFixture<
-            'withEmailChannelEnabled' | 'build'
-        >
+        return this as AiAgentStoreConfigurationFixtureFullyConfigured &
+            ConfiguredAiAgentStoreConfigurationFixture<
+                | 'withEmailChannelEnabled'
+                | 'withHandoverTopics'
+                | 'withoutHandoverTopic'
+            >
     }
 
     withEmailChannelEnabled() {
         this.aiAgentStoreConfigurationData.emailChannelDeactivatedDatetime =
             null
-        return this as ConfiguredAiAgentStoreConfigurationFixture<
-            'withChatChannelEnabled' | 'build'
-        >
+        return this as AiAgentStoreConfigurationFixtureFullyConfigured &
+            ConfiguredAiAgentStoreConfigurationFixture<
+                | 'withChatChannelEnabled'
+                | 'withHandoverTopics'
+                | 'withoutHandoverTopic'
+            >
+    }
+
+    withoutHandoverTopic() {
+        this.aiAgentStoreConfigurationData.excludedTopics = []
+        return this as AiAgentStoreConfigurationFixtureFullyConfigured
+    }
+
+    withHandoverTopics(...topics: string[]) {
+        this.aiAgentStoreConfigurationData.excludedTopics = topics
+
+        return this as AiAgentStoreConfigurationFixtureFullyConfigured
     }
 
     build(): AiAgentStoreConfigurationData {

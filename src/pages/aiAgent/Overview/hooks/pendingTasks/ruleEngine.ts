@@ -4,6 +4,7 @@ import {ConnectAHelpCenterTask} from './tasks/ConnectAHelpCenter.task'
 import {Create3to5GuidancesTask} from './tasks/Create3to5Guidances.task'
 import {CreateAnActionTask} from './tasks/CreateAnAction.task'
 import {CreateYourFirstGuidanceTask} from './tasks/CreateYourFirstGuidance.task'
+import {DefineHandoverTopicsTask} from './tasks/DefineHandoverTopics.task'
 import {EnableAIAgentOnChatTask} from './tasks/EnableAIAgentOnChat.task'
 import {EnableAIAgentOnEmailTask} from './tasks/EnableAIAgentOnEmail.task'
 import {PublishYourFirstGuidanceTask} from './tasks/PublishYourFirstGuidance.task'
@@ -38,6 +39,7 @@ export const runRuleEngine = (
         new Create3to5GuidancesTask(data, routes),
         new CreateAnActionTask(data, routes),
         new CreateYourFirstGuidanceTask(data, routes),
+        new DefineHandoverTopicsTask(data, routes),
         new EnableAIAgentOnChatTask(data, routes),
         new EnableAIAgentOnEmailTask(data, routes),
         new PublishYourFirstGuidanceTask(data, routes),

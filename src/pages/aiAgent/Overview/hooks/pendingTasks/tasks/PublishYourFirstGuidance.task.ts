@@ -5,7 +5,7 @@ export class PublishYourFirstGuidanceTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Publish your first Guidance',
-            'Make AI Agent follow your instructions on how to handle key topics.',
+            'Make AI Agent follow your instructions on how to handle key topics',
             'RECOMMENDED',
             data,
             routes

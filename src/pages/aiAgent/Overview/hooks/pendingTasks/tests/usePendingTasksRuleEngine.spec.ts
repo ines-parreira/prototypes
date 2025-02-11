@@ -50,6 +50,7 @@ describe('usePendingTasksRuleEngine', () => {
             .withoutConnectedHelpCenter()
             .withChatChannelEnabled()
             .withEmailChannelEnabled()
+            .withoutHandoverTopic()
             .build(),
     })
 
@@ -82,7 +83,7 @@ describe('usePendingTasksRuleEngine', () => {
         expect(
             // Mapping on title to ease reading error report
             hook.result.current.pendingTasks.map((t) => t.title)
-        ).toHaveLength(2)
+        ).toHaveLength(3)
         expect(
             // Mapping on title to ease reading error report
             hook.result.current.completedTasks.map((t) => t.title)

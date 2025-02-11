@@ -5,7 +5,7 @@ export class UploadAnExternalDocTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Upload an external doc',
-            'Help AI Agent give accurate answers by accessing your documents.',
+            'Help AI Agent give accurate answers by accessing your documents',
             'RECOMMENDED',
             data,
             routes
