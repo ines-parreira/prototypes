@@ -1,26 +1,26 @@
 import {RuleEngineData, RuleEngineRoutes} from '../ruleEngine'
 import {Task} from './Task'
 
-export class DefineHandoverTopicsTask extends Task {
+export class TestAIAgentTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
-            'Define handover topics',
-            'Define topics for AI Agent to always hand over to agents',
+            'Test AI Agent',
+            'See how AI Agent would responds based on your set-up',
             'RECOMMENDED',
             data,
             routes
         )
     }
 
-    // excludedTopics is empty in ai agent store configuration
+    // No playground executions
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
-        return data.aiAgentStoreConfiguration.excludedTopics?.length === 0
+        return data.aiAgentPlaygroundExecutions.count === 0
     }
 
     protected getFeatureUrl(
         _data: RuleEngineData,
         routes: RuleEngineRoutes
     ): string {
-        return routes.aiAgentRoutes.settings
+        return routes.aiAgentRoutes.test
     }
 }

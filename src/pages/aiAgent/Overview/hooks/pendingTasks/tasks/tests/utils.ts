@@ -8,6 +8,7 @@ export const buildRuleEngineData = (
     faqHelpCenters: [],
     guidances: [],
     actions: [],
+    aiAgentPlaygroundExecutions: {} as any,
     ...data,
 })
 

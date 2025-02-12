@@ -183,3 +183,12 @@ export type GetOnboardingNotificationStateParams = {
     accountDomain: string
     storeName: string | undefined
 }
+
+export type PlaygroundExecutions = {
+    count: number
+}
+
+export type GetPlaygroundExecutionsParams = {
+    accountDomain: string
+    storeName: string
+}

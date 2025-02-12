@@ -27,8 +27,10 @@ import {
     createContextAndGenerateCustomToneOfVoicePreview,
     createContextAndSubmitPlaygroundTicket,
 } from './resources/message-processing'
+import {getPlaygroundExecutions} from './resources/playground'
 import {
     GetOnboardingNotificationStateParams,
+    GetPlaygroundExecutionsParams,
     GetStoreConfigurationForAccountParams,
     GetStoreConfigurationParams,
 } from './types'
@@ -361,6 +363,30 @@ export const useUpsertOnboardingNotificationState = (
 ) => {
     return useMutation({
         mutationFn: (params) => upsertOnboardingNotificationState(...params),
+        ...overrides,
+    })
+}
+
+export const playgroundExecutionsKeys = {
+    all: () => ['aiAgentPlaygroundExecutions'] as const,
+    details: () => [...playgroundExecutionsKeys.all(), 'detail'] as const,
+    detail: (params: GetPlaygroundExecutionsParams) =>
+        [...playgroundExecutionsKeys.details(), params] as const,
+}
+
+export const useGetPlaygroundExecutions = (
+    params: GetPlaygroundExecutionsParams,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getPlaygroundExecutions>>
+    >
+) => {
+    return useQuery({
+        queryKey: playgroundExecutionsKeys.detail(params),
+        queryFn: () =>
+            getPlaygroundExecutions(params.accountDomain, params.storeName),
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        enabled: !!params.accountDomain && !!params.storeName,
         ...overrides,
     })
 }

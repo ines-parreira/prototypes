@@ -4,12 +4,14 @@ import {AiAgentScope} from 'models/aiAgent/types'
 import {assumeMock} from 'utils/testing'
 
 import {useFetchActionsData} from '../useFetchActionsData'
+import {useFetchAiAgentPlaygroundExecutionsData} from '../useFetchAiAgentPlaygroundExecutionsData'
 import {useFetchAiAgentStoreConfigurationData} from '../useFetchAiAgentStoreConfigurationData'
 import {useFetchFaqHelpCentersData} from '../useFetchFaqHelpCentersData'
 import {useFetchFileIngestionData} from '../useFetchFileIngestionData'
 import {useFetchGuidancesData} from '../useFetchGuidancesData'
 import {usePendingTasksRuleEngine} from '../usePendingTasksRuleEngine'
 import {ActionsDataFixture} from './ActionsData.fixture'
+import {AiAgentPlaygroundExecutionsDataFixture} from './AiAgentPlaygroundExecutionsData.fixture'
 import {AiAgentStoreConfigurationFixture} from './AiAgentStoreConfiguration.fixture'
 import {FileIngestionDataFixture} from './FileIngestionData.fixture'
 import {GuidancesDataFixture} from './GuidancesData.fixture'
@@ -37,6 +39,12 @@ jest.mock('../useFetchActionsData', () => ({
     useFetchActionsData: jest.fn(),
 }))
 const useFetchActionsDataMock = assumeMock(useFetchActionsData)
+jest.mock('../useFetchAiAgentPlaygroundExecutionsData', () => ({
+    useFetchAiAgentPlaygroundExecutionsData: jest.fn(),
+}))
+const useFetchAiAgentPlaygroundExecutionsDataMock = assumeMock(
+    useFetchAiAgentPlaygroundExecutionsData
+)
 
 // Will implements better testing after extracting the list of tasks from the ruleEngine
 describe('usePendingTasksRuleEngine', () => {
@@ -62,20 +70,27 @@ describe('usePendingTasksRuleEngine', () => {
         data: ActionsDataFixture.start().withoutAction().build(),
     })
 
+    useFetchAiAgentPlaygroundExecutionsDataMock.mockReturnValue({
+        isLoading: false,
+        data: AiAgentPlaygroundExecutionsDataFixture.start()
+            .withoutExecution()
+            .build(),
+    })
+
     it.each([
         {
             scopes: [AiAgentScope.Support, AiAgentScope.Sales],
-            pendingTasks: 3,
+            pendingTasks: 4,
             completedTasks: 8,
         },
         {
             scopes: [AiAgentScope.Support],
-            pendingTasks: 3,
+            pendingTasks: 4,
             completedTasks: 8,
         },
         {
             scopes: [AiAgentScope.Sales],
-            pendingTasks: 2,
+            pendingTasks: 3,
             completedTasks: 6,
         },
     ])(

@@ -16,9 +16,11 @@ import {EnableAIAgentOnEmailTask} from './tasks/EnableAIAgentOnEmail.task'
 import {PublishYourFirstGuidanceTask} from './tasks/PublishYourFirstGuidance.task'
 import {ReviewAIGeneratedGuidancesTask} from './tasks/ReviewAIGeneratedGuidances.task'
 import {SetYourActionsLiveTask} from './tasks/SetYourActionsLive.task'
+import {TestAIAgentTask} from './tasks/TestAIAgent.task'
 import {UploadAnExternalDocTask} from './tasks/UploadAnExternalDoc.task'
 
 import {type ActionsData} from './useFetchActionsData'
+import {type AiAgentPlaygroundExecutionsData} from './useFetchAiAgentPlaygroundExecutionsData'
 import {type AiAgentStoreConfigurationData} from './useFetchAiAgentStoreConfigurationData'
 import {type FaqHelpCentersData} from './useFetchFaqHelpCentersData'
 import {type FileIngestionData} from './useFetchFileIngestionData'
@@ -30,6 +32,7 @@ export type RuleEngineData = {
     fileIngestion: FileIngestionData
     guidances: GuidancesData
     actions: ActionsData
+    aiAgentPlaygroundExecutions: AiAgentPlaygroundExecutionsData
 }
 
 export type RuleEngineRoutes = {
@@ -50,6 +53,7 @@ const tasksPerAiAgentType: Record<
         new PublishYourFirstGuidanceTask(data, routes),
         new Create3to5GuidancesTask(data, routes),
         new DefineHandoverTopicsTask(data, routes),
+        new TestAIAgentTask(data, routes),
         new CreateAnActionTask(data, routes),
         new SetYourActionsLiveTask(data, routes),
     ],
@@ -62,6 +66,7 @@ const tasksPerAiAgentType: Record<
         new Create3to5GuidancesTask(data, routes),
         new UploadAnExternalDocTask(data, routes),
         new DefineHandoverTopicsTask(data, routes),
+        new TestAIAgentTask(data, routes),
     ],
     support: (data: RuleEngineData, routes: RuleEngineRoutes) => [
         new ConnectAHelpCenterTask(data, routes),
@@ -73,6 +78,7 @@ const tasksPerAiAgentType: Record<
         new PublishYourFirstGuidanceTask(data, routes),
         new Create3to5GuidancesTask(data, routes),
         new DefineHandoverTopicsTask(data, routes),
+        new TestAIAgentTask(data, routes),
         new CreateAnActionTask(data, routes),
         new SetYourActionsLiveTask(data, routes),
     ],
