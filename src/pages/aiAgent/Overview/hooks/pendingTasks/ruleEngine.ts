@@ -7,6 +7,7 @@ import {
 } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 
 import {ConnectAHelpCenterTask} from './tasks/ConnectAHelpCenter.task'
+import {ConnectYourDefaultEmailTask} from './tasks/ConnectYourDefaultEmail.task'
 import {Create3to5GuidancesTask} from './tasks/Create3to5Guidances.task'
 import {CreateAnActionTask} from './tasks/CreateAnAction.task'
 import {CreateYourFirstGuidanceTask} from './tasks/CreateYourFirstGuidance.task'
@@ -22,6 +23,7 @@ import {UploadAnExternalDocTask} from './tasks/UploadAnExternalDoc.task'
 import {type ActionsData} from './useFetchActionsData'
 import {type AiAgentPlaygroundExecutionsData} from './useFetchAiAgentPlaygroundExecutionsData'
 import {type AiAgentStoreConfigurationData} from './useFetchAiAgentStoreConfigurationData'
+import {type EmailIntegrationsData} from './useFetchEmailIntegrationsData'
 import {type FaqHelpCentersData} from './useFetchFaqHelpCentersData'
 import {type FileIngestionData} from './useFetchFileIngestionData'
 import {type GuidancesData} from './useFetchGuidancesData'
@@ -33,6 +35,7 @@ export type RuleEngineData = {
     guidances: GuidancesData
     actions: ActionsData
     aiAgentPlaygroundExecutions: AiAgentPlaygroundExecutionsData
+    emailIntegrations: EmailIntegrationsData
 }
 
 export type RuleEngineRoutes = {
@@ -44,6 +47,7 @@ const tasksPerAiAgentType: Record<
     (data: RuleEngineData, routes: RuleEngineRoutes) => Task[]
 > = {
     mixed: (data: RuleEngineData, routes: RuleEngineRoutes) => [
+        new ConnectYourDefaultEmailTask(data, routes),
         new ConnectAHelpCenterTask(data, routes),
         new UploadAnExternalDocTask(data, routes),
         new EnableAIAgentOnChatTask(data, routes),
@@ -69,6 +73,7 @@ const tasksPerAiAgentType: Record<
         new TestAIAgentTask(data, routes),
     ],
     support: (data: RuleEngineData, routes: RuleEngineRoutes) => [
+        new ConnectYourDefaultEmailTask(data, routes),
         new ConnectAHelpCenterTask(data, routes),
         new UploadAnExternalDocTask(data, routes),
         new EnableAIAgentOnChatTask(data, routes),

@@ -25,7 +25,34 @@ export class AiAgentStoreConfigurationFixture {
             | 'withConnectedHelpCenter'
             | 'withoutConnectedHelpCenter'
             | 'withScopes'
+            | 'withConnectedEmailIntegrations'
         >
+    }
+
+    withConnectedEmailIntegrations(...ids: {id: number; email: string}[]) {
+        this.aiAgentStoreConfigurationData.monitoredEmailIntegrations = ids
+        return this as AiAgentStoreConfigurationFixtureFullyConfigured &
+            ConfiguredAiAgentStoreConfigurationFixture<
+                | 'withChatChannelEnabled'
+                | 'withEmailChannelEnabled'
+                | 'withHandoverTopics'
+                | 'withoutHandoverTopic'
+                | 'withConnectedHelpCenter'
+                | 'withoutConnectedHelpCenter'
+            >
+    }
+
+    withoutConnectedEmailIntegrations() {
+        this.aiAgentStoreConfigurationData.monitoredEmailIntegrations = []
+        return this as AiAgentStoreConfigurationFixtureFullyConfigured &
+            ConfiguredAiAgentStoreConfigurationFixture<
+                | 'withChatChannelEnabled'
+                | 'withEmailChannelEnabled'
+                | 'withHandoverTopics'
+                | 'withoutHandoverTopic'
+                | 'withConnectedHelpCenter'
+                | 'withoutConnectedHelpCenter'
+            >
     }
 
     withConnectedHelpCenter(helpCenterId: number) {
@@ -36,6 +63,8 @@ export class AiAgentStoreConfigurationFixture {
                 | 'withEmailChannelEnabled'
                 | 'withHandoverTopics'
                 | 'withoutHandoverTopic'
+                | 'withConnectedEmailIntegrations'
+                | 'withoutConnectedEmailIntegrations'
             >
     }
 
@@ -47,6 +76,8 @@ export class AiAgentStoreConfigurationFixture {
                 | 'withEmailChannelEnabled'
                 | 'withHandoverTopics'
                 | 'withoutHandoverTopic'
+                | 'withConnectedEmailIntegrations'
+                | 'withoutConnectedEmailIntegrations'
             >
     }
 

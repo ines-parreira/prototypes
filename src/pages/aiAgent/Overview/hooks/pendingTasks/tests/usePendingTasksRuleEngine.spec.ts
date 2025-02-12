@@ -6,6 +6,7 @@ import {assumeMock} from 'utils/testing'
 import {useFetchActionsData} from '../useFetchActionsData'
 import {useFetchAiAgentPlaygroundExecutionsData} from '../useFetchAiAgentPlaygroundExecutionsData'
 import {useFetchAiAgentStoreConfigurationData} from '../useFetchAiAgentStoreConfigurationData'
+import {useFetchEmailIntegrationsData} from '../useFetchEmailIntegrationsData'
 import {useFetchFaqHelpCentersData} from '../useFetchFaqHelpCentersData'
 import {useFetchFileIngestionData} from '../useFetchFileIngestionData'
 import {useFetchGuidancesData} from '../useFetchGuidancesData'
@@ -13,6 +14,7 @@ import {usePendingTasksRuleEngine} from '../usePendingTasksRuleEngine'
 import {ActionsDataFixture} from './ActionsData.fixture'
 import {AiAgentPlaygroundExecutionsDataFixture} from './AiAgentPlaygroundExecutionsData.fixture'
 import {AiAgentStoreConfigurationFixture} from './AiAgentStoreConfiguration.fixture'
+import {EmailIntegrationsDataFixture} from './EmailIntegrationsData.fixture'
 import {FileIngestionDataFixture} from './FileIngestionData.fixture'
 import {GuidancesDataFixture} from './GuidancesData.fixture'
 import {HelpCenterDataFixture} from './HelpCenterData.fixture'
@@ -44,6 +46,12 @@ jest.mock('../useFetchAiAgentPlaygroundExecutionsData', () => ({
 }))
 const useFetchAiAgentPlaygroundExecutionsDataMock = assumeMock(
     useFetchAiAgentPlaygroundExecutionsData
+)
+jest.mock('../useFetchEmailIntegrationsData', () => ({
+    useFetchEmailIntegrationsData: jest.fn(),
+}))
+const useFetchEmailIntegrationsDataMock = assumeMock(
+    useFetchEmailIntegrationsData
 )
 
 // Will implements better testing after extracting the list of tasks from the ruleEngine
@@ -77,16 +85,23 @@ describe('usePendingTasksRuleEngine', () => {
             .build(),
     })
 
+    useFetchEmailIntegrationsDataMock.mockReturnValue({
+        isLoading: false,
+        data: EmailIntegrationsDataFixture.start()
+            .withoutEmailIntegrations()
+            .build(),
+    })
+
     it.each([
         {
             scopes: [AiAgentScope.Support, AiAgentScope.Sales],
             pendingTasks: 4,
-            completedTasks: 8,
+            completedTasks: 9,
         },
         {
             scopes: [AiAgentScope.Support],
             pendingTasks: 4,
-            completedTasks: 8,
+            completedTasks: 9,
         },
         {
             scopes: [AiAgentScope.Sales],

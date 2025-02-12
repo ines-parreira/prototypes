@@ -9,6 +9,7 @@ export const buildRuleEngineData = (
     guidances: [],
     actions: [],
     aiAgentPlaygroundExecutions: {} as any,
+    emailIntegrations: [],
     ...data,
 })
 

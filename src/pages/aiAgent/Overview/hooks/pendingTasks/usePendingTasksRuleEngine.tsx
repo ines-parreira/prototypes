@@ -7,6 +7,7 @@ import {Task} from './tasks/Task'
 import {useFetchActionsData} from './useFetchActionsData'
 import {useFetchAiAgentPlaygroundExecutionsData} from './useFetchAiAgentPlaygroundExecutionsData'
 import {useFetchAiAgentStoreConfigurationData} from './useFetchAiAgentStoreConfigurationData'
+import {useFetchEmailIntegrationsData} from './useFetchEmailIntegrationsData'
 import {useFetchFaqHelpCentersData} from './useFetchFaqHelpCentersData'
 import {useFetchFileIngestionData} from './useFetchFileIngestionData'
 import {useFetchGuidancesData} from './useFetchGuidancesData'
@@ -52,20 +53,27 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
         enabled: !shouldFakeTasks,
     })
 
+    const {
+        isLoading: emailIntegrationsDataIsLoading,
+        data: emailIntegrationsData,
+    } = useFetchEmailIntegrationsData()
+
     const isLoading =
         aiAgentStoreConfigurationIsLoading ||
         faqHelpCentersDataIsLoading ||
         fileIngestionDataIsLoading ||
         guidancesDataIsLoading ||
         actionsDataIsLoading ||
-        aiAgentPlaygroundExecutionsDataIsLoading
+        aiAgentPlaygroundExecutionsDataIsLoading ||
+        emailIntegrationsDataIsLoading
     const isReady =
         !!aiAgentStoreConfigurationData &&
         !!faqHelpCentersData &&
         !!fileIngestionData &&
         !!guidancesData &&
         !!actionsData &&
-        !!aiAgentPlaygroundExecutionsData
+        !!aiAgentPlaygroundExecutionsData &&
+        !!emailIntegrationsData
 
     // Use memo instead of useEffect
     const [{completedTasks, pendingTasks}, setTasks] = useState<{
@@ -89,6 +97,7 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
                         actions: actionsData,
                         aiAgentPlaygroundExecutions:
                             aiAgentPlaygroundExecutionsData,
+                        emailIntegrations: emailIntegrationsData,
                     },
                     {
                         aiAgentRoutes: routes,
@@ -104,6 +113,7 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
         guidancesData,
         actionsData,
         aiAgentPlaygroundExecutionsData,
+        emailIntegrationsData,
     ])
 
     if (shouldFakeTasks) {
