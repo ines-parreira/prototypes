@@ -6,7 +6,7 @@ import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 const panelConfig = {
     defaultSize: 340,
     minSize: 340,
-    maxSize: 0.5,
+    maxSize: 0.33,
 }
 
 export default function TicketInfobarPanel() {

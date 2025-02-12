@@ -8,7 +8,7 @@ import useIsOnboardingHidden from '../hooks/useIsOnboardingHidden'
 const panelConfig = {
     defaultSize: 340,
     minSize: 340,
-    maxSize: 0.5,
+    maxSize: 0.33,
 }
 
 export function OnboardingPanel() {
