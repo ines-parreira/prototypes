@@ -357,6 +357,13 @@ export default function reducer(
                     .setIn(['_internal', 'selectedItemsIds'], fromJS([]))
             }
 
+            // reset total resources count so as to prevent the previous resource count
+            // from being displayed while the new count is being fetched
+            newState = newState.setIn(
+                ['_internal', 'navigation', 'total_resources'],
+                null
+            )
+
             return newState
         }
 

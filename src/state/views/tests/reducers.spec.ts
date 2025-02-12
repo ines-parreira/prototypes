@@ -525,5 +525,31 @@ describe('reducers', () => {
                 JSON.stringify([field])
             )
         })
+
+        it('should reset total_resources meta parameter', () => {
+            const state = fromJS({
+                _internal: {
+                    navigation: {
+                        total_resources: 100,
+                    },
+                },
+            })
+
+            expect(
+                reducers(state, {
+                    type: types.FETCH_LIST_VIEW_START,
+                }).toJS()
+            ).toEqual({
+                _internal: {
+                    loading: {
+                        fetchList: true,
+                    },
+                    navigation: {
+                        total_resources: null,
+                    },
+                    selectedItemsIds: [],
+                },
+            })
+        })
     })
 })
