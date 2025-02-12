@@ -218,12 +218,10 @@ const ExistingConditions = ({
     }
 
     const handleDropEntity = () => {
-        const sortedOrders = draggedConditions
-            .map((condition) => condition.sort_order)
-            .sort((a, b) => b - a)
+        let currentOrder = 1
         const updatedSortOrders = draggedConditions.map((condition) => ({
             id: condition.id,
-            sort_order: sortedOrders.pop(),
+            sort_order: currentOrder++,
         }))
 
         updateCustomFieldConditions({data: updatedSortOrders})

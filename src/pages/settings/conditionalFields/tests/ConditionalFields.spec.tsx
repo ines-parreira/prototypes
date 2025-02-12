@@ -152,43 +152,46 @@ describe('<ConditionalFields/>', () => {
         ).toBeInTheDocument()
     })
 
-    it('should update conditions on drag and drop', () => {
-        useCustomFieldConditionsMock.mockReturnValue({
-            customFieldConditions: Array.from({length: 3}, (_, i) => ({
-                ...customFieldCondition,
-                id: i + 1,
-                sort_order: i + 1,
-            })),
-            isLoading: false,
-            isError: false,
-        })
+    it.each([[[1, 2, 3]], [[4, 5, 6]], [[1, 1, 1]], [[9, 9, 9]]])(
+        'should update conditions on drag and drop',
+        (initialSort: number[]) => {
+            useCustomFieldConditionsMock.mockReturnValue({
+                customFieldConditions: Array.from({length: 3}, (_, i) => ({
+                    ...customFieldCondition,
+                    id: i + 1,
+                    sort_order: initialSort[i],
+                })),
+                isLoading: false,
+                isError: false,
+            })
 
-        renderWithStoreAndQueryClientProvider(
-            <DndProvider backend={HTML5Backend}>
-                <ConditionalFields />
-            </DndProvider>
-        )
+            renderWithStoreAndQueryClientProvider(
+                <DndProvider backend={HTML5Backend}>
+                    <ConditionalFields />
+                </DndProvider>
+            )
 
-        // Drag the last row to the first row
-        const dragHandles = screen.getAllByText(/drag_indicator/i)
-        const from = dragHandles[2]
-        const dest = dragHandles[0]
-        act(() => {
-            fireEvent.dragStart(from)
-            fireEvent.dragEnter(dest)
-            fireEvent.dragOver(dest)
-        })
-        act(() => {
-            fireEvent.drop(dest)
-        })
+            // Drag the last row to the first row
+            const dragHandles = screen.getAllByText(/drag_indicator/i)
+            const from = dragHandles[2]
+            const dest = dragHandles[0]
+            act(() => {
+                fireEvent.dragStart(from)
+                fireEvent.dragEnter(dest)
+                fireEvent.dragOver(dest)
+            })
+            act(() => {
+                fireEvent.drop(dest)
+            })
 
-        // The new order should have the last row at first
-        expect(updateConditions).toHaveBeenCalledWith({
-            data: [
-                {id: 3, sort_order: 1},
-                {id: 1, sort_order: 2},
-                {id: 2, sort_order: 3},
-            ],
-        })
-    })
+            // The new order should have the last row at first
+            expect(updateConditions).toHaveBeenCalledWith({
+                data: [
+                    {id: 3, sort_order: 1},
+                    {id: 1, sort_order: 2},
+                    {id: 2, sort_order: 3},
+                ],
+            })
+        }
+    )
 })
