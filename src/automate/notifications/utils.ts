@@ -1,4 +1,7 @@
-import {OnboardingNotificationState} from 'models/aiAgent/types'
+import {
+    AiAgentOnboardingState,
+    OnboardingNotificationState,
+} from 'models/aiAgent/types'
 import {getAiAgentNavigationRoutes} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import {getLDClient} from 'utils/launchDarkly'
@@ -55,9 +58,9 @@ export const getNotificationParams = (
             }
         case AiAgentNotificationType.FirstAiAgentTicket:
             return {
-                title: 'AI Agent answered it’s first ticket',
+                title: 'AI Agent answered its first ticket',
                 subtitle:
-                    'Review AI Agent’s response and leave feedback in the ticket to improve it’s performance.',
+                    'Review AI Agent’s response and leave feedback in the ticket to improve its performance.',
                 redirectTo:
                     aiAgentTicketViewId && ticketId
                         ? `/app/views/${aiAgentTicketViewId}/${ticketId}`
@@ -94,6 +97,7 @@ export const getNotificationReceivedDatetimePayload = (
             return {
                 firstAiAgentTicketNotificationReceivedDatetime:
                     receivedDatetime,
+                onboardingState: AiAgentOnboardingState.FullyOnboarded,
             }
         default:
             return {}

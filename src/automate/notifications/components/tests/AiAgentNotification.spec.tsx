@@ -111,9 +111,9 @@ describe('AiAgentNotification', () => {
         },
         {
             type: AiAgentNotificationType.FirstAiAgentTicket,
-            title: 'AI Agent answered it’s first ticket',
+            title: 'AI Agent answered its first ticket',
             subtitle:
-                'Review AI Agent’s response and leave feedback in the ticket to improve it’s performance.',
+                'Review AI Agent’s response and leave feedback in the ticket to improve its performance.',
             redirectTo: `/app/views/${TICKET_VIEW_ID}/12345`,
         },
     ]
