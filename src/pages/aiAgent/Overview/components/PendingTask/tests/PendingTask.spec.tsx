@@ -1,7 +1,18 @@
 import {render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
+
 import {PendingTask} from '../PendingTask'
+
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {
+        AiAgentOverviewPendingTaskClicked:
+            'ai-agent-overview-pending-task-clicked',
+    },
+}))
 
 describe('PendingTask', () => {
     it.each(['BASIC' as const, 'RECOMMENDED' as const])(
@@ -32,4 +43,28 @@ describe('PendingTask', () => {
             'true'
         )
     })
+
+    it.each(['BASIC' as const, 'RECOMMENDED' as const])(
+        'calls segment log with type %s on click',
+        (type) => {
+            render(
+                <PendingTask
+                    caption="caption_text"
+                    ctaUrl="/"
+                    title="title_text"
+                    type={type}
+                />
+            )
+
+            userEvent.click(screen.getByRole('link'))
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.AiAgentOverviewPendingTaskClicked,
+                {
+                    title: 'title_text',
+                    task_type: type,
+                }
+            )
+        }
+    )
 })

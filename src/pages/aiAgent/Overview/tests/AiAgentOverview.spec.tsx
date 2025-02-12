@@ -6,6 +6,7 @@ import {Provider} from 'react-redux'
 import {useLocation} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch, StoreState} from 'state/types'
 import {initialState} from 'state/ui/stats/filtersSlice'
@@ -18,6 +19,10 @@ import {AiAgentOverview} from '../AiAgentOverview'
 import {AiAgentOverviewRootStateFixture} from './AiAgentOverviewRootState.fixture'
 
 jest.mock('react-router')
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {AiAgentOverviewPageView: 'ai-agent-overview-page-view'},
+}))
 
 const defaultLocation = {
     pathname: '',
@@ -66,6 +71,14 @@ describe('useAiAgentOverview', () => {
     it('should not renders the Thank You modal', () => {
         const {queryByText} = renderComponent()
         expect(queryByText('Your account is ready')).toBeNull()
+    })
+
+    it('should call the segment log', () => {
+        renderComponent()
+        expect(logEvent).toHaveBeenCalledTimes(1)
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentOverviewPageView
+        )
     })
 
     describe('when coming from onboarding', () => {

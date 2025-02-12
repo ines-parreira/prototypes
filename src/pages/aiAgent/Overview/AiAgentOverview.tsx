@@ -3,7 +3,9 @@ import React, {useEffect, useState} from 'react'
 import {useLocation} from 'react-router-dom'
 
 import modalImage from 'assets/img/ai-agent/ai_agent_onboarding_thankyou.png'
+import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
 import ThankYouModal from 'pages/aiAgent/Onboarding/components/ThankYouModal/ThankYouModal'
 
 import {KpiSection} from 'pages/aiAgent/Overview/components/KpiSection/KpiSection'
@@ -20,6 +22,10 @@ export const AiAgentOverview = () => {
     const [isOpen, setIsOpen] = useState(false)
     const {state}: {state: {from: string}} = useLocation()
     const currentUser = useAppSelector(getCurrentUser)
+
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.AiAgentOverviewPageView)
+    })
 
     useEffect(() => {
         if (state?.from) {

@@ -4,6 +4,7 @@ import React from 'react'
 
 import {NavLink} from 'react-router-dom'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     Card,
     CardFooter,
@@ -43,6 +44,13 @@ export const PendingTask: React.FC<Props> = ({
         ariaLoadingProps = {'aria-busy': 'true', 'aria-live': 'polite'}
     }
 
+    const onTaskClick = () => {
+        logEvent(SegmentEvent.AiAgentOverviewPendingTaskClicked, {
+            title,
+            task_type: type,
+        })
+    }
+
     return (
         <NavLink
             to={ctaUrl ?? ''}
@@ -50,6 +58,7 @@ export const PendingTask: React.FC<Props> = ({
             aria-label={title}
             tabIndex={0}
             role="link"
+            onClick={onTaskClick}
             {...ariaLoadingProps}
         >
             <Card className={css.card}>
