@@ -5,6 +5,7 @@ const pathItemMap: Record<string, string> = {
     '/app/automation': 'automate',
     '/app/ai-agent': 'ai-agent',
     '/app/convert': 'convert',
+    '/app/customer': 'customers',
     '/app/customers': 'customers',
     '/app/home': 'home',
     '/app/settings': 'settings',
