@@ -1,10 +1,10 @@
 import {render, screen} from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-
 import {Provider} from 'react-redux'
-
 import configureMockStore from 'redux-mock-store'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {StatType} from 'models/stat/types'
 
 import {
@@ -17,7 +17,6 @@ import {useSupportKpis} from 'pages/aiAgent/Overview/hooks/useSupportKpis'
 import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch, StoreState} from 'state/types'
 import {initialState} from 'state/ui/stats/filtersSlice'
-
 import {assumeMock} from 'utils/testing'
 
 import {KpiSection} from '../KpiSection'
@@ -121,5 +120,31 @@ describe('KpiSection', () => {
 
         // 8 because 2 skeletons by KPIs (title + metric)
         expect(screen.queryAllByTestId('skeleton')).toHaveLength(8)
+    })
+
+    it('should not render view report button when given sales analytics feature flag is false', () => {
+        useAiAgentTypeMock.mockReturnValue({
+            isLoading: false,
+        })
+
+        const {queryByRole} = renderComponent()
+
+        expect(queryByRole('button', {name: 'View Full Report'})).toBeNull()
+    })
+
+    it('should render view report button when given sales analytics feature flag is true', () => {
+        mockFlags({
+            [FeatureFlagKey.StandaloneAiSalesAnalyticsPage]: true,
+        })
+
+        useAiAgentTypeMock.mockReturnValue({
+            isLoading: false,
+        })
+
+        const {getByRole} = renderComponent()
+
+        expect(
+            getByRole('button', {name: 'View Full Report'})
+        ).toBeInTheDocument()
     })
 })

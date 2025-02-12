@@ -1,8 +1,12 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import React from 'react'
+import {NavLink} from 'react-router-dom'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {StatsFilters} from 'models/stat/types'
+
 import {Kpi} from 'pages/aiAgent/components/Kpi/Kpi'
 import {CardTitle} from 'pages/aiAgent/Onboarding/components/Card'
 import {OverviewCard} from 'pages/aiAgent/Overview/components/OverviewCard/OverviewCard'
@@ -10,12 +14,11 @@ import {
     AiAgentType,
     useAiAgentTypeForAccount,
 } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
-
 import {useMixedKpis} from 'pages/aiAgent/Overview/hooks/useMixedKpis'
 import {useSalesKpis} from 'pages/aiAgent/Overview/hooks/useSalesKpis'
 import {useSupportKpis} from 'pages/aiAgent/Overview/hooks/useSupportKpis'
-
 import {KpiMetric} from 'pages/aiAgent/Overview/types'
+import Button from 'pages/common/components/button/Button'
 
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 
@@ -109,12 +112,28 @@ const KpiForAiAgentType = ({
 }
 
 export const KpiSection = () => {
+    //TODO: Redirect to sales analytics page
     const {isLoading, aiAgentType} = useAiAgentTypeForAccount()
+    const hasAnalytics =
+        useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
 
     return (
         <OverviewCard>
             <div>
-                <CardTitle>AI Agent Performance</CardTitle>
+                <div className={css.title}>
+                    <CardTitle>AI Agent Performance</CardTitle>
+                    {hasAnalytics && (
+                        <NavLink to="/app/automation" exact>
+                            <Button
+                                intent="secondary"
+                                size="small"
+                                trailingIcon="open_in_new"
+                            >
+                                View Full Report
+                            </Button>
+                        </NavLink>
+                    )}
+                </div>
                 <div className={css.subtitle}>Data from last 28 days</div>
             </div>
 

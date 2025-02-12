@@ -1,5 +1,6 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 @import (reference) '~css/typography';
+@import (reference) '~css/new/mixins';
 
 :local {
     .kpiContainer {
@@ -7,6 +8,16 @@
         justify-content: space-between;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        @media @mobiles {
+            flex-direction: column;
+        }
     }
 
     .subtitle {

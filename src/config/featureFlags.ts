@@ -131,6 +131,7 @@ export enum FeatureFlagKey {
     ShopifyHideActionButtons = 'shopify-widget-hide-action-buttons',
     ShopifyOrderNotes = 'shopify-order-notes',
     StandaloneConvAiOverviewPage = 'standalone-conv-ai_overview-page',
+    StandaloneAiSalesAnalyticsPage = 'standalone-ai-sales-analytics-page',
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
     TagNewDesign = 'tag-new-design',
     TicketConditionalFields = 'ticket-conditional-fields',
