@@ -116,6 +116,58 @@ export const customFieldsTicketCountPerTicketDrillDownQueryFactory = (
     }
 }
 
+export const customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory =
+    (
+        filters: StatsFilters,
+        timezone: string,
+        customFieldId: string,
+        customFieldsValueStrings: string[] | null,
+        customFieldPeriod: StatsFilters['period'],
+        sorting?: OrderDirection
+    ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
+        return {
+            measures: [],
+            dimensions: [TicketDimension.TicketId],
+            timezone,
+            filters: [
+                ...NotSpamNorTrashedTicketsFilter,
+                ...statsFiltersToReportingFilters(
+                    TicketStatsFiltersMembers,
+                    filters
+                ),
+                {
+                    member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [customFieldId],
+                },
+                ...(customFieldsValueStrings
+                    ? [
+                          {
+                              member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                              operator: ReportingFilterOperator.StartsWith,
+                              values: customFieldsValueStrings,
+                          },
+                      ]
+                    : []),
+                {
+                    member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
+                    operator: ReportingFilterOperator.InDateRange,
+                    values: [
+                        formatReportingQueryDate(
+                            customFieldPeriod.start_datetime
+                        ),
+                        formatReportingQueryDate(
+                            customFieldPeriod.end_datetime
+                        ),
+                    ],
+                },
+                TicketDrillDownFilter,
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [[TicketDimension.TicketId, sorting ?? OrderDirection.Asc]],
+        }
+    }
+
 // Coverage rate
 export const coverageRateTicketDrillDownQueryFactory = (
     filters: StatsFilters,
@@ -180,6 +232,7 @@ export const aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory = (
             ...baseQuery.dimensions,
         ],
         filters: [
+            ...baseQuery.filters,
             {
                 member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
                 operator: ReportingFilterOperator.Equals,

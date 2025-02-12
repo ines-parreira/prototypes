@@ -1,15 +1,21 @@
 import {CustomField} from 'custom-fields/types'
 import {OrderDirection} from 'models/api/types'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
+    TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
     TicketSatisfactionSurveySegment,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
+import {
+    ReportingFilter,
+    ReportingFilterOperator,
+    ReportingQuery,
+} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 
 import {
@@ -18,12 +24,13 @@ import {
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
-export const customerSatisfactionPerCustomFieldQueryFactory = (
+export const customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
     customField?: CustomField,
-    customFieldValue?: string
+    customFieldValue?: string,
+    assigneeUserId?: string
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const customFiledFilters = []
     if (customField) {
@@ -39,6 +46,14 @@ export const customerSatisfactionPerCustomFieldQueryFactory = (
             member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
             operator: ReportingFilterOperator.StartsWith,
             values: [customFieldValue],
+        })
+    }
+
+    if (assigneeUserId) {
+        customFiledFilters.push({
+            member: TicketMember.AssigneeUserId,
+            operator: ReportingFilterOperator.Equals,
+            values: [assigneeUserId],
         })
     }
 
@@ -64,3 +79,36 @@ export const customerSatisfactionPerCustomFieldQueryFactory = (
             : {}),
     }
 }
+
+export const customerSatisfactionPerCustomFieldQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+    additionalFilter?: ReportingFilter
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    measures: [
+        TicketSatisfactionSurveyMeasure.ScoredSurveysCount,
+        TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+    ],
+    dimensions: [
+        TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+        TicketSatisfactionSurveyDimension.SurveyScore,
+    ],
+    timezone,
+    segments: [TicketSatisfactionSurveySegment.SurveyScored],
+    filters: [
+        ...NotSpamNorTrashedTicketsFilter,
+        ...statsFiltersToReportingFilters(
+            TicketStatsFiltersMembers,
+            statsFilters
+        ),
+        ...(additionalFilter ? [additionalFilter] : []),
+    ],
+    ...(sorting
+        ? {
+              order: [
+                  [TicketSatisfactionSurveyMeasure.AvgSurveyScore, sorting],
+              ],
+          }
+        : {}),
+})

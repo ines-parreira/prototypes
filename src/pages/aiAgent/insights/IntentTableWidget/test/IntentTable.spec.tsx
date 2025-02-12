@@ -34,6 +34,8 @@ const useAppSelectorMock = jest.mocked(useAppSelector)
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
 const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
+jest.mock('hooks/reporting/automate/useAIAgentUserId')
+
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     useParams: jest.fn(() => ({
@@ -215,11 +217,20 @@ describe('Intent Table components', () => {
                                 currentPage: 1,
                                 perPage: 10,
                             },
+                            sorting: {
+                                field: IntentTableColumn.AutomationOpportunities,
+                                direction: 'desc',
+                                isLoading: false,
+                            },
                         },
                     },
                 },
             }
             const store = mockStore(noDataState)
+            useNewStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: filters,
+                userTimezone,
+            } as unknown as ReturnType<typeof useNewStatsFilters>)
 
             renderWithProvider(
                 <IntentTableWithDefaultState tableTitle="Test Table" />,

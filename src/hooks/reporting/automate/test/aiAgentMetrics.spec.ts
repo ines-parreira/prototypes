@@ -14,7 +14,10 @@ import {
 } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {TicketCustomFieldsMember} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {customerSatisfactionPerCustomFieldQueryFactory} from 'models/reporting/queryFactories/ai-agent-insights/metrics'
+import {
+    customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory,
+    customerSatisfactionPerCustomFieldQueryFactory,
+} from 'models/reporting/queryFactories/ai-agent-insights/metrics'
 import {
     automationDatasetAdditionalFilters,
     automationDatasetDefaultFilters,
@@ -33,6 +36,7 @@ import {
     useAiAgentTicketCountPerIntent,
     useCustomerSatisfactionMetricPerIntent,
     useTotalAiAgentTicketsByCustomField,
+    useCustomerSatisfactionMetricPerIntentLevel,
 } from '../aiAgentMetrics'
 
 jest.mock('hooks/reporting/useMetric')
@@ -192,7 +196,11 @@ describe('aiAgentMetrics', () => {
                     filters,
                     timezone,
                     sorting,
-                    customField
+                    {
+                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [String(customField.id)],
+                    }
                 )
             )
         })
@@ -321,6 +329,30 @@ describe('aiAgentMetrics', () => {
                 },
                 undefined,
                 undefined
+            )
+        })
+    })
+
+    describe('useCustomerSatisfactionMetricPerIntentLevel', () => {
+        it('should pass the query to useMetricPerDimension hook', () => {
+            renderHook(
+                () =>
+                    useCustomerSatisfactionMetricPerIntentLevel(
+                        filters,
+                        timezone,
+                        customField,
+                        sorting
+                    ),
+                {}
+            )
+
+            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory(
+                    filters,
+                    timezone,
+                    sorting,
+                    customField
+                )
             )
         })
     })

@@ -647,3 +647,19 @@ export const calculateAiAgentKnowledgeResourcePerIntent = (
         })
     )
 }
+
+/**
+ * Get intent by level
+ * @param {string} intent - intent name in format L1::L2::L3
+ * @param {number }level - level of intent
+ * @returns {string} - intent name by level
+ * @example
+ * getIntentByLevel('L1::L2::L3', 1) // 'L1'
+ * getIntentByLevel('L1::L2::L3', 2) // 'L1::L2'
+ * getIntentByLevel('L1::L2::L3', 3) // 'L1::L2::L3'
+ */
+export const getIntentByLevel = (intent: string, level: number): string => {
+    const INTENT_SEPARATOR = '::'
+    const levels = intent.split(INTENT_SEPARATOR)
+    return levels.slice(0, level).join(INTENT_SEPARATOR)
+}

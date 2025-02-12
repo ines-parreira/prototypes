@@ -232,6 +232,26 @@ describe('tagsTicketCount query factories', () => {
 
             expect(query.filters).toEqual([
                 {
+                    member: 'TicketEnriched.isTrashed',
+                    operator: 'equals',
+                    values: ['0'],
+                },
+                {
+                    member: 'TicketEnriched.isSpam',
+                    operator: 'equals',
+                    values: ['0'],
+                },
+                {
+                    member: 'TicketEnriched.periodStart',
+                    operator: 'afterDate',
+                    values: ['2021-05-29T00:00:00.000'],
+                },
+                {
+                    member: 'TicketEnriched.periodEnd',
+                    operator: 'beforeDate',
+                    values: ['2021-06-04T23:59:59.000'],
+                },
+                {
                     member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
                     operator: ReportingFilterOperator.Equals,
                     values: [customFieldId],

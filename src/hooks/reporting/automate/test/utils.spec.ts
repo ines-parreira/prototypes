@@ -40,6 +40,7 @@ import {
     enrichWithAutomationOpportunity,
     enrichWithSuccessRate,
     calculateAiAgentKnowledgeResourcePerIntent,
+    getIntentByLevel,
 } from '../utils'
 
 describe('mergeAutomateDataByEventType', () => {
@@ -939,5 +940,36 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
         )
 
         expect(result).toEqual([])
+    })
+})
+
+describe('getIntentByLevel', () => {
+    test('returns correct intent for level 1', () => {
+        expect(getIntentByLevel('L1::L2::L3', 1)).toBe('L1')
+    })
+
+    test('returns correct intent for level 2', () => {
+        expect(getIntentByLevel('L1::L2::L3', 2)).toBe('L1::L2')
+    })
+
+    test('returns correct intent for level 3', () => {
+        expect(getIntentByLevel('L1::L2::L3', 3)).toBe('L1::L2::L3')
+    })
+
+    test('returns empty string for level 0', () => {
+        expect(getIntentByLevel('L1::L2::L3', 0)).toBe('')
+    })
+
+    test('handles intents with a single level correctly', () => {
+        expect(getIntentByLevel('L1', 1)).toBe('L1')
+        expect(getIntentByLevel('L1', 2)).toBe('L1')
+    })
+
+    test('returns empty string for empty intent input', () => {
+        expect(getIntentByLevel('', 1)).toBe('')
+    })
+
+    test('handles level greater than the number of levels in intent', () => {
+        expect(getIntentByLevel('L1::L2', 5)).toBe('L1::L2')
     })
 })

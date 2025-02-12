@@ -3,10 +3,11 @@ import {useMemo} from 'react'
 import {AI_MANAGED_TYPES} from 'custom-fields/constants'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {
-    transformIntentName,
+    calculateAiAgentKnowledgeResourcePerIntent,
     enrichWithAutomationOpportunity,
     enrichWithSuccessRate,
-    calculateAiAgentKnowledgeResourcePerIntent,
+    getIntentByLevel,
+    transformIntentName,
 } from 'hooks/reporting/automate/utils'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
@@ -21,18 +22,21 @@ import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/suppor
 import {customFieldsTicketTotalCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {FilterKey, StatsFilters} from 'models/stat/types'
-import {IntentMetrics} from 'pages/aiAgent/insights/IntentTableWidget/types'
+import {
+    IntentMetrics,
+    IntentTableColumn,
+} from 'pages/aiAgent/insights/IntentTableWidget/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {activeParams} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {getPreviousPeriod} from 'utils/reporting'
 
 import {
-    useTotalAiAgentTicketsByCustomField,
     useAiAgenTickets,
-    useAiAgentTicketCountPerIntent,
-    useCustomerSatisfactionMetricPerIntent,
-    useAIAgentTicketsWithIntent,
     useAIAgentResourcePerTicket,
+    useAiAgentTicketCountPerIntent,
+    useAIAgentTicketsWithIntent,
+    useCustomerSatisfactionMetricPerIntentLevel,
+    useTotalAiAgentTicketsByCustomField,
 } from './aiAgentMetrics'
 import {
     getAiAgentCoverageRate,
@@ -208,7 +212,7 @@ export const useAutomationOpportunityPerIntent = (
 
     const ticketIds = aiAgentNotAutomatedTicketsData.data?.allData
         .map((item) => item[TicketDimension.TicketId])
-        .filter((id): id is string => id !== null)
+        .filter((id): id is string => typeof id === 'string')
 
     const aiAgentTicketsNotAutomatedGroupedByIntent =
         useAiAgentTicketCountPerIntent(
@@ -272,7 +276,7 @@ export const useAIAgentTicketsPerIntent = (
 
     const ticketIds = aiAgentTicketsData.data?.allData
         .map((item) => item[TicketDimension.TicketId])
-        .filter((id): id is string => id !== null)
+        .filter((id): id is string => typeof id === 'string')
 
     const aiAgentTicketsGroupedByIntent = useAiAgentTicketCountPerIntent(
         filters,
@@ -319,9 +323,10 @@ export const useSuccessRatePerIntent = (
         intentId
     )
 
-    const automatedTicketIds = aiAgentAutomatedTicketsData.data?.allData
-        .map((item) => item[TicketDimension.TicketId])
-        .filter((id): id is string => id !== null)
+    const automatedTicketIds =
+        aiAgentAutomatedTicketsData.data?.allData
+            .map((item) => item[TicketDimension.TicketId])
+            .filter((id): id is string => typeof id === 'string') || []
 
     const aiAgentAutomatedTicketsGroupedByIntent =
         useAiAgentTicketCountPerIntent(
@@ -381,9 +386,10 @@ export const useAiAgentKnowledgeResourcePerIntent = (
         sorting
     )
 
-    const ticketIds = aiAgentTicketsWithIntent.data?.allData
-        .map((item) => item[TicketDimension.TicketId])
-        .filter((id): id is string => id !== null) || ['0']
+    const ticketIds =
+        aiAgentTicketsWithIntent.data?.allData
+            .map((item) => item[TicketDimension.TicketId])
+            .filter((id): id is string => typeof id === 'string') || []
 
     const resourcePerTicketId = useAIAgentResourcePerTicket(
         filters,
@@ -422,12 +428,15 @@ export const useCustomerSatisfactionPerIntent = (
         (field) => field.managed_type === AI_MANAGED_TYPES.AI_INTENT
     )
 
-    const csatPerIntent = useCustomerSatisfactionMetricPerIntent(
+    const aiAgentUserId = useAIAgentUserId()
+
+    const csatPerIntent = useCustomerSatisfactionMetricPerIntentLevel(
         filters,
         timezone,
         customFieldAiIntent,
         sorting,
-        intentId
+        intentId,
+        aiAgentUserId
     )
 
     return csatPerIntent
@@ -435,10 +444,14 @@ export const useCustomerSatisfactionPerIntent = (
 
 export const addMetricDataToResults = (
     results: Record<string, IntentMetrics>,
-    metricData: Record<string, string | number | null>[],
+    metricData: {[p: string]: string | number}[] | any[],
     metricKey: string,
     resultKey?: string
 ) => {
+    if (!metricData) {
+        return
+    }
+
     metricData.forEach((item: Record<string, any>) => {
         const intent = item['TicketCustomFieldsEnriched.valueString'] as string
         const resultKeyToUse = resultKey || metricKey
@@ -451,29 +464,131 @@ export const addMetricDataToResults = (
     })
 }
 
+// Filter metric data by intent level
+export const filterMetricDataByIntentLevel = ({
+    metricData,
+    level,
+    intentKey,
+    valueKey,
+    totalKey,
+    resultKey,
+    metricFor,
+}: {
+    metricData: Record<string, any>[]
+    level: number
+    intentKey: string
+    valueKey: string
+    totalKey?: string
+    resultKey: string
+    metricFor: IntentTableColumn
+}) => {
+    const adjustedData: Record<string, {sum: number; length: number}> = {}
+    metricData.forEach((item) => {
+        const intent = getIntentByLevel(item[intentKey], level)
+        if (!adjustedData[intent]) {
+            adjustedData[intent] = {
+                sum: 0,
+                length: 0,
+            }
+        }
+
+        const total = (totalKey && Number(item[totalKey])) || 0
+        const value = (valueKey && Number(item[valueKey])) || 0
+
+        switch (metricFor) {
+            case IntentTableColumn.AutomationOpportunities:
+                adjustedData[intent].length = total
+                adjustedData[intent].sum += value
+                break
+            case IntentTableColumn.Tickets:
+            case IntentTableColumn.Resources:
+                adjustedData[intent].sum += value
+                break
+            case IntentTableColumn.SuccessRate:
+                adjustedData[intent].length += total
+                adjustedData[intent].sum += value
+                break
+            case IntentTableColumn.AvgCustomerSatisfaction:
+                adjustedData[intent].length += total
+                adjustedData[intent].sum += value * total
+                break
+        }
+    })
+
+    // Calculate average for intents
+    return Object.keys(adjustedData).map((intent) => {
+        switch (metricFor) {
+            case IntentTableColumn.AutomationOpportunities:
+            case IntentTableColumn.SuccessRate:
+            case IntentTableColumn.AvgCustomerSatisfaction:
+                return {
+                    [intentKey]: intent,
+                    [resultKey]:
+                        adjustedData[intent].sum / adjustedData[intent].length,
+                }
+            case IntentTableColumn.Tickets:
+            case IntentTableColumn.Resources:
+                return {
+                    [intentKey]: intent,
+                    [resultKey]: adjustedData[intent].sum,
+                }
+        }
+    })
+}
+
 const useFetchAllIntentsMetrics = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
 ) => {
+    const INTENT_LEVEL = 2
     // Fetch all metrics for all intents
     const automationOpportunityPerIntent = useAutomationOpportunityPerIntent(
         filters,
         timezone,
         sorting
     )
+    const automationOpportunityPerIntentLevel = filterMetricDataByIntentLevel({
+        metricData: automationOpportunityPerIntent.data,
+        level: INTENT_LEVEL,
+        intentKey: 'TicketCustomFieldsEnriched.valueString',
+        valueKey: 'TicketCustomFieldsEnriched.ticketCount',
+        totalKey: 'TicketEnriched.ticketCount',
+        resultKey: 'automationOpportunity',
+        metricFor: IntentTableColumn.AutomationOpportunities,
+    })
 
     const ticketsPerIntent = useAIAgentTicketsPerIntent(
         filters,
         timezone,
         sorting
     )
+    let ticketsPerIntentPerIntentLevel
+    if (ticketsPerIntent.data?.allData) {
+        ticketsPerIntentPerIntentLevel = filterMetricDataByIntentLevel({
+            metricData: ticketsPerIntent.data.allData,
+            level: INTENT_LEVEL,
+            intentKey: 'TicketCustomFieldsEnriched.valueString',
+            valueKey: 'TicketCustomFieldsEnriched.ticketCount',
+            resultKey: 'tickets',
+            metricFor: IntentTableColumn.Tickets,
+        })
+    }
 
     const successRatePerIntent = useSuccessRatePerIntent(
         filters,
         timezone,
         sorting
     )
+    const successRatePerIntentPerIntentLevel = filterMetricDataByIntentLevel({
+        metricData: successRatePerIntent.data,
+        level: INTENT_LEVEL,
+        intentKey: 'TicketCustomFieldsEnriched.valueString',
+        valueKey: 'TicketCustomFieldsEnriched.ticketCount',
+        totalKey: 'TicketEnriched.ticketCount',
+        resultKey: 'successRate',
+        metricFor: IntentTableColumn.SuccessRate,
+    })
 
     const customerSatisfactionPerIntent = useCustomerSatisfactionPerIntent(
         filters,
@@ -481,15 +596,54 @@ const useFetchAllIntentsMetrics = (
         sorting
     )
 
+    let customerSatisfactionPerIntentPerIntentLevel
+    if (customerSatisfactionPerIntent.data?.allData) {
+        customerSatisfactionPerIntentPerIntentLevel =
+            filterMetricDataByIntentLevel({
+                metricData: customerSatisfactionPerIntent.data?.allData,
+                level: INTENT_LEVEL,
+                intentKey: 'TicketCustomFieldsEnriched.valueString',
+                valueKey: 'TicketSatisfactionSurveyEnriched.surveyScore',
+                totalKey: 'TicketSatisfactionSurveyEnriched.scoredSurveysCount',
+                resultKey: 'avgCustomerSatisfaction',
+                metricFor: IntentTableColumn.AvgCustomerSatisfaction,
+            })
+    }
+
     const aiAgentKnowledgeResourcePerIntent =
         useAiAgentKnowledgeResourcePerIntent(filters, timezone, sorting)
 
+    const aiAgentKnowledgeResourcePerIntentPerIntentLevel =
+        filterMetricDataByIntentLevel({
+            metricData: aiAgentKnowledgeResourcePerIntent.data,
+            level: INTENT_LEVEL,
+            intentKey: 'TicketCustomFieldsEnriched.valueString',
+            valueKey: 'resources',
+            resultKey: 'resources',
+            metricFor: IntentTableColumn.Resources,
+        })
+
     return {
-        automationOpportunityPerIntent,
-        ticketsPerIntent,
-        successRatePerIntent,
-        customerSatisfactionPerIntent,
-        aiAgentKnowledgeResourcePerIntent,
+        automationOpportunityPerIntent: {
+            ...automationOpportunityPerIntent,
+            data: automationOpportunityPerIntentLevel,
+        },
+        ticketsPerIntent: {
+            ...ticketsPerIntent,
+            data: ticketsPerIntentPerIntentLevel,
+        },
+        successRatePerIntent: {
+            ...successRatePerIntent,
+            data: successRatePerIntentPerIntentLevel,
+        },
+        customerSatisfactionPerIntent: {
+            ...customerSatisfactionPerIntent,
+            data: customerSatisfactionPerIntentPerIntentLevel,
+        },
+        aiAgentKnowledgeResourcePerIntent: {
+            ...aiAgentKnowledgeResourcePerIntent,
+            data: aiAgentKnowledgeResourcePerIntentPerIntentLevel,
+        },
     }
 }
 
@@ -521,22 +675,22 @@ export const useAIAgentInsightsDataset = (
     const results: Record<string, IntentMetrics> = {}
     const metrics = [
         {
-            data: automationOpportunityPerIntent.data,
+            data: automationOpportunityPerIntent.data || [],
             metricKey: 'automationOpportunity',
         },
         {
-            data: ticketsPerIntent.data?.allData || [],
-            metricKey: 'TicketCustomFieldsEnriched.ticketCount',
+            data: ticketsPerIntent.data || [],
+            metricKey: 'tickets',
             resultKey: 'tickets',
         },
         {
-            data: successRatePerIntent.data,
+            data: successRatePerIntent.data || [],
             metricKey: 'successRate',
             resultKey: 'automationRate',
         },
         {
-            data: customerSatisfactionPerIntent.data?.allData || [],
-            metricKey: 'TicketSatisfactionSurveyEnriched.avgSurveyScore',
+            data: customerSatisfactionPerIntent.data || [],
+            metricKey: 'avgCustomerSatisfaction',
             resultKey: 'avgCustomerSatisfaction',
         },
         {

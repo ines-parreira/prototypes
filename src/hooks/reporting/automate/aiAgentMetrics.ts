@@ -11,7 +11,10 @@ import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {customerSatisfactionPerCustomFieldQueryFactory} from 'models/reporting/queryFactories/ai-agent-insights/metrics'
+import {
+    customerSatisfactionPerCustomFieldQueryFactory,
+    customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory,
+} from 'models/reporting/queryFactories/ai-agent-insights/metrics'
 import {
     automationDatasetAdditionalFilters,
     automationDatasetDefaultFilters,
@@ -115,23 +118,46 @@ export const useAiAgentTicketCountPerIntent = (
     )
 }
 
-export const useCustomerSatisfactionMetricPerIntent = (
+export const useCustomerSatisfactionMetricPerIntentLevel = (
     filters: StatsFilters,
     timezone: string,
     customField: CustomField | undefined,
     sorting?: OrderDirection,
-    customFieldValue?: string
+    customFieldValue?: string,
+    assigneeUserId?: string
 ) => {
     return useMetricPerDimension(
-        customerSatisfactionPerCustomFieldQueryFactory(
+        customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory(
             filters,
             timezone,
             sorting,
             customField,
-            customFieldValue
+            customFieldValue,
+            assigneeUserId
         )
     )
 }
+
+export const useCustomerSatisfactionMetricPerIntent = (
+    filters: StatsFilters,
+    timezone: string,
+    customField: CustomField | undefined,
+    sorting?: OrderDirection
+) =>
+    useMetricPerDimension(
+        customerSatisfactionPerCustomFieldQueryFactory(
+            filters,
+            timezone,
+            sorting,
+            customField
+                ? {
+                      member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: [String(customField.id)],
+                  }
+                : undefined
+        )
+    )
 
 export const useAIAgentTicketsWithIntent = (
     filters: StatsFilters,

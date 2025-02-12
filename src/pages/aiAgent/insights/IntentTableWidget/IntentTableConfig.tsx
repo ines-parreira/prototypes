@@ -156,7 +156,7 @@ export function useIntentSoringQuery(
         data,
         sorting?.field,
         sorting?.isLoading,
-        sorting.direction,
+        sorting?.direction,
         isFetching,
     ])
 
@@ -167,13 +167,13 @@ export function useIntentSoringQuery(
                     field: column,
                     direction:
                         sorting.field === column
-                            ? opposite(sorting.direction)
+                            ? opposite(sorting?.direction)
                             : DEFAULT_SORTING_DIRECTION,
                 })
             )
         },
-        direction: sorting.direction,
-        field: sorting.field,
-        isOrderedBy: column === sorting.field,
+        direction: sorting?.direction,
+        field: sorting?.field,
+        isOrderedBy: column === sorting?.field,
     }
 }

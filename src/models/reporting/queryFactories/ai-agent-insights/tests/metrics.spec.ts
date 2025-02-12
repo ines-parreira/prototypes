@@ -1,6 +1,7 @@
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {TicketCustomFieldsDimension} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
+    TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
     TicketSatisfactionSurveySegment,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
@@ -10,7 +11,10 @@ import {
     formatReportingQueryDate,
 } from 'utils/reporting'
 
-import {customerSatisfactionPerCustomFieldQueryFactory} from '../metrics'
+import {
+    customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory,
+    customerSatisfactionPerCustomFieldQueryFactory,
+} from '../metrics'
 
 describe('AI Agent metrics', () => {
     const timezone = 'UTC'
@@ -24,6 +28,43 @@ describe('AI Agent metrics', () => {
     it('customerSatisfactionPerCustomFieldQueryFactory', () => {
         expect(
             customerSatisfactionPerCustomFieldQueryFactory(filters, timezone)
+        ).toEqual({
+            dimensions: [
+                TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+                TicketSatisfactionSurveyDimension.SurveyScore,
+            ],
+            filters: [
+                ...NotSpamNorTrashedTicketsFilter,
+                {
+                    member: TicketMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [
+                        formatReportingQueryDate(filters.period.start_datetime),
+                    ],
+                },
+                {
+                    member: TicketMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [
+                        formatReportingQueryDate(filters.period.end_datetime),
+                    ],
+                },
+            ],
+            measures: [
+                TicketSatisfactionSurveyMeasure.ScoredSurveysCount,
+                TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+            ],
+            segments: [TicketSatisfactionSurveySegment.SurveyScored],
+            timezone: timezone,
+        })
+    })
+
+    it('customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory', () => {
+        expect(
+            customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory(
+                filters,
+                timezone
+            )
         ).toEqual({
             dimensions: [
                 TicketCustomFieldsDimension.TicketCustomFieldsValueString,

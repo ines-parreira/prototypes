@@ -25,22 +25,22 @@ import {
     ChannelsMetrics,
     ConvertMetrics,
     DrillDownMetric,
-    SlaMetrics,
     SatisfactionMetrics,
+    SlaMetrics,
     TagsFieldsMetrics,
 } from 'state/ui/stats/drillDownSlice'
 import {
     AgentsTableColumn,
-    TicketFieldsMetric,
-    SlaMetric,
-    SatisfactionMetric,
-    ConvertMetric,
-    VoiceMetric,
-    AutoQAMetric,
-    VoiceAgentsMetric,
-    TagsMetric,
-    ChannelsTableColumns,
     AIInsightsMetric,
+    AutoQAMetric,
+    ChannelsTableColumns,
+    ConvertMetric,
+    SatisfactionMetric,
+    SlaMetric,
+    TagsMetric,
+    TicketFieldsMetric,
+    VoiceAgentsMetric,
+    VoiceMetric,
 } from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 
@@ -310,6 +310,11 @@ describe('getDrillDownQuery', () => {
             perAgentId: '1',
             customFieldId: 1,
             customFieldValue: null,
+        },
+        {
+            metricName: AIInsightsMetric.TicketCustomFieldsTicketCount,
+            customFieldId: 1,
+            customFieldValue: ['value'],
         },
     ]
 

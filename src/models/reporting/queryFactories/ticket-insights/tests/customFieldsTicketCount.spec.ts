@@ -6,13 +6,14 @@ import {
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
+    customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory,
     customFieldsTicketCountPerTicketDrillDownQueryFactory,
     customFieldsTicketCountQueryFactory,
     customFieldsTicketTotalCountQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {injectDrillDownCustomFieldId} from 'models/reporting/queryFactories/utils'
 import {ReportingFilterOperator} from 'models/reporting/types'
-import {FilterKey} from 'models/stat/types'
+import {FilterKey, StatsFilters} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
     DRILLDOWN_QUERY_LIMIT,
@@ -449,6 +450,123 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     ],
                 ],
             })
+        })
+    })
+
+    describe('customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory', () => {
+        const mockFilters: StatsFilters = {
+            period: {
+                start_datetime: '2023-01-01T00:00:00Z',
+                end_datetime: '2023-01-31T23:59:59Z',
+            },
+        }
+
+        const mockTimezone = 'UTC'
+        const mockCustomFieldId = '123'
+        const mockCustomFieldsValueStrings = ['value1', 'value2']
+        const mockCustomFieldPeriod = mockFilters.period
+        const mockSorting = OrderDirection.Desc
+
+        test('returns correct query structure with all parameters', () => {
+            const query =
+                customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory(
+                    mockFilters,
+                    mockTimezone,
+                    mockCustomFieldId,
+                    mockCustomFieldsValueStrings,
+                    mockCustomFieldPeriod,
+                    mockSorting
+                )
+
+            expect(query).toEqual({
+                measures: [],
+                dimensions: [TicketDimension.TicketId],
+                timezone: mockTimezone,
+                filters: [
+                    {
+                        member: 'TicketEnriched.isTrashed',
+                        operator: 'equals',
+                        values: ['0'],
+                    },
+                    {
+                        member: 'TicketEnriched.isSpam',
+                        operator: 'equals',
+                        values: ['0'],
+                    },
+                    {
+                        member: 'TicketEnriched.periodStart',
+                        operator: 'afterDate',
+                        values: ['2023-01-01T00:00:00.000'],
+                    },
+                    {
+                        member: 'TicketEnriched.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2023-01-31T23:59:59.000'],
+                    },
+                    {
+                        member: 'TicketCustomFieldsEnriched.customFieldId',
+                        operator: 'equals',
+                        values: [mockCustomFieldId],
+                    },
+                    {
+                        member: 'TicketCustomFieldsEnriched.valueString',
+                        operator: 'startsWith',
+                        values: mockCustomFieldsValueStrings,
+                    },
+                    {
+                        member: 'TicketCustomFieldsEnriched.customFieldUpdatedDatetime',
+                        operator: 'inDateRange',
+                        values: [
+                            '2023-01-01T00:00:00.000',
+                            '2023-01-31T23:59:59.000',
+                        ],
+                    },
+                    {
+                        member: 'TicketEnriched.ticketCount',
+                        operator: 'measureFilter',
+                        values: [],
+                    },
+                ],
+                limit: DRILLDOWN_QUERY_LIMIT,
+                order: [[TicketDimension.TicketId, mockSorting]],
+            })
+        })
+
+        test('handles null customFieldsValueStrings', () => {
+            const query =
+                customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory(
+                    mockFilters,
+                    mockTimezone,
+                    mockCustomFieldId,
+                    null,
+                    mockCustomFieldPeriod,
+                    mockSorting
+                )
+
+            const filtersWithoutCustomFieldValueStrings = query.filters.filter(
+                (filter) =>
+                    filter.member !==
+                    'TicketCustomFieldsMember.TicketCustomFieldsValueString'
+            )
+
+            expect(filtersWithoutCustomFieldValueStrings).toHaveLength(
+                query.filters.length
+            )
+        })
+
+        test('applies default sorting when none is provided', () => {
+            const query =
+                customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory(
+                    mockFilters,
+                    mockTimezone,
+                    mockCustomFieldId,
+                    mockCustomFieldsValueStrings,
+                    mockCustomFieldPeriod
+                )
+
+            expect(query.order).toEqual([
+                ['TicketEnriched.ticketId', OrderDirection.Asc],
+            ])
         })
     })
 })

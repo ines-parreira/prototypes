@@ -35,6 +35,7 @@ import {
     customFieldsTicketCountPerTicketDrillDownQueryFactory,
     coverageRateTicketDrillDownQueryFactory,
     aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
+    customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {tagsTicketCountDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 import {
@@ -321,13 +322,26 @@ export const getDrillDownQuery = (
                     sorting
                 )
         case TicketFieldsMetric.TicketCustomFieldsTicketCount:
-        case AIInsightsMetric.TicketCustomFieldsTicketCount:
             return (
                 statsFilters: StatsFilters,
                 timezone: string,
                 sorting?: OrderDirection
             ) =>
                 customFieldsTicketCountPerTicketDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    String(metricName.customFieldId),
+                    metricName.customFieldValue,
+                    metricName.dateRange || statsFilters.period,
+                    sorting
+                )
+        case AIInsightsMetric.TicketCustomFieldsTicketCount:
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection
+            ) =>
+                customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory(
                     statsFilters,
                     timezone,
                     String(metricName.customFieldId),
