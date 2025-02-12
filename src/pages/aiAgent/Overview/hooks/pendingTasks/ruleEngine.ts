@@ -19,6 +19,7 @@ import {ReviewAIGeneratedGuidancesTask} from './tasks/ReviewAIGeneratedGuidances
 import {SetYourActionsLiveTask} from './tasks/SetYourActionsLive.task'
 import {TestAIAgentTask} from './tasks/TestAIAgent.task'
 import {UploadAnExternalDocTask} from './tasks/UploadAnExternalDoc.task'
+import {VerifyYourEmailDomainTask} from './tasks/VerifyYourEmailDomain.task'
 
 import {type ActionsData} from './useFetchActionsData'
 import {type AiAgentPlaygroundExecutionsData} from './useFetchAiAgentPlaygroundExecutionsData'
@@ -66,6 +67,7 @@ const tasksPerAiAgentType: Record<
         new EnableAIAgentOnChatTask(data, routes),
         new ReviewAIGeneratedGuidancesTask(data, routes),
         new CreateYourFirstGuidanceTask(data, routes),
+        new VerifyYourEmailDomainTask(data, routes),
         new PublishYourFirstGuidanceTask(data, routes),
         new Create3to5GuidancesTask(data, routes),
         new UploadAnExternalDocTask(data, routes),
@@ -73,9 +75,10 @@ const tasksPerAiAgentType: Record<
         new TestAIAgentTask(data, routes),
     ],
     support: (data: RuleEngineData, routes: RuleEngineRoutes) => [
-        new ConnectYourDefaultEmailTask(data, routes),
         new ConnectAHelpCenterTask(data, routes),
         new UploadAnExternalDocTask(data, routes),
+        new ConnectYourDefaultEmailTask(data, routes),
+        new VerifyYourEmailDomainTask(data, routes),
         new EnableAIAgentOnChatTask(data, routes),
         new EnableAIAgentOnEmailTask(data, routes),
         new ReviewAIGeneratedGuidancesTask(data, routes),

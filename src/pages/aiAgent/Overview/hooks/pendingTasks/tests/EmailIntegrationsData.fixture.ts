@@ -32,11 +32,12 @@ export class EmailIntegrationsDataFixture {
         return this as EmailIntegrationsDataFullyConfigured
     }
 
-    withEmailIntegration({isDefault = false} = {}) {
+    withEmailIntegration({isDefault = false, isVerified = false} = {}) {
         const id = this.internalData.emailIntegrationId++
         this.emailIntegrationsData.push({
             id,
             isDefault,
+            isVerified,
             address: `email-${id}@example.com`,
         } as EmailIntegrationsData[number])
 

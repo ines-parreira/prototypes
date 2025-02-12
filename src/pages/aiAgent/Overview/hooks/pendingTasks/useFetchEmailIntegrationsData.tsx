@@ -14,6 +14,7 @@ export const useFetchEmailIntegrationsData = () => {
             id: email!.id,
             isDefault: email!.meta?.preferred,
             address: email!.meta?.address,
+            isVerified: !!email!.meta?.verified,
         }))
         .toArray()
 

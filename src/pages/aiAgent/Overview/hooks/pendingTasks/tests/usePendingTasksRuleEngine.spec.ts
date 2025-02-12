@@ -101,12 +101,12 @@ describe('usePendingTasksRuleEngine', () => {
         {
             scopes: [AiAgentScope.Support],
             pendingTasks: 4,
-            completedTasks: 9,
+            completedTasks: 10,
         },
         {
             scopes: [AiAgentScope.Sales],
             pendingTasks: 3,
-            completedTasks: 6,
+            completedTasks: 7,
         },
     ])(
         'should return valid tasks for scopes $scopes',
@@ -114,6 +114,7 @@ describe('usePendingTasksRuleEngine', () => {
             useFetchAiAgentStoreConfigurationDataMock.mockReturnValue({
                 isLoading: false,
                 data: AiAgentStoreConfigurationFixture.start()
+                    .withoutConnectedEmailIntegrations()
                     .withScopes(scopes)
                     .withoutConnectedHelpCenter()
                     .withChatChannelEnabled()

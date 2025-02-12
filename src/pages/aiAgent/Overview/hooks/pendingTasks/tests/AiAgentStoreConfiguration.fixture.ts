@@ -26,6 +26,7 @@ export class AiAgentStoreConfigurationFixture {
             | 'withoutConnectedHelpCenter'
             | 'withScopes'
             | 'withConnectedEmailIntegrations'
+            | 'withoutConnectedEmailIntegrations'
         >
     }
 
@@ -39,6 +40,7 @@ export class AiAgentStoreConfigurationFixture {
                 | 'withoutHandoverTopic'
                 | 'withConnectedHelpCenter'
                 | 'withoutConnectedHelpCenter'
+                | 'withScopes'
             >
     }
 
@@ -52,6 +54,7 @@ export class AiAgentStoreConfigurationFixture {
                 | 'withoutHandoverTopic'
                 | 'withConnectedHelpCenter'
                 | 'withoutConnectedHelpCenter'
+                | 'withScopes'
             >
     }
 
