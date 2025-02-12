@@ -10,6 +10,7 @@ export const buildRuleEngineData = (
     actions: [],
     aiAgentPlaygroundExecutions: {} as any,
     emailIntegrations: [],
+    shopifyIntegration: {} as any,
     ...data,
 })
 

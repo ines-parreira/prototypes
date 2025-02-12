@@ -3,6 +3,7 @@ import {render, screen} from '@testing-library/react'
 import React from 'react'
 
 import {ShopifyIntegration} from 'models/integration/types'
+import {READ_FULFILLMENTS_PERMISSION} from 'pages/aiAgent/utils/shopify-integration.utils'
 import {useHasEmailToStoreConnection} from 'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection'
 import {useHelpCentersArticleCount} from 'pages/automate/common/hooks/useHelpCentersArticleCount'
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
@@ -10,7 +11,6 @@ import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfS
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 
-import {READ_FULFILLMENTS_PERMISSION} from '../AiAgentConfigurationView/AiAgentConfigurationView'
 import {AIAgentWelcomePageDynamic} from '../AIAgentWelcomePageDynamic'
 import {AIAgentWelcomePageView} from '../components/AIAgentWelcomePageView/AIAgentWelcomePageView'
 

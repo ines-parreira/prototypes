@@ -8,6 +8,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {AI_AGENT, SETTINGS} from 'pages/aiAgent/constants'
 import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import {hasShopifyRequiredPermissions} from 'pages/aiAgent/utils/shopify-integration.utils'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
@@ -17,8 +18,6 @@ import {NotificationStatus} from 'state/notifications/types'
 import {AiAgentLayout} from '../components/AiAgentLayout/AiAgentLayout'
 import {StoreConfigForm} from '../components/StoreConfigForm/StoreConfigForm'
 import css from './AiAgentConfigurationView.less'
-
-export const READ_FULFILLMENTS_PERMISSION = 'read_fulfillments'
 
 type AiAgentConfigurationViewProps = {
     shopName: string
@@ -76,7 +75,7 @@ export const AiAgentConfigurationView = ({
     }
 
     const integrationNeedMorePermissions =
-        !integration.meta.oauth.scope.includes(READ_FULFILLMENTS_PERMISSION)
+        !hasShopifyRequiredPermissions(integration)
 
     return (
         <AiAgentLayout

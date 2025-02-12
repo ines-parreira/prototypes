@@ -1,6 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks'
 
 import {AiAgentScope} from 'models/aiAgent/types'
+import {ShopifyPermissionsDataFixture} from 'pages/aiAgent/Overview/hooks/pendingTasks/tests/ShopifyPermissionsData.fixture'
 import {assumeMock} from 'utils/testing'
 
 import {useFetchActionsData} from '../useFetchActionsData'
@@ -11,6 +12,7 @@ import {useFetchFaqHelpCentersData} from '../useFetchFaqHelpCentersData'
 import {useFetchFileIngestionData} from '../useFetchFileIngestionData'
 import {useFetchGuidancesData} from '../useFetchGuidancesData'
 import {usePendingTasksRuleEngine} from '../usePendingTasksRuleEngine'
+import {useShopifyPermissionsData} from '../useShopifyPermissionsData'
 import {ActionsDataFixture} from './ActionsData.fixture'
 import {AiAgentPlaygroundExecutionsDataFixture} from './AiAgentPlaygroundExecutionsData.fixture'
 import {AiAgentStoreConfigurationFixture} from './AiAgentStoreConfiguration.fixture'
@@ -53,6 +55,10 @@ jest.mock('../useFetchEmailIntegrationsData', () => ({
 const useFetchEmailIntegrationsDataMock = assumeMock(
     useFetchEmailIntegrationsData
 )
+jest.mock('../useShopifyPermissionsData', () => ({
+    useShopifyPermissionsData: jest.fn(),
+}))
+const useShopifyPermissionsDataMock = assumeMock(useShopifyPermissionsData)
 
 // Will implements better testing after extracting the list of tasks from the ruleEngine
 describe('usePendingTasksRuleEngine', () => {
@@ -92,16 +98,22 @@ describe('usePendingTasksRuleEngine', () => {
             .build(),
     })
 
+    useShopifyPermissionsDataMock.mockReturnValue({
+        data: ShopifyPermissionsDataFixture.start()
+            .withHasRequiredPermission()
+            .build(),
+    })
+
     it.each([
         {
             scopes: [AiAgentScope.Support, AiAgentScope.Sales],
             pendingTasks: 4,
-            completedTasks: 9,
+            completedTasks: 11,
         },
         {
             scopes: [AiAgentScope.Support],
             pendingTasks: 4,
-            completedTasks: 10,
+            completedTasks: 11,
         },
         {
             scopes: [AiAgentScope.Sales],

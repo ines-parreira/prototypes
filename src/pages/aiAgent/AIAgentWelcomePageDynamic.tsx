@@ -2,6 +2,7 @@ import React, {useMemo} from 'react'
 
 import {IntegrationType} from 'models/integration/constants'
 
+import {hasShopifyRequiredPermissions} from 'pages/aiAgent/utils/shopify-integration.utils'
 import {useHasEmailToStoreConnection} from 'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection'
 import {useHelpCentersArticleCount} from 'pages/automate/common/hooks/useHelpCentersArticleCount'
 
@@ -9,7 +10,6 @@ import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfS
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 
-import {READ_FULFILLMENTS_PERMISSION} from './AiAgentConfigurationView/AiAgentConfigurationView'
 import {
     AiAgentWelcomePageProps,
     AIAgentWelcomePageView,
@@ -37,9 +37,7 @@ export const AIAgentWelcomePageDynamic = ({
         if (!isOnboardingWizard || !shopifyIntegration) return undefined
 
         const shopifyNeedPermissions =
-            !shopifyIntegration.meta.oauth.scope.includes(
-                READ_FULFILLMENTS_PERMISSION
-            )
+            !hasShopifyRequiredPermissions(shopifyIntegration)
 
         if (shopifyNeedPermissions) {
             return {

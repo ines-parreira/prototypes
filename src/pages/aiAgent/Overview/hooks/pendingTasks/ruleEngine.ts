@@ -1,6 +1,8 @@
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import {Task} from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/Task'
+import {UpdateShopifyPermissionsTask} from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/UpdateShopifyPermissions.task'
+import {ShopifyPermissionsData} from 'pages/aiAgent/Overview/hooks/pendingTasks/useShopifyPermissionsData'
 import {
     AiAgentType,
     getAiAgentTypeFromScopes,
@@ -37,6 +39,7 @@ export type RuleEngineData = {
     actions: ActionsData
     aiAgentPlaygroundExecutions: AiAgentPlaygroundExecutionsData
     emailIntegrations: EmailIntegrationsData
+    shopifyIntegration: ShopifyPermissionsData
 }
 
 export type RuleEngineRoutes = {
@@ -48,7 +51,9 @@ const tasksPerAiAgentType: Record<
     (data: RuleEngineData, routes: RuleEngineRoutes) => Task[]
 > = {
     mixed: (data: RuleEngineData, routes: RuleEngineRoutes) => [
+        new UpdateShopifyPermissionsTask(data, routes),
         new ConnectYourDefaultEmailTask(data, routes),
+        new VerifyYourEmailDomainTask(data, routes),
         new ConnectAHelpCenterTask(data, routes),
         new UploadAnExternalDocTask(data, routes),
         new EnableAIAgentOnChatTask(data, routes),
@@ -63,11 +68,11 @@ const tasksPerAiAgentType: Record<
         new SetYourActionsLiveTask(data, routes),
     ],
     sales: (data: RuleEngineData, routes: RuleEngineRoutes) => [
+        new UpdateShopifyPermissionsTask(data, routes),
         new ConnectAHelpCenterTask(data, routes),
         new EnableAIAgentOnChatTask(data, routes),
         new ReviewAIGeneratedGuidancesTask(data, routes),
         new CreateYourFirstGuidanceTask(data, routes),
-        new VerifyYourEmailDomainTask(data, routes),
         new PublishYourFirstGuidanceTask(data, routes),
         new Create3to5GuidancesTask(data, routes),
         new UploadAnExternalDocTask(data, routes),
@@ -75,10 +80,11 @@ const tasksPerAiAgentType: Record<
         new TestAIAgentTask(data, routes),
     ],
     support: (data: RuleEngineData, routes: RuleEngineRoutes) => [
+        new ConnectYourDefaultEmailTask(data, routes),
+        new UpdateShopifyPermissionsTask(data, routes),
+        new VerifyYourEmailDomainTask(data, routes),
         new ConnectAHelpCenterTask(data, routes),
         new UploadAnExternalDocTask(data, routes),
-        new ConnectYourDefaultEmailTask(data, routes),
-        new VerifyYourEmailDomainTask(data, routes),
         new EnableAIAgentOnChatTask(data, routes),
         new EnableAIAgentOnEmailTask(data, routes),
         new ReviewAIGeneratedGuidancesTask(data, routes),

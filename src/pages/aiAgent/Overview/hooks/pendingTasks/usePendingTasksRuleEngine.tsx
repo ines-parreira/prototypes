@@ -11,6 +11,7 @@ import {useFetchEmailIntegrationsData} from './useFetchEmailIntegrationsData'
 import {useFetchFaqHelpCentersData} from './useFetchFaqHelpCentersData'
 import {useFetchFileIngestionData} from './useFetchFileIngestionData'
 import {useFetchGuidancesData} from './useFetchGuidancesData'
+import {useShopifyPermissionsData} from './useShopifyPermissionsData'
 
 // Until we have the full implementation of usePendingTasksRuleEngine
 // we decided to fake the tasks in storybook to prevent having to mock things
@@ -58,6 +59,10 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
         data: emailIntegrationsData,
     } = useFetchEmailIntegrationsData()
 
+    const {data: shopifyPermissionsData} = useShopifyPermissionsData({
+        storeName,
+    })
+
     const isLoading =
         aiAgentStoreConfigurationIsLoading ||
         faqHelpCentersDataIsLoading ||
@@ -73,7 +78,8 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
         !!guidancesData &&
         !!actionsData &&
         !!aiAgentPlaygroundExecutionsData &&
-        !!emailIntegrationsData
+        !!emailIntegrationsData &&
+        !!shopifyPermissionsData
 
     // Use memo instead of useEffect
     const [{completedTasks, pendingTasks}, setTasks] = useState<{
@@ -98,6 +104,7 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
                         aiAgentPlaygroundExecutions:
                             aiAgentPlaygroundExecutionsData,
                         emailIntegrations: emailIntegrationsData,
+                        shopifyIntegration: shopifyPermissionsData,
                     },
                     {
                         aiAgentRoutes: routes,
@@ -114,6 +121,7 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
         actionsData,
         aiAgentPlaygroundExecutionsData,
         emailIntegrationsData,
+        shopifyPermissionsData,
     ])
 
     if (shouldFakeTasks) {
