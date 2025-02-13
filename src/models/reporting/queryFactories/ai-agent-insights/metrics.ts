@@ -1,5 +1,11 @@
 import {CustomField} from 'custom-fields/types'
 import {OrderDirection} from 'models/api/types'
+import {
+    RecommendedResourcesCube,
+    RecommendedResourcesDimension,
+    RecommendedResourcesFilterMember,
+    RecommendedResourcesMeasure,
+} from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {
@@ -23,6 +29,8 @@ import {
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
+
+import {recommendedResourceDatasetDefaultFilters} from '../automate_v2/filters'
 
 export const customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory = (
     statsFilters: StatsFilters,
@@ -109,6 +117,33 @@ export const customerSatisfactionPerCustomFieldQueryFactory = (
               order: [
                   [TicketSatisfactionSurveyMeasure.AvgSurveyScore, sorting],
               ],
+          }
+        : {}),
+})
+
+export const recommendedResourceQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    ticketIds: string[],
+    sorting?: OrderDirection
+): ReportingQuery<RecommendedResourcesCube> => ({
+    measures: [RecommendedResourcesMeasure.NumRecommendedResources],
+    dimensions: [
+        RecommendedResourcesDimension.TicketId,
+        RecommendedResourcesDimension.RecommendedResourceId,
+    ],
+    timezone,
+    filters: [
+        ...recommendedResourceDatasetDefaultFilters(statsFilters),
+        {
+            member: RecommendedResourcesFilterMember.TicketId,
+            operator: ReportingFilterOperator.In,
+            values: ticketIds,
+        },
+    ],
+    ...(sorting
+        ? {
+              order: [[RecommendedResourcesDimension.TicketId, sorting]],
           }
         : {}),
 })

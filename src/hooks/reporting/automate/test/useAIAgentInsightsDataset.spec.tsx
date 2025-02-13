@@ -10,9 +10,14 @@ import {
     totalTicketsMetric,
 } from 'fixtures/aiAgentInsights'
 import {ticketFieldDefinitions} from 'fixtures/customField'
+import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
 import {useMetric} from 'hooks/reporting/useMetric'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
 import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
+import {
+    RecommendedResourcesDimension,
+    RecommendedResourcesMeasure,
+} from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {StatsFilters} from 'models/stat/types'
 import {
@@ -34,7 +39,6 @@ import {
     useAiAgentKnowledgeResourcePerIntent,
     filterMetricDataByIntentLevel,
 } from '../useAIAgentInsightsDataset'
-import {useAIAgentUserId} from '../useAIAgentUserId'
 
 const queryClient = mockQueryClient()
 const timezone = 'UTC'
@@ -436,12 +440,18 @@ describe('useAiAgentInsightsDataset', () => {
                         value: null,
                         allData: [
                             {
-                                'AutomationDataset.automatedInteractions': '1',
-                                'AutomationDataset.ticketId': '1',
+                                [RecommendedResourcesMeasure.NumRecommendedResources]:
+                                    '1',
+                                [RecommendedResourcesDimension.RecommendedResourceId]:
+                                    '1',
+                                [RecommendedResourcesDimension.TicketId]: '1',
                             },
                             {
-                                'AutomationDataset.automatedInteractions': '2',
-                                'AutomationDataset.ticketId': '2',
+                                [RecommendedResourcesMeasure.NumRecommendedResources]:
+                                    '2',
+                                [RecommendedResourcesDimension.TicketId]: '2',
+                                [RecommendedResourcesDimension.RecommendedResourceId]:
+                                    '2',
                             },
                         ],
                     },

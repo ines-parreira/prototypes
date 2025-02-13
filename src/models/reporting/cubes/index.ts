@@ -4,6 +4,7 @@ import {TicketQAScoreCubeWithJoins} from 'models/reporting/cubes/auto-qa/TicketQ
 import {AutomationBillingEventCubeWithJoins} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import {AutomationDatasetCube} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {BillableTicketDatasetCube} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import {RecommendedResourcesCube} from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
 import {WorkflowDatasetCube} from 'models/reporting/cubes/automate_v2/WorkflowDatasetCube'
 import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
 import {ConvertOrderEventsCube} from 'models/reporting/cubes/ConvertOrderEventsCube'
@@ -30,3 +31,4 @@ export type Cubes =
     | VoiceEventsByAgentCube
     | WorkflowDatasetCube
     | TicketTagsEnrichedCube
+    | RecommendedResourcesCube

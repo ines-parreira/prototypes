@@ -1,5 +1,6 @@
 import {AutomationDatasetFilterMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {BillableTicketDatasetFilterMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import {RecommendedResourcesFilterMember} from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
 import {
     addOptionalFilter,
     isFilterWithLogicalOperator,
@@ -90,3 +91,18 @@ export const mapTicketChannelsToAutomateChannelsInFilter = (
 
     return channels.map(ticketChannelToAutomateChannel)
 }
+
+export const recommendedResourceDatasetDefaultFilters = (
+    filters: StatsFilters
+): ReportingFilter[] => [
+    {
+        member: RecommendedResourcesFilterMember.PeriodStart,
+        operator: ReportingFilterOperator.AfterDate,
+        values: [formatReportingQueryDate(filters.period.start_datetime)],
+    },
+    {
+        member: RecommendedResourcesFilterMember.PeriodEnd,
+        operator: ReportingFilterOperator.BeforeDate,
+        values: [formatReportingQueryDate(filters.period.end_datetime)],
+    },
+]

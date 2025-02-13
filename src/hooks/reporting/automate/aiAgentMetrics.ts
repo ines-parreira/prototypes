@@ -1,24 +1,15 @@
 import {CustomField} from 'custom-fields/types'
 import {OrderDirection} from 'models/api/types'
-import {
-    AutomatedDatesetEventTypes,
-    AutomationDatasetDimension,
-    AutomationDatasetFilterMember,
-    AutomationDatasetMeasure,
-} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
-    customerSatisfactionPerCustomFieldQueryFactory,
     customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory,
+    customerSatisfactionPerCustomFieldQueryFactory,
+    recommendedResourceQueryFactory,
 } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
-import {
-    automationDatasetAdditionalFilters,
-    automationDatasetDefaultFilters,
-} from 'models/reporting/queryFactories/automate_v2/filters'
 import {
     customFieldsTicketTotalCountQueryFactory,
     customFieldsTicketFactory,
@@ -213,32 +204,7 @@ export const useAIAgentResourcePerTicket = (
     enabled?: boolean
 ) => {
     return useMetricPerDimension(
-        {
-            measures: [AutomationDatasetMeasure.AutomatedInteractions],
-            dimensions: [AutomationDatasetDimension.TicketId],
-            timezone,
-            filters: [
-                ...automationDatasetDefaultFilters(filters),
-                ...automationDatasetAdditionalFilters(filters),
-                {
-                    member: AutomationDatasetFilterMember.TicketId,
-                    operator: ReportingFilterOperator.In,
-                    values: ticketIds,
-                },
-                {
-                    member: AutomationDatasetFilterMember.EventType,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [
-                        AutomatedDatesetEventTypes.AiAgentRecommendedResource,
-                    ],
-                },
-            ],
-            ...(sorting
-                ? {
-                      order: [[AutomationDatasetDimension.TicketId, sorting]],
-                  }
-                : {}),
-        },
+        recommendedResourceQueryFactory(filters, timezone, ticketIds, sorting),
         undefined,
         enabled
     )

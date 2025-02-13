@@ -13,7 +13,10 @@ import {BREAKDOWN_FIELD} from 'hooks/reporting/withBreakdown'
 import {OrderDirection} from 'models/api/types'
 import {Cubes} from 'models/reporting/cubes'
 import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
-import {AutomationDatasetMeasure} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import {
+    RecommendedResourcesDimension,
+    RecommendedResourcesMeasure,
+} from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {
     TicketCustomFieldsDimension,
@@ -833,12 +836,16 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
         ]
         const resourcePerTicketIdData = [
             {
-                'AutomationDataset.ticketId': 'ticket1',
-                [AutomationDatasetMeasure.AutomatedInteractions]: '5',
+                [RecommendedResourcesDimension.TicketId]: 'ticket1',
+                [RecommendedResourcesMeasure.NumRecommendedResources]: '5',
+                [RecommendedResourcesDimension.RecommendedResourceId]:
+                    'resource1',
             },
             {
-                'AutomationDataset.ticketId': 'ticket2',
-                [AutomationDatasetMeasure.AutomatedInteractions]: '3',
+                [RecommendedResourcesDimension.TicketId]: 'ticket2',
+                [RecommendedResourcesMeasure.NumRecommendedResources]: '3',
+                [RecommendedResourcesDimension.RecommendedResourceId]:
+                    'resource2',
             },
         ]
 
@@ -900,12 +907,16 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
         ]
         const resourcePerTicketIdData = [
             {
-                'AutomationDataset.ticketId': 'ticket1',
-                [AutomationDatasetMeasure.AutomatedInteractions]: '5',
+                [RecommendedResourcesDimension.TicketId]: 'ticket1',
+                [RecommendedResourcesMeasure.NumRecommendedResources]: '5',
+                [RecommendedResourcesDimension.RecommendedResourceId]:
+                    'resource1',
             },
             {
-                'AutomationDataset.ticketId': 'ticket2',
-                [AutomationDatasetMeasure.AutomatedInteractions]: '3',
+                [RecommendedResourcesDimension.TicketId]: 'ticket2',
+                [RecommendedResourcesMeasure.NumRecommendedResources]: '3',
+                [RecommendedResourcesDimension.RecommendedResourceId]:
+                    'resource2',
             },
         ]
 
@@ -929,8 +940,10 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
         ]
         const resourcePerTicketIdData = [
             {
-                'AutomationDataset.ticketId': 'ticket1',
-                [AutomationDatasetMeasure.AutomatedInteractions]: '5',
+                [RecommendedResourcesDimension.TicketId]: 'ticket1',
+                [RecommendedResourcesMeasure.NumRecommendedResources]: '5',
+                [RecommendedResourcesDimension.RecommendedResourceId]:
+                    'resource1',
             },
         ]
 

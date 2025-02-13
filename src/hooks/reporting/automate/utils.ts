@@ -44,7 +44,10 @@ import {
     AutomationBillingEventCubeWithJoins,
     AutomationBillingEventMeasure,
 } from 'models/reporting/cubes/automate/AutomationBillingEventCube'
-import {AutomationDatasetMeasure} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import {
+    RecommendedResourcesDimension,
+    RecommendedResourcesMeasure,
+} from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
 import {
     WorkflowDatasetDimension,
     WorkflowDatasetMeasure,
@@ -613,13 +616,27 @@ export const calculateAiAgentKnowledgeResourcePerIntent = (
     resourcePerTicketIdData: QueryReturnType<Cubes>
 ): {'TicketCustomFieldsEnriched.valueString': string; resources: number}[] => {
     const aiAgentKnowledgeResourcePerIntent: Record<string, number> = {}
+    const aiAgentCountedResourcesPerIntent: Record<string, Set<string>> = {}
 
-    aiAgentTicketsWithIntentData.forEach((ticketWithIntent) => {
-        const intent =
-            ticketWithIntent[
-                TicketCustomFieldsDimension.TicketCustomFieldsValueString
-            ]
-        const ticketId = ticketWithIntent[TicketDimension.TicketId]
+    // Get the intent and all ticket ids with that intent
+    const ticketIdsPerIntent = groupBy(
+        aiAgentTicketsWithIntentData,
+        TicketCustomFieldsDimension.TicketCustomFieldsValueString
+    )
+
+    if (!ticketIdsPerIntent || ticketIdsPerIntent['null']) {
+        return []
+    }
+    // Loop through each intent and get the resources used in each ticket
+    Object.entries(ticketIdsPerIntent).forEach(([intent, tickets]) => {
+        const ticketIds = tickets.map(
+            (ticket) => ticket[TicketDimension.TicketId]
+        )
+
+        // Get all resources used in the tickets
+        const resources = resourcePerTicketIdData.filter((item) =>
+            ticketIds.includes(item[RecommendedResourcesDimension.TicketId])
+        )
 
         if (!intent) {
             return
@@ -627,16 +644,39 @@ export const calculateAiAgentKnowledgeResourcePerIntent = (
 
         if (!aiAgentKnowledgeResourcePerIntent[intent]) {
             aiAgentKnowledgeResourcePerIntent[intent] = 0
+            aiAgentCountedResourcesPerIntent[intent] = new Set()
         }
 
-        const resource = resourcePerTicketIdData.find(
-            (item) => item['AutomationDataset.ticketId'] === ticketId
-        )
+        if (resources && resources?.length > 0) {
+            resources.forEach((resource) => {
+                if (
+                    !resource ||
+                    !resource[
+                        RecommendedResourcesDimension.RecommendedResourceId
+                    ]
+                ) {
+                    return
+                }
 
-        if (resource) {
-            aiAgentKnowledgeResourcePerIntent[intent] += Number(
-                resource[AutomationDatasetMeasure.AutomatedInteractions]
-            )
+                if (
+                    !aiAgentCountedResourcesPerIntent[intent].has(
+                        resource[
+                            RecommendedResourcesDimension.RecommendedResourceId
+                        ]
+                    )
+                ) {
+                    aiAgentCountedResourcesPerIntent[intent].add(
+                        resource[
+                            RecommendedResourcesDimension.RecommendedResourceId
+                        ]
+                    )
+                    aiAgentKnowledgeResourcePerIntent[intent] += Number(
+                        resource[
+                            RecommendedResourcesMeasure.NumRecommendedResources
+                        ]
+                    )
+                }
+            })
         }
     })
 

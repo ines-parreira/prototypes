@@ -7,11 +7,10 @@ import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 
 import {
-    AutomatedDatesetEventTypes,
-    AutomationDatasetDimension,
-    AutomationDatasetFilterMember,
-    AutomationDatasetMeasure,
-} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+    RecommendedResourcesFilterMember,
+    RecommendedResourcesMeasure,
+    RecommendedResourcesDimension,
+} from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {TicketCustomFieldsMember} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
@@ -19,15 +18,12 @@ import {
     customerSatisfactionPerCustomFieldQueryFactory,
 } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
 import {
-    automationDatasetAdditionalFilters,
-    automationDatasetDefaultFilters,
-} from 'models/reporting/queryFactories/automate_v2/filters'
-import {
     customFieldsTicketCountQueryFactory,
     customFieldsTicketFactory,
     customFieldsTicketTotalCountQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {ReportingFilterOperator} from 'models/reporting/types'
+import {formatReportingQueryDate} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 
 import {
@@ -232,26 +228,42 @@ describe('aiAgentMetrics', () => {
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
                 {
-                    measures: [AutomationDatasetMeasure.AutomatedInteractions],
-                    dimensions: [AutomationDatasetDimension.TicketId],
+                    measures: [
+                        RecommendedResourcesMeasure.NumRecommendedResources,
+                    ],
+                    dimensions: [
+                        RecommendedResourcesDimension.TicketId,
+                        RecommendedResourcesDimension.RecommendedResourceId,
+                    ],
                     timezone,
                     filters: [
-                        ...automationDatasetDefaultFilters(filters),
-                        ...automationDatasetAdditionalFilters(filters),
                         {
-                            member: AutomationDatasetFilterMember.TicketId,
+                            member: RecommendedResourcesFilterMember.PeriodStart,
+                            operator: ReportingFilterOperator.AfterDate,
+                            values: [
+                                formatReportingQueryDate(
+                                    filters.period.start_datetime
+                                ),
+                            ],
+                        },
+                        {
+                            member: RecommendedResourcesFilterMember.PeriodEnd,
+                            operator: ReportingFilterOperator.BeforeDate,
+                            values: [
+                                formatReportingQueryDate(
+                                    filters.period.end_datetime
+                                ),
+                            ],
+                        },
+                        {
+                            member: RecommendedResourcesFilterMember.TicketId,
                             operator: ReportingFilterOperator.In,
                             values: ticketIds,
                         },
-                        {
-                            member: AutomationDatasetFilterMember.EventType,
-                            operator: ReportingFilterOperator.Equals,
-                            values: [
-                                AutomatedDatesetEventTypes.AiAgentRecommendedResource,
-                            ],
-                        },
                     ],
-                    order: [[AutomationDatasetDimension.TicketId, sorting]],
+                    order: [
+                        [RecommendedResourcesFilterMember.TicketId, sorting],
+                    ],
                 },
                 undefined,
                 false
@@ -273,26 +285,42 @@ describe('aiAgentMetrics', () => {
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
                 {
-                    measures: [AutomationDatasetMeasure.AutomatedInteractions],
-                    dimensions: [AutomationDatasetDimension.TicketId],
+                    measures: [
+                        RecommendedResourcesMeasure.NumRecommendedResources,
+                    ],
+                    dimensions: [
+                        RecommendedResourcesDimension.TicketId,
+                        RecommendedResourcesDimension.RecommendedResourceId,
+                    ],
                     timezone,
                     filters: [
-                        ...automationDatasetDefaultFilters(filters),
-                        ...automationDatasetAdditionalFilters(filters),
                         {
-                            member: AutomationDatasetFilterMember.TicketId,
+                            member: RecommendedResourcesFilterMember.PeriodStart,
+                            operator: ReportingFilterOperator.AfterDate,
+                            values: [
+                                formatReportingQueryDate(
+                                    filters.period.start_datetime
+                                ),
+                            ],
+                        },
+                        {
+                            member: RecommendedResourcesFilterMember.PeriodEnd,
+                            operator: ReportingFilterOperator.BeforeDate,
+                            values: [
+                                formatReportingQueryDate(
+                                    filters.period.end_datetime
+                                ),
+                            ],
+                        },
+                        {
+                            member: RecommendedResourcesFilterMember.TicketId,
                             operator: ReportingFilterOperator.In,
                             values: [],
                         },
-                        {
-                            member: AutomationDatasetFilterMember.EventType,
-                            operator: ReportingFilterOperator.Equals,
-                            values: [
-                                AutomatedDatesetEventTypes.AiAgentRecommendedResource,
-                            ],
-                        },
                     ],
-                    order: [[AutomationDatasetDimension.TicketId, sorting]],
+                    order: [
+                        [RecommendedResourcesFilterMember.TicketId, sorting],
+                    ],
                 },
                 undefined,
                 true
@@ -307,23 +335,37 @@ describe('aiAgentMetrics', () => {
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
                 {
-                    measures: [AutomationDatasetMeasure.AutomatedInteractions],
-                    dimensions: [AutomationDatasetDimension.TicketId],
+                    measures: [
+                        RecommendedResourcesMeasure.NumRecommendedResources,
+                    ],
+                    dimensions: [
+                        RecommendedResourcesDimension.TicketId,
+                        RecommendedResourcesDimension.RecommendedResourceId,
+                    ],
                     timezone,
                     filters: [
-                        ...automationDatasetDefaultFilters(filters),
-                        ...automationDatasetAdditionalFilters(filters),
                         {
-                            member: AutomationDatasetFilterMember.TicketId,
-                            operator: ReportingFilterOperator.In,
-                            values: ticketIds,
+                            member: RecommendedResourcesFilterMember.PeriodStart,
+                            operator: ReportingFilterOperator.AfterDate,
+                            values: [
+                                formatReportingQueryDate(
+                                    filters.period.start_datetime
+                                ),
+                            ],
                         },
                         {
-                            member: AutomationDatasetFilterMember.EventType,
-                            operator: ReportingFilterOperator.Equals,
+                            member: RecommendedResourcesFilterMember.PeriodEnd,
+                            operator: ReportingFilterOperator.BeforeDate,
                             values: [
-                                AutomatedDatesetEventTypes.AiAgentRecommendedResource,
+                                formatReportingQueryDate(
+                                    filters.period.end_datetime
+                                ),
                             ],
+                        },
+                        {
+                            member: RecommendedResourcesFilterMember.TicketId,
+                            operator: ReportingFilterOperator.In,
+                            values: ticketIds,
                         },
                     ],
                 },

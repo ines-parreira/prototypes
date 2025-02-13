@@ -1,3 +1,8 @@
+import {
+    RecommendedResourcesDimension,
+    RecommendedResourcesFilterMember,
+    RecommendedResourcesMeasure,
+} from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {TicketCustomFieldsDimension} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
@@ -12,8 +17,9 @@ import {
 } from 'utils/reporting'
 
 import {
-    customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory,
     customerSatisfactionPerCustomFieldQueryFactory,
+    customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory,
+    recommendedResourceQueryFactory,
 } from '../metrics'
 
 describe('AI Agent metrics', () => {
@@ -88,6 +94,40 @@ describe('AI Agent metrics', () => {
             ],
             measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
             segments: [TicketSatisfactionSurveySegment.SurveyScored],
+            timezone: timezone,
+        })
+    })
+
+    it('recommendedResourceQueryFactory', () => {
+        expect(
+            recommendedResourceQueryFactory(filters, timezone, ['1', '2'])
+        ).toEqual({
+            dimensions: [
+                RecommendedResourcesDimension.TicketId,
+                RecommendedResourcesDimension.RecommendedResourceId,
+            ],
+            filters: [
+                {
+                    member: RecommendedResourcesFilterMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [
+                        formatReportingQueryDate(filters.period.start_datetime),
+                    ],
+                },
+                {
+                    member: RecommendedResourcesFilterMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [
+                        formatReportingQueryDate(filters.period.end_datetime),
+                    ],
+                },
+                {
+                    member: RecommendedResourcesFilterMember.TicketId,
+                    operator: ReportingFilterOperator.In,
+                    values: ['1', '2'],
+                },
+            ],
+            measures: [RecommendedResourcesMeasure.NumRecommendedResources],
             timezone: timezone,
         })
     })
