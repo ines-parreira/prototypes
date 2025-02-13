@@ -3,7 +3,10 @@ import {renderHook} from '@testing-library/react-hooks'
 import {
     useScriptTagMigrationBanner,
     useEmailDomainVerificationBanner,
+    useEmailMigrationBanner,
+    useEmailDisconnectedBanner,
 } from '../banners'
+
 import {useAccountNotVerifiedBanner} from '../useAccountNotVerifiedBanner'
 import {useImpersonatedBanner} from '../useImpersonatedBanner'
 import {useSetBanners} from '../useSetBanners'
@@ -26,6 +29,8 @@ jest.mock('../useUsageBanner', () => ({
 jest.mock('../banners', () => ({
     useScriptTagMigrationBanner: jest.fn(),
     useEmailDomainVerificationBanner: jest.fn(),
+    useEmailMigrationBanner: jest.fn(),
+    useEmailDisconnectedBanner: jest.fn(),
 }))
 
 describe('useSetBanners', () => {
@@ -38,5 +43,7 @@ describe('useSetBanners', () => {
         expect(useUsageBanner).toHaveBeenCalledTimes(1)
         expect(useScriptTagMigrationBanner).toHaveBeenCalledTimes(1)
         expect(useEmailDomainVerificationBanner).toHaveBeenCalledTimes(1)
+        expect(useEmailMigrationBanner).toHaveBeenCalledTimes(1)
+        expect(useEmailDisconnectedBanner).toHaveBeenCalledTimes(1)
     })
 })

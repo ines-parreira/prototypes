@@ -42,6 +42,7 @@ export default function App({children}: Props) {
             scriptTagMigrationBanner: false,
             emailDomainVerificationBanner: false,
             emailDisconnectedBanner: false,
+            emailMigrationBanner: false,
         }
     )
 
@@ -60,7 +61,6 @@ export default function App({children}: Props) {
                 <NotificationsToasts />
                 <AlertNotifications />
                 <AlertBanners />
-                <EmailMigrationBanner />
                 {!bannerList?.scriptTagMigrationBanner && (
                     <ScriptTagMigrationBanner />
                 )}
@@ -70,6 +70,7 @@ export default function App({children}: Props) {
                 {!bannerList?.emailDisconnectedBanner && (
                     <EmailDisconnectedBanner />
                 )}
+                {!bannerList?.emailMigrationBanner && <EmailMigrationBanner />}
                 <ScriptTagMigrationModal />
                 <Spotlight />
                 <div className={css.content}>

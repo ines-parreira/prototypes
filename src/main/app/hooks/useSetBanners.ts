@@ -4,6 +4,7 @@ import {
     useEmailDomainVerificationBanner,
     useScriptTagMigrationBanner,
     useEmailDisconnectedBanner,
+    useEmailMigrationBanner,
 } from './banners'
 import {useAccountNotVerifiedBanner} from './useAccountNotVerifiedBanner'
 import {useImpersonatedBanner} from './useImpersonatedBanner'
@@ -18,6 +19,7 @@ export function useSetBanners() {
     useScriptTagMigrationBanner()
     useEmailDomainVerificationBanner()
     useEmailDisconnectedBanner()
+    useEmailMigrationBanner()
 
     // TMP: Remove this when the new AI Agent location will be adopted enough
     useDisplayAiAgentMovedBanner()

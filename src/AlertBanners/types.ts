@@ -47,6 +47,7 @@ export const BannerCategories = {
     ACCOUNT_USAGE: 'account_usage',
     EMAIL_DISCONNECTED: 'email_disconnected',
     EMAIL_DOMAIN_VERIFICATION: 'email_domain_verification',
+    EMAIL_MIGRATION_BANNER: 'email_migration_banner',
     IMPERSONATION: 'impersonation',
     STATUS_PAGE_INCIDENT: 'status_page_incident',
     STATUS_PAGE_MAINTENANCE: 'status_page_maintenance',
