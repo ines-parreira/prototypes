@@ -3,7 +3,7 @@ import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {SetUpYourEmailTask} from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/SetUpYourEmail.task'
 import {Task} from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/Task'
 import {UpdateShopifyPermissionsTask} from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/UpdateShopifyPermissions.task'
-import {ShopifyPermissionsData} from 'pages/aiAgent/Overview/hooks/pendingTasks/useShopifyPermissionsData'
+
 import {
     AiAgentType,
     getAiAgentTypeFromScopes,
@@ -17,6 +17,7 @@ import {CreateYourFirstGuidanceTask} from './tasks/CreateYourFirstGuidance.task'
 import {DefineHandoverTopicsTask} from './tasks/DefineHandoverTopics.task'
 import {EnableAIAgentOnChatTask} from './tasks/EnableAIAgentOnChat.task'
 import {EnableAIAgentOnEmailTask} from './tasks/EnableAIAgentOnEmail.task'
+import {InstallYourChatTask} from './tasks/InstallYourChat.task'
 import {PublishYourFirstGuidanceTask} from './tasks/PublishYourFirstGuidance.task'
 import {ReviewAIGeneratedGuidancesTask} from './tasks/ReviewAIGeneratedGuidances.task'
 import {SetYourActionsLiveTask} from './tasks/SetYourActionsLive.task'
@@ -27,10 +28,12 @@ import {VerifyYourEmailDomainTask} from './tasks/VerifyYourEmailDomain.task'
 import {type ActionsData} from './useFetchActionsData'
 import {type AiAgentPlaygroundExecutionsData} from './useFetchAiAgentPlaygroundExecutionsData'
 import {type AiAgentStoreConfigurationData} from './useFetchAiAgentStoreConfigurationData'
+import {type ChatIntegrationsStatusData} from './useFetchChatIntegrationsStatusData'
 import {type EmailIntegrationsData} from './useFetchEmailIntegrationsData'
 import {type FaqHelpCentersData} from './useFetchFaqHelpCentersData'
 import {type FileIngestionData} from './useFetchFileIngestionData'
 import {type GuidancesData} from './useFetchGuidancesData'
+import {type ShopifyPermissionsData} from './useShopifyPermissionsData'
 
 export type RuleEngineData = {
     aiAgentStoreConfiguration: AiAgentStoreConfigurationData
@@ -41,6 +44,7 @@ export type RuleEngineData = {
     aiAgentPlaygroundExecutions: AiAgentPlaygroundExecutionsData
     emailIntegrations: EmailIntegrationsData
     shopifyIntegration: ShopifyPermissionsData
+    chatIntegrationsStatus: ChatIntegrationsStatusData
 }
 
 export type RuleEngineRoutes = {
@@ -52,6 +56,7 @@ const tasksPerAiAgentType: Record<
     (data: RuleEngineData, routes: RuleEngineRoutes) => Task[]
 > = {
     mixed: (data: RuleEngineData, routes: RuleEngineRoutes) => [
+        new InstallYourChatTask(data, routes),
         new SetUpYourEmailTask(data, routes),
         new UpdateShopifyPermissionsTask(data, routes),
         new ConnectYourDefaultEmailTask(data, routes),
@@ -70,6 +75,7 @@ const tasksPerAiAgentType: Record<
         new SetYourActionsLiveTask(data, routes),
     ],
     sales: (data: RuleEngineData, routes: RuleEngineRoutes) => [
+        new InstallYourChatTask(data, routes),
         new UpdateShopifyPermissionsTask(data, routes),
         new ConnectAHelpCenterTask(data, routes),
         new EnableAIAgentOnChatTask(data, routes),
@@ -83,6 +89,7 @@ const tasksPerAiAgentType: Record<
     ],
     support: (data: RuleEngineData, routes: RuleEngineRoutes) => [
         new SetUpYourEmailTask(data, routes),
+        new InstallYourChatTask(data, routes),
         new ConnectYourDefaultEmailTask(data, routes),
         new UpdateShopifyPermissionsTask(data, routes),
         new VerifyYourEmailDomainTask(data, routes),

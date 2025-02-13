@@ -7,6 +7,7 @@ import {assumeMock} from 'utils/testing'
 import {useFetchActionsData} from '../useFetchActionsData'
 import {useFetchAiAgentPlaygroundExecutionsData} from '../useFetchAiAgentPlaygroundExecutionsData'
 import {useFetchAiAgentStoreConfigurationData} from '../useFetchAiAgentStoreConfigurationData'
+import {useFetchChatIntegrationsStatusData} from '../useFetchChatIntegrationsStatusData'
 import {useFetchEmailIntegrationsData} from '../useFetchEmailIntegrationsData'
 import {useFetchFaqHelpCentersData} from '../useFetchFaqHelpCentersData'
 import {useFetchFileIngestionData} from '../useFetchFileIngestionData'
@@ -16,6 +17,7 @@ import {useShopifyPermissionsData} from '../useShopifyPermissionsData'
 import {ActionsDataFixture} from './ActionsData.fixture'
 import {AiAgentPlaygroundExecutionsDataFixture} from './AiAgentPlaygroundExecutionsData.fixture'
 import {AiAgentStoreConfigurationFixture} from './AiAgentStoreConfiguration.fixture'
+import {ChatIntegrationsStatusDataFixture} from './ChatIntegrationsStatusData.fixture'
 import {EmailIntegrationsDataFixture} from './EmailIntegrationsData.fixture'
 import {FileIngestionDataFixture} from './FileIngestionData.fixture'
 import {GuidancesDataFixture} from './GuidancesData.fixture'
@@ -59,6 +61,12 @@ jest.mock('../useShopifyPermissionsData', () => ({
     useShopifyPermissionsData: jest.fn(),
 }))
 const useShopifyPermissionsDataMock = assumeMock(useShopifyPermissionsData)
+jest.mock('../useFetchChatIntegrationsStatusData', () => ({
+    useFetchChatIntegrationsStatusData: jest.fn(),
+}))
+const useFetchChatIntegrationsStatusDataMock = assumeMock(
+    useFetchChatIntegrationsStatusData
+)
 
 // Will implements better testing after extracting the list of tasks from the ruleEngine
 describe('usePendingTasksRuleEngine', () => {
@@ -92,7 +100,6 @@ describe('usePendingTasksRuleEngine', () => {
     })
 
     useFetchEmailIntegrationsDataMock.mockReturnValue({
-        isLoading: false,
         data: EmailIntegrationsDataFixture.start()
             .withoutEmailIntegrations()
             .build(),
@@ -104,21 +111,28 @@ describe('usePendingTasksRuleEngine', () => {
             .build(),
     })
 
+    useFetchChatIntegrationsStatusDataMock.mockReturnValue({
+        isLoading: false,
+        data: ChatIntegrationsStatusDataFixture.start()
+            .withoutChatIntegrationStatus()
+            .build(),
+    })
+
     it.each([
         {
             scopes: [AiAgentScope.Support, AiAgentScope.Sales],
             pendingTasks: 5,
-            completedTasks: 11,
+            completedTasks: 12,
         },
         {
             scopes: [AiAgentScope.Support],
             pendingTasks: 5,
-            completedTasks: 11,
+            completedTasks: 12,
         },
         {
             scopes: [AiAgentScope.Sales],
             pendingTasks: 3,
-            completedTasks: 7,
+            completedTasks: 8,
         },
     ])(
         'should return valid tasks for scopes $scopes',

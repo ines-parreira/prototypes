@@ -7,6 +7,7 @@ import {Task} from './tasks/Task'
 import {useFetchActionsData} from './useFetchActionsData'
 import {useFetchAiAgentPlaygroundExecutionsData} from './useFetchAiAgentPlaygroundExecutionsData'
 import {useFetchAiAgentStoreConfigurationData} from './useFetchAiAgentStoreConfigurationData'
+import {useFetchChatIntegrationsStatusData} from './useFetchChatIntegrationsStatusData'
 import {useFetchEmailIntegrationsData} from './useFetchEmailIntegrationsData'
 import {useFetchFaqHelpCentersData} from './useFetchFaqHelpCentersData'
 import {useFetchFileIngestionData} from './useFetchFileIngestionData'
@@ -54,13 +55,18 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
         enabled: !shouldFakeTasks,
     })
 
-    const {
-        isLoading: emailIntegrationsDataIsLoading,
-        data: emailIntegrationsData,
-    } = useFetchEmailIntegrationsData()
+    const {data: emailIntegrationsData} = useFetchEmailIntegrationsData()
 
     const {data: shopifyPermissionsData} = useShopifyPermissionsData({
         storeName,
+    })
+
+    const {
+        isLoading: chatIntegrationsStatusDataIsLoading,
+        data: chatIntegrationsStatusData,
+    } = useFetchChatIntegrationsStatusData({
+        chatIds: aiAgentStoreConfigurationData?.monitoredChatIntegrations ?? [],
+        enabled: !shouldFakeTasks && !!aiAgentStoreConfigurationData,
     })
 
     const isLoading =
@@ -70,7 +76,7 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
         guidancesDataIsLoading ||
         actionsDataIsLoading ||
         aiAgentPlaygroundExecutionsDataIsLoading ||
-        emailIntegrationsDataIsLoading
+        chatIntegrationsStatusDataIsLoading
     const isReady =
         !!aiAgentStoreConfigurationData &&
         !!faqHelpCentersData &&
@@ -79,7 +85,8 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
         !!actionsData &&
         !!aiAgentPlaygroundExecutionsData &&
         !!emailIntegrationsData &&
-        !!shopifyPermissionsData
+        !!shopifyPermissionsData &&
+        !!chatIntegrationsStatusData
 
     // Use memo instead of useEffect
     const [{completedTasks, pendingTasks}, setTasks] = useState<{
@@ -105,6 +112,7 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
                             aiAgentPlaygroundExecutionsData,
                         emailIntegrations: emailIntegrationsData,
                         shopifyIntegration: shopifyPermissionsData,
+                        chatIntegrationsStatus: chatIntegrationsStatusData,
                     },
                     {
                         aiAgentRoutes: routes,
@@ -122,6 +130,7 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
         aiAgentPlaygroundExecutionsData,
         emailIntegrationsData,
         shopifyPermissionsData,
+        chatIntegrationsStatusData,
     ])
 
     if (shouldFakeTasks) {

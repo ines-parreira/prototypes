@@ -11,6 +11,7 @@ export const buildRuleEngineData = (
     aiAgentPlaygroundExecutions: {} as any,
     emailIntegrations: [],
     shopifyIntegration: {} as any,
+    chatIntegrationsStatus: {} as any,
     ...data,
 })
 

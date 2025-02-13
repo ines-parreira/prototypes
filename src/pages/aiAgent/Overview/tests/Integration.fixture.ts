@@ -1,4 +1,9 @@
-import {Integration, IntegrationType} from 'models/integration/types'
+import {
+    EmailIntegrationMeta,
+    GorgiasChatIntegrationMeta,
+    Integration,
+    IntegrationType,
+} from 'models/integration/types'
 
 type AllKeys = keyof IntegrationFixture
 type ConfiguredIntegrationFixture<
@@ -8,6 +13,12 @@ type ConfiguredIntegrationFixture<
 export type IntegrationFixtureFullyConfigured =
     ConfiguredIntegrationFixture<'build'>
 
+export type AsEmailArgs = {
+    type: IntegrationType.Gmail | IntegrationType.Outlook
+    address: string
+    isPreferred?: boolean
+    isVerified?: boolean
+}
 export class IntegrationFixture {
     private integration: Integration
 
@@ -16,11 +27,36 @@ export class IntegrationFixture {
     }
 
     static start() {
-        return new IntegrationFixture() as ConfiguredIntegrationFixture<'asShopify'>
+        return new IntegrationFixture() as ConfiguredIntegrationFixture<
+            'asShopify' | 'asEmail' | 'asChat'
+        >
     }
 
     asShopify() {
         this.integration.type = IntegrationType.Shopify
+        return this as ConfiguredIntegrationFixture<'withDetails'>
+    }
+
+    asEmail({
+        type,
+        address,
+        isPreferred = true,
+        isVerified = true,
+    }: AsEmailArgs) {
+        this.integration.type = type
+        this.integration.meta = {
+            address,
+            preferred: isPreferred,
+            verified: isVerified,
+        } as EmailIntegrationMeta
+        return this as ConfiguredIntegrationFixture<'withDetails'>
+    }
+
+    asChat() {
+        this.integration.type = IntegrationType.GorgiasChat
+        this.integration.meta = {
+            app_id: `app_id_123`,
+        } as GorgiasChatIntegrationMeta
         return this as ConfiguredIntegrationFixture<'withDetails'>
     }
 
