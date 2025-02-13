@@ -14,6 +14,7 @@ import {ApiListResponseCursorPagination} from 'models/api/types'
 import {FilterKey} from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
+import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 import {CustomFieldSelect} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {CustomFieldsTicketCountBreakdownTableChart} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
@@ -33,6 +34,9 @@ import {
     initialState as ticketInsightsState,
 } from 'state/ui/stats/ticketInsightsSlice'
 import {assumeMock} from 'utils/testing'
+
+jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
+const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 jest.mock('pages/stats/support-performance/SupportPerformanceFilters.tsx')
 const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)
@@ -101,6 +105,10 @@ describe('<SupportPerformanceTicketInsights />', () => {
     useAppSelectorMock.mockReturnValue({id: 1})
 
     beforeEach(() => {
+        useReportChartRestrictionsMock.mockReturnValue({
+            isChartRestrictedToCurrentUser: () => false,
+        } as any)
+
         SupportPerformanceFiltersMock.mockImplementation(componentMock)
         CustomFieldSelectMock.mockImplementation(componentMock)
         TicketDistributionTableMock.mockImplementation(componentMock)

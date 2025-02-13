@@ -7,10 +7,13 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {ArticleViewsTrendCard} from 'pages/stats/help-center/components/ArticleViewsTrendCard/ArticleViewsTrendCard'
-
 import HelpCenterOverviewSection from 'pages/stats/help-center/components/HelpCenterOverviewSection/HelpCenterOverviewSection'
 import {SearchesTrendCard} from 'pages/stats/help-center/components/SearchesTrendCard/SearchesTrendCard'
+import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import {assumeMock} from 'utils/testing'
+
+jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
+const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 jest.mock('pages/stats/help-center/hooks/useArticleViewsTrend', () => ({
     useArticleViewsTrend: () => ({data: {value: 1}, isFetching: false}),
@@ -37,6 +40,10 @@ const renderComponent = () => {
 
 describe('<HelpCenterOverviewSection />', () => {
     beforeEach(() => {
+        useReportChartRestrictionsMock.mockReturnValue({
+            isChartRestrictedToCurrentUser: () => false,
+        } as any)
+
         ArticleViewsTrendCardMock.mockImplementation(() => <div />)
         SearchesTrendCardMock.mockImplementation(() => <div />)
     })

@@ -9,6 +9,11 @@ import {
     DashboardChartProps,
     ReportConfig,
 } from 'pages/stats/custom-reports/types'
+import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import {assumeMock} from 'utils/testing'
+
+jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
+const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 const content = 'Test'
 const chart = 'chart-id'
@@ -38,6 +43,22 @@ describe('<CustomReportComponent />', () => {
             },
         },
     } as unknown as ReportConfig<string>
+
+    const isChartRestrictedToCurrentUser = jest.fn()
+
+    beforeEach(() => {
+        useReportChartRestrictionsMock.mockReturnValue({
+            isChartRestrictedToCurrentUser,
+        } as any)
+    })
+
+    it('should not render if the chart is restricted', () => {
+        isChartRestrictedToCurrentUser.mockReturnValueOnce(true)
+
+        render(<CustomReportComponent chart={chart} config={config} />)
+
+        expect(chartComponentMock).not.toHaveBeenCalled()
+    })
 
     it('should not render chartId if featureFlag is false', () => {
         render(<CustomReportComponent chart={chart} config={config} />)

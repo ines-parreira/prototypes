@@ -16,6 +16,7 @@ import {
 import {FilterKey} from 'models/stat/types'
 import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import {AccuracyTrendCard} from 'pages/stats/support-performance/auto-qa/AccuracyTrendCard'
 import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
 import {AutoQAAgentPerformanceHeatmapSwitch} from 'pages/stats/support-performance/auto-qa/AutoQAAgentPerformanceHeatmapSwitch'
@@ -34,6 +35,9 @@ import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/a
 import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
 import {RootState} from 'state/types'
 import {assumeMock, renderWithStore} from 'utils/testing'
+
+jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
+const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 const componentMock = () => <div />
 
@@ -112,6 +116,10 @@ const state = {
 
 describe('AutoQA', () => {
     beforeEach(() => {
+        useReportChartRestrictionsMock.mockReturnValue({
+            isChartRestrictedToCurrentUser: () => false,
+        } as any)
+
         NumberOfClosedTicketsReviewedTrendCardMock.mockImplementation(
             componentMock
         )

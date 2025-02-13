@@ -20,12 +20,16 @@ import {FiltersPanelWrapper} from 'pages/stats/common/filters/FiltersPanelWrappe
 import AIBanner from 'pages/stats/help-center/components/AIBanner'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
 import {HELP_CENTER_STATS_TEST_IDS} from 'pages/stats/help-center/pages/tests/constants'
+import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import {initialState} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import configureStore from 'store/configureStore.prod'
 import {InitialRootState} from 'types'
 import {getSortByName} from 'utils/getSortByName'
 import {assumeMock, renderWithStore} from 'utils/testing'
+
+jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
+const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 jest.mock('common/segment')
 jest.mock(
@@ -99,6 +103,10 @@ const renderComponent = () => {
 
 describe('<HelpCenterStats />', () => {
     beforeEach(() => {
+        useReportChartRestrictionsMock.mockReturnValue({
+            isChartRestrictedToCurrentUser: () => false,
+        } as any)
+
         const mockedDate = new Date(1999, 10, 1)
 
         jest.useFakeTimers()
