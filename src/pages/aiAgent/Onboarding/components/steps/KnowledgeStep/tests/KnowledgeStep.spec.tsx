@@ -118,7 +118,7 @@ describe('KnowledgeStep', () => {
 
         expect(
             screen.getByText(
-                /Your AI Agent uses your knowledge to respond to customers/
+                /Your AI Agent leverages different knowledge resources/
             )
         ).toBeInTheDocument()
     })

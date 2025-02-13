@@ -95,8 +95,9 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                     titleMagenta="AI Agent's knowledge"
                 />
                 <AIBanner fillStyle="fill">
-                    Your AI Agent uses your knowledge to respond to customers,
-                    organizing information into clear categories for accuracy.
+                    Your AI Agent leverages different knowledge resources to
+                    provide accurate responses to customers. You can update or
+                    expand your knowledge resources anytime in your settings.
                 </AIBanner>
                 <Card className={css.card}>
                     <CardContent>
