@@ -356,18 +356,10 @@
         }
 
         &.primary {
-            margin: 0 0 0 auto;
+            margin: 0 0 4px auto;
             background: @primary;
-
             color: var(--neutral-grey-0);
-        }
-
-        &.firstMessageOfAppUser {
-            border-top-right-radius: 2px;
-        }
-
-        &.firstMessageOfAppMaker {
-            border-top-left-radius: 2px;
+            max-width: calc(100% - 32px - 8px); // icon size + gap size
         }
 
         &.lastMessage {
