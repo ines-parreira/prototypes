@@ -95,8 +95,8 @@ export const SkillsetStep: FC<StepProps> = ({
                 onBackClick={() => {}}
             >
                 <MainTitle
-                    titleBlack="Welcome to Conversational AI"
-                    titleMagenta="Select your agents below to get started!"
+                    titleBlack="Welcome to Conversational AI!"
+                    titleMagenta="Select your agents below to get started."
                 />
 
                 <div className={css.skillSetContainer}>

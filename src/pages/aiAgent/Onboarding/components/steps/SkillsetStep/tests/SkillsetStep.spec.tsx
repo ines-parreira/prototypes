@@ -74,7 +74,7 @@ describe('<SkillsetStep />', () => {
         jest.runAllTimers()
 
         expect(
-            screen.getByText('Welcome to Conversational AI')
+            screen.getByText('Welcome to Conversational AI!')
         ).toBeInTheDocument()
     })
 

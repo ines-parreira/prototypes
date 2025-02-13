@@ -787,7 +787,7 @@ describe('<Routes/>', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.getByText('Welcome to Conversational AI')
+                    screen.getByText('Welcome to Conversational AI!')
                 ).toBeInTheDocument()
             })
         })
