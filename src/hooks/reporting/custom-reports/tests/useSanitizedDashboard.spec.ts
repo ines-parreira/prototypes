@@ -1,6 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
 
-import * as reportRestrictionsModule from 'hooks/reporting/custom-reports/useReportRestrictions'
 import {useSanitizedDashboard} from 'hooks/reporting/custom-reports/useSanitizedDashboard'
 import {CustomReportChartSchema, CustomReportRowSchema} from 'models/stat/types'
 import {
@@ -8,13 +7,14 @@ import {
     CustomReportSchema,
     CustomReportSectionSchema,
 } from 'pages/stats/custom-reports/types'
+import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import {assumeMock} from 'utils/testing'
 
-const mockUseReportRestrictions = jest.spyOn(
-    reportRestrictionsModule,
-    'useReportRestrictions'
-)
+jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
+const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 describe('useSanitizedDashboard', () => {
+    beforeEach(() => {})
     it('should return dashboard unchanged when no restrictions exist', () => {
         const dashboard: CustomReportSchema = {
             id: 1,
@@ -28,7 +28,10 @@ describe('useSanitizedDashboard', () => {
             ],
         }
 
-        mockUseReportRestrictions.mockReturnValue({restrictionsMap: {}})
+        useReportChartRestrictionsMock.mockImplementation(() => ({
+            isChartRestrictedToCurrentUser: () => false,
+            isRouteRestrictedToCurrentUser: () => false,
+        }))
 
         const {result} = renderHook(() => useSanitizedDashboard(dashboard))
         expect(result.current).toEqual(dashboard)
@@ -51,11 +54,11 @@ describe('useSanitizedDashboard', () => {
             ],
         }
 
-        mockUseReportRestrictions.mockReturnValue({
-            restrictionsMap: {
-                'support-performance-overview': true,
-            },
-        })
+        useReportChartRestrictionsMock.mockImplementation(() => ({
+            isChartRestrictedToCurrentUser: (chartId) =>
+                chartId === 'customer_satisfaction_trend_card',
+            isRouteRestrictedToCurrentUser: () => true,
+        }))
 
         const {result} = renderHook(() => useSanitizedDashboard(dashboard))
 
@@ -92,11 +95,11 @@ describe('useSanitizedDashboard', () => {
             ],
         }
 
-        mockUseReportRestrictions.mockReturnValue({
-            restrictionsMap: {
-                'support-performance-overview': true,
-            },
-        })
+        useReportChartRestrictionsMock.mockImplementation(() => ({
+            isChartRestrictedToCurrentUser: (chartId) =>
+                chartId === 'customer_satisfaction_trend_card',
+            isRouteRestrictedToCurrentUser: () => true,
+        }))
 
         const {result} = renderHook(() => useSanitizedDashboard(dashboard))
 
@@ -130,7 +133,10 @@ describe('useSanitizedDashboard', () => {
             ],
         }
 
-        mockUseReportRestrictions.mockReturnValue({restrictionsMap: {}})
+        useReportChartRestrictionsMock.mockImplementation(() => ({
+            isChartRestrictedToCurrentUser: () => false,
+            isRouteRestrictedToCurrentUser: () => false,
+        }))
 
         const {result} = renderHook(() => useSanitizedDashboard(dashboard))
 
