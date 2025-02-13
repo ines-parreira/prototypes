@@ -1,5 +1,7 @@
 import React from 'react'
 
+import {DASHBOARDS_DOCUMENTATION_URL} from 'pages/stats/custom-reports/constants'
+
 import {ChartsFrameSVG} from 'pages/stats/custom-reports/CreateCustomReport/ChartsFrameSVG'
 import css from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport.less'
 
@@ -8,9 +10,6 @@ export const CREATE_REPORT_DESCRIPTION =
     'Add Charts such as KPIs, tables, and graphs by copying from report or select multiple via list view'
 export const LEARN_ABOUT = 'Learn about'
 export const CUSTOM_REPORTS = 'Dashboards'
-
-export const DASHBOARDS_DOCUMENTATION_URL =
-    'https://docs.gorgias.com/en-US/1093828-b36482f1d68142c992b27c2fd1fd9ec3'
 
 export const CreateCustomReport = () => {
     return (

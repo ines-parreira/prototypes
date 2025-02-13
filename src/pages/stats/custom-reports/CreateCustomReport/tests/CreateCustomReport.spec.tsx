@@ -1,12 +1,14 @@
 import {render, screen} from '@testing-library/react'
+
 import React from 'react'
+
+import {DASHBOARDS_DOCUMENTATION_URL} from 'pages/stats/custom-reports/constants'
 
 import {
     CREATE_CUSTOM_REPORT,
     CREATE_REPORT_DESCRIPTION,
     CreateCustomReport,
     CUSTOM_REPORTS,
-    DASHBOARDS_DOCUMENTATION_URL,
     LEARN_ABOUT,
 } from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
 

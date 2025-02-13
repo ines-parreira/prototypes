@@ -11,6 +11,7 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import {ChartsDefaultFrame} from 'pages/stats/custom-reports/ChartsDefaultFrame'
 import {REPORTS_MODAL_CONFIG} from 'pages/stats/custom-reports/config'
+import {DASHBOARDS_DOCUMENTATION_URL} from 'pages/stats/custom-reports/constants'
 import css from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal.less'
 import {ModalSearchBar} from 'pages/stats/custom-reports/CustomReportsModal/ModalSearchBar'
 import {SelectableCharts} from 'pages/stats/custom-reports/CustomReportsModal/SelectableCharts'
@@ -28,17 +29,26 @@ import {
 export const MODAL_TITLE = 'Select charts to display'
 export const GRAPH_DESCRIPTION =
     'Select from available graphs, tables, and charts from existing reports'
-export const GRAPH_LINK = 'Read more about available charts'
 export const ADD_CHARTS_CTA = 'Add Charts'
 export const READ_MORE_ABOUT_CHARTS = 'Read more about available charts'
 export const NO_SEARCH_RESULT =
     'No search results. Please check your spelling and try again.'
 
+const ReadMoreAboutChartsLink = () => {
+    return (
+        <a href={DASHBOARDS_DOCUMENTATION_URL} target="_blank" rel="noreferrer">
+            {READ_MORE_ABOUT_CHARTS}
+        </a>
+    )
+}
+
 const NoSearchResult = () => {
     return (
         <div className={css.noResult}>
             <div>{NO_SEARCH_RESULT}</div>
-            <div className={css.link}>{READ_MORE_ABOUT_CHARTS}</div>
+            <div className={css.link}>
+                <ReadMoreAboutChartsLink />
+            </div>
         </div>
     )
 }
@@ -49,7 +59,7 @@ const InitialChartsFrame = () => {
             <ChartsDefaultFrame />
             <div className={css.footer}>
                 <div className={css.description}>{GRAPH_DESCRIPTION}</div>
-                <a href="#">{READ_MORE_ABOUT_CHARTS}</a>
+                <ReadMoreAboutChartsLink />
             </div>
         </div>
     )
