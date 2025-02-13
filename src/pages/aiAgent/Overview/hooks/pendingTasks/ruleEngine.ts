@@ -1,5 +1,6 @@
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
+import {SetUpYourEmailTask} from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/SetUpYourEmail.task'
 import {Task} from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/Task'
 import {UpdateShopifyPermissionsTask} from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/UpdateShopifyPermissions.task'
 import {ShopifyPermissionsData} from 'pages/aiAgent/Overview/hooks/pendingTasks/useShopifyPermissionsData'
@@ -51,6 +52,7 @@ const tasksPerAiAgentType: Record<
     (data: RuleEngineData, routes: RuleEngineRoutes) => Task[]
 > = {
     mixed: (data: RuleEngineData, routes: RuleEngineRoutes) => [
+        new SetUpYourEmailTask(data, routes),
         new UpdateShopifyPermissionsTask(data, routes),
         new ConnectYourDefaultEmailTask(data, routes),
         new VerifyYourEmailDomainTask(data, routes),
@@ -80,6 +82,7 @@ const tasksPerAiAgentType: Record<
         new TestAIAgentTask(data, routes),
     ],
     support: (data: RuleEngineData, routes: RuleEngineRoutes) => [
+        new SetUpYourEmailTask(data, routes),
         new ConnectYourDefaultEmailTask(data, routes),
         new UpdateShopifyPermissionsTask(data, routes),
         new VerifyYourEmailDomainTask(data, routes),

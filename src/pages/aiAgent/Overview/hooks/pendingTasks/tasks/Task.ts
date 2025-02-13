@@ -4,7 +4,7 @@ export abstract class Task {
     public readonly display: boolean
     public readonly featureUrl: string
 
-    constructor(
+    protected constructor(
         public readonly title: string,
         public readonly caption: string,
         public readonly type: 'BASIC' | 'RECOMMENDED',
