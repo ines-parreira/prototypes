@@ -91,30 +91,6 @@ describe('NavBarProvider', () => {
         expect(getState().navBarDisplay).toBe(NavBarDisplayMode.Open)
     })
 
-    it('handles home button click correctly', () => {
-        const {getByTestId} = render(
-            <NavBarProvider>
-                <TestComponent />
-            </NavBarProvider>
-        )
-
-        const homeButton = getByTestId('home-button')
-        const getState = () =>
-            JSON.parse(
-                getByTestId('test-component').dataset.state!
-            ) as NavBarContextType
-
-        act(() => {
-            homeButton.click()
-        })
-        expect(getState().navBarDisplay).toBe(NavBarDisplayMode.Collapsed)
-
-        act(() => {
-            homeButton.click()
-        })
-        expect(getState().navBarDisplay).toBe(NavBarDisplayMode.Open)
-    })
-
     it('maintains open state during hover events', () => {
         const {getByTestId} = render(
             <NavBarProvider>
@@ -250,46 +226,5 @@ describe('NavBarProvider', () => {
         )
 
         expect(getState().navBarDisplay).toBe(NavBarDisplayMode.Collapsed)
-    })
-
-    it('handles home button click with freeze behavior', () => {
-        const {getByTestId} = render(
-            <NavBarProvider>
-                <TestComponent />
-            </NavBarProvider>
-        )
-        const homeButton = getByTestId('home-button')
-        const navbarArea = getByTestId('navbar-area')
-        const getState = () =>
-            JSON.parse(
-                getByTestId('test-component').dataset.state!
-            ) as NavBarContextType
-
-        // Change state
-        act(() => {
-            homeButton.click()
-        })
-
-        // Verify immediate state
-        expect(getState().navBarDisplay).toBe(NavBarDisplayMode.Collapsed)
-        expect(getState().isNavHovered).toBe(false)
-
-        // Immediate hover should not affect the navbar due to freeze
-        act(() => {
-            fireEvent.mouseEnter(navbarArea)
-        })
-        expect(getState().isNavHovered).toBe(false)
-
-        // Wait for freeze timeout using fake timers
-        act(() => {
-            jest.advanceTimersByTime(800)
-        })
-
-        // Now hover should work
-        act(() => {
-            fireEvent.mouseEnter(navbarArea)
-        })
-        expect(getState().isNavHovered).toBe(true)
-        expect(getState().navBarDisplay).toBe(NavBarDisplayMode.Hover)
     })
 })

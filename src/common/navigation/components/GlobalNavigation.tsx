@@ -22,8 +22,7 @@ export default function GlobalNavigation() {
     const currentUser = useAppSelector(getCurrentUser)
     const activeItem = useActiveItem()
     const navBarMenuIcon = useNavBarMenuIcon()
-    const {onMenuToggle, onNavHover, onNavLeave, onHomeButtonClick} =
-        useNavBar()
+    const {onMenuToggle, onNavHover, onNavLeave} = useNavBar()
 
     useNavBarShortcuts()
 
@@ -50,7 +49,6 @@ export default function GlobalNavigation() {
                         tooltip={<span>Home</span>}
                         url="/app/home"
                         data-candu-id="global-navigation-menu-home-page"
-                        onClick={onHomeButtonClick}
                     />
                     <GlobalNavigationSpotlight />
                     <NotificationsItem />

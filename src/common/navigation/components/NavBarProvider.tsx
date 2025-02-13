@@ -64,26 +64,6 @@ export function NavBarProvider({children}: {children: ReactNode}) {
         }
     }, [navBarDisplay, onNavLeave, setNavBarDisplay])
 
-    const onHomeButtonClick = useCallback(() => {
-        // Freeze the navbar to prevent it from being shown when the user hovers the global nav
-        // after the home button is clicked
-        /* istanbul ignore next */
-        isFrozenRef.current = true
-        /* istanbul ignore next */
-        setIsNavHovered(false)
-        /* istanbul ignore next */
-        setNavBarDisplay(NavBarDisplayMode.Collapsed)
-
-        /* istanbul ignore next */
-        clearTimeout()
-        /* istanbul ignore next */
-        setTimeout(() => {
-            /* istanbul ignore next */
-            isFrozenRef.current = false
-            /* istanbul ignore next */
-        }, FREEZE_TIMEOUT)
-    }, [setNavBarDisplay, clearTimeout, setTimeout])
-
     const value = useMemo(
         () => ({
             navBarDisplay,
@@ -93,7 +73,7 @@ export function NavBarProvider({children}: {children: ReactNode}) {
             onNavLeave,
             onOverlayHover,
             onMenuToggle,
-            onHomeButtonClick,
+
             isNavBarVisible: navBarDisplay !== NavBarDisplayMode.Collapsed,
         }),
         [
@@ -104,7 +84,6 @@ export function NavBarProvider({children}: {children: ReactNode}) {
             onNavLeave,
             onOverlayHover,
             onMenuToggle,
-            onHomeButtonClick,
         ]
     )
 
