@@ -103,7 +103,7 @@ export default function Navbar({
                 <div data-candu-id="navbar-menu-spacer" />
                 {!showGlobalNav && <UserMenuWithToggle />}
             </div>
-            {!disableResize && (
+            {enableResize && (
                 <div
                     className={cn(css['sidebar-resizer'], {
                         [css.isTouched]: isResizing,
