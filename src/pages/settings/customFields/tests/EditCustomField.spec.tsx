@@ -92,6 +92,6 @@ describe('<EditCustomField/>', () => {
         render(<EditCustomField objectType={OBJECT_TYPES.TICKET} />)
         expect(
             screen.getByText('see this article').getAttribute('href')
-        ).toEqual('https://docs.gorgias.com/en-US/managed-ticket-fields-273001')
+        ).toEqual('https://link.gorgias.com/dz7')
     })
 })

@@ -26,7 +26,17 @@ export default function RequirementTypeInput(props: RequirementTypeInputProps) {
             </p>
             <p className="mb-4">
                 <a
-                    href="https://link.gorgias.com/ticket-fields-playbook"
+                    className="d-block"
+                    href="https://link.gorgias.com/gx3"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <i className="material-icons mr-1">menu_book</i>
+                    How to Set up Ticket Fields
+                </a>
+                <a
+                    className="d-block"
+                    href="https://link.gorgias.com/ylm"
                     target="_blank"
                     rel="noopener noreferrer"
                 >

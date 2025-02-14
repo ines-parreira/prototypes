@@ -151,7 +151,7 @@ export default function CustomFields({
                             </p>
                             <a
                                 className="d-block"
-                                href="https://docs.gorgias.com/en-US/articles/ticket-fields-63498"
+                                href="https://link.gorgias.com/gx3"
                                 rel="noopener noreferrer"
                                 target="_blank"
                             >

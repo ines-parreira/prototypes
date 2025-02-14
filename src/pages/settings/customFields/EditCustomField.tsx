@@ -34,7 +34,7 @@ export default function EditCustomField({
     const helpArticleLink =
         objectType === OBJECT_TYPES.CUSTOMER
             ? 'https://link.gorgias.com/tjj'
-            : 'https://docs.gorgias.com/en-US/managed-ticket-fields-273001'
+            : 'https://link.gorgias.com/dz7'
 
     useTitle(field?.label)
 

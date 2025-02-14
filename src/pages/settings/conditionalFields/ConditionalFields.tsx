@@ -104,12 +104,21 @@ export default function ConditionalFields() {
                             </p>
                             <a
                                 className="d-block"
+                                href="https://link.gorgias.com/8d2"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                <i className="material-icons">menu_book</i>{' '}
+                                <span>How to set up Field Conditions</span>
+                            </a>
+                            <a
+                                className="d-block"
                                 href="https://link.gorgias.com/ticket-fields-playbook-conditional"
                                 rel="noopener noreferrer"
                                 target="_blank"
                             >
                                 <i className="material-icons">menu_book</i>{' '}
-                                <span>Field Conditions playbook</span>
+                                <span>Learn more about field visibility</span>
                             </a>
                         </div>
                         <div className="d-flex">
