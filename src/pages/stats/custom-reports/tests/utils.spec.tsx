@@ -12,10 +12,7 @@ import {
 import {AxiosError} from 'axios'
 import React from 'react'
 
-import {
-    REPORTS_MODAL_CONFIG,
-    ReportsIDs,
-} from 'pages/stats/custom-reports/config'
+import {REPORTS_CONFIG, ReportsIDs} from 'pages/stats/custom-reports/config'
 import {getSearchConfig} from 'pages/stats/custom-reports/CustomReportsModal/ModalSearchBar'
 import {
     ChartConfig,
@@ -296,7 +293,7 @@ describe('getSearchConfig', () => {
     it('should return matching charts based on case-insensitive search query', () => {
         const searchValue =
             OverviewMetricConfig[OverviewMetric.CustomerSatisfaction].title
-        const result = getSearchConfig(REPORTS_MODAL_CONFIG, searchValue)
+        const result = getSearchConfig(REPORTS_CONFIG, searchValue)
 
         expect(result).toEqual([
             {
@@ -374,14 +371,14 @@ describe('getSearchConfig', () => {
 
     it('should return null if no charts match the search query', () => {
         const searchValue = 'Nonexistent'
-        const result = getSearchConfig(REPORTS_MODAL_CONFIG, searchValue)
+        const result = getSearchConfig(REPORTS_CONFIG, searchValue)
 
         expect(result).toEqual(null)
     })
 
     it('should correctly match partial chart labels', () => {
         const searchValue = 'Messages'
-        const result = getSearchConfig(REPORTS_MODAL_CONFIG, searchValue)
+        const result = getSearchConfig(REPORTS_CONFIG, searchValue)
 
         expect(result).toEqual([
             {
@@ -418,9 +415,9 @@ describe('getSearchConfig', () => {
 
     it('should return all charts if the search query is empty', () => {
         const searchValue = ''
-        const result = getSearchConfig(REPORTS_MODAL_CONFIG, searchValue)
+        const result = getSearchConfig(REPORTS_CONFIG, searchValue)
 
-        expect(result).toEqual(REPORTS_MODAL_CONFIG)
+        expect(result).toEqual(REPORTS_CONFIG)
     })
 })
 

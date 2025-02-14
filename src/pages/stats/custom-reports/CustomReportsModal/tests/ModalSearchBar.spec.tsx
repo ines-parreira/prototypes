@@ -2,10 +2,7 @@ import {fireEvent, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {
-    REPORTS_MODAL_CONFIG,
-    ReportsIDs,
-} from 'pages/stats/custom-reports/config'
+import {REPORTS_CONFIG, ReportsIDs} from 'pages/stats/custom-reports/config'
 import {ModalSearchBar} from 'pages/stats/custom-reports/CustomReportsModal/ModalSearchBar'
 import {
     OverviewChart,
@@ -15,7 +12,7 @@ import {
 const setConfig = jest.fn()
 const setSelectedReport = jest.fn()
 const props = {
-    config: REPORTS_MODAL_CONFIG,
+    config: REPORTS_CONFIG,
     setConfig,
     setSelectedReport,
 }
@@ -76,7 +73,7 @@ describe('ModalSearchBar', () => {
 
         expect(screen.getByRole('textbox')).toHaveValue('')
         expect(setSelectedReport).toHaveBeenCalledWith(null)
-        expect(setConfig).toHaveBeenCalledWith(REPORTS_MODAL_CONFIG)
+        expect(setConfig).toHaveBeenCalledWith(REPORTS_CONFIG)
     })
 
     it('should manage no result case', async () => {

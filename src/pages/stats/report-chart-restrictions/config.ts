@@ -27,7 +27,10 @@ export type RestrictionsPerCustomer = {
 export const RBAC_RESTRICTIONS: RestrictionsPerCustomer = {
     [testAccountId]: [
         {
-            ids: [ReportsIDs.SupportPerformanceAgentsReportConfig],
+            ids: [
+                ReportsIDs.SupportPerformanceAgentsReportConfig,
+                ReportsIDs.SupportPerformanceRevenueReportConfig,
+            ],
             type: RestrictedComponentType.Report,
             role: UserRole.Agent,
         },

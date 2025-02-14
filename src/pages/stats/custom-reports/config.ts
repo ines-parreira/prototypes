@@ -37,6 +37,7 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import {SupportPerformanceRevenueReportConfig} from 'pages/stats/support-performance/revenue/SupportPerformanceRevenueReportConfig'
 import {
     TicketInsightsTagsChart,
     TicketInsightsTagsReportConfig,
@@ -63,6 +64,7 @@ export const AGENT_PERFORMANCE_ID = 'SupportPerformanceAgentsReportConfig'
 export enum ReportsIDs {
     SupportPerformanceOverviewReportConfig = 'SupportPerformanceOverviewReportConfig',
     SupportPerformanceAgentsReportConfig = 'SupportPerformanceAgentsReportConfig',
+    SupportPerformanceRevenueReportConfig = 'SupportPerformanceRevenueReportConfig',
     BusiestTimesReportConfig = 'BusiestTimesReportConfig',
     ChannelsReportConfig = 'ChannelsReportConfig',
     ServiceLevelAgreementsReportConfig = 'ServiceLevelAgreementsReportConfig',
@@ -75,7 +77,7 @@ export enum ReportsIDs {
     VoiceOverviewReportConfig = 'VoiceOverviewReportConfig',
 }
 
-export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
+export const REPORTS_CONFIG: ReportsModalConfig = [
     {
         category: 'Support Performance',
         children: [
@@ -158,14 +160,31 @@ export const REPORTS_MODAL_CONFIG: ReportsModalConfig = [
     },
 ]
 
+export const LEGACY_REPORTS_CONFIG: ReportsModalConfig = [
+    {
+        category: 'Support Performance',
+        children: [
+            {
+                type: OverviewChart,
+                config: SupportPerformanceRevenueReportConfig,
+                id: ReportsIDs.SupportPerformanceRevenueReportConfig,
+            },
+        ],
+    },
+]
+
 export const getComponentConfig = (
-    chartId: string
+    chartId: string,
+    withLegacyReports?: boolean
 ): {
     reportConfig: ReportConfig<string> | null
     chartConfig: ChartConfig | null
 } => {
     const availableReports = _flatten(
-        REPORTS_MODAL_CONFIG.map((report) => report.children)
+        (withLegacyReports
+            ? [...REPORTS_CONFIG, ...LEGACY_REPORTS_CONFIG]
+            : REPORTS_CONFIG
+        ).map((report) => report.children)
     )
     for (const report of availableReports) {
         if (Object.values(report.type).includes(chartId)) {
@@ -180,10 +199,14 @@ export const getComponentConfig = (
 }
 
 export const getReportConfig = (
-    reportId: string
+    reportId: string,
+    withLegacyReports?: boolean
 ): ReportConfig<string> | null => {
     const availableReports = _flatten(
-        REPORTS_MODAL_CONFIG.map((report) => report.children)
+        (withLegacyReports
+            ? [...REPORTS_CONFIG, ...LEGACY_REPORTS_CONFIG]
+            : REPORTS_CONFIG
+        ).map((report) => report.children)
     )
 
     const report = availableReports.find((report) => report.id === reportId)

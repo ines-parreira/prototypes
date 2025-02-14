@@ -68,7 +68,7 @@ export const useReportChartRestrictions = () => {
         (url: string, isPartialPath?: boolean): boolean => {
             return !!userReportRestrictions.find((restriction) =>
                 restriction.ids.find((id) => {
-                    const path = getReportConfig(id)?.reportPath
+                    const path = getReportConfig(id, true)?.reportPath
                     if (!path) {
                         return false
                     }
@@ -93,7 +93,7 @@ export const useReportChartRestrictions = () => {
                     restriction.ids.includes(chartId)
             )
 
-            const {reportConfig} = getComponentConfig(chartId)
+            const {reportConfig} = getComponentConfig(chartId, true)
             if (!reportConfig) {
                 return false
             }
