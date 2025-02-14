@@ -129,7 +129,7 @@ export default function AutomateAiAgentStats() {
 
             {hasAiAgentCustomField && selectedCustomField.id && (
                 <DashboardSection>
-                    <DashboardGridCell size={getGridCellSize(1)}>
+                    <DashboardGridCell size={getGridCellSize(4)}>
                         <CustomReportComponent
                             config={AutomateAiAgentsReportConfig}
                             chart={
@@ -137,7 +137,7 @@ export default function AutomateAiAgentStats() {
                             }
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={getGridCellSize(11)}>
+                    <DashboardGridCell size={getGridCellSize(8)}>
                         <CustomReportComponent
                             config={AutomateAiAgentsReportConfig}
                             chart={
