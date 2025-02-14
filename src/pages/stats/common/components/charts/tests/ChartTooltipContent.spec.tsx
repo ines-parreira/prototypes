@@ -28,4 +28,29 @@ describe('<ChartTooltipContent />', () => {
 
         expect(screen.getByText(/Label/)).toBeInTheDocument()
     })
+
+    it('should display N/A when showZeroAsNA is true and value is 0', () => {
+        const zeroTooltip = {
+            labelColors: [
+                {
+                    backgroundColor: 'red',
+                    borderWidth: '1',
+                    borderColor: 'blue',
+                    borderRadius: '0',
+                },
+            ],
+            dataPoints: [
+                {
+                    dataset: {
+                        label: 'Label',
+                    },
+                    formattedValue: '0',
+                },
+            ],
+        } as any
+
+        render(<ChartTooltipContent tooltip={zeroTooltip} showZeroAsNA />)
+
+        expect(screen.getByText('N/A')).toBeInTheDocument()
+    })
 })

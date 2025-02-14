@@ -38,9 +38,11 @@ jest.mock('pages/stats/common/components/charts/LineChart/LineChart', () => ({
     LineChart: ({
         isLoading,
         data,
+        renderYTickLabel,
     }: {
         isLoading: boolean
         data: Array<{label: string}>
+        renderYTickLabel?: (value: number) => string
     }) => {
         if (isLoading) {
             return <div data-testid="skeleton" />
@@ -53,6 +55,16 @@ jest.mock('pages/stats/common/components/charts/LineChart/LineChart', () => ({
                         {dataset.label}
                     </div>
                 ))}
+                {renderYTickLabel && (
+                    <div data-testid="y-tick-labels">
+                        <span data-testid="y-tick-0">
+                            {renderYTickLabel(0)}
+                        </span>
+                        <span data-testid="y-tick-5">
+                            {renderYTickLabel(5)}
+                        </span>
+                    </div>
+                )}
             </div>
         )
     },
@@ -345,5 +357,29 @@ describe('<AverageScorePerDimensionTrendChart>', () => {
         userEvent.click(assigneeOption)
 
         expect(screen.queryByText('Per integration')).not.toBeInTheDocument()
+    })
+
+    it('should render N/A for zero values in channel view', () => {
+        renderComponent(mockStoreState)
+        expect(screen.getByTestId('y-tick-0')).toHaveTextContent('N/A')
+        expect(screen.getByTestId('y-tick-5')).toHaveTextContent('5')
+    })
+
+    it('should render N/A for zero values in assignee view', () => {
+        renderComponent(mockStoreState)
+        const selectBox = screen.getByRole('combobox')
+        userEvent.click(selectBox)
+        userEvent.click(screen.getByText('Per assignee'))
+        expect(screen.getByTestId('y-tick-0')).toHaveTextContent('N/A')
+        expect(screen.getByTestId('y-tick-5')).toHaveTextContent('5')
+    })
+
+    it('should render N/A for zero values in integration view', () => {
+        renderComponent(mockStoreState)
+        const selectBox = screen.getByRole('combobox')
+        userEvent.click(selectBox)
+        userEvent.click(screen.getByText('Per integration'))
+        expect(screen.getByTestId('y-tick-0')).toHaveTextContent('N/A')
+        expect(screen.getByTestId('y-tick-5')).toHaveTextContent('5')
     })
 })

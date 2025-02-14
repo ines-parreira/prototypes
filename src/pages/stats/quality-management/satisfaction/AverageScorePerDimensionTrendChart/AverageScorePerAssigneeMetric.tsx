@@ -9,7 +9,10 @@ import {LineChart} from 'pages/stats/common/components/charts/LineChart/LineChar
 import {formatLabeledTooltipTimeSeriesData} from 'pages/stats/common/utils'
 import {LINES_COLORS} from 'pages/stats/constants'
 import css from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScoreMetric.less'
-import {getFormattedInfo} from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/utils'
+import {
+    getFormattedInfo,
+    formatZeroToNALabel,
+} from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/utils'
 import {getAllAgentsJS} from 'state/agents/selectors'
 import {getIntegrations} from 'state/integrations/selectors'
 
@@ -68,6 +71,8 @@ export const AverageScorePerAssigneeMetric = () => {
                 granularity,
                 [true]
             )}
+            yShowZeroAsNA
+            renderYTickLabel={formatZeroToNALabel}
             displayLegend
             toggleLegend
             legendOnLeft

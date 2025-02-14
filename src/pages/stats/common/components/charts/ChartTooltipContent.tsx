@@ -1,14 +1,18 @@
 import {TooltipLabelStyle, TooltipModel} from 'chart.js'
 import React from 'react'
 
+import {NOT_AVAILABLE_TEXT} from 'pages/stats/common/utils'
+
 import css from './ChartTooltip.less'
 
 type Props = {
     tooltip: TooltipModel
+    showZeroAsNA?: boolean
 }
 
 export const ChartTooltipContent = ({
     tooltip: {labelColors, dataPoints},
+    showZeroAsNA,
 }: Props) => {
     return (
         <>
@@ -31,7 +35,9 @@ export const ChartTooltipContent = ({
                         />
                         <span>{item.dataset.label}:</span>
                         <span className={css.tooltipItemValue}>
-                            {item.formattedValue}
+                            {showZeroAsNA && item.formattedValue === '0'
+                                ? NOT_AVAILABLE_TEXT
+                                : item.formattedValue}
                         </span>
                     </div>
                 )

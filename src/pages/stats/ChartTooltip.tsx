@@ -35,6 +35,9 @@ export const ChartTooltip = ({
             modifiers={{
                 computeStyle: {
                     fn: (data) => {
+                        const isTooltipOutOfScreen =
+                            tooltipStyle.left + data.offsets.popper.width >
+                            window.innerWidth
                         return {
                             ...data,
                             styles: {
@@ -42,7 +45,11 @@ export const ChartTooltip = ({
                                 top:
                                     tooltipStyle.top -
                                     data.offsets.popper.height / 2,
-                                left: tooltipStyle.left,
+                                left:
+                                    tooltipStyle.left -
+                                    (isTooltipOutOfScreen
+                                        ? data.offsets.popper.width
+                                        : 0),
                                 opacity: tooltipStyle.opacity,
                                 pointerEvents: 'none',
                             } as unknown as CSSStyleDeclaration,

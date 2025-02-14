@@ -10,6 +10,7 @@ import {
 import {Integration} from 'models/integration/types'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
+import {NOT_AVAILABLE_TEXT} from 'pages/stats/common/utils'
 
 const DATASET_VISIBILITY_ITEMS = 3
 const TOP_AMOUNT = 10
@@ -164,4 +165,9 @@ export const transformToTimeSeriesData = (result: {
         ])
     }
     return values
+}
+
+export const formatZeroToNALabel = (value: number | string) => {
+    const stringValue = value.toString()
+    return stringValue === '0' ? NOT_AVAILABLE_TEXT : stringValue
 }

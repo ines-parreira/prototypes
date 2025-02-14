@@ -46,6 +46,7 @@ type Props = {
     customColors?: string[]
     isCurvedLine?: boolean
     yAxisBeginAtZero?: boolean
+    yShowZeroAsNA?: boolean
     legendOnLeft?: boolean
     renderXTickLabel?: (
         this: Scale,
@@ -77,6 +78,7 @@ export function LineChart({
     customColors,
     isCurvedLine = true,
     yAxisBeginAtZero = true,
+    yShowZeroAsNA = false,
     legendOnLeft = false,
     toggleLegend = false,
     renderXTickLabel,
@@ -271,7 +273,10 @@ export function LineChart({
                         title={tooltipData?.title}
                     >
                         {tooltipData && (
-                            <ChartTooltipContent tooltip={tooltipData} />
+                            <ChartTooltipContent
+                                tooltip={tooltipData}
+                                showZeroAsNA={yShowZeroAsNA}
+                            />
                         )}
                     </ChartTooltip>
                 )}
