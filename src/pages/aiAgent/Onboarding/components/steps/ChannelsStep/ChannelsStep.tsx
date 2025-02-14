@@ -5,6 +5,8 @@ import React, {useMemo, useState} from 'react'
 
 import {FormProvider, useForm} from 'react-hook-form'
 
+import {useParams} from 'react-router-dom'
+
 import {GORGIAS_CHAT_DEFAULT_COLOR} from 'config/integrations/gorgias_chat'
 import {
     EMAIL_INTEGRATION_TYPES,
@@ -27,10 +29,8 @@ import {
 import {createChatConfiguration} from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/utils/createGorgiasConfiguration'
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
-import {
-    useGetOnboardingData,
-    useUpdateOnboardingCache,
-} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import {useUpdateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import {
     OnboardingBody,
     OnboardingContentContainer,
@@ -64,28 +64,36 @@ export const ChannelsStep: React.FC<StepProps> = ({
     totalSteps,
     goToStep,
 }) => {
-    const {data, isLoading} = useGetOnboardingData()
-    const updateOnboardingCache = useUpdateOnboardingCache()
+    const {shopName} = useParams<{shopName: string}>()
 
-    const storeName = data?.shop || ''
+    const {data, isLoading: isLoadingOnboardingData} =
+        useGetOnboardingData(shopName)
+
+    const {
+        mutate: doUpdateOnboardingMutation,
+        isLoading: isUpdatingOnboarding,
+    } = useUpdateOnboarding()
+
+    const isLoading = isLoadingOnboardingData || isUpdatingOnboarding
+
     const storeIntegration: ShopifyIntegration = useAppSelector(
-        getShopifyIntegrationByShopName(storeName)
+        getShopifyIntegrationByShopName(shopName)
     ).toJS()
 
-    useCheckStoreIntegration({storeName, isLoading, goToStep})
+    useCheckStoreIntegration()
 
     const dispatch = useAppDispatch()
 
     const chatChannels = useSelfServiceChatChannels(
         SHOPIFY_INTEGRATION_TYPE,
-        storeName
+        shopName
     )
 
     const [newChatColor, setNewChatColor] = useState<string>(
         GORGIAS_CHAT_DEFAULT_COLOR
     )
 
-    const {integration} = useShopifyIntegrationAndScope(storeName)
+    const {integration} = useShopifyIntegrationAndScope(shopName)
 
     const createNewChat = chatChannels.length === 0
 
@@ -93,9 +101,9 @@ export const ChannelsStep: React.FC<StepProps> = ({
 
     const methods = useForm<ChannelsFormValues>({
         values: {
-            emailChannelEnabled: data?.emailChannelEnabled ?? false,
+            emailChannelEnabled: !!data?.emailIntegrationIds?.length,
             emailIntegrationIds: data?.emailIntegrationIds ?? [],
-            chatChannelEnabled: data?.chatChannelEnabled ?? false,
+            chatChannelEnabled: !!data?.chatIntegrationIds?.length,
             chatIntegrationIds: data?.chatIntegrationIds ?? [],
         },
         mode: 'onChange',
@@ -105,7 +113,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const {
         watch,
         setValue,
-        formState: {errors},
+        formState: {errors, isDirty},
         handleSubmit,
     } = methods
 
@@ -130,7 +138,11 @@ export const ChannelsStep: React.FC<StepProps> = ({
 
     // Handle selection change and update cache
     const handleUpdate = (field: keyof ChannelsFormValues, value: any) => {
-        setValue(field, value, {shouldValidate: true})
+        setValue(field, value, {
+            shouldValidate: true,
+            shouldDirty: true,
+            shouldTouch: true,
+        })
     }
 
     // Handle form submission
@@ -156,20 +168,31 @@ export const ChannelsStep: React.FC<StepProps> = ({
         }
     }
 
-    const updateCacheData = () => {
-        updateOnboardingCache('emailChannelEnabled', emailChannelEnabled)
-        updateOnboardingCache('emailIntegrationIds', emailIntegrationIds)
-        updateOnboardingCache('chatChannelEnabled', chatChannelEnabled)
-        updateOnboardingCache('chatIntegrationIds', chatIntegrationIds)
-    }
-
     const onNextClick = () => {
-        goToStep(WizardStepEnum.PERSONALITY_PREVIEW)
-        updateCacheData()
+        if (!isDirty) {
+            goToStep(WizardStepEnum.PERSONALITY_PREVIEW)
+            return
+        }
+        if (data && 'id' in data) {
+            const updatedData = {
+                shopName,
+                currentStepName: WizardStepEnum.PERSONALITY_PREVIEW,
+                emailIntegrationIds,
+                chatIntegrationIds,
+            }
+
+            doUpdateOnboardingMutation(
+                {id: data.id as string, data: updatedData},
+                {
+                    onSuccess: () => {
+                        goToStep(WizardStepEnum.PERSONALITY_PREVIEW)
+                    },
+                }
+            )
+        }
     }
 
     const onBackClick = () => {
-        updateCacheData()
         if (!emailIntegrations) {
             goToStep(WizardStepEnum.EMAIL_INTEGRATION)
             return
@@ -200,7 +223,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
                     </AIBanner>
                 )}
 
-                {data?.scope.includes(AiAgentScopes.SUPPORT) && (
+                {data?.scopes.includes(AiAgentScopes.SUPPORT) && (
                     <>
                         <Card className={css.card}>
                             <CardContent>

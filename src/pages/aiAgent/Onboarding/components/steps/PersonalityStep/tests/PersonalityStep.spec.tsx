@@ -1,7 +1,8 @@
 import '@testing-library/jest-dom/extend-expect'
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {fireEvent, screen, waitFor} from '@testing-library/react'
 
+import {createMemoryHistory} from 'history'
 import {fromJS, Map} from 'immutable'
 import React, {ComponentProps} from 'react'
 
@@ -12,11 +13,23 @@ import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {chatIntegrationFixtures} from 'fixtures/chat'
 import {shopifyIntegration, integrationsState} from 'fixtures/integrations'
+import {
+    getOnboardingData,
+    updateOnboardingData,
+} from 'models/aiAgent/resources/configuration'
+import {DiscountStrategy} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import {PersonalityStep} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersonalityStep'
+import {PersuasionLevel} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
 
-import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
+import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
+
+jest.mock('models/aiAgent/resources/configuration', () => ({
+    getOnboardingData: jest.fn(),
+    updateOnboardingData: jest.fn(),
+}))
 
 const trackRect = {
     left: 0,
@@ -29,6 +42,15 @@ const trackRect = {
     y: 0,
     toJSON: () => {},
 }
+
+const history = createMemoryHistory({
+    initialEntries: [
+        `/app/ai-agent/shopify/${shopifyIntegration.meta.shop_name}/onboarding/${WizardStepEnum.SALES_PERSONALITY}`,
+    ],
+})
+
+const mockGetOnboardingData = getOnboardingData as jest.Mock
+const mockUpdateOnboardingData = updateOnboardingData as jest.Mock
 
 const queryClient = new QueryClient()
 
@@ -43,12 +65,17 @@ const defaultState = {
 } as RootState
 
 const renderComponent = (props: ComponentProps<typeof PersonalityStep>) => {
-    render(
+    renderWithRouter(
         <QueryClientProvider client={queryClient}>
             <Provider store={mockStore(defaultState)}>
                 <PersonalityStep {...props} />
             </Provider>
-        </QueryClientProvider>
+        </QueryClientProvider>,
+        {
+            history,
+            path: '/app/ai-agent/:shopType/:shopName/onboarding/:step',
+            route: `/app/ai-agent/shopify/${shopifyIntegration.meta.shop_name}/onboarding/${WizardStepEnum.SALES_PERSONALITY}`,
+        }
     )
 }
 
@@ -62,6 +89,27 @@ describe('PersonalityStep', () => {
     }
 
     beforeAll(() => {
+        // ✅ Mock getOnboardingData function
+        mockGetOnboardingData.mockResolvedValue(
+            Promise.resolve([
+                {
+                    id: 1,
+                    salesPersuasionLevel: PersuasionLevel.Moderate,
+                    salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                    salesDiscountMax: null,
+                    scopes: [AiAgentScopes.SALES],
+                    shopName: shopifyIntegration.meta.shop_name,
+                },
+            ])
+        )
+
+        // // ✅ Mock updateOnboardingData function
+        mockUpdateOnboardingData.mockResolvedValue(
+            Promise.resolve({
+                success: true,
+            })
+        )
+
         jest.useFakeTimers()
     })
 
@@ -181,6 +229,8 @@ describe('PersonalityStep', () => {
             fireEvent.change(maxDiscountInput, {target: {value: '0'}})
             expect(maxDiscountInput.value).toBe('0')
 
+            fireEvent.click(screen.getByText(/Next/i))
+
             expect(
                 screen.queryByText(/Must be a number between 1 and 100/i)
             ).toBeInTheDocument()
@@ -228,6 +278,14 @@ describe('PersonalityStep', () => {
             expect(
                 screen.queryByText(/Maximum Discount Percentage/)
             ).toBeInTheDocument()
+        })
+
+        await waitFor(() => {
+            const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
+                /Maximum Discount Percentage/
+            )
+            fireEvent.change(maxDiscountInput, {target: {value: '90'}})
+            expect(maxDiscountInput.value).toBe('90')
         })
 
         fireEvent.click(screen.getByText(/Next/i))

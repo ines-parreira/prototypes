@@ -4,10 +4,12 @@ import cn from 'classnames'
 import React from 'react'
 
 import {FormProvider, useForm} from 'react-hook-form'
+import {useParams} from 'react-router-dom'
 import {z} from 'zod'
 
 import sparkles from 'assets/img/icons/auto_awesome.svg'
 
+import {OnboardingData} from 'models/aiAgent/types'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import Card from 'pages/aiAgent/Onboarding/components/Card/Card'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
@@ -25,10 +27,8 @@ import {
 } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
-import {
-    useGetOnboardingData,
-    useUpdateOnboardingCache,
-} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import {useUpdateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import {
     OnboardingBody,
     OnboardingContentContainer,
@@ -45,33 +45,39 @@ import InputField from 'pages/common/forms/input/InputField'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 
 type PersonalityFormValues = {
-    persuasionLevel: PersuasionLevel
-    discountStrategy: DiscountStrategy
-    maxDiscountPercentage: number
+    salesPersuasionLevel: PersuasionLevel
+    salesDiscountStrategyLevel: DiscountStrategy
+    salesDiscountMax: number
+}
+
+const formatDiscountMax = (value: number): number => {
+    return parseFloat(value.toFixed(8).replace(/\.?0+$/, ''))
 }
 
 const personalitySchema = z
     .object({
-        persuasionLevel: z.nativeEnum(PersuasionLevel),
-        discountStrategy: z.nativeEnum(DiscountStrategy),
-        maxDiscountPercentage: z.number().optional(), // Initially optional
+        salesPersuasionLevel: z.nativeEnum(PersuasionLevel),
+        salesDiscountStrategyLevel: z.nativeEnum(DiscountStrategy),
+        salesDiscountMax: z.number().optional(),
     })
     .refine(
         (data) => {
-            if (data.discountStrategy === DiscountStrategy.NoDiscount) {
+            if (
+                data.salesDiscountStrategyLevel === DiscountStrategy.NoDiscount
+            ) {
                 // Allow only 0 when discount strategy is NoDiscount
-                return data.maxDiscountPercentage === 0
+                return data.salesDiscountMax === 0
             }
             // Enforce range 1-100 for other discount strategies
             return (
-                data.maxDiscountPercentage !== undefined &&
-                data.maxDiscountPercentage >= 1 &&
-                data.maxDiscountPercentage <= 100
+                data.salesDiscountMax !== undefined &&
+                data.salesDiscountMax >= 1 &&
+                data.salesDiscountMax <= 100
             )
         },
         {
             message: 'Must be a number between 1 and 100',
-            path: ['maxDiscountPercentage'],
+            path: ['salesDiscountMax'],
         }
     )
 
@@ -80,20 +86,28 @@ export const PersonalityStep: React.FC<StepProps> = ({
     totalSteps,
     goToStep,
 }) => {
-    const {isLoading, data} = useGetOnboardingData()
+    const {shopName} = useParams<{shopName: string}>()
 
-    const storeName = data?.shop || ''
+    const {data, isLoading: isLoadingOnboardingData} =
+        useGetOnboardingData(shopName)
+    const {
+        mutate: doUpdateOnboardingMutation,
+        isLoading: isUpdatingOnboarding,
+    } = useUpdateOnboarding()
 
-    useCheckStoreIntegration({storeName, isLoading, goToStep})
+    const isLoading = isLoadingOnboardingData || isUpdatingOnboarding
 
-    const updateOnboardingCache = useUpdateOnboardingCache()
+    useCheckStoreIntegration()
 
     const methods = useForm<PersonalityFormValues>({
         values: {
-            persuasionLevel: data?.persuasionLevel ?? PersuasionLevel.Moderate,
-            discountStrategy:
-                data?.discountStrategy ?? DiscountStrategy.Balanced,
-            maxDiscountPercentage: data?.maxDiscountPercentage ?? 8,
+            salesPersuasionLevel:
+                data?.salesPersuasionLevel ?? PersuasionLevel.Moderate,
+            salesDiscountStrategyLevel:
+                data?.salesDiscountStrategyLevel ?? DiscountStrategy.Balanced,
+            salesDiscountMax: formatDiscountMax(
+                (data?.salesDiscountMax ?? 0) * 100
+            ),
         },
         mode: 'onChange',
         resolver: zodResolver(personalitySchema),
@@ -102,45 +116,65 @@ export const PersonalityStep: React.FC<StepProps> = ({
     const {
         watch,
         setValue,
-        formState: {errors},
+        formState: {errors, isDirty},
         handleSubmit,
         trigger,
     } = methods
 
     // Watch form state values
-    const persuasionLevel = watch('persuasionLevel')
-    const discountStrategy = watch('discountStrategy')
-    const maxDiscountPercentage = watch('maxDiscountPercentage')
-
-    const updateCacheData = () => {
-        updateOnboardingCache('persuasionLevel', persuasionLevel)
-        updateOnboardingCache('discountStrategy', discountStrategy)
-        updateOnboardingCache('maxDiscountPercentage', maxDiscountPercentage)
-    }
+    const salesPersuasionLevel = watch('salesPersuasionLevel')
+    const salesDiscountStrategyLevel = watch('salesDiscountStrategyLevel')
+    const salesDiscountMax = watch('salesDiscountMax')
 
     const handleSliderChange = (
         field: keyof PersonalityFormValues,
         value: PersuasionLevel | DiscountStrategy | number
     ) => {
-        setValue(field, value, {shouldValidate: true})
+        setValue(field, value, {shouldValidate: true, shouldDirty: true})
         if (
-            field === 'discountStrategy' &&
+            field === 'salesDiscountStrategyLevel' &&
             value === DiscountStrategy.NoDiscount
         ) {
-            setValue('maxDiscountPercentage', 0, {shouldValidate: true})
+            setValue('salesDiscountMax', 0, {
+                shouldValidate: true,
+                shouldDirty: true,
+            })
         }
-        if (field === 'discountStrategy') {
-            void trigger('maxDiscountPercentage')
+        if (field === 'salesDiscountStrategyLevel') {
+            void trigger('salesDiscountMax')
         }
     }
 
     const onNextClick = () => {
-        updateCacheData()
-        goToStep(WizardStepEnum.HANDOVER)
+        if (!isDirty) {
+            goToStep(WizardStepEnum.HANDOVER)
+            return
+        }
+        if (data && 'id' in data) {
+            const updatedData: OnboardingData = {
+                ...data,
+                id: data.id as string,
+                shopName,
+                currentStepName: WizardStepEnum.HANDOVER,
+                salesPersuasionLevel,
+                salesDiscountStrategyLevel,
+                salesDiscountMax: salesDiscountMax
+                    ? salesDiscountMax / 100
+                    : null,
+            }
+
+            doUpdateOnboardingMutation(
+                {id: data.id as string, data: updatedData},
+                {
+                    onSuccess: () => {
+                        goToStep(WizardStepEnum.HANDOVER)
+                    },
+                }
+            )
+        }
     }
 
     const onBackClick = () => {
-        updateCacheData()
         goToStep(WizardStepEnum.PERSONALITY_PREVIEW)
     }
 
@@ -173,15 +207,15 @@ export const PersonalityStep: React.FC<StepProps> = ({
                                 </IconTooltip>
                             </div>
                             <div className={css.cardSliderWrapper}>
-                                {!persuasionLevel ? (
+                                {!salesPersuasionLevel ? (
                                     <Skeleton height={50} />
                                 ) : (
                                     <OnboardingSteppedSlider
                                         steps={PersuasionLevelSteps}
-                                        stepKey={persuasionLevel}
+                                        stepKey={salesPersuasionLevel}
                                         onChange={(value: string) => {
                                             handleSliderChange(
-                                                'persuasionLevel',
+                                                'salesPersuasionLevel',
                                                 value as PersuasionLevel
                                             )
                                         }}
@@ -190,13 +224,13 @@ export const PersonalityStep: React.FC<StepProps> = ({
                             </div>
                             <div className={css.cardDescriptionWrapper}>
                                 <img src={sparkles} alt="Sparkles" />
-                                {!persuasionLevel ? (
+                                {!salesPersuasionLevel ? (
                                     <Skeleton />
                                 ) : (
                                     <div>
                                         {
                                             PersuasionLevelLabels[
-                                                persuasionLevel
+                                                salesPersuasionLevel
                                             ]?.description
                                         }
                                     </div>
@@ -218,15 +252,15 @@ export const PersonalityStep: React.FC<StepProps> = ({
                                 </IconTooltip>
                             </div>
                             <div className={css.cardSliderWrapper}>
-                                {!discountStrategy ? (
+                                {!salesDiscountStrategyLevel ? (
                                     <Skeleton height={50} />
                                 ) : (
                                     <OnboardingSteppedSlider
                                         steps={DiscountStrategySteps}
-                                        stepKey={discountStrategy}
+                                        stepKey={salesDiscountStrategyLevel}
                                         onChange={(value: string) => {
                                             handleSliderChange(
-                                                'discountStrategy',
+                                                'salesDiscountStrategyLevel',
                                                 value as DiscountStrategy
                                             )
                                         }}
@@ -235,13 +269,13 @@ export const PersonalityStep: React.FC<StepProps> = ({
                             </div>
                             <div className={css.cardDescriptionWrapper}>
                                 <img src={sparkles} alt="Sparkles" />
-                                {!discountStrategy ? (
+                                {!salesDiscountStrategyLevel ? (
                                     <Skeleton />
                                 ) : (
                                     <div>
                                         {
                                             DiscountStrategyLabels[
-                                                discountStrategy
+                                                salesDiscountStrategyLevel
                                             ]?.description
                                         }
                                     </div>
@@ -272,21 +306,24 @@ export const PersonalityStep: React.FC<StepProps> = ({
                                 max={100}
                                 id="percentage-discount"
                                 className={css.percentageInputWrapper}
-                                value={maxDiscountPercentage}
+                                value={salesDiscountMax}
                                 onChange={(value: string) => {
                                     const parsedValue = Number(value)
                                     setValue(
-                                        'maxDiscountPercentage',
+                                        'salesDiscountMax',
                                         !value || isNaN(parsedValue)
                                             ? 0
                                             : parsedValue,
-                                        {shouldValidate: true}
+                                        {
+                                            shouldValidate: true,
+                                            shouldDirty: true,
+                                        }
                                     )
                                 }}
                                 suffix={<IconInput icon="percent" />}
-                                error={errors.maxDiscountPercentage?.message}
+                                error={errors.salesDiscountMax?.message}
                                 isDisabled={
-                                    discountStrategy ===
+                                    salesDiscountStrategyLevel ===
                                     DiscountStrategy.NoDiscount
                                 }
                             />

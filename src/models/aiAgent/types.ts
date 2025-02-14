@@ -1,4 +1,7 @@
 import {AiAgentChannel, ToneOfVoice} from 'pages/aiAgent/constants'
+import {DiscountStrategy} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import {PersuasionLevel} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+import {AiAgentScopes} from 'pages/aiAgent/Onboarding/types'
 
 export type AccountConfigurationResponse = {
     accountConfiguration: Omit<AccountConfiguration, 'helpdeskOAuth'>
@@ -191,4 +194,21 @@ export type PlaygroundExecutions = {
 export type GetPlaygroundExecutionsParams = {
     accountDomain: string
     storeName: string
+}
+
+export type OnboardingData = {
+    id: string
+    currentStepName: string
+    salesPersuasionLevel: PersuasionLevel | null
+    salesDiscountStrategyLevel: DiscountStrategy | null
+    salesDiscountMax: number | null
+    scopes: AiAgentScopes[]
+    shopName?: string
+    shopType?: string
+    emailChannelEnabled?: boolean
+    emailIntegrationIds?: number[]
+    chatChannelEnabled?: boolean
+    chatIntegrationIds?: number[]
+    helpCenterId?: string
+    gorgiasDomain?: string
 }

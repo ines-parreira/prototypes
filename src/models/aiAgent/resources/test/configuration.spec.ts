@@ -13,14 +13,18 @@ import {HelpCenter} from '../../../helpCenter/types'
 import {
     apiClient,
     createAccountConfiguration,
+    createOnboardingData,
     createOnboardingNotificationState,
     createStoreConfiguration,
     createStoreSnippetHelpCenter,
     createWelcomePageAcknowledged,
     getAccountConfiguration,
+    getOnboardingData,
+    getOnboardingDataByShopName,
     getOnboardingNotificationState,
     getStoreConfiguration,
     getWelcomePageAcknowledged,
+    updateOnboardingData,
     upsertAccountConfiguration,
     upsertOnboardingNotificationState,
     upsertStoreConfiguration,
@@ -430,6 +434,110 @@ describe('Configuration', () => {
                     ...mockedOnboardingNotificationState,
                 })
             ).rejects.toThrow('Request failed with status code 400')
+        })
+    })
+
+    describe('Onboarding Data API', () => {
+        let apiServer: MockAdapter
+
+        beforeAll(() => {
+            apiServer = new MockAdapter(apiClient)
+        })
+
+        afterEach(() => {
+            apiServer.reset()
+        })
+
+        afterAll(() => {
+            apiServer.reset()
+        })
+
+        describe('getOnboardingData', () => {
+            it('should resolve with the correct data on success', async () => {
+                const mockData = [{id: 1, name: 'Test Onboarding'}]
+
+                apiServer.onGet('/onboardings').reply(200, mockData)
+
+                const res = await getOnboardingData()
+                expect(res).toEqual(mockData)
+            })
+
+            it('should handle an error correctly', async () => {
+                apiServer.onGet('/onboardings').reply(400)
+
+                await expect(getOnboardingData()).rejects.toThrow(
+                    'Request failed with status code 400'
+                )
+            })
+        })
+
+        describe('getOnboardingDataByShopName', () => {
+            it('should resolve with the correct data on success', async () => {
+                const mockData = [{id: 1, name: 'Test Onboarding'}]
+                const shopName = 'TestShop'
+
+                // 🔹 FIX: Ensure mock request includes correct params
+                apiServer
+                    .onGet('/onboardings', {params: {shop_name: shopName}}) // Incorrect approach
+                    .reply(200, mockData)
+
+                const res = await getOnboardingDataByShopName(shopName)
+                expect(res).toEqual(mockData)
+            })
+
+            it('should handle an error correctly', async () => {
+                const shopName = 'NonExistentShop'
+
+                apiServer
+                    .onGet('/onboardings', {params: {shop_name: shopName}})
+                    .reply(400)
+
+                await expect(
+                    getOnboardingDataByShopName(shopName)
+                ).rejects.toThrow('Request failed with status code 400')
+            })
+        })
+
+        describe('createOnboardingData', () => {
+            it('should resolve with the correct data on success', async () => {
+                const mockData = {id: 1, name: 'New Onboarding'}
+
+                apiServer.onPost('/onboardings').reply(201, mockData)
+
+                const res = await createOnboardingData({
+                    shopName: 'New Onboarding',
+                })
+                expect(res).toEqual(mockData)
+            })
+
+            it('should handle an error correctly', async () => {
+                apiServer.onPost('/onboardings').reply(400)
+
+                await expect(
+                    createOnboardingData({shopName: 'New Onboarding'})
+                ).rejects.toThrow('Request failed with status code 400')
+            })
+        })
+
+        describe('updateOnboardingData', () => {
+            it('should resolve with the correct data on success', async () => {
+                const mockData = {id: 1, name: 'Updated Onboarding'}
+
+                apiServer.onPut('/onboardings/1').reply(200, mockData)
+
+                const res = await updateOnboardingData(1, {
+                    shopName: 'Updated Onboarding',
+                })
+                expect(res).toEqual(mockData)
+            })
+
+            it('should handle an error correctly', async () => {
+                apiServer.onPut('/onboardings/1').reply(400)
+
+                await expect(
+                    updateOnboardingData(1, {shopName: 'Updated Onboarding'})
+                ).rejects.toThrow('Request failed with status code 400')
+            })
         })
     })
 })

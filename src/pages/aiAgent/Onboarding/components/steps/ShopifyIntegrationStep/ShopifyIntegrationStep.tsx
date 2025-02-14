@@ -2,11 +2,12 @@ import React, {useMemo, useState, useCallback} from 'react'
 
 import {FormProvider, useForm} from 'react-hook-form'
 
-import {useHistory} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 
 import {z} from 'zod'
 
 import shopify from 'assets/img/integrations/shopify.png'
+import useAppSelector from 'hooks/useAppSelector'
 import {StoreIntegration} from 'models/integration/types'
 import {DropdownSelector} from 'pages/aiAgent/Onboarding/components/DropdownSelector/DropdownSelector'
 import IntegrationCard from 'pages/aiAgent/Onboarding/components/IntegrationCard'
@@ -17,12 +18,12 @@ import StatusBadge, {
 } from 'pages/aiAgent/Onboarding/components/StatusBadge'
 import css from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep.less'
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
-import {
-    useGetOnboardingData,
-    useUpdateOnboardingCache,
-} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import {useCreateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
+import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import {useGetOnboardingDataByShopName} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingDataByShopName'
 import {useOnboardingIntegrationRedirection} from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
 import {useShopifyIntegrations} from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
+import {useUpdateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import {
     OnboardingBody,
     OnboardingContentContainer,
@@ -33,6 +34,7 @@ import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 
 import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
 const ShopifyIcon: React.FC<{size?: string}> = ({size}) => (
     <img
@@ -44,7 +46,7 @@ const ShopifyIcon: React.FC<{size?: string}> = ({size}) => (
 )
 
 const ShopifyFormSchema = z.object({
-    shop: z.string().min(1, 'Please select a Shopify store'),
+    shopName: z.string().min(1, 'Please select a Shopify store'),
     shopType: z.string().optional(),
 })
 
@@ -55,81 +57,136 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
     totalSteps,
     goToStep,
 }) => {
+    const {shopName} = useParams<{shopName: string}>()
     const {redirectToIntegration} = useOnboardingIntegrationRedirection()
     const shopifyIntegrations: StoreIntegration[] = useShopifyIntegrations()
     const {emailIntegrations, defaultIntegration} = useEmailIntegrations()
 
-    const {data, isLoading} = useGetOnboardingData()
-    const updateOnboardingCache = useUpdateOnboardingCache()
+    const {data, isLoading: isLoadingOnboardingData} =
+        useGetOnboardingData(shopName)
+    const {
+        mutate: doUpdateOnboardingMutation,
+        isLoading: isUpdatingOnboarding,
+    } = useUpdateOnboarding()
+    const {
+        mutate: doCreateOnboardingMutation,
+        isLoading: isCreatingOnboarding,
+    } = useCreateOnboarding()
+
+    const currentAccount = useAppSelector(getCurrentAccountState)
+
+    const accountDomain = currentAccount.get('domain')
 
     const history = useHistory()
 
     const [shopError, setShopError] = useState<string | null>(null)
 
-    const selectedIntegration = useMemo(
-        () =>
-            shopifyIntegrations.find((store) => store.name === data?.shop) ||
-            shopifyIntegrations[0],
-        [shopifyIntegrations, data?.shop]
-    )
-
     const methods = useForm<ShopifyFormValues>({
         values: {
-            shop: selectedIntegration?.name ?? '',
-            shopType: selectedIntegration?.type ?? '',
+            shopName: data?.shopName ?? '',
+            shopType: data?.shopType ?? '',
         },
     })
 
-    const {watch, setValue, handleSubmit} = methods
+    const {
+        watch,
+        setValue,
+        handleSubmit,
+        formState: {isDirty},
+    } = methods
 
     // Watch form state
-    const selectedShop = watch('shop')
-    const selectedShopType = watch('shopType')
+    const selectedShop = watch('shopName') || shopifyIntegrations[0]?.name
+    const selectedShopType = watch('shopType') || shopifyIntegrations[0]?.type
 
-    // Update shopName in cache when selection changes
-    const onSelectShop = useCallback(
-        (shopId: number | null) => {
-            const foundShop = shopifyIntegrations.find(
-                (shop) => shop.id === shopId
-            )
-            if (foundShop) {
-                setValue('shop', foundShop.name)
-                updateOnboardingCache('shop', foundShop.name)
-                setValue('shopType', foundShop.type)
-                setShopError(null)
-            }
-        },
-        [shopifyIntegrations, setValue, updateOnboardingCache]
+    const {
+        data: onBoardingDataBySelectedShop,
+        isLoading: isLoadingOnboardingDataBySelectedShop,
+    } = useGetOnboardingDataByShopName(selectedShop)
+
+    const isLoading =
+        isLoadingOnboardingData ||
+        isUpdatingOnboarding ||
+        isCreatingOnboarding ||
+        isLoadingOnboardingDataBySelectedShop
+
+    const selectedIntegration = useMemo(
+        () =>
+            shopifyIntegrations.find((store) => store.name === selectedShop) ||
+            shopifyIntegrations[0],
+        [shopifyIntegrations, selectedShop]
     )
+
+    const onSelectShop = (shopId: number | null) => {
+        const foundShop = shopifyIntegrations.find((shop) => shop.id === shopId)
+        if (foundShop) {
+            setValue('shopName', foundShop.name, {
+                shouldDirty: true,
+            })
+            setValue('shopType', foundShop.type, {
+                shouldDirty: true,
+            })
+            setShopError(null)
+        }
+    }
 
     const redirectToShopify = useCallback(() => {
         redirectToIntegration('https://apps.shopify.com/helpdesk')
     }, [redirectToIntegration])
 
     const onBackClick = () => {
-        updateOnboardingCache('shop', selectedShop)
         goToStep(WizardStepEnum.SKILLSET)
     }
 
-    const onNextClick = () => {
+    const goToNextStep = () => {
         let newPath = `/app/ai-agent/${selectedShopType}/${selectedShop}/onboarding/${WizardStepEnum.CHANNELS}`
+        if (!emailIntegrations && !defaultIntegration) {
+            newPath = `/app/ai-agent/${selectedShopType}/${selectedShop}/onboarding/${WizardStepEnum.EMAIL_INTEGRATION}`
+        }
+        history.push(newPath)
+    }
+
+    const onNextClick = () => {
         if (!shopifyIntegrations.length) {
             setShopError(
                 'No Shopify store connected. Please connect a store before proceeding.'
             )
             return
         }
-        updateOnboardingCache('shop', selectedShop)
-        if (!emailIntegrations && !defaultIntegration) {
-            newPath = `app/ai-agent/${selectedShopType}/${selectedShop}/onboarding/${WizardStepEnum.EMAIL_INTEGRATION}`
-            history.push(newPath)
-            return
+
+        const updatedData = {
+            scopes: data?.scopes,
+            gorgiasDomain: accountDomain,
+            shopName: selectedShop,
+            currentStepName:
+                !emailIntegrations && !defaultIntegration
+                    ? WizardStepEnum.EMAIL_INTEGRATION
+                    : WizardStepEnum.CHANNELS,
         }
 
-        history.push(newPath)
+        if ((!isDirty && !!data?.shopName) || onBoardingDataBySelectedShop) {
+            goToNextStep()
+            return
+        }
+        if (data && 'id' in data) {
+            doUpdateOnboardingMutation(
+                {...data, id: data.id as string, data: updatedData},
+                {
+                    onSuccess: () => {
+                        goToNextStep()
+                    },
+                }
+            )
+        } else {
+            doCreateOnboardingMutation(updatedData, {
+                onSuccess: () => {
+                    goToNextStep()
+                },
+            })
+        }
     }
 
-    const renderContent = useMemo(() => {
+    const renderContent = () => {
         if (isLoading) {
             return <LoadingPulserIcon icon={<ShopifyIcon size="40%" />} />
         }
@@ -190,15 +247,7 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
                 </IntegrationCard>
             </>
         )
-    }, [
-        isLoading,
-        shopError,
-        selectedShop,
-        shopifyIntegrations,
-        selectedIntegration,
-        onSelectShop,
-        redirectToShopify,
-    ])
+    }
 
     return (
         <FormProvider {...methods}>
@@ -214,7 +263,7 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
                         titleMagenta="Shopify account"
                     />
                     <Separator />
-                    {renderContent}
+                    {renderContent()}
                 </OnboardingContentContainer>
                 <OnboardingPreviewContainer
                     isLoading={true}

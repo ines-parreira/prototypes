@@ -1,8 +1,8 @@
 export enum DiscountStrategy {
-    NoDiscount = 'NoDiscount',
-    Minimal = 'Minimal',
-    Balanced = 'Balanced',
-    Maximized = 'Maximized',
+    NoDiscount = 'none',
+    Minimal = 'rare',
+    Balanced = 'balanced',
+    Maximized = 'generous',
 }
 
 type DiscountStrategyInfo = {

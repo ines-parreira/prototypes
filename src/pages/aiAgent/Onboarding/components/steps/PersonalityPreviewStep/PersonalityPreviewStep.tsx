@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react'
 
+import {useParams} from 'react-router-dom'
+
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
 import {
@@ -32,13 +34,13 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
     totalSteps,
     goToStep,
 }) => {
-    const {data, isLoading} = useGetOnboardingData()
+    const {shopName} = useParams<{shopName: string}>()
 
-    const storeName = data?.shop || ''
+    const {data, isLoading} = useGetOnboardingData(shopName)
 
-    useCheckStoreIntegration({storeName, isLoading, goToStep})
+    useCheckStoreIntegration()
 
-    const previewType = mapScopeToPreviewType(data?.scope ?? [])
+    const previewType = mapScopeToPreviewType(data?.scopes ?? [])
 
     const [selectedPreview, setSelectedPreview] = useState<{
         caption: string
@@ -59,7 +61,7 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
         useFetchPersonalityPreviewChatScenario(previewType, selectedPreview?.id)
 
     const onNextClick = () => {
-        if (data?.scope.includes(AiAgentScopes.SALES)) {
+        if (data?.scopes.includes(AiAgentScopes.SALES)) {
             goToStep(WizardStepEnum.SALES_PERSONALITY)
             return
         }

@@ -1,8 +1,9 @@
 import React, {FC} from 'react'
 
+import {useParams} from 'react-router-dom'
+
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
-import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import {
     OnboardingBody,
     OnboardingContentContainer,
@@ -17,12 +18,11 @@ export const EmailIntegrationStep: FC<StepProps> = ({
     totalSteps,
     goToStep,
 }) => {
-    const {data, isLoading} = useGetOnboardingData()
-    const storeName = data?.shop || ''
+    const {shopName} = useParams<{shopName: string}>()
 
-    const {integration} = useShopifyIntegrationAndScope(storeName)
+    const {integration} = useShopifyIntegrationAndScope(shopName)
 
-    useCheckStoreIntegration({storeName, isLoading, goToStep})
+    useCheckStoreIntegration()
 
     const onNextClick = () => {
         goToStep(WizardStepEnum.CHANNELS)

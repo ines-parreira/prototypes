@@ -1,7 +1,7 @@
 export enum PersuasionLevel {
-    Educational = 'Educational',
-    Moderate = 'Moderate',
-    Aggressive = 'Aggressive',
+    Educational = 'educational',
+    Moderate = 'balanced',
+    Aggressive = 'aggressive',
 }
 
 type PersuasionLevelInfo = {

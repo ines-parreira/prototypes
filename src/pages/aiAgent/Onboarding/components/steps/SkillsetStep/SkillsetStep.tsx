@@ -1,16 +1,16 @@
+import {isEqual} from 'lodash'
 import React, {FC, useMemo, useCallback} from 'react'
-
 import {FormProvider, useForm} from 'react-hook-form'
 import {useParams} from 'react-router-dom'
 
+import useAppSelector from 'hooks/useAppSelector'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import Goals from 'pages/aiAgent/Onboarding/components/Goals/Goals'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
-import {
-    useGetOnboardingData,
-    useUpdateOnboardingCache,
-} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import {useCreateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
+import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import {useUpdateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import {
     LoadingPulserIcon,
     OnboardingBody,
@@ -28,10 +28,12 @@ import ChatIntegrationPreview from 'pages/integrations/integration/components/go
 
 import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+
 import css from './SkillsetStep.less'
 
 type SkillsetFormValues = {
-    scope: AiAgentScopes[]
+    scopes: AiAgentScopes[]
 }
 
 export const SkillsetStep: FC<StepProps> = ({
@@ -43,30 +45,42 @@ export const SkillsetStep: FC<StepProps> = ({
     const {integration} = useShopifyIntegrationAndScope(shopName)
     const {emailIntegrations, defaultIntegration} = useEmailIntegrations()
 
-    const {data, isLoading} = useGetOnboardingData()
+    const {data, isLoading: isLoadingOnboardingData} =
+        useGetOnboardingData(shopName)
 
-    const updateOnboardingCache = useUpdateOnboardingCache()
+    const {
+        mutate: doUpdateOnboardingMutation,
+        isLoading: isUpdatingOnboarding,
+    } = useUpdateOnboarding()
+    const {
+        mutate: doCreateOnboardingMutation,
+        isLoading: isCreatingOnboarding,
+    } = useCreateOnboarding()
 
+    const currentAccount = useAppSelector(getCurrentAccountState)
+
+    const accountDomain = currentAccount.get('domain')
+
+    // Loading state
+    const isLoading =
+        isLoadingOnboardingData || isUpdatingOnboarding || isCreatingOnboarding
+
+    // Form initialization
     const methods = useForm<SkillsetFormValues>({
-        values: {
-            scope: data?.scope ?? [],
-        },
+        values: {scopes: data?.scopes ?? []},
     })
 
     const {watch, setValue} = methods
-
-    // Watch form state changes
-    const selectedScope = watch('scope')
+    const selectedScope = watch('scopes')
 
     const onSkillsetChange = useCallback(
         (newSkillset: AiAgentScopes[]) => {
-            setValue('scope', newSkillset)
-            updateOnboardingCache('scope', newSkillset)
+            setValue('scopes', newSkillset)
         },
-        [setValue, updateOnboardingCache]
+        [setValue]
     )
 
-    const onNextStep = () => {
+    const onNextStep = useCallback(() => {
         if (!integration) {
             goToStep(WizardStepEnum.SHOPIFY_INTEGRATION)
             return
@@ -76,7 +90,45 @@ export const SkillsetStep: FC<StepProps> = ({
             return
         }
         goToStep(WizardStepEnum.CHANNELS)
-    }
+    }, [integration, emailIntegrations, defaultIntegration, goToStep])
+
+    const handleSubmit = useCallback(() => {
+        if (isEqual(selectedScope, data?.scopes) && data && 'id' in data) {
+            onNextStep()
+            return
+        }
+        if (data && 'id' in data) {
+            // Update onboarding
+            doUpdateOnboardingMutation(
+                {
+                    id: data.id as string,
+                    data: {
+                        ...data,
+                        id: data.id as string,
+                        scopes: selectedScope,
+                    },
+                },
+                {onSuccess: onNextStep}
+            )
+        } else {
+            // Create onboarding
+            doCreateOnboardingMutation(
+                {
+                    currentStepName: WizardStepEnum.SKILLSET,
+                    scopes: selectedScope,
+                    gorgiasDomain: accountDomain,
+                },
+                {onSuccess: onNextStep}
+            )
+        }
+    }, [
+        selectedScope,
+        data,
+        doUpdateOnboardingMutation,
+        doCreateOnboardingMutation,
+        onNextStep,
+        accountDomain,
+    ])
 
     const renderContent = useMemo(() => {
         if (isLoading) {
@@ -91,7 +143,7 @@ export const SkillsetStep: FC<StepProps> = ({
             <OnboardingContentContainer
                 currentStep={currentStep}
                 totalSteps={totalSteps}
-                onNextClick={onNextStep}
+                onNextClick={handleSubmit}
                 onBackClick={() => {}}
             >
                 <MainTitle
@@ -103,6 +155,7 @@ export const SkillsetStep: FC<StepProps> = ({
                     <FormProvider {...methods}>{renderContent}</FormProvider>
                 </div>
             </OnboardingContentContainer>
+
             <OnboardingPreviewContainer isLoading={isLoading} icon="">
                 <div className={css.previewContainer}>
                     <div>

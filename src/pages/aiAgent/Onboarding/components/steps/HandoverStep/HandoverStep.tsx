@@ -1,5 +1,7 @@
 import React, {FC} from 'react'
 
+import {useParams} from 'react-router-dom'
+
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
 import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
@@ -15,18 +17,18 @@ export const HandoverStep: FC<StepProps> = ({
     totalSteps,
     goToStep,
 }) => {
-    const {data, isLoading} = useGetOnboardingData()
+    const {shopName} = useParams<{shopName: string}>()
 
-    const storeName = data?.shop || ''
+    const {data} = useGetOnboardingData(shopName)
 
-    useCheckStoreIntegration({storeName, isLoading, goToStep})
+    useCheckStoreIntegration()
 
     const onNextClick = () => {
         goToStep(WizardStepEnum.KNOWLEDGE)
     }
 
     const onBackClick = () => {
-        if (data?.scope.includes(AiAgentScopes.SALES)) {
+        if (data?.scopes.includes(AiAgentScopes.SALES)) {
             goToStep(WizardStepEnum.SALES_PERSONALITY)
             return
         }

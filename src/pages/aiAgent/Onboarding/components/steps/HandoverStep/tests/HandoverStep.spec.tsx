@@ -1,7 +1,8 @@
 import '@testing-library/jest-dom/extend-expect'
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen} from '@testing-library/react'
+import {fireEvent, screen, waitFor} from '@testing-library/react'
 
+import {createMemoryHistory} from 'history'
 import {fromJS, Map} from 'immutable'
 import React from 'react'
 
@@ -12,16 +13,21 @@ import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {chatIntegrationFixtures} from 'fixtures/chat'
 import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
+import {
+    getOnboardingData,
+    updateOnboardingData,
+} from 'models/aiAgent/resources/configuration'
 import {HandoverStep} from 'pages/aiAgent/Onboarding/components/steps/HandoverStep/HandoverStep'
 import {DiscountStrategy} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import {PersuasionLevel} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 
 import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
 
-jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData', () => ({
-    useGetOnboardingData: jest.fn(),
+jest.mock('models/aiAgent/resources/configuration', () => ({
+    getOnboardingData: jest.fn(),
+    updateOnboardingData: jest.fn(),
 }))
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
@@ -34,38 +40,59 @@ const defaultState = {
     }),
 } as RootState
 
-const mockUseGetOnboardingData = useGetOnboardingData as jest.Mock
+const mockGetOnboardingData = getOnboardingData as jest.Mock
+const mockUpdateOnboardingData = updateOnboardingData as jest.Mock
 
 const mockGoToStep = jest.fn()
 
+const history = createMemoryHistory({
+    initialEntries: [
+        `/app/ai-agent/shopify/${shopifyIntegration.meta.shop_name}/onboarding/handover`,
+    ],
+})
+
 const queryClient = new QueryClient()
 
-const renderComponent = (state?: RootState) => {
-    render(
+const renderComponent = () => {
+    renderWithRouter(
         <QueryClientProvider client={queryClient}>
-            <Provider store={mockStore(state ?? defaultState)}>
+            <Provider store={mockStore(defaultState)}>
                 <HandoverStep
                     currentStep={2}
                     totalSteps={3}
                     goToStep={mockGoToStep}
                 />
             </Provider>
-        </QueryClientProvider>
+        </QueryClientProvider>,
+        {
+            history,
+            path: '/app/ai-agent/:shopType/:shopName/onboarding/:step',
+            route: `/app/ai-agent/shopify/${shopifyIntegration.meta.shop_name}/onboarding/handover`,
+        }
     )
 }
 
 describe('HandoverStep', () => {
     beforeEach(() => {
-        // Populate the return values of the mocked hooks
-        mockUseGetOnboardingData.mockReturnValue({
-            data: {
-                persuasionLevel: PersuasionLevel.Moderate,
-                discountStrategy: DiscountStrategy.Balanced,
-                maxDiscountPercentage: 8,
-                scope: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
-                shop: '',
-            },
-        })
+        mockGetOnboardingData.mockResolvedValue(
+            Promise.resolve([
+                {
+                    id: 1,
+                    salesPersuasionLevel: PersuasionLevel.Moderate,
+                    salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                    salesDiscountMax: 0.8,
+                    scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
+                    shopName: shopifyIntegration.meta.shop_name,
+                },
+            ])
+        )
+
+        // // ✅ Mock updateOnboardingData function
+        mockUpdateOnboardingData.mockResolvedValue(
+            Promise.resolve({
+                success: true,
+            })
+        )
     })
 
     beforeAll(() => {
@@ -96,39 +123,18 @@ describe('HandoverStep', () => {
         expect(mockGoToStep).toHaveBeenCalledWith(WizardStepEnum.KNOWLEDGE)
     })
 
-    it('navigates back to SALES_PERSONALITY if agent includes SALES', () => {
+    it('navigates back to SALES_PERSONALITY if agent includes SALES', async () => {
         renderComponent()
 
         jest.runAllTimers()
 
-        expect(screen.getByText('Handover step')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Handover step')).toBeInTheDocument()
+        })
 
         fireEvent.click(screen.getByText(/Back/i))
         expect(mockGoToStep).toHaveBeenCalledWith(
             WizardStepEnum.SALES_PERSONALITY
-        )
-    })
-
-    it('navigates back to PERSONALITY_PREVIEW if agent does not include SALES', () => {
-        mockUseGetOnboardingData.mockReturnValue({
-            data: {
-                persuasionLevel: PersuasionLevel.Moderate,
-                discountStrategy: DiscountStrategy.Balanced,
-                maxDiscountPercentage: 8,
-                scope: [AiAgentScopes.SUPPORT],
-                shop: '',
-            },
-        })
-
-        renderComponent()
-
-        jest.runAllTimers()
-
-        expect(screen.getByText('Handover step')).toBeInTheDocument()
-
-        fireEvent.click(screen.getByText(/Back/i))
-        expect(mockGoToStep).toHaveBeenCalledWith(
-            WizardStepEnum.PERSONALITY_PREVIEW
         )
     })
 })

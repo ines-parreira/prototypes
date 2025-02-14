@@ -11,6 +11,7 @@ import {
     CreateOnboardingNotificationStatePayload,
     CreateStoreConfigurationPayload,
     GetStoreConfigurationParams,
+    OnboardingData,
     OnboardingNotificationStateResponse,
     StoreConfigurationResponse,
     UpsertOnboardingNotificationStatePayload,
@@ -177,4 +178,39 @@ export const upsertOnboardingNotificationState = async (
         `/config/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`,
         onboardingNotificationState
     )
+}
+
+/**
+ * Endpoints "/api/onboardings"
+ */
+export const getOnboardingData = async (): Promise<OnboardingData[]> => {
+    const {data} = await apiClient.get<OnboardingData[]>('/onboardings')
+    return data
+}
+
+export const getOnboardingDataByShopName = async (
+    shopName: string
+): Promise<OnboardingData[]> => {
+    const {data} = await apiClient.get<OnboardingData[]>('/onboardings', {
+        params: {shop_name: shopName},
+    })
+    return data
+}
+
+export const createOnboardingData = async (
+    data: Partial<OnboardingData>
+): Promise<OnboardingData> => {
+    const response = await apiClient.post<OnboardingData>('/onboardings', data)
+    return response.data
+}
+
+export const updateOnboardingData = async (
+    id: string | number,
+    updateData: Partial<OnboardingData>
+): Promise<OnboardingData> => {
+    const response = await apiClient.put<OnboardingData>(
+        `/onboardings/${id}`,
+        updateData
+    )
+    return response.data
 }

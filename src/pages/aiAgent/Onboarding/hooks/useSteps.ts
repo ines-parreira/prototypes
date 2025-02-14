@@ -8,7 +8,7 @@ import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailInt
 export const useSteps = ({shopName}: {shopName: string}) => {
     const {integration} = useShopifyIntegrationAndScope(shopName)
     const {emailIntegrations, defaultIntegration} = useEmailIntegrations()
-    const {data} = useGetOnboardingData()
+    const {data, isLoading} = useGetOnboardingData(shopName)
 
     // Step configuration array
     const steps = useMemo(
@@ -35,7 +35,8 @@ export const useSteps = ({shopName}: {shopName: string}) => {
             },
             {
                 step: WizardStepEnum.SALES_PERSONALITY,
-                condition: data?.scope.includes(AiAgentScopes.SALES),
+                condition:
+                    isLoading || data?.scopes.includes(AiAgentScopes.SALES),
             },
             {
                 step: WizardStepEnum.HANDOVER,
@@ -46,7 +47,13 @@ export const useSteps = ({shopName}: {shopName: string}) => {
                 condition: true,
             },
         ],
-        [integration, emailIntegrations, defaultIntegration, data?.scope]
+        [
+            integration,
+            emailIntegrations,
+            defaultIntegration,
+            data?.scopes,
+            isLoading,
+        ]
     )
 
     // Filter steps based on conditions

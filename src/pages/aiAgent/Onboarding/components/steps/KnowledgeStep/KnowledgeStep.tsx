@@ -1,6 +1,8 @@
 import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
+import {useParams} from 'react-router-dom'
+
 import useAppSelector from 'hooks/useAppSelector'
 
 import {ShopifyIntegration} from 'models/integration/types'
@@ -20,10 +22,6 @@ import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckSto
 import {useGetHelpCentersByShopName} from 'pages/aiAgent/Onboarding/hooks/useGetHelpCentersByShopName'
 import {useGetKnowledgeStatusByShopName} from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgeStatusByShopName'
 import {
-    useGetOnboardingData,
-    useUpdateOnboardingCache,
-} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
-import {
     OnboardingBody,
     OnboardingContentContainer,
     OnboardingPreviewContainer,
@@ -39,17 +37,14 @@ export const KnowledgeStep: React.FC<StepProps> = ({
     totalSteps,
     goToStep,
 }) => {
-    const {data, isLoading} = useGetOnboardingData()
-    const updateOnboardingCache = useUpdateOnboardingCache()
+    const {shopName} = useParams<{shopName: string}>()
 
-    const shopName = data?.shop ?? ''
+    useCheckStoreIntegration()
 
     /// This part is a temporary block to be removed once the actual data is available
     const shopifyIntegration: ShopifyIntegration = useAppSelector(
         getShopifyIntegrationByShopName(shopName || '')
     ).toJS()
-
-    useCheckStoreIntegration({storeName: shopName, isLoading, goToStep})
 
     const dummyKnowledgeData: TemporaryKnowledgeData[] = [
         {
@@ -75,7 +70,6 @@ export const KnowledgeStep: React.FC<StepProps> = ({
         if (!hasHelpCenter) {
             return
         }
-        updateOnboardingCache('helpCenterId', helpCenters[0].id.toString())
     }
 
     const onBackClick = () => {

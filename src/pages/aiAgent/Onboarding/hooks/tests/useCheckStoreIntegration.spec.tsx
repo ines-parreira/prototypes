@@ -1,64 +1,76 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
+import {useParams, useHistory} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
+import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 
 jest.mock('hooks/useAppSelector')
+jest.mock('react-router-dom', () => ({
+    useParams: jest.fn(),
+    useHistory: jest.fn(),
+}))
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData')
 
 const mockUseAppSelector = useAppSelector as jest.Mock
-
-const mockGoToStep = jest.fn()
+const mockUseParams = useParams as jest.Mock
+const mockUseHistory = useHistory as jest.Mock
+const mockUseGetOnboardingData = useGetOnboardingData as jest.Mock
 
 describe('useCheckStoreIntegration', () => {
-    it('should not call goToStep when isLoading is true', () => {
+    let mockHistoryPush: jest.Mock
+
+    beforeEach(() => {
+        mockHistoryPush = jest.fn()
+        mockUseHistory.mockReturnValue({push: mockHistoryPush})
+    })
+
+    it('should not redirect when isLoading is true', () => {
+        mockUseParams.mockReturnValue({shopName: 'test-store'})
         mockUseAppSelector.mockReturnValue(
             fromJS({id: '123', name: 'Valid Store'})
         )
+        mockUseGetOnboardingData.mockReturnValue({
+            data: null,
+            isLoading: true, // Simulate loading state
+        })
 
-        const {result} = renderHook(() =>
-            useCheckStoreIntegration({
-                storeName: 'test-store',
-                isLoading: true,
-                goToStep: mockGoToStep,
-            })
-        )
+        const {result} = renderHook(() => useCheckStoreIntegration())
 
-        expect(mockGoToStep).not.toHaveBeenCalled()
+        expect(mockHistoryPush).not.toHaveBeenCalled()
         expect(result.current).toBeNull()
     })
 
-    it('should not call goToStep when storeIntegration is valid', () => {
+    it('should not redirect when storeIntegration is valid', () => {
+        mockUseParams.mockReturnValue({shopName: 'valid-store'})
         mockUseAppSelector.mockReturnValue(
             fromJS({id: '123', name: 'Valid Store'})
         )
+        mockUseGetOnboardingData.mockReturnValue({
+            data: {id: '123', shopName: 'valid-store'},
+            isLoading: false, // Data loaded
+        })
 
-        const {result} = renderHook(() =>
-            useCheckStoreIntegration({
-                storeName: 'valid-store',
-                isLoading: false,
-                goToStep: mockGoToStep,
-            })
-        )
+        const {result} = renderHook(() => useCheckStoreIntegration())
 
-        expect(mockGoToStep).not.toHaveBeenCalled()
+        expect(mockHistoryPush).not.toHaveBeenCalled()
         expect(result.current).toBeNull()
     })
 
-    it('should call goToStep(WizardStepEnum.SHOPIFY_INTEGRATION) when storeIntegration is empty', () => {
-        mockUseAppSelector.mockReturnValue(fromJS({}))
+    it('should redirect to Shopify integration step when storeIntegration is empty', () => {
+        mockUseParams.mockReturnValue({shopName: 'empty-store'})
+        mockUseAppSelector.mockReturnValue(fromJS({})) // Simulate empty store integration
+        mockUseGetOnboardingData.mockReturnValue({
+            data: null, // Simulate no onboarding data
+            isLoading: false,
+        })
 
-        renderHook(() =>
-            useCheckStoreIntegration({
-                storeName: 'empty-store',
-                isLoading: false,
-                goToStep: mockGoToStep,
-            })
-        )
+        renderHook(() => useCheckStoreIntegration())
 
-        expect(mockGoToStep).toHaveBeenCalledWith(
-            WizardStepEnum.SHOPIFY_INTEGRATION
+        expect(mockHistoryPush).toHaveBeenCalledWith(
+            `/app/ai-agent/onboarding/${WizardStepEnum.SHOPIFY_INTEGRATION}`
         )
     })
 })

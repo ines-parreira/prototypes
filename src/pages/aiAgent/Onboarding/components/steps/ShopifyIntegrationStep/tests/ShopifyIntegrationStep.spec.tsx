@@ -1,7 +1,23 @@
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import {screen, fireEvent, waitFor} from '@testing-library/react'
 import {createMemoryHistory} from 'history'
+import {fromJS, Map} from 'immutable'
 import React from 'react'
+
+import {Provider} from 'react-redux'
+
+import configureMockStore from 'redux-mock-store'
+
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {chatIntegrationFixtures} from 'fixtures/chat'
+import {shopifyIntegration, integrationsState} from 'fixtures/integrations'
+import {
+    getOnboardingData,
+    createOnboardingData,
+    updateOnboardingData,
+    getOnboardingDataByShopName,
+} from 'models/aiAgent/resources/configuration'
 
 import '@testing-library/jest-dom/extend-expect'
 import {StoreIntegration} from 'models/integration/types'
@@ -11,6 +27,7 @@ import {useShopifyIntegrations} from 'pages/aiAgent/Onboarding/hooks/useShopifyI
 import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
+import {RootState, StoreDispatch} from 'state/types'
 
 import {renderWithRouter} from 'utils/testing'
 
@@ -18,6 +35,18 @@ import {renderWithRouter} from 'utils/testing'
 jest.mock('pages/aiAgent/Onboarding/hooks/useShopifyIntegrations')
 jest.mock('pages/common/hooks/useShopifyIntegrationAndScope')
 jest.mock('pages/settings/contactForm/hooks/useEmailIntegrations')
+
+jest.mock('models/aiAgent/resources/configuration', () => ({
+    getOnboardingData: jest.fn(),
+    getOnboardingDataByShopName: jest.fn(),
+    createOnboardingData: jest.fn(),
+    updateOnboardingData: jest.fn(),
+}))
+
+const mockGetOnboardingData = getOnboardingData as jest.Mock
+const mockGetOnboardingDataByShopName = getOnboardingDataByShopName as jest.Mock
+const mockCreateOnboardingData = createOnboardingData as jest.Mock
+const mockUpdateOnboardingData = updateOnboardingData as jest.Mock
 
 const mockUseShopifyIntegrations = useShopifyIntegrations as jest.Mock
 const mockUseShopifyIntegrationAndScope =
@@ -30,16 +59,28 @@ const goToStep = jest.fn()
 
 let history = createMemoryHistory()
 
+const mockStore = configureMockStore<RootState, StoreDispatch>()
+
+const defaultState = {
+    currentAccount: fromJS(account),
+    billing: fromJS(billingState),
+    integrations: (fromJS(integrationsState) as Map<any, any>).mergeDeep({
+        integrations: [shopifyIntegration, ...chatIntegrationFixtures],
+    }),
+} as RootState
+
 const renderComponent = (shopifyIntegrations: StoreIntegration[] = []) => {
     mockUseShopifyIntegrations.mockReturnValue(shopifyIntegrations)
     return renderWithRouter(
         <>
             <QueryClientProvider client={queryClient}>
-                <ShopifyIntegrationStep
-                    currentStep={2}
-                    totalSteps={3}
-                    goToStep={goToStep}
-                />
+                <Provider store={mockStore(defaultState)}>
+                    <ShopifyIntegrationStep
+                        currentStep={2}
+                        totalSteps={3}
+                        goToStep={goToStep}
+                    />
+                </Provider>
             </QueryClientProvider>
         </>,
         {history}
@@ -58,6 +99,46 @@ describe('ShopifyIntegrationStep', () => {
             emailIntegrations: true,
             defaultIntegration: true,
         })
+
+        // ✅ Mock getOnboardingData function
+        mockGetOnboardingData.mockResolvedValue(Promise.resolve([]))
+
+        // ✅ Mock getOnboardingDataByShopName function
+        mockGetOnboardingDataByShopName.mockResolvedValue(
+            Promise.resolve([
+                {
+                    id: '1',
+                    shopName: 'Test Store',
+                    currentStepName: 'CHANNELS',
+                },
+                {
+                    id: '2',
+                    shopName: 'Test Store 1',
+                    currentStepName: 'CHANNELS',
+                },
+                {
+                    id: '3',
+                    shopName: 'Test Store 2',
+                    currentStepName: 'CHANNELS',
+                },
+            ])
+        )
+
+        // ✅ Mock createOnboardingData function
+        mockCreateOnboardingData.mockResolvedValue(
+            Promise.resolve({
+                id: '456',
+                shopName: 'New Test Store',
+                currentStepName: 'CHANNELS',
+            })
+        )
+
+        // // ✅ Mock updateOnboardingData function
+        mockUpdateOnboardingData.mockResolvedValue(
+            Promise.resolve({
+                success: true,
+            })
+        )
     })
 
     beforeAll(() => {
@@ -78,16 +159,18 @@ describe('ShopifyIntegrationStep', () => {
         })
     })
 
-    it('displays connected status when an integration is selected', () => {
+    it('displays connected status when an integration is selected', async () => {
         const integrations = [{id: 1, name: 'Test Store', type: 'shopify'}]
         renderComponent(integrations as StoreIntegration[])
 
-        expect(
-            screen.getByText(
-                "You're already connected to Shopify. Click next to proceed."
-            )
-        ).toBeInTheDocument()
-        expect(screen.getByText('Connected')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    "You're already connected to Shopify. Click next to proceed."
+                )
+            ).toBeInTheDocument()
+            expect(screen.getByText('Connected')).toBeInTheDocument()
+        })
     })
 
     it('displays disconnected status when no integration is selected', () => {
@@ -217,17 +300,23 @@ describe('ShopifyIntegrationStep', () => {
         })
     })
 
-    it('updates text when another integration is selected', () => {
+    it('updates text when another integration is selected', async () => {
         const integrations = [
             {id: 1, name: 'Test Store 1'},
             {id: 2, name: 'Test Store 2'},
         ]
         renderComponent(integrations as StoreIntegration[])
 
+        await waitFor(() => {
+            expect(screen.getByText('Test Store 1')).toBeInTheDocument()
+        })
+
         fireEvent.click(screen.getByText('Test Store 1'))
         fireEvent.click(screen.getByText('Test Store 2'))
 
-        expect(screen.getByText(integrations[1].name)).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText(integrations[1].name)).toBeInTheDocument()
+        })
     })
 
     it('shows error message when Next is clicked and there is no integrations', async () => {

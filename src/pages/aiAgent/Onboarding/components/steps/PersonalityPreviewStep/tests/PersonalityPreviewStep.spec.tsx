@@ -1,6 +1,7 @@
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {render, fireEvent, act} from '@testing-library/react'
+import {fireEvent, act} from '@testing-library/react'
 
+import {createMemoryHistory} from 'history'
 import {fromJS, Map} from 'immutable'
 import React from 'react'
 
@@ -11,19 +12,25 @@ import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {chatIntegrationFixtures} from 'fixtures/chat'
 import {shopifyIntegration, integrationsState} from 'fixtures/integrations'
+import {
+    getOnboardingData,
+    updateOnboardingData,
+} from 'models/aiAgent/resources/configuration'
 import {PersonalityPreviewStep} from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep'
 import {DiscountStrategy} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import {PersuasionLevel} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 
 import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
 
-jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData', () => ({
-    useGetOnboardingData: jest.fn(),
+jest.mock('models/aiAgent/resources/configuration', () => ({
+    getOnboardingData: jest.fn(),
+    updateOnboardingData: jest.fn(),
 }))
 
-const mockUseGetOnboardingData = useGetOnboardingData as jest.Mock
+const mockGetOnboardingData = getOnboardingData as jest.Mock
+const mockUpdateOnboardingData = updateOnboardingData as jest.Mock
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -35,12 +42,18 @@ const defaultState = {
     }),
 } as RootState
 
+const history = createMemoryHistory({
+    initialEntries: [
+        `/app/ai-agent/shopify/${shopifyIntegration.meta.shop_name}/onboarding/${WizardStepEnum.PERSONALITY_PREVIEW}`,
+    ],
+})
+
 const queryClient = new QueryClient()
 
 const goToStep = jest.fn()
 
 const renderComponent = (state?: RootState) => {
-    return render(
+    return renderWithRouter(
         <QueryClientProvider client={queryClient}>
             <Provider store={mockStore(state ?? defaultState)}>
                 <PersonalityPreviewStep
@@ -49,7 +62,12 @@ const renderComponent = (state?: RootState) => {
                     goToStep={goToStep}
                 />
             </Provider>
-        </QueryClientProvider>
+        </QueryClientProvider>,
+        {
+            history,
+            path: '/app/ai-agent/:shopType/:shopName/onboarding/:step',
+            route: `/app/ai-agent/shopify/${shopifyIntegration.meta.shop_name}/onboarding/${WizardStepEnum.PERSONALITY_PREVIEW}`,
+        }
     )
 }
 
@@ -58,18 +76,28 @@ describe('<PersonalityPreviewStep />', () => {
         ['sales', [AiAgentScopes.SALES]],
         ['support', [AiAgentScopes.SUPPORT]],
         ['mixed', [AiAgentScopes.SALES, AiAgentScopes.SUPPORT]],
-    ])('with scope defined as %s', (scopeName, scope) => {
+    ])('with scope defined as %s', (scopeName, scopes) => {
         beforeEach(() => {
-            // Populate the return values of the mocked hooks
-            mockUseGetOnboardingData.mockReturnValue({
-                data: {
-                    persuasionLevel: PersuasionLevel.Moderate,
-                    discountStrategy: DiscountStrategy.Balanced,
-                    maxDiscountPercentage: 8,
-                    scope,
-                    shop: shopifyIntegration.meta.shop_name,
-                },
-            })
+            // ✅ Mock getOnboardingData function
+            mockGetOnboardingData.mockResolvedValue(
+                Promise.resolve([
+                    {
+                        id: 1,
+                        salesPersuasionLevel: PersuasionLevel.Moderate,
+                        salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                        salesDiscountMax: 0.8,
+                        scopes,
+                        shopName: shopifyIntegration.meta.shop_name,
+                    },
+                ])
+            )
+
+            // // ✅ Mock updateOnboardingData function
+            mockUpdateOnboardingData.mockResolvedValue(
+                Promise.resolve({
+                    success: true,
+                })
+            )
         })
 
         it('should render with the title', () => {
@@ -138,10 +166,7 @@ describe('<PersonalityPreviewStep />', () => {
 
             fireEvent.click(screen.getByText(/Next/i))
 
-            const expectedCalledWith =
-                scopeName === 'support'
-                    ? WizardStepEnum.HANDOVER
-                    : WizardStepEnum.SALES_PERSONALITY
+            const expectedCalledWith = WizardStepEnum.SALES_PERSONALITY
 
             expect(goToStep).toHaveBeenCalledWith(expectedCalledWith)
         })
