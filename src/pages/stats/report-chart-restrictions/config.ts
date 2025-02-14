@@ -1,7 +1,7 @@
 import {UserRole} from 'config/types/user'
 import {ReportsIDs} from 'pages/stats/custom-reports/config'
 
-export const testAccountId = 6069 // account id of artemisathletix as a temporary test customer
+const LOOPY_CASES_ACCOUNT_ID = 141994
 
 export enum RestrictedComponentType {
     Report = 'report',
@@ -25,7 +25,7 @@ export type RestrictionsPerCustomer = {
 }
 
 export const RBAC_RESTRICTIONS: RestrictionsPerCustomer = {
-    [testAccountId]: [
+    [LOOPY_CASES_ACCOUNT_ID]: [
         {
             ids: [
                 ReportsIDs.SupportPerformanceAgentsReportConfig,

@@ -82,11 +82,6 @@ describe('getAccountRestrictions', () => {
     beforeEach(() => {
         jest.replaceProperty(
             constants,
-            'testAccountId',
-            restrictedAccountId as any
-        )
-        jest.replaceProperty(
-            constants,
             'RBAC_RESTRICTIONS',
             RBAC_RESTRICTIONS_MOCK as any
         )
@@ -105,11 +100,6 @@ describe('getAccountRestrictions', () => {
 
 describe('getUserReportsRestrictions', () => {
     beforeEach(() => {
-        jest.replaceProperty(
-            constants,
-            'testAccountId',
-            restrictedAccountId as any
-        )
         jest.replaceProperty(
             constants,
             'RBAC_RESTRICTIONS',
@@ -140,11 +130,6 @@ describe('getUserChartsRestrictions', () => {
     beforeEach(() => {
         jest.replaceProperty(
             constants,
-            'testAccountId',
-            restrictedAccountId as any
-        )
-        jest.replaceProperty(
-            constants,
             'RBAC_RESTRICTIONS',
             RBAC_RESTRICTIONS_MOCK as any
         )
@@ -171,11 +156,6 @@ describe('getUserChartsRestrictions', () => {
 
 describe('useReportChartRestrictions', () => {
     beforeEach(() => {
-        jest.replaceProperty(
-            constants,
-            'testAccountId',
-            restrictedAccountId as any
-        )
         jest.replaceProperty(
             constants,
             'RBAC_RESTRICTIONS',
