@@ -5,6 +5,7 @@ import {
     ReportConfig,
 } from 'pages/stats/custom-reports/types'
 import {BusiestTimesOfDaysTableChart} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTableChart'
+import {STATS_ROUTES} from 'routes/constants'
 import {fetchAggregatedBusiestTimesOfDayReportData} from 'services/reporting/busiestTimesOfDaysReportingService'
 
 export const BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS = [
@@ -23,7 +24,7 @@ export enum BusiestTimesChart {
 
 export const BusiestTimesReportConfig: ReportConfig<BusiestTimesChart> = {
     reportName: BUSIEST_TIME_OF_DAY_PAGE_TITLE,
-    reportPath: 'busiest-times-of-days',
+    reportPath: STATS_ROUTES.SUPPORT_PERFORMANCE_BUSIEST_TIMES,
     charts: {
         [BusiestTimesChart.BusiestTimesTable]: {
             chartComponent: BusiestTimesOfDaysTableChart,

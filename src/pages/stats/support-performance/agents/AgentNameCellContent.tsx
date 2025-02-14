@@ -7,7 +7,9 @@ import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
 import {AgentAvatar} from 'pages/stats/common/AgentAvatar'
+import {STATS_ROUTE_PREFIX} from 'pages/stats/common/components/constants'
 import css from 'pages/stats/support-performance/agents/AgentCellContent.less'
+import {STATS_ROUTES} from 'routes/constants'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 
 export type AgentNameCellContentProps = {
@@ -28,7 +30,7 @@ export const AgentNameCellContent = ({
     return (
         <BodyCell {...bodyCellProps}>
             <Link
-                to="/app/stats/support-performance-overview"
+                to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW}`}
                 onClick={handleClick}
                 className={css.container}
             >

@@ -20,6 +20,7 @@ import {
 import {AchievementRateTrendCard} from 'pages/stats/sla/components/AchievementRateTrendCard'
 import {BreachedTicketsRateTrendCard} from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
 import {SlaMetricConfig} from 'pages/stats/sla/SlaConfig'
+import {STATS_ROUTES} from 'routes/constants'
 import {
     ACHIEVED_SLA_LABEL,
     ACHIEVEMENT_RATE_LABEL,
@@ -54,7 +55,7 @@ export const SERVICE_LEVEL_PERSISTENT_FILTERS = [
 export const ServiceLevelAgreementsReportConfig: ReportConfig<ServiceLevelAgreementsChart> =
     {
         reportName: SERVICE_LEVEL_AGREEMENT_PAGE_TITLE,
-        reportPath: 'slas',
+        reportPath: STATS_ROUTES.SUPPORT_PERFORMANCE_SERVICE_LEVEL_AGREEMENT,
         reportFilters: {
             optional: SERVICE_LEVEL_OPTIONAL_FILTERS,
             persistent: SERVICE_LEVEL_PERSISTENT_FILTERS,

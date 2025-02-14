@@ -19,9 +19,9 @@ import {
     getUserReportsRestrictions,
     useReportChartRestrictions,
 } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import {SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import {AutoQAReportConfig} from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
 import {OverviewChart} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import {STATS_ROUTES} from 'routes/constants'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('state/currentAccount/selectors')
@@ -196,7 +196,7 @@ describe('useReportChartRestrictions', () => {
 
             expect(
                 result.current.isRouteRestrictedToCurrentUser(
-                    `${STATS_ROUTE_PREFIX}${SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH}`
+                    `${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS}`
                 )
             ).toEqual(true)
         })
@@ -234,7 +234,7 @@ describe('useReportChartRestrictions', () => {
 
             expect(
                 result.current.isRouteRestrictedToCurrentUser(
-                    SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH,
+                    STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS,
                     true
                 )
             ).toEqual(false)
@@ -297,8 +297,8 @@ describe('useReportChartRestrictions', () => {
             useReportRestrictionsMock.mockReturnValue({
                 restrictionsMap: {
                     ['quality-management-satisfaction']: true,
-                    ['support-performance-overview']: true,
-                    ['support-performance-agents']: true,
+                    [STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW]: true,
+                    [STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS]: true,
                 },
             })
 

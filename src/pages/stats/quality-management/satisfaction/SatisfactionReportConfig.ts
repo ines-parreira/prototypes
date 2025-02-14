@@ -13,6 +13,7 @@ import {ResponseRateTrendCard} from 'pages/stats/quality-management/satisfaction
 import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
 import {SatisfactionScoreTrendCard} from 'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard'
 import {SurveysSentTrendCard} from 'pages/stats/quality-management/satisfaction/SurveysSentTrendCard'
+import {STATS_ROUTES} from 'routes/constants'
 import {fetchSurveyScoresReportData} from 'services/reporting/satisfactionReportingService'
 import {SatisfactionMetric} from 'state/ui/stats/types'
 
@@ -26,7 +27,6 @@ export enum SatisfactionChart {
 }
 
 export const SATISFACTION_TITLE = 'Satisfaction'
-export const SATISFACTION_REPORT_PAGE_SLUG = 'quality-management-satisfaction'
 export const SATISFACTION_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.Period,
 ]
@@ -40,7 +40,7 @@ export const SATISFACTION_OPTIONAL_FILTERS = [
 
 export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {
     reportName: SATISFACTION_TITLE,
-    reportPath: SATISFACTION_REPORT_PAGE_SLUG,
+    reportPath: STATS_ROUTES.QUALITY_MANAGEMENT_SATISFACTION,
     reportFilters: {
         persistent: SATISFACTION_PERSISTENT_FILTERS,
         optional: SATISFACTION_OPTIONAL_FILTERS,

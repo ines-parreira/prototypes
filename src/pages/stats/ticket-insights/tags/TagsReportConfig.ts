@@ -11,6 +11,7 @@ import {
 } from 'pages/stats/ticket-insights/tags/TagsMetricConfig'
 import {TagsTrendChart} from 'pages/stats/ticket-insights/tags/TagsTrendChart'
 import {TopUsedTagsChart} from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'
+import {STATS_ROUTES} from 'routes/constants'
 import {fetchTagsReportData} from 'services/reporting/tagsReportingService'
 
 export const TAGS_OPTIONAL_FILTERS = [
@@ -37,7 +38,7 @@ export enum TicketInsightsTagsChart {
 export const TicketInsightsTagsReportConfig: ReportConfig<TicketInsightsTagsChart> =
     {
         reportName: TAGS_TITLE,
-        reportPath: 'tags',
+        reportPath: STATS_ROUTES.TICKET_INSIGHTS_TAGS,
         reportFilters: {
             optional: TAGS_OPTIONAL_FILTERS,
             persistent: TAGS_PERSISTENT_FILTERS,

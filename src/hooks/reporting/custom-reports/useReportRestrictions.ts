@@ -1,15 +1,10 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-
 import {useMemo} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-
 import {getComponentConfig} from 'pages/stats/custom-reports/config'
-import {HELP_CENTER_REPORT_PAGE_SLUG} from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
-import {SATISFACTION_REPORT_PAGE_SLUG} from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
-import {AUTO_QA_REPORT_PAGE_SLUG} from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
-
+import {STATS_ROUTES} from 'routes/constants'
 import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {isTeamLead} from 'utils'
@@ -30,9 +25,12 @@ export const useReportRestrictions = () => {
     )
     const restrictionsMap: RestrictionsMap = useMemo(
         () => ({
-            [HELP_CENTER_REPORT_PAGE_SLUG]: !isHelpCenterAnalyticsEnabled,
-            [SATISFACTION_REPORT_PAGE_SLUG]: !isNewSatisfactionReportEnabled,
-            [AUTO_QA_REPORT_PAGE_SLUG]: !isAutoQANavLinkAvailable,
+            [STATS_ROUTES.SUPPORT_PERFORMANCE_HELP_CENTER]:
+                !isHelpCenterAnalyticsEnabled,
+            [STATS_ROUTES.QUALITY_MANAGEMENT_SATISFACTION]:
+                !isNewSatisfactionReportEnabled,
+            [STATS_ROUTES.QUALITY_MANAGEMENT_AUTO_QA]:
+                !isAutoQANavLinkAvailable,
         }),
         [
             isAutoQANavLinkAvailable,

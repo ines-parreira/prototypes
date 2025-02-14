@@ -21,8 +21,8 @@ import StatsNavbarView, {
     BUSIEST_TIMES_OF_DAYS_NAV_LABEL,
 } from 'pages/stats/common/components/StatsNavbarView'
 import {SERVICE_LEVEL_AGREEMENT_PAGE_TITLE} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
-import {SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import {AUTO_QA_PAGE_TITLE} from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
+import {STATS_ROUTES} from 'routes/constants'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock, renderWithRouterAndDnD} from 'utils/testing'
 
@@ -96,7 +96,7 @@ describe('StatsNavbarView', () => {
                 .find(
                     (el) =>
                         el.getAttribute('href') ===
-                        `${STATS_ROUTE_PREFIX}${SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH}`
+                        `${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS}`
                 )
 
             expect(agentsPerformanceLink).toBeInTheDocument()

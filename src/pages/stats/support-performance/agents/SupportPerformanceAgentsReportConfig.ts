@@ -17,6 +17,7 @@ import {TopClosedTicketsPerformers} from 'pages/stats/support-performance/agents
 import {TopCsatPerformers} from 'pages/stats/support-performance/agents/TopCsatPerformers'
 import {TopFirstResponseTimePerformers} from 'pages/stats/support-performance/agents/TopFirstResponseTimePerformers'
 import {TopResponseTimePerformers} from 'pages/stats/support-performance/agents/TopResponseTimePerformers'
+import {STATS_ROUTES} from 'routes/constants'
 
 export const AGENT_PERSISTENT_FILTERS: StaticFilter[] = [FilterKey.Period]
 
@@ -36,12 +37,9 @@ export enum AgentsChart {
     TopClosedTicketsPerformers = 'agents_top_closed_tickets_performers',
 }
 
-export const SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH =
-    'support-performance-agents'
-
 export const SupportPerformanceAgentsReportConfig: ReportConfig<AgentsChart> = {
     reportName: AGENT_PERFORMANCE_SECTION_TITLE,
-    reportPath: SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH,
+    reportPath: STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS,
     charts: {
         [AgentsChart.Table]: {
             chartComponent: AgentsTableChart,

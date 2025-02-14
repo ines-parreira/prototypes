@@ -5,7 +5,7 @@ import {useRouteMatch} from 'react-router-dom'
 import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import {SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
+import {STATS_ROUTES} from 'routes/constants'
 import {assumeMock} from 'utils/testing'
 
 const NavLinkMock = ({children, ...props}: {children: React.ReactNode}) => (
@@ -30,7 +30,7 @@ jest.mock(
 )
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
-const path = SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH
+const path = STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS
 
 describe('NavbarLink', () => {
     beforeEach(() => {

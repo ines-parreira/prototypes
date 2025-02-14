@@ -1,5 +1,4 @@
 import {act} from '@testing-library/react'
-
 import {createBrowserHistory} from 'history'
 import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
@@ -16,10 +15,9 @@ import {
 } from 'common/navigation/hooks/useNavBar/context'
 import {FeatureFlagKey} from 'config/featureFlags'
 import * as billingFixtures from 'fixtures/billing'
-
 import {user} from 'fixtures/users'
 import {VOICE_OVERVIEW_PAGE_TITLE} from 'pages/stats/voice/constants/voiceOverview'
-import {StatsRoutes} from 'routes/Routes'
+import {StatsRoutes} from 'routes/StatsRoutes'
 import {initialState} from 'state/billing/reducers'
 import {RootState} from 'state/types'
 import {renderWithRouter} from 'utils/testing'

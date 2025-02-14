@@ -14,8 +14,8 @@ import ConvertStatsNavbar from 'pages/convert/common/components/ConvertStatsNavb
 import {STATS_ROUTE_PREFIX} from 'pages/stats/common/components/constants'
 import {DashboardsNavbarBlock} from 'pages/stats/custom-reports/DashboardsNavbarBlock/DashboardsNavbarBlock'
 import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
-import {SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import VoiceStatsNavbarItem from 'pages/stats/voice/components/VoiceStatsNavbar/VoiceStatsNavbarItem'
+import {STATS_ROUTES} from 'routes/constants'
 import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {isTeamLead} from 'utils'
@@ -102,7 +102,7 @@ export default function StatsNavbarView() {
                     >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to={`${STATS_ROUTE_PREFIX}support-performance-overview`}
+                            to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW}`}
                         >
                             Overview
                         </NavbarLink>
@@ -115,7 +115,7 @@ export default function StatsNavbarView() {
                     >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to={`${STATS_ROUTE_PREFIX}${SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH}`}
+                            to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS}`}
                         >
                             Agents
                         </NavbarLink>

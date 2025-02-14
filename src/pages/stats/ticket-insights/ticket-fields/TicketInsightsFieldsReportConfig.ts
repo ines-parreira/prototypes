@@ -11,6 +11,7 @@ import {
     TicketInsightsFieldsMetricConfig,
 } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
 import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
+import {STATS_ROUTES} from 'routes/constants'
 import {fetchCustomFieldsReportData} from 'services/reporting/ticketFieldsReportingService'
 
 export const TICKET_INSIGHTS_PAGE_TITLE = 'Ticket Fields'
@@ -37,7 +38,7 @@ export const TICKET_INSIGHTS_PERSISTENT_FILTERS = [
 
 export const TicketFieldsReportConfig: ReportConfig<TicketFieldsChart> = {
     reportName: TICKET_INSIGHTS_PAGE_TITLE,
-    reportPath: 'ticket-fields',
+    reportPath: STATS_ROUTES.TICKET_INSIGHTS_TICKET_FIELDS,
     reportFilters: {
         optional: TICKET_INSIGHTS_OPTIONAL_FILTERS,
         persistent: TICKET_INSIGHTS_PERSISTENT_FILTERS,

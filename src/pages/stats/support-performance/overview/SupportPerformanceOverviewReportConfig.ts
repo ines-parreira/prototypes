@@ -31,6 +31,7 @@ import {
     TICKETS_CREATED_VS_CLOSED_HINT,
     WORKLOAD_BY_CHANNEL_HINT,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import {STATS_ROUTES} from 'routes/constants'
 import {
     TOTAL_WORKLOAD_BY_CHANNEL_LABEL,
     WORKLOAD_BY_CHANNEL_LABEL,
@@ -60,7 +61,7 @@ export enum OverviewChart {
 export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart> =
     {
         reportName: SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE,
-        reportPath: 'support-performance-overview',
+        reportPath: STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW,
         charts: {
             [OverviewChart.CustomerSatisfactionTrendCard]: {
                 chartComponent: CustomerSatisfactionTrendCard,

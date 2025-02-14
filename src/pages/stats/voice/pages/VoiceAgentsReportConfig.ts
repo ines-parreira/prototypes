@@ -11,6 +11,7 @@ import {
     VOICE_CALL_ACTIVITY_HINT,
     VOICE_CALL_ACTIVITY_TITLE,
 } from 'pages/stats/voice/constants/voiceAgents'
+import {STATS_ROUTES} from 'routes/constants'
 import {fetchVoiceAgentsReportData} from 'services/reporting/voiceAgentsReportingService'
 
 export enum VoiceAgentsChart {
@@ -29,7 +30,7 @@ export const VOICE_AGENTS_PERSISTENT_FILTERS: StaticFilter[] = [
 
 export const VoiceAgentsReportConfig: ReportConfig<VoiceAgentsChart> = {
     reportName: VOICE_AGENTS_PAGE_TITLE,
-    reportPath: 'voice-agents',
+    reportPath: STATS_ROUTES.VOICE_AGENTS,
     reportFilters: {
         optional: VOICE_AGENTS_OPTIONAL_FILTERS,
         persistent: VOICE_AGENTS_PERSISTENT_FILTERS,

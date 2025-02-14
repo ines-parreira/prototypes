@@ -49,7 +49,6 @@ import {
     AGENT_PERSISTENT_FILTERS,
     AGENTS_OPTIONAL_FILTERS,
     AgentsChart,
-    SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH,
 } from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import {TopCsatPerformers} from 'pages/stats/support-performance/agents/TopCsatPerformers'
 import {
@@ -60,6 +59,7 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import {STATS_ROUTES} from 'routes/constants'
 
 describe('customReportFromApi', () => {
     const apiReportWithoutChildren: AnalyticsCustomReport = {
@@ -339,7 +339,7 @@ describe('getSearchConfig', () => {
                                 optional: AGENTS_OPTIONAL_FILTERS,
                             },
                             reportName: AGENT_PERFORMANCE_SECTION_TITLE,
-                            reportPath: SUPPORT_PERFORMANCE_AGENTS_REPORT_PATH,
+                            reportPath: STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS,
                         },
                         type: AgentsChart,
                     },

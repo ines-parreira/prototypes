@@ -38,6 +38,7 @@ import {
     fetchVoiceCallCountOutboundTrend,
     fetchVoiceCallCountTrend,
 } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
+import {STATS_ROUTES} from 'routes/constants'
 
 export const VOICE_OVERVIEW_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.Period,
@@ -60,7 +61,7 @@ export enum VoiceOverviewChart {
 
 export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
     reportName: 'Voice Overview Report',
-    reportPath: 'automate-overview',
+    reportPath: STATS_ROUTES.VOICE_OVERVIEW,
     charts: {
         [VoiceOverviewChart.VoiceCallCallerExperienceAverageWaitTimeChart]: {
             chartComponent: VoiceCallCallerExperienceAverageWaitTimeChart,

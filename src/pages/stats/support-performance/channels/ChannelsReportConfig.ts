@@ -9,6 +9,7 @@ import {
     CHANNEL_PERFORMANCE_TABLE_TITLE,
     ChannelsPerformanceTableChart,
 } from 'pages/stats/support-performance/channels/ChannelsPerformanceTableChart'
+import {STATS_ROUTES} from 'routes/constants'
 
 export const CHANNEL_REPORT_OPTIONAL_FILTERS = [
     FilterKey.Channels,
@@ -26,7 +27,7 @@ export enum ChannelsChart {
 
 export const ChannelsReportConfig: ReportConfig<ChannelsChart> = {
     reportName: CHANNELS_REPORT_PAGE_TITLE,
-    reportPath: 'channels',
+    reportPath: STATS_ROUTES.SUPPORT_PERFORMANCE_CHANNELS,
     charts: {
         [ChannelsChart.ChannelsPerformanceTable]: {
             chartComponent: ChannelsPerformanceTableChart,

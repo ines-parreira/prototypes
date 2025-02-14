@@ -18,6 +18,7 @@ import {InternalComplianceTrendCard} from 'pages/stats/support-performance/auto-
 import {LanguageProficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/LanguageProficiencyTrendCard'
 import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
 import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
+import {STATS_ROUTES} from 'routes/constants'
 import {fetchAutoQAAgentsTableReportData} from 'services/reporting/autoQAReportingService'
 import {AutoQAMetric} from 'state/ui/stats/types'
 
@@ -34,7 +35,6 @@ export enum AutoQAChart {
 }
 
 export const AUTO_QA_PAGE_TITLE = 'Auto QA'
-export const AUTO_QA_REPORT_PAGE_SLUG = 'auto-qa'
 export const AUTO_QA_PERSISTENT_FILTERS: StaticFilter[] = [FilterKey.Period]
 export const AUTO_QA_OPTIONAL_FILTERS = [
     FilterKey.Integrations,
@@ -45,7 +45,7 @@ export const AUTO_QA_OPTIONAL_FILTERS = [
 ]
 export const AutoQAReportConfig: ReportConfig<AutoQAChart> = {
     reportName: AUTO_QA_PAGE_TITLE,
-    reportPath: AUTO_QA_REPORT_PAGE_SLUG,
+    reportPath: STATS_ROUTES.QUALITY_MANAGEMENT_AUTO_QA,
     charts: {
         [AutoQAChart.ReviewedClosedTickets]: {
             chartComponent: ReviewedClosedTicketsTrendCard,
