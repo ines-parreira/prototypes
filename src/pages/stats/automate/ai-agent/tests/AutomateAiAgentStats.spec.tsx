@@ -19,6 +19,7 @@ import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {AutomatedInteractionsMetric} from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
 import {useTimeSeriesFormattedData} from 'pages/stats/AutomateOverviewContent'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
+import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import {TicketDistributionChart} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
 import {TwoDimensionalDataItem} from 'pages/stats/types'
 import {getCurrentUser} from 'state/currentUser/selectors'
@@ -67,6 +68,9 @@ const useTimeSeriesFormattedDataMock =
 
 jest.mock('hooks/reporting/automate/useAIAgentUserId')
 const useAIAgentUserIdMock = useAIAgentUserId as jest.Mock
+
+jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
+const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 jest.mock(
     'pages/stats/StatsPage',
@@ -219,6 +223,11 @@ describe('AutomateAiAgentStats', () => {
         useTimeSeriesFormattedDataMock.mockReturnValue({
             automatedInteractionByEventTypesTimeSeriesData,
             exportableData: {},
+        })
+
+        useReportChartRestrictionsMock.mockReturnValue({
+            isChartRestrictedToCurrentUser: () => false,
+            isRouteRestrictedToCurrentUser: () => false,
         })
 
         return render(<AutomateAiAgentStats />)
