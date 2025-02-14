@@ -57,7 +57,7 @@ export function Tags() {
 
                 <DashboardSection>
                     <DashboardGridCell
-                        size={getGridCellSize(1)}
+                        size={getGridCellSize(4)}
                         className="pb-0"
                     >
                         <CustomReportComponent
@@ -66,7 +66,7 @@ export function Tags() {
                         />
                     </DashboardGridCell>
                     <DashboardGridCell
-                        size={getGridCellSize(11)}
+                        size={getGridCellSize(8)}
                         className="pb-0"
                     >
                         <CustomReportComponent

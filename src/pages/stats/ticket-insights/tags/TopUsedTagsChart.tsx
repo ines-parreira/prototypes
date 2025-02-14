@@ -46,6 +46,7 @@ export const TopUsedTagsChart = ({chartId, dashboard}: DashboardChartProps) => {
             className={css.card}
             dashboard={dashboard}
             chartId={chartId}
+            noPadding={true}
         >
             {isFetching ? (
                 <TableWrapper className={css.table}>

@@ -226,6 +226,7 @@ export const TicketDistributionChart = ({
             className={css.card}
             dashboard={dashboard}
             chartId={chartId}
+            noPadding={true}
         >
             {selectedCustomField.id == null ? (
                 <NoDataFallback />

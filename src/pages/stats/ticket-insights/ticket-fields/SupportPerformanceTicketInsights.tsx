@@ -90,16 +90,15 @@ export function SupportPerformanceTicketInsights() {
                     <CustomFieldSelect />
                 </DashboardSection>
             )}
-
             {selectedCustomField.id && (
                 <DashboardSection>
-                    <DashboardGridCell size={getGridCellSize(1)}>
+                    <DashboardGridCell size={getGridCellSize(4)}>
                         <CustomReportComponent
                             chart={TicketFieldsChart.TicketDistributionTable}
                             config={TicketFieldsReportConfig}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={getGridCellSize(11)}>
+                    <DashboardGridCell size={getGridCellSize(8)}>
                         <CustomReportComponent
                             chart={TicketFieldsChart.TicketInsightsFieldTrend}
                             config={TicketFieldsReportConfig}
