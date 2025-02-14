@@ -17,10 +17,12 @@ export class InstallYourChatTask extends Task {
         return data.chatIntegrationsStatus.some((c) => !c.installed)
     }
 
-    protected getFeatureUrl(
-        data: RuleEngineData,
-        __routes: RuleEngineRoutes
-    ): string {
+    protected getFeatureUrl({
+        data,
+    }: {
+        data: RuleEngineData
+        routes: RuleEngineRoutes
+    }): string {
         // We fallback gracefully if the task should not be displayed
         if (!this.shouldBeDisplayed(data)) {
             return ''

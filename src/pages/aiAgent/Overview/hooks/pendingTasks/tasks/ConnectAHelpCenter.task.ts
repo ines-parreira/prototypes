@@ -22,10 +22,12 @@ export class ConnectAHelpCenterTask extends Task {
         )
     }
 
-    protected getFeatureUrl(
-        __data: RuleEngineData,
+    protected getFeatureUrl({
+        routes: {aiAgentRoutes},
+    }: {
+        data: RuleEngineData
         routes: RuleEngineRoutes
-    ): string {
-        return routes.aiAgentRoutes.knowledge
+    }): string {
+        return aiAgentRoutes.knowledge
     }
 }

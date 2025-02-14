@@ -17,10 +17,12 @@ export class TestAIAgentTask extends Task {
         return data.aiAgentPlaygroundExecutions.count === 0
     }
 
-    protected getFeatureUrl(
-        _data: RuleEngineData,
+    protected getFeatureUrl({
+        routes: {aiAgentRoutes},
+    }: {
+        data: RuleEngineData
         routes: RuleEngineRoutes
-    ): string {
-        return routes.aiAgentRoutes.test
+    }): string {
+        return aiAgentRoutes.test
     }
 }

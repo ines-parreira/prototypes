@@ -17,10 +17,12 @@ export class SetYourActionsLiveTask extends Task {
         return data.actions.some((action) => action.is_draft)
     }
 
-    protected getFeatureUrl(
-        _data: RuleEngineData,
+    protected getFeatureUrl({
+        routes: {aiAgentRoutes},
+    }: {
+        data: RuleEngineData
         routes: RuleEngineRoutes
-    ): string {
-        return routes.aiAgentRoutes.actions
+    }): string {
+        return aiAgentRoutes.actions
     }
 }

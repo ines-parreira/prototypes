@@ -38,5 +38,6 @@ export const getStoreConfigurationFixture = (
     ticketSampleRate: 0.5,
     wizardId: null,
     scopes: [AiAgentScope.Support],
+    createdDatetime: '1970-01-01T00:00:00.000Z',
     ...props,
 })

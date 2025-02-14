@@ -23,10 +23,12 @@ export class ReviewAIGeneratedGuidancesTask extends Task {
         )
     }
 
-    protected getFeatureUrl(
-        _data: RuleEngineData,
+    protected getFeatureUrl({
+        routes: {aiAgentRoutes},
+    }: {
+        data: RuleEngineData
         routes: RuleEngineRoutes
-    ): string {
-        return routes.aiAgentRoutes.guidance
+    }): string {
+        return aiAgentRoutes.guidance
     }
 }

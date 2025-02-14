@@ -12,12 +12,15 @@ export abstract class Task {
         protected readonly routes: RuleEngineRoutes
     ) {
         this.display = this.shouldBeDisplayed(data)
-        this.featureUrl = this.getFeatureUrl(data, routes)
+        this.featureUrl = this.getFeatureUrl({data, routes})
     }
 
     protected abstract shouldBeDisplayed(data: RuleEngineData): boolean
-    protected abstract getFeatureUrl(
-        data: RuleEngineData,
+    protected abstract getFeatureUrl({
+        data,
+        routes,
+    }: {
+        data: RuleEngineData
         routes: RuleEngineRoutes
-    ): string
+    }): string
 }

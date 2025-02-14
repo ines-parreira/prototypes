@@ -13,6 +13,7 @@ import {useFetchFaqHelpCentersData} from './useFetchFaqHelpCentersData'
 import {useFetchFileIngestionData} from './useFetchFileIngestionData'
 import {useFetchGuidancesData} from './useFetchGuidancesData'
 import {useShopifyPermissionsData} from './useShopifyPermissionsData'
+import {useTicketViewData} from './useTicketViewData'
 
 // Until we have the full implementation of usePendingTasksRuleEngine
 // we decided to fake the tasks in storybook to prevent having to mock things
@@ -55,6 +56,11 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
         enabled: !shouldFakeTasks,
     })
 
+    const {isLoading: ticketViewDataIsLoading, data: ticketViewData} =
+        useTicketViewData({
+            accountDomain,
+        })
+
     const {data: emailIntegrationsData} = useFetchEmailIntegrationsData()
 
     const {data: shopifyPermissionsData} = useShopifyPermissionsData({
@@ -76,7 +82,9 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
         guidancesDataIsLoading ||
         actionsDataIsLoading ||
         aiAgentPlaygroundExecutionsDataIsLoading ||
-        chatIntegrationsStatusDataIsLoading
+        chatIntegrationsStatusDataIsLoading ||
+        ticketViewDataIsLoading
+
     const isReady =
         !!aiAgentStoreConfigurationData &&
         !!faqHelpCentersData &&
@@ -86,7 +94,8 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
         !!aiAgentPlaygroundExecutionsData &&
         !!emailIntegrationsData &&
         !!shopifyPermissionsData &&
-        !!chatIntegrationsStatusData
+        !!chatIntegrationsStatusData &&
+        !!ticketViewData
 
     // Use memo instead of useEffect
     const [{completedTasks, pendingTasks}, setTasks] = useState<{
@@ -113,6 +122,7 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
                         emailIntegrations: emailIntegrationsData,
                         shopifyIntegration: shopifyPermissionsData,
                         chatIntegrationsStatus: chatIntegrationsStatusData,
+                        ticketViewData: ticketViewData,
                     },
                     {
                         aiAgentRoutes: routes,
@@ -131,6 +141,7 @@ export const usePendingTasksRuleEngine = ({accountDomain, storeName}: Args) => {
         emailIntegrationsData,
         shopifyPermissionsData,
         chatIntegrationsStatusData,
+        ticketViewData,
     ])
 
     if (shouldFakeTasks) {

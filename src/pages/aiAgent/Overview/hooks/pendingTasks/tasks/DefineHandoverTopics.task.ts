@@ -17,10 +17,12 @@ export class DefineHandoverTopicsTask extends Task {
         return data.aiAgentStoreConfiguration.excludedTopics?.length === 0
     }
 
-    protected getFeatureUrl(
-        _data: RuleEngineData,
+    protected getFeatureUrl({
+        routes: {aiAgentRoutes},
+    }: {
+        data: RuleEngineData
         routes: RuleEngineRoutes
-    ): string {
-        return routes.aiAgentRoutes.settings
+    }): string {
+        return aiAgentRoutes.settings
     }
 }

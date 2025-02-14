@@ -11,7 +11,7 @@ export type AiAgentStoreConfigurationFixtureFullyConfigured =
     ConfiguredAiAgentStoreConfigurationFixture<'build'>
 
 export class AiAgentStoreConfigurationFixture {
-    private aiAgentStoreConfigurationData: AiAgentStoreConfigurationData
+    private readonly aiAgentStoreConfigurationData: AiAgentStoreConfigurationData
 
     private constructor() {
         this.aiAgentStoreConfigurationData = {
@@ -27,6 +27,7 @@ export class AiAgentStoreConfigurationFixture {
             | 'withScopes'
             | 'withConnectedEmailIntegrations'
             | 'withoutConnectedEmailIntegrations'
+            | 'withCreatedDatetime'
         >
     }
 
@@ -41,6 +42,7 @@ export class AiAgentStoreConfigurationFixture {
                 | 'withConnectedHelpCenter'
                 | 'withoutConnectedHelpCenter'
                 | 'withScopes'
+                | 'withCreatedDatetime'
             >
     }
 
@@ -55,6 +57,7 @@ export class AiAgentStoreConfigurationFixture {
                 | 'withConnectedHelpCenter'
                 | 'withoutConnectedHelpCenter'
                 | 'withScopes'
+                | 'withCreatedDatetime'
             >
     }
 
@@ -68,6 +71,7 @@ export class AiAgentStoreConfigurationFixture {
                 | 'withoutHandoverTopic'
                 | 'withConnectedEmailIntegrations'
                 | 'withoutConnectedEmailIntegrations'
+                | 'withCreatedDatetime'
             >
     }
 
@@ -81,6 +85,7 @@ export class AiAgentStoreConfigurationFixture {
                 | 'withoutHandoverTopic'
                 | 'withConnectedEmailIntegrations'
                 | 'withoutConnectedEmailIntegrations'
+                | 'withCreatedDatetime'
             >
     }
 
@@ -91,6 +96,7 @@ export class AiAgentStoreConfigurationFixture {
                 | 'withEmailChannelEnabled'
                 | 'withHandoverTopics'
                 | 'withoutHandoverTopic'
+                | 'withCreatedDatetime'
             >
     }
 
@@ -102,6 +108,7 @@ export class AiAgentStoreConfigurationFixture {
                 | 'withChatChannelEnabled'
                 | 'withHandoverTopics'
                 | 'withoutHandoverTopic'
+                | 'withCreatedDatetime'
             >
     }
 
@@ -125,6 +132,11 @@ export class AiAgentStoreConfigurationFixture {
             | 'withEmailChannelEnabled'
             | 'build'
         >
+    }
+
+    withCreatedDatetime(createdDatetime: string) {
+        this.aiAgentStoreConfigurationData.createdDatetime = createdDatetime
+        return this
     }
 
     build(): AiAgentStoreConfigurationData {

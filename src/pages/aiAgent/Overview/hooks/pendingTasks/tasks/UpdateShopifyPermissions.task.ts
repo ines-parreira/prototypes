@@ -17,7 +17,12 @@ export class UpdateShopifyPermissionsTask extends Task {
         return !shopifyIntegration.hasRequiredPermissions
     }
 
-    protected getFeatureUrl({shopifyIntegration}: RuleEngineData): string {
+    protected getFeatureUrl({
+        data: {shopifyIntegration},
+    }: {
+        data: RuleEngineData
+        routes: RuleEngineRoutes
+    }): string {
         return `/api/integrations/${shopifyIntegration.integrationId}/sync_permissions`
     }
 }

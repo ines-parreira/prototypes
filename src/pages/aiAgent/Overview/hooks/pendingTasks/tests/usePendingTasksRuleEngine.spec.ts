@@ -1,5 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks'
 
+import moment from 'moment/moment'
+
 import {AiAgentScope} from 'models/aiAgent/types'
 import {ShopifyPermissionsDataFixture} from 'pages/aiAgent/Overview/hooks/pendingTasks/tests/ShopifyPermissionsData.fixture'
 import {assumeMock} from 'utils/testing'
@@ -14,6 +16,7 @@ import {useFetchFileIngestionData} from '../useFetchFileIngestionData'
 import {useFetchGuidancesData} from '../useFetchGuidancesData'
 import {usePendingTasksRuleEngine} from '../usePendingTasksRuleEngine'
 import {useShopifyPermissionsData} from '../useShopifyPermissionsData'
+import {useTicketViewData} from '../useTicketViewData'
 import {ActionsDataFixture} from './ActionsData.fixture'
 import {AiAgentPlaygroundExecutionsDataFixture} from './AiAgentPlaygroundExecutionsData.fixture'
 import {AiAgentStoreConfigurationFixture} from './AiAgentStoreConfiguration.fixture'
@@ -68,6 +71,11 @@ const useFetchChatIntegrationsStatusDataMock = assumeMock(
     useFetchChatIntegrationsStatusData
 )
 
+jest.mock('../useTicketViewData', () => ({
+    useTicketViewData: jest.fn(),
+}))
+const useTicketViewDataMock = assumeMock(useTicketViewData)
+
 // Will implements better testing after extracting the list of tasks from the ruleEngine
 describe('usePendingTasksRuleEngine', () => {
     useFetchFaqHelpCentersDataMock.mockReturnValue({
@@ -118,20 +126,25 @@ describe('usePendingTasksRuleEngine', () => {
             .build(),
     })
 
+    useTicketViewDataMock.mockReturnValue({
+        isLoading: false,
+        data: {},
+    })
+
     it.each([
         {
             scopes: [AiAgentScope.Support, AiAgentScope.Sales],
-            pendingTasks: 5,
+            pendingTasks: 6,
             completedTasks: 12,
         },
         {
             scopes: [AiAgentScope.Support],
-            pendingTasks: 5,
+            pendingTasks: 6,
             completedTasks: 12,
         },
         {
             scopes: [AiAgentScope.Sales],
-            pendingTasks: 3,
+            pendingTasks: 4,
             completedTasks: 8,
         },
     ])(
@@ -140,6 +153,9 @@ describe('usePendingTasksRuleEngine', () => {
             useFetchAiAgentStoreConfigurationDataMock.mockReturnValue({
                 isLoading: false,
                 data: AiAgentStoreConfigurationFixture.start()
+                    .withCreatedDatetime(
+                        moment().subtract(10, 'days').toISOString()
+                    )
                     .withoutConnectedEmailIntegrations()
                     .withScopes(scopes)
                     .withoutConnectedHelpCenter()

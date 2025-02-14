@@ -17,10 +17,12 @@ export class UploadAnExternalDocTask extends Task {
         return data.fileIngestion.length === 0
     }
 
-    protected getFeatureUrl(
-        _data: RuleEngineData,
+    protected getFeatureUrl({
+        routes: {aiAgentRoutes},
+    }: {
+        data: RuleEngineData
         routes: RuleEngineRoutes
-    ): string {
-        return routes.aiAgentRoutes.knowledge
+    }): string {
+        return aiAgentRoutes.knowledge
     }
 }

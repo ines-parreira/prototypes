@@ -17,10 +17,12 @@ export class CreateAnActionTask extends Task {
         return data.actions.length === 0
     }
 
-    protected getFeatureUrl(
-        _data: RuleEngineData,
+    protected getFeatureUrl({
+        routes: {aiAgentRoutes},
+    }: {
+        data: RuleEngineData
         routes: RuleEngineRoutes
-    ): string {
-        return routes.aiAgentRoutes.actions
+    }): string {
+        return aiAgentRoutes.actions
     }
 }

@@ -1,3 +1,10 @@
+import {useQuery} from '@tanstack/react-query'
+
+import {
+    getViewTicketUpdates,
+    ViewTicketUpdatesParams,
+} from 'models/view/resources'
+
 export const viewItemsDefinitionKeys = {
     all: () => ['view'] as const,
     lists: () => [...viewItemsDefinitionKeys.all(), 'list'] as const,
@@ -14,4 +21,15 @@ export const viewItemsDefinitionKeys = {
             'tickets',
             'updates',
         ] as const,
+}
+
+export const useGetViewTicketUpdates = (
+    {viewId, params}: {viewId: number; params?: ViewTicketUpdatesParams},
+    {enabled = true}: {enabled?: boolean}
+) => {
+    return useQuery({
+        queryFn: () => getViewTicketUpdates(viewId, params),
+        queryKey: viewItemsDefinitionKeys.updates(viewId),
+        enabled,
+    })
 }

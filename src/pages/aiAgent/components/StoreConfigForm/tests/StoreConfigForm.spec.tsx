@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import {keyBy} from 'lodash'
+import moment from 'moment'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -247,6 +248,7 @@ describe('<StoreConfigForm />', () => {
         monitoredChatIntegrations: [],
         wizardId: null,
         scopes: [AiAgentScope.Support],
+        createdDatetime: moment().toISOString(),
     }
 
     const initialFormValues: FormValues = {

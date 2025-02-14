@@ -72,6 +72,8 @@ export type StoreConfiguration = {
     isPreviewModeActive?: boolean
 
     scopes: AiAgentScope[]
+
+    createdDatetime: string
 }
 
 export type CreateStoreConfigurationPayload = Pick<

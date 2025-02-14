@@ -12,16 +12,6 @@ export class VerifyYourEmailDomainTask extends Task {
         )
     }
 
-    private getFirstUnverifiedEmailIntegration(data: RuleEngineData) {
-        const notVerifiedEmailIntegrationsIds = data.emailIntegrations
-            .filter((emailIntegration) => !emailIntegration.isVerified)
-            .map((ei) => ei.id)
-
-        return data.aiAgentStoreConfiguration.monitoredEmailIntegrations.find(
-            (ei) => notVerifiedEmailIntegrationsIds.includes(ei.id)
-        )
-    }
-
     // Email channel should be activated
     // AND at least one email integration connected to the ai agent store configuration is not verified
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
@@ -38,10 +28,22 @@ export class VerifyYourEmailDomainTask extends Task {
         return !!firstUnverifiedEmailDomain
     }
 
-    protected getFeatureUrl(
-        data: RuleEngineData,
-        __routes: RuleEngineRoutes
-    ): string {
+    protected getFeatureUrl({
+        data,
+    }: {
+        data: RuleEngineData
+        routes: RuleEngineRoutes
+    }): string {
         return ` /app/settings/channels/email/${this.getFirstUnverifiedEmailIntegration(data)?.id}/verification`
+    }
+
+    private getFirstUnverifiedEmailIntegration(data: RuleEngineData) {
+        const notVerifiedEmailIntegrationsIds = data.emailIntegrations
+            .filter((emailIntegration) => !emailIntegration.isVerified)
+            .map((ei) => ei.id)
+
+        return data.aiAgentStoreConfiguration.monitoredEmailIntegrations.find(
+            (ei) => notVerifiedEmailIntegrationsIds.includes(ei.id)
+        )
     }
 }

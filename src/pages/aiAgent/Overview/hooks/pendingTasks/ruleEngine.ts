@@ -1,5 +1,6 @@
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
+import {GiveFeedbackAIAgentTask} from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/GiveFeedbackAIAgent.task'
 import {SetUpYourEmailTask} from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/SetUpYourEmail.task'
 import {Task} from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/Task'
 import {UpdateShopifyPermissionsTask} from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/UpdateShopifyPermissions.task'
@@ -34,6 +35,7 @@ import {type FaqHelpCentersData} from './useFetchFaqHelpCentersData'
 import {type FileIngestionData} from './useFetchFileIngestionData'
 import {type GuidancesData} from './useFetchGuidancesData'
 import {type ShopifyPermissionsData} from './useShopifyPermissionsData'
+import {type TicketViewData} from './useTicketViewData'
 
 export type RuleEngineData = {
     aiAgentStoreConfiguration: AiAgentStoreConfigurationData
@@ -45,6 +47,7 @@ export type RuleEngineData = {
     emailIntegrations: EmailIntegrationsData
     shopifyIntegration: ShopifyPermissionsData
     chatIntegrationsStatus: ChatIntegrationsStatusData
+    ticketViewData: TicketViewData
 }
 
 export type RuleEngineRoutes = {
@@ -73,6 +76,7 @@ const tasksPerAiAgentType: Record<
         new TestAIAgentTask(data, routes),
         new CreateAnActionTask(data, routes),
         new SetYourActionsLiveTask(data, routes),
+        new GiveFeedbackAIAgentTask(data, routes),
     ],
     sales: (data: RuleEngineData, routes: RuleEngineRoutes) => [
         new InstallYourChatTask(data, routes),
@@ -86,6 +90,7 @@ const tasksPerAiAgentType: Record<
         new UploadAnExternalDocTask(data, routes),
         new DefineHandoverTopicsTask(data, routes),
         new TestAIAgentTask(data, routes),
+        new GiveFeedbackAIAgentTask(data, routes),
     ],
     support: (data: RuleEngineData, routes: RuleEngineRoutes) => [
         new SetUpYourEmailTask(data, routes),
@@ -105,6 +110,7 @@ const tasksPerAiAgentType: Record<
         new TestAIAgentTask(data, routes),
         new CreateAnActionTask(data, routes),
         new SetYourActionsLiveTask(data, routes),
+        new GiveFeedbackAIAgentTask(data, routes),
     ],
 }
 
