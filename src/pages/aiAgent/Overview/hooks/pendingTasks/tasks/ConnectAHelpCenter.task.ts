@@ -22,7 +22,10 @@ export class ConnectAHelpCenterTask extends Task {
         )
     }
 
-    protected getFeatureUrl(): string {
-        return '/app/settings/help-center'
+    protected getFeatureUrl(
+        __data: RuleEngineData,
+        routes: RuleEngineRoutes
+    ): string {
+        return routes.aiAgentRoutes.knowledge
     }
 }

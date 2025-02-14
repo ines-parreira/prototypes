@@ -35,6 +35,7 @@ describe('VerifyYourEmailDomain', () => {
         const aiAgentStoreConfiguration =
             AiAgentStoreConfigurationFixture.start()
                 .withoutConnectedHelpCenter()
+                .withoutConnectedEmailIntegrations()
                 .build()
 
         const task = new VerifyYourEmailDomainTask(
