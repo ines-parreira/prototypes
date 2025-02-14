@@ -34,7 +34,7 @@ export class VerifyYourEmailDomainTask extends Task {
         data: RuleEngineData
         routes: RuleEngineRoutes
     }): string {
-        return ` /app/settings/channels/email/${this.getFirstUnverifiedEmailIntegration(data)?.id}/verification`
+        return `/app/settings/channels/email/${this.getFirstUnverifiedEmailIntegration(data)?.id}/verification`
     }
 
     private getFirstUnverifiedEmailIntegration(data: RuleEngineData) {

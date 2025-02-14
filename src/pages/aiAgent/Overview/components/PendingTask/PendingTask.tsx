@@ -15,6 +15,11 @@ import CardCaption from 'pages/aiAgent/Onboarding/components/Card/CardCaption'
 
 import css from './PendingTask.less'
 
+const Div = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLDivElement>
+>(({...props}, ref) => <div ref={ref} {...props} />)
+
 type Props = {
     title?: string
     caption?: string
@@ -51,8 +56,10 @@ export const PendingTask: React.FC<Props> = ({
         })
     }
 
+    const Wrapper = isLoading ? Div : NavLink
+
     return (
-        <NavLink
+        <Wrapper
             to={ctaUrl ?? ''}
             className={classNames(css.wrapperA, {[css.isLoading]: isLoading})}
             aria-label={title}
@@ -88,6 +95,6 @@ export const PendingTask: React.FC<Props> = ({
                     </div>
                 </CardFooter>
             </Card>
-        </NavLink>
+        </Wrapper>
     )
 }
