@@ -68,14 +68,7 @@ export const ConvertActionToAdvancedViewDialog = ({
                             steps
                         </li>
                     </ul>
-                    <div>
-                        <a href="#">
-                            <i className="icon material-icons mr-2">
-                                chrome_reader_mode
-                            </i>
-                            Learn more about advanced options for Actions
-                        </a>
-                    </div>
+                    <div data-candu-id="action-advanced-options-modal-link"></div>
                     <div>
                         <Alert type={AlertType.Warning} icon>
                             Converting an Action to the advanced view cannot be
