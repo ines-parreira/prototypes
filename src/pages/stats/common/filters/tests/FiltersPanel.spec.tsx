@@ -226,9 +226,9 @@ describe('FiltersPanel', () => {
                 defaultState
             )
 
-            expect(
-                screen.getByText(new RegExp(FilterLabels[filter]))
-            ).toBeInTheDocument()
+            expect(screen.getByTestId('filter-name')).toHaveTextContent(
+                new RegExp(FilterLabels[filter])
+            )
         }
     )
 

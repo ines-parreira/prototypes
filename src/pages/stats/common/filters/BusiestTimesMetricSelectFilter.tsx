@@ -5,6 +5,7 @@ import {useDispatch} from 'react-redux'
 import useAppSelector from 'hooks/useAppSelector'
 import {FilterComponentKey} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {logSegmentEvent} from 'pages/stats/common/filters/helpers'
 import {
     metricLabels,
@@ -15,8 +16,6 @@ import {
     getSelectedMetric,
     setSelectedMetric,
 } from 'state/ui/stats/busiestTimesSlice'
-
-export const BUSIEST_TIMES_METRIC_SELECT_FILTER_NAME = 'Report on'
 
 export const BusiestTimesMetricSelectFilter = () => {
     const dispatch = useDispatch()
@@ -45,7 +44,9 @@ export const BusiestTimesMetricSelectFilter = () => {
 
     return (
         <Filter
-            filterName={BUSIEST_TIMES_METRIC_SELECT_FILTER_NAME}
+            filterName={
+                FilterLabels[FilterComponentKey.BusiestTimesMetricSelectFilter]
+            }
             isPersistent
             isMultiple={false}
             showSearch={false}
