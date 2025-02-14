@@ -11,11 +11,13 @@ import {isAiAgentCustomField} from 'pages/aiAgent/util'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {AiAgentStatsDownloadButton} from 'pages/stats/automate/ai-agent/AiAgentStatsDownloadButton'
-import {AiAgentTableChart} from 'pages/stats/automate/ai-agent/AiAgentTableChart'
-import {AutomatedInteractionsMetricCard} from 'pages/stats/automate/ai-agent/AutomatedInteractionsMetricCard'
-import {AutomatedInteractionsOverTimeChart} from 'pages/stats/automate/ai-agent/AutomatedInteractionsOverTimeChart'
+import {
+    AutomateAiAgentsReportConfig,
+    AutomateAiAgentsChart,
+} from 'pages/stats/automate/ai-agent/AutomateAiAgentsReportConfig'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
+import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import {PAGE_TITLE_AI_AGENT} from 'pages/stats/self-service/constants'
@@ -24,9 +26,6 @@ import {
     activeParams,
     CustomFieldSelect,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
-import {CustomFieldsTicketCountBreakdownTableChart} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
-import {TicketDistributionChart} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
-import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
 import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 
@@ -98,7 +97,10 @@ export default function AutomateAiAgentStats() {
             <DashboardSection>
                 <DashboardGridCell size={getGridCellSize(12)} className="pb-0">
                     <FiltersPanelWrapper
-                        persistentFilters={[FilterKey.Period]}
+                        persistentFilters={
+                            AutomateAiAgentsReportConfig.reportFilters
+                                .persistent
+                        }
                         filterSettingsOverrides={{
                             [FilterKey.Period]: {
                                 initialSettings: {
@@ -112,7 +114,10 @@ export default function AutomateAiAgentStats() {
 
             <DashboardSection title="Performance">
                 <DashboardGridCell size={12}>
-                    <AiAgentTableChart />
+                    <CustomReportComponent
+                        config={AutomateAiAgentsReportConfig}
+                        chart={AutomateAiAgentsChart.AiAgentTable}
+                    />
                 </DashboardGridCell>
             </DashboardSection>
 
@@ -125,24 +130,49 @@ export default function AutomateAiAgentStats() {
             {hasAiAgentCustomField && selectedCustomField.id && (
                 <DashboardSection>
                     <DashboardGridCell size={getGridCellSize(1)}>
-                        <TicketDistributionChart />
+                        <CustomReportComponent
+                            config={AutomateAiAgentsReportConfig}
+                            chart={
+                                AutomateAiAgentsChart.AiAgentTicketDistribution
+                            }
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(11)}>
-                        <TicketInsightsFieldTrend />
+                        <CustomReportComponent
+                            config={AutomateAiAgentsReportConfig}
+                            chart={
+                                AutomateAiAgentsChart.AiAgentTicketInsightsFieldTrend
+                            }
+                        />
                     </DashboardGridCell>
                     <DashboardGridCell>
-                        <CustomFieldsTicketCountBreakdownTableChart />
+                        <CustomReportComponent
+                            config={AutomateAiAgentsReportConfig}
+                            chart={
+                                AutomateAiAgentsChart.AiAgentCustomFieldsTicketCountBreakdown
+                            }
+                        />
                     </DashboardGridCell>
                 </DashboardSection>
             )}
 
             <DashboardSection title="Automated tickets">
                 <DashboardGridCell size={6}>
-                    <AutomatedInteractionsMetricCard />
+                    <CustomReportComponent
+                        config={AutomateAiAgentsReportConfig}
+                        chart={
+                            AutomateAiAgentsChart.AiAgentAutomatedInteractionsMetric
+                        }
+                    />
                 </DashboardGridCell>
 
                 <DashboardGridCell size={12}>
-                    <AutomatedInteractionsOverTimeChart />
+                    <CustomReportComponent
+                        config={AutomateAiAgentsReportConfig}
+                        chart={
+                            AutomateAiAgentsChart.AiAgentAutomatedInteractionsOverTime
+                        }
+                    />
                 </DashboardGridCell>
             </DashboardSection>
 

@@ -16,11 +16,18 @@ import ChartCard from 'pages/stats/ChartCard'
 import {default as LineChart} from 'pages/stats/common/components/charts/LineChart/LineChart'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {SHORT_FORMAT} from 'pages/stats/common/utils'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 
 const AUTOMATED_INTERACTIONS_LABEL = 'AI Agent'
 
-export function AutomatedInteractionsOverTimeChart() {
+export const AUTOMATED_INTERACTIONS_OVER_TIME_CHART_TITLE =
+    'Automated interactions over time'
+
+export function AutomatedInteractionsOverTimeChart({
+    chartId,
+    dashboard,
+}: DashboardChartProps) {
     const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
 
     const aiAgentUserId = useAIAgentUserId()
@@ -70,21 +77,23 @@ export function AutomatedInteractionsOverTimeChart() {
         (item) => item.label === AUTOMATED_INTERACTIONS_LABEL
     )
 
-    if (!data) return null
-
     return (
         <ChartCard
-            title="Automated interactions over time"
+            title={AUTOMATED_INTERACTIONS_OVER_TIME_CHART_TITLE}
             hint={{title: AUTOMATED_INTERACTION_TOOLTIP}}
             {...getGreyAreaHint(greyArea)}
+            chartId={chartId}
+            dashboard={dashboard}
         >
-            <LineChart
-                isCurvedLine={false}
-                yAxisBeginAtZero
-                data={[data]}
-                _displayLegacyTooltip
-                greyArea={greyAreaChartParam}
-            />
+            {data && (
+                <LineChart
+                    isCurvedLine={false}
+                    yAxisBeginAtZero
+                    data={[data]}
+                    _displayLegacyTooltip
+                    greyArea={greyAreaChartParam}
+                />
+            )}
         </ChartCard>
     )
 }
