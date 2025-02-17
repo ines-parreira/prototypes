@@ -18,6 +18,8 @@ import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import {RevenueAddonApiClientProvider} from 'pages/convert/common/hooks/useConvertApi'
 import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import AiSalesAgentSalesOverview from 'pages/stats/aiSalesAgent/AiSalesAgentSalesOverview'
+import {ROUTE_AI_SALES_AGENT_OVERVIEW} from 'pages/stats/aiSalesAgent/constants'
 import AiAgentStatsFilters from 'pages/stats/automate/ai-agent/AiAgentStatsFilters'
 import AutomateAiAgentStats from 'pages/stats/automate/ai-agent/AutomateAiAgentStats'
 import AutomateIntents from 'pages/stats/AutomateIntents'
@@ -100,6 +102,9 @@ export const StatsRoutes = () => {
 
     const isAnalyticsCustomReports: FeatureFlag =
         useFlags()[FeatureFlagKey.AnalyticsCustomReports]
+
+    const isStandaloneSalesOverviewEnabled: FeatureFlag =
+        useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
 
     useEffect(logPageChange, [location.pathname])
 
@@ -514,6 +519,22 @@ export const StatsRoutes = () => {
                         )}
                     />
                 </ProtectedRoute>
+                {isStandaloneSalesOverviewEnabled && (
+                    <ProtectedRoute
+                        path={`${path}/${ROUTE_AI_SALES_AGENT_OVERVIEW}`}
+                    >
+                        <Route
+                            exact
+                            path={`${path}/${ROUTE_AI_SALES_AGENT_OVERVIEW}`}
+                            render={() => (
+                                <App
+                                    content={AiSalesAgentSalesOverview}
+                                    navbar={StatsNavbarContainer}
+                                />
+                            )}
+                        />
+                    </ProtectedRoute>
+                )}
             </Switch>
         </DefaultStatsFilters>
     )

@@ -9,6 +9,10 @@ import AutomateNavbarPaywallNavbarLink from 'pages/automate/common/components/Au
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
+import {
+    ROUTE_AI_SALES_AGENT_OVERVIEW,
+    LINK_AI_SALES_AGENT_TEXT,
+} from 'pages/stats/aiSalesAgent/constants'
 import {getHasAutomate} from 'state/billing/selectors'
 
 import {
@@ -27,12 +31,16 @@ type Props = {
 const OVERVIEW_PATH = `/app/stats/${ROUTE_AUTOMATE_OVERVIEW}`
 const AI_AGENT_PATH = `/app/stats/${ROUTE_AUTOMATE_AI_AGENT}`
 const PERFORMANCE_BY_FEATURE_PATH = `/app/stats/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`
+const AI_SALES_AGENT_PATH = `/app/stats/${ROUTE_AI_SALES_AGENT_OVERVIEW}`
 
 export default function AutomateStatsNavbar({commonNavLinkProps}: Props) {
     const hasAutomate = useAppSelector(getHasAutomate)
 
     const isAiAgentStatsPageEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AIAgentStatsPage]
+
+    const isAiSalesAgentEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
 
     return (
         <div className={cssNavbar.menu}>
@@ -67,6 +75,23 @@ export default function AutomateStatsNavbar({commonNavLinkProps}: Props) {
                                 to={AI_AGENT_PATH}
                             >
                                 {PAGE_TITLE_AI_AGENT}
+                            </NavbarLink>
+                        </div>
+                    )}
+
+                    {isAiSalesAgentEnabled && (
+                        <div
+                            className={classNames(
+                                cssNavbar['link-wrapper'],
+                                cssNavbar.isNested
+                            )}
+                            data-candu-id="statistics-ai-sales-agent"
+                        >
+                            <NavbarLink
+                                {...commonNavLinkProps}
+                                to={AI_SALES_AGENT_PATH}
+                            >
+                                {LINK_AI_SALES_AGENT_TEXT}
                             </NavbarLink>
                         </div>
                     )}
