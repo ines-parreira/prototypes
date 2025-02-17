@@ -129,6 +129,7 @@ export enum FeatureFlagKey {
     ShopifyOrderNotes = 'shopify-order-notes',
     StandaloneConvAiOverviewPage = 'standalone-conv-ai_overview-page',
     StandaloneAiSalesAnalyticsPage = 'standalone-ai-sales-analytics-page',
+    StandaloneAIAgentSalesPage = 'standalone-ai-agent-sales-page',
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
     TagNewDesign = 'tag-new-design',
     TicketConditionalFields = 'ticket-conditional-fields',

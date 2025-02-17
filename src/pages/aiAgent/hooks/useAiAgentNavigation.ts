@@ -12,6 +12,7 @@ import {
     KNOWLEDGE,
     OPTIMIZE,
     PREVIEW,
+    SALES,
     SETTINGS,
     TEST,
 } from 'pages/aiAgent/constants'
@@ -56,6 +57,7 @@ export const getAiAgentNavigationRoutes = (
         settings: `${basePath}/settings`,
         test: `${basePath}/test`,
         knowledge: `${basePath}/knowledge`,
+        sales: `${basePath}/sales`,
         guidance: `${basePath}/${guidancePath}`,
         newGuidanceArticle: `${basePath}/${guidancePath}/new`,
         guidanceArticleEdit: (articleId: number) =>
@@ -112,6 +114,9 @@ const useNavigationItems = (
     const isStandaloneMenuEnabled =
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
+    const isAiAgentSalesTabEnabled =
+        flags[FeatureFlagKey.StandaloneAIAgentSalesPage]
+
     return useMemo<NavigationItem[]>(() => {
         if (isStandaloneMenuEnabled) {
             return [
@@ -162,7 +167,10 @@ const useNavigationItems = (
                         },
                     ].filter((x) => !!x) as NavigationItem[],
                 },
-                // TODO: Add "Sales" tab here
+                isAiAgentSalesTabEnabled && {
+                    route: routes.sales,
+                    title: SALES,
+                },
                 {
                     route: routes.test,
                     title: TEST,
@@ -210,6 +218,7 @@ const useNavigationItems = (
         isStandaloneMenuEnabled,
         isAiAgentKnowledgeTabEnabled,
         isAiAgentOptimizeTabEnabled,
+        isAiAgentSalesTabEnabled,
         isGorgiasUser,
         routes,
         showAutomateActions,

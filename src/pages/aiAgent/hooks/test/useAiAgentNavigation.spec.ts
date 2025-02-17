@@ -23,6 +23,7 @@ describe('useAiAgentNavigation', () => {
             [FeatureFlagKey.AiAgentKnowledgeTab]: false,
             [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
             [FeatureFlagKey.ConvAiStandaloneMenu]: false,
+            [FeatureFlagKey.StandaloneAIAgentSalesPage]: false,
         })
     })
 
@@ -269,6 +270,7 @@ describe('useAiAgentNavigation', () => {
             useFlagsMock.mockReturnValue({
                 [FeatureFlagKey.ConvAiStandaloneMenu]: true,
                 [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
+                [FeatureFlagKey.StandaloneAIAgentSalesPage]: true,
             })
         })
 
@@ -301,6 +303,18 @@ describe('useAiAgentNavigation', () => {
 
             expect(result.current.routes.previewMode).toEqual(
                 '/app/ai-agent/shopify/test/settings/preview'
+            )
+        })
+
+        it('should return /sales path when user is a Gorgias user', () => {
+            window.USER_IMPERSONATED = true
+
+            const {result} = renderHook(() =>
+                useAiAgentNavigation({shopName: 'test'})
+            )
+
+            expect(result.current.routes.sales).toEqual(
+                '/app/ai-agent/shopify/test/sales'
             )
         })
     })
