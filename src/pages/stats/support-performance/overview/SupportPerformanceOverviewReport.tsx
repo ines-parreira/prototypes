@@ -2,7 +2,6 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import {useGridSize} from 'hooks/useGridSize'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {FilterKey} from 'models/stat/types'
@@ -27,10 +26,7 @@ import TipsToggle from 'pages/stats/TipsToggle'
 export default function SupportPerformanceOverviewReport() {
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-    const supportPerformanceOverviewOptionalFilters =
-        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS
-        )
+
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         STATS_TIPS_VISIBILITY_KEY,
         true
@@ -61,9 +57,9 @@ export default function SupportPerformanceOverviewReport() {
                                     FilterKey.Period,
                                     FilterKey.AggregationWindow,
                                 ]}
-                                optionalFilters={[
-                                    ...supportPerformanceOverviewOptionalFilters,
-                                ]}
+                                optionalFilters={
+                                    PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS
+                                }
                                 filterSettingsOverrides={{
                                     [FilterKey.Period]: {
                                         initialSettings: {

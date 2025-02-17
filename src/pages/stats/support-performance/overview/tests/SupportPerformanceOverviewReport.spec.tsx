@@ -17,6 +17,7 @@ import {
 } from 'fixtures/productPrices'
 import {FilterKey} from 'models/stat/types'
 import {TrendCard} from 'pages/stats/common/components/TrendCard'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
@@ -108,7 +109,6 @@ describe('<SupportPerformanceOverview />', () => {
         ))
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: false,
-            [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
         })
     })
 
@@ -199,8 +199,6 @@ describe('<SupportPerformanceOverview />', () => {
         beforeEach(() => {
             mockFlags({
                 [FeatureFlagKey.AnalyticsNewFilters]: true,
-                [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
-                [FeatureFlagKey.AutoQAFilters]: false,
             })
         })
 
@@ -219,7 +217,6 @@ describe('<SupportPerformanceOverview />', () => {
         it('should show New Filters Panel and render expected filters with score filter', () => {
             mockFlags({
                 [FeatureFlagKey.AnalyticsNewFilters]: true,
-                [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
             })
             const {getByText} = render(
                 <Provider store={mockStore(defaultState)}>
@@ -253,8 +250,6 @@ describe('<SupportPerformanceOverview />', () => {
             }
             mockFlags({
                 [FeatureFlagKey.AnalyticsNewFilters]: true,
-                [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
-                [FeatureFlagKey.AutoQAFilters]: true,
             })
             const {getByText} = render(
                 <Provider store={mockStore(state)}>
@@ -263,8 +258,7 @@ describe('<SupportPerformanceOverview />', () => {
             )
             const filtersWithResolutionCompletenessAndCommunicationSkills = [
                 ...PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS,
-                FilterKey.ResolutionCompleteness,
-                FilterKey.CommunicationSkills,
+                ...AUTO_QA_FILTER_KEYS,
             ]
             filtersWithResolutionCompletenessAndCommunicationSkills.forEach(
                 (filter) => {

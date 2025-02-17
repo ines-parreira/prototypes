@@ -1,8 +1,6 @@
 import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {
@@ -11,7 +9,7 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import {FilterKey} from 'models/stat/types'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {AllUsedTagsTableChart} from 'pages/stats/ticket-insights/tags/AllUsedTagsTableChart'
 import {Tags} from 'pages/stats/ticket-insights/tags/Tags'
@@ -69,11 +67,6 @@ describe('<Tags>', () => {
         TagsTrendChartMock.mockImplementation(componentMock)
         TopUsedTagsChartMock.mockImplementation(componentMock)
         TagsReportDownloadDataButtonMock.mockImplementation(componentMock)
-
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
-            [FeatureFlagKey.AutoQAFilters]: false,
-        })
     })
 
     it('should render new tags page', () => {
@@ -91,13 +84,7 @@ describe('<Tags>', () => {
     })
 
     it('should contain filters panel component and Score filter should be one of the optional filters', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
-        })
-        const extendedTagsOptionalFilters = [
-            ...TAGS_OPTIONAL_FILTERS,
-            FilterKey.Score,
-        ]
+        const extendedTagsOptionalFilters = [...TAGS_OPTIONAL_FILTERS]
         const {getByText} = renderWithStore(<Tags />, defaultState)
 
         extendedTagsOptionalFilters.forEach((optionalFilter) => {
@@ -120,13 +107,9 @@ describe('<Tags>', () => {
                 },
             }),
         } as RootState
-        mockFlags({
-            [FeatureFlagKey.AutoQAFilters]: true,
-        })
         const extendedTagsOptionalFilters = [
             ...TAGS_OPTIONAL_FILTERS,
-            FilterKey.ResolutionCompleteness,
-            FilterKey.CommunicationSkills,
+            ...AUTO_QA_FILTER_KEYS,
         ]
         const {getByText} = renderWithStore(<Tags />, state)
 

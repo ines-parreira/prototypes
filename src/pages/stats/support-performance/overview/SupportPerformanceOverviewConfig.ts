@@ -37,6 +37,7 @@ import {
 import {MetricTrendFetch, MetricTrendHook} from 'hooks/reporting/useMetricTrend'
 import {TimeSeriesFetch, TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
 import {FilterKey} from 'models/stat/types'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import {MetricTrendFormat} from 'pages/stats/common/utils'
 import {TooltipData} from 'pages/stats/types'
 import {
@@ -266,6 +267,8 @@ export const PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS = [
     FilterKey.Tags,
     FilterKey.Agents,
     FilterKey.CustomFields,
+    FilterKey.Score,
+    ...AUTO_QA_FILTER_KEYS,
 ]
 
 export const PERFORMANCE_OVERVIEW_CHART_TYPE = 'bar'

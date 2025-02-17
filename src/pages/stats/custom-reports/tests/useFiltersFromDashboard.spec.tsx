@@ -1,22 +1,23 @@
 import {renderHook} from '@testing-library/react-hooks'
+import {fromJS} from 'immutable'
+import React from 'react'
 
-import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {getComponentConfig} from 'pages/stats/custom-reports/config'
+
 import {
     CustomReportSchema,
     CustomReportChildType,
 } from 'pages/stats/custom-reports/types'
 import {useFiltersFromDashboard} from 'pages/stats/custom-reports/useFiltersFromDashboard'
+import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('pages/stats/custom-reports/config')
 const getComponentConfigMock = assumeMock(getComponentConfig)
-
-jest.mock(
-    'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
-)
-const useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFiltersMock =
-    assumeMock(useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters)
 
 const mockConfigs = {
     chart1: {
@@ -47,20 +48,60 @@ const mockDashboard = {
     id: 1,
 } satisfies CustomReportSchema
 
+const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
+
+const createInitialState = (hasAutomate: boolean) =>
+    ({
+        billing: fromJS({
+            products: [
+                {
+                    id: 1,
+                    type: 'automation',
+                    prices: hasAutomate
+                        ? [
+                              {
+                                  price_id: 'price_1',
+                              },
+                          ]
+                        : [],
+                },
+            ],
+        }),
+        currentAccount: fromJS({
+            current_subscription: {
+                trial_start_datetime: '2017-08-23T01:38:53+00:00',
+                trial_end_datetime: '2017-09-06T01:38:53+00:00',
+                status: 'trialing',
+                start_datetime: '2017-08-23T01:38:53+00:00',
+                products: {
+                    1: 'price_1',
+                },
+                scheduled_to_cancel_at: null,
+            },
+        }),
+    }) as RootState
+
 describe('useFiltersFromDashboard(dashboard)', () => {
+    const createWrapper =
+        (store: any) =>
+        ({children}: {children: React.ReactNode}) => (
+            <Provider store={store}>{children}</Provider>
+        )
+
     beforeEach(() => {
         getComponentConfigMock.mockImplementation((configId) => {
             return mockConfigs[configId] || {}
         })
-
-        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFiltersMock.mockImplementation(
-            (val = []) => val
-        )
     })
 
     it('returns object with persistentFilters and optionalFilters', () => {
-        const {result} = renderHook(() =>
-            useFiltersFromDashboard(mockDashboard)
+        const store = mockStore(createInitialState(false))
+
+        const {result} = renderHook(
+            () => useFiltersFromDashboard(mockDashboard),
+            {
+                wrapper: createWrapper(store),
+            }
         )
 
         expect(result.current.persistentFilters).toBeDefined()
@@ -71,13 +112,17 @@ describe('useFiltersFromDashboard(dashboard)', () => {
     })
 
     it('returns empty filters for an empty schema', () => {
+        const store = mockStore(createInitialState(false))
         const emptyDashboard = {
             ...mockDashboard,
             children: [],
         }
 
-        const {result} = renderHook(() =>
-            useFiltersFromDashboard(emptyDashboard)
+        const {result} = renderHook(
+            () => useFiltersFromDashboard(emptyDashboard),
+            {
+                wrapper: createWrapper(store),
+            }
         )
 
         expect(result.current.persistentFilters.length).toBe(0)
@@ -85,6 +130,7 @@ describe('useFiltersFromDashboard(dashboard)', () => {
     })
 
     it('aggregates filters from charts in the schema', () => {
+        const store = mockStore(createInitialState(false))
         const chart1 = {
             type: CustomReportChildType.Chart,
             config_id: 'chart1',
@@ -102,7 +148,12 @@ describe('useFiltersFromDashboard(dashboard)', () => {
             children: [chart1, chart2],
         } satisfies CustomReportSchema
 
-        const {result} = renderHook(() => useFiltersFromDashboard(customReport))
+        const {result} = renderHook(
+            () => useFiltersFromDashboard(customReport),
+            {
+                wrapper: createWrapper(store),
+            }
+        )
 
         expect(result.current.persistentFilters.length).toBe(3)
         expect(result.current.optionalFilters.length).toBe(2)
@@ -123,6 +174,7 @@ describe('useFiltersFromDashboard(dashboard)', () => {
     })
 
     it('returns empty filters for unknown chart ID', () => {
+        const store = mockStore(createInitialState(false))
         const customReport = {
             ...mockDashboard,
             children: [
@@ -130,7 +182,12 @@ describe('useFiltersFromDashboard(dashboard)', () => {
             ],
         } satisfies CustomReportSchema
 
-        const {result} = renderHook(() => useFiltersFromDashboard(customReport))
+        const {result} = renderHook(
+            () => useFiltersFromDashboard(customReport),
+            {
+                wrapper: createWrapper(store),
+            }
+        )
 
         expect(result.current.persistentFilters.length).toBe(0)
         expect(result.current.optionalFilters.length).toBe(0)

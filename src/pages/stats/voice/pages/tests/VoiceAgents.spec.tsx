@@ -117,8 +117,6 @@ describe('VoiceAgents with the new filters', () => {
     beforeAll(() => {
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
-            [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
-            [FeatureFlagKey.AutoQAFilters]: true,
         })
     })
 
@@ -142,7 +140,6 @@ describe('VoiceAgents with the new filters', () => {
     it('should render Filters Panel with Score filter', () => {
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
-            [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
         })
 
         const {getByText, getAllByText} = renderVoiceAgents()
@@ -167,7 +164,6 @@ describe('VoiceAgents with the new filters', () => {
     it('should render Filters Panel with Resolution Completeness and Communication Skills filters', () => {
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
-            [FeatureFlagKey.AutoQAFilters]: true,
         })
 
         const {getByText, getAllByText} = renderVoiceAgents()

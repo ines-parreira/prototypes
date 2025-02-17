@@ -2,7 +2,6 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
@@ -26,10 +25,7 @@ export function ServiceLevelAgreements() {
     const getGridCellSize = useGridSize()
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-    const SLAsOptionalFilters =
-        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            ServiceLevelAgreementsReportConfig.reportFilters.optional
-        )
+
     return (
         <WithSlaEmptyState>
             <div className="full-width">
@@ -55,7 +51,10 @@ export function ServiceLevelAgreements() {
                                         ServiceLevelAgreementsReportConfig
                                             .reportFilters.persistent
                                     }
-                                    optionalFilters={SLAsOptionalFilters}
+                                    optionalFilters={
+                                        ServiceLevelAgreementsReportConfig
+                                            .reportFilters.optional
+                                    }
                                     filterSettingsOverrides={{
                                         [FilterKey.Period]: {
                                             initialSettings: {

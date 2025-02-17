@@ -1,7 +1,6 @@
 import moment from 'moment/moment'
 import React, {useMemo} from 'react'
 
-import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {ProductType} from 'models/billing/types'
@@ -38,10 +37,7 @@ import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 
 function VoiceOverview() {
     const {isAnalyticsNewFilters} = useNewVoiceStatsFilters()
-    const voiceOverviewOptionalFilters =
-        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            VoiceOverviewReportConfig.reportFilters.optional
-        )
+
     const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
@@ -112,7 +108,9 @@ function VoiceOverview() {
                                 VoiceOverviewReportConfig.reportFilters
                                     .persistent
                             }
-                            optionalFilters={voiceOverviewOptionalFilters}
+                            optionalFilters={
+                                VoiceOverviewReportConfig.reportFilters.optional
+                            }
                             filterSettingsOverrides={{
                                 [FilterKey.Period]: {
                                     initialSettings: {

@@ -11,7 +11,7 @@ import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFi
 import {CustomField} from 'custom-fields/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {ApiListResponseCursorPagination} from 'models/api/types'
-import {FilterKey} from 'models/stat/types'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
 import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
@@ -122,8 +122,6 @@ describe('<SupportPerformanceTicketInsights />', () => {
 
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: false,
-            [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
-            [FeatureFlagKey.AutoQAFilters]: false,
         })
     })
 
@@ -165,11 +163,9 @@ describe('<SupportPerformanceTicketInsights />', () => {
     it('should render the Filters Panel with default optional filters and a Score filter', () => {
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
-            [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
         })
         const extendedTicketInsightsOptionalFilters = [
             ...TICKET_INSIGHTS_OPTIONAL_FILTERS,
-            FilterKey.Score,
         ]
 
         const {getByText} = render(
@@ -186,12 +182,10 @@ describe('<SupportPerformanceTicketInsights />', () => {
     it('should render the Filters Panel with default optional filters and a Resolution Completeness and Communication Skills filters', () => {
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
-            [FeatureFlagKey.AutoQAFilters]: true,
         })
         const extendedTicketInsightsOptionalFilters = [
             ...TICKET_INSIGHTS_OPTIONAL_FILTERS,
-            FilterKey.ResolutionCompleteness,
-            FilterKey.CommunicationSkills,
+            ...AUTO_QA_FILTER_KEYS,
         ]
 
         const {getByText} = render(

@@ -13,6 +13,7 @@ import {connect} from 'react-redux'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import useAppSelector from 'hooks/useAppSelector'
 import usePrevious from 'hooks/usePrevious'
 import {
     FilterComponentKey,
@@ -23,6 +24,7 @@ import {
 } from 'models/stat/types'
 import {AddFilterButton} from 'pages/stats/common/filters/AddFilterButton'
 import {ChannelsFilterWithState} from 'pages/stats/common/filters/ChannelsFilter'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import {CustomFieldFilter} from 'pages/stats/common/filters/CustomFieldFilter'
 import css from 'pages/stats/common/filters/FiltersPanel.less'
 import {FilterComponentMap} from 'pages/stats/common/filters/FiltersPanelConfig'
@@ -38,6 +40,7 @@ import {
     activeParams,
     selectDropdownTextFields,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
+import {getHasAutomate} from 'state/billing/selectors'
 import {RootState} from 'state/types'
 import {getCleanStatsFiltersWithLogicalOperators} from 'state/ui/stats/selectors'
 
@@ -210,10 +213,23 @@ export const FiltersPanelComponent = ({
     filterComponentMap,
     shouldHideFilters,
 }: FiltersPanelProps) => {
-    const optionalFilters = useMemo(
-        () => (shouldHideFilters ? [] : initialOptionalFilters),
-        [initialOptionalFilters, shouldHideFilters]
-    )
+    const hasAutomate = useAppSelector(getHasAutomate)
+    const optionalFilters = useMemo(() => {
+        if (shouldHideFilters) return []
+
+        let filters = [...initialOptionalFilters]
+        if (!hasAutomate) {
+            filters = filters.filter(
+                (filter) =>
+                    !AUTO_QA_FILTER_KEYS.find(
+                        (autoQAFilter) => autoQAFilter === filter
+                    )
+            )
+        }
+
+        return filters
+    }, [initialOptionalFilters, shouldHideFilters, hasAutomate])
+
     const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>(
         getActiveFilters(optionalFilters, cleanStatsFilters)
     )

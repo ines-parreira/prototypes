@@ -11,7 +11,7 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import {FilterKey} from 'models/stat/types'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsReport'
@@ -73,8 +73,6 @@ describe('ChannelsReport', () => {
     beforeEach(() => {
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: false,
-            [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
-            [FeatureFlagKey.AutoQAFilters]: false,
         })
     })
 
@@ -114,11 +112,9 @@ describe('ChannelsReport', () => {
     it('should render channels report component with filters panel, default optional filters and a Score filter', () => {
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
-            [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
         })
         const extendedChannelsReportFilters = [
             ...CHANNEL_REPORT_OPTIONAL_FILTERS,
-            FilterKey.Score,
         ]
 
         const {getByText} = renderWithStore(<ChannelsReport />, defaultState)
@@ -145,12 +141,10 @@ describe('ChannelsReport', () => {
         }
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
-            [FeatureFlagKey.AutoQAFilters]: true,
         })
         const extendedChannelsReportFilters = [
             ...CHANNEL_REPORT_OPTIONAL_FILTERS,
-            FilterKey.ResolutionCompleteness,
-            FilterKey.CommunicationSkills,
+            ...AUTO_QA_FILTER_KEYS,
         ]
 
         const {getByText} = renderWithStore(<ChannelsReport />, state)

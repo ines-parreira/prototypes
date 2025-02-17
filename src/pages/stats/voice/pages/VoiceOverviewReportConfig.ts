@@ -1,4 +1,5 @@
 import {FilterComponentKey, FilterKey, StaticFilter} from 'models/stat/types'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
 import {
     ChartType,
@@ -47,6 +48,8 @@ export const VOICE_OVERVIEW_OPTIONAL_FILTERS: OptionalFilter[] = [
     FilterComponentKey.PhoneIntegrations,
     FilterKey.Tags,
     FilterKey.Agents,
+    FilterKey.Score,
+    ...AUTO_QA_FILTER_KEYS,
 ]
 
 export enum VoiceOverviewChart {

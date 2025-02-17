@@ -1,5 +1,6 @@
 import {fetchAgentsTableReportData} from 'hooks/reporting/support-performance/agents/useDownloadAgentsPerformanceData'
 import {FilterKey, StaticFilter} from 'models/stat/types'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -27,6 +28,8 @@ export const AGENTS_OPTIONAL_FILTERS = [
     FilterKey.Tags,
     FilterKey.Agents,
     FilterKey.CustomFields,
+    FilterKey.Score,
+    ...AUTO_QA_FILTER_KEYS,
 ]
 
 export enum AgentsChart {

@@ -1,4 +1,5 @@
 import {FilterKey, StaticFilter} from 'models/stat/types'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -20,6 +21,8 @@ export const TAGS_OPTIONAL_FILTERS = [
     FilterKey.Integrations,
     FilterKey.Tags,
     FilterKey.CustomFields,
+    FilterKey.Score,
+    ...AUTO_QA_FILTER_KEYS,
 ]
 
 export const TAGS_PERSISTENT_FILTERS = [

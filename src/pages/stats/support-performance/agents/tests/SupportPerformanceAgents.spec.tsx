@@ -17,8 +17,8 @@ import {
 import {useAgentsMetrics} from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
-import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {AgentsPerformanceCardExtra} from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
 import {AgentsTableWithDefaultState} from 'pages/stats/support-performance/agents/AgentsTable'
@@ -167,7 +167,7 @@ describe('SupportPerformanceAgents', () => {
     it('should render New FiltersPanel and hide legacy filters', () => {
         mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: true})
 
-        const {getByText, queryByText} = renderWithStore(
+        const {getByText} = renderWithStore(
             <MemoryRouter>
                 <SupportPerformanceAgentsReport />
             </MemoryRouter>,
@@ -181,18 +181,13 @@ describe('SupportPerformanceAgents', () => {
         AGENTS_OPTIONAL_FILTERS.forEach((filter) => {
             expect(getByText(filter)).toBeInTheDocument()
         })
-        expect(queryByText(FilterKey.Score)).not.toBeInTheDocument()
     })
 
     it('should render New FiltersPanel and score filter should be present in the FiltersPanel', () => {
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
-            [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
         })
-        const extendedOptionalFilters = [
-            ...AGENTS_OPTIONAL_FILTERS,
-            FilterKey.Score,
-        ]
+        const extendedOptionalFilters = [...AGENTS_OPTIONAL_FILTERS]
 
         const {getByText} = renderWithStore(
             <MemoryRouter>
@@ -227,12 +222,10 @@ describe('SupportPerformanceAgents', () => {
         } as RootState
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
-            [FeatureFlagKey.AutoQAFilters]: true,
         })
         const extendedOptionalFilters = [
             ...AGENTS_OPTIONAL_FILTERS,
-            FilterKey.ResolutionCompleteness,
-            FilterKey.CommunicationSkills,
+            ...AUTO_QA_FILTER_KEYS,
         ]
 
         const {getByText} = renderWithStore(

@@ -7,6 +7,7 @@ import {
 import {fetchTicketSlaAchievementRateTrend} from 'hooks/reporting/sla/useTicketSlaAchievementRate'
 import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
 import {FilterKey, StaticFilter} from 'models/stat/types'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -44,6 +45,8 @@ export const SERVICE_LEVEL_OPTIONAL_FILTERS = [
     FilterKey.Agents,
     FilterKey.Tags,
     FilterKey.CustomFields,
+    FilterKey.Score,
+    ...AUTO_QA_FILTER_KEYS,
 ]
 
 export const SERVICE_LEVEL_PERSISTENT_FILTERS = [

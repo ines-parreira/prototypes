@@ -1,6 +1,5 @@
 import React from 'react'
 
-import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
@@ -19,10 +18,6 @@ import {TagsReportDownloadDataButton} from 'pages/stats/ticket-insights/tags/Tag
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 
 export function Tags() {
-    const tagsOptionalFilters =
-        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            TicketInsightsTagsReportConfig.reportFilters.optional
-        )
     const getGridCellSize = useGridSize()
     const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
     useCleanStatsFiltersWithLogicalOperators(statsFilters)
@@ -43,7 +38,10 @@ export function Tags() {
                                 TicketInsightsTagsReportConfig.reportFilters
                                     .persistent
                             }
-                            optionalFilters={tagsOptionalFilters}
+                            optionalFilters={
+                                TicketInsightsTagsReportConfig.reportFilters
+                                    .optional
+                            }
                             filterSettingsOverrides={{
                                 [FilterKey.Period]: {
                                     initialSettings: {

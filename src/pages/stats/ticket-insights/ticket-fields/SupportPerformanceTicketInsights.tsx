@@ -2,7 +2,6 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
@@ -17,7 +16,6 @@ import {CustomFieldSelect} from 'pages/stats/ticket-insights/ticket-fields/Custo
 import {DownloadTicketFieldsDataButton} from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
 import {TicketFieldsBlankState} from 'pages/stats/ticket-insights/ticket-fields/TicketFieldsBlankState'
 import {
-    TICKET_INSIGHTS_OPTIONAL_FILTERS,
     TicketFieldsChart,
     TicketFieldsReportConfig,
 } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
@@ -26,10 +24,7 @@ import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 export function SupportPerformanceTicketInsights() {
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-    const supportPerformanceTicketInsightsOptionalFilters =
-        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            TICKET_INSIGHTS_OPTIONAL_FILTERS
-        )
+
     const selectedCustomField = useAppSelector(getSelectedCustomField)
     const getGridCellSize = useGridSize()
 
@@ -72,7 +67,7 @@ export function SupportPerformanceTicketInsights() {
                                     .persistent
                             }
                             optionalFilters={
-                                supportPerformanceTicketInsightsOptionalFilters
+                                TicketFieldsReportConfig.reportFilters.optional
                             }
                             filterSettingsOverrides={{
                                 [FilterKey.Period]: {

@@ -2,7 +2,6 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
@@ -19,10 +18,6 @@ import StatsPage from 'pages/stats/StatsPage'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 
 export default function SatisfactionReport() {
-    const satisfactionOptionalFilters =
-        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            SatisfactionReportConfig.reportFilters.optional
-        )
     const getGridCellSize = useGridSize()
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
@@ -46,7 +41,10 @@ export default function SatisfactionReport() {
                             className="pb-0"
                         >
                             <FiltersPanelWrapper
-                                optionalFilters={satisfactionOptionalFilters}
+                                optionalFilters={
+                                    SatisfactionReportConfig.reportFilters
+                                        .optional
+                                }
                                 filterSettingsOverrides={{
                                     [FilterKey.Period]: {
                                         initialSettings: {

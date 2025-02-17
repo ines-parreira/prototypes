@@ -1,4 +1,5 @@
 import {FilterComponentKey, FilterKey, StaticFilter} from 'models/stat/types'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -28,6 +29,8 @@ export const TICKET_INSIGHTS_OPTIONAL_FILTERS = [
     FilterKey.Tags,
     FilterKey.Agents,
     FilterKey.CustomFields,
+    FilterKey.Score,
+    ...AUTO_QA_FILTER_KEYS,
 ]
 
 export const TICKET_INSIGHTS_PERSISTENT_FILTERS = [

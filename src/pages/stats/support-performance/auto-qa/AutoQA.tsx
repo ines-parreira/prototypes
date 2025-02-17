@@ -2,7 +2,6 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
@@ -24,10 +23,6 @@ export default function AutoQA() {
 
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-    const autoQAOptionalFilters =
-        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            AutoQAReportConfig.reportFilters.optional
-        )
 
     const trendCardColumnWidth = 3
     const manualDimensionTrendCardColumnWidth = 3
@@ -62,7 +57,9 @@ export default function AutoQA() {
                                 persistentFilters={
                                     AutoQAReportConfig.reportFilters.persistent
                                 }
-                                optionalFilters={autoQAOptionalFilters}
+                                optionalFilters={
+                                    AutoQAReportConfig.reportFilters.optional
+                                }
                             />
                         </DashboardGridCell>
                     </DashboardSection>

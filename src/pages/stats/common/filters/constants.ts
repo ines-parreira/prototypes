@@ -127,5 +127,6 @@ export const SAVEABLE_FILTERS: Exclude<FilterKey, FilterKey.Period>[] = [
     FilterKey.Integrations,
     FilterKey.Agents,
     FilterKey.Tags,
+    FilterKey.Score,
     ...AUTO_QA_FILTER_KEYS,
 ]

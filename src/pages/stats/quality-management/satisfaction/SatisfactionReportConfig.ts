@@ -1,4 +1,5 @@
 import {FilterKey, StaticFilter} from 'models/stat/types'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -36,6 +37,8 @@ export const SATISFACTION_OPTIONAL_FILTERS = [
     FilterKey.Integrations,
     FilterKey.CustomFields,
     FilterKey.Tags,
+    FilterKey.Score,
+    ...AUTO_QA_FILTER_KEYS,
 ]
 
 export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {

@@ -32,7 +32,10 @@ import {
     LogicalOperatorEnum,
 } from 'pages/stats/common/components/Filter/constants'
 import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButton'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {
+    AUTO_QA_FILTER_KEYS,
+    FilterLabels,
+} from 'pages/stats/common/filters/constants'
 import {
     FiltersPanel,
     FiltersPanelComponent,
@@ -46,6 +49,7 @@ import {
     filterKeyToStateKeyMapper,
     getFilteredFilterComponentKeys,
 } from 'pages/stats/common/filters/helpers'
+import {getHasAutomate} from 'state/billing/selectors'
 import {initialState, statsSlice} from 'state/stats/statsSlice'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState} from 'state/types'
@@ -78,6 +82,9 @@ const useGetCustomFieldDefinitionsMock = assumeMock(
 )
 jest.mock('hooks/reporting/common/useTagSearch')
 const useTagSearchMock = assumeMock(useTagSearch)
+
+jest.mock('state/billing/selectors', () => ({getHasAutomate: jest.fn()}))
+const getHasAutomateMock = assumeMock(getHasAutomate)
 
 jest.mock(
     'pages/stats/common/filters/PeriodFilter',
@@ -213,6 +220,7 @@ describe('FiltersPanel', () => {
             tagIds: someTags.map((tag) => String(tag.id)),
             tagsState: tagState,
         })
+        getHasAutomateMock.mockReturnValue(true)
     })
 
     it.each(supportedFilters)(
@@ -910,6 +918,90 @@ describe('FiltersPanel', () => {
             }),
             {}
         )
+    })
+
+    describe('hasAutomate behavior', () => {
+        const autoQAFilters = [...AUTO_QA_FILTER_KEYS]
+        const nonAutoQAFilters = [
+            FilterKey.Agents,
+            FilterKey.Channels,
+            FilterKey.Tags,
+            FilterKey.Score,
+        ]
+
+        it('should show auto-qa filters when hasAutomate is true', () => {
+            renderWithStore(
+                <FiltersPanel
+                    persistentFilters={[]}
+                    optionalFilters={[...autoQAFilters, ...nonAutoQAFilters]}
+                />,
+                defaultState
+            )
+
+            userEvent.click(
+                screen.getByRole('button', {
+                    name: new RegExp(ADD_FILTER_BUTTON_LABEL),
+                })
+            )
+            ;[...autoQAFilters, ...nonAutoQAFilters].forEach((filter) => {
+                expect(
+                    screen.getByRole('option', {name: FilterLabels[filter]})
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should hide auto-qa filters when hasAutomate is false', () => {
+            getHasAutomateMock.mockReturnValue(false)
+            renderWithStore(
+                <FiltersPanel
+                    persistentFilters={[]}
+                    optionalFilters={[...autoQAFilters, ...nonAutoQAFilters]}
+                />,
+                defaultState
+            )
+
+            userEvent.click(
+                screen.getByRole('button', {
+                    name: new RegExp(ADD_FILTER_BUTTON_LABEL),
+                })
+            )
+
+            autoQAFilters.forEach((filter) => {
+                expect(
+                    screen.queryByRole('option', {name: FilterLabels[filter]})
+                ).not.toBeInTheDocument()
+            })
+
+            nonAutoQAFilters.forEach((filter) => {
+                expect(
+                    screen.getByRole('option', {name: FilterLabels[filter]})
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should not affect persistent filters even when hasAutomate is false', () => {
+            const state = {
+                ...defaultState,
+                billing: fromJS({
+                    ...billingState,
+                    hasAutomate: false,
+                }),
+            }
+
+            renderWithStore(
+                <FiltersPanel
+                    persistentFilters={autoQAFilters}
+                    optionalFilters={nonAutoQAFilters}
+                />,
+                state
+            )
+
+            autoQAFilters.forEach((filter) => {
+                expect(
+                    screen.getByText(new RegExp(FilterLabels[filter]))
+                ).toBeInTheDocument()
+            })
+        })
     })
 })
 

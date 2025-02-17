@@ -2,6 +2,7 @@ import React, {useCallback} from 'react'
 
 import {AutoQA} from 'auto_qa'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import AIAgentFeedbackBar from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentFeedbackBar'
@@ -10,13 +11,12 @@ import {changeTicketMessage} from 'state/ui/ticketAIAgentFeedback'
 import TicketListInfo from 'ticket-list-view/components/TicketListInfo'
 
 import useHasAIAgent from './hooks/useHasAIAgent'
-import useHasAutoQA from './hooks/useHasAutoQA'
 import css from './TicketFeedback.less'
 
 export default function TicketFeedback() {
     const dispatch = useAppDispatch()
     const hasAIAgent = useHasAIAgent()
-    const hasAutoQA = useHasAutoQA()
+    const hasAgentPrivileges = useHasAgentPrivileges()
     const messageFeedback = useAiAgentMessageFeedback()
 
     const handleClickBack = useCallback(() => {
@@ -25,13 +25,13 @@ export default function TicketFeedback() {
 
     return (
         <div className={css.container}>
-            {!hasAutoQA && !hasAIAgent && (
+            {!hasAgentPrivileges && !hasAIAgent && (
                 <TicketListInfo
                     text="Unauthorized"
                     subText="You do not have permission to view ticket feedback."
                 />
             )}
-            {hasAutoQA &&
+            {hasAgentPrivileges &&
                 (messageFeedback ? (
                     <div className={css.back}>
                         <Button
@@ -51,7 +51,7 @@ export default function TicketFeedback() {
                 ) : (
                     <AutoQA />
                 ))}
-            {hasAutoQA && hasAIAgent && !messageFeedback && (
+            {hasAgentPrivileges && hasAIAgent && !messageFeedback && (
                 <div className={css.lineSeparator} />
             )}
             {hasAIAgent && <AIAgentFeedbackBar />}

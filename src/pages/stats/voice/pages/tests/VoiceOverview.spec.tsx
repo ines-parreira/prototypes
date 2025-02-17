@@ -20,7 +20,8 @@ import {
 } from 'fixtures/productPrices'
 import {tags} from 'fixtures/tag'
 import {user} from 'fixtures/users'
-import {FilterKey, LegacyStatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import * as VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
 import {VoiceOverviewDownloadDataButton} from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
@@ -94,8 +95,6 @@ describe('VoiceOverview', () => {
         VoiceOverviewDownloadDataButtonMock.mockImplementation(() => <div />)
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFiltersVoice]: false,
-            [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
-            [FeatureFlagKey.AutoQAFilters]: false,
         })
     })
 
@@ -215,11 +214,9 @@ describe('VoiceOverview', () => {
     it('should render new filters panel when feature flag is enabled and add Score filter', () => {
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
-            [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
         })
         const extendedVoiceOverviewFilters = [
             ...VOICE_OVERVIEW_OPTIONAL_FILTERS,
-            FilterKey.Score,
         ]
 
         const {getByText} = renderVoiceOverview()
@@ -232,12 +229,10 @@ describe('VoiceOverview', () => {
     it('should render new filters panel when feature flag is enabled and add Resolution Completeness and Communication Skills filters', () => {
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
-            [FeatureFlagKey.AutoQAFilters]: true,
         })
         const extendedVoiceOverviewFilters = [
             ...VOICE_OVERVIEW_OPTIONAL_FILTERS,
-            FilterKey.ResolutionCompleteness,
-            FilterKey.CommunicationSkills,
+            ...AUTO_QA_FILTER_KEYS,
         ]
 
         const {getByText} = renderVoiceOverview()

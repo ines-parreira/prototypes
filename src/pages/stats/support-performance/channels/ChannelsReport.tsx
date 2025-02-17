@@ -2,7 +2,6 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
@@ -24,10 +23,6 @@ export function ChannelsReport() {
 
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-    const channelReportOptionalFilters =
-        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            CHANNEL_REPORT_OPTIONAL_FILTERS
-        )
 
     return (
         <div className="full-width">
@@ -50,7 +45,9 @@ export function ChannelsReport() {
                         >
                             <FiltersPanelWrapper
                                 persistentFilters={[FilterKey.Period]}
-                                optionalFilters={channelReportOptionalFilters}
+                                optionalFilters={
+                                    CHANNEL_REPORT_OPTIONAL_FILTERS
+                                }
                                 filterSettingsOverrides={{
                                     [FilterKey.Period]: {
                                         initialSettings: {

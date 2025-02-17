@@ -7,15 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {
-    AUTOMATION_PRODUCT_ID,
-    basicYearlyAutomationPlan,
-    basicYearlyHelpdeskPlan,
-    HELPDESK_PRODUCT_ID,
-} from 'fixtures/productPrices'
-import {FilterKey} from 'models/stat/types'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {AchievedAndBreachedTicketsChart} from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
@@ -72,9 +64,36 @@ jest.mock(
     }
 )
 
-const defaultState = {
-    billing: fromJS(billingState),
-}
+const createInitialState = (hasAutomate: boolean) =>
+    ({
+        billing: fromJS({
+            products: [
+                {
+                    id: 1,
+                    type: 'automation',
+                    prices: hasAutomate
+                        ? [
+                              {
+                                  price_id: 'price_1',
+                              },
+                          ]
+                        : [],
+                },
+            ],
+        }),
+        currentAccount: fromJS({
+            current_subscription: {
+                trial_start_datetime: '2017-08-23T01:38:53+00:00',
+                trial_end_datetime: '2017-09-06T01:38:53+00:00',
+                status: 'trialing',
+                start_datetime: '2017-08-23T01:38:53+00:00',
+                products: {
+                    1: 'price_1',
+                },
+                scheduled_to_cancel_at: null,
+            },
+        }),
+    }) as RootState
 
 describe('ServiceLevelAgreements', () => {
     beforeEach(() => {
@@ -89,7 +108,7 @@ describe('ServiceLevelAgreements', () => {
     })
     it('should render service level agreements', () => {
         render(
-            <Provider store={mockStore(defaultState)}>
+            <Provider store={mockStore(createInitialState(false))}>
                 <ServiceLevelAgreements />
             </Provider>
         )
@@ -104,7 +123,7 @@ describe('ServiceLevelAgreements', () => {
 
     it('should render SLAPolicySelect', () => {
         render(
-            <Provider store={mockStore(defaultState)}>
+            <Provider store={mockStore(createInitialState(false))}>
                 <ServiceLevelAgreements />
             </Provider>
         )
@@ -129,7 +148,7 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
     })
     it('should render service level agreements', () => {
         render(
-            <Provider store={mockStore(defaultState)}>
+            <Provider store={mockStore(createInitialState(false))}>
                 <ServiceLevelAgreements />
             </Provider>
         )
@@ -148,7 +167,7 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
         })
 
         render(
-            <Provider store={mockStore(defaultState)}>
+            <Provider store={mockStore(createInitialState(false))}>
                 <ServiceLevelAgreements />
             </Provider>
         )
@@ -157,32 +176,15 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
     })
 
     describe('FilterPanel', () => {
-        const state = {
-            ...defaultState,
-            currentAccount: fromJS({
-                ...account,
-                current_subscription: {
-                    products: {
-                        [HELPDESK_PRODUCT_ID]: basicYearlyHelpdeskPlan.price_id,
-                        [AUTOMATION_PRODUCT_ID]:
-                            basicYearlyAutomationPlan.price_id,
-                    },
-                    status: 'active',
-                },
-            }),
-        } as RootState
-
         beforeEach(() => {
             mockFlags({
                 [FeatureFlagKey.AnalyticsNewFilters]: true,
-                [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
-                [FeatureFlagKey.AutoQAFilters]: false,
             })
         })
 
         it('should show New Filters Panel and render expected filters', () => {
             const {getByText} = render(
-                <Provider store={mockStore(state)}>
+                <Provider store={mockStore(createInitialState(false))}>
                     <ServiceLevelAgreements />
                 </Provider>
             )
@@ -192,41 +194,20 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
             })
         })
 
-        it('should show New Filters Panel and render expected filters with score filter', () => {
+        it('should show New Filters Panel and render expected filters with auto QA filter', () => {
             mockFlags({
                 [FeatureFlagKey.AnalyticsNewFilters]: true,
-                [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
             })
             const {getByText} = render(
-                <Provider store={mockStore(state)}>
+                <Provider store={mockStore(createInitialState(true))}>
                     <ServiceLevelAgreements />
                 </Provider>
             )
-            const filtersWithScore = [
+            const filtersWithAutoQA = [
                 ...SERVICE_LEVEL_OPTIONAL_FILTERS,
-                FilterKey.Score,
+                ...AUTO_QA_FILTER_KEYS,
             ]
-            filtersWithScore.forEach((filter) => {
-                expect(getByText(filter)).toBeInTheDocument()
-            })
-        })
-
-        it('should show New Filters Panel and render expected filters with resolution completeness and communication skills filters', () => {
-            mockFlags({
-                [FeatureFlagKey.AnalyticsNewFilters]: true,
-                [FeatureFlagKey.AutoQAFilters]: true,
-            })
-            const {getByText} = render(
-                <Provider store={mockStore(state)}>
-                    <ServiceLevelAgreements />
-                </Provider>
-            )
-            const filtersWithScore = [
-                ...SERVICE_LEVEL_OPTIONAL_FILTERS,
-                FilterKey.ResolutionCompleteness,
-                FilterKey.CommunicationSkills,
-            ]
-            filtersWithScore.forEach((filter) => {
+            filtersWithAutoQA.forEach((filter) => {
                 expect(getByText(filter)).toBeInTheDocument()
             })
         })

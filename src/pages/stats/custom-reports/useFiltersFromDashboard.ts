@@ -1,6 +1,5 @@
 import uniq from 'lodash/uniq'
 
-import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import {StaticFilter} from 'models/stat/types'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
 import {getComponentConfig} from 'pages/stats/custom-reports/config'
@@ -27,13 +26,8 @@ export function useFiltersFromDashboard(dashboard: CustomReportSchema) {
         optionalFilters.push(...reportsFilters.optionalFilters)
     })
 
-    const optionalFiltersWithAutoQaAndSatisfactionScore =
-        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            optionalFilters
-        )
-
     return {
         persistentFilters: uniq(persistentFilters),
-        optionalFilters: uniq(optionalFiltersWithAutoQaAndSatisfactionScore),
+        optionalFilters: uniq(optionalFilters),
     }
 }

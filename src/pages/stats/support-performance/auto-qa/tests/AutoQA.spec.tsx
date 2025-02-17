@@ -13,8 +13,6 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import {FilterKey} from 'models/stat/types'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import {AccuracyTrendCard} from 'pages/stats/support-performance/auto-qa/AccuracyTrendCard'
@@ -156,6 +154,16 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         ))
         ResolutionCompletenessTrendCardMock.mockImplementation(() => <div />)
         CommunicationSkillsTrendCardMock.mockImplementation(() => <div />)
+        LanguageProficiencyTrendCardMock.mockImplementation(componentMock)
+        AccuracyTrendCardMock.mockImplementation(componentMock)
+        EfficiencyTrendCardMock.mockImplementation(componentMock)
+        InternalComplianceTrendCardMock.mockImplementation(componentMock)
+        BrandVoiceTrendCardMock.mockImplementation(componentMock)
+        AutoQAAgentsTableMock.mockImplementation(componentMock)
+        AutoQAAgentPerformanceHeatmapSwitchMock.mockImplementation(
+            componentMock
+        )
+        AutoQADownloadButtonMock.mockImplementation(componentMock)
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
         })
@@ -180,33 +188,11 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         })
     })
 
-    it('should render AutoQA page with optional filters and Score filter added', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: true,
-            [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
-        })
-        const extendedAutoQAFilters = [
-            ...AUTO_QA_OPTIONAL_FILTERS,
-            FilterKey.Score,
-        ]
-
-        renderWithStore(<AutoQA />, state)
-
-        expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
-        extendedAutoQAFilters.forEach((optionalFilter) => {
-            expect(screen.getByText(optionalFilter)).toBeTruthy()
-        })
-    })
-
     it('should render AutoQA page with optional filters and Auto QA dimensions filters added', () => {
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
-            [FeatureFlagKey.AutoQAFilters]: true,
         })
-        const extendedAutoQAFilters = [
-            ...AUTO_QA_OPTIONAL_FILTERS,
-            ...AUTO_QA_FILTER_KEYS,
-        ]
+        const extendedAutoQAFilters = [...AUTO_QA_OPTIONAL_FILTERS]
 
         renderWithStore(<AutoQA />, state)
 

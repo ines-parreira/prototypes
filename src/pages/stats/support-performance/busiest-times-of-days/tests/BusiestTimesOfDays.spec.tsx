@@ -14,6 +14,7 @@ import {
 } from 'fixtures/productPrices'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {BusiestTimesOfDays} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
 import {BusiestTimesOfDaysDownloadDataButton} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
@@ -107,7 +108,6 @@ describe('BusiestTimesOfDays page', () => {
     it('should render FiltersPanel with New Filters and Score filter', () => {
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
-            [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
         })
         const extendedBusiestTimeOfDaysOptionalFilters = [
             ...BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS,
@@ -141,12 +141,10 @@ describe('BusiestTimesOfDays page', () => {
         }
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
-            [FeatureFlagKey.AutoQAFilters]: true,
         })
         const extendedBusiestTimeOfDaysOptionalFilters = [
             ...BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS,
-            FilterKey.ResolutionCompleteness,
-            FilterKey.CommunicationSkills,
+            ...AUTO_QA_FILTER_KEYS,
         ]
 
         const {getByText} = renderWithStore(<BusiestTimesOfDays />, state)

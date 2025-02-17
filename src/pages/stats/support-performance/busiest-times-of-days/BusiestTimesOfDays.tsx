@@ -2,7 +2,6 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterComponentKey, FilterKey} from 'models/stat/types'
@@ -26,10 +25,7 @@ import {getSelectedMetric} from 'state/ui/stats/busiestTimesSlice'
 export const BusiestTimesOfDays = () => {
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-    const busiestTimeOfDaysOptionalFilters =
-        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS
-        )
+
     const getGridCellSize = useGridSize()
     const selectedMetric = useAppSelector(getSelectedMetric)
 
@@ -60,7 +56,7 @@ export const BusiestTimesOfDays = () => {
                                     FilterComponentKey.BusiestTimesMetricSelectFilter,
                                 ]}
                                 optionalFilters={
-                                    busiestTimeOfDaysOptionalFilters
+                                    BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS
                                 }
                                 filterSettingsOverrides={{
                                     [FilterKey.Period]: {

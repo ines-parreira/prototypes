@@ -4,7 +4,6 @@ import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {PaywallConfig, paywallConfigs} from 'config/paywalls'
-import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
@@ -49,10 +48,6 @@ function VoiceAgents() {
 
     const isVoiceAgentsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersVoice]
-    const voiceAgentsOptionalFilters =
-        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            VoiceAgentsReportConfig.reportFilters.optional
-        )
 
     const getGridCellSize = useGridSize()
 
@@ -115,7 +110,9 @@ function VoiceAgents() {
                             persistentFilters={
                                 VoiceAgentsReportConfig.reportFilters.persistent
                             }
-                            optionalFilters={voiceAgentsOptionalFilters}
+                            optionalFilters={
+                                VoiceAgentsReportConfig.reportFilters.optional
+                            }
                         />
                     </DashboardGridCell>
                 </DashboardSection>

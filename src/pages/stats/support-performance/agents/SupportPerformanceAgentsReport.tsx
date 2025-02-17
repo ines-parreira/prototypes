@@ -3,7 +3,6 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
@@ -15,7 +14,6 @@ import StatsPage from 'pages/stats/StatsPage'
 import {AGENTS_SHOUT_OUTS_TITLE} from 'pages/stats/support-performance/agents/AgentsShoutOutsConfig'
 import {DownloadAgentsPerformanceDataButton} from 'pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton'
 import {
-    AGENTS_OPTIONAL_FILTERS,
     AgentsChart,
     SupportPerformanceAgentsReportConfig,
 } from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
@@ -26,10 +24,7 @@ export const AGENTS_PAGE_TITLE = 'Agents'
 export default function SupportPerformanceAgentsReport() {
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-    const supportPerformanceAgentsOptionalFilters =
-        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
-            AGENTS_OPTIONAL_FILTERS
-        )
+
     const getGridCellSize = useGridSize()
 
     return (
@@ -57,7 +52,8 @@ export default function SupportPerformanceAgentsReport() {
                                         .reportFilters.persistent
                                 }
                                 optionalFilters={
-                                    supportPerformanceAgentsOptionalFilters
+                                    SupportPerformanceAgentsReportConfig
+                                        .reportFilters.optional
                                 }
                                 filterSettingsOverrides={{
                                     [FilterKey.Period]: {

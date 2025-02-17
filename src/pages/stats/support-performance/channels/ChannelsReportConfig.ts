@@ -1,5 +1,6 @@
 import {fetchChannelsTableReportData} from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
 import {FilterKey} from 'models/stat/types'
+import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -17,6 +18,8 @@ export const CHANNEL_REPORT_OPTIONAL_FILTERS = [
     FilterKey.Tags,
     FilterKey.Agents,
     FilterKey.CustomFields,
+    FilterKey.Score,
+    ...AUTO_QA_FILTER_KEYS,
 ]
 
 export const CHANNELS_REPORT_PAGE_TITLE = 'Channels'
