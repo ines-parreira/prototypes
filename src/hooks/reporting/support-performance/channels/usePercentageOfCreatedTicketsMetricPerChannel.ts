@@ -8,7 +8,7 @@ import {
 import {
     fetchCreatedTicketsMetricPerChannel,
     useCreatedTicketsMetricPerChannel,
-} from 'hooks/reporting/metricsPerChannel'
+} from 'hooks/reporting/support-performance/channels/metricsPerChannel'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'

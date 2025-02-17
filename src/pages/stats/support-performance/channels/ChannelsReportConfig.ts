@@ -1,4 +1,4 @@
-import {fetchChannelsTableReportData} from 'hooks/reporting/useChannelsReportMetrics'
+import {fetchChannelsTableReportData} from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
 import {FilterKey} from 'models/stat/types'
 import {
     ChartType,

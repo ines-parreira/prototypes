@@ -1,4 +1,4 @@
-import {useChannelsReportMetrics} from 'hooks/reporting/useChannelsReportMetrics'
+import {useChannelsReportMetrics} from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
 import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
 import {Channel} from 'services/channels'
 import {notEmpty} from 'utils'

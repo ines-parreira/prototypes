@@ -41,21 +41,18 @@ describe('useArticleViewTimeSeries', () => {
                 {
                     member: 'HelpCenterTrackingEvent.periodStart',
                     operator: 'afterDate',
-                    values: ['2023-11-13T00:00:00.000'],
+                    values: [periodStart],
                 },
                 {
                     member: 'HelpCenterTrackingEvent.periodEnd',
                     operator: 'beforeDate',
-                    values: ['2023-11-06T00:00:00.000'],
+                    values: [periodEnd],
                 },
             ],
             order: [['HelpCenterTrackingEvent.timestamp', 'asc']],
             timeDimensions: [
                 {
-                    dateRange: [
-                        '2023-11-13T00:00:00.000',
-                        '2023-11-06T00:00:00.000',
-                    ],
+                    dateRange: [periodStart, periodEnd],
                     dimension: 'HelpCenterTrackingEvent.timestamp',
                     granularity: 'day',
                 },

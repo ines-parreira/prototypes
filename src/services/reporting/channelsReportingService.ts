@@ -1,4 +1,4 @@
-import {ChannelsReportData} from 'hooks/reporting/useChannelsReportMetrics'
+import {ChannelsReportData} from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {Channel} from 'models/channel/types'
 import {AgentTimeTrackingCube} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'

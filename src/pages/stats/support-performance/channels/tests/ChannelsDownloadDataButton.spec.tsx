@@ -5,12 +5,14 @@ import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {channels} from 'fixtures/channels'
-import {useChannelsReportMetrics} from 'hooks/reporting/useChannelsReportMetrics'
+import {useChannelsReportMetrics} from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
 import {ChannelsDownloadDataButton} from 'pages/stats/support-performance/channels/ChannelsDownloadDataButton'
 import {saveZippedFiles} from 'utils/file'
 import {assumeMock} from 'utils/testing'
 
-jest.mock('hooks/reporting/useChannelsReportMetrics')
+jest.mock(
+    'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
+)
 const useChannelsReportMetricsMock = assumeMock(useChannelsReportMetrics)
 
 jest.mock('utils/file')

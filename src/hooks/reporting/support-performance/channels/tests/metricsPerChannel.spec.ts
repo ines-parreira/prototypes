@@ -12,7 +12,7 @@ import {
     useOneTouchTicketsMetricPerChannel,
     useTicketAverageHandleTimePerChannel,
     useCreatedTicketsMetricPerChannel,
-} from 'hooks/reporting/metricsPerChannel'
+} from 'hooks/reporting/support-performance/channels/metricsPerChannel'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {ticketAverageHandleTimePerAgentPerChannelQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'

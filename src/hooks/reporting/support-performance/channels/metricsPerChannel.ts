@@ -41,6 +41,9 @@ export const useMedianFirstResponseTimeMetricPerChannel: MetricPerChannelQueryHo
             channel
         )
 
+export const fetchMedianFirstResponseTimeMetricPerChannel =
+    createFetchPerDimension(medianFirstResponseTimeMetricPerChannelQueryFactory)
+
 export const useTicketsRepliedMetricPerChannel = createMetricPerDimensionHook(
     ticketsRepliedMetricPerChannelQueryFactory
 )

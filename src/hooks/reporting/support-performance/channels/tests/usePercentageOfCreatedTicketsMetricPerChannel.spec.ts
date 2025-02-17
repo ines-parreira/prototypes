@@ -9,18 +9,18 @@ import {
 import {
     fetchCreatedTicketsMetricPerChannel,
     useCreatedTicketsMetricPerChannel,
-} from 'hooks/reporting/metricsPerChannel'
+} from 'hooks/reporting/support-performance/channels/metricsPerChannel'
 import {
     fetchPercentageOfCreatedTicketsMetricPerChannel,
     usePercentageOfCreatedTicketsMetricPerChannel,
-} from 'hooks/reporting/usePercentageOfCreatedTicketsMetricPerChannel'
+} from 'hooks/reporting/support-performance/channels/usePercentageOfCreatedTicketsMetricPerChannel'
 
 import {OrderDirection} from 'models/api/types'
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {LegacyStatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
 
-jest.mock('hooks/reporting/metricsPerChannel')
+jest.mock('hooks/reporting/support-performance/channels/metricsPerChannel')
 jest.mock('hooks/reporting/metrics')
 const useTicketsCreatedMetricMock = assumeMock(useTicketsCreatedMetric)
 const useTicketsCreatedMetricPerChannelMock = assumeMock(

@@ -3,7 +3,7 @@ import classnames from 'classnames'
 
 import React from 'react'
 
-import {MetricPerChannelQueryHook} from 'hooks/reporting/metricsPerChannel'
+import {MetricPerChannelQueryHook} from 'hooks/reporting/support-performance/channels/metricsPerChannel'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {Channel} from 'models/channel/types'

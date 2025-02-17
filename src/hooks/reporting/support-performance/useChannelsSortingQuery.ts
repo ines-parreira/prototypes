@@ -1,7 +1,7 @@
 import {useEffect} from 'react'
 import {useDispatch} from 'react-redux'
 
-import {MetricPerChannelQueryHook} from 'hooks/reporting/metricsPerChannel'
+import {MetricPerChannelQueryHook} from 'hooks/reporting/support-performance/channels/metricsPerChannel'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {opposite, OrderDirection} from 'models/api/types'

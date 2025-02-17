@@ -8,17 +8,18 @@ import {
     fetchClosedTicketsMetricPerChannel,
     fetchCreatedTicketsMetricPerChannel,
     fetchCustomerSatisfactionMetricPerChannel,
+    fetchMedianFirstResponseTimeMetricPerChannel,
     fetchMedianResolutionTimeMetricPerChannel,
     fetchMessagesSentMetricPerChannel,
     fetchTicketAverageHandleTimePerChannel,
     fetchTicketsRepliedMetricPerChannel,
-} from 'hooks/reporting/metricsPerChannel'
+} from 'hooks/reporting/support-performance/channels/metricsPerChannel'
+import {fetchPercentageOfCreatedTicketsMetricPerChannel} from 'hooks/reporting/support-performance/channels/usePercentageOfCreatedTicketsMetricPerChannel'
 import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
 import {useChannelsTableSetting} from 'hooks/reporting/useChannelsTableConfigSetting'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {fetchPercentageOfCreatedTicketsMetricPerChannel} from 'hooks/reporting/usePercentageOfCreatedTicketsMetricPerChannel'
 import {Channel} from 'models/channel/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
@@ -58,7 +59,7 @@ export const ChannelsMetricsDataSources: TableDataSources<ChannelsReportData> =
             title: 'customerSatisfactionMetricPerChannel',
         },
         {
-            fetchData: fetchMedianResolutionTimeMetricPerChannel,
+            fetchData: fetchMedianFirstResponseTimeMetricPerChannel,
             title: 'medianFirstResponseTimeMetricPerChannel',
         },
         {

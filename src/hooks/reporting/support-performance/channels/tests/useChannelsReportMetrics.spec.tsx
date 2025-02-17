@@ -13,13 +13,13 @@ import {
     fetchTableReportData,
     useTableReportData,
 } from 'hooks/reporting/common/useTableReportData'
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
 import {
     CHANNELS_REPORT_FILE_NAME,
     fetchChannelsTableReportData,
     useChannelsReportMetrics,
-} from 'hooks/reporting/useChannelsReportMetrics'
+} from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
+import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
 import {OrderDirection} from 'models/api/types'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {ReportingGranularity} from 'models/reporting/types'

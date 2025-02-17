@@ -8,8 +8,8 @@ import {
     useMessagesSentMetricPerChannel,
     useTicketAverageHandleTimePerChannel,
     useTicketsRepliedMetricPerChannel,
-} from 'hooks/reporting/metricsPerChannel'
-import {usePercentageOfCreatedTicketsMetricPerChannel} from 'hooks/reporting/usePercentageOfCreatedTicketsMetricPerChannel'
+} from 'hooks/reporting/support-performance/channels/metricsPerChannel'
+import {usePercentageOfCreatedTicketsMetricPerChannel} from 'hooks/reporting/support-performance/channels/usePercentageOfCreatedTicketsMetricPerChannel'
 import {ticketHandleTimePerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {closedTicketsPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionMetricDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
