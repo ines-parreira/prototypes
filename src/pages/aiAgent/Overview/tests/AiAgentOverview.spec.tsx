@@ -21,7 +21,7 @@ import {AiAgentOverviewRootStateFixture} from './AiAgentOverviewRootState.fixtur
 jest.mock('react-router')
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
-    SegmentEvent: {AiAgentOverviewPageView: 'ai-agent-overview-page-view'},
+    SegmentEvent: {AiAgentOverviewPageView: 'ai-agent-overview-page-viewed'},
 }))
 
 const defaultLocation = {

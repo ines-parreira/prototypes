@@ -35,7 +35,7 @@ export enum SegmentEvent {
     AiAgentOnboardingWizardNextClicked = 'ai-agent-onboarding-wizard-next-clicked',
     AiAgentOnboardingWizardPublicUrlIngested = 'ai-agent-onboarding-wizard-public-url-ingested',
     AiAgentOnboardingWizardSaveClicked = 'ai-agent-onboarding-wizard-save-clicked',
-    AiAgentOverviewPageView = 'ai-agent-overview-page-view',
+    AiAgentOverviewPageView = 'ai-agent-overview-page-viewed',
     AiAgentOverviewPendingTaskClicked = 'ai-agent-overview-pending-task-clicked',
     AiAgentOverviewFullReportClicked = 'ai-agent-overview-full-report-clicked',
     AiAgentTicketViewed = 'ai-agent-ticket-viewed',
