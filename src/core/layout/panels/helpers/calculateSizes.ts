@@ -59,6 +59,21 @@ export default function calculateSizes({
             ? order.filter((name) => previousOrder.includes(name))
             : []
 
+    const prioritisedPanels = order.filter(
+        (name) =>
+            !!configs[name].prioritise &&
+            !existingPanels.includes(name) &&
+            !!savedSizes[name]
+    )
+    if (prioritisedPanels.length) {
+        orderedApplyDeltas(
+            prioritisedPanels.map<PanelDelta>((name) => [
+                name,
+                savedSizes[name] - sizes[name],
+            ])
+        )
+    }
+
     if (existingPanels.length) {
         orderedApplyDeltas(
             existingPanels

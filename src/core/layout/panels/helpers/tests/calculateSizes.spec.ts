@@ -5,7 +5,12 @@ describe('calculateSizes', () => {
     const configs = {
         'global-navigation': {defaultSize: 48, minSize: 48, maxSize: 48},
         infobar: {defaultSize: 340, minSize: 340, maxSize: 500},
-        navigation: {defaultSize: 238, minSize: 200, maxSize: 350},
+        navigation: {
+            defaultSize: 238,
+            minSize: 200,
+            maxSize: 350,
+            prioritise: true,
+        },
         'ticket-detail': {
             defaultSize: Infinity,
             minSize: 300,
@@ -106,6 +111,27 @@ describe('calculateSizes', () => {
             navigation: 238,
             'ticket-detail': 474,
             'ticket-list': 300,
+        })
+    })
+
+    it('should restore the the navbar to its previous size', () => {
+        const result = calculateSizes({
+            availableSize,
+            configs: configs,
+            order: ['global-navigation', 'navigation', 'view'],
+            previousOrder: ['global-navigation', 'view'],
+            previousSizes: {
+                'global-navigation': 48,
+                navigation: 238,
+                view: 714,
+            },
+            savedSizes: {navigation: 300},
+        })
+
+        expect(result).toEqual({
+            'global-navigation': 48,
+            navigation: 300,
+            view: 652,
         })
     })
 

@@ -2,13 +2,14 @@ import type {PanelConfig} from '../types'
 import clamp from './clamp'
 
 type ConfigKey = keyof PanelConfig
+type NumberKey = keyof Omit<PanelConfig, 'prioritise'>
 
 export default function sanitiseConfig(config: PanelConfig, totalSize: number) {
     const newConfig = {...config}
 
     Object.entries(newConfig).forEach(([k, v]) => {
-        if (v > 0 && v < 1) {
-            newConfig[k as keyof PanelConfig] = totalSize * v
+        if (typeof v === 'number' && v > 0 && v < 1) {
+            newConfig[k as NumberKey] = totalSize * v
         }
     })
 

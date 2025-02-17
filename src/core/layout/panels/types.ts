@@ -23,9 +23,10 @@ export type Panel = {
 }
 
 export type PanelConfig = {
-    minSize: number
-    maxSize: number
     defaultSize: number
+    maxSize: number
+    minSize: number
+    prioritise?: boolean
 }
 
 export type PanelListener = (panelState: PanelState) => void

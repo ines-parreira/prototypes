@@ -10,6 +10,7 @@ const panelConfig = {
     defaultSize: 238,
     minSize: 200,
     maxSize: 350,
+    prioritise: true,
 }
 
 type Props = {
