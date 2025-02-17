@@ -6,9 +6,9 @@ import {Provider} from 'react-redux'
 
 import {account} from 'fixtures/account'
 import {user} from 'fixtures/users'
+import {useGetStoresConfigurationForAccount} from 'models/aiAgent/queries'
 import {AiAgentScope} from 'models/aiAgent/types'
 import {IntegrationType} from 'models/integration/constants'
-import {useStoreConfigurationForAccount} from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import {
     useAiAgentTypeForAccount,
     getAiAgentTypeFromScopes,
@@ -17,9 +17,9 @@ import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/util
 import {RootState} from 'state/types'
 import {assumeMock, mockStore} from 'utils/testing'
 
-jest.mock('pages/aiAgent/hooks/useStoreConfigurationForAccount')
-const useStoreConfigurationForAccountMock = assumeMock(
-    useStoreConfigurationForAccount
+jest.mock('models/aiAgent/queries')
+const useGetStoresConfigurationForAccountMock = assumeMock(
+    useGetStoresConfigurationForAccount
 )
 
 describe('useAiAgentType', () => {
@@ -76,17 +76,27 @@ describe('useAiAgentType', () => {
             })
 
         it('should return sales when all stores scope are sales', () => {
-            useStoreConfigurationForAccountMock.mockReturnValue({
+            useGetStoresConfigurationForAccountMock.mockReturnValue({
                 isLoading: false,
-                storeConfigurations: [
+                data: [
                     {
-                        scopes: [AiAgentScope.Sales],
+                        status: 200,
+                        data: {
+                            storeConfiguration: {
+                                scopes: [AiAgentScope.Sales],
+                            },
+                        },
                     },
                     {
-                        scopes: [AiAgentScope.Sales],
+                        status: 200,
+                        data: {
+                            storeConfiguration: {
+                                scopes: [AiAgentScope.Sales],
+                            },
+                        },
                     },
-                ] as any,
-            })
+                ],
+            } as any)
 
             const {result} = renderUseAiAgentTypeForAccount()
             expect(result.current).toEqual({
@@ -96,17 +106,27 @@ describe('useAiAgentType', () => {
         })
 
         it('should return support when all stores scope are support', () => {
-            useStoreConfigurationForAccountMock.mockReturnValue({
+            useGetStoresConfigurationForAccountMock.mockReturnValue({
                 isLoading: false,
-                storeConfigurations: [
+                data: [
                     {
-                        scopes: [AiAgentScope.Support],
+                        status: 200,
+                        data: {
+                            storeConfiguration: {
+                                scopes: [AiAgentScope.Support],
+                            },
+                        },
                     },
                     {
-                        scopes: [AiAgentScope.Support],
+                        status: 200,
+                        data: {
+                            storeConfiguration: {
+                                scopes: [AiAgentScope.Support],
+                            },
+                        },
                     },
-                ] as any,
-            })
+                ],
+            } as any)
 
             const {result} = renderUseAiAgentTypeForAccount()
 
@@ -117,17 +137,22 @@ describe('useAiAgentType', () => {
         })
 
         it('should return support when some stores scope are support and some are sales', () => {
-            useStoreConfigurationForAccountMock.mockReturnValue({
+            useGetStoresConfigurationForAccountMock.mockReturnValue({
                 isLoading: false,
-                storeConfigurations: [
+                data: [
                     {
-                        scopes: [AiAgentScope.Support],
+                        status: 200,
+                        data: {
+                            storeConfiguration: {
+                                scopes: [
+                                    AiAgentScope.Support,
+                                    AiAgentScope.Sales,
+                                ],
+                            },
+                        },
                     },
-                    {
-                        scopes: [AiAgentScope.Sales],
-                    },
-                ] as any,
-            })
+                ],
+            } as any)
 
             const {result} = renderUseAiAgentTypeForAccount()
             expect(result.current).toEqual({
@@ -137,17 +162,30 @@ describe('useAiAgentType', () => {
         })
 
         it('should return support when some stores scope are support and sales', () => {
-            useStoreConfigurationForAccountMock.mockReturnValue({
+            useGetStoresConfigurationForAccountMock.mockReturnValue({
                 isLoading: false,
-                storeConfigurations: [
+                data: [
                     {
-                        scopes: [AiAgentScope.Support, AiAgentScope.Sales],
+                        status: 200,
+                        data: {
+                            storeConfiguration: {
+                                scopes: [AiAgentScope.Support],
+                            },
+                        },
                     },
                     {
-                        scopes: [AiAgentScope.Sales],
+                        status: 200,
+                        data: {
+                            storeConfiguration: {
+                                scopes: [
+                                    AiAgentScope.Support,
+                                    AiAgentScope.Sales,
+                                ],
+                            },
+                        },
                     },
-                ] as any,
-            })
+                ],
+            } as any)
 
             const {result} = renderUseAiAgentTypeForAccount()
             expect(result.current).toEqual({

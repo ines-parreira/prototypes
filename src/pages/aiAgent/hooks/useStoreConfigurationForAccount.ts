@@ -1,6 +1,7 @@
 import {useMemo} from 'react'
 
 import {useGetStoresConfigurationForAccount} from 'models/aiAgent/queries'
+import {StoreConfiguration} from 'models/aiAgent/types'
 
 export const useStoreConfigurationForAccount = ({
     accountDomain,
@@ -26,10 +27,17 @@ export const useStoreConfigurationForAccount = ({
     )
 
     const storeConfigurations = useMemo(() => {
-        return storeConfigurationResponses?.map(
-            (storeConfigurationResponse) =>
-                storeConfigurationResponse.data.storeConfiguration
-        )
+        return storeConfigurationResponses
+            ?.map(
+                (storeConfigurationResponse) =>
+                    storeConfigurationResponse.data?.storeConfiguration
+            )
+            .filter(
+                (
+                    storeConfiguration
+                ): storeConfiguration is StoreConfiguration =>
+                    !!storeConfiguration
+            )
     }, [storeConfigurationResponses])
 
     return {

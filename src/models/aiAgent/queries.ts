@@ -1,5 +1,6 @@
 import {UseQueryOptions, useMutation, useQuery} from '@tanstack/react-query'
 
+import {AxiosError, AxiosResponse} from 'axios'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -33,6 +34,7 @@ import {
     GetPlaygroundExecutionsParams,
     GetStoreConfigurationForAccountParams,
     GetStoreConfigurationParams,
+    StoreConfigurationResponse,
 } from './types'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
@@ -104,17 +106,24 @@ export const useGetStoreConfigurationPure = (
 export const useGetStoresConfigurationForAccount = (
     params: GetStoreConfigurationForAccountParams,
     overrides?: UseQueryOptions<
-        Awaited<ReturnType<typeof getStoreConfiguration>>[]
+        AxiosResponse<StoreConfigurationResponse | undefined>[]
     >
 ) => {
     const queryFn = () => {
         const getAllStoreConfigurationPromise: Promise<
-            Awaited<ReturnType<typeof getStoreConfiguration>>
+            AxiosResponse<StoreConfigurationResponse | undefined>
         >[] = []
 
         for (const storeName of params.storesName) {
             getAllStoreConfigurationPromise.push(
-                getStoreConfiguration({...params, storeName})
+                getStoreConfiguration({...params, storeName}).catch(
+                    (e: AxiosError) => {
+                        if (e.status === 404) {
+                            return e.response as AxiosResponse<undefined>
+                        }
+                        throw e
+                    }
+                )
             )
         }
 

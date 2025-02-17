@@ -158,9 +158,11 @@ describe('queries', () => {
 
     describe('useGetStoresConfigurationForAccount', () => {
         const accountDomain = 'test-account'
-        const storeName = 'test-store'
+        const storeName = 'test-store-1'
+        const mockData = getStoreConfigurationFixture({
+            storeName,
+        })
 
-        const mockData = getStoreConfigurationFixture({storeName})
         const overrides = {staleTime: 2000}
         it('should call useQuery with the correct parameters', async () => {
             mockGetStoreConfiguration.mockResolvedValue({
@@ -205,6 +207,115 @@ describe('queries', () => {
                     status: 200,
                 },
             ])
+        })
+        it('should filter out all 404 storeConfigurations', async () => {
+            const mockData = {
+                store1: getStoreConfigurationFixture({storeName: 'store1'}),
+                store2: getStoreConfigurationFixture({storeName: 'store2'}),
+                store4: getStoreConfigurationFixture({storeName: 'store4'}),
+            }
+            mockGetStoreConfiguration.mockImplementation(({storeName}) => {
+                if (storeName === 'should-404') {
+                    return Promise.reject({status: 404})
+                }
+
+                return Promise.resolve({
+                    data: {
+                        storeConfiguration:
+                            mockData[storeName as keyof typeof mockData],
+                    },
+                    status: 200,
+                }) as ReturnType<typeof getStoreConfiguration>
+            })
+
+            renderHook(
+                () =>
+                    useGetStoresConfigurationForAccount(
+                        {
+                            accountDomain,
+                            storesName: [
+                                'store1',
+                                'store2',
+                                'should-404',
+                                'store4',
+                            ],
+                            withWizard: true,
+                        },
+                        overrides
+                    ),
+                {wrapper}
+            )
+
+            expect(useQuerySpy).toHaveBeenCalledWith({
+                queryKey: [
+                    'aiAgentStoreConfigurations',
+                    'account',
+                    {
+                        accountDomain,
+                        storesName: [
+                            'store1',
+                            'store2',
+                            'should-404',
+                            'store4',
+                        ],
+                        withWizard: true,
+                    },
+                ],
+                queryFn: expect.any(Function),
+                staleTime: 2000,
+                cacheTime: CACHE_TIME_MS,
+                enabled: true,
+            })
+
+            const queryFn = (
+                useQuerySpy.mock.calls[0][0] as unknown as {
+                    queryFn: () => any
+                }
+            ).queryFn
+
+            await expect(queryFn()).resolves.toEqual([
+                {
+                    data: {storeConfiguration: mockData.store1},
+                    status: 200,
+                },
+                {
+                    data: {storeConfiguration: mockData.store2},
+                    status: 200,
+                },
+                undefined,
+                {
+                    data: {storeConfiguration: mockData.store4},
+                    status: 200,
+                },
+            ])
+        })
+        it('should throw any other error than 404', async () => {
+            mockGetStoreConfiguration.mockImplementation(() => {
+                return Promise.reject({status: 500})
+            })
+
+            renderHook(
+                () =>
+                    useGetStoresConfigurationForAccount(
+                        {
+                            accountDomain,
+                            storesName: ['storeFail'],
+                            withWizard: true,
+                        },
+                        overrides
+                    ),
+                {wrapper}
+            )
+
+            const queryFn = (
+                useQuerySpy.mock.calls[0][0] as unknown as {
+                    queryFn: () => any
+                }
+            ).queryFn
+
+            await expect(queryFn()).rejects.toEqual({
+                status: 500,
+            })
         })
     })
 
