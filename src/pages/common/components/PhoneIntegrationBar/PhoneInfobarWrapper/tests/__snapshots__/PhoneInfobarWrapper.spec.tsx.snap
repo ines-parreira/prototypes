@@ -3,7 +3,7 @@
 exports[`<PhoneInfobarWrapper/> should render 1`] = `
 <div
   class="container"
-  style="width: 350px;"
+  style="width: 349px;"
 >
   <div
     class="inner"
@@ -16,7 +16,7 @@ exports[`<PhoneInfobarWrapper/> should render 1`] = `
 exports[`<PhoneInfobarWrapper/> should render as primary 1`] = `
 <div
   class="container primary"
-  style="width: 350px;"
+  style="width: 349px;"
 >
   <div
     class="inner"
@@ -29,7 +29,7 @@ exports[`<PhoneInfobarWrapper/> should render as primary 1`] = `
 exports[`<PhoneInfobarWrapper/> should render with current infobar size 1`] = `
 <div
   class="container"
-  style="width: 500px;"
+  style="width: 509px;"
 >
   <div
     class="inner"

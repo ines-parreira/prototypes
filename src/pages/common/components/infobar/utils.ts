@@ -9,7 +9,6 @@ import _isBoolean from 'lodash/isBoolean'
 import _isObject from 'lodash/isObject'
 import _isString from 'lodash/isString'
 import _last from 'lodash/last'
-import _max from 'lodash/max'
 import _omitBy from 'lodash/omitBy'
 import _pickBy from 'lodash/pickBy'
 import _size from 'lodash/size'
@@ -574,12 +573,4 @@ export function getDisplayCustomerLastSeenOnChat(
         : customerLastSeenOnChatUtcDateTime.calendar(referenceDay, {
               lastWeek: 'dddd',
           })
-}
-
-export function getInfobarMinWidth() {
-    return _max([window.innerWidth / 5.1, 350])
-}
-
-export function getInfobarWidth() {
-    return window.localStorage.getItem('infobar-width')
 }

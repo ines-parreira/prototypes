@@ -1,15 +1,25 @@
 import classnames from 'classnames'
 import React, {ReactNode} from 'react'
+import type {ComponentType} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
-import {clamp} from 'core/layout/panels'
+import {clamp, useSavedSizes} from 'core/layout/panels'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
-import {tryLocalStorage} from 'services/common/utils'
 import * as layoutSelectors from 'state/layout/selectors'
 import {RootState} from 'state/types'
 
 import css from './Infobar.less'
-import {getInfobarMinWidth, getInfobarWidth} from './utils'
+
+export const DEFAULT_WIDTH = 340
+export const MIN_WIDTH = 340
+export const MAX_WIDTH = 0.33
+
+type UseSavedSizesReturn = ReturnType<typeof useSavedSizes>
+
+type SavedSizesProps = {
+    savedSizes: UseSavedSizesReturn[0]
+    persistSizes: UseSavedSizesReturn[1]
+}
 
 type Props = {
     children?: ReactNode
@@ -18,37 +28,39 @@ type Props = {
 } & ConnectedProps<typeof connector>
 
 type State = {
-    width: Maybe<number | string>
+    width: number
 }
 
-export class InfobarLayout extends React.Component<Props, State> {
+export class InfobarLayout extends React.Component<
+    Props & SavedSizesProps,
+    State
+> {
     private cursorX: number | null
     private originalWidth: number
-    private readonly minWidth: number
     private readonly maxWidth: number
     private readonly classHandle: string
     private readonly classActive: string
 
     containerRef: Maybe<HTMLDivElement>
 
-    constructor(props: Props) {
+    constructor(props: Props & SavedSizesProps) {
         super(props)
+
+        const {savedSizes} = props
 
         this.cursorX = null
         this.originalWidth = 0
-        this.minWidth = getInfobarMinWidth() as number
         this.maxWidth = clamp(
-            Math.round(window.innerWidth * 0.33),
-            this.minWidth,
+            Math.round(window.innerWidth * MAX_WIDTH),
+            MIN_WIDTH,
             Infinity
         )
         this.classHandle = 'infobar-drag-handle'
         this.classActive = 'infobar-drag-active'
 
-        const storedWidth = getInfobarWidth()
         const width = clamp(
-            storedWidth ? parseInt(storedWidth, 10) : this.minWidth,
-            this.minWidth,
+            savedSizes.current.infobar || DEFAULT_WIDTH,
+            MIN_WIDTH,
             this.maxWidth
         )
         this.state = {width}
@@ -91,13 +103,7 @@ export class InfobarLayout extends React.Component<Props, State> {
     dragStop = () => {
         this.cursorX = null
         document.body.classList.remove(this.classActive)
-
-        tryLocalStorage(() =>
-            window.localStorage.setItem(
-                'infobar-width',
-                this.state.width as string
-            )
-        )
+        this.props.persistSizes({infobar: this.state.width})
     }
 
     drag = (e: MouseEvent) => {
@@ -105,7 +111,7 @@ export class InfobarLayout extends React.Component<Props, State> {
 
         const nextWidth = clamp(
             this.originalWidth + this.cursorX - e.clientX,
-            this.minWidth,
+            MIN_WIDTH,
             this.maxWidth
         )
 
@@ -114,7 +120,7 @@ export class InfobarLayout extends React.Component<Props, State> {
 
     render() {
         const style = {
-            width: `${this.state.width!}px`,
+            width: `${this.state.width}px`,
         }
 
         return (
@@ -143,4 +149,19 @@ const connector = connect((state: RootState) => ({
     isOpenedPanel: layoutSelectors.isOpenedPanel('infobar')(state),
 }))
 
-export default connector(InfobarLayout)
+function withSavedSizes<T extends object>(
+    Component: ComponentType<T & SavedSizesProps>
+) {
+    return (props: T) => {
+        const [savedSizes, persistSizes] = useSavedSizes()
+        return (
+            <Component
+                {...props}
+                savedSizes={savedSizes}
+                persistSizes={persistSizes}
+            />
+        )
+    }
+}
+
+export default connector(withSavedSizes(InfobarLayout))

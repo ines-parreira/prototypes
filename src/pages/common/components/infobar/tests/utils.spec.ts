@@ -585,28 +585,6 @@ describe('widgets infobar utils', () => {
         )
     })
 
-    describe('getInfobarMinWidth()', () => {
-        it('should return calculated width because it is larger than the limit', () => {
-            global.innerWidth = 1800
-            const expected = global.innerWidth / 5.1
-            expect(utils.getInfobarMinWidth()).toBe(expected)
-        })
-
-        it('should return limit because the calculated width is smaller than the limit', () => {
-            global.innerWidth = 1700
-            const expected = 350
-            expect(utils.getInfobarMinWidth()).toBe(expected)
-        })
-    })
-
-    describe('getInfobarWidth()', () => {
-        it('should return store infobar width', () => {
-            const expected = '500'
-            window.localStorage.setItem('infobar-width', expected)
-            expect(utils.getInfobarWidth()).toBe(expected)
-        })
-    })
-
     describe('jsonToWidgets()', () => {
         it('should convert json to widgets', () => {
             expect(

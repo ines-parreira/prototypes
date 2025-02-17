@@ -21,7 +21,7 @@ describe('<PhoneInfobarWrapper/>', () => {
     })
 
     it('should render with current infobar size', () => {
-        window.localStorage.setItem('infobar-width', '500')
+        window.localStorage.setItem('panel-sizes', '{"infobar":500}')
 
         const {container} = render(
             <PhoneInfobarWrapper>Foo...</PhoneInfobarWrapper>

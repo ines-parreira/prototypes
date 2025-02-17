@@ -1,7 +1,8 @@
 import classnames from 'classnames'
 import React from 'react'
 
-import {getInfobarMinWidth, getInfobarWidth} from '../../infobar/utils'
+import {useSavedSizes} from 'core/layout/panels'
+import {DEFAULT_WIDTH} from 'pages/common/components/infobar/InfobarLayout'
 
 import css from './PhoneInfobarWrapper.less'
 
@@ -14,7 +15,8 @@ export default function PhoneInfobarWrapper({
     primary,
     children,
 }: Props): JSX.Element {
-    const width = (getInfobarWidth() || getInfobarMinWidth()) as number
+    const [savedSizes] = useSavedSizes()
+    const width = (savedSizes.current.infobar || DEFAULT_WIDTH) + 9
 
     return (
         <div
