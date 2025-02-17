@@ -23,6 +23,8 @@ export const useCsat = (filters: StatsFilters, timezone: string): KpiMetric => {
         hint: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
         metricType: StatType.Number,
         isLoading: result.isFetching,
-        ...result.data?.[TicketSatisfactionSurveyMeasure.AvgSurveyScore],
+        // Explicitly omit prevValue because we don't want to show the trend for this KPI
+        value: result.data?.[TicketSatisfactionSurveyMeasure.AvgSurveyScore]
+            .value,
     }
 }

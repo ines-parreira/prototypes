@@ -36,7 +36,6 @@ describe('useCsat', () => {
             hint: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
             metricType: StatType.Number,
             value: 3.1,
-            prevValue: 3.5,
             isLoading: false,
         })
     })
