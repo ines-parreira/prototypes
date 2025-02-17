@@ -70,10 +70,15 @@
         @media @tablets-up {
             border-radius: @layout-spacing-m;
             display: flex;
-            background: linear-gradient(
-                165.76deg,
-                #eeeeee 30.85%,
-                #c34ced 145.54%
+
+            border-radius: var(--Main-M, 24px);
+            background: var(
+                --linear-grey-magenta,
+                linear-gradient(
+                    166deg,
+                    var(--neutral-grey-2) 30.85%,
+                    var(--accessory-magenta-25) 145.54%
+                )
             );
             height: 100%;
             width: 100%;
@@ -95,6 +100,7 @@
     }
 
     .caption {
+        color: var(--neutral-grey-6);
         @media @tablets-up {
             margin-bottom: @layout-spacing-m;
             width: 50%;

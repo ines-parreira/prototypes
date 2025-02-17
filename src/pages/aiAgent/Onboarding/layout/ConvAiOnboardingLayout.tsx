@@ -1,16 +1,10 @@
 import React, {ReactNode} from 'react'
 
-import gorgiasLogoExtended from 'assets/img/gorgias-logo-extended.svg'
 import OnboardingProgressTracker from 'pages/aiAgent/Onboarding/components/common/OnboardingProgressTracker/OnboardingProgressTracker'
+import GorgiasLogoExtendedIcon from 'pages/aiAgent/Onboarding/layout/GorgiasLogoExtended'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import css from './ConvAiOnboardingLayout.less'
-
-const GorgiasBrand: React.FC = () => {
-    return (
-        <img src={gorgiasLogoExtended} alt="Gorgias" width="100" height="26" />
-    )
-}
 
 const CloseButton: React.FC<{onClose: () => void}> = ({onClose}) => {
     return (
@@ -30,7 +24,7 @@ export const OnboardingHeader: React.FC<{onClose: () => void}> = ({
 }) => {
     return (
         <div className={css.onboardingHeader}>
-            <GorgiasBrand />
+            <GorgiasLogoExtendedIcon />
             <CloseButton onClose={onClose} />
         </div>
     )

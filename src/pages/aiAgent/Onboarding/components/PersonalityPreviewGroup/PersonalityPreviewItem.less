@@ -22,14 +22,6 @@
     }
 }
 
-// TODO: remove this when the color will be available
-:root {
-    --accessory-magenta-25: #c34ced;
-    --accessory-magenta-25-h: 284;
-    --accessory-magenta-25-s: 82%;
-    --accessory-magenta-25-l: 61%;
-}
-
 :local {
     .card {
         // Proposed changes for animation on hovering cards
@@ -52,10 +44,7 @@
         display: flex;
         color: var(--neutral-grey-6);
 
-        p {
-            margin-bottom: 0;
-        }
-
+        p,
         h3 {
             margin-bottom: 0;
         }
@@ -82,16 +71,25 @@
     }
 
     .selected {
-        background: linear-gradient(304.33deg, #ffffff 17.85%, #f5d4ff 127.59%);
-        background-repeat: no-repeat;
+        background: var(
+            --linear-magenta-white,
+            linear-gradient(
+                296deg,
+                var(--neutral-grey-0) 12.18%,
+                var(--accessory-magenta-2) 81.98%
+            )
+        );
+        border: 1px solid var(--accessory-magenta-25);
+        box-shadow: 0px 2px 4px 0px rgba(22, 22, 22, 0.16);
 
         :global {
             animation: aiAgentOnboardingPersonalityPreviewItemBorder 150ms
                 ease-in-out forwards;
         }
 
+        p,
         h3 {
-            color: var(--accessory-magenta-3);
+            color: var(--neutral-grey-6);
         }
     }
 }
