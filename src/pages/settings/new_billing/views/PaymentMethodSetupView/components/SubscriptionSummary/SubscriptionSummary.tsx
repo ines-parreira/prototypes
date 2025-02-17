@@ -54,12 +54,12 @@ export function SubscriptionSummary<TFields extends FieldValues>({
         voiceAvailablePlans,
         anyDowngradedPlanSelected,
         totalProductAmount,
-        interval,
+        cadence,
         isSubscriptionCanceled,
         selectedPlans: selectedPlansFromState,
     } = useBillingPlans({
         dispatchBillingError,
-        filterByInterval: true,
+        filterByCadence: true,
     })
 
     const handleUpdateSubscription =
@@ -86,35 +86,35 @@ export function SubscriptionSummary<TFields extends FieldValues>({
                 </div>
                 <SummaryItem
                     productType={ProductType.Helpdesk}
-                    interval={interval}
+                    cadence={cadence}
                     currentPlan={currentHelpdeskPlan}
                     availablePlans={helpdeskAvailablePlans}
                     selectedPlans={selectedPlans}
                 />
                 <SummaryItem
                     productType={ProductType.Automation}
-                    interval={interval}
+                    cadence={cadence}
                     currentPlan={currentAutomatePlan}
                     availablePlans={automateAvailablePlans}
                     selectedPlans={selectedPlans}
                 />
                 <SummaryItem
                     productType={ProductType.Voice}
-                    interval={interval}
+                    cadence={cadence}
                     currentPlan={currentVoicePlan}
                     availablePlans={voiceAvailablePlans}
                     selectedPlans={selectedPlans}
                 />
                 <SummaryItem
                     productType={ProductType.SMS}
-                    interval={interval}
+                    cadence={cadence}
                     currentPlan={currentSmsPlan}
                     availablePlans={smsAvailablePlans}
                     selectedPlans={selectedPlans}
                 />
                 <SummaryItem
                     productType={ProductType.Convert}
-                    interval={interval}
+                    cadence={cadence}
                     currentPlan={currentConvertPlan}
                     availablePlans={convertAvailablePlans}
                     selectedPlans={selectedPlans}
@@ -122,7 +122,7 @@ export function SubscriptionSummary<TFields extends FieldValues>({
                 <SummaryTotal
                     selectedPlans={selectedPlans}
                     totalProductAmount={totalProductAmount}
-                    interval={interval}
+                    cadence={cadence}
                     currency={helpdeskAvailablePlans?.[0].currency}
                 />
             </div>

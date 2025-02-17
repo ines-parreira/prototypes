@@ -2,12 +2,12 @@ import React, {useCallback, useEffect, useState} from 'react'
 
 import {useHistory} from 'react-router-dom'
 
-import {PlanInterval, ProductType} from 'models/billing/types'
+import {Cadence, ProductType} from 'models/billing/types'
 import Alert from 'pages/common/components/Alert/Alert'
 
 import {NewSummaryPaymentSection} from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import {useIsPaymentEnabled} from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
-import {getCorrespondingPlanAtInterval} from 'pages/settings/new_billing/utils/getCorrespondingPlanAtInterval'
+import {getCorrespondingPlanAtCadence} from 'pages/settings/new_billing/utils/getCorrespondingPlanAtCadence'
 import {TicketPurpose} from 'state/billing/types'
 
 import BackLink from '../../components/BackLink/BackLink'
@@ -47,7 +47,7 @@ const BillingFrequencyView = ({
         voiceAvailablePlans,
         smsAvailablePlans,
         convertAvailablePlans,
-        interval,
+        cadence,
         selectedPlans,
         setSelectedPlans,
         totalProductAmount,
@@ -62,52 +62,51 @@ const BillingFrequencyView = ({
 
     const [showAlert, setShowAlert] = useState(true)
 
-    const [selectedInterval, setSelectedInterval] =
-        useState<PlanInterval>(interval)
+    const [selectedCadence, setSelectedCadence] = useState<Cadence>(cadence)
 
     const onFrequencySelect = useCallback(
-        (interval: PlanInterval) => {
-            setSelectedInterval(interval)
+        (cadence: Cadence) => {
+            setSelectedCadence(cadence)
 
             setSelectedPlans((prev) => ({
                 ...prev,
                 [ProductType.Helpdesk]: {
                     ...prev[ProductType.Helpdesk],
-                    plan: getCorrespondingPlanAtInterval({
+                    plan: getCorrespondingPlanAtCadence({
                         availablePlans: helpdeskAvailablePlans,
-                        interval: interval,
+                        cadence: cadence,
                         currentPlan: currentHelpdeskPlan,
                     }),
                 },
                 [ProductType.Automation]: {
                     ...prev[ProductType.Automation],
-                    plan: getCorrespondingPlanAtInterval({
+                    plan: getCorrespondingPlanAtCadence({
                         availablePlans: automateAvailablePlans,
-                        interval: interval,
+                        cadence: cadence,
                         currentPlan: currentAutomatePlan,
                     }),
                 },
                 [ProductType.Voice]: {
                     ...prev[ProductType.Voice],
-                    plan: getCorrespondingPlanAtInterval({
+                    plan: getCorrespondingPlanAtCadence({
                         availablePlans: voiceAvailablePlans ?? [],
-                        interval: interval,
+                        cadence: cadence,
                         currentPlan: currentVoicePlan,
                     }),
                 },
                 [ProductType.SMS]: {
                     ...prev[ProductType.SMS],
-                    plan: getCorrespondingPlanAtInterval({
+                    plan: getCorrespondingPlanAtCadence({
                         availablePlans: smsAvailablePlans ?? [],
-                        interval: interval,
+                        cadence: cadence,
                         currentPlan: currentSmsPlan,
                     }),
                 },
                 [ProductType.Convert]: {
                     ...prev[ProductType.Convert],
-                    plan: getCorrespondingPlanAtInterval({
+                    plan: getCorrespondingPlanAtCadence({
                         availablePlans: convertAvailablePlans ?? [],
-                        interval: interval,
+                        cadence: cadence,
                         currentPlan: currentConvertPlan,
                     }),
                 },
@@ -118,7 +117,7 @@ const BillingFrequencyView = ({
             currentAutomatePlan,
             helpdeskAvailablePlans,
             currentHelpdeskPlan,
-            setSelectedInterval,
+            setSelectedCadence,
             setSelectedPlans,
             smsAvailablePlans,
             currentSmsPlan,
@@ -131,10 +130,10 @@ const BillingFrequencyView = ({
 
     // redirect to the main page if yearly frequency is selected or subscription is canceled
     useEffect(() => {
-        if (interval === PlanInterval.Year || isCurrentSubscriptionCanceled) {
+        if (cadence === Cadence.Year || isCurrentSubscriptionCanceled) {
             history.push(BILLING_PAYMENT_PATH)
         }
-    }, [interval, isCurrentSubscriptionCanceled, history])
+    }, [cadence, isCurrentSubscriptionCanceled, history])
 
     return (
         <div className={css.container}>
@@ -154,8 +153,8 @@ const BillingFrequencyView = ({
                     }}
                 >
                     <BillingFrequency
-                        selectedInterval={selectedInterval}
-                        onFrequencySelect={onFrequencySelect}
+                        selectedCadence={selectedCadence}
+                        onCadenceSelect={onFrequencySelect}
                     />
                 </Card>
                 <Card title="Summary">
@@ -166,7 +165,7 @@ const BillingFrequencyView = ({
                         </div>
                         <SummaryItem
                             productType={ProductType.Helpdesk}
-                            interval={selectedInterval}
+                            cadence={selectedCadence}
                             currentPlan={currentHelpdeskPlan}
                             availablePlans={helpdeskAvailablePlans}
                             selectedPlans={selectedPlans}
@@ -174,7 +173,7 @@ const BillingFrequencyView = ({
                         />
                         <SummaryItem
                             productType={ProductType.Automation}
-                            interval={selectedInterval}
+                            cadence={selectedCadence}
                             currentPlan={currentAutomatePlan}
                             availablePlans={automateAvailablePlans}
                             selectedPlans={selectedPlans}
@@ -182,7 +181,7 @@ const BillingFrequencyView = ({
                         />
                         <SummaryItem
                             productType={ProductType.Voice}
-                            interval={selectedInterval}
+                            cadence={selectedCadence}
                             currentPlan={currentVoicePlan}
                             availablePlans={voiceAvailablePlans}
                             selectedPlans={selectedPlans}
@@ -190,7 +189,7 @@ const BillingFrequencyView = ({
                         />
                         <SummaryItem
                             productType={ProductType.SMS}
-                            interval={selectedInterval}
+                            cadence={selectedCadence}
                             currentPlan={currentSmsPlan}
                             availablePlans={smsAvailablePlans}
                             selectedPlans={selectedPlans}
@@ -198,7 +197,7 @@ const BillingFrequencyView = ({
                         />
                         <SummaryItem
                             productType={ProductType.Convert}
-                            interval={selectedInterval}
+                            cadence={selectedCadence}
                             currentPlan={currentConvertPlan}
                             availablePlans={convertAvailablePlans}
                             selectedPlans={selectedPlans}
@@ -207,7 +206,7 @@ const BillingFrequencyView = ({
                         <SummaryTotal
                             selectedPlans={selectedPlans}
                             totalProductAmount={totalProductAmount}
-                            interval={selectedInterval}
+                            cadence={selectedCadence}
                             currency={helpdeskAvailablePlans?.[0].currency}
                             isFrequencyChanged={true}
                         />

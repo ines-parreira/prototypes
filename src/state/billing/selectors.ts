@@ -238,7 +238,7 @@ export const getCurrentHelpdeskPlanName = createSelector(
     (currentHelpdeskPlan) => currentHelpdeskPlan?.name
 )
 
-export const getCurrentHelpdeskInterval = createSelector(
+export const getCurrentHelpdeskCadence = createSelector(
     getCurrentHelpdeskPlan,
     (currentHelpdeskPlan) => currentHelpdeskPlan?.cadence
 )
@@ -343,20 +343,20 @@ export const getCurrentProductsUsage = createSelector(
 
 export const getCheapestSMSPrice = createSelector(
     getAvailableSmsPlans,
-    getCurrentHelpdeskInterval,
-    (smsPlans, interval) => getCheapestPrice(smsPlans, interval)
+    getCurrentHelpdeskCadence,
+    (smsPlans, cadence) => getCheapestPrice(smsPlans, cadence)
 )
 
 export const getCheapestVoicePrice = createSelector(
     getAvailableVoicePlans,
-    getCurrentHelpdeskInterval,
-    (voicePlans, interval) => getCheapestPrice(voicePlans, interval)
+    getCurrentHelpdeskCadence,
+    (voicePlans, cadence) => getCheapestPrice(voicePlans, cadence)
 )
 
 export const getCheapestConvertPrice = createSelector(
     getAvailableConvertPlans,
-    getCurrentHelpdeskInterval,
-    (convertPlans, interval) => getCheapestPrice(convertPlans, interval)
+    getCurrentHelpdeskCadence,
+    (convertPlans, cadence) => getCheapestPrice(convertPlans, cadence)
 )
 
 export const getCheapestProductPrices = createSelector(
@@ -365,21 +365,21 @@ export const getCheapestProductPrices = createSelector(
     getAvailableVoicePlans,
     getAvailableSmsPlans,
     getAvailableConvertPlans,
-    getCurrentHelpdeskInterval,
+    getCurrentHelpdeskCadence,
     (
         helpDeskPlans,
         automationPlans,
         voicePlans,
         smsPlans,
         convertPlans,
-        interval
+        cadence
     ) => {
         return {
-            helpdesk: getCheapestPrice(helpDeskPlans, interval),
-            automation: getCheapestPrice(automationPlans, interval),
-            voice: getCheapestPrice(voicePlans, interval),
-            sms: getCheapestPrice(smsPlans, interval),
-            convert: getCheapestPrice(convertPlans, interval),
+            helpdesk: getCheapestPrice(helpDeskPlans, cadence),
+            automation: getCheapestPrice(automationPlans, cadence),
+            voice: getCheapestPrice(voicePlans, cadence),
+            sms: getCheapestPrice(smsPlans, cadence),
+            convert: getCheapestPrice(convertPlans, cadence),
         }
     }
 )

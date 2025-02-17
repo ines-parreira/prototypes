@@ -8,7 +8,7 @@ import {
     smsPlan0,
     voicePlan0,
 } from 'fixtures/productPrices'
-import {PlanInterval, ProductType} from 'models/billing/types'
+import {Cadence, ProductType} from 'models/billing/types'
 import {assumeMock} from 'utils/testing'
 
 import {HELPDESK_CANCELLATION_SCENARIO} from '../../scenarios'
@@ -35,35 +35,35 @@ describe('CancellationSummary', () => {
             num_quota_tickets: 100,
             amount: 100000,
             currency: 'USD',
-            cadence: PlanInterval.Year,
+            cadence: Cadence.Year,
         },
         [ProductType.Automation]: {
             ...proYearlyAutomationPlan,
             num_quota_tickets: 100,
             amount: 100000,
             currency: 'USD',
-            cadence: PlanInterval.Year,
+            cadence: Cadence.Year,
         },
         [ProductType.SMS]: {
             ...smsPlan0,
             num_quota_tickets: 100,
             amount: 100000,
             currency: 'USD',
-            cadence: PlanInterval.Year,
+            cadence: Cadence.Year,
         },
         [ProductType.Voice]: {
             ...voicePlan0,
             num_quota_tickets: 100,
             amount: 100000,
             currency: 'USD',
-            cadence: PlanInterval.Year,
+            cadence: Cadence.Year,
         },
         [ProductType.Convert]: {
             ...convertPlan0,
             num_quota_tickets: 100,
             amount: 100000,
             currency: 'USD',
-            cadence: PlanInterval.Year,
+            cadence: Cadence.Year,
         },
     }
 
@@ -84,7 +84,7 @@ describe('CancellationSummary', () => {
                     {
                         title: 'Helpdesk',
                         label: 'Pro - ',
-                        interval: 'year',
+                        cadence: 'year',
                         quotaAmount: 100,
                         counter: 'tickets',
                         amount: '$1,000',
@@ -93,7 +93,7 @@ describe('CancellationSummary', () => {
                     {
                         title: 'Automate',
                         label: null,
-                        interval: 'year',
+                        cadence: 'year',
                         quotaAmount: 100,
                         counter: 'automated interactions',
                         amount: '$1,000',
@@ -102,7 +102,7 @@ describe('CancellationSummary', () => {
                     {
                         title: 'SMS',
                         label: null,
-                        interval: 'year',
+                        cadence: 'year',
                         quotaAmount: 100,
                         counter: 'SMS tickets',
                         amount: '$1,000',
@@ -111,7 +111,7 @@ describe('CancellationSummary', () => {
                     {
                         title: 'Voice',
                         label: null,
-                        interval: 'year',
+                        cadence: 'year',
                         quotaAmount: 100,
                         counter: 'voice tickets',
                         amount: '$1,000',
@@ -120,14 +120,14 @@ describe('CancellationSummary', () => {
                     {
                         title: 'Convert',
                         label: null,
-                        interval: 'year',
+                        cadence: 'year',
                         quotaAmount: 100,
                         counter: 'clicks',
                         amount: '$1,000',
                         strickenOut: true,
                     },
                 ],
-                interval: 'year',
+                cadence: 'year',
                 total: 0,
             },
             {}
@@ -160,7 +160,7 @@ describe('CancellationSummary', () => {
                     {
                         title: 'Helpdesk',
                         label: 'Pro - ',
-                        interval: 'year',
+                        cadence: 'year',
                         quotaAmount: 100,
                         counter: 'tickets',
                         amount: '$1,000',
@@ -169,7 +169,7 @@ describe('CancellationSummary', () => {
                     {
                         title: 'Automate',
                         label: null,
-                        interval: 'year',
+                        cadence: 'year',
                         quotaAmount: 100,
                         counter: 'automated interactions',
                         amount: '$1,000',
@@ -178,7 +178,7 @@ describe('CancellationSummary', () => {
                     {
                         title: 'SMS',
                         label: null,
-                        interval: 'year',
+                        cadence: 'year',
                         quotaAmount: 100,
                         counter: 'SMS tickets',
                         amount: '$1,000',
@@ -187,7 +187,7 @@ describe('CancellationSummary', () => {
                     {
                         title: 'Convert',
                         label: null,
-                        interval: 'year',
+                        cadence: 'year',
                         quotaAmount: 100,
                         counter: 'clicks',
                         amount: '$1,000',
@@ -196,14 +196,14 @@ describe('CancellationSummary', () => {
                     {
                         title: 'Voice',
                         label: null,
-                        interval: 'year',
+                        cadence: 'year',
                         quotaAmount: 100,
                         counter: 'voice tickets',
                         amount: '$1,000',
                         strickenOut: true,
                     },
                 ],
-                interval: 'year',
+                cadence: 'year',
                 total: 4000,
             },
             {}
@@ -245,7 +245,7 @@ describe('CancellationSummary', () => {
                     {
                         title: 'Helpdesk',
                         label: 'Pro - ',
-                        interval: 'year',
+                        cadence: 'year',
                         quotaAmount: 100,
                         counter: 'tickets',
                         amount: '$1,000',
@@ -254,14 +254,14 @@ describe('CancellationSummary', () => {
                     {
                         title: 'Automate',
                         label: null,
-                        interval: 'year',
+                        cadence: 'year',
                         quotaAmount: 100,
                         counter: 'automated interactions',
                         amount: '$1,000',
                         strickenOut: true,
                     },
                 ],
-                interval: 'year',
+                cadence: 'year',
                 total: 0,
             },
             {}

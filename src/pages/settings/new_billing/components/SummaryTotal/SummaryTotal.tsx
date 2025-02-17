@@ -2,7 +2,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {CouponSummary, Plan, PlanInterval} from 'models/billing/types'
+import {CouponSummary, Plan, Cadence} from 'models/billing/types'
 
 import {useBillingStateWithSideEffects} from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
 
@@ -17,7 +17,7 @@ export type SummaryTotalProps = {
     selectedPlans: SelectedPlans
     totalProductAmount: number
     prices?: Plan[]
-    interval?: PlanInterval
+    cadence?: Cadence
     currency: string
     isFrequencyChanged?: boolean
 }
@@ -25,7 +25,7 @@ export type SummaryTotalProps = {
 const SummaryTotal = ({
     selectedPlans,
     totalProductAmount,
-    interval = PlanInterval.Month,
+    cadence = Cadence.Month,
     currency,
     isFrequencyChanged = false,
 }: SummaryTotalProps) => {
@@ -61,7 +61,7 @@ const SummaryTotal = ({
                     totalWithoutDiscounts={totalWithoutDiscounts}
                     discountAmount={discountAmount}
                     currency={currency}
-                    interval={interval}
+                    cadence={cadence}
                 ></SummaryTotalWithDiscounts>
             ) : (
                 <div className={css.total}>
@@ -78,7 +78,7 @@ const SummaryTotal = ({
                         <span aria-label="Total price">
                             {formatAmount(amountSelectedPlans / 100, currency)}
                         </span>
-                        /{interval}
+                        /{cadence}
                     </div>
                 </div>
             )}

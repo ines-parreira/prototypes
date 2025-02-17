@@ -10,7 +10,7 @@ import {
     useTicketHandleTimeTrend,
 } from 'hooks/reporting/metricTrends'
 import useAppSelector from 'hooks/useAppSelector'
-import {PlanInterval} from 'models/billing/types'
+import {Cadence} from 'models/billing/types'
 import {useGetCostPerAutomatedInteraction} from 'pages/automate/common/hooks/useGetCostPerAutomatedInteraction'
 import {useGetCostPerBillableTicket} from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
 import InputField from 'pages/common/forms/input/InputField'
@@ -209,7 +209,7 @@ const ROICalculator = () => {
         setNumberOfTickets(numberOfTickets)
 
         const availableAutomateMonthlyPlans = availableAutomatePlans.filter(
-            (plan) => plan.cadence === PlanInterval.Month
+            (plan) => plan.cadence === Cadence.Month
         )
 
         const automateSubscriptionPrice = getAutomateSubscriptionPrice(

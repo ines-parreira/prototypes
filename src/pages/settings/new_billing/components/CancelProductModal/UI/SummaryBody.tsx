@@ -1,5 +1,7 @@
 import React from 'react'
 
+import {Cadence} from 'models/billing/types'
+
 import css from './SummaryBody.less'
 import SummaryLineItem from './SummaryLineItem'
 import SummaryTotal from './SummaryTotal'
@@ -8,9 +10,9 @@ import {SummaryItemData} from './types'
 export type SummaryBodyProps = {
     items: SummaryItemData[]
     total: number
-    interval: string
+    cadence: Cadence
 }
-const SummaryBody = ({items, total, interval}: SummaryBodyProps) => {
+const SummaryBody = ({items, total, cadence}: SummaryBodyProps) => {
     return (
         <div className={css.container}>
             <div>
@@ -25,7 +27,7 @@ const SummaryBody = ({items, total, interval}: SummaryBodyProps) => {
                     />
                 ))}
             </div>
-            <SummaryTotal total={total} interval={interval} />
+            <SummaryTotal total={total} cadence={cadence} />
             <div className={css.taxNotion}>
                 <span>Prices exclusive of sales tax</span>
             </div>

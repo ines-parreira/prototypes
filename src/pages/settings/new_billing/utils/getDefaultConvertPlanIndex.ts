@@ -1,4 +1,4 @@
-import {ConvertPlan, PlanInterval} from 'models/billing/types'
+import {ConvertPlan, Cadence} from 'models/billing/types'
 
 const convertPlansMapping: Record<string, string> = {
     Starter: 'convert-01',
@@ -9,7 +9,7 @@ const convertPlansMapping: Record<string, string> = {
 }
 
 export const getDefaultConvertPlanIndex = (
-    cadence?: PlanInterval,
+    cadence?: Cadence,
     convertAvailablePlans?: ConvertPlan[],
     helpdeskPlanName?: string
 ): number => {

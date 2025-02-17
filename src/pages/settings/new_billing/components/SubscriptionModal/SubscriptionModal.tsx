@@ -15,7 +15,7 @@ import {
 } from 'pages/settings/new_billing/constants'
 import {useCurrentPriceIds} from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import {useUpdateSubscription} from 'pages/settings/new_billing/hooks/useUpdateSubscription'
-import {getCurrentHelpdeskInterval} from 'state/billing/selectors'
+import {getCurrentHelpdeskCadence} from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 
@@ -65,7 +65,7 @@ const SubscriptionModal = ({
     const currentPriceIds = useCurrentPriceIds()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
-    const cadence = useAppSelector(getCurrentHelpdeskInterval)
+    const cadence = useAppSelector(getCurrentHelpdeskCadence)
     const appNode = useAppNode()
 
     const from: string = currentUser.get('email')
@@ -139,7 +139,7 @@ const SubscriptionModal = ({
                         isEnterprisePlan={isEnterprisePlan}
                         availablePlans={availablePlans}
                         tagline={tagline}
-                        interval={cadence}
+                        cadence={cadence}
                         selectedPlan={selectedPlan}
                         setSelectedPlan={setSelectedPlan}
                         setIsSubscriptionEnabled={setIsSubscriptionEnabled}

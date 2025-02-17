@@ -2,7 +2,7 @@ import {render, waitFor} from '@testing-library/react'
 import React from 'react'
 
 import {basicMonthlyAutomationPlan, convertPlan0} from 'fixtures/productPrices'
-import {PlanInterval, ProductType} from 'models/billing/types'
+import {Cadence, ProductType} from 'models/billing/types'
 import CounterText from 'pages/settings/new_billing/components/CounterText/CounterText'
 import {PRODUCT_INFO} from 'pages/settings/new_billing/constants'
 
@@ -11,7 +11,7 @@ describe('CounterText', () => {
         const props = {
             plan: convertPlan0,
             type: ProductType.Convert,
-            interval: PlanInterval.Month,
+            cadence: Cadence.Month,
         }
 
         const {getByText} = render(<CounterText {...props} />)
@@ -22,12 +22,12 @@ describe('CounterText', () => {
 
     it('should render the regular price text', async () => {
         const type = ProductType.Automation
-        const cadence = PlanInterval.Year
+        const cadence = Cadence.Year
 
         const props = {
             plan: basicMonthlyAutomationPlan,
             type: type,
-            interval: cadence,
+            cadence: cadence,
         }
 
         const {getByText} = render(<CounterText {...props} />)

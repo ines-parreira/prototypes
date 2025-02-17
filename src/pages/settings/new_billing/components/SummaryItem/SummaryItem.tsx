@@ -2,7 +2,7 @@ import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {useMemo} from 'react'
 
-import {Plan, PlanInterval, ProductType} from 'models/billing/types'
+import {Plan, Cadence, ProductType} from 'models/billing/types'
 import {
     getOverageUnitPriceFormatted,
     getPlanPrice,
@@ -20,7 +20,7 @@ import css from './SummaryItem.less'
 
 export type SummaryItemProps = {
     productType: ProductType
-    interval?: PlanInterval
+    cadence?: Cadence
     currentPlan?: Plan
     availablePlans?: Plan[]
     selectedPlans: SelectedPlans
@@ -29,7 +29,7 @@ export type SummaryItemProps = {
 
 const SummaryItem = ({
     productType,
-    interval = PlanInterval.Month,
+    cadence = Cadence.Month,
     currentPlan,
     availablePlans = [],
     selectedPlans,
@@ -83,10 +83,10 @@ const SummaryItem = ({
 
         return (
             <>
-                {tickets} {PRODUCT_INFO[productType].counter}/{interval}
+                {tickets} {PRODUCT_INFO[productType].counter}/{cadence}
             </>
         )
-    }, [interval, selectedPlan.plan, tickets, productType])
+    }, [cadence, selectedPlan.plan, tickets, productType])
 
     if (!selectedPlan.isSelected && !currentPlan) {
         return null
@@ -128,7 +128,7 @@ const SummaryItem = ({
                     </>
                 ) : (
                     <>
-                        <span>{formatAmount(price, currency)}</span>/{interval}
+                        <span>{formatAmount(price, currency)}</span>/{cadence}
                     </>
                 )}
                 {selectedPlan.isSelected &&

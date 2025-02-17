@@ -6,7 +6,7 @@ import React, {useCallback, useMemo, useState} from 'react'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {Plan, PlanInterval, ProductType} from 'models/billing/types'
+import {Plan, Cadence, ProductType} from 'models/billing/types'
 import {getProductLabel, isStarterTier} from 'models/billing/utils'
 import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -33,7 +33,7 @@ import css from './ProductPlanSelection.less'
 
 export type ProductPlanSelectionProps = {
     type: ProductType
-    interval?: PlanInterval
+    cadence?: Cadence
     currentPlan?: Plan
     availablePlans?: Plan[]
     selectedPlans: SelectedPlans
@@ -48,7 +48,7 @@ export type ProductPlanSelectionProps = {
 const ProductPlanSelection = ({
     type,
     currentPlan,
-    interval = PlanInterval.Month,
+    cadence = Cadence.Month,
     availablePlans = [],
     selectedPlans,
     setSelectedPlans,
@@ -74,7 +74,7 @@ const ProductPlanSelection = ({
 
     const isStarterHelpdeskPlanDisabled = useCallback(
         (plan) => {
-            if (isStarterTier(plan) && interval === PlanInterval.Year) {
+            if (isStarterTier(plan) && cadence === Cadence.Year) {
                 return {
                     isDisabled: true,
                     tooltipText:
@@ -87,7 +87,7 @@ const ProductPlanSelection = ({
                 tooltipText: undefined,
             }
         },
-        [interval]
+        [cadence]
     )
 
     const getLabel = useCallback((plan: Plan) => {
@@ -353,7 +353,7 @@ const ProductPlanSelection = ({
                                 <CounterText
                                     plan={selectedPlan}
                                     type={type}
-                                    interval={interval}
+                                    cadence={cadence}
                                 />
                             </div>
                             <i
@@ -390,7 +390,7 @@ const ProductPlanSelection = ({
                             <div className={css.oldPrice}>
                                 {`${currentPlan?.num_quota_tickets || 0} ${
                                     PRODUCT_INFO[type].counter
-                                }/${interval ?? ''}`}
+                                }/${cadence ?? ''}`}
                             </div>
                         )}
                 </div>

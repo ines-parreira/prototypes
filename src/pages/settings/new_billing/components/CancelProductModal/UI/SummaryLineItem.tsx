@@ -20,7 +20,7 @@ const SummaryLineItem = ({summaryItem}: CancelledLineItemProps) => {
                     {summaryItem.label}
                     <>
                         {summaryItem.quotaAmount} {summaryItem.counter} /{' '}
-                        {summaryItem.interval}
+                        {summaryItem.cadence}
                     </>
                 </div>
             </div>
@@ -29,7 +29,7 @@ const SummaryLineItem = ({summaryItem}: CancelledLineItemProps) => {
                     [css.strikeThrough]: summaryItem.strickenOut,
                 })}
             >
-                <span>{summaryItem.amount}</span>/{summaryItem.interval}
+                <span>{summaryItem.amount}</span>/{summaryItem.cadence}
             </div>
         </div>
     )

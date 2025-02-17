@@ -1,7 +1,10 @@
 import {render} from '@testing-library/react'
 import React from 'react'
 
-import {assumeMock} from '../../../../../../../utils/testing'
+import {Cadence} from 'models/billing/types'
+
+import {assumeMock} from 'utils/testing'
+
 import SummaryBody from '../SummaryBody'
 import SummaryLineItem from '../SummaryLineItem'
 import SummaryTotal from '../SummaryTotal'
@@ -24,7 +27,7 @@ describe('SummaryBody', () => {
             {
                 title: 'Helpdesk',
                 label: 'Basic - ',
-                interval: 'month',
+                cadence: Cadence.Month,
                 quotaAmount: 1000,
                 counter: 'tickets',
                 amount: '$450',
@@ -33,7 +36,7 @@ describe('SummaryBody', () => {
             {
                 title: 'Automate',
                 label: null,
-                interval: 'month',
+                cadence: Cadence.Month,
                 quotaAmount: 1000,
                 counter: 'tickets',
                 amount: '$550',
@@ -42,7 +45,11 @@ describe('SummaryBody', () => {
         ]
 
         const {container, getAllByTestId, getByTestId} = render(
-            <SummaryBody items={summaryItems} total={1000} interval={'month'} />
+            <SummaryBody
+                items={summaryItems}
+                total={1000}
+                cadence={Cadence.Month}
+            />
         )
         const bodyHeaderElement = container.querySelector('div[class="header"]')
         expect(bodyHeaderElement).toHaveTextContent('PRODUCT')
@@ -59,7 +66,7 @@ describe('SummaryBody', () => {
         expect(SummaryTotalMock).toHaveBeenCalledWith(
             {
                 total: 1000,
-                interval: 'month',
+                cadence: 'month',
             },
             {}
         )

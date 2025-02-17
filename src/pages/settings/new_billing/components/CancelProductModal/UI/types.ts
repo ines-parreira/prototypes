@@ -1,7 +1,9 @@
+import {Cadence} from 'models/billing/types'
+
 export type SummaryItemData = {
     title: string
     label: string | null
-    interval: string
+    cadence: Cadence
     quotaAmount: number
     counter: string
     amount: string

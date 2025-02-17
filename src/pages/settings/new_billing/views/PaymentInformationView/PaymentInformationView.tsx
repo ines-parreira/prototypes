@@ -8,7 +8,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {
     AutomatePlan,
     HelpdeskPlan,
-    PlanInterval,
+    Cadence,
     SMSOrVoicePlan,
 } from 'models/billing/types'
 import {isLegacyAutomate} from 'models/billing/utils'
@@ -16,7 +16,7 @@ import {NewSummaryPaymentSection} from 'pages/settings/new_billing/components/Su
 import {BillingInformationSection} from 'pages/settings/new_billing/views/PaymentInformationView/components/BillingInformationSection'
 import {Description} from 'pages/settings/new_billing/views/PaymentInformationView/components/Description'
 import {Section} from 'pages/settings/new_billing/views/PaymentInformationView/components/Section'
-import {getCurrentHelpdeskInterval} from 'state/billing/selectors'
+import {getCurrentHelpdeskCadence} from 'state/billing/selectors'
 import {TicketPurpose} from 'state/billing/types'
 import {shouldPayWithShopify as getShouldPayWithShopify} from 'state/currentAccount/selectors'
 
@@ -40,8 +40,7 @@ const PaymentInformationView = ({
     currentSmsPlan,
     isCurrentSubscriptionCanceled,
 }: PaymentInformationViewProps) => {
-    const cadence =
-        useAppSelector(getCurrentHelpdeskInterval) ?? PlanInterval.Month
+    const cadence = useAppSelector(getCurrentHelpdeskCadence) ?? Cadence.Month
     const isSubscribedToHelpdeskStarter =
         currentHelpdeskPlan?.name === 'Starter'
     const isAAOLegacy =
@@ -55,7 +54,7 @@ const PaymentInformationView = ({
     const changeFrequency = useMemo(() => {
         let toolTipContent
 
-        if (cadence === PlanInterval.Month) {
+        if (cadence === Cadence.Month) {
             if (isSubscribedToHelpdeskStarter) {
                 toolTipContent =
                     'To change billing frequency, upgrade your Helpdesk plan to Basic or higher'

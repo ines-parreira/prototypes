@@ -18,7 +18,7 @@ import {
 } from 'fixtures/productPrices'
 import {
     BillingState,
-    PlanInterval,
+    Cadence,
     ProductUsages,
     SubscriptionStatus,
     SubscriptionSummary,
@@ -91,7 +91,7 @@ const upcomingInvoice: UpcomingInvoiceSummary = {
 
 const subscription: SubscriptionSummary = {
     status: SubscriptionStatus.ACTIVE,
-    cadence: PlanInterval.Month,
+    cadence: Cadence.Month,
     is_trialing: false,
     trial_start_datetime: null,
     trial_end_datetime: null,

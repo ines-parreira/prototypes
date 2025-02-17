@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 import {INTEGRATION_TYPE_CONFIG} from 'config'
 import {dummyAppListData} from 'fixtures/apps'
 import client from 'models/api/resources'
-import {HelpdeskPlan, PlanInterval, ProductType} from 'models/billing/types'
+import {HelpdeskPlan, Cadence, ProductType} from 'models/billing/types'
 import {IntegrationType} from 'models/integration/constants'
 import {Integration} from 'models/integration/types'
 import {
@@ -68,7 +68,7 @@ const prices = [
     {
         price_id: INTEGRATIONS_PRICE_ID,
         integrations: 150,
-        cadence: PlanInterval.Month,
+        cadence: Cadence.Month,
         amount: 100,
         name: 'FeatureName',
         features: {

@@ -2,12 +2,7 @@ import classNames from 'classnames'
 import React from 'react'
 import {ModalFooter, ModalHeader, ModalBody} from 'reactstrap'
 
-import {
-    AutomatePlan,
-    PlanInterval,
-    Plan,
-    ProductType,
-} from 'models/billing/types'
+import {AutomatePlan, Cadence, Plan, ProductType} from 'models/billing/types'
 import Button from 'pages/common/components/button/Button'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 
@@ -20,7 +15,7 @@ type Props = {
     automateAvailablePlans: AutomatePlan[]
     isTrialingSubscription: boolean
     isEnterprisePlan: boolean
-    interval?: PlanInterval
+    cadence?: Cadence
     selectedPlan?: Plan
     setSelectedPlan: React.Dispatch<React.SetStateAction<Plan | undefined>>
     setIsSubscriptionEnabled: React.Dispatch<React.SetStateAction<boolean>>
@@ -43,7 +38,7 @@ const AutomateModalStep = ({
     automateAvailablePlans,
     isTrialingSubscription,
     isEnterprisePlan,
-    interval,
+    cadence,
     selectedPlan,
     setSelectedPlan,
     setIsSubscriptionEnabled,
@@ -73,7 +68,7 @@ const AutomateModalStep = ({
                 availablePlans={automateAvailablePlans}
                 isTrialing={isTrialingSubscription}
                 isEnterprisePlan={isEnterprisePlan}
-                interval={interval}
+                cadence={cadence}
                 selectedPlan={selectedPlan}
                 setSelectedPlan={setSelectedPlan}
                 setIsSubscriptionEnabled={setIsSubscriptionEnabled}

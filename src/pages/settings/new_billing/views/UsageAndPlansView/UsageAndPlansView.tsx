@@ -9,14 +9,14 @@ import {AlertBannerTypes} from 'AlertBanners'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {PlanInterval, ProductType} from 'models/billing/types'
+import {Cadence, ProductType} from 'models/billing/types'
 import {isLegacyAutomate} from 'models/billing/utils'
 import useMeetAiAgentNotifications from 'pages/aiAgent/hooks/useMeetAiAgentNotification'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import BillingScheduledDowngrades from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades'
 import {
     getCurrentAutomatePlan,
-    getCurrentHelpdeskInterval,
+    getCurrentHelpdeskCadence,
     getCurrentHelpdeskPlan,
     getCurrentConvertPlan,
     getCurrentSmsPlan,
@@ -72,7 +72,7 @@ const UsageAndPlansView = ({
     const history = useHistory()
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
-    const cadence = useAppSelector(getCurrentHelpdeskInterval)
+    const cadence = useAppSelector(getCurrentHelpdeskCadence)
     const currentVoicePlan = useAppSelector(getCurrentVoicePlan)
     const currentSmsPlan = useAppSelector(getCurrentSmsPlan)
     const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
@@ -80,8 +80,8 @@ const UsageAndPlansView = ({
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const convertStatus = useGetConvertStatus()
 
-    const isCurrentPlanMonthly = cadence === PlanInterval.Month
-    const isCurrentPlanYearly = cadence === PlanInterval.Year
+    const isCurrentPlanMonthly = cadence === Cadence.Month
+    const isCurrentPlanYearly = cadence === Cadence.Year
     const isSubscribedToHelpdeskStarter =
         currentHelpdeskPlan?.name === 'Starter'
     const isSubscribedToVoiceOrSMS = !!currentVoicePlan || !!currentSmsPlan

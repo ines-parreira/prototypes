@@ -14,7 +14,7 @@ import {
     convertPlan1,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import {PlanInterval, ProductType} from 'models/billing/types'
+import {Cadence, ProductType} from 'models/billing/types'
 import {assumeMock} from 'utils/testing'
 
 import useAutomatedHelpdeskCancellationFlowAvailable from '../../../hooks/useAutomatedHelpdeskCancellationFlowAvailable'
@@ -86,7 +86,7 @@ describe('ProductPlanSelection', () => {
 
     const props: ProductPlanSelectionProps = {
         type: ProductType.Helpdesk,
-        interval: PlanInterval.Month,
+        cadence: Cadence.Month,
         currentPlan: basicMonthlyHelpdeskPlan,
         availablePlans: [
             basicMonthlyHelpdeskPlan,

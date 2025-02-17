@@ -1,31 +1,31 @@
 import React from 'react'
 
-import {PlanInterval} from 'models/billing/types'
+import {Cadence} from 'models/billing/types'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 
 import css from './BillingFrequency.less'
 
 export type BillingFrequencyProps = {
-    selectedInterval: PlanInterval | null
-    onFrequencySelect: (interval: PlanInterval) => void
+    selectedCadence: Cadence | null
+    onCadenceSelect: (cadence: Cadence) => void
 }
 
 const BillingFrequency = ({
-    selectedInterval,
-    onFrequencySelect,
+    selectedCadence,
+    onCadenceSelect,
 }: BillingFrequencyProps) => {
     return (
         <div className={css.container}>
             <PreviewRadioButton
-                isSelected={selectedInterval === PlanInterval.Month}
-                value={PlanInterval.Month}
-                onClick={() => onFrequencySelect(PlanInterval.Month)}
+                isSelected={selectedCadence === Cadence.Month}
+                value={Cadence.Month}
+                onClick={() => onCadenceSelect(Cadence.Month)}
                 label="Monthly"
             />
             <PreviewRadioButton
-                isSelected={selectedInterval === PlanInterval.Year}
-                value={PlanInterval.Year}
-                onClick={() => onFrequencySelect(PlanInterval.Year)}
+                isSelected={selectedCadence === Cadence.Year}
+                value={Cadence.Year}
+                onClick={() => onCadenceSelect(Cadence.Year)}
                 label="Yearly"
             />
         </div>

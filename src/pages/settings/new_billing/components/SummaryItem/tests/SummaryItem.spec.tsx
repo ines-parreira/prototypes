@@ -2,7 +2,7 @@ import {render, screen} from '@testing-library/react'
 import React from 'react'
 
 import {basicMonthlyHelpdeskPlan} from 'fixtures/productPrices'
-import {PlanInterval, ProductType} from 'models/billing/types'
+import {Cadence, ProductType} from 'models/billing/types'
 
 import SummaryItem, {SummaryItemProps} from '../SummaryItem'
 
@@ -27,7 +27,7 @@ describe('SummaryItem', () => {
                 isSelected: false,
             },
         },
-        interval: PlanInterval.Month,
+        cadence: Cadence.Month,
         currentPlan: basicMonthlyHelpdeskPlan,
         availablePlans: [
             basicMonthlyHelpdeskPlan,

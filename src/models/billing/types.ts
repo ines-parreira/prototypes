@@ -3,7 +3,7 @@ import {
     AccountFeatureMetadata,
 } from 'state/currentAccount/types'
 
-export enum PlanInterval {
+export enum Cadence {
     Month = 'month',
     Year = 'year',
 }
@@ -51,7 +51,7 @@ type BasePlan = {
     custom: boolean
     extra_ticket_cost: number
     internal_id: string
-    cadence: PlanInterval
+    cadence: Cadence
     name: string
     product_id: string
     price_id: string
@@ -159,7 +159,7 @@ export type StripePaymentMethodType =
 
 export type SubscriptionSummary = {
     status: SubscriptionStatus
-    cadence: PlanInterval
+    cadence: Cadence
     is_trialing: boolean
     trial_start_datetime: string | null
     trial_end_datetime: string | null

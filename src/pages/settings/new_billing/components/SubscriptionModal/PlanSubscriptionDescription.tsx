@@ -2,7 +2,7 @@ import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
-import {PlanInterval, Plan, ProductType} from 'models/billing/types'
+import {Cadence, Plan, ProductType} from 'models/billing/types'
 import {getPlanPriceFormatted, getProductLabel} from 'models/billing/utils'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
@@ -26,7 +26,7 @@ export type PlanSubscriptionDescriptionProps = {
     tagline?: string
     isTrialing: boolean
     isEnterprisePlan: boolean
-    interval?: PlanInterval
+    cadence?: Cadence
     selectedPlan: Plan | undefined
     setSelectedPlan: React.Dispatch<React.SetStateAction<Plan | undefined>>
     setIsSubscriptionEnabled: React.Dispatch<React.SetStateAction<boolean>>
@@ -38,7 +38,7 @@ const PlanSubscriptionDescription = ({
     tagline,
     isTrialing,
     isEnterprisePlan,
-    interval = PlanInterval.Month,
+    cadence = Cadence.Month,
     selectedPlan,
     setSelectedPlan,
     setIsSubscriptionEnabled,
@@ -47,8 +47,8 @@ const PlanSubscriptionDescription = ({
     const isPaymentEnabled = !!useIsPaymentEnabled()
     const [isTermsChecked, setIsTermsChecked] = useState(false)
     const filteredPlans = useMemo(
-        () => availablePlans.filter((plan) => plan.cadence === interval),
-        [availablePlans, interval]
+        () => availablePlans.filter((plan) => plan.cadence === cadence),
+        [availablePlans, cadence]
     )
 
     const productInfo = useMemo(() => PRODUCT_INFO[productType], [productType])
@@ -161,7 +161,7 @@ const PlanSubscriptionDescription = ({
                                 <CounterText
                                     plan={selectedPlan}
                                     type={productType}
-                                    interval={interval}
+                                    cadence={cadence}
                                 />
                             </div>
                             <i id="priceSelectInfo" className="material-icons">
@@ -184,7 +184,7 @@ const PlanSubscriptionDescription = ({
                             </div>
                         ) : (
                             <strong>
-                                {getPlanPriceFormatted(selectedPlan)}/{interval}
+                                {getPlanPriceFormatted(selectedPlan)}/{cadence}
                             </strong>
                         )}
                     </div>

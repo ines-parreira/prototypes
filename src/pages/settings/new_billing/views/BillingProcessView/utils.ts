@@ -1,4 +1,4 @@
-import {Plan, PlanInterval} from 'models/billing/types'
+import {Plan, Cadence} from 'models/billing/types'
 import {
     AlertNotification,
     NotificationStatus,
@@ -11,7 +11,7 @@ export type setNotificationProps = {
     oldPlan?: Plan
     newPlan?: Plan
     periodEnd: string
-    interval?: PlanInterval
+    cadence?: Cadence
     onClick: () => void
     isFreeTrial: boolean
 }
@@ -65,7 +65,7 @@ export const setAutomationNotification = ({
     oldPlan,
     newPlan,
     periodEnd,
-    interval = PlanInterval.Month,
+    cadence = Cadence.Month,
     onClick,
     isFreeTrial,
 }: setNotificationProps): AlertNotification | null => {
@@ -87,12 +87,12 @@ export const setAutomationNotification = ({
             newPlan?.num_quota_tickets ?? 0
         } ${
             PRODUCT_INFO.automation.counter
-        }/${interval}</strong> on <strong>${periodEnd}</strong>.`
+        }/${cadence}</strong> on <strong>${periodEnd}</strong>.`
     } else {
         // Upgrade Automate subscription
         message = `Success! You now have <strong>${
             newPlan?.num_quota_tickets ?? ''
-        } ${PRODUCT_INFO.automation.counter} per ${interval}</strong>`
+        } ${PRODUCT_INFO.automation.counter} per ${cadence}</strong>`
         buttonLabel = 'Automate Settings'
     }
 
@@ -120,7 +120,7 @@ export const setConvertNotification = ({
     oldPlan,
     newPlan,
     periodEnd,
-    interval = PlanInterval.Month,
+    cadence = Cadence.Month,
     onClick,
     isFreeTrial,
 }: setNotificationProps): AlertNotification | null => {
@@ -142,12 +142,12 @@ export const setConvertNotification = ({
             newPlan?.num_quota_tickets ?? 0
         } ${
             PRODUCT_INFO.convert.counter
-        }/${interval}</strong> on <strong>${periodEnd}</strong>.`
+        }/${cadence}</strong> on <strong>${periodEnd}</strong>.`
     } else {
         // Upgrade Convert subscription
         message = `Success! You now have <strong>${
             newPlan?.num_quota_tickets ?? ''
-        } ${PRODUCT_INFO.convert.counter} per ${interval}</strong>`
+        } ${PRODUCT_INFO.convert.counter} per ${cadence}</strong>`
         buttonLabel = 'Convert Settings'
     }
 

@@ -2,7 +2,7 @@ import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
-import {PlanInterval} from 'models/billing/types'
+import {Cadence} from 'models/billing/types'
 
 import {setHelpdeskNotification, setAutomationNotification} from '../utils'
 
@@ -64,13 +64,13 @@ describe('setAutomationNotification', () => {
         const newPlan = basicMonthlyAutomationPlan
 
         const periodEnd = '2023-06-30'
-        const cadence = PlanInterval.Month
+        const cadence = Cadence.Month
 
         const notification = setAutomationNotification({
             oldPlan: oldPlan,
             newPlan: newPlan,
             periodEnd,
-            interval: cadence,
+            cadence: cadence,
             onClick,
             isFreeTrial: false,
         })
@@ -90,12 +90,12 @@ describe('setAutomationNotification', () => {
             name: 'New Automate Plan',
         }
         const periodEnd = '2023-06-30'
-        const cadence = PlanInterval.Month
+        const cadence = Cadence.Month
 
         const notification = setAutomationNotification({
             oldPlan: oldPlan,
             newPlan: newPlan,
-            interval: cadence,
+            cadence: cadence,
             periodEnd,
             onClick,
             isFreeTrial: false,
@@ -116,13 +116,13 @@ describe('setAutomationNotification', () => {
             name: 'New Automate Plan',
         }
         const periodEnd = '2023-06-30'
-        const cadence = PlanInterval.Month
+        const cadence = Cadence.Month
 
         const notification = setAutomationNotification({
             oldPlan: oldPlan,
             newPlan: newPlan,
             periodEnd,
-            interval: cadence,
+            cadence: cadence,
             onClick,
             isFreeTrial: false,
         })

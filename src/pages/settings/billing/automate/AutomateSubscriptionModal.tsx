@@ -23,7 +23,7 @@ import {
 import {useCurrentPriceIds} from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import {
     getAvailableAutomatePlans,
-    getCurrentHelpdeskInterval,
+    getCurrentHelpdeskCadence,
     getCurrentHelpdeskPlan,
     getHasAutomate,
     getAvailableHelpdeskPlans,
@@ -111,7 +111,7 @@ const AutomateSubscriptionModal = ({
     const history = useHistory()
     const hasAutomate = useAppSelector(getHasAutomate)
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
-    const cadence = useAppSelector(getCurrentHelpdeskInterval)
+    const cadence = useAppSelector(getCurrentHelpdeskCadence)
     const isTrialingSubscription = useAppSelector(isTrialing)
     const helpdeskAvailablePlans = useAppSelector(getAvailableHelpdeskPlans)
     const helpdeskAvailablePlansPriceIds = helpdeskAvailablePlans
@@ -242,7 +242,7 @@ const AutomateSubscriptionModal = ({
                         header={header}
                         isTrialingSubscription={isTrialingSubscription}
                         isEnterprisePlan={isEnterprisePlan}
-                        interval={cadence}
+                        cadence={cadence}
                         selectedPlan={selectedPlan}
                         setSelectedPlan={setSelectedPlan}
                         setIsSubscriptionEnabled={setIsSubscriptionEnabled}

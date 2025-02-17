@@ -6,7 +6,7 @@ import {
     AutomatePlan,
     ConvertPlan,
     HelpdeskPlan,
-    PlanInterval,
+    Cadence,
     Plan,
     ProductType,
     SMSOrVoicePlan,
@@ -80,7 +80,7 @@ export function getFormattedAmount(amountInCents: number) {
     return amountInCents / 100
 }
 
-export const getCheapestPrice = (plans?: Plan[], cadence?: PlanInterval) =>
+export const getCheapestPrice = (plans?: Plan[], cadence?: Cadence) =>
     !!plans
         ? _minBy(
               plans.filter(

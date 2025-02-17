@@ -8,7 +8,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {Form} from 'core/forms'
 import {basicMonthlyHelpdeskPlan} from 'fixtures/productPrices'
 import useSessionStorage from 'hooks/useSessionStorage'
-import {PlanInterval, ProductType} from 'models/billing/types'
+import {Cadence, ProductType} from 'models/billing/types'
 import {useBillingPlans} from 'pages/settings/new_billing/hooks/useBillingPlan'
 import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import * as selectors from 'state/currentAccount/selectors'
@@ -58,7 +58,7 @@ const defaultUseBillingPlansMockReturnValue = {
     voiceAvailablePlans: [],
     anyDowngradedPlanSelected: false,
     totalProductAmount: 0,
-    interval: PlanInterval.Month,
+    cadence: Cadence.Month,
     isSubscriptionCanceled: false,
     selectedPlans,
 } as unknown as ReturnType<typeof useBillingPlans>

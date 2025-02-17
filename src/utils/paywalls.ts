@@ -1,4 +1,4 @@
-import {AutomatePlan, HelpdeskPlan, PlanInterval} from '../models/billing/types'
+import {AutomatePlan, HelpdeskPlan, Cadence} from '../models/billing/types'
 import {
     AccountFeature,
     AccountFeatureMetadata,
@@ -40,7 +40,7 @@ export const getCheapestPriceNameForFeature = (
     plans: (HelpdeskPlan | AutomatePlan)[]
 ) => {
     return plans
-        .filter((plan) => plan.cadence === PlanInterval.Month)
+        .filter((plan) => plan.cadence === Cadence.Month)
         .find(
             (plan) =>
                 (

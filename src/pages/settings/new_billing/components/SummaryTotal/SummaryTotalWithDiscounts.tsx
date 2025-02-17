@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import React from 'react'
 
-import {PlanInterval} from 'models/billing/types'
+import {Cadence} from 'models/billing/types'
 
 import {formatAmount} from '../../utils/formatAmount'
 import css from './SummaryTotal.less'
@@ -10,7 +10,7 @@ export type SummaryTotalWithDiscountsProps = {
     totalWithoutDiscounts: number
     totalWithDiscounts: number
     discountAmount: number
-    interval: PlanInterval
+    cadence: Cadence
     currency: string
 }
 
@@ -18,7 +18,7 @@ const SummaryTotalWithDiscounts = ({
     totalWithoutDiscounts,
     totalWithDiscounts,
     discountAmount,
-    interval,
+    cadence,
     currency,
 }: SummaryTotalWithDiscountsProps) => {
     return (
@@ -34,7 +34,7 @@ const SummaryTotalWithDiscounts = ({
                                     currency
                                 )}
                             </span>
-                            /{interval}
+                            /{cadence}
                         </div>
                     </div>
                     <div className={classNames(css.total, css.discountLine)}>
@@ -43,7 +43,7 @@ const SummaryTotalWithDiscounts = ({
                             <span aria-label="Discount amount">
                                 - {formatAmount(discountAmount / 100, currency)}
                             </span>
-                            /{interval}
+                            /{cadence}
                         </div>
                     </div>
                 </>
@@ -54,7 +54,7 @@ const SummaryTotalWithDiscounts = ({
                     <span aria-label="Total price">
                         {formatAmount(totalWithDiscounts / 100, currency)}
                     </span>
-                    /{interval}
+                    /{cadence}
                 </div>
             </div>
         </div>

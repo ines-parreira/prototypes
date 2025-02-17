@@ -1,6 +1,8 @@
 import {render} from '@testing-library/react'
 import React from 'react'
 
+import {Cadence} from 'models/billing/types'
+
 import SummaryLineItem from '../SummaryLineItem'
 
 describe('SummaryLineItem', () => {
@@ -12,7 +14,7 @@ describe('SummaryLineItem', () => {
                     summaryItem={{
                         title: 'Helpdesk',
                         label: 'Basic - ',
-                        interval: 'month',
+                        cadence: Cadence.Month,
                         quotaAmount: 1000,
                         counter: 'tickets',
                         amount: '$250',

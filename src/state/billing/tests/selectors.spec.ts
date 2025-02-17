@@ -16,7 +16,7 @@ import {
     smsPlan1,
     voicePlan1,
 } from 'fixtures/productPrices'
-import {PlanInterval, ProductType} from 'models/billing/types'
+import {Cadence, ProductType} from 'models/billing/types'
 import {AccountFeature} from 'state/currentAccount/types'
 import {RootState} from 'state/types'
 
@@ -266,10 +266,10 @@ describe('billing selectors', () => {
         })
     })
 
-    describe('getCurrentHelpdeskInterval', () => {
-        it('should return the product interval', () => {
-            expect(selectors.getCurrentHelpdeskInterval(state)).toBe(
-                PlanInterval.Month
+    describe('getCurrentHelpdeskCadence', () => {
+        it('should return the product cadence', () => {
+            expect(selectors.getCurrentHelpdeskCadence(state)).toBe(
+                Cadence.Month
             )
         })
     })

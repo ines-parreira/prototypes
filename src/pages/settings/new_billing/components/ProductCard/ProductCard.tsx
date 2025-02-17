@@ -18,7 +18,7 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import {
     getCheapestProductPrices,
-    getCurrentHelpdeskInterval,
+    getCurrentHelpdeskCadence,
 } from 'state/billing/selectors'
 import {BillingBanner, CurrentUsagePerProduct} from 'state/billing/types'
 
@@ -47,7 +47,7 @@ const ProductCard = ({
     autoUpgradeEnabled = false,
 }: ProductCardProps) => {
     const cheapestPlanByProduct = useAppSelector(getCheapestProductPrices)
-    const cadence = useAppSelector(getCurrentHelpdeskInterval)
+    const cadence = useAppSelector(getCurrentHelpdeskCadence)
     const history = useHistory()
 
     const {className, canduOverageStatus} = useMemo(() => {

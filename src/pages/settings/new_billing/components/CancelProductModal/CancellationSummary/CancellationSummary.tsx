@@ -43,7 +43,7 @@ const CancellationSummary = ({
                         productType === ProductType.Helpdesk
                             ? `${plan.name} - `
                             : null,
-                    interval: plan.cadence,
+                    cadence: plan.cadence,
                     quotaAmount: plan.num_quota_tickets || 0,
                     counter: PRODUCT_INFO[productType].counter,
                     amount: getPlanPriceFormatted(plan),
@@ -67,7 +67,7 @@ const CancellationSummary = ({
             <SummaryBody
                 items={summaryItems}
                 total={summaryTotal}
-                interval={cadence}
+                cadence={cadence}
             />
         </div>
     )

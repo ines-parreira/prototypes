@@ -136,7 +136,7 @@ const BillingProcessView = ({
         anyNewProductSelected,
         anyProductChanged,
         totalProductAmount,
-        interval,
+        cadence,
         updateSubscription,
         startSubscription,
         isSubscriptionUpdating,
@@ -144,7 +144,7 @@ const BillingProcessView = ({
     } = useBillingPlans({
         dispatchBillingError,
         selectedProduct,
-        filterByInterval: true,
+        filterByCadence: true,
     })
 
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
@@ -175,12 +175,12 @@ const BillingProcessView = ({
 
                 message += `\n • ${productName} - ${tickets} ${
                     PRODUCT_INFO[productType].counter
-                }/${interval} ${isEnterprisePlan ? '(Enterprise)' : ''}`
+                }/${cadence} ${isEnterprisePlan ? '(Enterprise)' : ''}`
             }
         })
 
         return message
-    }, [selectedPlans, interval])
+    }, [selectedPlans, cadence])
 
     if (hasCreditCard.isLoading) return <Loader />
 
@@ -244,35 +244,35 @@ const BillingProcessView = ({
                     </div>
                     <SummaryItem
                         productType={ProductType.Helpdesk}
-                        interval={interval}
+                        cadence={cadence}
                         currentPlan={currentHelpdeskPlan}
                         availablePlans={helpdeskAvailablePlans}
                         selectedPlans={selectedPlans}
                     />
                     <SummaryItem
                         productType={ProductType.Automation}
-                        interval={interval}
+                        cadence={cadence}
                         currentPlan={currentAutomatePlan}
                         availablePlans={automateAvailablePlans}
                         selectedPlans={selectedPlans}
                     />
                     <SummaryItem
                         productType={ProductType.Voice}
-                        interval={interval}
+                        cadence={cadence}
                         currentPlan={currentVoicePlan}
                         availablePlans={voiceAvailablePlans}
                         selectedPlans={selectedPlans}
                     />
                     <SummaryItem
                         productType={ProductType.SMS}
-                        interval={interval}
+                        cadence={cadence}
                         currentPlan={currentSmsPlan}
                         availablePlans={smsAvailablePlans}
                         selectedPlans={selectedPlans}
                     />
                     <SummaryItem
                         productType={ProductType.Convert}
-                        interval={interval}
+                        cadence={cadence}
                         currentPlan={currentConvertPlan}
                         availablePlans={convertAvailablePlans}
                         selectedPlans={selectedPlans}
@@ -280,7 +280,7 @@ const BillingProcessView = ({
                     <SummaryTotal
                         selectedPlans={selectedPlans}
                         totalProductAmount={totalProductAmount}
-                        interval={interval}
+                        cadence={cadence}
                         currency={helpdeskAvailablePlans?.[0].currency}
                     />
                 </div>
@@ -330,7 +330,7 @@ const BillingProcessView = ({
                     <div className={css.products}>
                         <ProductPlanSelection
                             type={ProductType.Helpdesk}
-                            interval={interval}
+                            cadence={cadence}
                             currentPlan={currentHelpdeskPlan}
                             availablePlans={helpdeskAvailablePlans}
                             selectedPlans={selectedPlans}
@@ -344,7 +344,7 @@ const BillingProcessView = ({
                         <div className={css.separator} />
                         <ProductPlanSelection
                             type={ProductType.Automation}
-                            interval={interval}
+                            cadence={cadence}
                             currentPlan={currentAutomatePlan}
                             availablePlans={automateAvailablePlans}
                             selectedPlans={selectedPlans}
@@ -360,7 +360,7 @@ const BillingProcessView = ({
                         <div className={css.separator} />
                         <ProductPlanSelection
                             type={ProductType.Voice}
-                            interval={interval}
+                            cadence={cadence}
                             currentPlan={currentVoicePlan}
                             availablePlans={voiceAvailablePlans}
                             selectedPlans={selectedPlans}
@@ -374,7 +374,7 @@ const BillingProcessView = ({
                         <div className={css.separator} />
                         <ProductPlanSelection
                             type={ProductType.SMS}
-                            interval={interval}
+                            cadence={cadence}
                             currentPlan={currentSmsPlan}
                             availablePlans={smsAvailablePlans}
                             selectedPlans={selectedPlans}
@@ -388,7 +388,7 @@ const BillingProcessView = ({
                         <div className={css.separator} />
                         <ProductPlanSelection
                             type={ProductType.Convert}
-                            interval={interval}
+                            cadence={cadence}
                             currentPlan={currentConvertPlan}
                             availablePlans={convertAvailablePlans}
                             selectedPlans={selectedPlans}

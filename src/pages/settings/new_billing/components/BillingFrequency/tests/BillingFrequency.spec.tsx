@@ -2,18 +2,18 @@ import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {PlanInterval} from 'models/billing/types'
+import {Cadence} from 'models/billing/types'
 
 import BillingFrequency, {BillingFrequencyProps} from '../BillingFrequency'
 
 describe('BillingFrequency', () => {
-    const mockSelectedInterval = PlanInterval.Month
+    const mockSelectedCadence = Cadence.Month
     const mockOnFrequencySelect = jest.fn()
 
     const setup = (props?: Partial<BillingFrequencyProps>) => {
         const defaultProps: BillingFrequencyProps = {
-            selectedInterval: mockSelectedInterval,
-            onFrequencySelect: mockOnFrequencySelect,
+            selectedCadence: mockSelectedCadence,
+            onCadenceSelect: mockOnFrequencySelect,
             ...props,
         }
 
@@ -26,7 +26,7 @@ describe('BillingFrequency', () => {
         expect(getByText('Yearly')).toBeInTheDocument()
     })
 
-    it('should call setSelectedInterval and setSelectedPlans with the correct values when a radio button is clicked', () => {
+    it('should call setSelectedCadence and setSelectedPlans with the correct values when a radio button is clicked', () => {
         const {getByLabelText} = setup()
         const monthlyRadioButton = getByLabelText('Monthly', {
             selector: 'input',
