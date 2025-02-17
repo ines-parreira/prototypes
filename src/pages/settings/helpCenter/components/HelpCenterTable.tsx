@@ -10,7 +10,7 @@ import {
     Locale,
 } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
-import {LanguageList} from 'pages/common/components/LanguageBulletList'
+import {LanguageTagList} from 'pages/common/components/LanguageTagList'
 import Loader from 'pages/common/components/Loader/Loader'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
@@ -112,11 +112,8 @@ export const HelpCenterTable: React.FC<Props> = ({
                             <BodyCell className={css.storeName}>
                                 <StoreName name={helpCenter.shop_name} />
                             </BodyCell>
-                            <BodyCell
-                                size="small"
-                                innerClassName={css.bodyCell}
-                            >
-                                <LanguageList
+                            <BodyCell size="small">
+                                <LanguageTagList
                                     id={id}
                                     defaultLanguage={
                                         locales[helpCenter.default_locale]

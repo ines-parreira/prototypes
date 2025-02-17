@@ -25,6 +25,7 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
       <span
         class="badge badge badge-none"
         data-testid="badge-en-US"
+        id="badge-en-US"
       >
         <span>
           <span>

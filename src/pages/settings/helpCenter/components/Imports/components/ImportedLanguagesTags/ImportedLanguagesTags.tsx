@@ -1,14 +1,12 @@
 import React, {useMemo} from 'react'
 
+import {BadgeItemProps} from 'pages/common/components/BadgetItem'
 import settingsCss from 'pages/settings/settings.less'
 
 import {Locale, LocaleCode} from '../../../../../../../models/helpCenter/types'
 import {localeToSelectOption} from '../../../../utils/localeSelectOptions'
 
-import {
-    DynamicBadgeList,
-    BadgeItemProps,
-} from '../../../HelpCenterPreferencesView/components/BadgeList'
+import {DynamicBadgeList} from '../../../HelpCenterPreferencesView/components/BadgeList'
 
 import {localeToSelectedLanguage} from './utils'
 

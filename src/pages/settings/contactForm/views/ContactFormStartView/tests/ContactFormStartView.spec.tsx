@@ -30,6 +30,17 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const testQueryClient = mockQueryClient()
 
+const mockedLocales = [
+    {name: 'English', code: 'en-US'},
+    {name: 'Spanish', code: 'es-ES'},
+    {name: 'French', code: 'fr-FR'},
+    {name: 'German', code: 'de-DE'},
+]
+
+jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
+    useSupportedLocales: () => mockedLocales,
+}))
+
 describe('<ContactFormStartView />', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
 

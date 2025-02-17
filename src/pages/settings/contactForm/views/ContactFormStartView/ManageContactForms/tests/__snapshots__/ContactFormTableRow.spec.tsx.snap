@@ -43,19 +43,17 @@ exports[`<ContactFormTableRow /> should display the name, ecom platform logo and
       class="cellContent"
     >
       <div
-        class="language-bullet-list"
+        class="language-tag-list"
       >
-        <div
-          aria-label="Item for locale en-US"
-          class="language-bullet-item"
+        <span
+          class="badge language-tag badge badge-none"
+          data-testid="badge-en-US"
+          id="badge-en-US"
         >
-          <img
-            alt="en-US"
-            aria-label="Picture for language en-US"
-            class="flag-emoji"
-            src="test-file-stub"
-          />
-        </div>
+          <span>
+            English (Default)
+          </span>
+        </span>
       </div>
     </div>
   </td>
@@ -110,19 +108,17 @@ exports[`<ContactFormTableRow /> should display the placeholder label when not c
       class="cellContent"
     >
       <div
-        class="language-bullet-list"
+        class="language-tag-list"
       >
-        <div
-          aria-label="Item for locale en-US"
-          class="language-bullet-item"
+        <span
+          class="badge language-tag badge badge-none"
+          data-testid="badge-en-US"
+          id="badge-en-US"
         >
-          <img
-            alt="en-US"
-            aria-label="Picture for language en-US"
-            class="flag-emoji"
-            src="test-file-stub"
-          />
-        </div>
+          <span>
+            English (Default)
+          </span>
+        </span>
       </div>
     </div>
   </td>

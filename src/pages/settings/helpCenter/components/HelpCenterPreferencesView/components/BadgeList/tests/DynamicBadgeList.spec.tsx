@@ -2,7 +2,8 @@ import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {BadgeItemProps} from '../BadgeItem'
+import {BadgeItemProps} from 'pages/common/components/BadgetItem'
+
 import {DynamicBadgeList, BadgeSelectItem} from '../DynamicBadgeList'
 
 const availableList: BadgeSelectItem[] = [

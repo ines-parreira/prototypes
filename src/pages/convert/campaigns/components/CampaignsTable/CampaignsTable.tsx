@@ -22,6 +22,7 @@ import {Language} from 'constants/languages'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {GorgiasChatIntegration} from 'models/integration/types'
 
+import BadgeItem from 'pages/common/components/BadgetItem'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import {NumberedPagination} from 'pages/common/components/Paginations/NumberedPagination'
@@ -42,7 +43,6 @@ import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsC
 import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 
 import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
-import {BadgeItem} from 'pages/settings/helpCenter/components/HelpCenterPreferencesView/components/BadgeList'
 
 import {SortingKeys, useSortedCampaigns} from '../../hooks/useSortedCampaigns'
 import {Campaign} from '../../types/Campaign'

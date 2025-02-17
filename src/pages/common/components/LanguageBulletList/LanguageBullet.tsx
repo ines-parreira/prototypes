@@ -1,7 +1,7 @@
 import React from 'react'
 
+import {getEmojiFlag} from '../../utils/locale'
 import css from './LanguageBullet.less'
-import {getEmojiFlag} from './utils'
 
 type Props = {
     id?: string

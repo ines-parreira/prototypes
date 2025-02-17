@@ -1,9 +1,10 @@
 import React from 'react'
 
+import {BadgeItemProps} from 'pages/common/components/BadgetItem'
+
 import {Locale} from '../../../../../../../models/helpCenter/types'
 
 import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
-import {BadgeItemProps} from '../../../HelpCenterPreferencesView/components/BadgeList'
 
 export const localeToSelectedLanguage = (
     locale: Locale,

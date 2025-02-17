@@ -7,7 +7,8 @@ import {
     Input,
 } from 'reactstrap'
 
-import {BadgeItemProps} from './BadgeItem'
+import {BadgeItemProps} from 'pages/common/components/BadgetItem'
+
 import {BadgeList} from './BadgeList'
 
 import css from './DynamicBadgeList.less'

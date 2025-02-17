@@ -14,7 +14,7 @@ import noNo from 'assets/img/flags/no-no.svg'
 import ptBr from 'assets/img/flags/pt-br.svg'
 import svSe from 'assets/img/flags/sv-se.svg'
 
-import {Locale} from '../../../../models/helpCenter/types'
+import {Locale} from 'models/helpCenter/types'
 
 const flagsMap: {[key: string]: string} = {
     cz: 'cs-cz',

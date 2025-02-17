@@ -3,11 +3,12 @@ import React from 'react'
 
 import {Locale} from '../../../../models/helpCenter/types'
 
+import {moveLocaleToBack, moveLocaleToFront} from '../../utils/locale'
+
 import {FlagLanguageItem} from './FlagLanguageItem'
 import {LanguageBullet} from './LanguageBullet'
 
 import css from './LanguageList.less'
-import {moveLocaleToBack, moveLocaleToFront} from './utils'
 
 type Props = {
     id: number | string

@@ -1,0 +1,27 @@
+:local {
+    .language-tag-list {
+        display: flex;
+        flex-direction: row-reverse;
+    }
+
+    .language-tag-tooltip {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+
+        > span {
+            font-weight: normal;
+        }
+    }
+
+    .language-tag {
+        background-color: var(--Neutral-Grey_1, #f9f9f9);
+        color: var(--Neutral-Grey_5, #6a6a6a);
+        margin: 0;
+        border-radius: 4px;
+        padding: 4px 8px;
+        &:not(:last-child) {
+            margin-left: 8px;
+        }
+    }
+}

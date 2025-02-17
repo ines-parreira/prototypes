@@ -20,9 +20,9 @@ import {
 } from 'config/integrations/gorgias_chat'
 import {Language} from 'constants/languages'
 import useAppSelector from 'hooks/useAppSelector'
+import BadgeItem from 'pages/common/components/BadgetItem'
 import {LanguageBullet} from 'pages/common/components/LanguageBulletList'
 import {useGorgiasChatIntegrationStatusData} from 'pages/integrations/integration/hooks/useGorgiasChatIntegrationStatusData'
-import {BadgeItem} from 'pages/settings/helpCenter/components/HelpCenterPreferencesView/components/BadgeList'
 import {getIconFromType} from 'state/integrations/helpers'
 import {makeGetRedirectUri} from 'state/integrations/selectors'
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {BadgeItem, BadgeItemProps} from './BadgeItem'
+import BadgeItem, {BadgeItemProps} from 'pages/common/components/BadgetItem'
 
 import css from './BadgeList.less'
 

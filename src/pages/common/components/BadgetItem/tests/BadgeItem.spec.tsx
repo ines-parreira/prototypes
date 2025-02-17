@@ -1,7 +1,7 @@
 import {render} from '@testing-library/react'
 import React from 'react'
 
-import {BadgeItem} from '../BadgeItem'
+import BadgeItem from '../BadgeItem'
 
 describe('<BadgeItem />', () => {
     it('renders the close icon if <isClosable> is true', () => {

@@ -413,22 +413,20 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     class="wrapper small"
                   >
                     <div
-                      class="cellContent bodyCell"
+                      class="cellContent"
                     >
                       <div
-                        class="language-bullet-list"
+                        class="language-tag-list"
                       >
-                        <div
-                          aria-label="Item for locale en-US"
-                          class="language-bullet-item"
+                        <span
+                          class="badge language-tag badge badge-none"
+                          data-testid="badge-en-US"
+                          id="badge-en-US"
                         >
-                          <img
-                            alt="en-US"
-                            aria-label="Picture for language en-US"
-                            class="flag-emoji"
-                            src="test-file-stub"
-                          />
-                        </div>
+                          <span>
+                            English - USA (Default)
+                          </span>
+                        </span>
                       </div>
                     </div>
                   </td>
@@ -519,33 +517,29 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     class="wrapper small"
                   >
                     <div
-                      class="cellContent bodyCell"
+                      class="cellContent"
                     >
                       <div
-                        class="language-bullet-list"
+                        class="language-tag-list"
                       >
-                        <div
-                          aria-label="Item for locale en-US"
-                          class="language-bullet-item"
+                        <span
+                          class="badge language-tag badge badge-none"
+                          data-testid="badge-more-tags-2"
+                          id="badge-more-tags-2"
                         >
-                          <img
-                            alt="en-US"
-                            aria-label="Picture for language en-US"
-                            class="flag-emoji"
-                            src="test-file-stub"
-                          />
-                        </div>
-                        <div
-                          aria-label="Item for locale de-DE"
-                          class="language-bullet-item"
+                          <span>
+                            +1 more
+                          </span>
+                        </span>
+                        <span
+                          class="badge language-tag badge badge-none"
+                          data-testid="badge-de-DE"
+                          id="badge-de-DE"
                         >
-                          <img
-                            alt="de-DE"
-                            aria-label="Picture for language de-DE"
-                            class="flag-emoji"
-                            src="test-file-stub"
-                          />
-                        </div>
+                          <span>
+                            German - Germany (Default)
+                          </span>
+                        </span>
                       </div>
                     </div>
                   </td>
@@ -636,33 +630,29 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     class="wrapper small"
                   >
                     <div
-                      class="cellContent bodyCell"
+                      class="cellContent"
                     >
                       <div
-                        class="language-bullet-list"
+                        class="language-tag-list"
                       >
-                        <div
-                          aria-label="Item for locale en-US"
-                          class="language-bullet-item"
+                        <span
+                          class="badge language-tag badge badge-none"
+                          data-testid="badge-more-tags-3"
+                          id="badge-more-tags-3"
                         >
-                          <img
-                            alt="en-US"
-                            aria-label="Picture for language en-US"
-                            class="flag-emoji"
-                            src="test-file-stub"
-                          />
-                        </div>
-                        <div
-                          aria-label="Item for locale fr-FR"
-                          class="language-bullet-item"
+                          <span>
+                            +1 more
+                          </span>
+                        </span>
+                        <span
+                          class="badge language-tag badge badge-none"
+                          data-testid="badge-fr-FR"
+                          id="badge-fr-FR"
                         >
-                          <img
-                            alt="fr-FR"
-                            aria-label="Picture for language fr-FR"
-                            class="flag-emoji"
-                            src="test-file-stub"
-                          />
-                        </div>
+                          <span>
+                            French - France (Default)
+                          </span>
+                        </span>
                       </div>
                     </div>
                   </td>
@@ -753,33 +743,29 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     class="wrapper small"
                   >
                     <div
-                      class="cellContent bodyCell"
+                      class="cellContent"
                     >
                       <div
-                        class="language-bullet-list"
+                        class="language-tag-list"
                       >
-                        <div
-                          aria-label="Item for locale en-US"
-                          class="language-bullet-item"
+                        <span
+                          class="badge language-tag badge badge-none"
+                          data-testid="badge-more-tags-4"
+                          id="badge-more-tags-4"
                         >
-                          <img
-                            alt="en-US"
-                            aria-label="Picture for language en-US"
-                            class="flag-emoji"
-                            src="test-file-stub"
-                          />
-                        </div>
-                        <div
-                          aria-label="Item for locale fr-FR"
-                          class="language-bullet-item"
+                          <span>
+                            +1 more
+                          </span>
+                        </span>
+                        <span
+                          class="badge language-tag badge badge-none"
+                          data-testid="badge-fr-FR"
+                          id="badge-fr-FR"
                         >
-                          <img
-                            alt="fr-FR"
-                            aria-label="Picture for language fr-FR"
-                            class="flag-emoji"
-                            src="test-file-stub"
-                          />
-                        </div>
+                          <span>
+                            French - France (Default)
+                          </span>
+                        </span>
                       </div>
                     </div>
                   </td>

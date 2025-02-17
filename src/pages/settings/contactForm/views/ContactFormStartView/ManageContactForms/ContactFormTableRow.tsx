@@ -1,11 +1,12 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 
 import {ContactForm} from 'models/contactForm/types'
 import {Locale} from 'models/helpCenter/types'
 import {IntegrationType} from 'models/integration/constants'
-import {LanguageList} from 'pages/common/components/LanguageBulletList'
+import {LanguageTagList} from 'pages/common/components/LanguageTagList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 
 import {getIconFromType} from 'state/integrations/helpers'
 
@@ -41,10 +42,19 @@ export const ContactFormTableRow = ({
     onClick,
     form,
 }: ContactFormTableRowProps) => {
-    const language: Locale = {
-        code: form.default_locale,
-        name: '', // we don't display this label
-    }
+    const locales = useSupportedLocales()
+    const language: Locale | undefined = useMemo(() => {
+        const defaultLocDto = locales.find(
+            (locale) => locale.code === form.default_locale
+        )
+
+        if (!defaultLocDto) return undefined
+
+        return {
+            code: defaultLocDto.code,
+            name: defaultLocDto.name,
+        }
+    }, [form.default_locale, locales])
 
     return (
         <TableBodyRow key={key} onClick={onClick}>
@@ -56,11 +66,13 @@ export const ContactFormTableRow = ({
             </BodyCell>
 
             <BodyCell>
-                <LanguageList
-                    id={form.id}
-                    defaultLanguage={language}
-                    languageList={[language]}
-                />
+                {language ? (
+                    <LanguageTagList
+                        id={form.id}
+                        defaultLanguage={language}
+                        languageList={[language]}
+                    />
+                ) : null}
             </BodyCell>
             <BodyCell>
                 <i className="material-icons md-2">keyboard_arrow_right</i>

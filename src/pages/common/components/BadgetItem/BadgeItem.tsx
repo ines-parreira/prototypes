@@ -3,12 +3,10 @@ import classnames from 'classnames'
 import React from 'react'
 import {Badge} from 'reactstrap'
 
-import {LocaleCode} from '../../../../../../../models/helpCenter/types'
-
 import css from './BadgeItem.less'
 
 export type BadgeItemProps = {
-    id: LocaleCode
+    id: string
     label: string | React.ReactNode
     isClosable?: boolean
     help?: string | React.ReactNode
@@ -16,7 +14,7 @@ export type BadgeItemProps = {
     onClose?: (ev: React.MouseEvent) => void
 }
 
-export const BadgeItem: React.FC<BadgeItemProps> = ({
+const BadgeItem: React.FC<BadgeItemProps> = ({
     id,
     label,
     isClosable,
@@ -27,6 +25,7 @@ export const BadgeItem: React.FC<BadgeItemProps> = ({
     return (
         <Badge
             data-testid={`badge-${id}`}
+            id={`badge-${id}`}
             className={classnames(css.badge, customClass ?? '')}
             color="none"
         >
@@ -71,3 +70,5 @@ export const BadgeItem: React.FC<BadgeItemProps> = ({
         </Badge>
     )
 }
+
+export default BadgeItem

@@ -140,6 +140,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
             <span
               class="badge badge badge-none"
               data-testid="badge-en-US"
+              id="badge-en-US"
             >
               <span>
                 <span>

@@ -5,6 +5,17 @@ import React from 'react'
 import {ContactFormFixture} from '../../../../fixtures/contacForm'
 import {ContactFormTableRow} from '../ContactFormTableRow'
 
+const mockedLocales = [
+    {name: 'English', code: 'en-US'},
+    {name: 'Spanish', code: 'es-ES'},
+    {name: 'French', code: 'fr-FR'},
+    {name: 'German', code: 'de-DE'},
+]
+
+jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
+    useSupportedLocales: () => mockedLocales,
+}))
+
 describe('<ContactFormTableRow />', () => {
     it('should display the name, ecom platform logo and store name, language, and arrow', () => {
         const form = {

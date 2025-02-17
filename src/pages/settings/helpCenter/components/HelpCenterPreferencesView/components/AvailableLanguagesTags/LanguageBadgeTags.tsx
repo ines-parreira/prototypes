@@ -3,6 +3,7 @@ import _keyBy from 'lodash/keyBy'
 import React, {useCallback, useMemo, useState} from 'react'
 
 import {Locale, LocaleCode} from 'models/helpCenter/types'
+import {BadgeItemProps} from 'pages/common/components/BadgetItem'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -11,7 +12,7 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
 import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
 import {localeToSelectOption} from '../../../../utils/localeSelectOptions'
-import {BadgeItemProps, DynamicBadgeList} from '../BadgeList'
+import {DynamicBadgeList} from '../BadgeList'
 
 import {transformToSelectedLocale} from './utils'
 
@@ -87,7 +88,10 @@ export const LanguageBadgeTags = ({
         })
 
     const handleOnAddLocale = (_: React.MouseEvent, locale: BadgeItemProps) => {
-        updateAvailableLanguages([...availableLanguages, locale.id])
+        updateAvailableLanguages([
+            ...availableLanguages,
+            locale.id as LocaleCode,
+        ])
     }
 
     const forceRemoveLocal = useCallback(
