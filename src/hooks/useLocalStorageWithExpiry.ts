@@ -4,7 +4,7 @@ import useLocalStorage from 'hooks/useLocalStorage'
 
 export default function useLocalStorageWithExpiry<T>(
     key: string,
-    expiryTime: number,
+    expiryTimeInMilliseconds: number,
     defaultValue: T
 ) {
     const [value, setValue, removeValue] = useLocalStorage<T>(key, defaultValue)
@@ -14,8 +14,11 @@ export default function useLocalStorageWithExpiry<T>(
     )
 
     const isExpired = useCallback(
-        () => (timestamp ? Date.now() - timestamp > expiryTime : false),
-        [expiryTime, timestamp]
+        () =>
+            timestamp
+                ? Date.now() - timestamp > expiryTimeInMilliseconds
+                : false,
+        [expiryTimeInMilliseconds, timestamp]
     )
 
     const remove = useCallback(() => {
