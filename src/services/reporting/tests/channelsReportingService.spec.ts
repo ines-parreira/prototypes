@@ -7,7 +7,6 @@ import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
-import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
 import {
     ChannelsTableLabels,
     columnsOrder,
@@ -102,12 +101,6 @@ describe('channelsReportingService', () => {
         expect(createCsvSpy).toHaveBeenCalledWith([
             [...columnsOrder.map((column) => ChannelsTableLabels[column])],
             [channelA.slug, '5', '5%', '5', '5s', '5s', '5s', '-', '5', '5'],
-            [
-                channelB.slug,
-                ...Array(Object.keys(columnsOrder).length - 1).fill(
-                    NOT_AVAILABLE_PLACEHOLDER
-                ),
-            ],
         ])
     })
 

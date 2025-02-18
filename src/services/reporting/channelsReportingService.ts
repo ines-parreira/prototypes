@@ -1,4 +1,5 @@
 import {ChannelsReportData} from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
+import {nonEmptyChannels} from 'hooks/reporting/support-performance/useSortedChannelsWithData'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {Channel} from 'models/channel/types'
 import {AgentTimeTrackingCube} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
@@ -97,6 +98,8 @@ export const saveReport = (
         }
     }
 
+    const visibleChannels = nonEmptyChannels(channels, data)
+
     const columnsToMetricDataMap: ReportDataMap = {
         [ChannelsTableColumns.Channel]: {
             column: ChannelsTableColumns.Channel,
@@ -162,7 +165,7 @@ export const saveReport = (
 
     const metricData = [
         columnsOrder.map((column) => ChannelsTableLabels[column]),
-        ...channels.map((channel) => {
+        ...visibleChannels.map((channel) => {
             return columnsOrder.map((column) =>
                 getMetric(column, channel, columnsToMetricDataMap)
             )

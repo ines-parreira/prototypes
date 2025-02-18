@@ -113,7 +113,7 @@ export const useChannelsReportMetrics = () => {
 export const fetchChannelsTableReportData: ReportFetch = async (
     cleanStatsFilters: StatsFilters,
     userTimezone: string,
-    granularity: ReportingGranularity,
+    _: ReportingGranularity,
     context: {
         channels: Channel[]
         channelColumnsOrder: ChannelsTableColumns[]
