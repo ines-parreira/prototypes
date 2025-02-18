@@ -27,6 +27,7 @@ export function AlertBanner({
 }: AlertBannerProps) {
     return (
         <div
+            role="banner"
             aria-label={ariaLabel}
             aria-live={
                 type === AlertBannerTypes.Critical ? 'assertive' : 'polite'

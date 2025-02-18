@@ -1,9 +1,19 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {act, fireEvent, screen, waitFor} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React from 'react'
+
+import {Provider} from 'react-redux'
+
+import configureMockStore from 'redux-mock-store'
+
+import thunk from 'redux-thunk'
 
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {IntegrationType} from 'models/integration/constants'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import {RootState, StoreDispatch} from 'state/types'
+
+import {renderWithRouter} from 'utils/testing'
 
 import ActionsPlatformStepsView from '../ActionsPlatformStepsView'
 import useApps from '../hooks/useApps'
@@ -20,6 +30,15 @@ const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
 const mockUseApps = jest.mocked(useApps)
 const mockUseGetDateAndTimeFormat = jest.mocked(useGetDateAndTimeFormat)
 const mockUseDeleteActionTemplate = jest.mocked(useDeleteActionTemplate)
+
+const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
+    integrations: fromJS({
+        integrations: [],
+    }),
+    billing: fromJS({
+        products: [],
+    }),
+} as RootState)
 
 mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
     data: [
@@ -70,7 +89,11 @@ mockUseDeleteActionTemplate.mockReturnValue({
 
 describe('<ActionsPlatformStepsView />', () => {
     it('should render actions platform ste[s page', () => {
-        render(<ActionsPlatformStepsView />)
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformStepsView />
+            </Provider>
+        )
 
         expect(
             screen.getByText(
@@ -82,7 +105,11 @@ describe('<ActionsPlatformStepsView />', () => {
     })
 
     it('should filter steps by app', () => {
-        render(<ActionsPlatformStepsView />)
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformStepsView />
+            </Provider>
+        )
 
         act(() => {
             fireEvent.click(screen.getByText('Select value...'))
@@ -97,7 +124,11 @@ describe('<ActionsPlatformStepsView />', () => {
     })
 
     it('should filter steps by name', async () => {
-        render(<ActionsPlatformStepsView />)
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformStepsView />
+            </Provider>
+        )
 
         act(() => {
             fireEvent.change(screen.getByPlaceholderText('Search name'), {
@@ -114,7 +145,11 @@ describe('<ActionsPlatformStepsView />', () => {
     })
 
     it('should show only relevant apps in app filter', () => {
-        render(<ActionsPlatformStepsView />)
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformStepsView />
+            </Provider>
+        )
 
         act(() => {
             fireEvent.click(screen.getByText('Select value...'))

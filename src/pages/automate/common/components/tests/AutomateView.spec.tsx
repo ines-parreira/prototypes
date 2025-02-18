@@ -3,6 +3,7 @@ import React from 'react'
 
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 
+import {useDisplayAiAgentMovedBanner} from '../../hooks/useDisplayAiAgentMovedBanner'
 import AutomateView from '../AutomateView'
 
 // Mock components used within AutomateView
@@ -16,7 +17,19 @@ jest.mock(
         ({children}: {children: React.ReactNode}) => <div>{children}</div>
 )
 
+jest.mock('../../hooks/useDisplayAiAgentMovedBanner', () => ({
+    useDisplayAiAgentMovedBanner: jest.fn(),
+}))
+
+jest.mock('../AiAgentMovedBanner', () => ({
+    AiAgentMovedBanner: () => <div>AI Agent Moved Banner</div>,
+}))
+
 describe('AutomateView', () => {
+    beforeEach(() => {
+        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReset()
+    })
+
     test('renders with title and action', () => {
         renderWithQueryClientProvider(
             <AutomateView
@@ -61,5 +74,31 @@ describe('AutomateView', () => {
             </AutomateView>
         )
         expect(screen.getByText('Content')).toBeInTheDocument()
+    })
+
+    test('renders AI Agent Moved banner when useDisplayAiAgentMovedBanner returns true', () => {
+        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(true)
+
+        renderWithQueryClientProvider(
+            <AutomateView>
+                <div>Content</div>
+            </AutomateView>
+        )
+
+        expect(screen.getByText('AI Agent Moved Banner')).toBeInTheDocument()
+    })
+
+    test('does not render AI Agent Moved banner when useDisplayAiAgentMovedBanner returns false', () => {
+        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(false)
+
+        renderWithQueryClientProvider(
+            <AutomateView>
+                <div>Content</div>
+            </AutomateView>
+        )
+
+        expect(
+            screen.queryByText('AI Agent Moved Banner')
+        ).not.toBeInTheDocument()
     })
 })

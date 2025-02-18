@@ -24,6 +24,8 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import PageHeader from 'pages/common/components/PageHeader'
 import InputField from 'pages/common/forms/input/InputField'
 
+import {AiAgentMovedBanner} from '../common/components/AiAgentMovedBanner'
+import {useDisplayAiAgentMovedBanner} from '../common/hooks/useDisplayAiAgentMovedBanner'
 import css from './ActionsPlatformEditStepView.less'
 import ActionsPlatformStepAppSelectBox from './components/ActionsPlatformStepAppSelectBox'
 import WorkflowVisualBuilder from './components/visualBuilder/WorkflowVisualBuilder'
@@ -84,6 +86,7 @@ const ActionsPlatformCreateStepView = () => {
     const {isLoading: isCreateActionTemplateLoading, createActionTemplate} =
         useCreateActionTemplate()
     const {apps = [], isLoading: isAppsLoading, actionsApps} = useApps()
+    const displayAiAgentMovedBanner = useDisplayAiAgentMovedBanner()
 
     const history = useHistory()
     const template = useMemo(() => getInitialTemplate(), [])
@@ -163,6 +166,7 @@ const ActionsPlatformCreateStepView = () => {
 
     return (
         <div className={css.page}>
+            {displayAiAgentMovedBanner && <AiAgentMovedBanner />}
             <PageHeader
                 className={css.header}
                 title={

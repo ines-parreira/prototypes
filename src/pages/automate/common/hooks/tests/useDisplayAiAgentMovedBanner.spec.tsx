@@ -37,22 +37,37 @@ describe('useDisplayAiAgentMovedBanner', () => {
         mockUseAppSelector.mockReturnValue(true)
     })
 
-    it('should display ai-agent-moved info banner when accessing Automate pages', () => {
-        renderHook(() => useDisplayAiAgentMovedBanner(), {wrapper})
+    it('should return true when accessing Automate pages with required conditions met', () => {
+        const {result} = renderHook(() => useDisplayAiAgentMovedBanner(), {
+            wrapper,
+        })
 
         act(() => mockHistory.push('/app/automation'))
-        expect(mockAddBanner).toHaveBeenCalled()
+        expect(result.current).toBe(true)
 
-        act(() => mockHistory.push('/app/ai-agent'))
-        expect(mockRemoveBanner).toHaveBeenCalled()
+        act(() => mockHistory.push('/app/other'))
+        expect(result.current).toBe(false)
     })
 
-    it('should not display ai-agent-moved info banner when hasAutomate is false', () => {
+    it('should return false when hasAutomate is false', () => {
         mockUseAppSelector.mockReturnValue(false)
 
-        renderHook(() => useDisplayAiAgentMovedBanner(), {wrapper})
+        const {result} = renderHook(() => useDisplayAiAgentMovedBanner(), {
+            wrapper,
+        })
 
         act(() => mockHistory.push('/app/automation'))
-        expect(mockAddBanner).not.toHaveBeenCalled()
+        expect(result.current).toBe(false)
+    })
+
+    it('should return false when feature flag is disabled', () => {
+        mockFlags({[FeatureFlagKey.ConvAiStandaloneMenu]: false})
+
+        const {result} = renderHook(() => useDisplayAiAgentMovedBanner(), {
+            wrapper,
+        })
+
+        act(() => mockHistory.push('/app/automation'))
+        expect(result.current).toBe(false)
     })
 })

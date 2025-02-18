@@ -10,9 +10,12 @@ import AutomateLandingPageDashboardV2 from 'pages/automate/common/components/Aut
 import {last28DaysStatsFilters} from 'pages/automate/common/utils/last28DaysStatsFilters'
 import StatsPage from 'pages/stats/StatsPage'
 
+import {useDisplayAiAgentMovedBanner} from '../hooks/useDisplayAiAgentMovedBanner'
+import {AiAgentMovedBanner} from './AiAgentMovedBanner'
 import {AutomateLandingPageTopQuestions} from './TopQuestions/AutomateLandingPageTopQuestions'
 
 const AutomateLandingPage = () => {
+    const displayAiAgentMovedBanner = useDisplayAiAgentMovedBanner()
     const isImprovedNavigationEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
 
@@ -28,6 +31,7 @@ const AutomateLandingPage = () => {
         <StatsPage
             title={isImprovedNavigationEnabled ? 'Overview' : 'Automate'}
             headerCanduId="header-my-automate"
+            banner={displayAiAgentMovedBanner && <AiAgentMovedBanner />}
         >
             <AutomateLandingPageDashboardV2
                 filters={filters}

@@ -1,9 +1,14 @@
 import {act, fireEvent, screen, waitFor} from '@testing-library/react'
-
 import {createMemoryHistory} from 'history'
+import {fromJS} from 'immutable'
 import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {useGetActionsApp} from 'models/workflows/queries'
+import {RootState, StoreDispatch} from 'state/types'
+
 import {flushPromises, renderWithRouter} from 'utils/testing'
 
 import ActionsPlatformEditAppFormView from '../ActionsPlatformEditAppFormView'
@@ -13,6 +18,15 @@ import useEditActionsApp from '../hooks/useEditActionsApp'
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useEditActionsApp')
 jest.mock('../hooks/useApps')
+
+const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
+    integrations: fromJS({
+        integrations: [],
+    }),
+    billing: fromJS({
+        products: [],
+    }),
+} as RootState)
 
 const mockUseGetActionsApp = jest.mocked(useGetActionsApp)
 const mockUseApps = jest.mocked(useApps)
@@ -51,7 +65,11 @@ describe('<ActionsPlatformEditAppFormView />', () => {
     })
 
     it('should render edit app form', () => {
-        renderWithRouter(<ActionsPlatformEditAppFormView />)
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformEditAppFormView />
+            </Provider>
+        )
 
         expect(screen.getByText('Actions platform')).toBeInTheDocument()
         expect(screen.getByText('Save Changes')).toBeInTheDocument()
@@ -62,7 +80,12 @@ describe('<ActionsPlatformEditAppFormView />', () => {
 
         const historyPushSpy = jest.spyOn(history, 'push')
 
-        renderWithRouter(<ActionsPlatformEditAppFormView />, {history})
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformEditAppFormView />
+            </Provider>,
+            {history}
+        )
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('https://example.com'), {
@@ -99,7 +122,11 @@ describe('<ActionsPlatformEditAppFormView />', () => {
             editActionsApp: mockEditActionsApp,
         } as unknown as ReturnType<typeof mockUseEditActionsApp>)
 
-        renderWithRouter(<ActionsPlatformEditAppFormView />)
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformEditAppFormView />
+            </Provider>
+        )
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('https://example.com'), {
@@ -124,7 +151,12 @@ describe('<ActionsPlatformEditAppFormView />', () => {
             isInitialLoading: false,
         } as unknown as ReturnType<typeof useGetActionsApp>)
 
-        renderWithRouter(<ActionsPlatformEditAppFormView />, {history})
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformEditAppFormView />
+            </Provider>,
+            {history}
+        )
 
         expect(history.location.pathname).toEqual(
             '/app/automation/actions-platform/apps'

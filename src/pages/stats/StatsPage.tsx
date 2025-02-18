@@ -47,16 +47,19 @@ type Props = {
     children: ReactNode
     titleExtra?: ReactNode
     headerCanduId?: string
+    banner?: ReactNode
 } & ComponentProps<typeof HeaderTitle>
 
 export default function StatsPage({
     children,
     titleExtra,
     headerCanduId,
+    banner,
     ...headerTitleProps
 }: Props) {
     return (
         <StatsPageWrapper>
+            {banner}
             <StatsPageHeader
                 left={<HeaderTitle {...headerTitleProps} />}
                 right={titleExtra}

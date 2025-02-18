@@ -1,7 +1,16 @@
 import {act, fireEvent, screen, waitFor} from '@testing-library/react'
 
 import {createMemoryHistory} from 'history'
+import {fromJS} from 'immutable'
 import React from 'react'
+
+import {Provider} from 'react-redux'
+
+import configureMockStore from 'redux-mock-store'
+
+import thunk from 'redux-thunk'
+
+import {RootState, StoreDispatch} from 'state/types'
 
 import {flushPromises, renderWithRouter} from 'utils/testing'
 
@@ -16,6 +25,15 @@ jest.mock('../hooks/useApps')
 const mockUseApps = jest.mocked(useApps)
 const mockUseCreateActionsApp = jest.mocked(useCreateActionsApp)
 const mockCreateActionsApp = jest.fn()
+
+const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
+    integrations: fromJS({
+        integrations: [],
+    }),
+    billing: fromJS({
+        products: [],
+    }),
+} as RootState)
 
 mockUseApps.mockReturnValue({
     apps: [
@@ -53,7 +71,11 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
     })
 
     it('should render create app form', () => {
-        renderWithRouter(<ActionsPlatformCreateAppFormView />)
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformCreateAppFormView />
+            </Provider>
+        )
 
         expect(screen.getByText('Actions platform')).toBeInTheDocument()
         expect(screen.getByText('Create App settings')).toBeInTheDocument()
@@ -64,7 +86,12 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
 
         const historyPushSpy = jest.spyOn(history, 'push')
 
-        renderWithRouter(<ActionsPlatformCreateAppFormView />, {history})
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformCreateAppFormView />
+            </Provider>,
+            {history}
+        )
 
         act(() => {
             fireEvent.focus(screen.getByText('Select an App'))
@@ -107,7 +134,11 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
     })
 
     it('should filter out already used apps', () => {
-        renderWithRouter(<ActionsPlatformCreateAppFormView />)
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformCreateAppFormView />
+            </Provider>
+        )
 
         act(() => {
             fireEvent.focus(screen.getByText('Select an App'))
@@ -123,7 +154,11 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
             createActionsApp: mockCreateActionsApp,
         } as unknown as ReturnType<typeof mockUseCreateActionsApp>)
 
-        renderWithRouter(<ActionsPlatformCreateAppFormView />)
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformCreateAppFormView />
+            </Provider>
+        )
 
         act(() => {
             fireEvent.focus(screen.getByText('Select an App'))

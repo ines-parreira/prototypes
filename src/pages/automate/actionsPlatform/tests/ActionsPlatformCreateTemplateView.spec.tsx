@@ -7,6 +7,7 @@ import {
     within,
 } from '@testing-library/react'
 import {createMemoryHistory} from 'history'
+import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -47,7 +48,14 @@ const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
 const mockUseDownloadWorkflowConfigurationStepLogs = jest.mocked(
     useDownloadWorkflowConfigurationStepLogs
 )
-const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])()
+const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
+    integrations: fromJS({
+        integrations: [],
+    }),
+    billing: fromJS({
+        products: [],
+    }),
+} as RootState)
 
 mockUseListActionsApps.mockReturnValue({
     data: [

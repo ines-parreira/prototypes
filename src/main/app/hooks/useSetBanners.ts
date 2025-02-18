@@ -1,5 +1,3 @@
-import {useDisplayAiAgentMovedBanner} from 'pages/automate/common/hooks/useDisplayAiAgentMovedBanner'
-
 import {
     useEmailDomainVerificationBanner,
     useScriptTagMigrationBanner,
@@ -20,7 +18,4 @@ export function useSetBanners() {
     useEmailDomainVerificationBanner()
     useEmailDisconnectedBanner()
     useEmailMigrationBanner()
-
-    // TMP: Remove this when the new AI Agent location will be adopted enough
-    useDisplayAiAgentMovedBanner()
 }

@@ -23,6 +23,7 @@ import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 
 import {initialState as articlesState} from '../../../../state/entities/helpCenter/articles'
 import {initialState as categoriesState} from '../../../../state/entities/helpCenter/categories'
+import {useDisplayAiAgentMovedBanner} from '../../common/hooks/useDisplayAiAgentMovedBanner'
 import {ConnectedChannelsView} from '../ConnectedChannelsView'
 
 const mockChannels = [
@@ -268,6 +269,14 @@ jest.mock(
     })
 )
 
+jest.mock('../../common/hooks/useDisplayAiAgentMovedBanner', () => ({
+    useDisplayAiAgentMovedBanner: jest.fn(),
+}))
+
+jest.mock('../../common/components/AiAgentMovedBanner', () => ({
+    AiAgentMovedBanner: () => <div>AI Agent Moved Banner</div>,
+}))
+
 const renderWithRouter = (ui: React.ReactElement, {route = '/'} = {}) => {
     const history = createMemoryHistory({initialEntries: [route]})
     return {
@@ -360,6 +369,7 @@ describe('ConnectedChannelsView', () => {
             },
             isFetchPending: false,
         })
+        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReset()
     })
     it('should render', () => {
         renderWithRouter(<ConnectedChannelsView />)
@@ -469,5 +479,23 @@ describe('ConnectedChannelsView', () => {
                 expect(screen.getByText(/email/i)).toBeInTheDocument()
             })
         })
+    })
+
+    it('should render AI Agent Moved banner when useDisplayAiAgentMovedBanner returns true', () => {
+        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(true)
+
+        renderWithRouter(<ConnectedChannelsView />)
+
+        expect(screen.getByText('AI Agent Moved Banner')).toBeInTheDocument()
+    })
+
+    it('should not render AI Agent Moved banner when useDisplayAiAgentMovedBanner returns false', () => {
+        ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(false)
+
+        renderWithRouter(<ConnectedChannelsView />)
+
+        expect(
+            screen.queryByText('AI Agent Moved Banner')
+        ).not.toBeInTheDocument()
     })
 })

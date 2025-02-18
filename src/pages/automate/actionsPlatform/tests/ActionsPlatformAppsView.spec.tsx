@@ -1,13 +1,28 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {act, fireEvent, screen, waitFor} from '@testing-library/react'
 
 import {createMemoryHistory} from 'history'
+import {fromJS} from 'immutable'
 import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {IntegrationType} from 'models/integration/constants'
+import {RootState, StoreDispatch} from 'state/types'
+
 import {renderWithRouter} from 'utils/testing'
 
 import ActionsPlatformAppsView from '../ActionsPlatformAppsView'
 import useApps from '../hooks/useApps'
+
+const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
+    integrations: fromJS({
+        integrations: [],
+    }),
+    billing: fromJS({
+        products: [],
+    }),
+} as RootState)
 
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useApps')
@@ -50,7 +65,11 @@ mockUseApps.mockReturnValue({
 
 describe('<ActionsPlatformAppsView />', () => {
     it('should render actions platform apps page', () => {
-        render(<ActionsPlatformAppsView />)
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformAppsView />
+            </Provider>
+        )
 
         expect(
             screen.getByText(
@@ -62,7 +81,11 @@ describe('<ActionsPlatformAppsView />', () => {
     })
 
     it('should filter apps by name', async () => {
-        render(<ActionsPlatformAppsView />)
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformAppsView />
+            </Provider>
+        )
 
         act(() => {
             fireEvent.change(screen.getByPlaceholderText('Search name'), {
@@ -83,7 +106,12 @@ describe('<ActionsPlatformAppsView />', () => {
 
         const historyPushSpy = jest.spyOn(history, 'push')
 
-        renderWithRouter(<ActionsPlatformAppsView />, {history})
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformAppsView />
+            </Provider>,
+            {history}
+        )
 
         act(() => {
             fireEvent.click(screen.getByText('Create App settings'))
@@ -99,7 +127,12 @@ describe('<ActionsPlatformAppsView />', () => {
 
         const historyPushSpy = jest.spyOn(history, 'push')
 
-        renderWithRouter(<ActionsPlatformAppsView />, {history})
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformAppsView />
+            </Provider>,
+            {history}
+        )
 
         act(() => {
             fireEvent.click(screen.getByText('App 1'))

@@ -33,6 +33,9 @@ const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
     integrations: fromJS({
         integrations: [],
     }),
+    billing: fromJS({
+        products: [],
+    }),
 } as RootState)
 
 mockUseListActionsApps.mockReturnValue({

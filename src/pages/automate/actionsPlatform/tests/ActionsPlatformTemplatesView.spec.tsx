@@ -1,9 +1,18 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {act, fireEvent, screen, waitFor} from '@testing-library/react'
+
+import {fromJS} from 'immutable'
 import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {IntegrationType} from 'models/integration/constants'
+
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import {RootState, StoreDispatch} from 'state/types'
+
+import {renderWithRouter} from 'utils/testing'
 
 import ActionsPlatformTemplatesView from '../ActionsPlatformTemplatesView'
 import useApps from '../hooks/useApps'
@@ -13,6 +22,15 @@ jest.mock('models/workflows/queries')
 jest.mock('hooks/useGetDateAndTimeFormat')
 jest.mock('../hooks/useApps')
 jest.mock('../hooks/useDeleteActionTemplate')
+
+const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
+    integrations: fromJS({
+        integrations: [],
+    }),
+    billing: fromJS({
+        products: [],
+    }),
+} as RootState)
 
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates
@@ -70,7 +88,11 @@ mockUseDeleteActionTemplate.mockReturnValue({
 
 describe('<ActionsPlatformTemplatesView />', () => {
     it('should render actions platform templates page', () => {
-        render(<ActionsPlatformTemplatesView />)
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformTemplatesView />
+            </Provider>
+        )
 
         expect(
             screen.getByText(
@@ -82,7 +104,11 @@ describe('<ActionsPlatformTemplatesView />', () => {
     })
 
     it('should filter templates by app', () => {
-        render(<ActionsPlatformTemplatesView />)
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformTemplatesView />
+            </Provider>
+        )
 
         act(() => {
             fireEvent.click(screen.getByText('Select value...'))
@@ -97,7 +123,11 @@ describe('<ActionsPlatformTemplatesView />', () => {
     })
 
     it('should filter templates by name', async () => {
-        render(<ActionsPlatformTemplatesView />)
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformTemplatesView />
+            </Provider>
+        )
 
         act(() => {
             fireEvent.change(screen.getByPlaceholderText('Search name'), {
@@ -114,7 +144,11 @@ describe('<ActionsPlatformTemplatesView />', () => {
     })
 
     it('should show only relevant apps in app filter', () => {
-        render(<ActionsPlatformTemplatesView />)
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformTemplatesView />
+            </Provider>
+        )
 
         act(() => {
             fireEvent.click(screen.getByText('Select value...'))

@@ -3,6 +3,7 @@ import {act, fireEvent, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
+import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {ulid} from 'ulidx'
@@ -33,6 +34,9 @@ const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
     integrations: fromJS({
         integrations: [],
+    }),
+    billing: fromJS({
+        products: [],
     }),
 } as RootState)
 const mockEditActionTemplate = jest.fn()
@@ -179,11 +183,13 @@ describe('<ActionsPlatformEditUseCaseTemplateView />', () => {
     const renderApp = (template: ActionTemplate) => {
         renderWithDnD(
             <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <ActionsPlatformEditUseCaseTemplateView
-                        template={template}
-                    />
-                </QueryClientProvider>
+                <MemoryRouter>
+                    <QueryClientProvider client={queryClient}>
+                        <ActionsPlatformEditUseCaseTemplateView
+                            template={template}
+                        />
+                    </QueryClientProvider>
+                </MemoryRouter>
             </Provider>
         )
     }

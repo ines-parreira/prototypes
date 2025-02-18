@@ -1,6 +1,7 @@
 import {QueryClientProvider} from '@tanstack/react-query'
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {act, fireEvent, screen, waitFor} from '@testing-library/react'
 import {produce} from 'immer'
+import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -16,6 +17,8 @@ import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/work
 import {RootState, StoreDispatch} from 'state/types'
 
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
+import {renderWithRouter} from 'utils/testing'
 
 import ActionsPlatformEditTemplateView from '../ActionsPlatformEditTemplateView'
 import useEditActionTemplate from '../hooks/useEditActionTemplate'
@@ -33,7 +36,14 @@ const mockUseListActionsApps = jest.mocked(useListActionsApps)
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates
 )
-const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])()
+const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
+    integrations: fromJS({
+        integrations: [],
+    }),
+    billing: fromJS({
+        products: [],
+    }),
+} as RootState)
 const mockEditActionTemplate = jest.fn()
 
 mockUseEditActionTemplate.mockReturnValue({
@@ -97,7 +107,7 @@ const template = b.build()
 
 describe('<ActionsPlatformEditTemplateView />', () => {
     const renderApp = (template: ActionTemplate) => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={queryClient}>
                     <ActionsPlatformEditTemplateView template={template} />

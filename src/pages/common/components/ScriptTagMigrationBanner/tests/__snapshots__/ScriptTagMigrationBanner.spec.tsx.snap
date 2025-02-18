@@ -5,6 +5,7 @@ exports[`<ScriptTagMigrationBanner /> should contain both re-install and permiss
   <div
     aria-live="assertive"
     class="AlertBanner critical"
+    role="banner"
   >
     <div
       class="centralContainer"
@@ -56,6 +57,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
   <div
     aria-live="assertive"
     class="AlertBanner critical"
+    role="banner"
   >
     <div
       class="centralContainer"
@@ -97,6 +99,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
   <div
     aria-live="assertive"
     class="AlertBanner critical"
+    role="banner"
   >
     <div
       class="centralContainer"
@@ -138,6 +141,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only re-install link for a 
   <div
     aria-live="assertive"
     class="AlertBanner critical"
+    role="banner"
   >
     <div
       class="centralContainer"
@@ -186,6 +190,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only re-install link for mu
   <div
     aria-live="assertive"
     class="AlertBanner critical"
+    role="banner"
   >
     <div
       class="centralContainer"
@@ -234,6 +239,7 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for a singl
   <div
     aria-live="assertive"
     class="AlertBanner critical"
+    role="banner"
   >
     <div
       class="centralContainer"
@@ -285,6 +291,7 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for multipl
   <div
     aria-live="assertive"
     class="AlertBanner critical"
+    role="banner"
   >
     <div
       class="centralContainer"

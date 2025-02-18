@@ -55,6 +55,7 @@ exports[`Detail should render 1`] = `
   <div
     aria-live="polite"
     class="AlertBanner info borderless"
+    role="banner"
   >
     <div
       class="centralContainer"
