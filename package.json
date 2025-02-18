@@ -29,6 +29,7 @@
         "build-storybook": "storybook build",
         "storybook-docs": "storybook build --docs",
         "patch-package": "patch-package",
+        "postinstall": "patch-package",
         "build": "run-s build:clean build:vendors build:app build:sharedWorker",
         "build:clean": "yarn rimraf build/*",
         "build:app": "NODE_ENV=production rspack --config rspack.app.config.ts",
