@@ -6,8 +6,9 @@ import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {
     formatCurrency,
-    formatNumber,
-    formatPercent,
+    formatMetricValue,
+    MetricTrendFormat,
+    NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import MetricCard from 'pages/stats/MetricCard'
 
@@ -18,7 +19,8 @@ type Props = {
     isLoading?: boolean
     value?: number
     prevValue?: number
-    metricType?: StatType.Number | StatType.Percent | StatType.Currency
+    metricType?: StatType.Number | StatType.Currency
+    metricFormat?: MetricTrendFormat
     currency?: string
     hint?: string
 }
@@ -28,26 +30,23 @@ export const Kpi = ({
     value,
     prevValue,
     metricType,
+    metricFormat,
     currency,
     hint,
     isLoading,
 }: Props) => {
     const formattedValue = useMemo(() => {
         if (value === undefined) {
-            return ''
+            return NOT_AVAILABLE_PLACEHOLDER
         }
-
-        const fixedValue = +value.toFixed(2)
 
         switch (metricType) {
             case StatType.Number:
-                return formatNumber(fixedValue)
+                return formatMetricValue(value, metricFormat)
             case StatType.Currency:
-                return formatCurrency(fixedValue, currency ?? 'USD')
-            case StatType.Percent:
-                return formatPercent(fixedValue)
+                return formatCurrency(value, currency ?? 'USD')
         }
-    }, [metricType, value, currency])
+    }, [metricType, metricFormat, value, currency])
 
     const cardTitle = useMemo(() => {
         if (title === undefined) {

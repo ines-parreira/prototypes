@@ -1,4 +1,5 @@
 import {StatType} from 'models/stat/types'
+import {MetricTrendFormat} from 'pages/stats/common/utils'
 
 export type KpiMetric = {
     isLoading: boolean
@@ -6,6 +7,7 @@ export type KpiMetric = {
     hint: string
     value?: number | null
     prevValue?: number | null
-    metricType: StatType.Number | StatType.Percent | StatType.Currency
+    metricType: StatType.Number | StatType.Currency
     currency?: string
+    metricFormat?: MetricTrendFormat
 }

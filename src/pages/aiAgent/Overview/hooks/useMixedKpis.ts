@@ -1,7 +1,7 @@
 import {StatsFilters} from 'models/stat/types'
-import {useAutomationRate} from 'pages/aiAgent/Overview/hooks/useAutomationRate'
-import {useCoverageRate} from 'pages/aiAgent/Overview/hooks/useCoverageRate'
-import {useCsat} from 'pages/aiAgent/Overview/hooks/useCsat'
+import {useAutomationRate} from 'pages/aiAgent/Overview/hooks/kpis/useAutomationRate'
+import {useCoverageRate} from 'pages/aiAgent/Overview/hooks/kpis/useCoverageRate'
+import {useCsat} from 'pages/aiAgent/Overview/hooks/kpis/useCsat'
 
 export const useMixedKpis = (filters: StatsFilters, timezone: string) => {
     const coverageRate = useCoverageRate(filters, timezone)

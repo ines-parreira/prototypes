@@ -5,9 +5,8 @@ import {ticketFieldDefinitions} from 'fixtures/customField'
 import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
 import {StatsFilters, StatType} from 'models/stat/types'
 
+import {useAutomationRate} from 'pages/aiAgent/Overview/hooks/kpis/useAutomationRate'
 import {assumeMock} from 'utils/testing'
-
-import {useAutomationRate} from '../useAutomationRate'
 
 jest.mock('hooks/reporting/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
@@ -51,7 +50,8 @@ describe('useAutomationRate', () => {
         expect(result.current).toEqual({
             title: 'Automation Rate',
             hint: 'Automated interactions as a percent of all customer interactions.',
-            metricType: StatType.Percent,
+            metricType: StatType.Number,
+            metricFormat: 'decimal-to-percent',
             isLoading: false,
             prevValue: 3.5,
             value: 1.55,
@@ -68,7 +68,8 @@ describe('useAutomationRate', () => {
         expect(result.current).toEqual({
             title: 'Automation Rate',
             hint: 'Automated interactions as a percent of all customer interactions.',
-            metricType: StatType.Percent,
+            metricType: StatType.Number,
+            metricFormat: 'decimal-to-percent',
             isLoading: true,
             value: 0,
             prevValue: 0,

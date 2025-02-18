@@ -59,6 +59,7 @@ const KpiContainer = ({
                         title={metric.title}
                         hint={metric.hint}
                         metricType={metric.metricType}
+                        metricFormat={metric.metricFormat}
                     />
                 )
             })}

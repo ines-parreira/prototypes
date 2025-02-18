@@ -15,6 +15,7 @@ describe('Kpi', () => {
                 value={1500}
                 prevValue={1200}
                 metricType={StatType.Number}
+                metricFormat="decimal"
             />
         )
 
@@ -56,29 +57,14 @@ describe('Kpi', () => {
         expect(screen.getByText('$1,234.56')).toBeInTheDocument()
     })
 
-    it('should format value as percent when metric type is StatType.Percent', () => {
-        render(
-            <Kpi
-                title="Rate KPI"
-                value={87.5}
-                prevValue={85}
-                metricType={StatType.Percent}
-                hint="Conversion hint"
-                isLoading={false}
-            />
-        )
-
-        expect(screen.getByText('Rate KPI')).toBeInTheDocument()
-        expect(screen.getByText('87.5%')).toBeInTheDocument()
-    })
-
     it('should format value with 2 numbers after the comma when it is a really long number', () => {
         render(
             <Kpi
                 title="Rate KPI"
-                value={87.55555555}
-                prevValue={85}
-                metricType={StatType.Percent}
+                value={0.8755555555}
+                prevValue={0.85}
+                metricType={StatType.Number}
+                metricFormat="decimal-to-percent"
                 hint="Conversion hint"
                 isLoading={false}
             />

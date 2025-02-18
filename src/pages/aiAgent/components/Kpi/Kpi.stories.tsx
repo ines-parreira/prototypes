@@ -17,6 +17,7 @@ Number.args = {
     value: 2920,
     prevValue: 3241,
     metricType: StatType.Number,
+    metricFormat: 'decimal',
 }
 
 export const Percent: Story = {}
@@ -24,7 +25,8 @@ Percent.args = {
     title: 'Automation Rate',
     value: 0.45,
     prevValue: 0.3,
-    metricType: StatType.Percent,
+    metricType: StatType.Number,
+    metricFormat: 'decimal-to-percent',
 }
 
 export const Currency: Story = {}

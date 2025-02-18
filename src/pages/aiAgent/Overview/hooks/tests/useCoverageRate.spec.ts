@@ -4,9 +4,8 @@ import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFi
 import {ticketFieldDefinitions} from 'fixtures/customField'
 import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
 import {StatsFilters, StatType} from 'models/stat/types'
+import {useCoverageRate} from 'pages/aiAgent/Overview/hooks/kpis/useCoverageRate'
 import {assumeMock} from 'utils/testing'
-
-import {useCoverageRate} from '../useCoverageRate'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
@@ -50,7 +49,8 @@ describe('useCoverageRate', () => {
         expect(result.current).toEqual({
             title: 'Coverage Rate',
             hint: 'Percentage of tickets that AI Agent attempted to respond to.',
-            metricType: StatType.Percent,
+            metricType: StatType.Number,
+            metricFormat: 'decimal-to-percent',
             value: 1.55,
             prevValue: 3.5,
             isLoading: false,
@@ -67,7 +67,8 @@ describe('useCoverageRate', () => {
         expect(result.current).toEqual({
             title: 'Coverage Rate',
             hint: 'Percentage of tickets that AI Agent attempted to respond to.',
-            metricType: StatType.Percent,
+            metricType: StatType.Number,
+            metricFormat: 'decimal-to-percent',
             value: 0,
             prevValue: 0,
             isLoading: true,

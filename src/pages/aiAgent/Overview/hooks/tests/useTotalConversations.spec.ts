@@ -9,9 +9,8 @@ import {ApiListResponseCursorPagination} from 'models/api/types'
 import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {StatsFilters, StatType} from 'models/stat/types'
 
+import {useTotalConversations} from 'pages/aiAgent/Overview/hooks/kpis/useTotalConversations'
 import {assumeMock} from 'utils/testing'
-
-import {useTotalConversations} from '../useTotalConversations'
 
 jest.mock('hooks/reporting/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
@@ -56,9 +55,10 @@ describe('useTotalConversations', () => {
         )
 
         expect(result.current).toEqual({
-            title: 'Total Conversations',
+            title: 'Total AI Sales Conversations',
             hint: 'The total number of conversations handled or influenced by the AI Agent for Sales.',
             metricType: StatType.Number,
+            metricFormat: 'decimal',
             value: 843,
             prevValue: 754,
             isLoading: false,
@@ -87,9 +87,10 @@ describe('useTotalConversations', () => {
         )
 
         expect(result.current).toEqual({
-            title: 'Total Conversations',
+            title: 'Total AI Sales Conversations',
             hint: 'The total number of conversations handled or influenced by the AI Agent for Sales.',
             metricType: StatType.Number,
+            metricFormat: 'decimal',
             value: 843,
             prevValue: 754,
             isLoading: false,
@@ -106,9 +107,10 @@ describe('useTotalConversations', () => {
         )
 
         expect(result.current).toEqual({
-            title: 'Total Conversations',
+            title: 'Total AI Sales Conversations',
             hint: 'The total number of conversations handled or influenced by the AI Agent for Sales.',
             metricType: StatType.Number,
+            metricFormat: 'decimal',
             isLoading: true,
         })
     })

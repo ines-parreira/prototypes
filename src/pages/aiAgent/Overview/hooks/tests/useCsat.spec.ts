@@ -2,9 +2,8 @@ import {renderHook} from '@testing-library/react-hooks/dom'
 
 import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
 import {StatsFilters, StatType} from 'models/stat/types'
+import {useCsat} from 'pages/aiAgent/Overview/hooks/kpis/useCsat'
 import {assumeMock} from 'utils/testing'
-
-import {useCsat} from '../useCsat'
 
 jest.mock('hooks/reporting/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
@@ -35,6 +34,7 @@ describe('useCsat', () => {
             title: 'CSAT (Customer Satisfaction Score)',
             hint: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
             metricType: StatType.Number,
+            metricFormat: 'decimal',
             value: 3.1,
             isLoading: false,
         })
@@ -51,6 +51,7 @@ describe('useCsat', () => {
             title: 'CSAT (Customer Satisfaction Score)',
             hint: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
             metricType: StatType.Number,
+            metricFormat: 'decimal',
             isLoading: true,
         })
     })

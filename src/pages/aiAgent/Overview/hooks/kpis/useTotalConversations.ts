@@ -25,9 +25,10 @@ export const useTotalConversations = (
     )
 
     return {
-        title: 'Total Conversations',
+        title: 'Total AI Sales Conversations',
         hint: 'The total number of conversations handled or influenced by the AI Agent for Sales.',
         metricType: StatType.Number,
+        metricFormat: 'decimal',
         isLoading: result.isFetching,
         ...result.data?.[
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount

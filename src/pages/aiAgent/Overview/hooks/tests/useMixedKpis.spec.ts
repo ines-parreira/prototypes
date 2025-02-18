@@ -2,13 +2,13 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import {useMixedKpis} from '../useMixedKpis'
 
-jest.mock('../useCoverageRate', () => ({
+jest.mock('pages/aiAgent/Overview/hooks/kpis/useCoverageRate', () => ({
     useCoverageRate: jest.fn(() => 'mockCoverageRate'),
 }))
-jest.mock('../useAutomationRate', () => ({
+jest.mock('pages/aiAgent/Overview/hooks/kpis/useAutomationRate', () => ({
     useAutomationRate: jest.fn(() => 'mockAutomationRate'),
 }))
-jest.mock('../useCsat', () => ({
+jest.mock('pages/aiAgent/Overview/hooks/kpis/useCsat', () => ({
     useCsat: jest.fn(() => 'mockCsat'),
 }))
 

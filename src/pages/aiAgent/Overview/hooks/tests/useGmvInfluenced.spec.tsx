@@ -6,9 +6,8 @@ import React from 'react'
 
 import {StatType} from 'models/stat/types'
 
+import {useGmvInfluenced} from 'pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-
-import {useGmvInfluenced} from '../useGmvInfluenced'
 
 const queryClient = mockQueryClient()
 

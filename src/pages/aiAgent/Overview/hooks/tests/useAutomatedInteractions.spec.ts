@@ -1,15 +1,18 @@
 import {renderHook} from '@testing-library/react-hooks/dom'
 
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import {ticketFieldDefinitions} from 'fixtures/customField'
 import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
 import {StatsFilters, StatType} from 'models/stat/types'
 
+import {useAutomatedInteractions} from 'pages/aiAgent/Overview/hooks/kpis/useAutomatedInteractions'
 import {assumeMock} from 'utils/testing'
 
-import {useAutomatedInteractions} from '../useAutomatedInteractions'
-
 jest.mock('hooks/reporting/useMultipleMetricsTrend')
-
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
+
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
+const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 
 const timezone = 'UTC'
 const filters: StatsFilters = {
@@ -20,10 +23,17 @@ const filters: StatsFilters = {
 }
 
 describe('useAutomatedInteractions', () => {
+    beforeEach(() => {
+        useCustomFieldDefinitionsMock.mockReturnValue({
+            data: {data: ticketFieldDefinitions},
+            isLoading: false,
+        } as any)
+    })
+
     it('should return correct metric data when the query resolves', () => {
         useMultipleMetricsTrendsMock.mockReturnValueOnce({
             data: {
-                'AutomationDataset.automatedInteractions': {
+                'TicketCustomFieldsEnriched.ticketCount': {
                     value: 450,
                     prevValue: 300,
                 },
@@ -39,6 +49,7 @@ describe('useAutomatedInteractions', () => {
             title: 'Automated Interactions',
             hint: 'Total of fully automated AI Agent interactions solved without any agent intervention.',
             metricType: StatType.Number,
+            metricFormat: 'decimal',
             value: 450,
             prevValue: 300,
             isLoading: false,
@@ -58,6 +69,7 @@ describe('useAutomatedInteractions', () => {
             title: 'Automated Interactions',
             hint: 'Total of fully automated AI Agent interactions solved without any agent intervention.',
             metricType: StatType.Number,
+            metricFormat: 'decimal',
             isLoading: true,
         })
     })

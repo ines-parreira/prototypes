@@ -9,7 +9,7 @@ import {
     getCurrentAccountId,
     getCurrentDomain,
 } from 'state/currentAccount/selectors'
-import {getStoreIntegrations} from 'state/integrations/selectors'
+import {getShopifyIntegrationsSortedByName} from 'state/integrations/selectors'
 
 type Store = {
     name: string
@@ -24,7 +24,7 @@ const expireIn1Hour = 3_600 * 1_000
  * to decouple data fetching and presentation logic and ease implementation of it in storybook
  * */
 export const PendingTasksSectionConnected = () => {
-    const rawStores = useAppSelector(getStoreIntegrations)
+    const rawStores = useAppSelector(getShopifyIntegrationsSortedByName)
     const accountDomain = useAppSelector(getCurrentDomain)
     const accountId = useAppSelector(getCurrentAccountId)
 
