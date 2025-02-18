@@ -20,7 +20,7 @@ import {
 
 export const CUSTOM_REPORT_CTA = 'Add Charts'
 
-const createDashboardName = () => {
+export const createDashboardName = (): string => {
     const [date, time] = new Date().toISOString().split('T')
     const [h, m] = time.split(':')
 
@@ -38,7 +38,7 @@ export const CustomReports = () => {
     const openModal = useCallback(() => setIsOpen(true), [])
 
     const [details, setDetails] = useState<DashboardNameValue>({
-        name: '',
+        name: createDashboardName(),
         emoji: '',
     })
 
@@ -53,7 +53,7 @@ export const CustomReports = () => {
                 dashboard: {
                     ...details,
                     children: charts,
-                    name: details.name.trim() || createDashboardName(),
+                    name: details.name.trim(),
                 },
                 onSuccess: (response) => {
                     history.push(`/app/stats/custom-reports/${response?.id}`)

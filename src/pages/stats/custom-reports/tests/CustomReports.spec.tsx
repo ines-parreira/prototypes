@@ -1,5 +1,4 @@
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-
 import React from 'react'
 import {useHistory} from 'react-router-dom'
 
@@ -9,6 +8,7 @@ import {useReportRestrictions} from 'hooks/reporting/custom-reports/useReportRes
 import {useNotify} from 'hooks/useNotify'
 import {CreateCustomReport} from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
 import {
+    createDashboardName,
     CUSTOM_REPORT_CTA,
     CustomReports,
 } from 'pages/stats/custom-reports/CustomReports'
@@ -103,6 +103,14 @@ describe('CustomReports', () => {
         await waitFor(() => {
             expect(screen.getByText(MODAL_TITLE)).toBeInTheDocument()
         })
+    })
+
+    it('should have a default name', () => {
+        render(<CustomReports />)
+
+        const dashboardName = createDashboardName()
+
+        expect(screen.getByRole('textbox')).toHaveValue(dashboardName)
     })
 
     it('should create a dashboard when modal is saved', async () => {
