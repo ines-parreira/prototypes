@@ -41,6 +41,7 @@ import AiAgentMainViewContainer from 'pages/aiAgent/AiAgentMainViewContainer'
 import AiAgentOnboardingWizard from 'pages/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard'
 import {AiAgentPlaygroundContainer} from 'pages/aiAgent/AiAgentPlaygroundContainer'
 import {AiAgentPreviewModeSettingsContainer} from 'pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer'
+import {AiAgentSales} from 'pages/aiAgent/AiAgentSales'
 import {AiAgentNavbar} from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
 import {RedirectToAiAgentStore} from 'pages/aiAgent/components/RedirectToAiAgentStore/RedirectToAiAgentStore'
 import {useAiAgentItemEnabled} from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
@@ -446,6 +447,9 @@ function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
     const isAiAgentStandaloneMenuEnabled =
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
+    const isAiAgentSalesPageEnabled =
+        useFlags()[FeatureFlagKey.StandaloneAIAgentSalesPage]
+
     if (shopType !== 'shopify') {
         return <Redirect to="/app/automation" />
     }
@@ -738,6 +742,18 @@ function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
                             component={ActionEventsViewContainer}
                         />
                     </Switch>
+                    {isAiAgentSalesPageEnabled && (
+                        <AiAgentErrorBoundary
+                            section="ai-agent-sales"
+                            team={OBS_ADOPT_SENTRY_TEAM}
+                        >
+                            <Route
+                                path={`${path}/sales`}
+                                exact
+                                component={AiAgentSales}
+                            />
+                        </AiAgentErrorBoundary>
+                    )}
                 </AiAgentStoreConfigurationProvider>
             </AiAgentAccountConfigurationProvider>
         </Switch>
@@ -1194,6 +1210,7 @@ function AiAgentContent() {
                 path={`${path}/:shopType/:shopName`}
                 component={withUserRoleRequired(AiAgentRoutes, AGENT_ROLE)}
             />
+
             <Route>
                 <RedirectToAiAgentStore />
             </Route>

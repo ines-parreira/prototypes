@@ -102,6 +102,10 @@ jest.mock('pages/aiAgent/AiAgentKnowledgeContainer', () => ({
     AiAgentKnowledgeContainer: () => <div>AiAgentKnowledgeContainer</div>,
 }))
 
+jest.mock('pages/aiAgent/AiAgentSales', () => ({
+    AiAgentSales: () => <div>AiAgentSales</div>,
+}))
+
 jest.mock('pages/aiAgent/hooks/useAiAgentItemEnabled')
 const useAiAgentItemEnabledMock = assumeMock(useAiAgentItemEnabled)
 
@@ -505,6 +509,26 @@ describe('<Routes/>', () => {
 
                 expect(mockHistory.location.pathname).toBe(to)
             })
+        })
+
+        it('should render sales page when flag standalone-ai-agent-sales-page is enabled', () => {
+            mockFlags({
+                [FeatureFlagKey.StandaloneAIAgentSalesPage]: true,
+            })
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <MemoryRouter
+                        initialEntries={[
+                            '/app/ai-agent/shopify/test-shop/sales',
+                        ]}
+                    >
+                        <Routes />
+                    </MemoryRouter>
+                </Provider>
+            )
+
+            expect(screen.getByText('AiAgentSales')).toBeInTheDocument()
         })
     })
 

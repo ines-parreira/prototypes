@@ -95,7 +95,7 @@ describe('useAiAgentOverview', () => {
     })
 
     describe('when coming from another page', () => {
-        it('should renders the Thank You modal', () => {
+        it('should not renders the Thank You modal', () => {
             useLocationMock.mockReturnValue({
                 ...defaultLocation,
                 state: {from: '/app/ai-agent/test'},
