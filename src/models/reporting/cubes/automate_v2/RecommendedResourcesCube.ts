@@ -10,7 +10,7 @@ export enum RecommendedResourcesDimension {
     Channel = 'RecommendedResources.channel',
     AutomationEventCreatedDatetime = 'RecommendedResources.automationEventCreatedDatetime',
     TicketId = 'RecommendedResources.ticketId',
-    RecommendedResourceId = 'RecommendedResources.recommendedResourceId',
+    RecommendedResourceId = 'RecommendedResources.resourceId',
 }
 
 export enum RecommendedResourcesFilterMember {
@@ -20,7 +20,6 @@ export enum RecommendedResourcesFilterMember {
     PeriodStart = 'RecommendedResources.periodStart',
     PeriodEnd = 'RecommendedResources.periodEnd',
     TicketId = 'RecommendedResources.ticketId',
-    RecommendedResourceId = 'RecommendedResources.recommendedResourceId',
 }
 export enum RecommendedResourcesSegment {}
 
