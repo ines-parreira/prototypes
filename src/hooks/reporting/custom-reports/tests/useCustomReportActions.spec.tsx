@@ -8,6 +8,8 @@ import {
     useListAnalyticsCustomReports,
     useUpdateAnalyticsCustomReport,
     getListAnalyticsCustomReportsQueryOptions,
+    getGetAnalyticsCustomReportQueryOptions,
+    UpdateAnalyticsCustomReportBody,
 } from '@gorgias/api-queries'
 import {
     QueryClientProvider,
@@ -23,7 +25,6 @@ import {
     CUSTOM_REPORT_DUPLICATE_ERROR_MESSAGE,
     CUSTOM_REPORT_DELETED_SUCCESS_MESSAGE,
     CUSTOM_REPORT_DELETED_ERROR_MESSAGE,
-    CUSTOM_REPORT_EDITED_ERROR_MESSAGE,
     SUCCESSFULLY_CREATED,
 } from 'hooks/reporting/custom-reports/useCustomReportActions'
 import {CustomReportChildType} from 'models/stat/types'
@@ -53,6 +54,9 @@ const useUpdateAnalyticsCustomReportMock = assumeMock(
 jest.mock('@gorgias/api-queries')
 const getListAnalyticsCustomReportsQueryOptionsMock = assumeMock(
     getListAnalyticsCustomReportsQueryOptions
+)
+const getGetAnalyticsCustomReportQueryOptionsMock = assumeMock(
+    getGetAnalyticsCustomReportQueryOptions
 )
 jest.mock('pages/stats/custom-reports/constants', () => ({
     MAX_DASHBOARDS_ALLOWED: 3,
@@ -163,6 +167,10 @@ describe('useCustomReportActions', () => {
         getListAnalyticsCustomReportsQueryOptionsMock.mockReturnValue({
             queryKey: createInvalidateKey,
         })
+
+        getGetAnalyticsCustomReportQueryOptionsMock.mockImplementation(
+            (id: number) => ({queryKey: ['customReports', id]})
+        )
     })
 
     const invalidateQueriesMock = jest.spyOn(queryClient, 'invalidateQueries')
@@ -341,23 +349,25 @@ describe('useCustomReportActions', () => {
         }
 
         const expectPayload = {
-            analytics_filter_id: null,
-            children: [
-                {
-                    children: [
-                        {
-                            config_id: '456',
-                            metadata: {},
-                            type: 'chart',
-                        },
-                    ],
-                    metadata: {},
-                    type: 'row',
-                },
-            ],
-            emoji: '',
-            name: 'Test Report',
-            type: 'custom',
+            data: {
+                analytics_filter_id: null,
+                children: [
+                    {
+                        children: [
+                            {
+                                config_id: '456',
+                                metadata: {},
+                                type: 'chart',
+                            },
+                        ],
+                        metadata: {},
+                        type: 'row',
+                    },
+                ],
+                emoji: '',
+                name: 'Test Report',
+                type: 'custom',
+            },
         }
 
         it('should call updateDashboard mutation', () => {
@@ -370,18 +380,19 @@ describe('useCustomReportActions', () => {
             })
 
             result.current.updateDashboardHandler(updateHandlerData)
+
             const [mutateArg, mutateOptions] = updateMutationMock.mock
                 .calls[0] as [
-                {id: number; data: CreateAnalyticsCustomReportBody},
+                {id: number; data: UpdateAnalyticsCustomReportBody},
                 {
-                    onSuccess?: () => void
+                    onSuccess?: (data: any) => void
                     onError?: () => void
                 },
             ]
 
             expect(mutateArg).toEqual({
                 id: customReport.id,
-                data: expectPayload,
+                data: expectPayload.data,
             })
 
             expect(mutateOptions).toEqual(
@@ -392,16 +403,21 @@ describe('useCustomReportActions', () => {
             )
 
             if (mutateOptions.onSuccess) {
-                mutateOptions.onSuccess()
+                mutateOptions.onSuccess({
+                    data: {id: customReport.id, ...expectPayload.data},
+                })
             }
 
-            expect(invalidateQueriesMock).toHaveBeenCalledWith({
-                queryKey: invalidationKeys,
-            })
+            expect(invalidateQueriesMock).toHaveBeenCalledWith(
+                getGetAnalyticsCustomReportQueryOptionsMock(customReport.id)
+                    .queryKey
+            )
+
+            expect(invalidateQueriesMock).toHaveBeenCalledWith(invalidationKeys)
 
             expect(notify).toHaveBeenCalledWith({
                 status: NotificationStatus.Success,
-                message: `Successfully added 1 chart to ${customReport.name}`,
+                message: `Successfully saved 1 chart to ${customReport.name}`,
             })
         })
 
@@ -420,20 +436,20 @@ describe('useCustomReportActions', () => {
             })
 
             const [, mutateOptions] = updateMutationMock.mock.calls[0] as [
-                {id: number; data: CreateAnalyticsCustomReportBody},
+                {id: number; data: UpdateAnalyticsCustomReportBody},
                 {
-                    onSuccess?: () => void
+                    onSuccess?: (data: any) => void
                     onError?: () => void
                 },
             ]
 
             if (mutateOptions.onSuccess) {
-                mutateOptions.onSuccess()
+                mutateOptions.onSuccess({data: {id: customReport.id}})
             }
 
             expect(notify).toHaveBeenCalledWith({
                 status: NotificationStatus.Success,
-                message: `Successfully added 2 charts to ${customReport.name}`,
+                message: `Successfully saved 2 charts to ${customReport.name}`,
             })
         })
 
@@ -447,6 +463,7 @@ describe('useCustomReportActions', () => {
             })
 
             result.current.updateDashboardHandler(updateHandlerData)
+
             const [, mutateOptions] = updateMutationMock.mock.calls[0] as [
                 {id: number; data: CreateAnalyticsCustomReportBody},
                 {
@@ -460,25 +477,8 @@ describe('useCustomReportActions', () => {
 
             expect(notify).toHaveBeenCalledWith({
                 status: NotificationStatus.Error,
-                message: `${customReport.name} ${CUSTOM_REPORT_EDITED_ERROR_MESSAGE}`,
+                message: 'Oops! Something went wrong.',
             })
-        })
-
-        it('should not do anything if dashboard is undefined', () => {
-            const {result} = renderHook(() => useCustomReportActions(), {
-                wrapper: ({children}) => (
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                    </QueryClientProvider>
-                ),
-            })
-
-            result.current.updateDashboardHandler({
-                ...updateHandlerData,
-                dashboard: undefined,
-            })
-
-            expect(updateMutationMock).not.toHaveBeenCalled()
         })
     })
 
@@ -503,29 +503,31 @@ describe('useCustomReportActions', () => {
         }
 
         const expectedPayload = {
-            analytics_filter_id:
-                updateHandlerData.dashboard.analytics_filter_id,
-            children: [
-                {
-                    children: [
-                        {
-                            config_id: firstChartId,
-                            metadata: {},
-                            type: CustomReportChildType.Chart,
-                        },
-                        {
-                            config_id: secondChartId,
-                            metadata: {},
-                            type: CustomReportChildType.Chart,
-                        },
-                    ],
-                    metadata: {},
-                    type: CustomReportChildType.Row,
-                },
-            ],
-            emoji: updateHandlerData.dashboard.emoji,
-            name: updateHandlerData.dashboard.name,
-            type: 'custom',
+            data: {
+                analytics_filter_id:
+                    updateHandlerData.dashboard.analytics_filter_id,
+                children: [
+                    {
+                        children: [
+                            {
+                                config_id: firstChartId,
+                                metadata: {},
+                                type: CustomReportChildType.Chart,
+                            },
+                            {
+                                config_id: secondChartId,
+                                metadata: {},
+                                type: CustomReportChildType.Chart,
+                            },
+                        ],
+                        metadata: {},
+                        type: CustomReportChildType.Row,
+                    },
+                ],
+                emoji: updateHandlerData.dashboard.emoji,
+                name: updateHandlerData.dashboard.name,
+                type: 'custom',
+            },
         }
 
         it('should call updateDashboard mutation', () => {
@@ -543,18 +545,18 @@ describe('useCustomReportActions', () => {
                 .calls[0] as [
                 {id: number; data: CreateAnalyticsCustomReportBody},
                 {
-                    onSuccess?: () => void
+                    onSuccess?: (data: any) => void
                     onError?: () => void
                 },
             ]
 
             if (mutateOptions.onSuccess) {
-                mutateOptions.onSuccess()
+                mutateOptions.onSuccess({data: expectedPayload})
             }
 
             expect(mutateArg).toEqual({
                 id: customReport.id,
-                data: expectedPayload,
+                data: expectedPayload.data,
             })
         })
     })
@@ -617,13 +619,15 @@ describe('useCustomReportActions', () => {
                 .calls[0] as [
                 {id: number; data: CreateAnalyticsCustomReportBody},
                 {
-                    onSuccess?: () => void
+                    onSuccess?: (data: any) => void
                     onError?: () => void
                 },
             ]
 
             if (mutateOptions.onSuccess) {
-                mutateOptions.onSuccess()
+                mutateOptions.onSuccess({
+                    data: {...expectedPayload, id: customReport.id},
+                })
             }
 
             expect(mutateArg).toEqual({
@@ -631,9 +635,12 @@ describe('useCustomReportActions', () => {
                 data: expectedPayload,
             })
 
-            expect(invalidateQueriesMock).toHaveBeenCalledWith({
-                queryKey: invalidationKeys,
-            })
+            expect(invalidateQueriesMock).toHaveBeenCalledWith(
+                getGetAnalyticsCustomReportQueryOptionsMock(customReport.id)
+                    .queryKey
+            )
+
+            expect(invalidateQueriesMock).toHaveBeenCalledWith(invalidationKeys)
 
             expect(notify).toHaveBeenCalledWith({
                 status: NotificationStatus.Success,

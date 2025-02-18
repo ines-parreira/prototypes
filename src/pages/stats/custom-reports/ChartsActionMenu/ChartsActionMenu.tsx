@@ -1,9 +1,7 @@
 import classNames from 'classnames'
-
 import React, {ReactNode, useRef, useState} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-
 import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import useAppSelector from 'hooks/useAppSelector'
 import {CustomReportChild} from 'models/stat/types'

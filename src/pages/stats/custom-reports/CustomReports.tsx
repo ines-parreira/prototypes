@@ -11,7 +11,6 @@ import {
     DashboardName,
     DashboardNameValue,
 } from 'pages/stats/custom-reports/DashboardName'
-import {CustomReportChild} from 'pages/stats/custom-reports/types'
 import {
     StatsPageContent,
     StatsPageHeader,
@@ -48,13 +47,13 @@ export const CustomReports = () => {
         useCustomReportActions()
 
     const handleCreateCustomReport = useCallback(
-        (charts: CustomReportChild[]) => {
+        (chartIds: string[]) => {
             return createDashboardHandler({
                 dashboard: {
                     ...details,
-                    children: charts,
                     name: details.name.trim(),
                 },
+                chartIds,
                 onSuccess: (response) => {
                     history.push(`/app/stats/custom-reports/${response?.id}`)
                     closeModal()

@@ -1,7 +1,9 @@
 import {
     AnalyticsCustomReport,
     CreateAnalyticsCustomReportBody,
+    getGetAnalyticsCustomReportQueryOptions,
     getListAnalyticsCustomReportsQueryOptions,
+    HttpResponse,
     useCreateAnalyticsCustomReport,
     useDeleteAnalyticsCustomReport,
     useListAnalyticsCustomReports,
@@ -34,7 +36,6 @@ export const CUSTOM_REPORT_DUPLICATE_SUCCESS_MESSAGE = 'successfully duplicated'
 export const CUSTOM_REPORT_DUPLICATE_ERROR_MESSAGE = 'could not be duplicated'
 export const CUSTOM_REPORT_DELETED_SUCCESS_MESSAGE = 'successfully deleted'
 export const CUSTOM_REPORT_DELETED_ERROR_MESSAGE = 'could not be deleted'
-export const CUSTOM_REPORT_EDITED_ERROR_MESSAGE = 'could not be modified'
 export const SUCCESSFULLY_CREATED = 'Successfully created'
 
 const handleMutationSuccess = (
@@ -70,9 +71,17 @@ export const useCustomReportActions = () => {
     const queryClient = useQueryClient()
     const dispatch = useAppDispatch()
 
-    const createMutation = useCreateAnalyticsCustomReport()
+    const createMutation = useCreateAnalyticsCustomReport({
+        mutation: {
+            retry: false,
+        },
+    })
     const deleteMutation = useDeleteAnalyticsCustomReport()
-    const updateMutation = useUpdateAnalyticsCustomReport()
+    const updateMutation = useUpdateAnalyticsCustomReport({
+        mutation: {
+            retry: false,
+        },
+    })
     const listDashboardsQuery = useListAnalyticsCustomReports()
     const listReportsQueryKey = listDashboardsQuery.queryKey
 
@@ -101,7 +110,7 @@ export const useCustomReportActions = () => {
                 children,
             })
 
-            return createMutation.mutate(
+            createMutation.mutate(
                 {
                     data: apiDashboard,
                 },
@@ -209,57 +218,54 @@ export const useCustomReportActions = () => {
             onSuccess,
             successMessage,
         }: {
-            dashboard: CustomReportSchema | undefined
+            dashboard: CustomReportSchema
             chartIds?: string[]
             onSuccess?: () => void
             successMessage?: string
         }) => {
-            if (dashboard) {
-                const children = getGroupChartsIntoRows(
-                    chartIds || getChildrenIds(dashboard.children)
-                )
+            const children = getGroupChartsIntoRows(
+                chartIds || getChildrenIds(dashboard.children)
+            )
 
-                const apiDashboard = createDashboardPayload({
-                    ...dashboard,
-                    children,
-                })
+            const apiDashboard = createDashboardPayload({
+                ...dashboard,
+                children,
+            })
 
-                updateMutation.mutate(
-                    {
-                        id: dashboard.id,
-                        data: apiDashboard,
+            updateMutation.mutate(
+                {
+                    id: dashboard.id,
+                    data: apiDashboard,
+                },
+                {
+                    onSuccess(data: HttpResponse<AnalyticsCustomReport>) {
+                        handleMutationSuccess(
+                            dispatch,
+                            successMessage ||
+                                `Successfully saved ${chartIds?.length} ${chartIds?.length === 1 ? 'chart' : 'charts'} to ${dashboard.name}`
+                        )
+
+                        const byIdQueryKey =
+                            getGetAnalyticsCustomReportQueryOptions(
+                                data.data.id
+                            ).queryKey
+
+                        void Promise.all([
+                            queryClient.invalidateQueries(byIdQueryKey),
+                            queryClient.invalidateQueries(listReportsQueryKey),
+                        ])
+
+                        if (onSuccess) {
+                            onSuccess()
+                        }
                     },
-                    {
-                        onSuccess: () => {
-                            void queryClient.invalidateQueries({
-                                queryKey: CUSTOM_REPORTS_QUERY_KEY,
-                            })
-
-                            void queryClient.invalidateQueries({
-                                queryKey: listReportsQueryKey,
-                            })
-
-                            handleMutationSuccess(
-                                dispatch,
-                                successMessage ||
-                                    `Successfully added ${chartIds?.length} ${chartIds?.length === 1 ? 'chart' : 'charts'} to ${dashboard.name}`
-                            )
-
-                            if (onSuccess) {
-                                onSuccess()
-                            }
-                        },
-                        onError: () =>
-                            handleMutationError(
-                                dispatch,
-                                `${dashboard.name} ${CUSTOM_REPORT_EDITED_ERROR_MESSAGE}`
-                            ),
-                    }
-                )
-            }
+                    onError: (error) =>
+                        handleMutationError(dispatch, getErrorMessage(error)),
+                }
+            )
         },
 
-        [updateMutation, dispatch, listReportsQueryKey, queryClient]
+        [updateMutation, dispatch, queryClient, listReportsQueryKey]
     )
 
     const addChartToDashboardHandler = useCallback(
@@ -327,5 +333,7 @@ export const useCustomReportActions = () => {
         removeChartFromDashboardHandler,
         isCreateMutationLoading: createMutation.isLoading,
         isCreateMutationError: createMutation.isError,
+        isUpdateMutationLoading: updateMutation.isLoading,
+        isUpdateMutationError: updateMutation.isError,
     }
 }

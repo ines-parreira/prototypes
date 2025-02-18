@@ -1,29 +1,20 @@
 import {useGetAnalyticsCustomReport} from '@gorgias/api-queries'
 import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-
 import React, {useCallback, useState} from 'react'
 import {useParams} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-
+import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
-import {useUpdateDashboard} from 'hooks/reporting/custom-reports/useUpdateDashboard'
 import {useUpdateDashboardCache} from 'hooks/reporting/custom-reports/useUpdateDashboardCache'
 import useAppSelector from 'hooks/useAppSelector'
-import {useNotify} from 'hooks/useNotify'
 import {CreateCustomReport} from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
 import {CustomReport} from 'pages/stats/custom-reports/CustomReport'
 import {CustomReportActionButton} from 'pages/stats/custom-reports/CustomReportActionButton'
 import {CustomReportsModal} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
 import {DashboardName} from 'pages/stats/custom-reports/DashboardName'
-import {
-    CustomReportChild,
-    CustomReportSchema,
-} from 'pages/stats/custom-reports/types'
-import {
-    customReportFromApi,
-    getErrorMessage,
-} from 'pages/stats/custom-reports/utils'
+import {CustomReportSchema} from 'pages/stats/custom-reports/types'
+import {customReportFromApi} from 'pages/stats/custom-reports/utils'
 import StatsPage, {
     StatsPageContent,
     StatsPageHeader,
@@ -62,32 +53,23 @@ export const CustomReportPage = () => {
 }
 
 const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
-    const notify = useNotify()
-
     const currentUser = useAppSelector(getCurrentUser)
     const isCurrentUserTeamLead = isTeamLead(currentUser)
 
     const [isOpen, setIsOpen] = useState(false)
     const closeModal = useCallback(() => setIsOpen(false), [])
 
-    const {updateDashboard, isLoading} = useUpdateDashboard(dashboard.id)
+    const {updateDashboardHandler, isUpdateMutationLoading} =
+        useCustomReportActions()
 
     const updateDashboardCache = useUpdateDashboardCache(dashboard.id)
 
-    const handleUpdateCharts = async (
-        charts: CustomReportChild[],
-        size: number
-    ) => {
-        try {
-            await updateDashboard({...dashboard, children: charts})
-
-            closeModal()
-            void notify.success(
-                `Successfully saved ${size} ${size === 1 ? 'chart' : 'charts'} to ${dashboard.name}`
-            )
-        } catch (error) {
-            void notify.error(getErrorMessage(error))
-        }
+    const handleUpdateCharts = (chartIds: string[]) => {
+        updateDashboardHandler({
+            dashboard,
+            chartIds,
+            onSuccess: closeModal,
+        })
     }
 
     const [details, setDetails] = useState({
@@ -95,33 +77,26 @@ const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
         emoji: dashboard.emoji || '',
     })
 
+    const successMessage = `Successfully updated ${details.name}`
+
     const {error} = useDashboardNameValidation(details.name, dashboard.name)
 
-    const handleUpdateName = async () => {
-        try {
-            if (error) throw new Error(error)
-
-            await updateDashboard({
+    const handleUpdateName = () =>
+        updateDashboardHandler({
+            dashboard: {
                 ...dashboard,
                 name: details.name,
                 emoji: details.emoji,
-            })
-        } catch (error) {
-            void notify.error(getErrorMessage(error))
-        }
-    }
+            },
+            successMessage,
+        })
 
     const handleMoveCharts = (dashboard: CustomReportSchema) => {
         updateDashboardCache(dashboard)
     }
 
-    const handleMoveChartsEnd = async () => {
-        try {
-            await updateDashboard(dashboard)
-        } catch (error) {
-            void notify.error(getErrorMessage(error))
-        }
-    }
+    const handleMoveChartsEnd = () =>
+        updateDashboardHandler({dashboard, successMessage})
 
     const handleActionButtonClick = (isOpen: boolean) => {
         setIsOpen(isOpen)
@@ -163,7 +138,7 @@ const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
                     onCancel={closeModal}
                     onSave={handleUpdateCharts}
                     charts={dashboard.children}
-                    isLoading={isLoading}
+                    isLoading={isUpdateMutationLoading}
                 />
             </StatsPageContent>
         </StatsPageWrapper>

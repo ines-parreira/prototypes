@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event'
 import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-
 import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import {useReportRestrictions} from 'hooks/reporting/custom-reports/useReportRestrictions'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -33,8 +32,6 @@ import {
     SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE,
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/useAppDispatch')
@@ -179,28 +176,11 @@ describe('AddChartsModal', () => {
 
         fireEvent.click(screen.getByText(`${ADD_CHARTS_CTA} (3)`))
 
-        expect(mockHandleSave).toHaveBeenCalledWith(
-            [
-                {
-                    children: [
-                        {
-                            config_id: customerSatisfactionMetric,
-                            type: CustomReportChildType.Chart,
-                        },
-                        {
-                            config_id: OverviewMetric.MedianFirstResponseTime,
-                            type: CustomReportChildType.Chart,
-                        },
-                        {
-                            type: CustomReportChildType.Chart,
-                            config_id: OverviewMetric.MedianResolutionTime,
-                        },
-                    ],
-                    type: CustomReportChildType.Row,
-                },
-            ],
-            3
-        )
+        expect(mockHandleSave).toHaveBeenCalledWith([
+            OverviewChart.CustomerSatisfactionTrendCard,
+            OverviewMetric.MedianFirstResponseTime,
+            OverviewMetric.MedianResolutionTime,
+        ])
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.StatDashboardModalAddChartsClicked
         )
@@ -235,10 +215,6 @@ describe('AddChartsModal', () => {
         userEvent.click(screen.getByText(String(secondChartDescription)))
 
         expect(useAppDispatchMock).toHaveBeenCalled()
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            message: 'You cannot select more than 1 charts',
-            status: NotificationStatus.Error,
-        })
     })
 
     it('should should not return selectableReports if config is null', () => {

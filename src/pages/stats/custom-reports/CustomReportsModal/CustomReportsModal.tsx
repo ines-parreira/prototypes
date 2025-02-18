@@ -19,10 +19,7 @@ import {
     ReportConfig,
     ReportsModalConfig,
 } from 'pages/stats/custom-reports/types'
-import {
-    getChildrenIds,
-    getGroupChartsIntoRows,
-} from 'pages/stats/custom-reports/utils'
+import {getChildrenIds} from 'pages/stats/custom-reports/utils'
 
 export const MODAL_TITLE = 'Select charts to display'
 export const GRAPH_DESCRIPTION =
@@ -65,7 +62,7 @@ const InitialChartsFrame = () => {
 
 type ChartsSelectorProps = {
     charts?: CustomReportChild[]
-    onSave: (charts: CustomReportChild[], size: number) => void
+    onSave: (charts: string[]) => void
     onCancel: () => void
     isLoading?: boolean
 }
@@ -96,7 +93,7 @@ const ChartsSelector = ({
     )
 
     const handleAddCharts = () => {
-        onSave(getGroupChartsIntoRows(checkedCharts), checkedCharts.length)
+        onSave(checkedCharts)
         logEvent(SegmentEvent.StatDashboardModalAddChartsClicked)
     }
 

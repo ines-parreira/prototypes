@@ -13,6 +13,7 @@ import {
     CustomReports,
 } from 'pages/stats/custom-reports/CustomReports'
 import {MODAL_TITLE} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
+import {OverviewChart} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import {assumeMock} from 'utils/testing'
 
 import {DashboardInput} from '../types'
@@ -142,15 +143,8 @@ describe('CustomReports', () => {
                     dashboard: {
                         name: dashboardName,
                         emoji: '',
-                        children: expect.arrayContaining([
-                            expect.objectContaining({
-                                children: expect.arrayContaining([
-                                    expect.any(Object),
-                                ]),
-                                type: 'row',
-                            }),
-                        ]),
                     },
+                    chartIds: [OverviewChart.CustomerSatisfactionTrendCard],
                 })
             )
         })
