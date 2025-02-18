@@ -18,6 +18,7 @@ const styleBundleFile = __PRODUCTION__
     ? `helpdesk.app.${HASH}.css`
     : '[name].css'
 
+/** @type {import('@storybook/react-webpack5').StorybookConfig} */
 module.exports = {
     stories: ['../src/**/*.mdx', `${srcDir}/**/*.stories.@(js|jsx|ts|tsx|mdx)`],
     staticDirs: [`${srcDir}`],
@@ -96,7 +97,9 @@ module.exports = {
                 },
                 {
                     loader: 'less-loader',
-                    options: cssLoaderOptions,
+                    options: {
+                        sourceMap: true,
+                    },
                 },
             ],
         })
@@ -106,8 +109,12 @@ module.exports = {
             alias: {
                 ...config.resolve.alias,
                 css: `${srcDir}/assets/css/`,
-                'launchdarkly-react-client-sdk': require.resolve('./launchdarkly-js-client-sdk.tsx'),
-                'launchdarkly-js-client-sdk': require.resolve('./launchdarkly-js-client-sdk.tsx'),
+                'launchdarkly-react-client-sdk': require.resolve(
+                    './launchdarkly-js-client-sdk.tsx'
+                ),
+                'launchdarkly-js-client-sdk': require.resolve(
+                    './launchdarkly-js-client-sdk.tsx'
+                ),
             },
             extensions: ['.ts', '.tsx', '.js'],
             modules: ['node_modules', srcDir],

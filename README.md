@@ -8,6 +8,7 @@ It's built using ReactJS + Redux + many other smaller tools.
 - [Gorgias JavaScript Application](#gorgias-javascript-application)
   - [Table of Contents](#table-of-contents)
   - [Setup NPM to access private packages](#setup-npm-to-access-private-packages)
+  - [Prerequisites](#prerequisites)
   - [Installation](#installation)
   - [Development](#development)
     - [Storybook](#storybook)
@@ -40,6 +41,7 @@ Please `cat ~/.npmrc` and ensure that `@gorgias:registry=https://npm.pkg.github.
 -   [Node.js (v18, uses nvm to install)](https://nodejs.org/en/download/package-manager)
 -   [Yarn](https://classic.yarnpkg.com/en/docs/install)
 -   [nvm (Node Version Manager)](https://github.com/nvm-sh/nvm)
+
 ## Installation
 
 ```bash
@@ -51,7 +53,7 @@ yarn install
 
 ## Development
 
-1. If you dont want run the backend on your machine, start the development server with:
+1. If you don't want run the backend on your machine, start the development server with:
 
 ```bash
 yarn dev:proxy
@@ -62,10 +64,10 @@ You also need to have your proxy setup correctly. Follow the instructions [here]
 2. If you have the backend running on your machine, start the development server with:
 
 ```bash
-yarn serve
+yarn dev:local
 ```
 
-The [HMR](https://webpack.js.org/concepts/hot-module-replacement) should work out of the box.
+The [HMR](https://webpack.js.org/concepts/hot-module-replacement) should work out of the box for both proxy and local development.
 
 ### Storybook
 

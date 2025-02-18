@@ -22,5 +22,5 @@
         },
         "types": ["facebook-js-sdk", "stripe-v2", "webpack-env"]
     },
-    "include": [".eslintrc.js", "**/*.ts", "**/*.d.ts", "**/*.tsx", "sa.config.ts", "scripts/deprecated-monitoring/deprecated.monitoring.ts"]
+    "include": [".eslintrc.js", "**/*.ts", "**/*.d.ts", "**/*.tsx", "sa.config.ts", "scripts/deprecated-monitoring/deprecated.monitoring.ts", "rspack.app.config.ts","rspack.vendors.config.ts", "rspack.sharedWorker.config.ts"]
 }
