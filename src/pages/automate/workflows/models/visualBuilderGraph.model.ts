@@ -1580,6 +1580,8 @@ export function getGraphAppAppTouched(
             return {
                 refresh_token: true,
             }
+        case 'trackstar':
+            return {}
     }
 }
 

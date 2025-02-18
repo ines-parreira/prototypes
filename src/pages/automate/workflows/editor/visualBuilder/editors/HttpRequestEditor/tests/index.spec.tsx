@@ -37,6 +37,7 @@ mockUseApps.mockReturnValue({
             auth_type: 'oauth2-token',
             auth_settings: {
                 url: 'https://example.com',
+                refresh_token_url: '',
             },
         },
     ],

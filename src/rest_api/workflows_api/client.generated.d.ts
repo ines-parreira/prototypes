@@ -411,6 +411,10 @@ declare namespace Components {
         name: string;
         description: string;
         data_type: "boolean";
+        options?: {
+          label: string;
+          value: boolean;
+        }[] | null;
       } | {
         id: string;
         name: string;
@@ -716,12 +720,26 @@ declare namespace Components {
     }
     export type GetAppResponseDto = {
       id: string;
-      auth_type: "api-key" | "oauth2-token";
+      auth_type: "api-key";
       auth_settings: {
-        refresh_token_url?: string | null;
         input_label?: string | null;
         instruction_url_text?: string | null;
         url?: string | null;
+      };
+    } | {
+      id: string;
+      auth_type: "oauth2-token";
+      auth_settings: {
+        refresh_token_url: string;
+        input_label?: string | null;
+        instruction_url_text?: string | null;
+        url?: string | null;
+      };
+    } | {
+      id: string;
+      auth_type: "trackstar";
+      auth_settings: {
+        integration_name: "sandbox" | "shiphero";
       };
     };
     export interface GetAutomationEventResponseDto {
@@ -1532,6 +1550,10 @@ declare namespace Components {
         name: string;
         description: string;
         data_type: "boolean";
+        options?: {
+          label: string;
+          value: boolean;
+        }[] | null;
       } | {
         id: string;
         name: string;
@@ -2026,6 +2048,10 @@ declare namespace Components {
         name: string;
         description: string;
         data_type: "boolean";
+        options?: {
+          label: string;
+          value: boolean;
+        }[] | null;
       } | {
         id: string;
         name: string;
@@ -3754,6 +3780,12 @@ declare namespace Components {
                     quantity?: number | null;
                     name?: string | null;
                   }[] | null;
+                  selected_variant?: {
+                    external_id: string;
+                    external_gid?: string | null;
+                    quantity?: number | null;
+                    name?: string | null;
+                  } | null;
                 };
               } | null;
             };
@@ -4109,12 +4141,26 @@ declare namespace Components {
     }[];
     export type ListAppResponseDto = ({
       id: string;
-      auth_type: "api-key" | "oauth2-token";
+      auth_type: "api-key";
       auth_settings: {
-        refresh_token_url?: string | null;
         input_label?: string | null;
         instruction_url_text?: string | null;
         url?: string | null;
+      };
+    } | {
+      id: string;
+      auth_type: "oauth2-token";
+      auth_settings: {
+        refresh_token_url: string;
+        input_label?: string | null;
+        instruction_url_text?: string | null;
+        url?: string | null;
+      };
+    } | {
+      id: string;
+      auth_type: "trackstar";
+      auth_settings: {
+        integration_name: "sandbox" | "shiphero";
       };
     })[];
     export type ListStoreAppResponseDto = {
@@ -4524,6 +4570,10 @@ declare namespace Components {
         name: string;
         description: string;
         data_type: "boolean";
+        options?: {
+          label: string;
+          value: boolean;
+        }[] | null;
       } | {
         id: string;
         name: string;
@@ -5076,6 +5126,10 @@ declare namespace Components {
         name: string;
         description: string;
         data_type: "boolean";
+        options?: {
+          label: string;
+          value: boolean;
+        }[] | null;
       } | {
         id: string;
         name: string;
@@ -5760,6 +5814,10 @@ declare namespace Components {
         name: string;
         description: string;
         data_type: "boolean";
+        options?: {
+          label: string;
+          value: boolean;
+        }[] | null;
       } | {
         id: string;
         name: string;
@@ -7447,6 +7505,12 @@ declare namespace Components {
                     quantity?: number | null;
                     name?: string | null;
                   }[] | null;
+                  selected_variant?: {
+                    external_id: string;
+                    external_gid?: string | null;
+                    quantity?: number | null;
+                    name?: string | null;
+                  } | null;
                 };
               } | null;
             };
@@ -9308,6 +9372,12 @@ declare namespace Components {
                     quantity?: number | null;
                     name?: string | null;
                   }[] | null;
+                  selected_variant?: {
+                    external_id: string;
+                    external_gid?: string | null;
+                    quantity?: number | null;
+                    name?: string | null;
+                  } | null;
                 };
               } | null;
             };
@@ -10713,6 +10783,12 @@ declare namespace Components {
                     quantity?: number | null;
                     name?: string | null;
                   }[] | null;
+                  selected_variant?: {
+                    external_id: string;
+                    external_gid?: string | null;
+                    quantity?: number | null;
+                    name?: string | null;
+                  } | null;
                 };
               } | null;
             };
@@ -11054,23 +11130,49 @@ declare namespace Components {
         };
       } | null;
     };
-    export interface UpsertAppRequestBodyDto {
-      auth_type: "api-key" | "oauth2-token";
+    export type UpsertAppRequestBodyDto = {
+      auth_type: "api-key";
       auth_settings: {
-        refresh_token_url?: string | null;
         input_label?: string | null;
         instruction_url_text?: string | null;
         url?: string | null;
       };
-    }
-    export type UpsertAppRequestResponseDto = {
-      id: string;
-      auth_type: "api-key" | "oauth2-token";
+    } | {
+      auth_type: "oauth2-token";
       auth_settings: {
-        refresh_token_url?: string | null;
+        refresh_token_url: string;
         input_label?: string | null;
         instruction_url_text?: string | null;
         url?: string | null;
+      };
+    } | {
+      auth_type: "trackstar";
+      auth_settings: {
+        integration_name: "sandbox" | "shiphero";
+      };
+    };
+    export type UpsertAppRequestResponseDto = {
+      id: string;
+      auth_type: "api-key";
+      auth_settings: {
+        input_label?: string | null;
+        instruction_url_text?: string | null;
+        url?: string | null;
+      };
+    } | {
+      id: string;
+      auth_type: "oauth2-token";
+      auth_settings: {
+        refresh_token_url: string;
+        input_label?: string | null;
+        instruction_url_text?: string | null;
+        url?: string | null;
+      };
+    } | {
+      id: string;
+      auth_type: "trackstar";
+      auth_settings: {
+        integration_name: "sandbox" | "shiphero";
       };
     };
     export interface UpsertStoreAppRequestBodyDto {
@@ -11481,6 +11583,10 @@ declare namespace Components {
         name: string;
         description: string;
         data_type: "boolean";
+        options?: {
+          label: string;
+          value: boolean;
+        }[] | null;
       } | {
         id: string;
         name: string;
@@ -12181,6 +12287,10 @@ declare namespace Components {
         name: string;
         description: string;
         data_type: "boolean";
+        options?: {
+          label: string;
+          value: boolean;
+        }[] | null;
       } | {
         id: string;
         name: string;
@@ -12882,6 +12992,10 @@ declare namespace Components {
         name: string;
         description: string;
         data_type: "boolean";
+        options?: {
+          label: string;
+          value: boolean;
+        }[] | null;
       } | {
         id: string;
         name: string;
@@ -13582,6 +13696,10 @@ declare namespace Components {
         name: string;
         description: string;
         data_type: "boolean";
+        options?: {
+          label: string;
+          value: boolean;
+        }[] | null;
       } | {
         id: string;
         name: string;
@@ -14075,6 +14193,10 @@ declare namespace Components {
         name: string;
         description: string;
         data_type: "boolean";
+        options?: {
+          label: string;
+          value: boolean;
+        }[] | null;
       } | {
         id: string;
         name: string;
@@ -14566,6 +14688,10 @@ declare namespace Components {
         name: string;
         description: string;
         data_type: "boolean";
+        options?: {
+          label: string;
+          value: boolean;
+        }[] | null;
       } | {
         id: string;
         name: string;
@@ -14902,7 +15028,7 @@ declare namespace Paths {
   }
   namespace AppControllerList {
     namespace Parameters {
-      export type Ids = any[];
+      export type Ids = string[];
     }
     export interface QueryParameters {
       ids?: Parameters.Ids;
@@ -15082,7 +15208,7 @@ declare namespace Paths {
     namespace Parameters {
       export type StoreName = string;
       export type StoreType = "shopify";
-      export type Triggers = any[];
+      export type Triggers = ("llm-prompt" | "channel" | "reusable-llm-prompt")[];
     }
     export interface PathParameters {
       store_type: Parameters.StoreType;
@@ -15200,7 +15326,7 @@ declare namespace Paths {
       export type OrderBy = "ASC" | "DESC";
       export type Page = number;
       export type StartDate = string; // date-time
-      export type Status = any[];
+      export type Status = ("success" | "error" | "partial_success")[];
       export type Success = "0" | "1" | "true" | "false";
     }
     export interface PathParameters {
@@ -15220,7 +15346,7 @@ declare namespace Paths {
   }
   namespace WfConfigurationControllerList {
     namespace Parameters {
-      export type IsDraft = any[];
+      export type IsDraft = ("0" | "1" | "true" | "false")[];
     }
     export interface QueryParameters {
       is_draft?: Parameters.IsDraft;
@@ -15262,7 +15388,7 @@ declare namespace Paths {
   }
   namespace WfConfigurationTemplateControllerList {
     namespace Parameters {
-      export type Triggers = any[];
+      export type Triggers = ("llm-prompt" | "channel" | "reusable-llm-prompt")[];
     }
     export interface QueryParameters {
       triggers: Parameters.Triggers;
@@ -15322,7 +15448,7 @@ declare namespace Paths {
   }
   namespace WfEntrypointControllerList {
     namespace Parameters {
-      export type Ids = any[];
+      export type Ids = string[];
       export type Language = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
     }
     export interface QueryParameters {

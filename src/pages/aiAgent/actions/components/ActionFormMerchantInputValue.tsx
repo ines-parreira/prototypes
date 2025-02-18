@@ -1,4 +1,5 @@
 import {Label} from '@gorgias/merchant-ui-kit'
+import {Option} from '@gorgias/merchant-ui-kit/dist/SelectInput'
 import React, {useRef} from 'react'
 
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -26,7 +27,7 @@ const ActionFormMerchantInputValue = ({input, onChange, value}: Props) => {
             {options && options.length ? (
                 <SelectField
                     value={value as string}
-                    options={options}
+                    options={options as Option[]}
                     onChange={onChange}
                     isSearchable={false}
                     fullWidth

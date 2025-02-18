@@ -9,7 +9,7 @@ import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
 import Button from 'pages/common/components/button/Button'
 import {TemplateCard} from 'pages/common/components/TemplateCard'
 
-import css from './ActionsTemplatesCards.less'
+import css from './ActionsUseCaseTemplatesCards.less'
 import UseCaseTemplateCard from './UseCaseTemplateCard'
 
 type Props = {

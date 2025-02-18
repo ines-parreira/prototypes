@@ -316,7 +316,7 @@ export const useGetWorkflowConfigurations = (
         Awaited<Paths.WfConfigurationControllerList.Responses.$200>
     >
 ) => {
-    const params = includeDrafts ? {is_draft: [0, 1]} : {}
+    const params = includeDrafts ? {is_draft: ['0', '1'] as ('0' | '1')[]} : {}
     return useQuery({
         queryKey: workflowsConfigurationDefinitionKeys.list(params),
         queryFn: async () => {
@@ -573,7 +573,7 @@ export const useGetConfigurationExecutions = (
         orderBy: 'ASC' | 'DESC'
         page: number
         success?: boolean
-        status?: string[]
+        status?: ('error' | 'success' | 'partial_success')[]
     },
     overrides?: UseQueryOptions<
         Awaited<Paths.WfConfigurationControllerGetExecutions.Responses.$200>

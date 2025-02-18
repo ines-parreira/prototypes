@@ -588,6 +588,8 @@ export default function HttpRequestEditor({
                     isOpen={isTestRequestModalOpen}
                     refreshTokenUrl={
                         (!!nodeInEdition.data.oauth2TokenSettings &&
+                            selectedApp?.auth_settings &&
+                            'refresh_token_url' in selectedApp.auth_settings &&
                             selectedApp?.auth_settings.refresh_token_url) ||
                         undefined
                     }

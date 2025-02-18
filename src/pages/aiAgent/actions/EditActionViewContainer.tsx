@@ -13,7 +13,6 @@ import {ACTIONS, AI_AGENT} from 'pages/aiAgent/constants'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 
-import EditActionFormView from './EditActionFormView'
 import EditActionView from './EditActionView'
 import {StoresWorkflowConfiguration} from './types'
 
@@ -64,16 +63,8 @@ const EditActionViewContainer = () => {
         return <Redirect to={routes.actions} />
     }
 
-    if (configuration.steps.length > 1) {
-        return (
-            <EditActionView
-                configuration={configuration as WorkflowConfiguration}
-            />
-        )
-    }
-
     return (
-        <EditActionFormView
+        <EditActionView
             configuration={configuration as WorkflowConfiguration}
         />
     )

@@ -12,16 +12,19 @@ import {ActionsApp, App} from '../types'
 import css from './ActionsPlatformAppForm.less'
 import ActionsPlatformAppSelectBox from './ActionsPlatformAppSelectBox'
 import ActionsPlatformAuthTypeSelectBox from './ActionsPlatformAuthTypeSelectBox'
+import ActionsPlatformTrackstarIntegrationSelectBox from './ActionsPlatformTrackstarIntegrationSelectBox'
+
+type AppWithUrl = Exclude<ActionsApp, {auth_type: 'trackstar'}>
 
 const INSTRUCTIONS_URL_CAPTION_BY_AUTH_TYPE: Record<
-    ActionsApp['auth_type'],
+    AppWithUrl['auth_type'],
     string
 > = {
     'api-key': 'URL with instructions on how to find an API key',
     'oauth2-token': 'URL with instructions on how to find a refresh token url',
 }
 
-const LABEL_BY_AUTH_TYPE: Record<ActionsApp['auth_type'], string> = {
+const LABEL_BY_AUTH_TYPE: Record<AppWithUrl['auth_type'], string> = {
     'api-key': 'API key',
     'oauth2-token': 'refresh token url',
 }
@@ -92,27 +95,47 @@ const ActionsPlatformAppForm = ({
                         />
                     )}
                 />
-                <Controller
-                    control={control}
-                    name="auth_settings.url"
-                    rules={{
-                        required: true,
-                        validate: (value) =>
-                            validateWebhookURL(value ?? '') || undefined,
-                    }}
-                    render={({field: {value, onChange}}) => (
-                        <InputField
-                            isRequired
-                            label="Instructions URL"
-                            value={value ?? ''}
-                            onChange={onChange}
-                            caption={
-                                INSTRUCTIONS_URL_CAPTION_BY_AUTH_TYPE[authType]
-                            }
-                            placeholder="https://link.gorgias.com/xyz"
-                        />
-                    )}
-                />
+                {authType === 'trackstar' && (
+                    <Controller
+                        control={control}
+                        name="auth_settings.integration_name"
+                        rules={{
+                            required: true,
+                        }}
+                        render={({field: {value, onChange}}) => (
+                            <ActionsPlatformTrackstarIntegrationSelectBox
+                                value={value}
+                                onChange={onChange}
+                            />
+                        )}
+                    />
+                )}
+                {authType !== 'trackstar' && (
+                    <Controller
+                        control={control}
+                        name="auth_settings.url"
+                        rules={{
+                            required: true,
+                            validate: (value) =>
+                                validateWebhookURL(value ?? '') || undefined,
+                        }}
+                        render={({field: {value, onChange}}) => (
+                            <InputField
+                                isRequired
+                                label="Instructions URL"
+                                value={value ?? ''}
+                                onChange={onChange}
+                                caption={
+                                    INSTRUCTIONS_URL_CAPTION_BY_AUTH_TYPE[
+                                        authType
+                                    ]
+                                }
+                                placeholder="https://link.gorgias.com/xyz"
+                            />
+                        )}
+                    />
+                )}
+
                 {authType === 'oauth2-token' && (
                     <Controller
                         control={control}
@@ -148,18 +171,20 @@ const ActionsPlatformAppForm = ({
                         )}
                     />
                 )}
-                <Controller
-                    control={control}
-                    name="auth_settings.instruction_url_text"
-                    render={({field: {value, onChange}}) => (
-                        <InputField
-                            label="Instructions URL text"
-                            value={value ?? ''}
-                            onChange={onChange}
-                            placeholder={`Find your ${LABEL_BY_AUTH_TYPE[authType]} in ${apps.find((app) => app.id === getValues().id)?.name || 'App'} `}
-                        />
-                    )}
-                />
+                {authType !== 'trackstar' && (
+                    <Controller
+                        control={control}
+                        name="auth_settings.instruction_url_text"
+                        render={({field: {value, onChange}}) => (
+                            <InputField
+                                label="Instructions URL text"
+                                value={value ?? ''}
+                                onChange={onChange}
+                                placeholder={`Find your ${LABEL_BY_AUTH_TYPE[authType]} in ${apps.find((app) => app.id === getValues().id)?.name || 'App'} `}
+                            />
+                        )}
+                    />
+                )}
             </div>
             <div className={css.actions}>
                 <Button

@@ -23,7 +23,7 @@ type Props = {
         from: Date
         to: Date
         success?: boolean
-        status?: string[]
+        status?: ('success' | 'error' | 'partial_success')[]
     }) => void
 }
 
@@ -96,7 +96,7 @@ export default function ActionEventsHeader({
                 to: endDateFilter,
                 status: statusFilterOptions.map(
                     (dropDownValue) => dropDownValue.value
-                ),
+                ) as ('success' | 'error' | 'partial_success')[],
             })
         } else {
             onChange({

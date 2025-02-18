@@ -3,7 +3,6 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useMemo} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import useShowAutomateActions from 'pages/aiAgent/actions/hooks/useShowAutomateActions'
 import {
     ACTIONS,
     CHANNELS,
@@ -99,7 +98,6 @@ type NavigationItem = {
 const useNavigationItems = (
     routes: ReturnType<typeof getAiAgentNavigationRoutes>
 ) => {
-    const showAutomateActions = useShowAutomateActions()
     const flags = useFlags()
 
     const isGorgiasUser =
@@ -141,7 +139,7 @@ const useNavigationItems = (
                             route: routes.guidance,
                             title: GUIDANCE,
                         },
-                        showAutomateActions && {
+                        {
                             route: routes.actions,
                             title: ACTIONS,
                         },
@@ -199,7 +197,7 @@ const useNavigationItems = (
                 title: GUIDANCE,
                 exact: false,
             },
-            showAutomateActions && {
+            {
                 route: routes.actions,
                 title: ACTIONS,
                 exact: false,
@@ -221,7 +219,6 @@ const useNavigationItems = (
         isAiAgentSalesTabEnabled,
         isGorgiasUser,
         routes,
-        showAutomateActions,
     ])
 }
 

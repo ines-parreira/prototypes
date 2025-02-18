@@ -26,9 +26,8 @@ import {useFlag} from 'core/flags'
 import ActionEventsViewContainer from 'pages/aiAgent/actions/ActionEventsViewContainer'
 import ActionsTemplatesViewContainer from 'pages/aiAgent/actions/ActionsTemplatesViewContainer'
 import ActionsViewContainer from 'pages/aiAgent/actions/ActionsViewContainer'
-import CreateActionViewContainer from 'pages/aiAgent/actions/CreateActionViewContainer'
+import CreateActionView from 'pages/aiAgent/actions/CreateActionView'
 import EditActionViewContainer from 'pages/aiAgent/actions/EditActionViewContainer'
-import useShowAutomateActions from 'pages/aiAgent/actions/hooks/useShowAutomateActions'
 import AiAgentConfigurationContainer from 'pages/aiAgent/AiAgentConfigurationContainer'
 import {AiAgentGuidanceAiSuggestionNewContainer} from 'pages/aiAgent/AiAgentGuidanceAiSuggestionNewContainer'
 import {AiAgentGuidanceContainer} from 'pages/aiAgent/AiAgentGuidanceContainer'
@@ -428,7 +427,6 @@ export function TicketRoutes({location, match: {path}}: RouteComponentProps) {
 }
 
 function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
-    const showAutomateActions = useShowAutomateActions()
     const {shopType} = useParams<{
         shopType: string
     }>()
@@ -556,35 +554,33 @@ function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
                     </AiAgentErrorBoundary>
 
                     {/* TODO: Remove this in favour of `/knowledge/actions`, after fully migrate to new AI Agent standalone menu */}
-                    {!!showAutomateActions && (
-                        <Switch>
-                            <Route
-                                path={`${path}/actions`}
-                                exact
-                                component={ActionsViewContainer}
-                            />
-                            <Route
-                                path={`${path}/actions/new`}
-                                exact
-                                component={CreateActionViewContainer}
-                            />
-                            <Route
-                                path={`${path}/actions/edit/:id`}
-                                exact
-                                component={EditActionViewContainer}
-                            />
-                            <Route
-                                path={`${path}/actions/templates`}
-                                exact
-                                component={ActionsTemplatesViewContainer}
-                            />
-                            <Route
-                                path={`${path}/actions/events/:id`}
-                                exact
-                                component={ActionEventsViewContainer}
-                            />
-                        </Switch>
-                    )}
+                    <Switch>
+                        <Route
+                            path={`${path}/actions`}
+                            exact
+                            component={ActionsViewContainer}
+                        />
+                        <Route
+                            path={`${path}/actions/new`}
+                            exact
+                            component={CreateActionView}
+                        />
+                        <Route
+                            path={`${path}/actions/edit/:id`}
+                            exact
+                            component={EditActionViewContainer}
+                        />
+                        <Route
+                            path={`${path}/actions/templates`}
+                            exact
+                            component={ActionsTemplatesViewContainer}
+                        />
+                        <Route
+                            path={`${path}/actions/events/:id`}
+                            exact
+                            component={ActionEventsViewContainer}
+                        />
+                    </Switch>
 
                     {/* TODO: Remove this in favour of `/knowledge/guidance`, after fully migrate to new AI Agent standalone menu */}
                     <AiAgentErrorBoundary section="ai-agent-guidance">
@@ -715,35 +711,33 @@ function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
                             />
                         </Switch>
                     </AiAgentErrorBoundary>
-                    {!!showAutomateActions && (
-                        <Switch>
-                            <Route
-                                path={`${path}/knowledge/actions`}
-                                exact
-                                component={ActionsViewContainer}
-                            />
-                            <Route
-                                path={`${path}/knowledge/actions/new`}
-                                exact
-                                component={CreateActionViewContainer}
-                            />
-                            <Route
-                                path={`${path}/knowledge/actions/edit/:id`}
-                                exact
-                                component={EditActionViewContainer}
-                            />
-                            <Route
-                                path={`${path}/knowledge/actions/templates`}
-                                exact
-                                component={ActionsTemplatesViewContainer}
-                            />
-                            <Route
-                                path={`${path}/knowledge/actions/events/:id`}
-                                exact
-                                component={ActionEventsViewContainer}
-                            />
-                        </Switch>
-                    )}
+                    <Switch>
+                        <Route
+                            path={`${path}/knowledge/actions`}
+                            exact
+                            component={ActionsViewContainer}
+                        />
+                        <Route
+                            path={`${path}/knowledge/actions/new`}
+                            exact
+                            component={CreateActionView}
+                        />
+                        <Route
+                            path={`${path}/knowledge/actions/edit/:id`}
+                            exact
+                            component={EditActionViewContainer}
+                        />
+                        <Route
+                            path={`${path}/knowledge/actions/templates`}
+                            exact
+                            component={ActionsTemplatesViewContainer}
+                        />
+                        <Route
+                            path={`${path}/knowledge/actions/events/:id`}
+                            exact
+                            component={ActionEventsViewContainer}
+                        />
+                    </Switch>
                 </AiAgentStoreConfigurationProvider>
             </AiAgentAccountConfigurationProvider>
         </Switch>

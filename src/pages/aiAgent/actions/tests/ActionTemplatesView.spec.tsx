@@ -8,9 +8,6 @@ import configureMockStore from 'redux-mock-store'
 
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
-
 import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {shopifyIntegration} from 'fixtures/integrations'
@@ -31,7 +28,6 @@ jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 
 const queryClient = mockQueryClient()
-const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 const mockStore = configureMockStore([thunk])
 const useGetWorkflowConfigurationTemplatesMock = jest.mocked(
@@ -56,9 +52,6 @@ describe('<ActionTemplatesView  />', () => {
     beforeEach(() => {
         jest.restoreAllMocks()
 
-        mockUseFlag.mockReturnValue({
-            [FeatureFlagKey.ActionsUseCaseTemplates]: true,
-        })
         mockUseEnableAiAgent.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),
         })

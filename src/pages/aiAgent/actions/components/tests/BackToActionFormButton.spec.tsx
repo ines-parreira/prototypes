@@ -3,12 +3,12 @@ import React from 'react'
 
 import {renderWithRouter} from 'utils/testing'
 
-import BrowseAllActionsButton from '../BrowseAllActionsButton'
+import BackToActionFormButton from '../BackToActionFormButton'
 
-describe('<BrowseAllActionsButton />', () => {
+describe('<BackToActionFormButton />', () => {
     it('should render component', () => {
-        renderWithRouter(<BrowseAllActionsButton />)
+        renderWithRouter(<BackToActionFormButton />)
 
-        expect(screen.getByText('Browse all actions')).toBeInTheDocument()
+        expect(screen.getByText('Back to Action')).toBeInTheDocument()
     })
 })

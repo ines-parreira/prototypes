@@ -3,9 +3,7 @@ import React, {useEffect} from 'react'
 import {useParams, Link} from 'react-router-dom'
 
 import emptyStateTemplate from 'assets/img/actions/empty-state-template.png'
-import emptyState from 'assets/img/actions/empty-state.png'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreWorkflowsConfigurations,
@@ -18,7 +16,6 @@ import AutomateViewEmptyStateBanner from 'pages/automate/common/components/Autom
 
 import css from './ActionsView.less'
 import ActionsList from './components/ActionsList'
-import ActionsTemplatesCards from './components/ActionsTemplatesCards'
 import ActionsUseCaseTemplatesCards from './components/ActionsUseCaseTemplatesCards'
 import BrowseAllActionsButton from './components/BrowseAllActionsButton'
 import CreateCustomActionButton from './components/CreateCustomActionButton'
@@ -30,9 +27,6 @@ const MAX_TEMPLATES = 7
 const ActionsView = () => {
     const dispatch = useAppDispatch()
 
-    const isMultiStepActionEnabled = useFlag(
-        FeatureFlagKey.ActionsUseCaseTemplates
-    )
     const isStandaloneMenuEnabled =
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
@@ -96,41 +90,25 @@ const ActionsView = () => {
                 <>
                     <AutomateViewEmptyStateBanner
                         id="actions"
-                        title={
-                            isMultiStepActionEnabled
-                                ? 'Create Actions for AI Agent to automate top customer requests with your 3rd party apps'
-                                : 'Set up Actions for AI Agent to automate requests involving your 3rd party apps'
-                        }
+                        title="Create Actions for AI Agent to automate top customer requests with your 3rd party apps"
                         description={ACTIONS_DESCRIPTION}
-                        image={
-                            isMultiStepActionEnabled
-                                ? emptyStateTemplate
-                                : emptyState
-                        }
+                        image={emptyStateTemplate}
                     />
                     <div className={css.templateCards}>
                         <div className={css.templateHeader}>
                             <p>
-                                {isMultiStepActionEnabled
-                                    ? 'Choose a template and customize it to fit your needs'
-                                    : 'Choose an Action and customize it to fit your needs'}
+                                Choose a template and customize it to fit your
+                                needs
                             </p>
                             <div className={css.actionButtons}>
                                 <CreateCustomActionButton />
                                 <BrowseAllActionsButton />
                             </div>
                         </div>
-                        {isMultiStepActionEnabled ? (
-                            <ActionsUseCaseTemplatesCards
-                                templates={templateConfigurations}
-                                max={MAX_TEMPLATES}
-                            />
-                        ) : (
-                            <ActionsTemplatesCards
-                                templateConfigurations={templateConfigurations}
-                                max={MAX_TEMPLATES}
-                            />
-                        )}
+                        <ActionsUseCaseTemplatesCards
+                            templates={templateConfigurations}
+                            max={MAX_TEMPLATES}
+                        />
                     </div>
                 </>
             )}

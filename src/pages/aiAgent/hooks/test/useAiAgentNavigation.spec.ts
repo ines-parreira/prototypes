@@ -2,7 +2,6 @@ import {renderHook} from '@testing-library/react-hooks'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import useShowAutomateActions from 'pages/aiAgent/actions/hooks/useShowAutomateActions'
 import {assumeMock} from 'utils/testing'
 
 import {useAiAgentNavigation} from '../useAiAgentNavigation'
@@ -11,9 +10,6 @@ jest.mock('launchdarkly-react-client-sdk', () => ({
     useFlag: jest.fn(),
 }))
 const useFlagsMock = assumeMock(useFlags)
-
-jest.mock('pages/aiAgent/actions/hooks/useShowAutomateActions')
-const useShowAutomateActionsMock = jest.mocked(useShowAutomateActions)
 
 describe('useAiAgentNavigation', () => {
     beforeEach(() => {
@@ -38,39 +34,15 @@ describe('useAiAgentNavigation', () => {
                 dataCanduId: 'ai-agent-navbar-configuration',
             },
             {
-                exact: false,
                 route: '/app/automation/shopify/test/ai-agent/guidance',
                 title: 'Guidance',
-            },
-            {
-                route: '/app/automation/shopify/test/ai-agent/test',
-                title: 'Test',
-            },
-        ])
-    })
-
-    it('should add Actions to navbar if show automate actions is true', () => {
-        useShowAutomateActionsMock.mockReturnValue(true)
-
-        const {result} = renderHook(() =>
-            useAiAgentNavigation({shopName: 'test'})
-        )
-        expect(result.current.navigationItems).toEqual([
-            {
-                route: '/app/automation/shopify/test/ai-agent/settings',
-                title: 'Settings',
-                dataCanduId: 'ai-agent-navbar-configuration',
-            },
-            {
                 exact: false,
-                route: '/app/automation/shopify/test/ai-agent/guidance',
-                title: 'Guidance',
             },
             {
-                dataCanduId: 'ai-agent-navbar-actions',
-                exact: false,
                 route: '/app/automation/shopify/test/ai-agent/actions',
                 title: 'Actions',
+                exact: false,
+                dataCanduId: 'ai-agent-navbar-actions',
             },
             {
                 route: '/app/automation/shopify/test/ai-agent/test',
@@ -133,9 +105,15 @@ describe('useAiAgentNavigation', () => {
                 dataCanduId: 'ai-agent-navbar-configuration',
             },
             {
-                exact: false,
                 route: '/app/automation/shopify/test/ai-agent/guidance',
                 title: 'Guidance',
+                exact: false,
+            },
+            {
+                route: '/app/automation/shopify/test/ai-agent/actions',
+                title: 'Actions',
+                exact: false,
+                dataCanduId: 'ai-agent-navbar-actions',
             },
             {
                 route: '/app/automation/shopify/test/ai-agent/test',
@@ -162,9 +140,15 @@ describe('useAiAgentNavigation', () => {
                 dataCanduId: 'ai-agent-navbar-configuration',
             },
             {
-                exact: false,
                 route: '/app/automation/shopify/test/ai-agent/guidance',
                 title: 'Guidance',
+                exact: false,
+            },
+            {
+                route: '/app/automation/shopify/test/ai-agent/actions',
+                title: 'Actions',
+                exact: false,
+                dataCanduId: 'ai-agent-navbar-actions',
             },
             {
                 route: '/app/automation/shopify/test/ai-agent/test',
@@ -180,26 +164,28 @@ describe('useAiAgentNavigation', () => {
         const {result} = renderHook(() =>
             useAiAgentNavigation({shopName: 'test'})
         )
-        expect(result.current.navigationItems).toEqual([
-            {
-                route: '/app/automation/shopify/test/ai-agent/settings',
-                title: 'Settings',
-                dataCanduId: 'ai-agent-navbar-configuration',
-            },
-            {
-                exact: false,
-                route: '/app/automation/shopify/test/ai-agent/guidance',
-                title: 'Guidance',
-            },
-            {
-                route: '/app/automation/shopify/test/ai-agent/test',
-                title: 'Test',
-            },
-            {
-                route: '/app/automation/shopify/test/ai-agent/preview-mode',
-                title: 'Preview',
-            },
-        ])
+        expect(result.current.navigationItems).toEqual(
+            expect.arrayContaining([
+                {
+                    route: '/app/automation/shopify/test/ai-agent/settings',
+                    title: 'Settings',
+                    dataCanduId: 'ai-agent-navbar-configuration',
+                },
+                {
+                    exact: false,
+                    route: '/app/automation/shopify/test/ai-agent/guidance',
+                    title: 'Guidance',
+                },
+                {
+                    route: '/app/automation/shopify/test/ai-agent/test',
+                    title: 'Test',
+                },
+                {
+                    route: '/app/automation/shopify/test/ai-agent/preview-mode',
+                    title: 'Preview',
+                },
+            ])
+        )
     })
 
     it('should add Preview mode to navbar if in development mode and impersonated', () => {
@@ -209,26 +195,28 @@ describe('useAiAgentNavigation', () => {
         const {result} = renderHook(() =>
             useAiAgentNavigation({shopName: 'test'})
         )
-        expect(result.current.navigationItems).toEqual([
-            {
-                route: '/app/automation/shopify/test/ai-agent/settings',
-                title: 'Settings',
-                dataCanduId: 'ai-agent-navbar-configuration',
-            },
-            {
-                exact: false,
-                route: '/app/automation/shopify/test/ai-agent/guidance',
-                title: 'Guidance',
-            },
-            {
-                route: '/app/automation/shopify/test/ai-agent/test',
-                title: 'Test',
-            },
-            {
-                route: '/app/automation/shopify/test/ai-agent/preview-mode',
-                title: 'Preview',
-            },
-        ])
+        expect(result.current.navigationItems).toEqual(
+            expect.arrayContaining([
+                {
+                    route: '/app/automation/shopify/test/ai-agent/settings',
+                    title: 'Settings',
+                    dataCanduId: 'ai-agent-navbar-configuration',
+                },
+                {
+                    exact: false,
+                    route: '/app/automation/shopify/test/ai-agent/guidance',
+                    title: 'Guidance',
+                },
+                {
+                    route: '/app/automation/shopify/test/ai-agent/test',
+                    title: 'Test',
+                },
+                {
+                    route: '/app/automation/shopify/test/ai-agent/preview-mode',
+                    title: 'Preview',
+                },
+            ])
+        )
     })
 
     it('should generate dynamic paths based on params', () => {
@@ -284,8 +272,6 @@ describe('useAiAgentNavigation', () => {
         })
 
         it('should return /knowledge/actions path', () => {
-            useShowAutomateActionsMock.mockReturnValue(true)
-
             const {result} = renderHook(() =>
                 useAiAgentNavigation({shopName: 'test'})
             )

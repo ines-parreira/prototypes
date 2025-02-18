@@ -4,15 +4,12 @@ import {useParams} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {ACTIONS, AI_AGENT} from 'pages/aiAgent/constants'
-import LinkButton from 'pages/common/components/button/LinkButton'
 
 import css from './ActionTemplatesView.less'
-import ActionsTemplatesCards from './components/ActionsTemplatesCards'
 import ActionsUseCaseTemplatesCards from './components/ActionsUseCaseTemplatesCards'
 import BackToActionButton from './components/BackToActionButton'
 import CreateCustomActionButton from './components/CreateCustomActionButton'
@@ -30,10 +27,6 @@ const ActionTemplatesView = () => {
         logEvent(SegmentEvent.AutomateActionsTemplatesVisited)
     })
 
-    const isMultiStepActionEnabled = useFlag(
-        FeatureFlagKey.ActionsUseCaseTemplates
-    )
-
     return (
         <AiAgentLayout
             shopName={shopName}
@@ -45,39 +38,13 @@ const ActionTemplatesView = () => {
                 <BackToActionButton />
             </div>
             <div className={css.header}>
-                {isMultiStepActionEnabled
-                    ? 'Choose a template and customize it to fit your needs'
-                    : 'Choose an Action and customize it to fit your needs'}
+                Choose a template and customize it to fit your needs
                 <CreateCustomActionButton />
             </div>
-            {isMultiStepActionEnabled ? (
-                <ActionsUseCaseTemplatesCards
-                    templates={templateConfigurations}
-                    showCustomAction
-                />
-            ) : (
-                <ActionsTemplatesCards
-                    templateConfigurations={templateConfigurations}
-                    showCustomAction
-                />
-            )}
-            {!isMultiStepActionEnabled && (
-                <div className={css.requestBannerContainer}>
-                    <div className={css.requestBannerContent}>
-                        <div className={css.requestBannerTitle}>
-                            Which Actions should we build next?
-                        </div>
-                        Let us know which Actions you would like AI Agent to
-                        handle.
-                    </div>
-                    <LinkButton
-                        intent="secondary"
-                        href="https://link.gorgias.com/actions"
-                    >
-                        Request action
-                    </LinkButton>
-                </div>
-            )}
+            <ActionsUseCaseTemplatesCards
+                templates={templateConfigurations}
+                showCustomAction
+            />
         </AiAgentLayout>
     )
 }

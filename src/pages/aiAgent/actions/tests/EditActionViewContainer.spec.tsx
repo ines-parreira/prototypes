@@ -13,7 +13,6 @@ import {renderWithRouter} from 'utils/testing'
 import EditActionViewContainer from '../EditActionViewContainer'
 
 jest.mock('models/workflows/queries')
-jest.mock('../EditActionFormView', () => () => <div>EditActionFormView</div>)
 jest.mock('../EditActionView', () => () => <div>EditActionView</div>)
 
 jest.mock('pages/aiAgent/components/AiAgentLayout/AiAgentLayout', () => {
@@ -64,7 +63,7 @@ describe('<EditActionViewContainer />', () => {
         )
     })
 
-    it('should render multi step Action page if Action has multiple steps', () => {
+    it('should render multi step Action page', () => {
         const b = new WorkflowConfigurationBuilder({
             id: ulid(),
             name: 'Action name',
@@ -124,61 +123,6 @@ describe('<EditActionViewContainer />', () => {
         )
 
         expect(screen.getByText('EditActionView')).toBeInTheDocument()
-    })
-
-    it('should render old Action form page if Action has only one step', () => {
-        const b = new WorkflowConfigurationBuilder({
-            id: ulid(),
-            name: 'Action name',
-            initialStep: {
-                id: ulid(),
-                kind: 'http-request',
-                settings: {
-                    headers: {},
-                    method: 'GET',
-                    name: '',
-                    url: 'https://example.com',
-                    variables: [],
-                },
-            },
-            entrypoints: [
-                {
-                    kind: 'llm-conversation',
-                    trigger: 'llm-prompt',
-                    settings: {
-                        instructions: 'instructions',
-                        requires_confirmation: false,
-                    },
-                    deactivated_datetime: null,
-                },
-            ],
-            triggers: [
-                {
-                    kind: 'llm-prompt',
-                    settings: {
-                        custom_inputs: [],
-                        object_inputs: [],
-                        outputs: [],
-                    },
-                },
-            ],
-            is_draft: false,
-            apps: [],
-            available_languages: [],
-        })
-
-        mockUseGetWorkflowConfiguration.mockReturnValue({
-            data: b.build(),
-            isInitialLoading: false,
-        } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
-
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <EditActionViewContainer />
-            </QueryClientProvider>
-        )
-
-        expect(screen.getByText('EditActionFormView')).toBeInTheDocument()
     })
 
     it('should render loading', () => {

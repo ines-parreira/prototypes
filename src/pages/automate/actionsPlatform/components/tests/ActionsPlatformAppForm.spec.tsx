@@ -232,6 +232,7 @@ describe('<ActionsPlatformAppForm />', () => {
                     id: 'someid',
                     auth_type: 'oauth2-token',
                     auth_settings: {
+                        refresh_token_url: '',
                         url: 'https://example.com',
                     },
                 }}
@@ -453,6 +454,42 @@ describe('<ActionsPlatformAppForm />', () => {
                 url: 'https://example.com',
                 instruction_url_text: 'Test Instructions URL text',
                 refresh_token_url: 'https://example.com',
+            },
+        })
+    })
+
+    it('should render trackstar integration when auth_type is trackstar', async () => {
+        const mock = jest.fn()
+        renderWithRouter(
+            <ActionsPlatformAppForm
+                value={{
+                    id: 'someid',
+                    auth_type: 'trackstar',
+                    auth_settings: {
+                        integration_name: 'sandbox',
+                    },
+                }}
+                apps={[app]}
+                onSubmit={mock}
+            />
+        )
+
+        act(() => {
+            fireEvent.focus(screen.getByText('sandbox'))
+        })
+        act(() => {
+            fireEvent.click(screen.getByText('shiphero'))
+        })
+        await flushPromises()
+
+        act(() => {
+            fireEvent.click(screen.getByText('Save Changes'))
+        })
+        expect(mock).toHaveBeenCalledWith({
+            id: 'someid',
+            auth_type: 'trackstar',
+            auth_settings: {
+                integration_name: 'shiphero',
             },
         })
     })
