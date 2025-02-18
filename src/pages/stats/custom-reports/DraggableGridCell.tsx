@@ -1,6 +1,6 @@
 import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
-import React, {forwardRef, useRef} from 'react'
+import React, {forwardRef, isValidElement, useRef} from 'react'
 import {
     useDrag,
     useDrop,
@@ -41,6 +41,21 @@ export const createDragItem = ({
 })
 
 type DragItem = ReturnType<typeof createDragItem>
+
+export const isDragItem = (item: unknown): item is DragItem => {
+    return (
+        typeof item === 'object' &&
+        item !== null &&
+        'type' in item &&
+        item.type === ChartType.Card &&
+        'size' in item &&
+        typeof item.size === 'number' &&
+        'element' in item &&
+        isValidElement(item.element) &&
+        'rect' in item &&
+        typeof item.rect === 'object'
+    )
+}
 
 export const createMoveHandler =
     (
@@ -241,12 +256,12 @@ const Handle = forwardRef<HTMLSpanElement>((_, ref) => {
 
 export const DraggablePreview = () => {
     const {item, isDragging, currentOffset} = useDragLayer((monitor) => ({
-        item: monitor.getItem() as DragItem,
+        item: monitor.getItem(),
         isDragging: monitor.isDragging(),
         currentOffset: monitor.getSourceClientOffset(),
     }))
 
-    if (!isDragging || !currentOffset) return null
+    if (!isDragging || !currentOffset || !isDragItem(item)) return null
 
     const handleOffset = {x: item.rect.width / 2 - HANDLE_WIDTH / 2, y: 0}
 
@@ -312,7 +327,7 @@ const defaultState = {
     right: 0,
 }
 
-type MeasureRect = typeof defaultState
+export type MeasureRect = typeof defaultState
 
 export function useMeasure(ref: React.RefObject<HTMLDivElement>) {
     const [rect, setRect] = React.useState<MeasureRect>(defaultState)

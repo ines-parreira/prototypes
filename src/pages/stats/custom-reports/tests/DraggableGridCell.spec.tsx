@@ -11,6 +11,7 @@ import {
     createIsDragging,
     createDropzoneHoverHandler,
     createMoveRawHandler,
+    MeasureRect,
 } from 'pages/stats/custom-reports/DraggableGridCell'
 import {
     CustomReportChild,
@@ -33,15 +34,25 @@ const dummyRect = {
 jest.mock('react-dnd', () => ({useDragLayer: jest.fn(), useDrag: jest.fn()}))
 const mockUseDragLayer = assumeMock(useDragLayer)
 
-const createDummyDragItem = (configId: string = '1', size: number = 2) =>
+const createDummyDragItem = ({
+    configId = '1',
+    size = 2,
+    rect = dummyRect,
+    element = <div />,
+}: {
+    configId?: string
+    size?: number
+    rect?: MeasureRect
+    element?: React.ReactNode
+} = {}) =>
     createDragItem({
         size,
         schema: {
             config_id: configId,
             type: CustomReportChildType.Chart,
         },
-        element: <div />,
-        rect: dummyRect,
+        element,
+        rect,
     })
 
 describe('createMoveHandler(node, target, handleMove)', () => {
@@ -72,8 +83,8 @@ describe('createMoveHandler(node, target, handleMove)', () => {
     })
 
     it('does nothing if node is null', () => {
-        const targetItem = createDummyDragItem('1')
-        const srcItem = createDummyDragItem('2')
+        const targetItem = createDummyDragItem({configId: '1'})
+        const srcItem = createDummyDragItem({configId: '2'})
         const monitor = {
             getClientOffset: () => ({x: 0, y: 0}),
         } as DropTargetMonitor
@@ -92,7 +103,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
     })
 
     it('does nothing if hovering over itself', () => {
-        const item = createDummyDragItem('1', 2)
+        const item = createDummyDragItem({configId: '1', size: 2})
         const monitor = {
             getClientOffset: () => ({x: 0, y: 0}),
         } as DropTargetMonitor
@@ -111,8 +122,8 @@ describe('createMoveHandler(node, target, handleMove)', () => {
     })
 
     it('does nothing if not past the hover threshold', () => {
-        const targetItem = createDummyDragItem('1', 4)
-        const srcItem = createDummyDragItem('2', 2)
+        const targetItem = createDummyDragItem({configId: '1', size: 4})
+        const srcItem = createDummyDragItem({configId: '2', size: 2})
         const monitor = {
             getClientOffset: () => ({x: 50, y: 50}),
         } as DropTargetMonitor
@@ -138,8 +149,14 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 id === srcId ? 1 : 0
             )
 
-            const targetItem = createDummyDragItem(targetId, 2)
-            const srcItem = createDummyDragItem(srcId, 2)
+            const targetItem = createDummyDragItem({
+                configId: targetId,
+                size: 2,
+            })
+            const srcItem = createDummyDragItem({
+                configId: srcId,
+                size: 2,
+            })
             const monitor = {
                 getClientOffset: () => ({x: 50, y: 50}),
             } as DropTargetMonitor
@@ -163,8 +180,14 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 id === srcId ? 0 : 1
             )
 
-            const targetItem = createDummyDragItem(targetId, 2)
-            const srcItem = createDummyDragItem(srcId, 2)
+            const targetItem = createDummyDragItem({
+                configId: targetId,
+                size: 2,
+            })
+            const srcItem = createDummyDragItem({
+                configId: srcId,
+                size: 2,
+            })
             const monitor = {
                 getClientOffset: () => ({x: 50, y: 50}),
             } as DropTargetMonitor
@@ -184,8 +207,8 @@ describe('createMoveHandler(node, target, handleMove)', () => {
 
     describe('when target is full width (size 12)', () => {
         it('positions before when hovering above middle', () => {
-            const targetItem = createDummyDragItem('1', 12)
-            const srcItem = createDummyDragItem('2', 2)
+            const targetItem = createDummyDragItem({configId: '1', size: 12})
+            const srcItem = createDummyDragItem({configId: '2', size: 2})
             const monitor = {
                 getClientOffset: () => ({x: 0, y: 30}),
             } as DropTargetMonitor
@@ -203,8 +226,8 @@ describe('createMoveHandler(node, target, handleMove)', () => {
         })
 
         it('positions after when hovering below middle', () => {
-            const targetItem = createDummyDragItem('1', 12)
-            const srcItem = createDummyDragItem('2', 2)
+            const targetItem = createDummyDragItem({configId: '1', size: 12})
+            const srcItem = createDummyDragItem({configId: '2', size: 2})
             const monitor = {
                 getClientOffset: () => ({x: 0, y: 70}),
             } as DropTargetMonitor
@@ -224,8 +247,8 @@ describe('createMoveHandler(node, target, handleMove)', () => {
 
     describe('when target is larger but not full width', () => {
         it('positions before when hovering in top-left quadrant', () => {
-            const targetItem = createDummyDragItem('1', 6)
-            const srcItem = createDummyDragItem('2', 2)
+            const targetItem = createDummyDragItem({configId: '1', size: 6})
+            const srcItem = createDummyDragItem({configId: '2', size: 2})
             const monitor = {
                 getClientOffset: () => ({x: 20, y: 20}),
             } as DropTargetMonitor
@@ -243,8 +266,8 @@ describe('createMoveHandler(node, target, handleMove)', () => {
         })
 
         it('positions after when hovering in bottom-right quadrant', () => {
-            const targetItem = createDummyDragItem('1', 6)
-            const srcItem = createDummyDragItem('2', 2)
+            const targetItem = createDummyDragItem({configId: '1', size: 6})
+            const srcItem = createDummyDragItem({configId: '2', size: 2})
             const monitor = {
                 getClientOffset: () => ({x: 80, y: 80}),
             } as DropTargetMonitor
@@ -262,8 +285,8 @@ describe('createMoveHandler(node, target, handleMove)', () => {
         })
 
         it('positions after when hovering in top-right quadrant', () => {
-            const targetItem = createDummyDragItem('1', 6)
-            const srcItem = createDummyDragItem('2', 2)
+            const targetItem = createDummyDragItem({configId: '1', size: 6})
+            const srcItem = createDummyDragItem({configId: '2', size: 2})
             const monitor = {
                 getClientOffset: () => ({x: 80, y: 20}),
             } as DropTargetMonitor
@@ -281,8 +304,8 @@ describe('createMoveHandler(node, target, handleMove)', () => {
         })
 
         it('positions after when hovering in bottom-left quadrant', () => {
-            const targetItem = createDummyDragItem('1', 6)
-            const srcItem = createDummyDragItem('2', 2)
+            const targetItem = createDummyDragItem({configId: '1', size: 6})
+            const srcItem = createDummyDragItem({configId: '2', size: 2})
             const monitor = {
                 getClientOffset: () => ({x: 20, y: 80}),
             } as DropTargetMonitor
@@ -325,13 +348,13 @@ describe('DraggablePreview', () => {
     })
 
     it('renders preview with correct positioning', () => {
-        const mockItem = {
+        const mockItem = createDummyDragItem({
             rect: {
                 width: 200,
                 height: 150,
-            },
+            } as MeasureRect,
             element: <div>Mock Content</div>,
-        }
+        })
 
         mockUseDragLayer.mockReturnValue({
             isDragging: true,
@@ -354,13 +377,13 @@ describe('DraggablePreview', () => {
     })
 
     it('renders the provided element content', () => {
-        const mockItem = {
+        const mockItem = createDummyDragItem({
             rect: {
                 width: 200,
                 height: 150,
-            },
+            } as MeasureRect,
             element: <div data-testid="mock-content">Mock Content</div>,
-        }
+        })
 
         mockUseDragLayer.mockReturnValue({
             isDragging: true,
@@ -478,7 +501,7 @@ describe('useMeasure', () => {
 
 describe('createIsDragging', () => {
     it('returns true when dragging item has matching config_id', () => {
-        const item = createDummyDragItem('test-123', 2)
+        const item = createDummyDragItem({configId: 'test-123', size: 2})
 
         const monitor = {
             getItem: () => item,
@@ -490,7 +513,7 @@ describe('createIsDragging', () => {
     })
 
     it('returns false when dragging item has different config_id', () => {
-        const item = createDummyDragItem('test-123', 2)
+        const item = createDummyDragItem({configId: 'test-123', size: 2})
 
         const monitor = {
             getItem: () => ({
@@ -522,7 +545,7 @@ describe('createDropzoneHoverHandler', () => {
                 children: [],
             },
         ] as CustomReportChild[]
-        const item = createDummyDragItem('test-id')
+        const item = createDummyDragItem({configId: 'test-id'})
 
         const handler = createDropzoneHoverHandler(schemas, mockMoveHandler)
         handler(item)
@@ -538,7 +561,7 @@ describe('createDropzoneHoverHandler', () => {
                 config_id: firstChartId,
             },
         ] as CustomReportChild[]
-        const item = createDummyDragItem(firstChartId)
+        const item = createDummyDragItem({configId: firstChartId})
 
         const handler = createDropzoneHoverHandler(schemas, mockMoveHandler)
         handler(item)
@@ -555,7 +578,7 @@ describe('createDropzoneHoverHandler', () => {
                 config_id: firstChartId,
             },
         ] as CustomReportChild[]
-        const item = createDummyDragItem(draggedChartId)
+        const item = createDummyDragItem({configId: draggedChartId})
 
         const handler = createDropzoneHoverHandler(schemas, mockMoveHandler)
         handler(item)
@@ -586,7 +609,7 @@ describe('createDropzoneHoverHandler', () => {
                 ],
             },
         ] as CustomReportChild[]
-        const item = createDummyDragItem(draggedChartId)
+        const item = createDummyDragItem({configId: draggedChartId})
 
         const handler = createDropzoneHoverHandler(schemas, mockMoveHandler)
         handler(item)
@@ -618,7 +641,7 @@ describe('createMoveRawHandler', () => {
             {config_id: 'chart-2'},
         ] as CustomReportChartSchema[]
 
-        const item = createDummyDragItem('chart-1')
+        const item = createDummyDragItem({configId: 'chart-1'})
         const handler = createMoveRawHandler(charts, mockMoveHandler)
 
         handler(item)
@@ -632,7 +655,7 @@ describe('createMoveRawHandler', () => {
             {config_id: 'chart-2'},
         ] as CustomReportChartSchema[]
 
-        const item = createDummyDragItem('chart-3')
+        const item = createDummyDragItem({configId: 'chart-3'})
         const handler = createMoveRawHandler(charts, mockMoveHandler)
 
         handler(item)
@@ -647,7 +670,7 @@ describe('createMoveRawHandler', () => {
     it('works with single chart in row', () => {
         const charts = [{config_id: 'chart-1'}] as CustomReportChartSchema[]
 
-        const item = createDummyDragItem('chart-2')
+        const item = createDummyDragItem({configId: 'chart-2'})
         const handler = createMoveRawHandler(charts, mockMoveHandler)
 
         handler(item)
