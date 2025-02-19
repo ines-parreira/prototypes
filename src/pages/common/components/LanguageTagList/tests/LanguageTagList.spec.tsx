@@ -2,7 +2,7 @@ import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {LocaleCode} from 'models/helpCenter/types'
+import {Locale, LocaleCode} from 'models/helpCenter/types'
 
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 
@@ -21,11 +21,22 @@ const LOCALE = {
  * IMPORTANT: Keep in mind the content of this list is rendered in reverse
  */
 describe('<LanguageTagList />', () => {
-    it('renders nothing if list is empty or defaultLocale is missing', () => {
+    it('renders nothing if list is empty', () => {
         const {container} = render(
             <LanguageTagList
                 id="1"
                 defaultLanguage={LOCALE}
+                languageList={[]}
+            />
+        )
+        expect(container.firstChild).toBeNull()
+    })
+
+    it('renders nothing if defaultLanguage is missing', () => {
+        const {container} = render(
+            <LanguageTagList
+                id="1"
+                defaultLanguage={undefined as unknown as Locale}
                 languageList={[]}
             />
         )

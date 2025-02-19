@@ -61,6 +61,13 @@ export const LanguageTagList: React.FC<Props> = ({
     displayLimit = 1,
 }: Props) => {
     const {displayedLocales, hiddenLocales} = useMemo(() => {
+        if (languageList.length === 0 || !defaultLanguage) {
+            return {
+                displayedLocales: [],
+                hiddenLocales: [],
+            }
+        }
+
         const isExceedLimit = displayLimit < languageList.length
 
         const locales = moveLocaleToBack(languageList, defaultLanguage)
@@ -85,6 +92,10 @@ export const LanguageTagList: React.FC<Props> = ({
     }, [languageList, defaultLanguage, displayLimit])
 
     const displayedTags = useMemo(() => {
+        if (displayedLocales.length === 0) {
+            return null
+        }
+
         const formatLanguageName = (lang: Locale) =>
             lang.code === defaultLanguage.code
                 ? `${lang.name} (Default)`
