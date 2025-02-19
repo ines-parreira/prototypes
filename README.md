@@ -174,7 +174,7 @@ This is because there is no registry configured with access to the package @gorg
 
 ### ERR_OSSL_EVP_UNSUPPORTED
 
-When running `yarn install` or `yarn serve` on node 18.21 following error might occur:
+When running `yarn install` or any of the `yarn dev` commands on node 18.12.1 following error might occur:
 
 ```bash
   this[kHandle] = new _Hash(algorithm, xofLen);
@@ -213,7 +213,7 @@ Run
 export NODE_OPTIONS=--openssl-legacy-provider
 ```
 
-before running `yarn install` or `yarn serve`. Should work without errors.
+before running `yarn install` or any of the `yarn dev` commands. Should work without errors.
 
 ### Revert PR was blocked by Codecov
 
