@@ -88,7 +88,7 @@ Tokens are provided by the `@gorgias/design-tokens` package.
 ```bash
 yarn test
 yarn lint   # Only code all the linting scripts
-yarn types  # Only type-check
+yarn typecheck  # Only type-check
 yarn jest   # Only unit tests
 ```
 

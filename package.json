@@ -6,7 +6,8 @@
     "private": true,
     "repository": "https://github.com/gorgias/gorgias",
     "scripts": {
-        "types": "tsc -p ./tsconfig.json --noEmit true --skipLibCheck true",
+        "typecheck": "tsc -p ./tsconfig.json --noEmit true",
+        "typecheck:watch": "tsc -p ./tsconfig.json --noEmit true --watch",
         "eslint": "eslint --quiet src/\"$1\"",
         "stylelint:less": "stylelint \"src/**/*.less\"",
         "lint": "run-s lint:*",

@@ -53,7 +53,7 @@ jobs:
           node-version: ${{ inputs.node-version }}
 
       - name: Typecheck
-        run: yarn types
+        run: yarn typecheck
 
   tests:
     name: Tests
