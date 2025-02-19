@@ -10,6 +10,12 @@
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     }
 
+    .titleWrapper {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+    }
+
     .title {
         display: flex;
         justify-content: space-between;
@@ -22,6 +28,6 @@
 
     .subtitle {
         color: var(--neutral-grey-5);
-        .caption-regular();
+        .body-regular();
     }
 }

@@ -15,27 +15,19 @@
     }
 
     .title {
-        background: linear-gradient(
-            90deg,
-            #222 21.5%,
-            #a48dff 73.5%,
-            #ff9466 100%
-        );
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        line-height: 24px;
+        .heading-subsection-semibold();
     }
 
     .titleIcon {
         margin-left: 2px;
         font-size: 18px;
         vertical-align: -18%;
+        color: var(--accessory-magenta-25);
     }
 
     .pendingTaskInnerContainer {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(304px, 1fr));
         gap: 16px;
         margin-top: @layout-spacing-xs;
     }
@@ -43,6 +35,7 @@
     .expanderContainer {
         text-align: center;
         width: 100%;
+        margin: @layout-spacing-xs 0;
     }
 
     .expander {

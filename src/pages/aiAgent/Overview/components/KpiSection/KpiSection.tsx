@@ -120,7 +120,7 @@ export const KpiSection = () => {
 
     return (
         <OverviewCard>
-            <div>
+            <div className={css.titleWrapper}>
                 <div className={css.title}>
                     <CardTitle>AI Agent Performance</CardTitle>
                     {hasAnalytics && (

@@ -28,27 +28,8 @@ export const PendingTasksCompletionBar: React.FC<Props> = ({
 
     const position = Math.min(100, (totalTasksCompleted / totalTasks) * 100)
 
-    const legend = isLoading ? (
-        <>
-            <span className={css.legendItem}>
-                <Skeleton width={35} height={13} />
-            </span>
-            <span className={css.legendItem}>
-                <Skeleton width={80} height={13} />
-            </span>
-            <span className={css.legendItem}>
-                <Skeleton width={62} height={13} />
-            </span>
-        </>
-    ) : (
-        <>
-            <span className={css.legendItem}>basic</span>
-            <span className={css.legendItem}>intermediate</span>
-            <span className={css.legendItem}>advanced</span>
-        </>
-    )
     return (
-        <div className={css.wrapper} role="progressbar" {...ariaProps}>
+        <div role="progressbar" {...ariaProps}>
             <div className={css.bar}>
                 {isLoading ? (
                     <Skeleton height={16} />
@@ -71,7 +52,6 @@ export const PendingTasksCompletionBar: React.FC<Props> = ({
                     </>
                 )}
             </div>
-            <div className={css.legendContainer}>{legend}</div>
         </div>
     )
 }

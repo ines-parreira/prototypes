@@ -3,10 +3,12 @@ import React from 'react'
 import {CardTitle} from 'pages/aiAgent/Onboarding/components/Card'
 import {Subtitle} from 'pages/aiAgent/Onboarding/components/Subtitle/Subtitle'
 
+import css from './ResourcesSection.less'
+
 export const ResourcesSection = () => {
     return (
         <div>
-            <div>
+            <div className={css.titleContainer}>
                 <CardTitle>Resources</CardTitle>
                 <Subtitle>
                     Discover expert tips and actionable strategies to enhance
