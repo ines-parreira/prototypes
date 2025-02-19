@@ -12,7 +12,8 @@ export const buildRuleEngineData = (
     emailIntegrations: [],
     shopifyIntegration: {} as any,
     chatIntegrationsStatus: {} as any,
-    ticketViewData: {} as any,
+    ticketView: {} as any,
+    pageInteractions: {} as any,
     ...data,
 })
 

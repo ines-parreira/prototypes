@@ -66,6 +66,7 @@ export enum FeatureFlagKey {
     ConvertPerformanceView = 'convert-performance-view',
     ConvertContactForm = 'convert-contact-form',
     ConvertCampaignProritization = 'convert-campaign-prioritization',
+    ConvertChatInstallSnippet = 'convert-chat-install-snippet',
     ConvAiStandaloneMenu = 'conv-ai-standalone-menu',
     ConvAiOnboarding = 'conv-ai-onboarding',
     CustomerTimelineButton = 'customer-timeline-button',

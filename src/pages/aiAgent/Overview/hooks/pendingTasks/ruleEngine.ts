@@ -23,6 +23,7 @@ import {PublishYourFirstGuidanceTask} from './tasks/PublishYourFirstGuidance.tas
 import {ReviewAIGeneratedGuidancesTask} from './tasks/ReviewAIGeneratedGuidances.task'
 import {SetYourActionsLiveTask} from './tasks/SetYourActionsLive.task'
 import {TestAIAgentTask} from './tasks/TestAIAgent.task'
+import {UpdateYourChatInstallationTask} from './tasks/UpdateYourChatInstallation.task'
 import {UploadAnExternalDocTask} from './tasks/UploadAnExternalDoc.task'
 import {VerifyYourEmailDomainTask} from './tasks/VerifyYourEmailDomain.task'
 
@@ -34,6 +35,7 @@ import {type EmailIntegrationsData} from './useFetchEmailIntegrationsData'
 import {type FaqHelpCentersData} from './useFetchFaqHelpCentersData'
 import {type FileIngestionData} from './useFetchFileIngestionData'
 import {type GuidancesData} from './useFetchGuidancesData'
+import {type PageInteractionsData} from './useFetchPageInteractionsData'
 import {type ShopifyPermissionsData} from './useShopifyPermissionsData'
 import {type TicketViewData} from './useTicketViewData'
 
@@ -47,7 +49,8 @@ export type RuleEngineData = {
     emailIntegrations: EmailIntegrationsData
     shopifyIntegration: ShopifyPermissionsData
     chatIntegrationsStatus: ChatIntegrationsStatusData
-    ticketViewData: TicketViewData
+    ticketView: TicketViewData
+    pageInteractions: PageInteractionsData
 }
 
 export type RuleEngineRoutes = {
@@ -60,6 +63,7 @@ const tasksPerAiAgentType: Record<
 > = {
     mixed: (data: RuleEngineData, routes: RuleEngineRoutes) => [
         new InstallYourChatTask(data, routes),
+        new UpdateYourChatInstallationTask(data, routes),
         new SetUpYourEmailTask(data, routes),
         new UpdateShopifyPermissionsTask(data, routes),
         new ConnectYourDefaultEmailTask(data, routes),
@@ -80,6 +84,7 @@ const tasksPerAiAgentType: Record<
     ],
     sales: (data: RuleEngineData, routes: RuleEngineRoutes) => [
         new InstallYourChatTask(data, routes),
+        new UpdateYourChatInstallationTask(data, routes),
         new UpdateShopifyPermissionsTask(data, routes),
         new ConnectAHelpCenterTask(data, routes),
         new EnableAIAgentOnChatTask(data, routes),

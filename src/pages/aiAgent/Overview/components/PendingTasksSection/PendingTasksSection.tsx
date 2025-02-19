@@ -18,6 +18,7 @@ export const pendingTasksCollapsibleId = 'overview-pending-tasks-collapsible'
 type Store = {
     name: string
     id: number
+    type: string
 }
 type Props = {
     selectedStore: Store

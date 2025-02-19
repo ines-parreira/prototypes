@@ -56,7 +56,7 @@ describe('GiveFeedbackAIAgentTask', () => {
     it('should return root view when no viewId', () => {
         const task = new GiveFeedbackAIAgentTask(
             buildRuleEngineData({
-                ticketViewData: {viewId: undefined},
+                ticketView: {viewId: undefined},
             }),
             buildRuleEngineRoutes()
         )
@@ -66,7 +66,7 @@ describe('GiveFeedbackAIAgentTask', () => {
     it('should return view/viewId when viewId exists and no ticketId', () => {
         const task = new GiveFeedbackAIAgentTask(
             buildRuleEngineData({
-                ticketViewData: {viewId: 123, ticketId: undefined},
+                ticketView: {viewId: 123, ticketId: undefined},
             }),
             buildRuleEngineRoutes()
         )
@@ -76,7 +76,7 @@ describe('GiveFeedbackAIAgentTask', () => {
     it('should return view/viewId/ticketId when viewId and ticketId exist', () => {
         const task = new GiveFeedbackAIAgentTask(
             buildRuleEngineData({
-                ticketViewData: {viewId: 123, ticketId: 456},
+                ticketView: {viewId: 123, ticketId: 456},
             }),
             buildRuleEngineRoutes()
         )

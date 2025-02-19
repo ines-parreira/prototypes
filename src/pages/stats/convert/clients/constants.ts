@@ -2,6 +2,7 @@ export enum Cube {
     events = 'CampaignEvents',
     orderConversion = 'OrderConversion',
     campaignOrderEvents = 'CampaignOrderEvents',
+    pageInteractions = 'PageInteractions',
 }
 
 export enum FilterOperator {
@@ -76,5 +77,32 @@ export enum CampaignOrderEventsMeasure {
 }
 
 export enum CampaignOrderEventsTimeDimension {}
+
+// Page interactions constants
+export enum PageInteractionsDimension {
+    accountId = 'PageInteractions.accountId',
+    shopName = 'PageInteractions.shopName',
+    guestId = 'PageInteractions.guestId',
+    sessionId = 'PageInteractions.sessionId',
+    createdDatetime = 'PageInteractions.createdDatetime',
+    eventType = 'PageInteractions.eventType',
+    pageTitle = 'PageInteractions.pageTitle',
+    productId = 'PageInteractions.productId',
+    collectionId = 'PageInteractions.collectionId',
+    searchQuery = 'PageInteractions.searchQuery',
+    cart = 'PageInteractions.cart',
+    url = 'PageInteractions.url',
+    trafficMetadata = 'PageInteractions.trafficMetadata',
+}
+
+export enum PageInteractionsMeasure {
+    count = 'PageInteractions.count',
+    lastDatetime = 'PageInteractions.lastDatetime',
+    lastSearchQuery = 'PageInteractions.lastSearchQuery',
+}
+
+export type PageInteractionsTimeDimension =
+    | ValueOf<PageInteractionsDimension.createdDatetime>
+    | ValueOf<PageInteractionsMeasure.lastDatetime>
 
 export const CUBE_DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSS'

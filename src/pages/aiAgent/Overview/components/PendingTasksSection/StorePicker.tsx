@@ -3,7 +3,7 @@ import React, {useMemo} from 'react'
 import Filter from 'pages/stats/common/components/Filter'
 import {DropdownOption} from 'pages/stats/types'
 
-type Store = {id: number; name: string}
+type Store = {id: number; name: string; type: string}
 type Props = {
     stores: Store[]
     onStoreChange: (store: Store) => void

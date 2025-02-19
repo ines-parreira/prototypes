@@ -19,6 +19,10 @@ export type AsEmailArgs = {
     isPreferred?: boolean
     isVerified?: boolean
 }
+export type AsChatArgs = {
+    appId?: string
+    updatedAt?: string
+}
 export class IntegrationFixture {
     private integration: Integration
 
@@ -52,11 +56,16 @@ export class IntegrationFixture {
         return this as ConfiguredIntegrationFixture<'withDetails'>
     }
 
-    asChat() {
+    asChat({appId = 'app_id_123', updatedAt}: AsChatArgs = {}) {
         this.integration.type = IntegrationType.GorgiasChat
         this.integration.meta = {
-            app_id: `app_id_123`,
+            app_id: appId,
         } as GorgiasChatIntegrationMeta
+
+        if (updatedAt) {
+            this.integration.updated_datetime = updatedAt
+        }
+
         return this as ConfiguredIntegrationFixture<'withDetails'>
     }
 

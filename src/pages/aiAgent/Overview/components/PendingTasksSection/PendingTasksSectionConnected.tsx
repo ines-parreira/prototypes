@@ -12,8 +12,9 @@ import {
 import {getShopifyIntegrationsSortedByName} from 'state/integrations/selectors'
 
 type Store = {
-    name: string
     id: number
+    name: string
+    type: string
 }
 
 const expireIn1Hour = 3_600 * 1_000
@@ -30,7 +31,11 @@ export const PendingTasksSectionConnected = () => {
 
     const stores = useMemo(
         () =>
-            rawStores.map<Store>((store) => ({name: store.name, id: store.id})),
+            rawStores.map<Store>((store) => ({
+                name: store.name,
+                id: store.id,
+                type: store.type as string,
+            })),
         [rawStores]
     )
 
@@ -58,6 +63,7 @@ export const PendingTasksSectionConnected = () => {
         {
             accountDomain,
             storeName: selectedStore.name,
+            storeType: selectedStore.type,
         }
     )
 

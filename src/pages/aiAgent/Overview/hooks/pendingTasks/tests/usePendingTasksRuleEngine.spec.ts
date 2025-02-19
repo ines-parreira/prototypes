@@ -14,6 +14,7 @@ import {useFetchEmailIntegrationsData} from '../useFetchEmailIntegrationsData'
 import {useFetchFaqHelpCentersData} from '../useFetchFaqHelpCentersData'
 import {useFetchFileIngestionData} from '../useFetchFileIngestionData'
 import {useFetchGuidancesData} from '../useFetchGuidancesData'
+import {useFetchPageInteractionsData} from '../useFetchPageInteractionsData'
 import {usePendingTasksRuleEngine} from '../usePendingTasksRuleEngine'
 import {useShopifyPermissionsData} from '../useShopifyPermissionsData'
 import {useTicketViewData} from '../useTicketViewData'
@@ -25,6 +26,7 @@ import {EmailIntegrationsDataFixture} from './EmailIntegrationsData.fixture'
 import {FileIngestionDataFixture} from './FileIngestionData.fixture'
 import {GuidancesDataFixture} from './GuidancesData.fixture'
 import {HelpCenterDataFixture} from './HelpCenterData.fixture'
+import {PageInteractionsDataFixture} from './PageInteractionsData.fixture'
 
 jest.mock('../useFetchFaqHelpCentersData', () => ({
     useFetchFaqHelpCentersData: jest.fn(),
@@ -69,6 +71,12 @@ jest.mock('../useFetchChatIntegrationsStatusData', () => ({
 }))
 const useFetchChatIntegrationsStatusDataMock = assumeMock(
     useFetchChatIntegrationsStatusData
+)
+jest.mock('../useFetchPageInteractionsData', () => ({
+    useFetchPageInteractionsData: jest.fn(),
+}))
+const useFetchPageInteractionsDataMock = assumeMock(
+    useFetchPageInteractionsData
 )
 
 jest.mock('../useTicketViewData', () => ({
@@ -131,11 +139,19 @@ describe('usePendingTasksRuleEngine', () => {
         data: {},
     })
 
+    useFetchPageInteractionsDataMock.mockReturnValue({
+        isLoading: false,
+        data: PageInteractionsDataFixture.start()
+            .withoutPageInteraction()
+            .withConvertChatInstallSnippetEnabled()
+            .build(),
+    })
+
     it.each([
         {
             scopes: [AiAgentScope.Support, AiAgentScope.Sales],
             pendingTasks: 6,
-            completedTasks: 12,
+            completedTasks: 13,
         },
         {
             scopes: [AiAgentScope.Support],
@@ -145,7 +161,7 @@ describe('usePendingTasksRuleEngine', () => {
         {
             scopes: [AiAgentScope.Sales],
             pendingTasks: 4,
-            completedTasks: 8,
+            completedTasks: 9,
         },
     ])(
         'should return valid tasks for scopes $scopes',
@@ -169,6 +185,7 @@ describe('usePendingTasksRuleEngine', () => {
                 usePendingTasksRuleEngine({
                     accountDomain: 'test',
                     storeName: 'test',
+                    storeType: 'shopify',
                 })
             )
 

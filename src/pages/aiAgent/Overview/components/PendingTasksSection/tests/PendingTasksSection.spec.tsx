@@ -30,8 +30,8 @@ describe('PendingTasksSection', () => {
                 pendingTasks={pendingTasks}
                 isLoading={true}
                 onStoreChange={() => {}}
-                selectedStore={{id: 1, name: 'test store'}}
-                stores={[{id: 1, name: 'test store'}]}
+                selectedStore={{id: 1, name: 'test store', type: 'shopify'}}
+                stores={[{id: 1, name: 'test store', type: 'shopify'}]}
             />
         )
 
@@ -49,8 +49,8 @@ describe('PendingTasksSection', () => {
                 pendingTasks={pendingTasks}
                 isLoading={false}
                 onStoreChange={() => {}}
-                selectedStore={{id: 1, name: 'test store'}}
-                stores={[{id: 1, name: 'test store'}]}
+                selectedStore={{id: 1, name: 'test store', type: 'shopify'}}
+                stores={[{id: 1, name: 'test store', type: 'shopify'}]}
             />
         )
 
@@ -66,8 +66,8 @@ describe('PendingTasksSection', () => {
                 pendingTasks={[]}
                 isLoading={false}
                 onStoreChange={() => {}}
-                selectedStore={{id: 1, name: 'test store'}}
-                stores={[{id: 1, name: 'test store'}]}
+                selectedStore={{id: 1, name: 'test store', type: 'shopify'}}
+                stores={[{id: 1, name: 'test store', type: 'shopify'}]}
             />
         )
 
@@ -85,8 +85,8 @@ describe('PendingTasksSection', () => {
                 pendingTasks={pendingTasks}
                 isLoading={false}
                 onStoreChange={() => {}}
-                selectedStore={{id: 1, name: 'test store'}}
-                stores={[{id: 1, name: 'test store'}]}
+                selectedStore={{id: 1, name: 'test store', type: 'shopify'}}
+                stores={[{id: 1, name: 'test store', type: 'shopify'}]}
             />
         )
 

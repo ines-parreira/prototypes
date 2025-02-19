@@ -28,14 +28,35 @@ export const useFetchChatIntegrationsStatusData = ({
     const {isLoading, data} = useQuery(['aiAgentChatInstallationStatus'], {
         queryFn: () => {
             const mappedChats = chatIds
-                .map((chatId) => ({
-                    chatId,
-                    appId: chatIntegrations.find((i) => i.id === chatId)?.meta
-                        .app_id,
-                }))
+                .map((chatId) => {
+                    const chat = chatIntegrations.find((i) => i.id === chatId)
+                    return {
+                        chatId,
+                        updatedAt: chat?.updated_datetime,
+                        appId: chat?.meta.app_id,
+                    }
+                })
+                .sort((a, b) => {
+                    if (!a.updatedAt) {
+                        return 1
+                    }
+                    if (!b.updatedAt) {
+                        return -1
+                    }
+
+                    return new Date(b.updatedAt).getTime() >
+                        new Date(a.updatedAt).getTime()
+                        ? -1
+                        : 1
+                })
                 .filter(
-                    (chat): chat is {chatId: number; appId: string} =>
-                        !!chat.appId
+                    (
+                        chat
+                    ): chat is {
+                        chatId: number
+                        appId: string
+                        updatedAt: string
+                    } => !!chat.appId
                 )
 
             const promises = mappedChats.map(({chatId, appId}) =>

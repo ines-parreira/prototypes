@@ -37,6 +37,7 @@ export class ChatIntegrationsStatusDataFixture {
         this.chatIntegrationsStatusData.push({
             installed: isInstalled,
             applicationId: id,
+            chatId: id,
         } as ChatIntegrationsStatusData[number])
 
         return this as ConfiguredChatIntegrationsStatusData<

@@ -17,6 +17,11 @@ export type AiAgentOverviewRootStateFixtureFullyConfigured =
 
 type InternalData = {
     integrationId: number
+    chatUpdatedAt: string
+}
+
+type ChatIntegrationArgs = {
+    updatedAt?: string
 }
 export class AiAgentOverviewRootStateFixture {
     private rootState: RootState
@@ -24,6 +29,7 @@ export class AiAgentOverviewRootStateFixture {
 
     private internalData: InternalData = {
         integrationId: 1,
+        chatUpdatedAt: '2021-01-01T00:00:00Z',
     }
 
     private constructor() {
@@ -96,11 +102,18 @@ export class AiAgentOverviewRootStateFixture {
             AiAgentOverviewRootStateFixtureFullyConfigured
     }
 
-    withChatIntegration() {
+    withChatIntegration({updatedAt}: ChatIntegrationArgs = {}) {
         const id = this.internalData.integrationId++
+        const _updatedAt = new Date(
+            updatedAt ?? this.internalData.chatUpdatedAt
+        )
+        if (updatedAt) {
+            _updatedAt.setSeconds(_updatedAt.getSeconds() + 1)
+        }
+
         this.integrations.push(
             IntegrationFixture.start()
-                .asChat()
+                .asChat({updatedAt: _updatedAt.toISOString()})
                 .withDetails({
                     id,
                     name: `Chat ${id}`,

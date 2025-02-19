@@ -8,7 +8,7 @@ export class GiveFeedbackAIAgentTask extends Task {
         super(
             'Give feedback to your AI Agent',
             'Coach AI Agent to improve its performance',
-            'BASIC',
+            'RECOMMENDED',
             data,
             routes
         )
@@ -24,7 +24,7 @@ export class GiveFeedbackAIAgentTask extends Task {
     }
 
     protected getFeatureUrl({
-        data: {ticketViewData},
+        data: {ticketView: ticketViewData},
     }: {
         data: RuleEngineData
         routes: RuleEngineRoutes
