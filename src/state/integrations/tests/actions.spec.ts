@@ -118,7 +118,7 @@ describe('integrations actions', () => {
                 .reply(200, {id: 1, name: 'http'})
 
             return store
-                .dispatch(actions.fetchIntegration('1', 'http'))
+                .dispatch(actions.fetchIntegration('1', IntegrationType.Http))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
@@ -128,7 +128,9 @@ describe('integrations actions', () => {
                 .reply(200, {id: 1, name: 'http'})
 
             return store
-                .dispatch(actions.fetchIntegration('1', 'http', true))
+                .dispatch(
+                    actions.fetchIntegration('1', IntegrationType.Http, true)
+                )
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
@@ -136,7 +138,7 @@ describe('integrations actions', () => {
             mockServer.onGet('/api/integrations/1/').reply(400)
 
             return store
-                .dispatch(actions.fetchIntegration('1', 'http'))
+                .dispatch(actions.fetchIntegration('1', IntegrationType.Http))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })
@@ -387,6 +389,68 @@ describe('integrations actions', () => {
                 ])
             )
             expect(store.getActions()).toMatchSnapshot()
+        })
+        it('should handle integration type mismatch', async () => {
+            const integrationId = '1'
+            const integrationType = IntegrationType.Shopify
+            const response = {}
+
+            jest.spyOn(
+                helpers,
+                'isWellKnownEcomIntegrationIdMisMatch'
+            ).mockReturnValue(true)
+            jest.spyOn(history, 'replace').mockImplementation(() => {})
+
+            mockServer
+                .onGet(`/api/integrations/${integrationId}`)
+                .reply(200, response)
+
+            await store.dispatch(
+                actions.fetchIntegration(integrationId, integrationType)
+            )
+
+            const actionsDispatched = store.getActions()
+            expect(history.replace).toHaveBeenCalledWith(
+                `/app/settings/integrations/${integrationType}`
+            )
+            expect(actionsDispatched).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        type: constants.FETCH_INTEGRATION_ERROR,
+                        error: 'integration type mismatch',
+                        reason: `Integration with ID ${integrationId} is not a valid ${integrationType} integration`,
+                    }),
+                ])
+            )
+        })
+        it('on type match, dispatches integration fetch success', async () => {
+            const integrationId = '1'
+            const integrationType = IntegrationType.Shopify
+            const response = {}
+
+            jest.spyOn(
+                helpers,
+                'isWellKnownEcomIntegrationIdMisMatch'
+            ).mockReturnValue(false)
+
+            mockServer
+                .onGet(`/api/integrations/${integrationId}`)
+                .reply(200, response)
+
+            await store.dispatch(
+                actions.fetchIntegration(integrationId, integrationType)
+            )
+
+            const actionsDispatched = store.getActions()
+
+            expect(actionsDispatched).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        type: constants.FETCH_INTEGRATION_SUCCESS,
+                        integration: response,
+                    }),
+                ])
+            )
         })
     })
 })

@@ -29,6 +29,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import type {StoreDispatch, RootState} from 'state/types'
 
 import * as helpers from '../helpers'
+import {isWellKnownEcomIntegrationIdMisMatch} from '../helpers'
 import {
     getTranslations as getTranslationsAction,
     getApplicationTexts as getApplicationTextsAction,
@@ -261,7 +262,7 @@ export function onUpdateSuccess(
 
 export function fetchIntegration(
     integrationId: string,
-    integrationType: string,
+    integrationType: IntegrationType,
     waitingForAuthentication = false
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
@@ -277,6 +278,24 @@ export function fetchIntegration(
             .then((json) => json?.data)
             .then(
                 (resp) => {
+                    if (
+                        //@TODO: [CRMECOM-101] Remove this function after a complete fix is implemented that validates the integration type for all integrations
+                        // not just the top 3 ecom ones
+                        isWellKnownEcomIntegrationIdMisMatch(
+                            resp?.type,
+                            integrationType
+                        )
+                    ) {
+                        history.replace(
+                            `/app/settings/integrations/${integrationType}`
+                        )
+                        return dispatch({
+                            type: constants.FETCH_INTEGRATION_ERROR,
+                            error: 'integration type mismatch',
+                            reason: `Integration with ID ${integrationId} is not a valid ${integrationType} integration`,
+                        })
+                    }
+
                     dispatch({
                         type: constants.FETCH_INTEGRATION_SUCCESS,
                         integration: resp,
@@ -308,7 +327,7 @@ export function fetchIntegration(
                     // We redirect to the integrations home page if we can't find the wanted integration on the server
                     history.replace(
                         `/app/settings/${
-                            isChannel(integrationType as IntegrationType)
+                            isChannel(integrationType)
                                 ? 'channels'
                                 : 'integrations'
                         }/${integrationType}`

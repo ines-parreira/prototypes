@@ -6,6 +6,7 @@ import {useHistory} from 'react-router-dom'
 import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 
+import {IntegrationType} from 'models/integration/constants'
 import {
     fetchIntegration,
     triggerCreateSuccess,
@@ -37,7 +38,7 @@ export default function useAuthenticationPolling(
                 void dispatch(
                     fetchIntegration(
                         integration.get('id') as string,
-                        integration.get('type') as string,
+                        integration.get('type') as IntegrationType,
                         true
                     )
                 )

@@ -230,3 +230,24 @@ export const computeChatIntegrationStatus = (
             return null
     }
 }
+
+// prevents ecom settings page UI glitching out when for example API returns email integration response
+// due to user entering manually an id of the email integration into the url of a
+// well known ecommerce integration settings page
+// @https://linear.app/gorgias/issue/CRMECOM-101/woocommerce-the-widget-title-is-not-customizable
+//@TODO: [CRMECOM-101] Remove this function after a complete fix is implemented that validates the integration type for all integrations
+// not just the top 3 ecom ones
+export const isWellKnownEcomIntegrationIdMisMatch = (
+    responseIntegrationType: string,
+    clientIntegrationType: IntegrationType
+) => {
+    return !!(
+        responseIntegrationType &&
+        [
+            IntegrationType.Shopify,
+            IntegrationType.BigCommerce,
+            IntegrationType.Magento2,
+        ].includes(clientIntegrationType) &&
+        responseIntegrationType !== clientIntegrationType
+    )
+}

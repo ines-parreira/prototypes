@@ -7,12 +7,15 @@ import {
     GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
 } from 'config/integrations/gorgias_chat'
 import {account} from 'fixtures/account'
+import {IntegrationType} from 'models/integration/constants'
 import {GorgiasChatStatusEnum} from 'models/integration/types'
 import {InstallationStatus} from 'rest_api/gorgias_chat_protected_api/types'
 import {
     AccountSettingBusinessHours,
     AccountSettingType,
 } from 'state/currentAccount/types'
+
+import {isWellKnownEcomIntegrationIdMisMatch} from '../helpers'
 
 import * as helpers from '../helpers'
 
@@ -305,6 +308,65 @@ describe('integrations helpers', () => {
             expect(
                 helpers.isAccountDuringBusinessHours(businessHoursSettings)
             ).toEqual(expected)
+        })
+    })
+
+    describe('isWellKnownEcomIntegrationIdMisMatch', () => {
+        it('should return false if responseIntegrationType is empty', () => {
+            expect(
+                isWellKnownEcomIntegrationIdMisMatch(
+                    '',
+                    IntegrationType.Shopify
+                )
+            ).toBe(false)
+        })
+
+        it('should return false if responseIntegrationType matches clientIntegrationType', () => {
+            expect(
+                isWellKnownEcomIntegrationIdMisMatch(
+                    IntegrationType.Shopify,
+                    IntegrationType.Shopify
+                )
+            ).toBe(false)
+            expect(
+                isWellKnownEcomIntegrationIdMisMatch(
+                    IntegrationType.BigCommerce,
+                    IntegrationType.BigCommerce
+                )
+            ).toBe(false)
+            expect(
+                isWellKnownEcomIntegrationIdMisMatch(
+                    IntegrationType.Magento2,
+                    IntegrationType.Magento2
+                )
+            ).toBe(false)
+        })
+
+        it('should return true if responseIntegrationType does not match clientIntegrationType and clientIntegrationType is a well-known ecom type', () => {
+            expect(
+                isWellKnownEcomIntegrationIdMisMatch(
+                    IntegrationType.Email,
+                    IntegrationType.BigCommerce
+                )
+            ).toBe(true)
+            expect(
+                isWellKnownEcomIntegrationIdMisMatch(
+                    IntegrationType.Phone,
+                    IntegrationType.Magento2
+                )
+            ).toBe(true)
+            expect(
+                isWellKnownEcomIntegrationIdMisMatch(
+                    IntegrationType.Gmail,
+                    IntegrationType.Shopify
+                )
+            ).toBe(true)
+            expect(
+                isWellKnownEcomIntegrationIdMisMatch(
+                    IntegrationType.Outlook,
+                    IntegrationType.Shopify
+                )
+            ).toBe(true)
         })
     })
 })

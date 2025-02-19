@@ -15,7 +15,6 @@ import {bindActionCreators} from 'redux'
 
 import {useAppNode} from 'appNode'
 import {DateAndTimeFormatting} from 'constants/datetime'
-import {ZENDESK_INTEGRATION_TYPE} from 'constants/integration'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {IntegrationType} from 'models/integration/constants'
@@ -54,7 +53,7 @@ export const ImportZendeskDetail = ({
     )
 
     useEffectOnce(() => {
-        fetchIntegration(integrationId, ZENDESK_INTEGRATION_TYPE)
+        fetchIntegration(integrationId, IntegrationType.Zendesk)
     })
 
     const integration = integrations.find(

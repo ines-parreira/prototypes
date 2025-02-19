@@ -13,6 +13,7 @@ import {
 } from 'reactstrap'
 
 import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
+import {IntegrationType} from 'models/integration/constants'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -89,7 +90,9 @@ export class YotpoIntegrationDetailComponent extends Component<Props, State> {
                     setTimeout(() => {
                         nextProps.actions.fetchIntegration(
                             nextProps.integration.get('id') as string,
-                            nextProps.integration.get('type') as string,
+                            nextProps.integration.get(
+                                'type'
+                            ) as IntegrationType,
                             true
                         )
                     }, 3000)
