@@ -441,9 +441,6 @@ function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
     const isAiAgentKnowledgeTabEnabled =
         useFlags()[FeatureFlagKey.AiAgentKnowledgeTab]
 
-    const isAiAgentOptimizeTabEnabled =
-        useFlags()[FeatureFlagKey.AiAgentOptimizeTab]
-
     const isAiAgentStandaloneMenuEnabled =
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
@@ -508,21 +505,19 @@ function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
                         exact
                         component={AiAgentMainViewContainer}
                     />
-                    {isAiAgentOptimizeTabEnabled && (
-                        <AiAgentErrorBoundary section="ai-agent-optimize">
+                    <AiAgentErrorBoundary section="ai-agent-optimize">
+                        <Route
+                            path={`${path}/optimize`}
+                            exact
+                            component={OptimizeContainer}
+                        />
+                        <Switch>
                             <Route
-                                path={`${path}/optimize`}
-                                exact
-                                component={OptimizeContainer}
+                                path={`${path}/optimize/:intentId`}
+                                component={Level2IntentsContainer}
                             />
-                            <Switch>
-                                <Route
-                                    path={`${path}/optimize/:intentId`}
-                                    component={Level2IntentsContainer}
-                                />
-                            </Switch>
-                        </AiAgentErrorBoundary>
-                    )}
+                        </Switch>
+                    </AiAgentErrorBoundary>
                     <AiAgentErrorBoundary section="ai-agent-configuration-channels">
                         <Route
                             path={`${path}/settings/:tab(channels)`}
