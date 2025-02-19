@@ -291,15 +291,6 @@ const GorgiasChatIntegrationVisibilityControls = (
                                 a condition.
                             </Alert>
                         )}
-                        <div className={css.tip}>
-                            <span className={css.tipIcon}>
-                                <i className="material-icons">error</i>
-                            </span>
-                            <span>
-                                Note that Shopify Checkout pages are not
-                                supported
-                            </span>
-                        </div>
                     </div>
                 )}
                 <div className={css.footer}>
