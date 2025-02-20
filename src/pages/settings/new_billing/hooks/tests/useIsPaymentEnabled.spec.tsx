@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {AlertBannerTypes} from 'AlertBanners'
+import {AlertBannerTypes, BannerCategories} from 'AlertBanners'
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
 
@@ -20,7 +20,6 @@ import {
 } from 'pages/settings/new_billing/fixtures'
 import {useIsPaymentEnabled} from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import {notify} from 'state/notifications/actions'
-import {NotificationStyle} from 'state/notifications/types'
 import {renderHookWithStoreAndQueryClientProvider} from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 const mockedServer = new MockAdapter(client)
@@ -34,6 +33,15 @@ useAppDispatchMock.mockReturnValue(dispatch)
 // Mock notify
 jest.mock('state/notifications/actions')
 
+const mockAddBanner = jest.fn()
+const mockRemoveBanner = jest.fn()
+jest.mock('AlertBanners/hooks/useBanners', () => ({
+    useBanners: jest.fn(() => ({
+        addBanner: mockAddBanner,
+        removeBanner: mockRemoveBanner,
+    })),
+}))
+
 describe('useIsPaymentEnabled', () => {
     it('should render the no-payment-method use-case', async () => {
         mockedServer.onGet('/billing/state').reply(200, trial)
@@ -43,18 +51,17 @@ describe('useIsPaymentEnabled', () => {
 
         await waitFor(() => {
             expect(result.current).toBe(false)
-            expect(dispatch).toHaveBeenCalledTimes(1)
-            expect(notify).toHaveBeenCalledTimes(1)
-            expect(notify).toHaveBeenNthCalledWith(1, {
+            expect(mockAddBanner).toHaveBeenCalledTimes(1)
+            expect(mockAddBanner).toHaveBeenCalledWith({
                 message: 'No payment method registered on your account',
                 type: AlertBannerTypes.Warning,
-                style: NotificationStyle.Banner,
                 CTA: {
                     type: 'internal',
                     to: BILLING_PAYMENT_CARD_PATH,
                     text: 'Add a payment method',
                 },
-                id: 'no-payment-method',
+                category: BannerCategories.PAYMENT_ENABLED,
+                instanceId: 'no-payment-method',
             })
         })
     })
@@ -85,18 +92,17 @@ describe('useIsPaymentEnabled', () => {
 
         await waitFor(() => {
             expect(result.current).toBe(false)
-            expect(dispatch).toHaveBeenCalledTimes(1)
-            expect(notify).toHaveBeenCalledTimes(1)
-            expect(notify).toHaveBeenNthCalledWith(1, {
+            expect(mockAddBanner).toHaveBeenCalledTimes(1)
+            expect(mockAddBanner).toHaveBeenCalledWith({
                 message: `${creditCard.brand} credit card ending with ${creditCard.last4} is expired`,
                 type: AlertBannerTypes.Warning,
-                style: NotificationStyle.Banner,
                 CTA: {
                     type: 'internal',
                     to: BILLING_PAYMENT_CARD_PATH,
                     text: 'Change Payment Method',
                 },
-                id: 'payment-method-expired',
+                category: BannerCategories.PAYMENT_ENABLED,
+                instanceId: 'payment-method-expired',
             })
         })
     })
@@ -137,19 +143,18 @@ describe('useIsPaymentEnabled', () => {
 
         await waitFor(() => {
             expect(result.current).toBe(false)
-            expect(dispatch).toHaveBeenCalledTimes(1)
-            expect(notify).toHaveBeenCalledTimes(1)
-            expect(notify).toHaveBeenNthCalledWith(1, {
+            expect(mockAddBanner).toHaveBeenCalledTimes(1)
+            expect(mockAddBanner).toHaveBeenCalledWith({
                 message: 'Payment with Shopify is inactive',
                 type: AlertBannerTypes.Warning,
-                style: NotificationStyle.Banner,
                 CTA: {
                     type: 'internal',
                     to: ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
                     text: 'Activate Billing with Shopify',
                     opensInNewTab: true,
                 },
-                id: 'payment-method-expired',
+                category: BannerCategories.PAYMENT_ENABLED,
+                instanceId: 'payment-method-expired-shopify-billing',
             })
         })
     })

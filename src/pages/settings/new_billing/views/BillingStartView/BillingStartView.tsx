@@ -2,7 +2,7 @@ import moment from 'moment'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {NavLink, Redirect, Route, Switch} from 'react-router-dom'
 
-import {AlertBannerTypes} from 'AlertBanners'
+import {AlertBannerTypes, BannerCategories, useBanners} from 'AlertBanners'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -40,11 +40,7 @@ import {
 } from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {notify} from 'state/notifications/actions'
-import {
-    Notification,
-    NotificationStatus,
-    NotificationStyle,
-} from 'state/notifications/types'
+import {Notification, NotificationStatus} from 'state/notifications/types'
 import {formatDatetime} from 'utils'
 
 import ContactSupportModal from '../../components/ContactSupportModal/ContactSupportModal'
@@ -86,6 +82,7 @@ const BillingStartView = () => {
     const isPaymentShopify = payment === 'shopify'
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
+
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.LongDateWithYear
     )
@@ -94,6 +91,7 @@ const BillingStartView = () => {
 
     const from: string = currentUser.get('email')
     const domain: string = currentAccount.get('domain')
+
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [subject, setSubject] = useState(
         `New Billing support request - ${domain}`
@@ -111,10 +109,13 @@ const BillingStartView = () => {
             ).format(DATE_FORMAT),
         [currentUsage]
     )
+
     const [helpdeskBanner, setHelpdeskBanner] = useState<BillingBanner>()
     const [voiceBanner, setVoiceBanner] = useState<BillingBanner>()
     const [smsBanner, setSMSBanner] = useState<BillingBanner>()
     const [convertBanner, setConvertBanner] = useState<BillingBanner>()
+
+    const {addBanner, removeBanner} = useBanners()
 
     const contactBilling = useCallback(
         (ticketPurpose: TicketPurpose) => {
@@ -213,6 +214,7 @@ const BillingStartView = () => {
                 type: AlertType.Error,
             })
         }
+
         if (currentUsage?.voice) {
             const subscriptionStartDate = moment(
                 currentUsage.voice.meta.subscription_start_datetime
@@ -221,24 +223,27 @@ const BillingStartView = () => {
             const isSubscriptionNew =
                 now.diff(subscriptionStartDate, 'hours') < 24
 
+            const voiceBannerInstanceId = `voice-subscription-activated-${subscriptionStartDate.toISOString()}`
+
             if (isSubscriptionNew) {
                 setVoiceBanner({
                     description: 'Get started with your Voice plan',
                     type: AlertType.Info,
                 })
-                void dispatch(
-                    notify({
-                        id: 'voice-subscription-activated',
-                        style: NotificationStyle.Banner,
-                        type: AlertBannerTypes.Info,
-                        message: `Your Voice subscription has been activated!`,
-                        CTA: {
-                            type: 'external',
-                            href: 'https://docs.gorgias.com/en-US/set-up-voice-81798',
-                            text: 'Set Up Voice',
-                        },
-                    })
-                )
+
+                addBanner({
+                    instanceId: voiceBannerInstanceId,
+                    category: BannerCategories.BILLING,
+                    type: AlertBannerTypes.Info,
+                    message: 'Your Voice subscription has been activated!',
+                    CTA: {
+                        type: 'external',
+                        href: 'https://docs.gorgias.com/en-US/set-up-voice-81798',
+                        text: 'Set Up Voice',
+                    },
+                })
+            } else {
+                removeBanner(BannerCategories.BILLING, voiceBannerInstanceId)
             }
         }
         if (currentUsage?.sms) {
@@ -254,23 +259,31 @@ const BillingStartView = () => {
                     description: 'Get started with your SMS plan',
                     type: AlertType.Info,
                 })
-                void dispatch(
-                    notify({
-                        id: 'sms-subscription-activated',
-                        message: `Your SMS subscription has been activated!`,
-                        style: NotificationStyle.Banner,
-                        type: AlertBannerTypes.Info,
-                        CTA: {
-                            type: 'external',
-                            href: 'https://docs.gorgias.com/en-US/set-up-sms-81919',
-                            text: 'Set Up SMS',
-                        },
-                    })
-                )
+                const smsSubscriptionBannerInstanceId = `sms-subscription-activated-${subscriptionStartDate.toISOString()}`
+
+                addBanner({
+                    instanceId: smsSubscriptionBannerInstanceId,
+                    category: BannerCategories.BILLING,
+                    type: AlertBannerTypes.Info,
+                    message: 'Your SMS subscription has been activated!',
+                    CTA: {
+                        type: 'external',
+                        href: 'https://docs.gorgias.com/en-US/set-up-sms-81919',
+                        text: 'Set Up SMS',
+                    },
+                })
             }
         }
-    }, [currentUsage, dispatch, isCurrentHelpdeskLegacy, periodEnd])
+    }, [
+        addBanner,
+        currentUsage,
+        dispatch,
+        isCurrentHelpdeskLegacy,
+        periodEnd,
+        removeBanner,
+    ])
 
+    /* istanbul ignore next */
     useEffect(() => {
         if (currentConvertPlan && convertStatus) {
             let enterpriseCta = <></>
@@ -284,6 +297,8 @@ const BillingStartView = () => {
                 )
             }
 
+            const convertSubscriptionBannerInstanceId = `convert-subscription-activated-${'enterpriseCta'}`
+
             if (
                 convertStatus.bundle_status ===
                 BundleOnboardingStatus.NOT_INSTALLED
@@ -292,19 +307,18 @@ const BillingStartView = () => {
                     description: 'Get started with your Convert plan',
                     type: AlertType.Info,
                 })
-                void dispatch(
-                    notify({
-                        id: 'convert-subscription-activated',
-                        message: `Your Convert subscription has been activated!`,
-                        style: NotificationStyle.Banner,
-                        type: AlertBannerTypes.Info,
-                        CTA: {
-                            type: 'internal',
-                            to: '/app/convert',
-                            text: 'Set Up Convert',
-                        },
-                    })
-                )
+
+                addBanner({
+                    instanceId: convertSubscriptionBannerInstanceId,
+                    message: 'Your Convert subscription has been activated!',
+                    type: AlertBannerTypes.Info,
+                    category: BannerCategories.BILLING,
+                    CTA: {
+                        type: 'internal',
+                        to: '/app/convert',
+                        text: 'Set Up Convert',
+                    },
+                })
             } else if (
                 convertStatus.usage_status === UsageStatus.LIMIT_REACHED
             ) {
@@ -319,6 +333,10 @@ const BillingStartView = () => {
                     ),
                     type: AlertType.Error,
                 })
+                removeBanner(
+                    BannerCategories.BILLING,
+                    convertSubscriptionBannerInstanceId
+                )
             } else if (
                 convertStatus.estimated_reach_date &&
                 isExceedingPlanLimit(convertStatus)
@@ -350,9 +368,17 @@ const BillingStartView = () => {
                         type: AlertType.Warning,
                     })
                 }
+                removeBanner(
+                    BannerCategories.BILLING,
+                    convertSubscriptionBannerInstanceId
+                )
             } else {
                 // hide banner
                 setConvertBanner(undefined)
+                removeBanner(
+                    BannerCategories.BILLING,
+                    convertSubscriptionBannerInstanceId
+                )
             }
         }
         // trigger useEffect only when convertProduct is changed or status was fetched

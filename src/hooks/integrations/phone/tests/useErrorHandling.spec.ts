@@ -1,16 +1,9 @@
 import {renderHook} from '@testing-library/react-hooks'
-import {dismissNotification} from 'reapop'
 
-import {AlertBannerTypes} from 'AlertBanners'
+import {AlertBannerTypes, BannerCategories} from 'AlertBanners'
 import {isRecoverableError} from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {VoiceDeviceActions} from 'pages/integrations/integration/components/voice/types'
-import {notify} from 'state/notifications/actions'
-import {
-    BannerNotification,
-    NotificationStatus,
-    NotificationStyle,
-} from 'state/notifications/types'
 import {State} from 'state/twilio/voiceDevice'
 import {assumeMock} from 'utils/testing'
 
@@ -21,8 +14,16 @@ jest.mock('state/notifications/actions')
 jest.mock('hooks/integrations/phone/utils')
 
 const useAppDispatchMock = assumeMock(useAppDispatch)
-const notifyMock = assumeMock(notify)
 const isRecoverableErrorMock = assumeMock(isRecoverableError)
+
+const mockAddBanner = jest.fn()
+const mockRemoveBanner = jest.fn()
+jest.mock('AlertBanners/hooks/useBanners', () => ({
+    useBanners: jest.fn(() => ({
+        addBanner: mockAddBanner,
+        removeBanner: mockRemoveBanner,
+    })),
+}))
 
 describe('useErrorHandling', () => {
     const dispatchMock = jest.fn()
@@ -35,88 +36,114 @@ describe('useErrorHandling', () => {
 
     beforeEach(() => {
         useAppDispatchMock.mockReturnValue(dispatchMock)
+    })
+
+    it('should dismiss the warning notification when there is no warning', () => {
         stateMock = {
             error: errorMock,
-            warning: warningMock,
+            warning: null,
         } as State
+
+        renderHook(() => useErrorHandling(stateMock, actionsMock))
+
+        expect(mockRemoveBanner).toHaveBeenCalledTimes(1)
+        expect(mockRemoveBanner).toHaveBeenCalledWith(
+            BannerCategories.ERROR_HANDLING,
+            'phone-warning-banner'
+        )
     })
 
     it('should dispatch an error notification when there is an unrecoverable error', () => {
+        stateMock = {
+            error: errorMock,
+        } as State
+
         isRecoverableErrorMock.mockReturnValue(false)
 
         renderHook(() => useErrorHandling(stateMock, actionsMock))
 
-        expect(notifyMock).toHaveBeenCalledWith(
+        expect(mockAddBanner).toHaveBeenCalledTimes(1)
+        expect(mockAddBanner).toHaveBeenCalledWith(
             expect.objectContaining({
-                style: NotificationStyle.Banner,
+                message: undefined,
                 type: AlertBannerTypes.Critical,
-                id: 'phone-error-banner',
+                instanceId: 'phone-error-banner',
+                category: BannerCategories.ERROR_HANDLING,
+                CTA: expect.objectContaining({
+                    type: 'action',
+                    text: 'Reload page',
+                    onClick: expect.any(Function),
+                }),
             })
         )
     })
 
     it('should dismiss the error notification when there is no error', () => {
-        stateMock.error = null
-
+        stateMock = {} as State
         renderHook(() => useErrorHandling(stateMock, actionsMock))
 
-        expect(dispatchMock).toHaveBeenCalledWith(
-            dismissNotification('phone-error-banner')
-        )
-        expect(notifyMock).not.toHaveBeenCalledWith(
-            expect.objectContaining({
-                type: NotificationStatus.Error,
-                id: 'phone-error-banner',
-            })
+        expect(mockRemoveBanner).toHaveBeenCalled()
+        expect(mockRemoveBanner).toHaveBeenCalledWith(
+            BannerCategories.ERROR_HANDLING,
+            'phone-error-banner'
         )
     })
 
     it('should dismiss the error notification when the error is recoverable', () => {
-        stateMock.warning = null
+        stateMock = {
+            error: errorMock,
+        } as State
+
         isRecoverableErrorMock.mockReturnValue(true)
 
         renderHook(() => useErrorHandling(stateMock, actionsMock))
 
-        expect(dispatchMock).toHaveBeenCalledWith(
-            dismissNotification('phone-error-banner')
+        expect(mockRemoveBanner).toHaveBeenCalledWith(
+            BannerCategories.ERROR_HANDLING,
+            'phone-error-banner'
         )
-        expect(notifyMock).not.toHaveBeenCalledWith(
-            expect.objectContaining({
-                type: NotificationStatus.Error,
-                id: 'phone-error-banner',
-            })
-        )
+        expect(mockAddBanner).not.toHaveBeenCalled()
     })
 
     it('should dispatch a warning notification when there is a warning', () => {
+        stateMock = {
+            warning: warningMock,
+        } as State
         renderHook(() => useErrorHandling(stateMock, actionsMock))
 
-        expect(notifyMock).toHaveBeenCalledWith(
+        expect(mockAddBanner).toHaveBeenCalledTimes(1)
+        expect(mockAddBanner).toHaveBeenCalledWith(
             expect.objectContaining({
                 type: AlertBannerTypes.Warning,
-                style: NotificationStyle.Banner,
-                id: 'phone-warning-banner',
+                instanceId: 'phone-warning-banner',
+                category: BannerCategories.ERROR_HANDLING,
+                message:
+                    'Poor network connection detected. Voice calls cannot be properly received or made until connection improves. Try restarting the network on your device.',
+                onClose: expect.any(Function),
             })
-        )
-    })
-
-    it('should dismiss the warning notification when there is no warning', () => {
-        stateMock.warning = null
-
-        renderHook(() => useErrorHandling(stateMock, actionsMock))
-
-        expect(dispatchMock).toHaveBeenCalledWith(
-            dismissNotification('phone-warning-banner')
         )
     })
 
     it('should call setWarning when the warning notification is clicked', () => {
-        stateMock.error = null
+        stateMock = {
+            warning: warningMock,
+        } as State
 
         renderHook(() => useErrorHandling(stateMock, actionsMock))
 
-        const onClose = (notifyMock.mock.calls?.[0]?.[0] as BannerNotification)
-            .onClose
+        const onClose = (
+            mockAddBanner.mock.calls as Array<
+                [
+                    {
+                        onClose?: () => void
+                        type: string
+                        instanceId: string
+                        category: string
+                        message: string
+                    },
+                ]
+            >
+        )[0][0].onClose
         onClose?.()
 
         expect(actionsMock.setWarning).toHaveBeenCalledTimes(1)

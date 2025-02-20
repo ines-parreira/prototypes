@@ -45,15 +45,22 @@ export type ContextBanner = AlertBannerProps & {
 export const BannerCategories = {
     ACCOUNT_NOT_VERIFIED: 'account_not_verified',
     ACCOUNT_USAGE: 'account_usage',
+    BILLING: 'billing',
     EMAIL_DISCONNECTED: 'email_disconnected',
     EMAIL_DOMAIN_VERIFICATION: 'email_domain_verification',
     EMAIL_MIGRATION_BANNER: 'email_migration_banner',
+    ERROR_HANDLING: 'error_handling',
+    ERROR_HANDLING_PHONE: 'error_handling_phone',
     IMPERSONATION: 'impersonation',
+    PAYMENT_ENABLED: 'payment_enabled',
     STATUS_PAGE_INCIDENT: 'status_page_incident',
     STATUS_PAGE_MAINTENANCE: 'status_page_maintenance',
     TMP_AI_AGENT_MOVED: 'ai_agent_moved',
+    TWO_FA_REQUIRED_NOTIFICATION_ID: 'two_fa_required_notification_id',
     SCRIPT_TAG_MIGRATION: 'script_tag_migration',
+    SUBSCRIPTION: 'subscription',
     SHOPIFY_INVENTORY_SCOPE: 'shopify_inventory_scope',
+    USAGE_BANNER: 'usage_banner',
 } as const
 
 export type BannerCategory =
