@@ -1,5 +1,6 @@
 import {
     EmailIntegrationMeta,
+    GorgiasChatCreationWizardStatus,
     GorgiasChatIntegrationMeta,
     Integration,
     IntegrationType,
@@ -69,9 +70,23 @@ export class IntegrationFixture {
         return this as ConfiguredIntegrationFixture<'withDetails'>
     }
 
-    withDetails(details: {id: number; name?: string}) {
+    withDetails(details: {
+        id: number
+        name?: string
+        isDraft?: boolean
+        storeIntegrationId?: string
+    }) {
         this.integration.id = details.id ?? 1
         this.integration.name = details.name ?? `Integration ${details.id}`
+        this.integration.meta = {
+            ...this.integration.meta,
+            wizard: {
+                status: details.isDraft
+                    ? GorgiasChatCreationWizardStatus.Draft
+                    : GorgiasChatCreationWizardStatus.Published,
+            },
+            shop_integration_id: details.storeIntegrationId,
+        }
 
         return this as IntegrationFixtureFullyConfigured
     }

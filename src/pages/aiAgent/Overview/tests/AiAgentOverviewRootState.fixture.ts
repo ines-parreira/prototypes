@@ -18,11 +18,14 @@ export type AiAgentOverviewRootStateFixtureFullyConfigured =
 type InternalData = {
     integrationId: number
     chatUpdatedAt: string
+    storeIntegrationId: string
 }
 
 type ChatIntegrationArgs = {
     updatedAt?: string
+    isDraft?: boolean
 }
+
 export class AiAgentOverviewRootStateFixture {
     private rootState: RootState
     private integrations: Integration[] = []
@@ -30,6 +33,7 @@ export class AiAgentOverviewRootStateFixture {
     private internalData: InternalData = {
         integrationId: 1,
         chatUpdatedAt: '2021-01-01T00:00:00Z',
+        storeIntegrationId: 'storeIntegration123',
     }
 
     private constructor() {
@@ -38,6 +42,13 @@ export class AiAgentOverviewRootStateFixture {
                 domain: 'storybookaccountdomain',
             }),
             integrations: fromJS({integrations: []}),
+            entities: {
+                selfServiceConfigurations: fromJS({
+                    data: {
+                        id: this.internalData.storeIntegrationId,
+                    },
+                }),
+            },
             ui: {
                 stats: {filters: initialState},
             },
@@ -61,6 +72,7 @@ export class AiAgentOverviewRootStateFixture {
                 .withDetails({
                     id: this.internalData.integrationId++,
                     name: `Super Store`,
+                    storeIntegrationId: this.internalData.storeIntegrationId,
                 })
                 .build()
         )
@@ -70,6 +82,7 @@ export class AiAgentOverviewRootStateFixture {
                 .withDetails({
                     id: this.internalData.integrationId++,
                     name: `Awesome Store`,
+                    storeIntegrationId: this.internalData.storeIntegrationId,
                 })
                 .build()
         )
@@ -91,6 +104,7 @@ export class AiAgentOverviewRootStateFixture {
                 .withDetails({
                     id,
                     name: `Email ${id}`,
+                    storeIntegrationId: this.internalData.storeIntegrationId,
                 })
                 .build()
         )
@@ -102,7 +116,10 @@ export class AiAgentOverviewRootStateFixture {
             AiAgentOverviewRootStateFixtureFullyConfigured
     }
 
-    withChatIntegration({updatedAt}: ChatIntegrationArgs = {}) {
+    withChatIntegration({
+        updatedAt,
+        isDraft = false,
+    }: ChatIntegrationArgs = {}) {
         const id = this.internalData.integrationId++
         const _updatedAt = new Date(
             updatedAt ?? this.internalData.chatUpdatedAt
@@ -117,6 +134,8 @@ export class AiAgentOverviewRootStateFixture {
                 .withDetails({
                     id,
                     name: `Chat ${id}`,
+                    isDraft,
+                    storeIntegrationId: this.internalData.storeIntegrationId,
                 })
                 .build()
         )

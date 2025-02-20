@@ -1,8 +1,12 @@
-import {useMemo} from 'react'
+import {useCallback, useMemo} from 'react'
 
 import {TicketChannel} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType, GorgiasChatIntegration} from 'models/integration/types'
+import {
+    IntegrationType,
+    GorgiasChatIntegration,
+    GorgiasChatCreationWizardStatus,
+} from 'models/integration/types'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 
 import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
@@ -12,7 +16,11 @@ export type SelfServiceChatChannel = {
     value: GorgiasChatIntegration
 }
 
-const useSelfServiceChatChannels = (shopType: string, shopName: string) => {
+const useSelfServiceChatChannels = (
+    shopType: string,
+    shopName: string,
+    includeDraft = false
+) => {
     const getChatIntegrations = useMemo(
         () =>
             getIntegrationsByType<GorgiasChatIntegration>(
@@ -20,9 +28,18 @@ const useSelfServiceChatChannels = (shopType: string, shopName: string) => {
             ),
         []
     )
+
     const chatIntegrations = useAppSelector(getChatIntegrations)
     const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
     const storeIntegrationId = storeIntegration?.id
+
+    const matchesPublishStateFilter = useCallback(
+        (integration: GorgiasChatIntegration) =>
+            includeDraft ||
+            integration.meta.wizard?.status !==
+                GorgiasChatCreationWizardStatus.Draft,
+        [includeDraft]
+    )
 
     return useMemo<SelfServiceChatChannel[]>(
         () =>
@@ -32,11 +49,12 @@ const useSelfServiceChatChannels = (shopType: string, shopName: string) => {
                         integration.meta.shop_integration_id ===
                         storeIntegrationId
                 )
+                .filter((integration) => matchesPublishStateFilter(integration))
                 .map((integration) => ({
                     type: TicketChannel.Chat,
                     value: integration,
                 })),
-        [chatIntegrations, storeIntegrationId]
+        [chatIntegrations, matchesPublishStateFilter, storeIntegrationId]
     )
 }
 
