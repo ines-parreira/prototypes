@@ -34,6 +34,7 @@ import {
     AgentsTableColumn,
     AutoQAMetric,
     ChannelsTableColumns,
+    SatisfactionMetric,
     SlaMetric,
 } from 'state/ui/stats/types'
 
@@ -65,6 +66,7 @@ export const getDrillDownMetricOrder = (
     metricName: DrillDownMetric['metricName']
 ) => {
     return metricName === OverviewMetric.CustomerSatisfaction ||
+        metricName === SatisfactionMetric.AverageSurveyScore ||
         metricName === AgentsTableColumn.CustomerSatisfaction ||
         metricName === ChannelsTableColumns.CustomerSatisfaction ||
         metricName === AutoQAAgentsTableColumn.ResolutionCompleteness ||

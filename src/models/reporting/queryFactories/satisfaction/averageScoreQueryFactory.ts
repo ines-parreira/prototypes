@@ -4,6 +4,7 @@ import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
+    TicketSatisfactionSurveySegment,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
@@ -47,5 +48,6 @@ export const averageScoreDrillDownQueryFactory = (
         },
     ],
     dimensions: [TicketDimension.TicketId],
+    segments: [TicketSatisfactionSurveySegment.SurveyScored],
     limit: DRILLDOWN_QUERY_LIMIT,
 })
