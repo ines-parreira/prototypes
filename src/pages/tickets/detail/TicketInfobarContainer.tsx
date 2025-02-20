@@ -12,9 +12,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {useSearchParam} from 'hooks/useSearchParam'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
-import TicketFeedback, {
-    useHasAIAgent,
-} from 'pages/tickets/detail/components/TicketFeedback'
+import TicketFeedback from 'pages/tickets/detail/components/TicketFeedback'
 import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
@@ -65,8 +63,7 @@ export const TicketInfobarContainer = ({
     const activeTab = useAppSelector(getActiveTab)
     const hasAutomate = useAppSelector(getHasAutomate)
 
-    const hasAIAgent = useHasAIAgent()
-    const hasTicketFeedback = hasAutomate && hasAIAgent
+    const hasTicketFeedback = hasAutomate
 
     const location = useLocation()
 

@@ -26,7 +26,6 @@ import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants
 import {selectContext, fetchWidgets} from 'state/widgets/actions'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 
-import {TRIAL_MESSAGE_TAG} from '../components/AIAgentFeedbackBar/constants'
 import {
     CUSTOMER_DETAILS_TAB,
     AI_FEEDBACK_TAB,
@@ -323,46 +322,5 @@ describe('<TicketInfobarContainer />', () => {
         userEvent.click(customerInformationTab)
 
         expect(mockedChangeActiveTab).not.toHaveBeenCalled()
-    })
-
-    it('should not render secondary navbar if there is no ticket feedback', () => {
-        useHasAIAgentMock.mockReturnValue(false)
-        mockedGetAIAgentMessages.mockReturnValue([])
-
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            }
-        )
-
-        expect(screen.queryByText(CUSTOMER_DETAILS_TAB)).toBeNull()
-    })
-
-    it('should not render secondary navbar if all AI messages on trial mode', () => {
-        const aiMessage = {
-            id: '1',
-            created_datetime: dateAfterFeatureAvailable,
-            public: true,
-            body_html: TRIAL_MESSAGE_TAG,
-        } as any
-
-        useHasAIAgentMock.mockReturnValue(false)
-        mockedGetAIAgentMessages.mockReturnValue([aiMessage])
-
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            }
-        )
-
-        expect(screen.queryByText(CUSTOMER_DETAILS_TAB)).toBeNull()
     })
 })
