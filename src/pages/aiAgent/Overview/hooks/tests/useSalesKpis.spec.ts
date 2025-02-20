@@ -8,9 +8,6 @@ jest.mock('pages/aiAgent/Overview/hooks/kpis/useCoverageRate', () => ({
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useTotalConversations', () => ({
     useTotalConversations: jest.fn(() => 'mockTotalConversations'),
 }))
-jest.mock('pages/aiAgent/Overview/hooks/kpis/useCsat', () => ({
-    useCsat: jest.fn(() => 'mockCsat'),
-}))
 
 const timezone = 'UTC'
 
@@ -28,7 +25,6 @@ describe('useSalesKpis', () => {
         expect(result.current.metrics).toEqual([
             'mockCoverageRate',
             'mockTotalConversations',
-            'mockCsat',
         ])
     })
 })

@@ -29,10 +29,10 @@ describe('useSupportKpis', () => {
         const {result} = renderHook(() => useSupportKpis(filters, timezone))
 
         expect(result.current.metrics).toEqual([
+            'mockCoverageRate',
             'mockAutomationRate',
             'mockAutomatedInteractions',
             'mockCsat',
-            'mockCoverageRate',
         ])
     })
 })
