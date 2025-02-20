@@ -1,7 +1,7 @@
 import moment, {Moment} from 'moment/moment'
 import React, {useState} from 'react'
-import {useDispatch} from 'react-redux'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {PeriodFilter} from 'pages/stats/common/filters/PeriodFilter'
@@ -9,21 +9,21 @@ import {PeriodFilter} from 'pages/stats/common/filters/PeriodFilter'
 import {dateInPastFromStartOfToday, endOfToday} from 'pages/stats/common/utils'
 
 import {
+    getNewSetOfRanges,
+    LAST_MONTH,
+    LAST_WEEK_MON,
+    LAST_WEEK_SUN,
+    MONTH_TO_DATE,
     PAST_30_DAYS,
     PAST_60_DAYS,
     PAST_7_DAYS,
     PAST_90_DAYS,
-    MONTH_TO_DATE,
-    LAST_WEEK_SUN,
-    LAST_WEEK_MON,
-    LAST_MONTH,
     PAST_YEAR,
     TODAY,
     YESTERDAY,
-    getNewSetOfRanges,
 } from 'pages/stats/constants'
 import {getPageStatsFilters} from 'state/stats/selectors'
-import {setStatsFilters} from 'state/stats/statsSlice'
+import {defaultStatsFilters, setStatsFilters} from 'state/stats/statsSlice'
 
 const HOURS_TO_REMOVE = 72
 
@@ -33,11 +33,9 @@ export const subtractsPeriodWithoutData = (momentDate: Moment) => {
 
 export const subtractsPeriodWithoutDataIfNeeded = (momentDate: Moment) => {
     if (momentDate.isAfter(moment().subtract(HOURS_TO_REMOVE, 'hours'))) {
-        return momentDate.subtract(
-            HOURS_TO_REMOVE - moment().diff(momentDate, 'hours'),
-            'hours'
-        )
+        return momentDate.subtract(HOURS_TO_REMOVE, 'hours')
     }
+
     return momentDate
 }
 
@@ -92,27 +90,34 @@ const getCalendarRangeFilters = (): {
 const DEFAULT_DAYS_TO_SHOW = 28
 
 export const AdjustedPeriodFilter = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
 
     const [isPeriodFilterSet, setIsPeriodFilterSet] = useState(false)
 
     useEffectOnce(() => {
-        dispatch(
-            setStatsFilters({
-                period: {
-                    start_datetime: moment(
-                        subtractsPeriodWithoutData(
-                            dateInPastFromStartOfToday(DEFAULT_DAYS_TO_SHOW)
-                        )
-                    ).format(),
-                    end_datetime: moment(
-                        subtractsPeriodWithoutData(endOfToday())
-                    ).format(),
-                },
-            })
-        )
+        if (
+            pageStatsFilters.period.start_datetime ===
+                defaultStatsFilters.period.start_datetime ||
+            pageStatsFilters.period.end_datetime ===
+                defaultStatsFilters.period.end_datetime
+        ) {
+            dispatch(
+                setStatsFilters({
+                    period: {
+                        start_datetime: moment(
+                            subtractsPeriodWithoutData(
+                                dateInPastFromStartOfToday(DEFAULT_DAYS_TO_SHOW)
+                            )
+                        ).format(),
+                        end_datetime: moment(
+                            subtractsPeriodWithoutData(endOfToday())
+                        ).format(),
+                    },
+                })
+            )
+        }
 
         setIsPeriodFilterSet(true)
     })

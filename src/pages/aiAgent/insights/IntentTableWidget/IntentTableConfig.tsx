@@ -3,6 +3,7 @@ import {useDispatch} from 'react-redux'
 
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
+import usePrevious from 'hooks/usePrevious'
 import {opposite, OrderDirection} from 'models/api/types'
 import {StatsFilters} from 'models/stat/types'
 import {IntentTableColumn} from 'pages/aiAgent/insights/IntentTableWidget/types'
@@ -65,7 +66,7 @@ export const IntentsColumnsConfig: Partial<
         notAvailableText: '-',
     },
     [IntentTableColumn.Tickets]: {
-        format: 'decimal',
+        format: 'integer',
         hint: null,
         perAgent: true,
         notAvailableText: '-',
@@ -83,7 +84,7 @@ export const IntentsColumnsConfig: Partial<
         notAvailableText: '-',
     },
     [IntentTableColumn.Resources]: {
-        format: 'decimal',
+        format: 'integer',
         hint: {
             title: 'Number of unique Guidance, articles, URLs, external documents or Actions used to answer tickets in this intent',
         },
@@ -118,16 +119,20 @@ export const IntentRowConfig: Partial<
     [IntentTableColumn.SuccessRate]: {},
 }
 
-export function useIntentSoringQuery(
+export function useIntentSortingQuery(
     column: IntentTableColumn,
     useQuery: (
         filters: StatsFilters,
         timezone: string,
-        sorting?: OrderDirection
+        sorting?: OrderDirection,
+        intentId?: string,
+        intentLevel?: number
     ) => {
         data: any
         isFetching: boolean
-    }
+    },
+    intentId?: string,
+    intentLevel?: number
 ) {
     const dispatch = useDispatch()
     const sorting = useAppSelector(getIntentSorting)
@@ -137,10 +142,20 @@ export function useIntentSoringQuery(
     const queryData = useQuery(
         cleanStatsFilters,
         userTimezone,
-        sorting?.direction
+        sorting?.direction,
+        intentId,
+        intentLevel
     )
     const isFetching = queryData?.isFetching
     const data = queryData?.data
+
+    const prevIntentId = usePrevious(intentId)
+    const prevIntentLevel = usePrevious(intentLevel)
+
+    const prevStartDatetime = usePrevious(
+        cleanStatsFilters?.period?.start_datetime
+    )
+    const prevEndDatetime = usePrevious(cleanStatsFilters?.period?.end_datetime)
 
     useEffect(() => {
         if (sorting?.field === column) {
@@ -158,6 +173,29 @@ export function useIntentSoringQuery(
         sorting?.isLoading,
         sorting?.direction,
         isFetching,
+    ])
+
+    useEffect(() => {
+        if (
+            prevIntentId !== intentId ||
+            prevIntentLevel !== intentLevel ||
+            prevStartDatetime !== cleanStatsFilters?.period?.start_datetime ||
+            prevEndDatetime !== cleanStatsFilters?.period?.end_datetime
+        ) {
+            !isFetching && dispatch(sortingLoaded(data))
+        }
+    }, [
+        intentId,
+        intentLevel,
+        isFetching,
+        data,
+        dispatch,
+        prevIntentId,
+        prevIntentLevel,
+        prevStartDatetime,
+        cleanStatsFilters?.period?.start_datetime,
+        cleanStatsFilters?.period?.end_datetime,
+        prevEndDatetime,
     ])
 
     return {

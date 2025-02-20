@@ -1,13 +1,14 @@
-import {OrderDirection} from 'models/api/types'
-import {StatsFilters} from 'models/stat/types'
-import {getPreviousPeriod} from 'utils/reporting'
-
 import {
     useAIAgentTicketsPerIntent,
     useAutomationOpportunityPerIntent,
     useCustomerSatisfactionPerIntent,
     useSuccessRatePerIntent,
-} from './useAIAgentInsightsDataset'
+} from 'hooks/reporting/automate/useAIAgentInsightsDataset'
+import {filterMetricDataByIntentLevel} from 'hooks/reporting/automate/utils'
+import {OrderDirection} from 'models/api/types'
+import {StatsFilters} from 'models/stat/types'
+import {IntentTableColumn} from 'pages/aiAgent/insights/IntentTableWidget/types'
+import {getPreviousPeriod} from 'utils/reporting'
 
 export const getIntentMetric = (
     metricKey: string,
@@ -23,19 +24,32 @@ export const useAutomatedOpportunityForIntentTrendMetric = ({
     filters,
     timezone,
     sorting,
-    intent,
+    intentId,
+    intentLevel,
 }: {
     filters: StatsFilters
     timezone: string
     sorting?: OrderDirection
-    intent?: string
+    intentId: string
+    intentLevel: number
 }) => {
     const automationOpportunityPerIntent = useAutomationOpportunityPerIntent(
         filters,
         timezone,
         sorting,
-        intent
+        intentId
     )
+    const automationOpportunityPerIntentLevelData =
+        filterMetricDataByIntentLevel({
+            metricData: automationOpportunityPerIntent.data,
+            level: intentLevel,
+            intentKey: 'TicketCustomFieldsEnriched.valueString',
+            valueKey: 'TicketCustomFieldsEnriched.ticketCount',
+            totalKey: 'TicketEnriched.ticketCount',
+            resultKey: 'automationOpportunity',
+            metricFor: IntentTableColumn.AutomationOpportunities,
+        })
+
     const prevAutomationOpportunityPerIntent =
         useAutomationOpportunityPerIntent(
             {
@@ -44,19 +58,29 @@ export const useAutomatedOpportunityForIntentTrendMetric = ({
             },
             timezone,
             sorting,
-            intent
+            intentId
         )
+    const prevAutomationOpportunityPerIntentLevelData =
+        filterMetricDataByIntentLevel({
+            metricData: automationOpportunityPerIntent.data || [],
+            level: intentLevel,
+            intentKey: 'TicketCustomFieldsEnriched.valueString',
+            valueKey: 'TicketCustomFieldsEnriched.ticketCount',
+            totalKey: 'TicketEnriched.ticketCount',
+            resultKey: 'automationOpportunity',
+            metricFor: IntentTableColumn.AutomationOpportunities,
+        })
 
     return {
         data: {
             value: getIntentMetric(
                 'automationOpportunity',
-                automationOpportunityPerIntent.data
+                automationOpportunityPerIntentLevelData
             ),
 
             prevValue: getIntentMetric(
                 'automationOpportunity',
-                prevAutomationOpportunityPerIntent.data
+                prevAutomationOpportunityPerIntentLevelData
             ),
         },
         isFetching:
@@ -72,19 +96,30 @@ export const useAIAgentTicketsForIntentTrendMetric = ({
     filters,
     timezone,
     sorting,
-    intent,
+    intentId,
+    intentLevel,
 }: {
     filters: StatsFilters
     timezone: string
     sorting?: OrderDirection
-    intent?: string
+    intentId?: string
+    intentLevel: number
 }) => {
     const ticketsPerIntent = useAIAgentTicketsPerIntent(
         filters,
         timezone,
         sorting,
-        intent
+        intentId
     )
+    const ticketsByLevelData = filterMetricDataByIntentLevel({
+        metricData: ticketsPerIntent.data?.allData || [],
+        level: intentLevel,
+        intentKey: 'TicketCustomFieldsEnriched.valueString',
+        valueKey: 'TicketCustomFieldsEnriched.ticketCount',
+        resultKey: 'tickets',
+        metricFor: IntentTableColumn.Tickets,
+    })
+
     const prevTicketsPerIntent = useAIAgentTicketsPerIntent(
         {
             ...filters,
@@ -92,19 +127,22 @@ export const useAIAgentTicketsForIntentTrendMetric = ({
         },
         timezone,
         sorting,
-        intent
+        intentId
     )
+
+    const prevTicketsByLevelData = filterMetricDataByIntentLevel({
+        metricData: prevTicketsPerIntent.data?.allData?.filter(Boolean) || [],
+        level: intentLevel,
+        intentKey: 'TicketCustomFieldsEnriched.valueString',
+        valueKey: 'TicketCustomFieldsEnriched.ticketCount',
+        resultKey: 'tickets',
+        metricFor: IntentTableColumn.Tickets,
+    })
 
     return {
         data: {
-            value: getIntentMetric(
-                'TicketCustomFieldsEnriched.ticketCount',
-                ticketsPerIntent.data?.allData || []
-            ),
-            prevValue: getIntentMetric(
-                'TicketCustomFieldsEnriched.ticketCount',
-                prevTicketsPerIntent.data?.allData || []
-            ),
+            value: getIntentMetric('tickets', ticketsByLevelData || []),
+            prevValue: getIntentMetric('tickets', prevTicketsByLevelData || []),
         },
         isFetching:
             ticketsPerIntent.isFetching || prevTicketsPerIntent.isFetching,
@@ -116,19 +154,32 @@ export const useSuccessRateForIntentTrendMetric = ({
     filters,
     timezone,
     sorting,
-    intent,
+    intentId,
+    intentLevel,
 }: {
     filters: StatsFilters
     timezone: string
     sorting?: OrderDirection
-    intent?: string
+    intentId: string
+    intentLevel: number
 }) => {
     const successRatePerIntent = useSuccessRatePerIntent(
         filters,
         timezone,
         sorting,
-        intent
+        intentId
     )
+    const successRatePerIntentPerIntentLevelData =
+        filterMetricDataByIntentLevel({
+            metricData: successRatePerIntent.data?.filter(Boolean) || [],
+            level: intentLevel,
+            intentKey: 'TicketCustomFieldsEnriched.valueString',
+            valueKey: 'TicketCustomFieldsEnriched.ticketCount',
+            totalKey: 'TicketEnriched.ticketCount',
+            resultKey: 'successRate',
+            metricFor: IntentTableColumn.SuccessRate,
+        })
+
     const prevSuccessRatePerIntent = useSuccessRatePerIntent(
         {
             ...filters,
@@ -136,15 +187,28 @@ export const useSuccessRateForIntentTrendMetric = ({
         },
         timezone,
         sorting,
-        intent
+        intentId
     )
+    const prevSuccessRatePerIntentPerIntentLevelData =
+        filterMetricDataByIntentLevel({
+            metricData: prevSuccessRatePerIntent.data?.filter(Boolean) || [],
+            level: intentLevel,
+            intentKey: 'TicketCustomFieldsEnriched.valueString',
+            valueKey: 'TicketCustomFieldsEnriched.ticketCount',
+            totalKey: 'TicketEnriched.ticketCount',
+            resultKey: 'successRate',
+            metricFor: IntentTableColumn.SuccessRate,
+        })
 
     return {
         data: {
-            value: getIntentMetric('successRate', successRatePerIntent.data),
+            value: getIntentMetric(
+                'successRate',
+                successRatePerIntentPerIntentLevelData
+            ),
             prevValue: getIntentMetric(
                 'successRate',
-                prevSuccessRatePerIntent.data
+                prevSuccessRatePerIntentPerIntentLevelData
             ),
         },
         isFetching:
@@ -159,19 +223,38 @@ export const useCustomerSatisfactionForIntentTrendMetric = ({
     filters,
     timezone,
     sorting,
-    intent,
+    intentId,
+    intentLevel,
 }: {
     filters: StatsFilters
     timezone: string
     sorting?: OrderDirection
-    intent?: string
+    intentId: string
+    intentLevel: number
 }) => {
     const customerSatisfactionPerIntent = useCustomerSatisfactionPerIntent(
         filters,
         timezone,
         sorting,
-        intent
+        intentId
     )
+    let customerSatisfactionPerIntentPerIntentLevel
+    if (customerSatisfactionPerIntent.data?.allData) {
+        customerSatisfactionPerIntentPerIntentLevel =
+            filterMetricDataByIntentLevel({
+                metricData:
+                    customerSatisfactionPerIntent.data?.allData?.filter(
+                        Boolean
+                    ) || [],
+                level: intentLevel,
+                intentKey: 'TicketCustomFieldsEnriched.valueString',
+                valueKey: 'TicketSatisfactionSurveyEnriched.surveyScore',
+                totalKey: 'TicketSatisfactionSurveyEnriched.scoredSurveysCount',
+                resultKey: 'avgCustomerSatisfaction',
+                metricFor: IntentTableColumn.AvgCustomerSatisfaction,
+            })
+    }
+
     const prevCustomerSatisfactionPerIntent = useCustomerSatisfactionPerIntent(
         {
             ...filters,
@@ -179,18 +262,34 @@ export const useCustomerSatisfactionForIntentTrendMetric = ({
         },
         timezone,
         sorting,
-        intent
+        intentId
     )
+    let prevCustomerSatisfactionPerIntentPerIntentLevel
+    if (prevCustomerSatisfactionPerIntent.data?.allData) {
+        prevCustomerSatisfactionPerIntentPerIntentLevel =
+            filterMetricDataByIntentLevel({
+                metricData:
+                    prevCustomerSatisfactionPerIntent.data?.allData?.filter(
+                        Boolean
+                    ) || [],
+                level: intentLevel,
+                intentKey: 'TicketCustomFieldsEnriched.valueString',
+                valueKey: 'TicketSatisfactionSurveyEnriched.surveyScore',
+                totalKey: 'TicketSatisfactionSurveyEnriched.scoredSurveysCount',
+                resultKey: 'avgCustomerSatisfaction',
+                metricFor: IntentTableColumn.AvgCustomerSatisfaction,
+            })
+    }
 
     return {
         data: {
             value: getIntentMetric(
-                'TicketSatisfactionSurveyEnriched.avgSurveyScore',
-                customerSatisfactionPerIntent.data?.allData || []
+                'avgCustomerSatisfaction',
+                customerSatisfactionPerIntentPerIntentLevel || []
             ),
             prevValue: getIntentMetric(
-                'TicketSatisfactionSurveyEnriched.avgSurveyScore',
-                prevCustomerSatisfactionPerIntent.data?.allData || []
+                'avgCustomerSatisfaction',
+                prevCustomerSatisfactionPerIntentPerIntentLevel || []
             ),
         },
         isFetching:
@@ -206,12 +305,14 @@ export const useInsightPerformanceMetrics = ({
     filters,
     timezone,
     sorting,
-    intent,
+    intentId,
+    intentLevel,
 }: {
     filters: StatsFilters
     timezone: string
     sorting?: OrderDirection
-    intent?: string
+    intentId: string
+    intentLevel: number
 }) => {
     // Automation Opportunity
     const automationOpportunityPerIntent =
@@ -219,7 +320,8 @@ export const useInsightPerformanceMetrics = ({
             filters,
             timezone,
             sorting,
-            intent,
+            intentId,
+            intentLevel,
         })
 
     // Tickets
@@ -227,7 +329,8 @@ export const useInsightPerformanceMetrics = ({
         filters,
         timezone,
         sorting,
-        intent,
+        intentId,
+        intentLevel,
     })
 
     // Success Rate
@@ -235,7 +338,8 @@ export const useInsightPerformanceMetrics = ({
         filters,
         timezone,
         sorting,
-        intent,
+        intentId,
+        intentLevel,
     })
 
     // Customer Satisfaction
@@ -244,7 +348,8 @@ export const useInsightPerformanceMetrics = ({
             filters,
             timezone,
             sorting,
-            intent,
+            intentId,
+            intentLevel,
         })
 
     return {

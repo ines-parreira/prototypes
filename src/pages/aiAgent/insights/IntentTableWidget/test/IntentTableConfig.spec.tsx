@@ -10,7 +10,7 @@ import {OrderDirection} from 'models/api/types'
 import {isMediumOrSmallScreen} from 'pages/common/utils/mobile'
 
 import {
-    useIntentSoringQuery,
+    useIntentSortingQuery,
     getColumnWidth,
     TableLabels,
     INTENT_NAME_COLUMN_WIDTH,
@@ -68,7 +68,7 @@ describe('TableConfig Utilities and Hooks', () => {
         })
     })
 
-    describe('useIntentSoringQuery', () => {
+    describe('useIntentSortingQuery', () => {
         it('returns the correct sorting state', () => {
             const column = IntentTableColumn.Tickets
             const mockSorting = {field: column, direction: 'desc'}
@@ -77,7 +77,7 @@ describe('TableConfig Utilities and Hooks', () => {
             useAppSelectorMock.mockReturnValue(mockSorting)
 
             const {result} = renderHook(
-                () => useIntentSoringQuery(column, query),
+                () => useIntentSortingQuery(column, query),
                 {
                     wrapper: ({children}) => (
                         <Provider store={mockStore(defaultState)}>

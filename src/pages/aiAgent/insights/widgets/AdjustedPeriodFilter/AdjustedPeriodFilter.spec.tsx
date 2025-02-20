@@ -4,6 +4,7 @@ import moment from 'moment'
 import React from 'react'
 import {Provider} from 'react-redux'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock, mockStore, renderWithRouter} from 'utils/testing'
@@ -18,9 +19,13 @@ jest.mock('hooks/useAppSelector', () => jest.fn())
 jest.mock('pages/stats/common/filters/PeriodFilter', () => ({
     PeriodFilter: jest.fn(() => <>Date</>),
 }))
-jest.mock('hooks/useAppDispatch')
 
 const useAppSelectorMock = assumeMock(useAppSelector)
+
+jest.mock('hooks/useAppDispatch')
+const useAppDispatchMock = assumeMock(useAppDispatch)
+const dispatchMock = jest.fn()
+useAppDispatchMock.mockReturnValue(dispatchMock)
 
 const SHOP_NAME = 'shopify-store'
 const SHOP_TYPE = 'shopify'
@@ -73,10 +78,10 @@ describe('subtractsPeriodWithoutData', () => {
 
 describe('subtractsPeriodWithoutDataIfNeeded', () => {
     it('should subtract 72 hours if the date is within the last 72 hours', () => {
-        const recentDate = moment('2023-12-30T12:00:00.000Z')
+        const recentDate = moment().subtract(48, 'hours')
         const result = subtractsPeriodWithoutDataIfNeeded(recentDate.clone())
         expect(result.toISOString()).toBe(
-            moment().subtract(72, 'hours').toISOString()
+            recentDate.subtract(72, 'hours').toISOString()
         )
     })
 
@@ -99,5 +104,17 @@ describe('AdjustedPeriodFilter Component', () => {
         renderComponent()
 
         expect(screen.getByText('Date')).toBeInTheDocument()
+    })
+
+    it('should call dispatch inside useEffectOnce', () => {
+        useAppSelectorMock.mockReturnValue({
+            period: {
+                start_datetime: '1970-01-01T00:00:00+00:00',
+                end_datetime: '1970-01-01T00:00:00+00:00',
+            },
+        })
+        renderComponent()
+
+        expect(useAppDispatchMock).toHaveBeenCalledTimes(2)
     })
 })

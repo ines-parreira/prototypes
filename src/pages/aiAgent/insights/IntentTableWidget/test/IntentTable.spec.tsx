@@ -48,24 +48,24 @@ const mockStore = configureMockStore([thunk])
 const defaultPaginatedIntents = {
     intents: [
         {
-            id: 1,
+            id: 'order::track',
             [IntentTableColumn.IntentName]: 'order/track',
             [IntentTableColumn.AutomationOpportunities]: 10,
         },
         {
-            id: 2,
+            id: 'order::cancel',
             [IntentTableColumn.IntentName]: 'order/cancel',
             [IntentTableColumn.AutomationOpportunities]: 20,
         },
     ],
     allIntents: [
         {
-            id: 1,
+            id: 'order::track',
             [IntentTableColumn.IntentName]: 'order/track',
             [IntentTableColumn.AutomationOpportunities]: 10,
         },
         {
-            id: 2,
+            id: 'order::cancel',
             [IntentTableColumn.IntentName]: 'order/cancel',
             [IntentTableColumn.AutomationOpportunities]: 20,
         },

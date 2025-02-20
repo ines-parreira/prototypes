@@ -1,26 +1,28 @@
+import {OrderDirection} from 'models/api/types'
 import {
     RecommendedResourcesDimension,
     RecommendedResourcesFilterMember,
     RecommendedResourcesMeasure,
 } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
-import {TicketCustomFieldsDimension} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {
+    TicketCustomFieldsDimension,
+    TicketCustomFieldsMember,
+} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
     TicketSatisfactionSurveySegment,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import {
+    customerSatisfactionPerIntentLevelQueryFactory,
+    recommendedResourceQueryFactory,
+} from 'models/reporting/queryFactories/ai-agent-insights/metrics'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {
-    NotSpamNorTrashedTicketsFilter,
     formatReportingQueryDate,
+    NotSpamNorTrashedTicketsFilter,
 } from 'utils/reporting'
-
-import {
-    customerSatisfactionPerCustomFieldQueryFactory,
-    customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory,
-    recommendedResourceQueryFactory,
-} from '../metrics'
 
 describe('AI Agent metrics', () => {
     const timezone = 'UTC'
@@ -31,9 +33,9 @@ describe('AI Agent metrics', () => {
         },
     }
 
-    it('customerSatisfactionPerCustomFieldQueryFactory', () => {
+    it('customerSatisfactionPerIntentLevelQueryFactory', () => {
         expect(
-            customerSatisfactionPerCustomFieldQueryFactory(filters, timezone)
+            customerSatisfactionPerIntentLevelQueryFactory(filters, timezone)
         ).toEqual({
             dimensions: [
                 TicketCustomFieldsDimension.TicketCustomFieldsValueString,
@@ -65,15 +67,20 @@ describe('AI Agent metrics', () => {
         })
     })
 
-    it('customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory', () => {
+    it('customerSatisfactionPerIntentLevelQueryFactory with custom field', () => {
         expect(
-            customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory(
+            customerSatisfactionPerIntentLevelQueryFactory(
                 filters,
-                timezone
+                timezone,
+                OrderDirection.Asc,
+                1,
+                'customFieldValue',
+                '1'
             )
         ).toEqual({
             dimensions: [
                 TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+                TicketSatisfactionSurveyDimension.SurveyScore,
             ],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,
@@ -91,8 +98,27 @@ describe('AI Agent metrics', () => {
                         formatReportingQueryDate(filters.period.end_datetime),
                     ],
                 },
+                {
+                    member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
+                {
+                    member: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+                    operator: ReportingFilterOperator.StartsWith,
+                    values: ['customFieldValue'],
+                },
+                {
+                    member: TicketMember.AssigneeUserId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
             ],
-            measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
+            order: [['TicketSatisfactionSurveyEnriched.avgSurveyScore', 'asc']],
+            measures: [
+                TicketSatisfactionSurveyMeasure.ScoredSurveysCount,
+                TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+            ],
             segments: [TicketSatisfactionSurveySegment.SurveyScored],
             timezone: timezone,
         })

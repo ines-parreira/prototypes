@@ -6,7 +6,7 @@ import {
     calculateAiAgentKnowledgeResourcePerIntent,
     enrichWithAutomationOpportunity,
     enrichWithSuccessRate,
-    getIntentByLevel,
+    filterMetricDataByIntentLevel,
     transformIntentName,
 } from 'hooks/reporting/automate/utils'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
@@ -366,7 +366,8 @@ export const useSuccessRatePerIntent = (
 export const useAiAgentKnowledgeResourcePerIntent = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
+    intentId?: string
 ) => {
     const {data: {data: activeFields = []} = {}} =
         useCustomFieldDefinitions(activeParams)
@@ -383,7 +384,8 @@ export const useAiAgentKnowledgeResourcePerIntent = (
         filters,
         timezone,
         customFiledId,
-        sorting
+        sorting,
+        intentId
     )
 
     const ticketIds =
@@ -444,7 +446,7 @@ export const useCustomerSatisfactionPerIntent = (
 
 export const addMetricDataToResults = (
     results: Record<string, IntentMetrics>,
-    metricData: {[p: string]: string | number}[] | any[],
+    metricData: Record<string, string | number | null>[],
     metricKey: string,
     resultKey?: string
 ) => {
@@ -464,89 +466,20 @@ export const addMetricDataToResults = (
     })
 }
 
-// Filter metric data by intent level
-export const filterMetricDataByIntentLevel = ({
-    metricData,
-    level,
-    intentKey,
-    valueKey,
-    totalKey,
-    resultKey,
-    metricFor,
-}: {
-    metricData: Record<string, any>[]
-    level: number
-    intentKey: string
-    valueKey: string
-    totalKey?: string
-    resultKey: string
-    metricFor: IntentTableColumn
-}) => {
-    const adjustedData: Record<string, {sum: number; length: number}> = {}
-    metricData.forEach((item) => {
-        const intent = getIntentByLevel(item[intentKey], level)
-        if (!adjustedData[intent]) {
-            adjustedData[intent] = {
-                sum: 0,
-                length: 0,
-            }
-        }
-
-        const total = (totalKey && Number(item[totalKey])) || 0
-        const value = (valueKey && Number(item[valueKey])) || 0
-
-        switch (metricFor) {
-            case IntentTableColumn.AutomationOpportunities:
-                adjustedData[intent].length = total
-                adjustedData[intent].sum += value
-                break
-            case IntentTableColumn.Tickets:
-            case IntentTableColumn.Resources:
-                adjustedData[intent].sum += value
-                break
-            case IntentTableColumn.SuccessRate:
-                adjustedData[intent].length += total
-                adjustedData[intent].sum += value
-                break
-            case IntentTableColumn.AvgCustomerSatisfaction:
-                adjustedData[intent].length += total
-                adjustedData[intent].sum += value * total
-                break
-        }
-    })
-
-    // Calculate average for intents
-    return Object.keys(adjustedData).map((intent) => {
-        switch (metricFor) {
-            case IntentTableColumn.AutomationOpportunities:
-            case IntentTableColumn.SuccessRate:
-            case IntentTableColumn.AvgCustomerSatisfaction:
-                return {
-                    [intentKey]: intent,
-                    [resultKey]:
-                        adjustedData[intent].sum / adjustedData[intent].length,
-                }
-            case IntentTableColumn.Tickets:
-            case IntentTableColumn.Resources:
-                return {
-                    [intentKey]: intent,
-                    [resultKey]: adjustedData[intent].sum,
-                }
-        }
-    })
-}
-
 const useFetchAllIntentsMetrics = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
+    intentId?: string,
+    intentLevel?: number
 ) => {
-    const INTENT_LEVEL = 2
+    const INTENT_LEVEL = intentLevel || 2
     // Fetch all metrics for all intents
     const automationOpportunityPerIntent = useAutomationOpportunityPerIntent(
         filters,
         timezone,
-        sorting
+        sorting,
+        intentId
     )
     const automationOpportunityPerIntentLevel = filterMetricDataByIntentLevel({
         metricData: automationOpportunityPerIntent.data,
@@ -561,26 +494,25 @@ const useFetchAllIntentsMetrics = (
     const ticketsPerIntent = useAIAgentTicketsPerIntent(
         filters,
         timezone,
-        sorting
+        sorting,
+        intentId
     )
-    let ticketsPerIntentPerIntentLevel
-    if (ticketsPerIntent.data?.allData) {
-        ticketsPerIntentPerIntentLevel = filterMetricDataByIntentLevel({
-            metricData: ticketsPerIntent.data.allData,
-            level: INTENT_LEVEL,
-            intentKey: 'TicketCustomFieldsEnriched.valueString',
-            valueKey: 'TicketCustomFieldsEnriched.ticketCount',
-            resultKey: 'tickets',
-            metricFor: IntentTableColumn.Tickets,
-        })
-    }
+    const ticketsPerIntentLevel = filterMetricDataByIntentLevel({
+        metricData: ticketsPerIntent?.data?.allData || [],
+        level: INTENT_LEVEL,
+        intentKey: 'TicketCustomFieldsEnriched.valueString',
+        valueKey: 'TicketCustomFieldsEnriched.ticketCount',
+        resultKey: 'tickets',
+        metricFor: IntentTableColumn.Tickets,
+    })
 
     const successRatePerIntent = useSuccessRatePerIntent(
         filters,
         timezone,
-        sorting
+        sorting,
+        intentId
     )
-    const successRatePerIntentPerIntentLevel = filterMetricDataByIntentLevel({
+    const successRatePerIntentLevel = filterMetricDataByIntentLevel({
         metricData: successRatePerIntent.data,
         level: INTENT_LEVEL,
         intentKey: 'TicketCustomFieldsEnriched.valueString',
@@ -593,25 +525,27 @@ const useFetchAllIntentsMetrics = (
     const customerSatisfactionPerIntent = useCustomerSatisfactionPerIntent(
         filters,
         timezone,
-        sorting
+        sorting,
+        intentId
     )
 
-    let customerSatisfactionPerIntentPerIntentLevel
-    if (customerSatisfactionPerIntent.data?.allData) {
-        customerSatisfactionPerIntentPerIntentLevel =
-            filterMetricDataByIntentLevel({
-                metricData: customerSatisfactionPerIntent.data?.allData,
-                level: INTENT_LEVEL,
-                intentKey: 'TicketCustomFieldsEnriched.valueString',
-                valueKey: 'TicketSatisfactionSurveyEnriched.surveyScore',
-                totalKey: 'TicketSatisfactionSurveyEnriched.scoredSurveysCount',
-                resultKey: 'avgCustomerSatisfaction',
-                metricFor: IntentTableColumn.AvgCustomerSatisfaction,
-            })
-    }
+    const customerSatisfactionPerIntentLevel = filterMetricDataByIntentLevel({
+        metricData: customerSatisfactionPerIntent?.data?.allData || [],
+        level: INTENT_LEVEL,
+        intentKey: 'TicketCustomFieldsEnriched.valueString',
+        valueKey: 'TicketSatisfactionSurveyEnriched.surveyScore',
+        totalKey: 'TicketSatisfactionSurveyEnriched.scoredSurveysCount',
+        resultKey: 'avgCustomerSatisfaction',
+        metricFor: IntentTableColumn.AvgCustomerSatisfaction,
+    })
 
     const aiAgentKnowledgeResourcePerIntent =
-        useAiAgentKnowledgeResourcePerIntent(filters, timezone, sorting)
+        useAiAgentKnowledgeResourcePerIntent(
+            filters,
+            timezone,
+            sorting,
+            intentId
+        )
 
     const aiAgentKnowledgeResourcePerIntentPerIntentLevel =
         filterMetricDataByIntentLevel({
@@ -630,15 +564,15 @@ const useFetchAllIntentsMetrics = (
         },
         ticketsPerIntent: {
             ...ticketsPerIntent,
-            data: ticketsPerIntentPerIntentLevel,
+            data: ticketsPerIntentLevel,
         },
         successRatePerIntent: {
             ...successRatePerIntent,
-            data: successRatePerIntentPerIntentLevel,
+            data: successRatePerIntentLevel,
         },
         customerSatisfactionPerIntent: {
             ...customerSatisfactionPerIntent,
-            data: customerSatisfactionPerIntentPerIntentLevel,
+            data: customerSatisfactionPerIntentLevel,
         },
         aiAgentKnowledgeResourcePerIntent: {
             ...aiAgentKnowledgeResourcePerIntent,
@@ -648,12 +582,13 @@ const useFetchAllIntentsMetrics = (
 }
 
 export const convertResultToTableArrayFormat = (
-    results: Record<string, IntentMetrics>
+    results: Record<string, IntentMetrics>,
+    intentLevel?: number
 ) => {
     const convertedArray = Object.entries(results).map(
         ([key, value]: [string, IntentMetrics]) => ({
             ...value,
-            name: transformIntentName(key),
+            name: transformIntentName(key, intentLevel),
             id: key,
         })
     )
@@ -663,7 +598,9 @@ export const convertResultToTableArrayFormat = (
 export const useAIAgentInsightsDataset = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
+    intentId?: string,
+    intentLevel?: number
 ) => {
     const {
         automationOpportunityPerIntent,
@@ -671,7 +608,13 @@ export const useAIAgentInsightsDataset = (
         successRatePerIntent,
         customerSatisfactionPerIntent,
         aiAgentKnowledgeResourcePerIntent,
-    } = useFetchAllIntentsMetrics(filters, timezone, sorting)
+    } = useFetchAllIntentsMetrics(
+        filters,
+        timezone,
+        sorting,
+        intentId,
+        intentLevel
+    )
     const results: Record<string, IntentMetrics> = {}
     const metrics = [
         {
@@ -705,7 +648,7 @@ export const useAIAgentInsightsDataset = (
     )
 
     // Convert object to array of objects
-    const convertedArray = convertResultToTableArrayFormat(results)
+    const convertedArray = convertResultToTableArrayFormat(results, intentLevel)
 
     const isFetching =
         automationOpportunityPerIntent.isFetching ||

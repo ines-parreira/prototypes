@@ -60,6 +60,8 @@ import {
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {ReportingGranularity} from 'models/reporting/types'
 import {Period, StatsFilters} from 'models/stat/types'
+import {IntentTableColumn} from 'pages/aiAgent/insights/IntentTableWidget/types'
+import {INTENT_LEVEL} from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
 import {WorkflowStep} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import {SHORT_FORMAT} from 'pages/stats/common/utils'
 import {
@@ -600,10 +602,15 @@ export const enrichWithSuccessRate = (
 }
 
 /**
- * Transform intent name from aaa::bbb to aaa/bbb format
+ * Transform intent name from aaa::bbb to aaa/bbb format. If the intent level is the L3, return the last level only.
+ * @example transformIntentName('aaa::bbb::ccc', 1) // 'aaa/bbb/ccc'
+ * @example transformIntentName('aaa::bbb', 2) // 'aaa/bbb'
+ * @example transformIntentName('aaa::bbb::ccc', 3) // 'ccc'
  */
-export const transformIntentName = (name: string) => name.replace(/::/g, '/')
-
+export const transformIntentName = (name: string, intentLevel?: number) =>
+    INTENT_LEVEL && intentLevel === INTENT_LEVEL + 1
+        ? name.split('::').pop()
+        : name.replace(/::/g, '/')
 /**
  * Calculates the number of AI agent knowledge resource per intent.
  *
@@ -702,4 +709,84 @@ export const getIntentByLevel = (intent: string, level: number): string => {
     const INTENT_SEPARATOR = '::'
     const levels = intent.split(INTENT_SEPARATOR)
     return levels.slice(0, level).join(INTENT_SEPARATOR)
+}
+
+// Filter metric data by intent level
+export const filterMetricDataByIntentLevel = ({
+    metricData,
+    level,
+    intentKey,
+    valueKey,
+    totalKey,
+    resultKey,
+    metricFor,
+}: {
+    metricData: Record<string, any>[]
+    level: number
+    intentKey: string
+    valueKey: string
+    totalKey?: string
+    resultKey: string
+    metricFor: IntentTableColumn
+}) => {
+    const adjustedData: Record<string, {sum: number; length: number}> = {}
+    metricData.forEach((item) => {
+        const intent = getIntentByLevel(item[intentKey], level)
+        if (!adjustedData[intent]) {
+            adjustedData[intent] = {
+                sum: 0,
+                length: 0,
+            }
+        }
+
+        const total = (totalKey && Number(item[totalKey])) || 0
+        const value = (valueKey && Number(item[valueKey])) || 0
+
+        switch (metricFor) {
+            case IntentTableColumn.AutomationOpportunities:
+                adjustedData[intent].length = total
+                adjustedData[intent].sum += value
+                break
+            case IntentTableColumn.Tickets:
+            case IntentTableColumn.Resources:
+                adjustedData[intent].sum += value
+                break
+            case IntentTableColumn.SuccessRate:
+                adjustedData[intent].length += total
+                adjustedData[intent].sum += value
+                break
+            case IntentTableColumn.AvgCustomerSatisfaction:
+                adjustedData[intent].length += total
+                adjustedData[intent].sum += value * total
+                break
+        }
+    })
+
+    // Calculate average for intents
+    return Object.keys(adjustedData)
+        .map((intent) => {
+            switch (metricFor) {
+                case IntentTableColumn.AutomationOpportunities:
+                case IntentTableColumn.SuccessRate:
+                case IntentTableColumn.AvgCustomerSatisfaction:
+                    return {
+                        [intentKey]: intent,
+                        [resultKey]:
+                            adjustedData[intent].length > 0
+                                ? adjustedData[intent].sum /
+                                  adjustedData[intent].length
+                                : null,
+                    }
+                case IntentTableColumn.Tickets:
+                case IntentTableColumn.Resources:
+                    return {
+                        [intentKey]: intent,
+                        [resultKey]: adjustedData[intent].sum,
+                    }
+            }
+        })
+        .filter(
+            (item): item is Record<string, string | number | null> =>
+                item !== undefined
+        )
 }

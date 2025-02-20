@@ -34,13 +34,7 @@ import {
 
 import css from './IntentPerformance.less'
 
-export const IntentsPerformance = ({
-    sectionTitle,
-    sectionSubtitle,
-    shouldDisplayTipsCTA,
-    period,
-    metrics,
-}: {
+export type IntentsPerformanceProps = {
     sectionTitle: string
     sectionSubtitle?: string
     shouldDisplayTipsCTA: boolean
@@ -60,7 +54,15 @@ export const IntentsPerformance = ({
             | AIInsightsMetric
         drillDownMetricAdditionalData?: Partial<AIInsightsMetrics>
     }>
-}) => {
+}
+
+export const IntentsPerformance = ({
+    sectionTitle,
+    sectionSubtitle,
+    shouldDisplayTipsCTA,
+    period,
+    metrics,
+}: IntentsPerformanceProps) => {
     const {isAnalyticsNewFilters} = useNewStatsFilters()
     const getGridCellSize = useGridSize()
 

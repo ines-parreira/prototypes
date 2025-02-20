@@ -12,6 +12,7 @@ type IntentWidget = {
         link: string
         linkText: string
     }
+    intentLevel?: number
 }
 
 export const IntentTableWidget = ({
@@ -19,6 +20,7 @@ export const IntentTableWidget = ({
     description,
     tableTitle,
     tableHint,
+    intentLevel,
 }: IntentWidget) => {
     return (
         <div>
@@ -27,6 +29,7 @@ export const IntentTableWidget = ({
             <IntentTableWithDefaultState
                 tableTitle={tableTitle}
                 tableHint={tableHint}
+                intentLevel={intentLevel}
             />
         </div>
     )

@@ -1,7 +1,10 @@
 import {render, screen} from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {MemoryRouter} from 'react-router-dom'
 
+import {FeatureFlagKey} from 'config/featureFlags'
+import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {
     Intent,
     IntentTableColumn,
@@ -10,15 +13,32 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
+import {assumeMock} from 'utils/testing'
+
 import {
-    IntentNameCellContent,
-    IntentDefaultCellContent,
-    IntentAutomationOpportunitiesCellContent,
-    LoadingIntentCellContent,
     BodyCellWrapper,
+    IntentAutomationOpportunitiesCellContent,
     IntentAvgCsatCellContent,
+    IntentDefaultCellContent,
+    IntentNameCellContent,
     IntentResourcesCellContent,
+    LoadingIntentCellContent,
 } from '../IntentTableCells'
+
+jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
+const mockUseAiAgentNavigation = assumeMock(useAiAgentNavigation)
+
+const mockHistoryPush = jest.fn()
+jest.mock(
+    'react-router-dom',
+    () =>
+        ({
+            ...jest.requireActual('react-router-dom'),
+            useHistory: () => ({
+                push: mockHistoryPush,
+            }),
+        }) as Record<string, unknown>
+)
 
 const renderTableCell = (cellContent: React.ReactNode) => {
     render(
@@ -34,7 +54,7 @@ const renderTableCell = (cellContent: React.ReactNode) => {
 
 describe('IntentTableCells', () => {
     const mockIntent = {
-        id: '1',
+        id: '1::2',
         [IntentTableColumn.IntentName]: 'Mock Intent Name',
         [IntentTableColumn.AutomationOpportunities]: 0.5,
         [IntentTableColumn.Resources]: 0,
@@ -48,6 +68,12 @@ describe('IntentTableCells', () => {
     ] as unknown as Intent[]
 
     describe('IntentNameCellContent', () => {
+        beforeEach(() => {
+            mockUseAiAgentNavigation.mockReturnValue({
+                routes: {optimizeIntent: (id: string) => `/optimize/${id}`},
+            } as unknown as ReturnType<typeof useAiAgentNavigation>)
+        })
+
         it('renders a link to the intent with the correct text', () => {
             renderTableCell(
                 <IntentNameCellContent
@@ -57,6 +83,36 @@ describe('IntentTableCells', () => {
             )
             const link = screen.getByRole('cell')
             expect(link).toHaveTextContent('Mock Intent Name')
+        })
+
+        it('navigates to the correct route on click if isL1Drilldown is true', () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentOptimizeTabL2Drilldown]: true,
+            })
+            renderTableCell(
+                <IntentNameCellContent
+                    intent={{...mockIntent, id: '1::2::3'}}
+                    column={IntentTableColumn.IntentName}
+                    intentLevel={2}
+                />
+            )
+            const link = screen.getByText(
+                mockIntent[IntentTableColumn.IntentName]
+            )
+            link.click()
+            expect(mockHistoryPush).toHaveBeenCalledWith('/optimize/1::2::3')
+        })
+
+        it('does not navigate on click if isL1Drilldown is false', () => {
+            renderTableCell(
+                <IntentNameCellContent
+                    intent={{...mockIntent, id: '1'}}
+                    column={IntentTableColumn.IntentName}
+                />
+            )
+            const link = screen.getByRole('cell')
+            link.click()
+            expect(mockHistoryPush).not.toHaveBeenCalled()
         })
     })
 
@@ -68,7 +124,7 @@ describe('IntentTableCells', () => {
                     column={IntentTableColumn.Tickets}
                 />
             )
-            expect(screen.getByText('200.00')).toBeInTheDocument()
+            expect(screen.getByText('200')).toBeInTheDocument()
         })
     })
 

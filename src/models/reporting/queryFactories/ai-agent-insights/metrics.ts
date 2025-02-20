@@ -1,4 +1,3 @@
-import {CustomField} from 'custom-fields/types'
 import {OrderDirection} from 'models/api/types'
 import {
     RecommendedResourcesCube,
@@ -17,11 +16,7 @@ import {
     TicketSatisfactionSurveyMeasure,
     TicketSatisfactionSurveySegment,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {
-    ReportingFilter,
-    ReportingFilterOperator,
-    ReportingQuery,
-} from 'models/reporting/types'
+import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 
 import {
@@ -32,23 +27,22 @@ import {
 
 import {recommendedResourceDatasetDefaultFilters} from '../automate_v2/filters'
 
-export const customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory = (
+export const customerSatisfactionPerIntentLevelQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    customField?: CustomField,
+    customFieldId?: number,
     customFieldValue?: string,
     assigneeUserId?: string
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const customFiledFilters = []
-    if (customField) {
+    if (customFieldId) {
         customFiledFilters.push({
             member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
             operator: ReportingFilterOperator.Equals,
-            values: [String(customField.id)],
+            values: [String(customFieldId)],
         })
     }
-
     if (customFieldValue) {
         customFiledFilters.push({
             member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
@@ -66,8 +60,14 @@ export const customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory = (
     }
 
     return {
-        measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
-        dimensions: [TicketCustomFieldsDimension.TicketCustomFieldsValueString],
+        measures: [
+            TicketSatisfactionSurveyMeasure.ScoredSurveysCount,
+            TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+        ],
+        dimensions: [
+            TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+            TicketSatisfactionSurveyDimension.SurveyScore,
+        ],
         timezone,
         segments: [TicketSatisfactionSurveySegment.SurveyScored],
         filters: [
@@ -87,39 +87,6 @@ export const customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory = (
             : {}),
     }
 }
-
-export const customerSatisfactionPerCustomFieldQueryFactory = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-    additionalFilter?: ReportingFilter
-): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
-    measures: [
-        TicketSatisfactionSurveyMeasure.ScoredSurveysCount,
-        TicketSatisfactionSurveyMeasure.AvgSurveyScore,
-    ],
-    dimensions: [
-        TicketCustomFieldsDimension.TicketCustomFieldsValueString,
-        TicketSatisfactionSurveyDimension.SurveyScore,
-    ],
-    timezone,
-    segments: [TicketSatisfactionSurveySegment.SurveyScored],
-    filters: [
-        ...NotSpamNorTrashedTicketsFilter,
-        ...statsFiltersToReportingFilters(
-            TicketStatsFiltersMembers,
-            statsFilters
-        ),
-        ...(additionalFilter ? [additionalFilter] : []),
-    ],
-    ...(sorting
-        ? {
-              order: [
-                  [TicketSatisfactionSurveyMeasure.AvgSurveyScore, sorting],
-              ],
-          }
-        : {}),
-})
 
 export const recommendedResourceQueryFactory = (
     statsFilters: StatsFilters,

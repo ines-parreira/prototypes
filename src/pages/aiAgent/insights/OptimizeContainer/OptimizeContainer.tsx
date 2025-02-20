@@ -12,12 +12,14 @@ import {IntentTableWidget} from 'pages/aiAgent/insights/IntentTableWidget/Intent
 
 import {AdjustedPeriodFilter} from 'pages/aiAgent/insights/widgets/AdjustedPeriodFilter/AdjustedPeriodFilter'
 import {Level1IntentsPerformance} from 'pages/aiAgent/insights/widgets/Level1IntentsPerformance/Level1IntentsPerformance'
+
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
 
 import css from './OptimizeContainer.less'
 
 const HOURS_TO_REMOVE = 72
 
+export const INTENT_LEVEL = 2
 export const subtractsPeriodWithoutData = (momentDate: Moment) => {
     return momentDate.subtract(HOURS_TO_REMOVE, 'hours')
 }
@@ -66,6 +68,7 @@ export const OptimizeContainer = () => {
                         link: 'https://docs.gorgias.com/en-US/customer-intents-81924',
                         linkText: 'Learn about intents',
                     }}
+                    intentLevel={INTENT_LEVEL}
                 />
             </div>
             <DrillDownModal />

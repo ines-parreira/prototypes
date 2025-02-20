@@ -24,6 +24,7 @@ import {DEFAULT_LOCALE, formatMetricValue} from 'pages/stats/common/utils'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 
+import {INTENT_LEVEL} from '../OptimizeContainer/OptimizeContainer'
 import intentTableCss from './IntentTable.less'
 
 type TableCellProps = {
@@ -31,17 +32,24 @@ type TableCellProps = {
     column: IntentTableColumn
     drillDownMetricData?: DrillDownMetric | null | undefined
     allIntents?: Intent[]
+    intentLevel?: number
 }
-export const IntentNameCellContent = ({intent, column}: TableCellProps) => {
+
+export const IntentNameCellContent = ({
+    intent,
+    column,
+    intentLevel,
+}: TableCellProps) => {
     const history = useHistory()
     const {shopName} = useParams<{
         shopName: string
     }>()
     const {routes} = useAiAgentNavigation({shopName})
-    const hasL2Drilldown =
+    const isL1Drilldown = intentLevel === INTENT_LEVEL
+    const hasL2DrilldownEnabled =
         useFlags()[FeatureFlagKey.AiAgentOptimizeTabL2Drilldown]
     const goToIntent = () => {
-        if (hasL2Drilldown) {
+        if (hasL2DrilldownEnabled && isL1Drilldown) {
             history.push(routes.optimizeIntent(String(intent.id)))
         }
     }
@@ -50,7 +58,7 @@ export const IntentNameCellContent = ({intent, column}: TableCellProps) => {
         <BodyCellWrapper
             bodyCellProps={{
                 width: getColumnWidth(column),
-                showCursor: hasL2Drilldown,
+                showCursor: hasL2DrilldownEnabled && isL1Drilldown,
             }}
         >
             <div className="body-medium" onClick={goToIntent}>

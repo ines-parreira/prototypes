@@ -3,30 +3,30 @@ import moment from 'moment'
 
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {ticketFieldDefinitions} from 'fixtures/customField'
-import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
-import {QueryReturnType} from 'hooks/reporting/useMetricPerDimension'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketCustomFieldsCube} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {StatsFilters} from 'models/stat/types'
-import {assumeMock} from 'utils/testing'
-
 import {
     EnrichedTicketCustomFieldsWithAutomationOpportunity,
     EnrichedTicketCustomFieldsWithSuccessRate,
-} from '../types'
+} from 'hooks/reporting/automate/types'
 import {
     useAIAgentTicketsPerIntent,
     useAutomationOpportunityPerIntent,
     useCustomerSatisfactionPerIntent,
     useSuccessRatePerIntent,
-} from '../useAIAgentInsightsDataset'
+} from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import {
     useAIAgentTicketsForIntentTrendMetric,
     useAutomatedOpportunityForIntentTrendMetric,
     useCustomerSatisfactionForIntentTrendMetric,
-    useSuccessRateForIntentTrendMetric,
     useInsightPerformanceMetrics,
-} from '../useAIAgentInsightsL2Dataset'
+    useSuccessRateForIntentTrendMetric,
+} from 'hooks/reporting/automate/useAIAgentInsightsL2Dataset'
+import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
+import {filterMetricDataByIntentLevel} from 'hooks/reporting/automate/utils'
+import {QueryReturnType} from 'hooks/reporting/useMetricPerDimension'
+import {OrderDirection} from 'models/api/types'
+import {TicketCustomFieldsCube} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {StatsFilters} from 'models/stat/types'
+import {assumeMock} from 'utils/testing'
 
 const timezone = 'UTC'
 
@@ -37,18 +37,25 @@ jest.mock('hooks/reporting/useMultipleMetricsTrend')
 
 jest.mock('hooks/reporting/automate/useAIAgentUserId')
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
-jest.mock('../useAIAgentInsightsDataset')
+jest.mock('hooks/reporting/automate/useAIAgentInsightsDataset')
+
+jest.mock('hooks/reporting/automate/utils')
 
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
+const useAIAgentTicketsPerIntentMock = assumeMock(useAIAgentTicketsPerIntent)
 const useAutomationOpportunityPerIntentMock = assumeMock(
     useAutomationOpportunityPerIntent
 )
-const useAIAgentTicketsPerIntentMock = assumeMock(useAIAgentTicketsPerIntent)
-const useSuccessRatePerIntentMock = assumeMock(useSuccessRatePerIntent)
+
+const filterMetricDataByIntentLevelMock = assumeMock(
+    filterMetricDataByIntentLevel
+)
 const useCustomerSatisfactionPerIntentMock = assumeMock(
     useCustomerSatisfactionPerIntent
 )
+
+const useSuccessRatePerIntentMock = assumeMock(useSuccessRatePerIntent)
 
 const statsFilters: StatsFilters = {
     period: {
@@ -63,14 +70,14 @@ const statsFilters: StatsFilters = {
 
 const data = [
     {
-        'TicketCustomFieldsEnriched.valueString': 'intentA',
+        'TicketCustomFieldsEnriched.valueString': 'intentA::subIntentA',
         automationOpportunity: 10,
         'TicketCustomFieldsEnriched.ticketCount': 5,
         successRate: 50,
         'TicketSatisfactionSurveyEnriched.avgSurveyScore': 3,
     } as unknown as EnrichedTicketCustomFieldsWithAutomationOpportunity,
     {
-        'TicketCustomFieldsEnriched.valueString': 'intentB',
+        'TicketCustomFieldsEnriched.valueString': 'intentB::subIntentB',
         automationOpportunity: 20,
         'TicketCustomFieldsEnriched.ticketCount': 4,
         successRate: 75,
@@ -78,7 +85,9 @@ const data = [
     } as unknown as EnrichedTicketCustomFieldsWithAutomationOpportunity,
 ]
 
-const intent = 'intentA'
+const intentId = 'intentA::subIntentA'
+const sorting = OrderDirection.Desc
+const intentLevel = 2
 
 describe('useAiAgentInsightsL2Dataset', () => {
     beforeEach(() => {
@@ -91,179 +100,275 @@ describe('useAiAgentInsightsL2Dataset', () => {
     })
 
     it('should return automated opportunity trend metric for intent', () => {
-        useAutomationOpportunityPerIntentMock.mockReturnValue({
-            data: data,
-            isFetching: false,
-            isError: false,
-        })
+        useAutomationOpportunityPerIntentMock
+            .mockReturnValueOnce({
+                data: [data[0]],
+                isFetching: false,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: [data[1]],
+                isFetching: false,
+                isError: false,
+            })
+        filterMetricDataByIntentLevelMock
+            .mockReturnValueOnce([{automationOpportunity: 10}])
+            .mockReturnValueOnce([{automationOpportunity: 5}])
 
         const {result} = renderHook(() =>
             useAutomatedOpportunityForIntentTrendMetric({
                 filters: statsFilters,
-                intent,
                 timezone,
+                sorting,
+                intentId,
+                intentLevel,
             })
         )
 
-        expect(result.current).toEqual({
-            data: {value: 10, prevValue: 10},
-            isFetching: false,
-            isError: false,
-        })
+        expect(result.current.data.value).toBe(10)
+        expect(result.current.data.prevValue).toBe(5)
+        expect(result.current.isFetching).toBe(false)
+        expect(result.current.isError).toBe(false)
     })
 
     it('should return tickets trend metric for intent', () => {
-        useAIAgentTicketsPerIntentMock.mockReturnValue({
-            data: {
-                allData:
-                    data as unknown as QueryReturnType<TicketCustomFieldsCube>,
-                value: null,
-                decile: null,
-            },
-            isFetching: false,
-            isError: false,
-        })
+        useAIAgentTicketsPerIntentMock
+            .mockReturnValueOnce({
+                data: {
+                    allData:
+                        data as unknown as QueryReturnType<TicketCustomFieldsCube>,
+                    value: null,
+                    decile: null,
+                },
+                isFetching: false,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: {
+                    allData:
+                        data as unknown as QueryReturnType<TicketCustomFieldsCube>,
+                    value: null,
+                    decile: null,
+                },
+                isFetching: false,
+                isError: false,
+            })
+        filterMetricDataByIntentLevelMock
+            .mockReturnValueOnce([{tickets: 5}])
+            .mockReturnValueOnce([{tickets: 4}])
 
         const {result} = renderHook(() =>
             useAIAgentTicketsForIntentTrendMetric({
                 filters: statsFilters,
-                intent,
                 timezone,
+                sorting,
+                intentId,
+                intentLevel,
             })
         )
 
-        expect(result.current).toEqual({
-            data: {value: 5, prevValue: 5},
-            isFetching: false,
-            isError: false,
-        })
-    })
-
-    it('should return automation rate  trend metric for intent', () => {
-        useSuccessRatePerIntentMock.mockReturnValue({
-            data: data as unknown as EnrichedTicketCustomFieldsWithSuccessRate[],
-            isError: false,
-            isFetching: false,
-        })
-
-        const {result} = renderHook(() =>
-            useSuccessRateForIntentTrendMetric({
-                filters: statsFilters,
-                intent,
-                timezone,
-            })
-        )
-
-        expect(result.current).toEqual({
-            data: {
-                value: 50,
-                prevValue: 50,
-            },
-            isFetching: false,
-            isError: false,
-        })
+        expect(result.current.data.value).toBe(5)
+        expect(result.current.data.prevValue).toBe(4)
+        expect(result.current.isFetching).toBe(false)
+        expect(result.current.isError).toBe(false)
     })
 
     it('should return customer satisfaction trend metric for intent', () => {
-        useCustomerSatisfactionPerIntentMock.mockReturnValue({
-            data: {
-                allData:
-                    data as unknown as QueryReturnType<HelpdeskMessageCubeWithJoins>,
-                value: null,
-                decile: null,
-            },
-            isError: false,
-            isFetching: false,
-        })
+        useCustomerSatisfactionPerIntentMock
+            .mockReturnValueOnce({
+                data: {
+                    allData:
+                        data as unknown as QueryReturnType<TicketCustomFieldsCube>,
+                    value: null,
+                    decile: null,
+                },
+                isFetching: false,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: {
+                    allData:
+                        data as unknown as QueryReturnType<TicketCustomFieldsCube>,
+                    value: null,
+                    decile: null,
+                },
+                isFetching: false,
+                isError: false,
+            })
+        filterMetricDataByIntentLevelMock
+            .mockReturnValueOnce([{avgCustomerSatisfaction: 3}])
+            .mockReturnValueOnce([{avgCustomerSatisfaction: 4}])
 
         const {result} = renderHook(() =>
             useCustomerSatisfactionForIntentTrendMetric({
                 filters: statsFilters,
-                intent,
                 timezone,
+                sorting,
+                intentId,
+                intentLevel,
             })
         )
 
-        expect(result.current).toEqual({
-            data: {
-                value: 3,
-                prevValue: 3,
-            },
-            isFetching: false,
-            isError: false,
-        })
+        expect(result.current.data.value).toBe(3)
+        expect(result.current.data.prevValue).toBe(4)
+        expect(result.current.isFetching).toBe(false)
+        expect(result.current.isError).toBe(false)
     })
 
-    it('should return all trend metrics for intent', () => {
+    it('should return success rate trend metric for intent', () => {
+        useSuccessRatePerIntentMock
+            .mockReturnValueOnce({
+                data: [
+                    data[0],
+                ] as unknown as EnrichedTicketCustomFieldsWithSuccessRate[],
+                isFetching: false,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: [
+                    data[1],
+                ] as unknown as EnrichedTicketCustomFieldsWithSuccessRate[],
+                isFetching: false,
+                isError: false,
+            })
+        filterMetricDataByIntentLevelMock
+            .mockReturnValueOnce([{successRate: 50}])
+            .mockReturnValueOnce([{successRate: 75}])
+
+        const {result} = renderHook(() =>
+            useSuccessRateForIntentTrendMetric({
+                filters: statsFilters,
+                timezone,
+                sorting,
+                intentId,
+                intentLevel,
+            })
+        )
+
+        expect(result.current.data.value).toBe(50)
+        expect(result.current.data.prevValue).toBe(75)
+        expect(result.current.isFetching).toBe(false)
+        expect(result.current.isError).toBe(false)
+    })
+
+    it('should return all performance metrics for intent', () => {
+        // automationOpportunityPerIntent
         useAutomationOpportunityPerIntentMock.mockReturnValue({
-            data: data,
+            data: [data[0]],
             isFetching: false,
             isError: false,
         })
+        filterMetricDataByIntentLevelMock
+            .mockReturnValueOnce([{automationOpportunity: 10}])
+            .mockReturnValueOnce([{automationOpportunity: 5}])
+        // ticketsPerIntent
+        useAIAgentTicketsPerIntentMock
+            .mockReturnValueOnce({
+                data: {
+                    allData:
+                        data as unknown as QueryReturnType<TicketCustomFieldsCube>,
+                    value: null,
+                    decile: null,
+                },
+                isFetching: false,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: {
+                    allData:
+                        data as unknown as QueryReturnType<TicketCustomFieldsCube>,
+                    value: null,
+                    decile: null,
+                },
+                isFetching: false,
+                isError: false,
+            })
+        filterMetricDataByIntentLevelMock
+            .mockReturnValueOnce([{tickets: 5}])
+            .mockReturnValueOnce([{tickets: 4}])
+        // successRatePerIntent
+        useSuccessRatePerIntentMock
+            .mockReturnValueOnce({
+                data: [
+                    data[0],
+                ] as unknown as EnrichedTicketCustomFieldsWithSuccessRate[],
+                isFetching: false,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: [
+                    data[1],
+                ] as unknown as EnrichedTicketCustomFieldsWithSuccessRate[],
+                isFetching: false,
+                isError: false,
+            })
+        filterMetricDataByIntentLevelMock
+            .mockReturnValueOnce([{successRate: 50}])
+            .mockReturnValueOnce([{successRate: 75}])
 
-        useAIAgentTicketsPerIntentMock.mockReturnValue({
-            data: {
-                allData:
-                    data as unknown as QueryReturnType<TicketCustomFieldsCube>,
-                value: null,
-                decile: null,
-            },
-            isFetching: false,
-            isError: false,
-        })
-
-        useSuccessRatePerIntentMock.mockReturnValue({
-            data: data as unknown as EnrichedTicketCustomFieldsWithSuccessRate[],
-            isError: false,
-            isFetching: false,
-        })
-
-        useCustomerSatisfactionPerIntentMock.mockReturnValue({
-            data: {
-                allData:
-                    data as unknown as QueryReturnType<HelpdeskMessageCubeWithJoins>,
-                value: null,
-                decile: null,
-            },
-            isError: false,
-            isFetching: false,
-        })
+        // customerSatisfactionPerIntent
+        useCustomerSatisfactionPerIntentMock
+            .mockReturnValueOnce({
+                data: {
+                    allData:
+                        data as unknown as QueryReturnType<TicketCustomFieldsCube>,
+                    value: null,
+                    decile: null,
+                },
+                isFetching: false,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: {
+                    allData:
+                        data as unknown as QueryReturnType<TicketCustomFieldsCube>,
+                    value: null,
+                    decile: null,
+                },
+                isFetching: false,
+                isError: false,
+            })
+        filterMetricDataByIntentLevelMock
+            .mockReturnValueOnce([{avgCustomerSatisfaction: 3}])
+            .mockReturnValueOnce([{avgCustomerSatisfaction: 4}])
 
         const {result} = renderHook(() =>
             useInsightPerformanceMetrics({
                 filters: statsFilters,
-                intent,
                 timezone,
+                sorting,
+                intentId,
+                intentLevel,
             })
         )
 
-        expect(result.current).toEqual({
-            automationOpportunityPerIntent: {
-                data: {value: 10, prevValue: 10},
-                isFetching: false,
-                isError: false,
-            },
-            ticketsPerIntent: {
-                data: {value: 5, prevValue: 5},
-                isFetching: false,
-                isError: false,
-            },
-            successRatePerIntent: {
-                data: {
-                    value: 50,
-                    prevValue: 50,
-                },
-                isFetching: false,
-                isError: false,
-            },
-            customerSatisfactionPerIntent: {
-                data: {
-                    value: 3,
-                    prevValue: 3,
-                },
-                isFetching: false,
-                isError: false,
-            },
-        })
+        expect(result.current.automationOpportunityPerIntent.data.value).toBe(
+            10
+        )
+        expect(
+            result.current.automationOpportunityPerIntent.data.prevValue
+        ).toBe(5)
+        expect(result.current.ticketsPerIntent.data.value).toBe(5)
+        expect(result.current.ticketsPerIntent.data.prevValue).toBe(4)
+        expect(result.current.successRatePerIntent.data.value).toBe(50)
+        expect(result.current.successRatePerIntent.data.prevValue).toBe(75)
+        expect(result.current.customerSatisfactionPerIntent.data.value).toBe(3)
+        expect(
+            result.current.customerSatisfactionPerIntent.data.prevValue
+        ).toBe(4)
+        expect(result.current.automationOpportunityPerIntent.isFetching).toBe(
+            false
+        )
+        expect(result.current.automationOpportunityPerIntent.isError).toBe(
+            false
+        )
+        expect(result.current.ticketsPerIntent.isFetching).toBe(false)
+        expect(result.current.ticketsPerIntent.isError).toBe(false)
+        expect(result.current.successRatePerIntent.isFetching).toBe(false)
+        expect(result.current.successRatePerIntent.isError).toBe(false)
+        expect(result.current.customerSatisfactionPerIntent.isFetching).toBe(
+            false
+        )
+        expect(result.current.customerSatisfactionPerIntent.isError).toBe(false)
     })
 })

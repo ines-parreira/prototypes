@@ -6,8 +6,7 @@ import {
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
-    customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory,
-    customerSatisfactionPerCustomFieldQueryFactory,
+    customerSatisfactionPerIntentLevelQueryFactory,
     recommendedResourceQueryFactory,
 } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
 import {
@@ -118,43 +117,23 @@ export const useCustomerSatisfactionMetricPerIntentLevel = (
     assigneeUserId?: string
 ) => {
     return useMetricPerDimension(
-        customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory(
+        customerSatisfactionPerIntentLevelQueryFactory(
             filters,
             timezone,
             sorting,
-            customField,
+            customField?.id,
             customFieldValue,
             assigneeUserId
         )
     )
 }
 
-export const useCustomerSatisfactionMetricPerIntent = (
-    filters: StatsFilters,
-    timezone: string,
-    customField: CustomField | undefined,
-    sorting?: OrderDirection
-) =>
-    useMetricPerDimension(
-        customerSatisfactionPerCustomFieldQueryFactory(
-            filters,
-            timezone,
-            sorting,
-            customField
-                ? {
-                      member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-                      operator: ReportingFilterOperator.Equals,
-                      values: [String(customField.id)],
-                  }
-                : undefined
-        )
-    )
-
 export const useAIAgentTicketsWithIntent = (
     filters: StatsFilters,
     timezone: string,
     customFieldId: string | null,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
+    intentId?: string
 ) => {
     return useMetricPerDimension({
         measures: [],
@@ -169,6 +148,15 @@ export const useAIAgentTicketsWithIntent = (
                 operator: ReportingFilterOperator.Equals,
                 values: [customFieldId],
             },
+            ...(intentId
+                ? [
+                      {
+                          member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                          operator: ReportingFilterOperator.StartsWith,
+                          values: [intentId],
+                      },
+                  ]
+                : []),
             ...NotSpamNorTrashedTicketsFilter,
             ...statsFiltersToReportingFilters(
                 TicketStatsFiltersMembers,

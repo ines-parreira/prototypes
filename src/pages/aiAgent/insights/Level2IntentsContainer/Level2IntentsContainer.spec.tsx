@@ -32,6 +32,10 @@ jest.mock('../Level2IntentsPerformance/Level2IntentsPerformance', () => ({
     Level2IntentsPerformance: jest.fn(() => <></>),
 }))
 
+jest.mock('pages/aiAgent/insights/IntentTableWidget/IntentTableWidget', () => ({
+    IntentTableWidget: jest.fn(() => <></>),
+}))
+
 jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
     useAccountStoreConfiguration: jest.fn(() => ({
         aiAgentTicketViewId: 1,

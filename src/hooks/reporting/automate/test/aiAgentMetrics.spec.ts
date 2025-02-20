@@ -13,10 +13,7 @@ import {
 } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {TicketCustomFieldsMember} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {
-    customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory,
-    customerSatisfactionPerCustomFieldQueryFactory,
-} from 'models/reporting/queryFactories/ai-agent-insights/metrics'
+import {customerSatisfactionPerIntentLevelQueryFactory} from 'models/reporting/queryFactories/ai-agent-insights/metrics'
 import {
     customFieldsTicketCountQueryFactory,
     customFieldsTicketFactory,
@@ -30,7 +27,6 @@ import {
     useAIAgentResourcePerTicket,
     useAiAgenTickets,
     useAiAgentTicketCountPerIntent,
-    useCustomerSatisfactionMetricPerIntent,
     useTotalAiAgentTicketsByCustomField,
     useCustomerSatisfactionMetricPerIntentLevel,
 } from '../aiAgentMetrics'
@@ -169,34 +165,6 @@ describe('aiAgentMetrics', () => {
                             values: ['1', '2'],
                         },
                     ]
-                )
-            )
-        })
-    })
-
-    describe('useCustomerSatisfactionMetricPerIntent', () => {
-        it('should pass the query to useMetricPerDimension hook', () => {
-            renderHook(
-                () =>
-                    useCustomerSatisfactionMetricPerIntent(
-                        filters,
-                        timezone,
-                        customField,
-                        sorting
-                    ),
-                {}
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                customerSatisfactionPerCustomFieldQueryFactory(
-                    filters,
-                    timezone,
-                    sorting,
-                    {
-                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-                        operator: ReportingFilterOperator.Equals,
-                        values: [String(customField.id)],
-                    }
                 )
             )
         })
@@ -389,11 +357,11 @@ describe('aiAgentMetrics', () => {
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                customerSatisfactionPerCustomFieldPerIntentLevelQueryFactory(
+                customerSatisfactionPerIntentLevelQueryFactory(
                     filters,
                     timezone,
                     sorting,
-                    customField
+                    customField.id
                 )
             )
         })

@@ -10,6 +10,21 @@ import {
     totalTicketsMetric,
 } from 'fixtures/aiAgentInsights'
 import {ticketFieldDefinitions} from 'fixtures/customField'
+import {
+    BREAKDOWN_FIELD,
+    CUSTOM_FIELD_COUNT,
+    TICKET_COUNT,
+} from 'hooks/reporting/automate/types'
+import {
+    useAIAgentMetrics,
+    useAIAgentTicketsPerIntent,
+    useAutomationOpportunityPerIntent,
+    useCustomerSatisfactionPerIntent,
+    useSuccessRatePerIntent,
+    addMetricDataToResults,
+    convertResultToTableArrayFormat,
+    useAiAgentKnowledgeResourcePerIntent,
+} from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
 import {useMetric} from 'hooks/reporting/useMetric'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
@@ -26,19 +41,6 @@ import {
 } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
-
-import {BREAKDOWN_FIELD, CUSTOM_FIELD_COUNT, TICKET_COUNT} from '../types'
-import {
-    useAIAgentMetrics,
-    useAIAgentTicketsPerIntent,
-    useAutomationOpportunityPerIntent,
-    useCustomerSatisfactionPerIntent,
-    useSuccessRatePerIntent,
-    addMetricDataToResults,
-    convertResultToTableArrayFormat,
-    useAiAgentKnowledgeResourcePerIntent,
-    filterMetricDataByIntentLevel,
-} from '../useAIAgentInsightsDataset'
 
 const queryClient = mockQueryClient()
 const timezone = 'UTC'
@@ -696,97 +698,6 @@ describe('useAiAgentInsightsDataset', () => {
                     [IntentTableColumn.IntentName]: intentFixture.IntentAL1,
                     id: intentFixture.IntentAL1,
                 },
-            ])
-        })
-    })
-
-    describe('filterMetricDataByIntentLevel', () => {
-        const metricData = [
-            {intent: 'intent1', value: 10, total: 5},
-            {intent: 'intent2', value: 20, total: 10},
-            {intent: 'intent1', value: 30, total: 15},
-        ]
-
-        it('should calculate Automation Opportunities correctly', () => {
-            const result = filterMetricDataByIntentLevel({
-                metricData,
-                level: 1,
-                intentKey: 'intent',
-                valueKey: 'value',
-                totalKey: 'total',
-                resultKey: 'result',
-                metricFor: IntentTableColumn.AutomationOpportunities,
-            })
-
-            expect(result).toEqual([
-                {intent: 'intent1', result: 2.6666666666666665},
-                {intent: 'intent2', result: 2},
-            ])
-        })
-
-        it('should calculate Tickets correctly', () => {
-            const result = filterMetricDataByIntentLevel({
-                metricData,
-                level: 1,
-                intentKey: 'intent',
-                valueKey: 'value',
-                resultKey: 'result',
-                metricFor: IntentTableColumn.Tickets,
-            })
-
-            expect(result).toEqual([
-                {intent: 'intent1', result: 40},
-                {intent: 'intent2', result: 20},
-            ])
-        })
-
-        it('should calculate Success Rate correctly', () => {
-            const result = filterMetricDataByIntentLevel({
-                metricData,
-                level: 1,
-                intentKey: 'intent',
-                valueKey: 'value',
-                totalKey: 'total',
-                resultKey: 'result',
-                metricFor: IntentTableColumn.SuccessRate,
-            })
-
-            expect(result).toEqual([
-                {intent: 'intent1', result: 2},
-                {intent: 'intent2', result: 2},
-            ])
-        })
-
-        it('should calculate Avg Customer Satisfaction correctly', () => {
-            const result = filterMetricDataByIntentLevel({
-                metricData,
-                level: 1,
-                intentKey: 'intent',
-                valueKey: 'value',
-                totalKey: 'total',
-                resultKey: 'result',
-                metricFor: IntentTableColumn.AvgCustomerSatisfaction,
-            })
-
-            expect(result).toEqual([
-                {intent: 'intent1', result: 25},
-                {intent: 'intent2', result: 20},
-            ])
-        })
-
-        it('should calculate Resources correctly', () => {
-            const result = filterMetricDataByIntentLevel({
-                metricData,
-                level: 1,
-                intentKey: 'intent',
-                valueKey: 'value',
-                resultKey: 'result',
-                metricFor: IntentTableColumn.Resources,
-            })
-
-            expect(result).toEqual([
-                {intent: 'intent1', result: 40},
-                {intent: 'intent2', result: 20},
             ])
         })
     })

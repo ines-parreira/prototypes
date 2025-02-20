@@ -3,6 +3,8 @@ import React, {UIEventHandler, useState} from 'react'
 
 import {useDispatch} from 'react-redux'
 
+import {useParams} from 'react-router-dom'
+
 import {useAIAgentInsightsDataset} from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
@@ -46,17 +48,29 @@ import {
     IntentsColumnsConfig,
     TableColumnsOrder,
     TableLabels,
-    useIntentSoringQuery,
+    useIntentSortingQuery,
 } from './IntentTableConfig'
 
-const getSortingQuery = (column: IntentTableColumn) => {
-    return () => useIntentSoringQuery(column, useAIAgentInsightsDataset)
+const getSortingQuery = (
+    column: IntentTableColumn,
+    intentId?: string,
+    intentLevel?: number
+) => {
+    return () =>
+        useIntentSortingQuery(
+            column,
+            useAIAgentInsightsDataset,
+            intentId,
+            intentLevel
+        )
 }
 
 export const IntentTable = ({
     paginatedIntents,
+    intentLevel,
 }: {
     paginatedIntents: PaginatedIntents
+    intentLevel?: number
 }) => {
     const dispatch = useDispatch()
 
@@ -68,6 +82,10 @@ export const IntentTable = ({
 
     const {intentCustomFieldId} = useGetCustomTicketsFieldsDefinitionData()
 
+    const {intentId} = useParams<{
+        shopName: string
+        intentId: string
+    }>()
     const onPageChangeCallback = (page: number) => {
         dispatch(pageSet(page))
     }
@@ -136,7 +154,11 @@ export const IntentTable = ({
                                 hint={
                                     IntentsColumnsConfig[column]?.hint || null
                                 }
-                                useSortingQuery={getSortingQuery(column)}
+                                useSortingQuery={getSortingQuery(
+                                    column,
+                                    intentId,
+                                    intentLevel
+                                )}
                                 width={getColumnWidth(column)}
                                 className={classNames(
                                     css.BodyCell,
@@ -172,6 +194,7 @@ export const IntentTable = ({
                                                             column,
                                                             intent,
                                                         }),
+                                                    intentLevel,
                                                 }
                                             )}
                                         </React.Fragment>
@@ -218,6 +241,7 @@ export const LoadingTableRows = () => {
 export const IntentTableWithDefaultState = ({
     tableTitle,
     tableHint,
+    intentLevel,
 }: {
     tableTitle: string
     tableHint?: {
@@ -225,13 +249,22 @@ export const IntentTableWithDefaultState = ({
         link: string
         linkText: string
     }
+    intentLevel?: number
 }) => {
+    const {intentId} = useParams<{
+        shopName: string
+        intentId: string
+    }>()
+
+    useIntentSortingQuery(
+        IntentTableColumn.AutomationOpportunities,
+        useAIAgentInsightsDataset,
+        intentId,
+        intentLevel
+    )
+
     const paginatedIntents = useAppSelector(getPaginatedIntents)
     const isSortingLoading = useAppSelector(isSortingMetricLoading)
-    useIntentSoringQuery(
-        IntentTableColumn.AutomationOpportunities,
-        useAIAgentInsightsDataset
-    )
 
     const shouldRemoveButtonBorder =
         paginatedIntents &&
@@ -252,7 +285,10 @@ export const IntentTableWithDefaultState = ({
             >
                 {(paginatedIntents && paginatedIntents.intents.length > 0) ||
                 isSortingLoading ? (
-                    <IntentTable paginatedIntents={paginatedIntents} />
+                    <IntentTable
+                        paginatedIntents={paginatedIntents}
+                        intentLevel={intentLevel}
+                    />
                 ) : (
                     <div className={intentTableCss.noData}>
                         <div className={intentTableCss.noDataText}>

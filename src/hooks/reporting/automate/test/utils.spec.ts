@@ -7,6 +7,26 @@ import {
     emptyMetric,
     totalTicketsMetric,
 } from 'fixtures/aiAgentInsights'
+import {CUSTOM_FIELD_COUNT, TICKET_COUNT} from 'hooks/reporting/automate/types'
+import {useAutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
+import {
+    addZeroValueTimeSeriesForGreyArea,
+    mergeAutomateDataByEventType,
+    automatePercentLabel,
+    AutomateEventType,
+    renderAutomateXTickLabel,
+    renderAutomateTooltipLabel,
+    sortByAutomateFeatureLabels,
+    automateInteractionsByEventTypeToTimeSeries,
+    addNonExistingEventTypesForGraph,
+    calculateGreyArea,
+    sortAllData,
+    enrichWithAutomationOpportunity,
+    enrichWithSuccessRate,
+    calculateAiAgentKnowledgeResourcePerIntent,
+    getIntentByLevel,
+    filterMetricDataByIntentLevel,
+} from 'hooks/reporting/automate/utils'
 import {QueryReturnType} from 'hooks/reporting/useMetricPerDimension'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {BREAKDOWN_FIELD} from 'hooks/reporting/withBreakdown'
@@ -24,27 +44,8 @@ import {
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
+import {IntentTableColumn} from 'pages/aiAgent/insights/IntentTableWidget/types'
 import {SHORT_FORMAT} from 'pages/stats/common/utils'
-
-import {CUSTOM_FIELD_COUNT, TICKET_COUNT} from '../types'
-import {useAutomateStatsMeasureLabelMap} from '../useAutomateStatsMeasureLabelMap'
-import {
-    addZeroValueTimeSeriesForGreyArea,
-    mergeAutomateDataByEventType,
-    automatePercentLabel,
-    AutomateEventType,
-    renderAutomateXTickLabel,
-    renderAutomateTooltipLabel,
-    sortByAutomateFeatureLabels,
-    automateInteractionsByEventTypeToTimeSeries,
-    addNonExistingEventTypesForGraph,
-    calculateGreyArea,
-    sortAllData,
-    enrichWithAutomationOpportunity,
-    enrichWithSuccessRate,
-    calculateAiAgentKnowledgeResourcePerIntent,
-    getIntentByLevel,
-} from '../utils'
 
 describe('mergeAutomateDataByEventType', () => {
     it('should merge interactions data by event type correctly', () => {
@@ -984,5 +985,96 @@ describe('getIntentByLevel', () => {
 
     test('handles level greater than the number of levels in intent', () => {
         expect(getIntentByLevel('L1::L2', 5)).toBe('L1::L2')
+    })
+})
+
+describe('filterMetricDataByIntentLevel', () => {
+    const metricData = [
+        {intent: 'intent1', value: 10, total: 5},
+        {intent: 'intent2', value: 20, total: 10},
+        {intent: 'intent1', value: 30, total: 15},
+    ]
+
+    it('should calculate Automation Opportunities correctly', () => {
+        const result = filterMetricDataByIntentLevel({
+            metricData,
+            level: 1,
+            intentKey: 'intent',
+            valueKey: 'value',
+            totalKey: 'total',
+            resultKey: 'result',
+            metricFor: IntentTableColumn.AutomationOpportunities,
+        })
+
+        expect(result).toEqual([
+            {intent: 'intent1', result: 2.6666666666666665},
+            {intent: 'intent2', result: 2},
+        ])
+    })
+
+    it('should calculate Tickets correctly', () => {
+        const result = filterMetricDataByIntentLevel({
+            metricData,
+            level: 1,
+            intentKey: 'intent',
+            valueKey: 'value',
+            resultKey: 'result',
+            metricFor: IntentTableColumn.Tickets,
+        })
+
+        expect(result).toEqual([
+            {intent: 'intent1', result: 40},
+            {intent: 'intent2', result: 20},
+        ])
+    })
+
+    it('should calculate Success Rate correctly', () => {
+        const result = filterMetricDataByIntentLevel({
+            metricData,
+            level: 1,
+            intentKey: 'intent',
+            valueKey: 'value',
+            totalKey: 'total',
+            resultKey: 'result',
+            metricFor: IntentTableColumn.SuccessRate,
+        })
+
+        expect(result).toEqual([
+            {intent: 'intent1', result: 2},
+            {intent: 'intent2', result: 2},
+        ])
+    })
+
+    it('should calculate Avg Customer Satisfaction correctly', () => {
+        const result = filterMetricDataByIntentLevel({
+            metricData,
+            level: 1,
+            intentKey: 'intent',
+            valueKey: 'value',
+            totalKey: 'total',
+            resultKey: 'result',
+            metricFor: IntentTableColumn.AvgCustomerSatisfaction,
+        })
+
+        expect(result).toEqual([
+            {intent: 'intent1', result: 25},
+            {intent: 'intent2', result: 20},
+        ])
+    })
+
+    it('should calculate Resources correctly', () => {
+        const result = filterMetricDataByIntentLevel({
+            metricData,
+            level: 1,
+            intentKey: 'intent',
+            valueKey: 'value',
+            resultKey: 'result',
+            metricFor: IntentTableColumn.Resources,
+        })
+
+        expect(result).toEqual([
+            {intent: 'intent1', result: 40},
+            {intent: 'intent2', result: 20},
+        ])
     })
 })

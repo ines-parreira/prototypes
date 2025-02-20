@@ -9,6 +9,8 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {AI_AGENT, OPTIMIZE} from 'pages/aiAgent/constants'
 import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import {IntentTableWidget} from 'pages/aiAgent/insights/IntentTableWidget/IntentTableWidget'
+import {INTENT_LEVEL} from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
 import BackLink from 'pages/common/components/BackLink'
 
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
@@ -41,6 +43,14 @@ export const Level2IntentsContainer = () => {
                 <AdjustedPeriodFilter />
 
                 <Level2IntentsPerformance />
+            </div>
+            <div className={css.section}>
+                <IntentTableWidget
+                    title="Intent topics"
+                    description="Explore intent topics to view related tickets and resources used by AI Agent to find opportunities to improve it’s performance."
+                    tableTitle="All topics"
+                    intentLevel={INTENT_LEVEL + 1}
+                />
             </div>
             <DrillDownModal />
         </AiAgentLayout>

@@ -8,7 +8,7 @@ export enum IntentTableColumn {
 }
 
 export type Intent = {
-    id: number
+    id: string
     [IntentTableColumn.IntentName]: string
     [IntentTableColumn.AutomationOpportunities]: number
     [IntentTableColumn.Tickets]: number
