@@ -121,14 +121,12 @@ export const IntentTable = ({
         intent: Intent
     }) => {
         const intentName = intent[IntentTableColumn.IntentName]
-        // Transform intent name from aaa/bbb to aaa::bbb format
-        const intentNameOriginalFormat = intentName.replace(/\//g, '::')
         switch (column) {
             case IntentTableColumn.Tickets:
                 return {
                     metricName: AIInsightsMetric.TicketCustomFieldsTicketCount,
                     title: intentName,
-                    customFieldValue: [intentNameOriginalFormat],
+                    customFieldValue: [intent.id],
                     customFieldId: intentCustomFieldId ?? null,
                 }
             default:
