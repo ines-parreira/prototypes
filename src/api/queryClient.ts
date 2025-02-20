@@ -6,7 +6,7 @@ export const queryCache = new QueryCache()
 
 const HTTP_STATUS_TO_NOT_RETRY = [401, 403, 404, 419, 429, 500]
 
-const isRetryable = (failureCount: number, error: unknown) => {
+const isRetriable = (retryIndex: number, error: unknown) => {
     if (
         isAxiosError(error) &&
         !!error.response?.status &&
@@ -15,14 +15,14 @@ const isRetryable = (failureCount: number, error: unknown) => {
         return false
     }
 
-    return failureCount <= 5
+    return retryIndex < 4
 }
 
 export const appQueryClient = new QueryClient({
     queryCache,
     defaultOptions: {
         queries: {
-            retry: (failureCount, error) => isRetryable(failureCount, error),
+            retry: (retryIndex, error) => isRetriable(retryIndex, error),
             /**
              * 1st failure: 2000ms (2 seconds)
              * 2nd failure: 4000ms (4 seconds)
@@ -30,11 +30,10 @@ export const appQueryClient = new QueryClient({
              * 4th failure: 16000ms (16 seconds)
              * 5th failure: 32000ms (32 seconds)
              */
-            retryDelay: (failureCount) =>
-                Math.min(1000 * 2 ** failureCount, 30000),
+            retryDelay: (retryIndex) => Math.min(1000 * 2 ** retryIndex, 30000),
         },
         mutations: {
-            retry: (failureCount, error) => isRetryable(failureCount, error),
+            retry: (retryIndex, error) => isRetriable(retryIndex, error),
             /**
              * 1st failure: 2000ms (2 seconds)
              * 2nd failure: 4000ms (4 seconds)
@@ -42,8 +41,7 @@ export const appQueryClient = new QueryClient({
              * 4th failure: 16000ms (16 seconds)
              * 5th failure: 32000ms (32 seconds)
              */
-            retryDelay: (failureCount) =>
-                Math.min(1000 * 2 ** failureCount, 30000),
+            retryDelay: (retryIndex) => Math.min(1000 * 2 ** retryIndex, 30000),
         },
     },
 })
