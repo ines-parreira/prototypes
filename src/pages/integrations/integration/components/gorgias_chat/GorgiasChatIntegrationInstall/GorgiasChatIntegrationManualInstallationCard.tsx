@@ -5,6 +5,9 @@ import {useGetInstallationSnippet} from 'models/integration/queries'
 import IconButton from 'pages/common/components/button/IconButton'
 import Collapse from 'pages/common/components/Collapse/Collapse'
 
+import {useConvertBundleInChatSnippetEnabled} from 'pages/integrations/integration/components/gorgias_chat/hooks/useConvertBundleInChatSnippetEnabled'
+import {useConvertBundleInstallationSnippet} from 'pages/integrations/integration/components/gorgias_chat/hooks/useConvertBundleInstallationSnippet'
+
 import css from './GorgiasChatIntegrationManualInstallationCard.less'
 import ManualInstallationGTMTab from './GorgiasChatIntegrationManualInstallationTabs/ManualInstallationGTMTab'
 import ManualInstallationOtherWebsiteTab from './GorgiasChatIntegrationManualInstallationTabs/ManualInstallationOtherWebsiteTab'
@@ -46,10 +49,17 @@ const GorgiasChatIntegrationManualInstallationCard = ({
 
     const {snippet, appKey} = data || {}
 
+    const bundleSnippet = useConvertBundleInstallationSnippet()
+    const isBundleSnippetEnabled = useConvertBundleInChatSnippetEnabled()
+
+    let code = snippet
+
+    if (isBundleSnippetEnabled) code += '\n' + bundleSnippet
+
     const tabs = {
         [Tab.OTHER]: (
             <ManualInstallationOtherWebsiteTab
-                code={snippet}
+                code={code}
                 alertMessage={
                     <>
                         Please note that by inserting this snippet on your
@@ -75,7 +85,7 @@ const GorgiasChatIntegrationManualInstallationCard = ({
         ),
         [Tab.SHOPIFY]: (
             <ManualInstallationShopifyWebsiteTab
-                code={snippet}
+                code={code}
                 alertMessage={
                     <>
                         Please note that by copying the code to your Shopify{' '}
