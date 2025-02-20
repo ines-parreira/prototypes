@@ -7,8 +7,6 @@ import {FormProvider, useForm} from 'react-hook-form'
 import {useParams} from 'react-router-dom'
 import {z} from 'zod'
 
-import sparkles from 'assets/img/icons/auto_awesome.svg'
-
 import {OnboardingData} from 'models/aiAgent/types'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import Card from 'pages/aiAgent/Onboarding/components/Card/Card'
@@ -39,6 +37,7 @@ import {
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding/settings'
 import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
+import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import IconInput from 'pages/common/forms/input/IconInput'
 import InputField from 'pages/common/forms/input/InputField'
@@ -223,17 +222,16 @@ export const PersonalityStep: React.FC<StepProps> = ({
                                 )}
                             </div>
                             <div className={css.cardDescriptionWrapper}>
-                                <img src={sparkles} alt="Sparkles" />
                                 {!salesPersuasionLevel ? (
                                     <Skeleton />
                                 ) : (
-                                    <div>
+                                    <AIBanner fillStyle="fill">
                                         {
                                             PersuasionLevelLabels[
                                                 salesPersuasionLevel
                                             ]?.description
                                         }
-                                    </div>
+                                    </AIBanner>
                                 )}
                             </div>
                         </section>
@@ -268,17 +266,16 @@ export const PersonalityStep: React.FC<StepProps> = ({
                                 )}
                             </div>
                             <div className={css.cardDescriptionWrapper}>
-                                <img src={sparkles} alt="Sparkles" />
                                 {!salesDiscountStrategyLevel ? (
                                     <Skeleton />
                                 ) : (
-                                    <div>
+                                    <AIBanner fillStyle="fill">
                                         {
                                             DiscountStrategyLabels[
                                                 salesDiscountStrategyLevel
                                             ]?.description
                                         }
-                                    </div>
+                                    </AIBanner>
                                 )}
                             </div>
                         </section>
