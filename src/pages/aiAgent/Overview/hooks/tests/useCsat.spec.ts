@@ -36,6 +36,7 @@ describe('useCsat', () => {
             metricType: StatType.Number,
             metricFormat: 'decimal',
             value: 3.1,
+            prevValue: 3.5,
             isLoading: false,
         })
     })

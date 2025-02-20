@@ -70,14 +70,12 @@ export const Kpi = ({
                     isLoading={isLoading}
                     className={css.metric}
                     trendBadge={
-                        prevValue !== undefined ? (
-                            <TrendBadge
-                                value={value}
-                                prevValue={prevValue}
-                                metricFormat="percent"
-                                interpretAs="more-is-better"
-                            />
-                        ) : undefined
+                        <TrendBadge
+                            value={value}
+                            prevValue={prevValue}
+                            metricFormat="percent"
+                            interpretAs="more-is-better"
+                        />
                     }
                 >
                     {formattedValue}

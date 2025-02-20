@@ -24,8 +24,6 @@ export const useCsat = (filters: StatsFilters, timezone: string): KpiMetric => {
         metricType: StatType.Number,
         metricFormat: 'decimal',
         isLoading: result.isFetching,
-        // Explicitly omit prevValue because we don't want to show the trend for this KPI
-        value: result.data?.[TicketSatisfactionSurveyMeasure.AvgSurveyScore]
-            .value,
+        ...result.data?.[TicketSatisfactionSurveyMeasure.AvgSurveyScore],
     }
 }
