@@ -15,6 +15,7 @@ import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/suppo
 import {openTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/openTickets'
 import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import {zeroTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
 import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {getPreviousPeriod} from 'utils/reporting'
@@ -96,6 +97,14 @@ export const useOneTouchTicketsTrend = getTrendHook(oneTouchTicketsQueryFactory)
 
 export const fetchOneTouchTicketsTrend = getTrendFetch(
     oneTouchTicketsQueryFactory
+)
+
+export const useZeroTouchTicketsTrend = getTrendHook(
+    zeroTouchTicketsQueryFactory
+)
+
+export const fetchZeroTouchTicketsTrend = getTrendFetch(
+    zeroTouchTicketsQueryFactory
 )
 
 export const useTicketsCreatedTrend = getTrendHook(ticketsCreatedQueryFactory)

@@ -1,4 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import moment from 'moment/moment'
 
 import {TicketChannel} from 'business/types/ticket'
@@ -10,9 +11,11 @@ import {
     useMedianResolutionTimeMetricPerAgent,
     useTicketsRepliedMetricPerAgent,
     useOneTouchTicketsMetricPerAgent,
+    useZeroTouchTicketsMetricPerAgent,
     useOnlineTimePerAgent,
     useTicketAverageHandleTimePerAgent,
     fetchOneTouchTicketsMetricPerAgent,
+    fetchZeroTouchTicketsMetricPerAgent,
     fetchTicketAverageHandleTimePerAgent,
     fetchOnlineTimePerAgent,
     fetchCustomerSatisfactionMetricPerAgent,
@@ -36,6 +39,7 @@ import {medianResolutionTimeMetricPerAgentQueryFactory} from 'models/reporting/q
 import {messagesSentMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {oneTouchTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import {ticketsRepliedMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import {zeroTouchTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
 
 import {LegacyStatsFilters} from 'models/stat/types'
 
@@ -108,6 +112,11 @@ describe('metricsPerAgent', () => {
                 useOneTouchTicketsMetricPerAgent,
                 oneTouchTicketsPerAgentQueryFactory,
             ],
+            [
+                'useZeroTouchTicketsMetricPerAgent',
+                useZeroTouchTicketsMetricPerAgent,
+                zeroTouchTicketsPerAgentQueryFactory,
+            ],
         ])(
             '%s should pass the query to useMetricPerDimension hook',
             (_, useFn, queryFactory) => {
@@ -168,6 +177,11 @@ describe('metricsPerAgent', () => {
                 'fetchOneTouchTicketsMetricPerAgent',
                 fetchOneTouchTicketsMetricPerAgent,
                 oneTouchTicketsPerAgentQueryFactory,
+            ],
+            [
+                'fetchZeroTouchTicketsMetricPerAgent',
+                fetchZeroTouchTicketsMetricPerAgent,
+                zeroTouchTicketsPerAgentQueryFactory,
             ],
         ])(
             '%s should pass the query to useMetricPerDimension hook',

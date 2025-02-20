@@ -1,4 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import moment from 'moment/moment'
 
 import {TicketChannel} from 'business/types/ticket'
@@ -10,10 +11,24 @@ import {
     useMedianResolutionTimeMetricPerChannel,
     useTicketsRepliedMetricPerChannel,
     useOneTouchTicketsMetricPerChannel,
+    useZeroTouchTicketsMetricPerChannel,
     useTicketAverageHandleTimePerChannel,
     useCreatedTicketsMetricPerChannel,
+    fetchTicketAverageHandleTimePerChannel,
+    fetchZeroTouchTicketsMetricPerChannel,
+    fetchOneTouchTicketsMetricPerChannel,
+    fetchCustomerSatisfactionMetricPerChannel,
+    fetchMedianResolutionTimeMetricPerChannel,
+    fetchMessagesSentMetricPerChannel,
+    fetchCreatedTicketsMetricPerChannel,
+    fetchClosedTicketsMetricPerChannel,
+    fetchTicketsRepliedMetricPerChannel,
+    fetchMedianFirstResponseTimeMetricPerChannel,
 } from 'hooks/reporting/support-performance/channels/metricsPerChannel'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import {
+    fetchMetricPerDimension,
+    useMetricPerDimension,
+} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {ticketAverageHandleTimePerAgentPerChannelQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {closedTicketsPerChannelQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
@@ -25,12 +40,14 @@ import {oneTouchTicketsPerChannelQueryFactory} from 'models/reporting/queryFacto
 
 import {ticketsCreatedPerChannelPerChannelQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedMetricPerChannelQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import {zeroTouchTicketsPerChannelQueryFactory} from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
 import {LegacyStatsFilters} from 'models/stat/types'
 
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
 
 describe('metricsPerChannel', () => {
     const periodStart = moment()
@@ -48,219 +65,134 @@ describe('metricsPerChannel', () => {
     const sorting = OrderDirection.Asc
     const channel = 'someChannel'
 
-    describe('useMedianFirstResponseTimeMetricPerChannel', () => {
-        it('should pass the query to useMetricPerDimension hook', () => {
-            renderHook(
-                () =>
-                    useMedianFirstResponseTimeMetricPerChannel(
-                        statsFilters,
-                        timezone,
-                        sorting,
-                        channel
-                    ),
-                {}
-            )
+    describe('hooks', () => {
+        it.each([
+            {
+                name: 'useMedianFirstResponseTimeMetricPerChannel',
+                hook: useMedianFirstResponseTimeMetricPerChannel,
+                queryFactory:
+                    medianFirstResponseTimeMetricPerChannelQueryFactory,
+            },
+            {
+                name: 'useTicketsRepliedMetricPerChannel',
+                hook: useTicketsRepliedMetricPerChannel,
+                queryFactory: ticketsRepliedMetricPerChannelQueryFactory,
+            },
+            {
+                name: 'useClosedTicketsMetricPerChannel',
+                hook: useClosedTicketsMetricPerChannel,
+                queryFactory: closedTicketsPerChannelQueryFactory,
+            },
+            {
+                name: 'useCreatedTicketsMetricPerChannel',
+                hook: useCreatedTicketsMetricPerChannel,
+                queryFactory: ticketsCreatedPerChannelPerChannelQueryFactory,
+            },
+            {
+                name: 'useMessagesSentMetricPerChannel',
+                hook: useMessagesSentMetricPerChannel,
+                queryFactory: messagesSentMetricPerChannelQueryFactory,
+            },
+            {
+                name: 'useMedianResolutionTimeMetricPerChannel',
+                hook: useMedianResolutionTimeMetricPerChannel,
+                queryFactory: medianResolutionTimeMetricPerChannelQueryFactory,
+            },
+            {
+                name: 'useCustomerSatisfactionMetricPerChannel',
+                hook: useCustomerSatisfactionMetricPerChannel,
+                queryFactory: customerSatisfactionMetricPerChannelQueryFactory,
+            },
+            {
+                name: 'useOneTouchTicketsMetricPerChannel',
+                hook: useOneTouchTicketsMetricPerChannel,
+                queryFactory: oneTouchTicketsPerChannelQueryFactory,
+            },
+            {
+                name: 'useZeroTouchTicketsMetricPerChannel',
+                hook: useZeroTouchTicketsMetricPerChannel,
+                queryFactory: zeroTouchTicketsPerChannelQueryFactory,
+            },
+            {
+                name: 'useTicketAverageHandleTimePerChannel',
+                hook: useTicketAverageHandleTimePerChannel,
+                queryFactory:
+                    ticketAverageHandleTimePerAgentPerChannelQueryFactory,
+            },
+        ])('should pass the query to $name hook', ({hook, queryFactory}) => {
+            renderHook(() => hook(statsFilters, timezone, sorting, channel), {})
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                medianFirstResponseTimeMetricPerChannelQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting
-                ),
+                queryFactory(statsFilters, timezone, sorting),
                 channel
             )
         })
     })
 
-    describe('useTicketsRepliedMetricPerChannel', () => {
-        it('should pass the query to useMetricPerDimension hook', () => {
-            renderHook(
-                () =>
-                    useTicketsRepliedMetricPerChannel(
-                        statsFilters,
-                        timezone,
-                        sorting,
-                        channel
-                    ),
-                {}
-            )
+    describe('fetch methods', () => {
+        it.each([
+            {
+                name: 'fetchMedianFirstResponseTimeMetricPerChannel',
+                fetch: fetchMedianFirstResponseTimeMetricPerChannel,
+                queryFactory:
+                    medianFirstResponseTimeMetricPerChannelQueryFactory,
+            },
+            {
+                name: 'fetchTicketsRepliedMetricPerChannel',
+                fetch: fetchTicketsRepliedMetricPerChannel,
+                queryFactory: ticketsRepliedMetricPerChannelQueryFactory,
+            },
+            {
+                name: 'fetchClosedTicketsMetricPerChannel',
+                fetch: fetchClosedTicketsMetricPerChannel,
+                queryFactory: closedTicketsPerChannelQueryFactory,
+            },
+            {
+                name: 'fetchCreatedTicketsMetricPerChannel',
+                fetch: fetchCreatedTicketsMetricPerChannel,
+                queryFactory: ticketsCreatedPerChannelPerChannelQueryFactory,
+            },
+            {
+                name: 'fetchMessagesSentMetricPerChannel',
+                fetch: fetchMessagesSentMetricPerChannel,
+                queryFactory: messagesSentMetricPerChannelQueryFactory,
+            },
+            {
+                name: 'fetchMedianResolutionTimeMetricPerChannel',
+                fetch: fetchMedianResolutionTimeMetricPerChannel,
+                queryFactory: medianResolutionTimeMetricPerChannelQueryFactory,
+            },
+            {
+                name: 'fetchCustomerSatisfactionMetricPerChannel',
+                fetch: fetchCustomerSatisfactionMetricPerChannel,
+                queryFactory: customerSatisfactionMetricPerChannelQueryFactory,
+            },
+            {
+                name: 'fetchOneTouchTicketsMetricPerChannel',
+                fetch: fetchOneTouchTicketsMetricPerChannel,
+                queryFactory: oneTouchTicketsPerChannelQueryFactory,
+            },
+            {
+                name: 'fetchZeroTouchTicketsMetricPerChannel',
+                fetch: fetchZeroTouchTicketsMetricPerChannel,
+                queryFactory: zeroTouchTicketsPerChannelQueryFactory,
+            },
+            {
+                name: 'fetchTicketAverageHandleTimePerChannel',
+                fetch: fetchTicketAverageHandleTimePerChannel,
+                queryFactory:
+                    ticketAverageHandleTimePerAgentPerChannelQueryFactory,
+            },
+        ])(
+            'should pass the query to $name hook',
+            async ({fetch, queryFactory}) => {
+                await fetch(statsFilters, timezone, sorting, channel)
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                ticketsRepliedMetricPerChannelQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting
-                ),
-                channel
-            )
-        })
-    })
-
-    describe('useClosedTicketsMetricPerChannel', () => {
-        it('should pass the query to useMetricPerDimension hook', () => {
-            renderHook(
-                () =>
-                    useClosedTicketsMetricPerChannel(
-                        statsFilters,
-                        timezone,
-                        sorting,
-                        channel
-                    ),
-                {}
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                closedTicketsPerChannelQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting
-                ),
-                channel
-            )
-        })
-    })
-
-    describe('useCreatedTicketsMetricPerChannel', () => {
-        it('should pass the query to useMetricPerDimension hook', () => {
-            renderHook(
-                () =>
-                    useCreatedTicketsMetricPerChannel(
-                        statsFilters,
-                        timezone,
-                        sorting,
-                        channel
-                    ),
-                {}
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                ticketsCreatedPerChannelPerChannelQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting
-                ),
-                channel
-            )
-        })
-    })
-
-    describe('useMessagesSentMetricPerChannel', () => {
-        it('should pass the query to useMetricPerDimension hook', () => {
-            renderHook(
-                () =>
-                    useMessagesSentMetricPerChannel(
-                        statsFilters,
-                        timezone,
-                        sorting,
-                        channel
-                    ),
-                {}
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                messagesSentMetricPerChannelQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting
-                ),
-                channel
-            )
-        })
-    })
-
-    describe('useMedianResolutionTimeMetricPerChannel', () => {
-        it('should pass the query to useMetricPerDimension hook', () => {
-            renderHook(
-                () =>
-                    useMedianResolutionTimeMetricPerChannel(
-                        statsFilters,
-                        timezone,
-                        sorting,
-                        channel
-                    ),
-                {}
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                medianResolutionTimeMetricPerChannelQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting
-                ),
-                channel
-            )
-        })
-    })
-
-    describe('useCustomerSatisfactionMetricPerChannel', () => {
-        it('should pass the query to useMetricPerDimension hook', () => {
-            renderHook(
-                () =>
-                    useCustomerSatisfactionMetricPerChannel(
-                        statsFilters,
-                        timezone,
-                        sorting,
-                        channel
-                    ),
-                {}
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                customerSatisfactionMetricPerChannelQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting
-                ),
-                channel
-            )
-        })
-    })
-
-    describe('useOneTouchTicketsMetricPerChannel', () => {
-        it('should pass the query to useMetricPerDimension hook', () => {
-            renderHook(
-                () =>
-                    useOneTouchTicketsMetricPerChannel(
-                        statsFilters,
-                        timezone,
-                        sorting,
-                        channel
-                    ),
-                {}
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                oneTouchTicketsPerChannelQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting
-                ),
-                channel
-            )
-        })
-    })
-
-    describe('useTicketAverageHandleTimePerChannel', () => {
-        it('should pass the query to useMetricPerDimension hook with channel', () => {
-            renderHook(
-                () =>
-                    useTicketAverageHandleTimePerChannel(
-                        statsFilters,
-                        timezone,
-                        sorting,
-                        channel
-                    ),
-                {}
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                ticketAverageHandleTimePerAgentPerChannelQueryFactory(
-                    statsFilters,
-                    timezone,
-                    sorting
-                ),
-                channel
-            )
-        })
+                expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+                    queryFactory(statsFilters, timezone, sorting),
+                    channel
+                )
+            }
+        )
     })
 })

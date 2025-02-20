@@ -12,6 +12,7 @@ export enum TicketMessagesDimension {
     Integration = 'TicketMessagesEnriched.integration',
     FirstHelpdeskMessageUserId = 'TicketMessagesEnriched.firstHelpdeskMessageUserId',
     OneTouchTickets = 'TicketMessagesEnriched.oneTouchTickets',
+    ZeroTouchTickets = 'TicketMessagesEnriched.zeroTouchTickets',
     MessagesCount = 'TicketMessagesEnriched.messagesCount',
     FirstResponseTime = 'TicketMessagesEnriched.firstResponseTime',
     ResolutionTime = 'TicketMessagesEnriched.resolutionTime',

@@ -16,6 +16,7 @@ import {messagesSentMetricPerChannelQueryFactory} from 'models/reporting/queryFa
 import {oneTouchTicketsPerChannelQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import {ticketsCreatedPerChannelPerChannelQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedMetricPerChannelQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import {zeroTouchTicketsPerChannelQueryFactory} from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
 import {StatsFilters} from 'models/stat/types'
 
 export type MetricPerChannelQueryHook = (
@@ -91,6 +92,13 @@ export const useOneTouchTicketsMetricPerChannel = createMetricPerDimensionHook(
 )
 export const fetchOneTouchTicketsMetricPerChannel = createFetchPerDimension(
     oneTouchTicketsPerChannelQueryFactory
+)
+
+export const useZeroTouchTicketsMetricPerChannel = createMetricPerDimensionHook(
+    zeroTouchTicketsPerChannelQueryFactory
+)
+export const fetchZeroTouchTicketsMetricPerChannel = createFetchPerDimension(
+    zeroTouchTicketsPerChannelQueryFactory
 )
 
 export const useTicketAverageHandleTimePerChannel =

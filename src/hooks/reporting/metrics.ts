@@ -11,6 +11,7 @@ import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-
 import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import {zeroTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
 import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {withFilter} from 'utils/reporting'
@@ -168,6 +169,28 @@ export const fetchOneTouchTicketsMetric = (
     fetchMetric(
         withFilter(
             oneTouchTicketsQueryFactory(statsFilters, timezone),
+            ignoreNotAssignedTicketsFilter
+        )
+    )
+
+export const useZeroTouchTicketsMetric = (
+    statsFilters: StatsFilters,
+    timezone: string
+): Metric =>
+    useMetric(
+        withFilter(
+            zeroTouchTicketsQueryFactory(statsFilters, timezone),
+            ignoreNotAssignedTicketsFilter
+        )
+    )
+
+export const fetchZeroTouchTicketsMetric = (
+    statsFilters: StatsFilters,
+    timezone: string
+): Promise<Metric> =>
+    fetchMetric(
+        withFilter(
+            zeroTouchTicketsQueryFactory(statsFilters, timezone),
             ignoreNotAssignedTicketsFilter
         )
     )

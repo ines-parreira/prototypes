@@ -14,6 +14,7 @@ import {medianResolutionTimeMetricPerAgentQueryFactory} from 'models/reporting/q
 import {messagesSentMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {oneTouchTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import {ticketsRepliedMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import {zeroTouchTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
 import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 
@@ -101,6 +102,14 @@ export const useOneTouchTicketsMetricPerAgent = createMetricPerDimensionHook(
 
 export const fetchOneTouchTicketsMetricPerAgent = createFetchPerDimension(
     oneTouchTicketsPerAgentQueryFactory
+)
+
+export const useZeroTouchTicketsMetricPerAgent = createMetricPerDimensionHook(
+    zeroTouchTicketsPerAgentQueryFactory
+)
+
+export const fetchZeroTouchTicketsMetricPerAgent = createFetchPerDimension(
+    zeroTouchTicketsPerAgentQueryFactory
 )
 
 export const useOnlineTimePerAgent = createMetricPerDimensionHook(

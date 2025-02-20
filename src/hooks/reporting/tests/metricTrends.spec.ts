@@ -1,4 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import moment from 'moment'
 
 import {
@@ -24,6 +25,8 @@ import {
     fetchTicketsCreatedTrend,
     fetchTicketsRepliedTrend,
     fetchMessagesSentTrend,
+    useZeroTouchTicketsTrend,
+    fetchZeroTouchTicketsTrend,
 } from 'hooks/reporting/metricTrends'
 import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
 import {ticketAverageHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
@@ -37,6 +40,7 @@ import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/suppo
 import {openTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/openTickets'
 import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import {zeroTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
 import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
@@ -91,6 +95,11 @@ describe('metric trends', () => {
             'useOneTouchTicketsTrend',
             useOneTouchTicketsTrend,
             oneTouchTicketsQueryFactory,
+        ],
+        [
+            'useZeroTouchTicketsTrend',
+            useZeroTouchTicketsTrend,
+            zeroTouchTicketsQueryFactory,
         ],
         ['useOpenTicketsTrend', useOpenTicketsTrend, openTicketsQueryFactory],
         [
@@ -165,6 +174,11 @@ describe('metric trends', () => {
             'fetchOneTouchTicketsTrend',
             fetchOneTouchTicketsTrend,
             oneTouchTicketsQueryFactory,
+        ],
+        [
+            'fetchZeroTouchTicketsTrend',
+            fetchZeroTouchTicketsTrend,
+            zeroTouchTicketsQueryFactory,
         ],
         [
             'fetchOpenTicketsTrend',

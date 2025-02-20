@@ -1,4 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import moment from 'moment'
 
 import {
@@ -23,6 +24,8 @@ import {
     fetchTicketsRepliedMetric,
     fetchTicketsCreatedMetric,
     fetchOnlineTimeMetric,
+    useZeroTouchTicketsMetric,
+    fetchZeroTouchTicketsMetric,
 } from 'hooks/reporting/metrics'
 import {fetchMetric, useMetric} from 'hooks/reporting/useMetric'
 import {onlineTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/onlineTime'
@@ -35,6 +38,7 @@ import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-
 import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import {zeroTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
 import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate, withFilter} from 'utils/reporting'
@@ -85,11 +89,15 @@ describe('metrics', () => {
             useMedianResolutionTimeMetric,
             medianResolutionTimeQueryFactory,
         ],
-
         [
             'useOneTouchTicketsMetric',
             useOneTouchTicketsMetric,
             oneTouchTicketsQueryFactory,
+        ],
+        [
+            'useZeroTouchTicketsMetric',
+            useZeroTouchTicketsMetric,
+            zeroTouchTicketsQueryFactory,
         ],
         [
             'useTicketHandleTimeMetric',
@@ -143,11 +151,15 @@ describe('metrics', () => {
             fetchMedianResolutionTimeMetric,
             medianResolutionTimeQueryFactory,
         ],
-
         [
             'fetchOneTouchTicketsMetric',
             fetchOneTouchTicketsMetric,
             oneTouchTicketsQueryFactory,
+        ],
+        [
+            'fetchZeroTouchTicketsMetric',
+            fetchZeroTouchTicketsMetric,
+            zeroTouchTicketsQueryFactory,
         ],
         [
             'fetchTicketHandleTimeMetric',
