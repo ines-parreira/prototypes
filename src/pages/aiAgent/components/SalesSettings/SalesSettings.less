@@ -20,4 +20,16 @@
         gap: @layout-spacing-xs;
         padding-top: @layout-spacing-xs;
     }
+
+    // Override Alert banner to fit onboarding design
+    .info {
+        border-color: var(--neutral-grey-3) !important;
+        border-radius: @layout-spacing-xs;
+        background-color: var(--main-primary-0);
+        padding: @layout-spacing-s;
+
+        & > :first-child {
+            margin-right: @layout-spacing-xs;
+        }
+    }
 }

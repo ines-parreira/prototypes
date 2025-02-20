@@ -11,5 +11,6 @@ describe('<SalesSettings />', () => {
 
         expect(screen.getByRole('button', {name: 'Save'})).toBeInTheDocument()
         expect(screen.getByRole('button', {name: 'Cancel'})).toBeInTheDocument()
+        expect(screen.getByText(/Fine-tune how your AI Agent/))
     })
 })
