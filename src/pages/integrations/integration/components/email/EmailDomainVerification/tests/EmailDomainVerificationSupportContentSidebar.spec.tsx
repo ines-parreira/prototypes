@@ -1,4 +1,4 @@
-import {SelectInput} from '@gorgias/merchant-ui-kit'
+import {SelectField} from '@gorgias/merchant-ui-kit'
 import {screen, render, act} from '@testing-library/react'
 import React from 'react'
 
@@ -12,14 +12,14 @@ jest.mock('../SupportContentLearnMore')
 jest.mock('../useDomainVerification')
 
 const SupportContentLearnMoreMock = assumeMock(SupportContentLearnMore)
-const SelectInputMock = assumeMock(SelectInput)
+const SelectFieldMock = assumeMock(SelectField)
 
 describe('EmailDomainVerificationSupportContentSidebar', () => {
     const renderComponent = () =>
         render(<EmailDomainVerificationSupportContentSidebar />)
 
     beforeEach(() => {
-        SelectInputMock.mockReturnValue(<div>SelectInput</div>)
+        SelectFieldMock.mockReturnValue(<div>SelectField</div>)
         SupportContentLearnMoreMock.mockImplementation(({children}) => (
             <div data-testid="supportContentLearnMore">{children}</div>
         ))
@@ -28,7 +28,7 @@ describe('EmailDomainVerificationSupportContentSidebar', () => {
     it('default state - should display dropdown, dynamic content and links', () => {
         const {container} = renderComponent()
 
-        expect(screen.getByText('SelectInput')).toBeInTheDocument()
+        expect(screen.getByText('SelectField')).toBeInTheDocument()
         expect(
             container.querySelector(
                 '[data-candu-id=email-domain-verification-support-content-default]'
@@ -51,7 +51,7 @@ describe('EmailDomainVerificationSupportContentSidebar', () => {
         const {container} = renderComponent()
 
         act(() => {
-            SelectInputMock.mock.lastCall?.[0].onChange({
+            SelectFieldMock.mock.lastCall?.[0].onChange({
                 value: 'godaddy',
                 label: 'GoDaddy',
                 learnMoreURL: 'https://www.godaddy.com/',
@@ -76,6 +76,6 @@ describe('EmailDomainVerificationSupportContentSidebar', () => {
     it('should display all options in the dropdown', () => {
         renderComponent()
 
-        expect(SelectInputMock.mock.calls[0][0].options).toHaveLength(11)
+        expect(SelectFieldMock.mock.calls[0][0].options).toHaveLength(11)
     })
 })

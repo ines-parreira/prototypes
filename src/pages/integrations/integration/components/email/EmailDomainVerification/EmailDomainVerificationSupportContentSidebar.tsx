@@ -1,4 +1,4 @@
-import {SelectInput} from '@gorgias/merchant-ui-kit'
+import {SelectField} from '@gorgias/merchant-ui-kit'
 import React, {useState} from 'react'
 
 import Accordion from 'pages/common/components/accordion/Accordion'
@@ -20,7 +20,7 @@ export default function EmailDomainVerificationSupportContentSidebar() {
         <SettingsSidebar className={css.sidebar}>
             <div className={css.container}>
                 <div>
-                    <SelectInput
+                    <SelectField
                         label="Domain Verification Guide"
                         options={supportContentDropdownOptions}
                         selectedOption={selectedOption}

@@ -1,5 +1,5 @@
 import {CustomFieldConditionExpressionValues} from '@gorgias/api-queries'
-import {SelectInput} from '@gorgias/merchant-ui-kit'
+import {SelectField} from '@gorgias/merchant-ui-kit'
 import React, {ReactNode, forwardRef} from 'react'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
@@ -39,7 +39,7 @@ export const ValueField = forwardRef(function ValueField(
     let Input: ReactNode = null
     if (!pickedDefinition) {
         Input = (
-            <SelectInput
+            <SelectField
                 options={[]}
                 isDisabled
                 placeholder="Select field value(s)"
@@ -84,7 +84,7 @@ export const ValueField = forwardRef(function ValueField(
         if (isDropdownInput(pickedDefinition)) {
             if (pickedDefinition.definition.data_type === 'boolean') {
                 Input = (
-                    <SelectInput
+                    <SelectField
                         onChange={(option: 'Yes' | 'No') => {
                             onChange(option === 'Yes' ? [true] : [false])
                         }}

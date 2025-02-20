@@ -1,4 +1,4 @@
-import {SelectInput} from '@gorgias/merchant-ui-kit'
+import {SelectField} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 import _isEqual from 'lodash/isEqual'
@@ -308,7 +308,7 @@ export class YourProfileView extends Component<Props, State> {
                                     <FormGroup
                                         className={settingsCss.inputField}
                                     >
-                                        <SelectInput
+                                        <SelectField
                                             label="Timezone"
                                             options={timezones}
                                             optionMapper={(timezone) =>

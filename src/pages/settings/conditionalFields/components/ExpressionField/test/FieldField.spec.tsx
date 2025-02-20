@@ -1,4 +1,4 @@
-import {SelectInput} from '@gorgias/merchant-ui-kit'
+import {SelectField} from '@gorgias/merchant-ui-kit'
 import {render} from '@testing-library/react'
 import React from 'react'
 import {useFormContext} from 'react-hook-form'
@@ -20,14 +20,14 @@ jest.mock(
     () =>
         ({
             ...jest.requireActual('@gorgias/merchant-ui-kit'),
-            SelectInput: jest.fn(() => <div data-testid="Mock" />),
+            SelectField: jest.fn(() => <div data-testid="Mock" />),
         }) as Record<string, unknown>
 )
 jest.mock('react-hook-form', () => ({
     useFormContext: jest.fn(),
 }))
 
-const SelectInputMock = assumeMock(SelectInput)
+const SelectFieldMock = assumeMock(SelectField)
 const useFormContextMock = assumeMock(useFormContext)
 
 describe('FieldField', () => {
@@ -48,10 +48,10 @@ describe('FieldField', () => {
         index: 1,
     }
 
-    it('should render a SelectInput with correct props', () => {
+    it('should render a SelectField with correct props', () => {
         render(<FieldField {...defaultProps} />)
 
-        expect(SelectInputMock).toHaveBeenCalledWith(
+        expect(SelectFieldMock).toHaveBeenCalledWith(
             {
                 options: defaultProps.customFieldDefinitions,
                 selectedOption: ticketDropdownFieldDefinition,
@@ -72,7 +72,7 @@ describe('FieldField', () => {
             />
         )
 
-        expect(SelectInputMock).toHaveBeenCalledWith(
+        expect(SelectFieldMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 options: [],
                 selectedOption: null,
@@ -84,7 +84,7 @@ describe('FieldField', () => {
     it('should provide a correct optionMapper', () => {
         render(<FieldField {...defaultProps} />)
 
-        const optionMapper = getLastMockCall(SelectInputMock)[0].optionMapper
+        const optionMapper = getLastMockCall(SelectFieldMock)[0].optionMapper
 
         expect(optionMapper?.(ticketNumberFieldDefinition)).toEqual({
             value: ticketNumberFieldDefinition.label,
@@ -95,7 +95,7 @@ describe('FieldField', () => {
     it('should call onChange and setValue on change', () => {
         render(<FieldField {...defaultProps} />)
 
-        const onChange = getLastMockCall(SelectInputMock)[0].onChange
+        const onChange = getLastMockCall(SelectFieldMock)[0].onChange
         onChange(ticketNumberFieldDefinition)
 
         expect(defaultProps.onChange).toHaveBeenCalledWith(

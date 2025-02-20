@@ -1,5 +1,5 @@
 import {CustomFieldConditionExpressionField} from '@gorgias/api-queries'
-import {SelectInput} from '@gorgias/merchant-ui-kit'
+import {SelectField} from '@gorgias/merchant-ui-kit'
 import React, {forwardRef} from 'react'
 import {useFormContext} from 'react-hook-form'
 
@@ -29,7 +29,7 @@ export const FieldField = forwardRef(function FieldField(
     )
 
     return (
-        <SelectInput
+        <SelectField
             options={customFieldDefinitions.filter(
                 ({definition}) =>
                     getUIDataType(

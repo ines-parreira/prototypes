@@ -2,7 +2,7 @@ import {
     CustomFieldConditionExpressionField,
     ExpressionOperator,
 } from '@gorgias/api-queries'
-import {SelectInput} from '@gorgias/merchant-ui-kit'
+import {SelectField} from '@gorgias/merchant-ui-kit'
 import React, {forwardRef} from 'react'
 
 import {getUIDataType} from 'custom-fields/helpers/getUIDataType'
@@ -31,7 +31,7 @@ export const OperatorField = forwardRef(function OperatorField(
         : undefined
 
     return (
-        <SelectInput
+        <SelectField
             options={
                 (UIDataType &&
                     EXPRESSION_OPERATORS_BY_UI_DATA_TYPE[UIDataType]) ||

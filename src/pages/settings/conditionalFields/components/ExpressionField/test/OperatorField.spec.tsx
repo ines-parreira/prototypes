@@ -1,5 +1,5 @@
 import {ExpressionOperator} from '@gorgias/api-queries'
-import {SelectInput} from '@gorgias/merchant-ui-kit'
+import {SelectField} from '@gorgias/merchant-ui-kit'
 import {render} from '@testing-library/react'
 import React from 'react'
 
@@ -18,11 +18,11 @@ jest.mock(
     () =>
         ({
             ...jest.requireActual('@gorgias/merchant-ui-kit'),
-            SelectInput: jest.fn(() => <div data-testid="Mock" />),
+            SelectField: jest.fn(() => <div data-testid="Mock" />),
         }) as Record<string, unknown>
 )
 
-const SelectInputMock = assumeMock(SelectInput)
+const SelectFieldMock = assumeMock(SelectField)
 
 describe('OperatorField', () => {
     const defaultProps = {
@@ -31,10 +31,10 @@ describe('OperatorField', () => {
         onChange: jest.fn(),
     }
 
-    it('should render a SelectInput with correct props', () => {
+    it('should render a SelectField with correct props', () => {
         render(<OperatorField {...defaultProps} />)
 
-        expect(SelectInputMock).toHaveBeenCalledWith(
+        expect(SelectFieldMock).toHaveBeenCalledWith(
             {
                 options: EXPRESSION_OPERATORS_BY_UI_DATA_TYPE['dropdown_text'],
                 onChange: defaultProps.onChange,
@@ -55,7 +55,7 @@ describe('OperatorField', () => {
             />
         )
 
-        expect(SelectInputMock).toHaveBeenCalledWith(
+        expect(SelectFieldMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 options: [],
                 selectedOption: null,
@@ -68,7 +68,7 @@ describe('OperatorField', () => {
     it('should provide a correct optionMapper', () => {
         render(<OperatorField {...defaultProps} />)
 
-        const {optionMapper} = getLastMockCall(SelectInputMock)[0]
+        const {optionMapper} = getLastMockCall(SelectFieldMock)[0]
 
         expect(optionMapper?.(ExpressionOperator.Is)).toEqual({
             value: EXPRESSION_OPERATORS_LABELS[ExpressionOperator.Is],

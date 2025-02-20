@@ -1,4 +1,4 @@
-import {SelectInput} from '@gorgias/merchant-ui-kit'
+import {SelectField} from '@gorgias/merchant-ui-kit'
 import {
     act,
     fireEvent,
@@ -54,12 +54,12 @@ jest.mock('moment-timezone', () => {
 jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
         ...jest.requireActual('@gorgias/merchant-ui-kit'),
-        SelectInput: ({
+        SelectField: ({
             label,
             options,
             selectedOption,
             optionMapper,
-        }: ComponentProps<typeof SelectInput>) => (
+        }: ComponentProps<typeof SelectField>) => (
             <label>
                 {label}
                 <select defaultValue={selectedOption as string}>

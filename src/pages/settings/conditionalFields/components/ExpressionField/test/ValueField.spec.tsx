@@ -1,4 +1,4 @@
-import {SelectInput} from '@gorgias/merchant-ui-kit'
+import {SelectField} from '@gorgias/merchant-ui-kit'
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 
@@ -23,7 +23,7 @@ jest.mock(
     () =>
         ({
             ...jest.requireActual('@gorgias/merchant-ui-kit'),
-            SelectInput: jest.fn(() => <div data-testid="Mock" />),
+            SelectField: jest.fn(() => <div data-testid="Mock" />),
         }) as Record<string, unknown>
 )
 jest.mock('pages/common/forms/input/NumberInput', () => jest.fn(() => <div />))
@@ -31,7 +31,7 @@ jest.mock('pages/common/forms/input/TextInput', () => jest.fn(() => <div />))
 jest.mock('../CustomDropdownInput')
 
 const MultiLevelSelectMock = assumeMock(MultiLevelSelect)
-const SelectInputMock = assumeMock(SelectInput)
+const SelectFieldMock = assumeMock(SelectField)
 const TextInputMock = assumeMock(TextInput)
 const NumberInputMock = assumeMock(NumberInput)
 
@@ -59,7 +59,7 @@ describe('ValueField', () => {
     it('should render a disabled select if there is no field picked yet', () => {
         render(<ValueField {...defaultProps} pickedDefinition={undefined} />)
 
-        expect(SelectInputMock).toHaveBeenCalledWith(
+        expect(SelectFieldMock).toHaveBeenCalledWith(
             {
                 options: [],
                 isDisabled: true,
@@ -200,7 +200,7 @@ describe('ValueField', () => {
 
     describe('Dropdown input', () => {
         describe('Yes / No dropdown', () => {
-            it('should render a SelectInput if the field is a boolean field', () => {
+            it('should render a SelectField if the field is a boolean field', () => {
                 render(
                     <ValueField
                         {...defaultProps}
@@ -209,7 +209,7 @@ describe('ValueField', () => {
                     />
                 )
 
-                expect(SelectInputMock).toHaveBeenCalledWith(
+                expect(SelectFieldMock).toHaveBeenCalledWith(
                     {
                         options: ['Yes', 'No'],
                         onChange: expect.any(Function),
@@ -231,7 +231,7 @@ describe('ValueField', () => {
                     />
                 )
 
-                expect(SelectInputMock).toHaveBeenCalledWith(
+                expect(SelectFieldMock).toHaveBeenCalledWith(
                     expect.objectContaining({
                         options: ['Yes', 'No'],
                         isDisabled: false,
@@ -249,10 +249,10 @@ describe('ValueField', () => {
                     />
                 )
 
-                getLastMockCall(SelectInputMock)[0].onChange?.('Yes')
+                getLastMockCall(SelectFieldMock)[0].onChange?.('Yes')
                 expect(defaultProps.onChange).toHaveBeenCalledWith([true])
 
-                getLastMockCall(SelectInputMock)[0].onChange?.('No')
+                getLastMockCall(SelectFieldMock)[0].onChange?.('No')
                 expect(defaultProps.onChange).toHaveBeenCalledWith([false])
             })
         })

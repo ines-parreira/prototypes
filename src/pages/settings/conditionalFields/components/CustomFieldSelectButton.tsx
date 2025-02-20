@@ -1,7 +1,7 @@
 import {CustomFieldRequirementType} from '@gorgias/api-queries'
 import {
-    SelectInput,
-    type SelectInputTriggerProps,
+    SelectField,
+    type SelectFieldTriggerProps,
 } from '@gorgias/merchant-ui-kit'
 import React, {useMemo} from 'react'
 
@@ -20,7 +20,7 @@ const SelectTrigger = ({
     setRef,
     value: __value,
     ...buttonProps
-}: SelectInputTriggerProps) => (
+}: SelectFieldTriggerProps) => (
     <Button
         {...buttonProps}
         ref={setRef}
@@ -92,7 +92,7 @@ export default function CustomFieldSelectButton({
     }
 
     return (
-        <SelectInput
+        <SelectField
             onChange={onSelect}
             options={options}
             optionMapper={(option) => ({
