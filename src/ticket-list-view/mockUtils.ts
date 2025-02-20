@@ -68,6 +68,7 @@ export class MockedTickets {
             meta: {
                 next_cursor: this.pageCount >= 3 ? null : 'random-cursor',
                 prev_cursor: null,
+                total_resources: null,
             },
             object: '',
             uri: '',
@@ -110,6 +111,7 @@ export class MockedTickets {
             meta: {
                 next_cursor: this.pageCount >= 3 ? null : 'random-cursor',
                 prev_cursor: null,
+                total_resources: null,
             },
             object: '',
             uri: '',

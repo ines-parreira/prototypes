@@ -129,6 +129,7 @@ exports[`event resources fetchEvents should resolve with an Event list on succes
     "meta": {
       "next_cursor": "WyJuZXh0IiwgIjIwMjItMDEtMjRUMTM6MTE6NDQuODEyNzE3IiwgMTEwMF0=",
       "prev_cursor": null,
+      "total_resources": null,
     },
   },
   "headers": {},

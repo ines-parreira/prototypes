@@ -35,6 +35,7 @@
         "build:app": "NODE_ENV=production rspack --config rspack.app.config.ts",
         "build:sharedWorker": "NODE_ENV=production rspack --config rspack.sharedWorker.config.ts",
         "build:vendors": "NODE_ENV=production rspack --config rspack.vendors.config.ts",
+        "serve": "run-s serve:app serve:sharedWorker",
         "serve:app": "rspack serve --config rspack.app.config.ts",
         "serve:sharedWorker": "rspack -w --config rspack.sharedWorker.config.ts",
         "helpcenter:fetch-openapi": "curl http://localhost:4001/api/help-center/api-json > ./src/rest_api/help_center_api/help-center.openapi.json && prettier --write ./src/rest_api/help_center_api/help-center.openapi.json",

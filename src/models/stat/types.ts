@@ -1,4 +1,5 @@
-import {CursorMeta} from 'models/api/types'
+import {CursorPaginationMeta} from '@gorgias/api-queries'
+
 import {ReportingGranularity} from 'models/reporting/types'
 import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
@@ -259,7 +260,7 @@ export type Stat<T = StatData> = {
     meta: StatMeta
 }
 
-export type StatMeta = Partial<CursorMeta> & {
+export type StatMeta = Partial<CursorPaginationMeta> & {
     end_datetime?: string
     previous_end_datetime?: string
     previous_start_datetime?: string

@@ -28,6 +28,7 @@ describe('Customer resources', () => {
             meta: {
                 next_cursor: null,
                 prev_cursor: null,
+                total_resources: null,
             },
             object: 'list',
             uri: '/api/customers/search',
@@ -119,6 +120,7 @@ describe('Customer resources', () => {
             meta: {
                 next_cursor: null,
                 prev_cursor: null,
+                total_resources: null,
             },
             object: 'list',
             uri: '/api/customers/search',

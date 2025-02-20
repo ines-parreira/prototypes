@@ -1,6 +1,5 @@
+import {CursorPaginationMeta} from '@gorgias/api-queries'
 import {act, renderHook} from '@testing-library/react-hooks'
-
-import {CursorMeta} from 'models/api/types'
 
 import useViewTickets from 'ticket-list-view/hooks/useViewTickets'
 
@@ -13,7 +12,7 @@ const TicketUpdatesManagerMock = TicketUpdatesManager as jest.Mock
 
 type Listener = (
     partials: TicketPartial[],
-    cursor: CursorMeta['next_cursor']
+    cursor: CursorPaginationMeta['next_cursor']
 ) => void
 
 jest.mock('../useViewTickets')

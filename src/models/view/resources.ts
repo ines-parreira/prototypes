@@ -1,15 +1,14 @@
+import {CursorPaginationMeta} from '@gorgias/api-queries'
 import _omit from 'lodash/omit'
 
 import client from 'models/api/resources'
 import {
     ApiListResponseCursorPagination,
     ApiPaginationParams,
-    CursorMeta,
-    OldCursorMeta,
 } from 'models/api/types'
-import {Ticket, TicketPartial} from 'models/ticket/types'
+import {TicketPartial} from 'models/ticket/types'
 
-import {ListParams, View, ViewDraft} from './types'
+import {View, ViewDraft} from './types'
 
 type SharedView = View & {
     shared_with_teams: {id: number}[]
@@ -25,15 +24,6 @@ export const fetchViewsPaginated = async (params: ApiPaginationParams = {}) => {
     )
 }
 
-export const getViewItems = async ({url, viewId, ...params}: ListParams) => {
-    return await client.get<
-        ApiListResponseCursorPagination<Ticket[], OldCursorMeta>
-    >(url ?? `/api/views/${viewId}/items`, {
-        ...params,
-        headers: {'x-gorgias-search-engine': 'ES'},
-    })
-}
-
 export type ViewTicketUpdatesParams = {
     cursor?: string | null
     limit?: number
@@ -46,7 +36,7 @@ export function getViewTicketUpdates(
     params?: ViewTicketUpdatesParams
 ) {
     return client.get<
-        ApiListResponseCursorPagination<TicketPartial[], CursorMeta>
+        ApiListResponseCursorPagination<TicketPartial[], CursorPaginationMeta>
     >(`/api/views/${viewId}/tickets/updates`, {params})
 }
 

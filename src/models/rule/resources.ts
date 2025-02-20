@@ -1,15 +1,15 @@
 import omit from 'lodash/omit'
 
 import client from '../api/resources'
-import {ApiListResponsePagination} from '../api/types'
+import {ApiListResponseLegacyPagination} from '../api/types'
 
 import {Rule, RuleDraft, RulePriority} from './types'
 
 export const fetchRules = async (): Promise<
-    ApiListResponsePagination<Rule[]>
+    ApiListResponseLegacyPagination<Rule[]>
 > => {
     const res = await client.get('/api/rules/')
-    return res.data as ApiListResponsePagination<Rule[]>
+    return res.data as ApiListResponseLegacyPagination<Rule[]>
 }
 
 export const fetchRule = async (id: number): Promise<Rule> => {

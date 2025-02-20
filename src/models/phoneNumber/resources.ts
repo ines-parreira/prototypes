@@ -1,7 +1,7 @@
 import {CancelToken} from 'axios'
 
 import client from 'models/api/resources'
-import {ApiListResponsePagination} from 'models/api/types'
+import {ApiListResponseLegacyPagination} from 'models/api/types'
 
 import {
     PhoneCapabilitiesLimitationsMap,
@@ -11,11 +11,10 @@ import {
 
 export const fetchPhoneNumbers = async (
     cancelToken?: CancelToken
-): Promise<ApiListResponsePagination<OldPhoneNumber[]>> => {
-    const res = await client.get<ApiListResponsePagination<OldPhoneNumber[]>>(
-        '/api/integrations/phone/phone-numbers/',
-        {cancelToken}
-    )
+): Promise<ApiListResponseLegacyPagination<OldPhoneNumber[]>> => {
+    const res = await client.get<
+        ApiListResponseLegacyPagination<OldPhoneNumber[]>
+    >('/api/integrations/phone/phone-numbers/', {cancelToken})
     return res.data
 }
 
@@ -59,11 +58,10 @@ export const fetchPhoneCapabilities = async () => {
 
 export const fetchNewPhoneNumbers = async (
     cancelToken?: CancelToken
-): Promise<ApiListResponsePagination<NewPhoneNumber[]>> => {
-    const res = await client.get<ApiListResponsePagination<NewPhoneNumber[]>>(
-        '/integrations/phone/phone-numbers-new/',
-        {cancelToken}
-    )
+): Promise<ApiListResponseLegacyPagination<NewPhoneNumber[]>> => {
+    const res = await client.get<
+        ApiListResponseLegacyPagination<NewPhoneNumber[]>
+    >('/integrations/phone/phone-numbers-new/', {cancelToken})
     return res.data
 }
 

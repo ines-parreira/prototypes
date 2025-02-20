@@ -1,4 +1,5 @@
 import {
+    CursorPaginationMeta,
     ListTagsOrderBy,
     ListTagsParams,
     OrderDirection,
@@ -23,7 +24,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {CursorDirection, CursorMeta} from 'models/api/types'
+import {CursorDirection} from 'models/api/types'
 import {fetchTags} from 'models/tag/resources'
 import {OrderBy, OrderByOrderDir} from 'models/tag/types'
 import Button from 'pages/common/components/button/Button'
@@ -51,7 +52,7 @@ const ManageTags = () => {
     const isCreating = useAppSelector(getIsCreating)
     const areAllTagsSelected = useAppSelector(getSelectAll)
 
-    const [meta, setMeta] = useState<CursorMeta | null>(null)
+    const [meta, setMeta] = useState<CursorPaginationMeta | null>(null)
     const [sort, setSort] = useState<OrderBy>(ListTagsOrderBy.Usage)
     const [reverse, setReverse] = useState(true)
     const [search, setSearch] = useState('')

@@ -9,7 +9,7 @@ import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actio
 import * as viewsConfig from 'config/views'
 import {SearchRank} from 'hooks/useSearchRankScenario'
 import client from 'models/api/resources'
-import {OrderDirection, ApiListResponsePagination} from 'models/api/types'
+import {OrderDirection, ApiListResponseLegacyPagination} from 'models/api/types'
 import {searchCustomersWithHighlights} from 'models/customer/resources'
 import {JOBS_PATH} from 'models/job/resources'
 import {Job} from 'models/job/types'
@@ -455,10 +455,13 @@ export function fetchViewItems(
                 ...params,
             })
         } else {
-            promise = client.get<ApiListResponsePagination<Ticket[]>>(url, {
-                ...options,
-                headers: {'x-gorgias-search-engine': 'ES'},
-            })
+            promise = client.get<ApiListResponseLegacyPagination<Ticket[]>>(
+                url,
+                {
+                    ...options,
+                    headers: {'x-gorgias-search-engine': 'ES'},
+                }
+            )
         }
 
         searchRank?.endScenario()

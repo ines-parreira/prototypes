@@ -1,3 +1,4 @@
+import {CursorPaginationMeta} from '@gorgias/api-queries'
 import axios, {AxiosError, CancelToken} from 'axios'
 import _isEmpty from 'lodash/isEmpty'
 import _isEqual from 'lodash/isEqual'
@@ -12,7 +13,7 @@ import useCancellableRequest from 'hooks/useCancellableRequest'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import usePrevious from 'hooks/usePrevious'
-import {CursorDirection, CursorMeta} from 'models/api/types'
+import {CursorDirection} from 'models/api/types'
 import {fetchEvents} from 'models/event/resources'
 import {
     EventType,
@@ -53,7 +54,7 @@ const UserAuditList = () => {
     const auditLogEvents = useAppSelector(getAuditLogEvents)
     const datetimeLabelFormat = useGetDateAndTimeFormat(DATETIME_LABEL_FORMAT)
 
-    const [meta, setMeta] = useState<CursorMeta | null>(null)
+    const [meta, setMeta] = useState<CursorPaginationMeta | null>(null)
     const [startDatetime, setStartDatetime] = useState<string>(
         _startOfToday().format()
     )

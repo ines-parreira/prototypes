@@ -1,3 +1,4 @@
+import {CursorPaginationMeta} from '@gorgias/api-queries'
 import {AxiosError} from 'axios'
 import classnames from 'classnames'
 import {Emoji} from 'emoji-mart'
@@ -8,7 +9,7 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {CursorDirection, CursorMeta, OrderDirection} from 'models/api/types'
+import {CursorDirection, OrderDirection} from 'models/api/types'
 import {fetchTeams} from 'models/team/resources'
 import {
     FetchTeamsOptions,
@@ -92,7 +93,7 @@ const TeamItem = ({team}: Props) => {
 
 const TeamList = () => {
     const dispatch = useAppDispatch()
-    const [meta, setMeta] = useState<CursorMeta | null>(null)
+    const [meta, setMeta] = useState<CursorPaginationMeta | null>(null)
     const [teams, setTeams] = useState<Team[]>([])
     const [isModalOpen, setIsModalOpen] = useState(false)
 

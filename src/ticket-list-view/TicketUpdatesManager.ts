@@ -1,6 +1,7 @@
+import {CursorPaginationMeta} from '@gorgias/api-queries'
+
 /* istanbul ignore file */
 import {appQueryClient} from 'api/queryClient'
-import {CursorMeta} from 'models/api/types'
 import {viewItemsDefinitionKeys} from 'models/view/queries'
 import {getViewTicketUpdates} from 'models/view/resources'
 
@@ -10,7 +11,7 @@ import transformApiTicketPartial from './utils/transformApiTicketPartial'
 
 export type Listener = (
     tickets: TicketPartial[],
-    cursor: CursorMeta['next_cursor']
+    cursor: CursorPaginationMeta['next_cursor']
 ) => void
 export type Unsubscribe = () => void
 
@@ -23,7 +24,7 @@ export default class TicketUpdatesManager {
     private latestIndex = 0
     private listener: Listener | null = null
     private loading = false
-    private nextCursor: CursorMeta['next_cursor'] = null
+    private nextCursor: CursorPaginationMeta['next_cursor'] = null
     private pollTimeout: ReturnType<typeof setTimeout> | null = null
     private sortOrder: SortOrder
     private tickets: TicketPartial[] = []
@@ -75,7 +76,7 @@ export default class TicketUpdatesManager {
 
     private async getPage(
         sortOrder: SortOrder,
-        cursor: CursorMeta['next_cursor']
+        cursor: CursorPaginationMeta['next_cursor']
     ) {
         const response = await appQueryClient.fetchQuery({
             queryFn: () =>

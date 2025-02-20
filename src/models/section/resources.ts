@@ -1,12 +1,12 @@
 import _pick from 'lodash/pick'
 
 import client from '../api/resources'
-import {ApiListResponsePagination} from '../api/types'
+import {ApiListResponseLegacyPagination} from '../api/types'
 
 import {Section, SectionDraft} from './types'
 
 export const fetchSections = async () => {
-    const res = await client.get<ApiListResponsePagination<Section[]>>(
+    const res = await client.get<ApiListResponseLegacyPagination<Section[]>>(
         '/api/view-sections/'
     )
     return res.data

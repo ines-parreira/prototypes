@@ -1,3 +1,4 @@
+import {CursorPaginationMeta} from '@gorgias/api-queries'
 import axios, {CancelToken} from 'axios'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import _isEmpty from 'lodash/isEmpty'
@@ -24,7 +25,6 @@ import useSearchRankScenario, {
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
 import useSelectedIndex from 'hooks/useSelectedIndex'
-import {CursorMeta} from 'models/api/types'
 import {ProductType} from 'models/billing/types'
 import {searchCustomersWithHighlights} from 'models/customer/resources'
 import {
@@ -72,7 +72,9 @@ type CallSearchResponse = {
     meta: MetaType
 }
 
-type MetaType = CursorMeta | OldSearchPaginationMeta
+type MetaType =
+    | Omit<CursorPaginationMeta, 'total_resources'>
+    | OldSearchPaginationMeta
 
 export enum Tabs {
     All = 'all',
@@ -545,17 +547,18 @@ export const useSearch = () => {
         switch (searchItemsType) {
             case ViewType.CustomerList:
                 return (
-                    (customersSearchMeta as CursorMeta)?.next_cursor ||
+                    (customersSearchMeta as CursorPaginationMeta)
+                        ?.next_cursor ||
                     (customersSearchMeta as OldSearchPaginationMeta)?.next_items
                 )
             case ViewType.TicketList:
                 return (
-                    (ticketsSearchMeta as CursorMeta)?.next_cursor ||
+                    (ticketsSearchMeta as CursorPaginationMeta)?.next_cursor ||
                     (ticketsSearchMeta as OldSearchPaginationMeta)?.next_items
                 )
             case ViewType.CallList:
                 return (
-                    (callSearchMeta as CursorMeta)?.next_cursor ||
+                    (callSearchMeta as CursorPaginationMeta)?.next_cursor ||
                     (callSearchMeta as OldSearchPaginationMeta)?.next_items
                 )
             default:

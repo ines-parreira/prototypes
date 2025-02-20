@@ -1,5 +1,5 @@
 import client from '../../models/api/resources'
-import {ApiListResponsePagination} from '../../models/api/types'
+import {ApiListResponseLegacyPagination} from '../../models/api/types'
 import {StoreDispatch} from '../types'
 
 import * as constants from './constants'
@@ -9,7 +9,9 @@ export const fetchCurrentAuths =
     () =>
     (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client
-            .get<ApiListResponsePagination<AuthItem[]>>('/api/users/0/auths/')
+            .get<ApiListResponseLegacyPagination<AuthItem[]>>(
+                '/api/users/0/auths/'
+            )
             .then((json) => json?.data?.data)
             .then(
                 (resp) => {

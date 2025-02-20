@@ -1,3 +1,4 @@
+import {CursorPaginationMeta} from '@gorgias/api-queries'
 import _truncate from 'lodash/truncate'
 import _uniqueId from 'lodash/uniqueId'
 import React, {useState, useEffect} from 'react'
@@ -11,7 +12,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {CursorMeta} from 'models/api/types'
 import {fetchTicketsByRuleId} from 'models/ticket/resources'
 import {Ticket} from 'models/ticket/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
@@ -32,9 +32,8 @@ type Props = {
 
 export const RuleTicketList = ({ruleId, numTickets = 10}: Props) => {
     const dispatch = useAppDispatch()
-    const [paginationMeta, setPaginationMeta] = useState<CursorMeta | null>(
-        null
-    )
+    const [paginationMeta, setPaginationMeta] =
+        useState<CursorPaginationMeta | null>(null)
     const [ticketList, setTicketList] = useState<Ticket[]>([])
     const currentAccount = useAppSelector(getCurrentAccountState)
     const [{loading}, handleFetchData] = useAsyncFn(async (cursor?: string) => {

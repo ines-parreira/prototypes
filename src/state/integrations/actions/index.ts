@@ -6,7 +6,10 @@ import moment from 'moment'
 
 import {isChannel} from 'config'
 import client from 'models/api/resources'
-import {ApiListResponsePagination, GorgiasApiError} from 'models/api/types'
+import {
+    ApiListResponseLegacyPagination,
+    GorgiasApiError,
+} from 'models/api/types'
 import {fetchIntegrations as fetchIntegrationsResources} from 'models/integration/resources'
 import {
     GorgiasChatIntegration,
@@ -89,7 +92,7 @@ function fetchOnboardingIntegrations(
         const params = filter ? {page, filter} : {page}
 
         return client
-            .get<ApiListResponsePagination<Integration[]>>(
+            .get<ApiListResponseLegacyPagination<Integration[]>>(
                 `/integrations/${integrationType}/onboarding-integrations/`,
                 {
                     params,
@@ -141,7 +144,7 @@ export function activateOnboardingIntegrations(
         })
 
         return client
-            .put<ApiListResponsePagination<Integration[]>>(
+            .put<ApiListResponseLegacyPagination<Integration[]>>(
                 `/integrations/${integrationType}/onboarding-integrations/`,
                 data
             )

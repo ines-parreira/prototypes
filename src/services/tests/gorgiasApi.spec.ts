@@ -142,6 +142,7 @@ describe('services', () => {
                         meta: {
                             next_cursor: 'cursored_page_2',
                             prev_cursor: null,
+                            total_resources: null,
                         },
                         object: 'list',
                         uri: 'api/events',
@@ -151,6 +152,7 @@ describe('services', () => {
                         meta: {
                             next_cursor: 'cursored_page_3',
                             prev_cursor: 'cursored_page_1',
+                            total_resources: null,
                         },
                         object: 'list',
                         uri: 'api/events',
@@ -160,6 +162,7 @@ describe('services', () => {
                         meta: {
                             next_cursor: null,
                             prev_cursor: 'cursored_page_2',
+                            total_resources: null,
                         },
                         object: 'list',
                         uri: 'api/events',

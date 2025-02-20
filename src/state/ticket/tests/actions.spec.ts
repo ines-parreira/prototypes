@@ -1361,6 +1361,7 @@ describe('ticket actions', () => {
                     meta: {
                         next_cursor: 'ticket_page_2',
                         prev_cursor: null,
+                        total_resources: null,
                     },
                     object: 'list',
                     uri: 'api/events',
@@ -1370,6 +1371,7 @@ describe('ticket actions', () => {
                     meta: {
                         next_cursor: null,
                         prev_cursor: 'ticket_page_1',
+                        total_resources: null,
                     },
                     object: 'list',
                     uri: 'api/events',
@@ -1382,6 +1384,7 @@ describe('ticket actions', () => {
                     meta: {
                         next_cursor: 'survey_page_2',
                         prev_cursor: null,
+                        total_resources: null,
                     },
                     object: 'list',
                     uri: 'api/events',
@@ -1391,6 +1394,7 @@ describe('ticket actions', () => {
                     meta: {
                         next_cursor: null,
                         prev_cursor: 'survey_page_1',
+                        total_resources: null,
                     },
                     object: 'list',
                     uri: 'api/events',
@@ -1474,6 +1478,7 @@ describe('ticket actions', () => {
                     meta: {
                         next_cursor: null,
                         prev_cursor: null,
+                        total_resources: null,
                     },
                     object: 'list',
                     uri: 'api/events',
@@ -1486,6 +1491,7 @@ describe('ticket actions', () => {
                     meta: {
                         next_cursor: null,
                         prev_cursor: null,
+                        total_resources: null,
                     },
                     object: 'list',
                     uri: 'api/events',
@@ -1544,6 +1550,7 @@ describe('ticket actions', () => {
                     meta: {
                         next_cursor: null,
                         prev_cursor: null,
+                        total_resources: null,
                     },
                     object: 'list',
                     uri: 'api/events',

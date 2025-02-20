@@ -107,6 +107,7 @@ describe('useTagSearch', () => {
                 meta: {
                     next_cursor: 'someCursor',
                     prev_cursor: null,
+                    total_resources: null,
                 },
                 object: '',
                 uri: '',

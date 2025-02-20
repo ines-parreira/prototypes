@@ -10,7 +10,6 @@ import {
     updateView,
     deleteView,
     fetchViewsPaginated,
-    getViewItems,
 } from '../resources'
 import {ViewDraft} from '../types'
 
@@ -115,27 +114,6 @@ describe('view resources', () => {
                 .onDelete(/\/api\/views\/\d+\//)
                 .reply(503, {message: 'error'})
             return expect(deleteView(1)).rejects.toEqual(
-                new Error('Request failed with status code 503')
-            )
-        })
-    })
-
-    describe('getViewItems', () => {
-        it('should resolve with a list of items on success', async () => {
-            const data = [view, view, view]
-            mockedServer.onGet(/\/api\/views\/.*/).reply(200, {
-                data,
-            })
-
-            const res = await getViewItems({viewId: 7})
-            expect(res).toHaveProperty('data.data', data)
-        })
-
-        it('should reject an error on fail', () => {
-            mockedServer
-                .onGet(/\/api\/views\/.*/)
-                .reply(503, {message: 'error'})
-            return expect(getViewItems({viewId: 7})).rejects.toEqual(
                 new Error('Request failed with status code 503')
             )
         })

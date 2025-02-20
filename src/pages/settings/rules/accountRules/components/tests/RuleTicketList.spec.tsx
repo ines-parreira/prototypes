@@ -26,7 +26,7 @@ describe('<RuleTicketList/>', () => {
     const store = mockStore({entities: {}})
     const defaultApiResponse = {
         data: [{...ticketFixture}],
-        meta: {prev_cursor: null, next_cursor: null},
+        meta: {prev_cursor: null, next_cursor: null, total_resources: null},
         object: '',
         uri: '',
     }
@@ -59,7 +59,11 @@ describe('<RuleTicketList/>', () => {
     it('should show navigation if response has cursor', async () => {
         fetchTicketsByRuleIdMock.mockResolvedValue({
             ...defaultApiResponse,
-            meta: {next_cursor: 'foo', prev_cursor: null},
+            meta: {
+                next_cursor: 'foo',
+                prev_cursor: null,
+                total_resources: null,
+            },
         })
         const {container} = render(
             <Provider store={store}>
@@ -74,7 +78,11 @@ describe('<RuleTicketList/>', () => {
     it('should query on click on next page', async () => {
         fetchTicketsByRuleIdMock.mockResolvedValue({
             ...defaultApiResponse,
-            meta: {next_cursor: 'foo', prev_cursor: null},
+            meta: {
+                next_cursor: 'foo',
+                prev_cursor: null,
+                total_resources: null,
+            },
         })
         const {container, getByText} = render(
             <Provider store={store}>

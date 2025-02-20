@@ -16,7 +16,7 @@ import type {
 import {createClient} from 'models/api/resources'
 import {
     ApiListResponseCursorPagination,
-    ApiListResponsePagination,
+    ApiListResponseLegacyPagination,
     ApiPaginationParams,
 } from 'models/api/types'
 import {fetchEvents} from 'models/event/resources'
@@ -92,8 +92,9 @@ export default class GorgiasApi {
         let path: Maybe<string> = url
 
         while (path) {
-            const response: AxiosResponse<ApiListResponsePagination<T[]>> =
-                await this._api.get(path, config)
+            const response: AxiosResponse<
+                ApiListResponseLegacyPagination<T[]>
+            > = await this._api.get(path, config)
             const {
                 data: {data, meta},
             } = response

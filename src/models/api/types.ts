@@ -1,3 +1,4 @@
+import {CursorPaginationMeta} from '@gorgias/api-queries'
 import axios, {AxiosError} from 'axios'
 
 export enum ContentType {
@@ -20,34 +21,23 @@ export type ApiListResponse<T, Y> = {
     uri: string
 }
 
-export type ApiListResponsePagination<T, V = PaginationMeta> = ApiListResponse<
+export type ApiListResponseCursorPagination<
     T,
-    V
+    U = CursorPaginationMeta,
+> = ApiListResponse<T, U>
+
+export type ApiListResponseLegacyPagination<T> = ApiListResponse<
+    T,
+    LegacyPaginationMeta
 >
 
-export type PaginationMeta = {
+export type LegacyPaginationMeta = {
     current_page: string
     item_count: number
     page: number
     per_page: number
     nb_pages: number
     next_page?: string
-}
-
-export type ApiListResponseCursorPagination<
-    T,
-    U = CursorMeta,
-> = ApiListResponse<T, U>
-
-export type CursorMeta = {
-    next_cursor: string | null
-    prev_cursor: string | null
-}
-
-export type OldCursorMeta = {
-    current_cursor: string
-    prev_items: string | null
-    next_items: string | null
 }
 
 export type OrderParams<T extends string> = {

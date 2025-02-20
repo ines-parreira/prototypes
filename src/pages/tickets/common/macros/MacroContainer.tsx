@@ -1,4 +1,4 @@
-import {Macro} from '@gorgias/api-queries'
+import {CursorPaginationMeta, Macro} from '@gorgias/api-queries'
 import {CancelToken} from 'axios'
 import {fromJS, Map, List} from 'immutable'
 import _debounce from 'lodash/debounce'
@@ -9,7 +9,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {CursorMeta, OrderDirection} from 'models/api/types'
+import {OrderDirection} from 'models/api/types'
 import {FetchMacrosOptions, MacroSortableProperties} from 'models/macro/types'
 import {getHumanAgents} from 'state/agents/selectors'
 import {fetchMacros} from 'state/macro/actions'
@@ -53,7 +53,7 @@ const MacroContainer = ({
     const [selectedMacroId, setSelectedMacroId] = useState<number | null>(null)
 
     const [macros, setMacros] = useState<Macro[]>([])
-    const [meta, setMeta] = useState<CursorMeta | null>(null)
+    const [meta, setMeta] = useState<CursorPaginationMeta | null>(null)
 
     const [cancellableFetchMacros] = useCancellableRequest(
         (cancelToken: CancelToken) => async (options: FetchMacrosOptions) =>

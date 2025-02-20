@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 import {billingState} from 'fixtures/billing'
 import {emptyRule, rules} from 'fixtures/rule'
 import {user} from 'fixtures/users'
-import {ApiListResponsePagination} from 'models/api/types'
+import {ApiListResponseLegacyPagination} from 'models/api/types'
 import {fetchRules} from 'models/rule/resources'
 import history from 'pages/history'
 import {
@@ -111,7 +111,7 @@ describe('<RuleDetailForm />', () => {
         it('should render a filled form when rule id after fetched', async () => {
             fetchRulesMock.mockResolvedValue({
                 data: [emptyRule],
-            } as unknown as ApiListResponsePagination<Rule[]>)
+            } as unknown as ApiListResponseLegacyPagination<Rule[]>)
             const {container} = render(
                 <Router history={history}>
                     <Provider store={mockStore(defaultStore)}>

@@ -1,7 +1,7 @@
 import {Tag} from '@gorgias/api-queries'
 import {fromJS, Map, List} from 'immutable'
 
-import {PaginationMeta} from 'models/api/types'
+import {LegacyPaginationMeta} from 'models/api/types'
 import {GorgiasAction} from 'state/types'
 
 import * as constants from './constants'
@@ -24,7 +24,7 @@ export default function reducer(
                 .set('meta', fromJS({})) // reset selection and editing state for all tags
                 .setIn(
                     ['_internal', 'pagination'],
-                    fromJS((action.resp as {meta: PaginationMeta}).meta)
+                    fromJS((action.resp as {meta: LegacyPaginationMeta}).meta)
                 )
 
         case constants.ADD_TAGS:

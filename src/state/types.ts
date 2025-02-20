@@ -4,7 +4,7 @@ import {AnyAction} from 'redux'
 import {ThunkDispatch} from 'redux-thunk'
 
 import {TicketMessageSourceType, TicketVia} from 'business/types/ticket'
-import {OrderDirection, PaginationMeta} from 'models/api/types'
+import {OrderDirection, LegacyPaginationMeta} from 'models/api/types'
 import {Customer} from 'models/customer/types'
 import {
     EcommerceStore,
@@ -167,7 +167,7 @@ export type GorgiasAction = {
     messagesDifference?: boolean
     customer?: Customer
     cursor?: string
-    meta?: PaginationMeta
+    meta?: LegacyPaginationMeta
     viewId?: number
     viewIds?: number[]
     view?: Map<any, any>

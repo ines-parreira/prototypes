@@ -7,7 +7,7 @@ import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actio
 import * as viewsConfig from 'config/views'
 
 import client from 'models/api/resources'
-import {ApiListResponsePagination} from 'models/api/types'
+import {ApiListResponseLegacyPagination} from 'models/api/types'
 import {Customer, CustomerDraft} from 'models/customer/types'
 import {Ticket} from 'models/ticket/types'
 import {ViewType} from 'models/view/types'
@@ -209,7 +209,7 @@ export function fetchCustomerHistory(
         })
 
         return client
-            .get<ApiListResponsePagination<Ticket>>(
+            .get<ApiListResponseLegacyPagination<Ticket>>(
                 `/api/customers/${customerId}/tickets/`
             )
             .then((json) => json?.data)

@@ -3,7 +3,7 @@ import {useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {SearchRank} from 'hooks/useSearchRankScenario'
-import {ApiListResponsePagination} from 'models/api/types'
+import {ApiListResponseLegacyPagination} from 'models/api/types'
 import {Customer} from 'models/customer/types'
 import {fetchPreviewCustomer} from 'state/infobar/actions'
 import {FETCH_PREVIEW_CUSTOMER_SUCCESS} from 'state/infobar/constants'
@@ -22,7 +22,7 @@ export const useSelectedCustomer = (searchRank: SearchRank) => {
             fetchPreviewCustomer(String(customerId))
         )) as {
             type: string
-            resp: ApiListResponsePagination<Customer[]>
+            resp: ApiListResponseLegacyPagination<Customer[]>
         }
         if (result?.type === FETCH_PREVIEW_CUSTOMER_SUCCESS) {
             setDisplaySelectedCustomer(true)

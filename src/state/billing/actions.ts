@@ -1,7 +1,7 @@
 import {Map} from 'immutable'
 
 import client from '../../models/api/resources'
-import {ApiListResponsePagination} from '../../models/api/types'
+import {ApiListResponseLegacyPagination} from '../../models/api/types'
 import {StoreDispatch} from '../types'
 
 import * as constants from './constants'
@@ -73,7 +73,9 @@ export function fetchCurrentProductsUsage() {
 export function fetchInvoices() {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client
-            .get<ApiListResponsePagination<Invoice[]>>('/api/billing/invoices/')
+            .get<ApiListResponseLegacyPagination<Invoice[]>>(
+                '/api/billing/invoices/'
+            )
             .then((json) => json?.data?.data)
             .then(
                 (resp) => {

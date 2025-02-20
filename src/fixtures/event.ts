@@ -1,4 +1,5 @@
-import {CursorMeta} from 'models/api/types'
+import {CursorPaginationMeta} from '@gorgias/api-queries'
+
 import {Event, EventObjectType, EventType} from 'models/event/types'
 
 export const events: Event[] = [
@@ -37,7 +38,8 @@ export const events: Event[] = [
     },
 ]
 
-export const eventsServerMeta: CursorMeta = {
+export const eventsServerMeta: CursorPaginationMeta = {
+    total_resources: null,
     next_cursor: 'WyJuZXh0IiwgIjIwMjItMDEtMjRUMTM6MTE6NDQuODEyNzE3IiwgMTEwMF0=',
     prev_cursor: null,
 }

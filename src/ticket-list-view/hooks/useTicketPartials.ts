@@ -1,6 +1,5 @@
+import {CursorPaginationMeta} from '@gorgias/api-queries'
 import {useCallback, useEffect, useMemo, useState} from 'react'
-
-import {CursorMeta} from 'models/api/types'
 
 import TicketUpdatesManager from '../TicketUpdatesManager'
 import {TicketPartial} from '../types'
@@ -8,7 +7,7 @@ import {SortOrder} from './useSortOrder'
 import useViewTickets from './useViewTickets'
 
 type State = {
-    cursor: CursorMeta['next_cursor']
+    cursor: CursorPaginationMeta['next_cursor']
     initialLoaded: boolean
     partials: TicketPartial[]
 }

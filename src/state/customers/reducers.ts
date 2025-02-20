@@ -1,3 +1,4 @@
+import {CursorPaginationMeta} from '@gorgias/api-queries'
 import {fromJS, Map, List} from 'immutable'
 import _sortBy from 'lodash/sortBy'
 
@@ -104,10 +105,17 @@ export default function reducer(
 
         case constants.FETCH_CUSTOMER_HISTORY_SUCCESS: {
             const resp = action.resp as {
-                meta: {item_count: number}
+                // @TODO @UnbearableBear: remove legacy meta once endpoint is migrated
+                meta:
+                    | CursorPaginationMeta
+                    | {item_count: number; total_resources: undefined}
                 data: unknown[]
             }
-            const hasHistory = resp.meta.item_count > 1
+            const totalTickets =
+                (resp.meta.total_resources === undefined
+                    ? resp.meta.item_count
+                    : resp.meta.total_resources) || 0
+            const hasHistory = totalTickets > 1
             const tickets: unknown[] = resp.data
             const sortedTickets = _sortBy(tickets, ['created_datetime'])
 
