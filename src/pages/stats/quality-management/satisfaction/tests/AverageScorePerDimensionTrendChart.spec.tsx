@@ -17,6 +17,7 @@ import {
     useAverageCSATPerIntegrationTimeseries,
 } from 'hooks/reporting/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {ReportingGranularity} from 'models/reporting/types'
 
 import {AverageScorePerDimensionTrendChart} from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart'
@@ -161,22 +162,54 @@ describe('<AverageScorePerDimensionTrendChart>', () => {
     const mockTimeseriesData = {
         email: [
             [
-                {dateTime: '2023-04-07T00:00:00.000', value: 4.4},
-                {dateTime: '2023-04-08T00:00:00.000', value: 4.5},
+                {
+                    dateTime: '2023-04-07T00:00:00.000',
+                    value: 4.4,
+                    label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                },
+                {
+                    dateTime: '2023-04-08T00:00:00.000',
+                    value: 4.5,
+                    label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                },
             ],
             [
-                {dateTime: '2023-04-07T00:00:00.000', value: 10},
-                {dateTime: '2023-04-08T00:00:00.000', value: 15},
+                {
+                    dateTime: '2023-04-07T00:00:00.000',
+                    value: 10,
+                    label: TicketSatisfactionSurveyMeasure.ScoredSurveysCount,
+                },
+                {
+                    dateTime: '2023-04-08T00:00:00.000',
+                    value: 15,
+                    label: TicketSatisfactionSurveyMeasure.ScoredSurveysCount,
+                },
             ],
         ],
-        api: [
+        chat: [
             [
-                {dateTime: '2023-04-07T00:00:00.000', value: 3.1},
-                {dateTime: '2023-04-08T00:00:00.000', value: 3.2},
+                {
+                    dateTime: '2023-04-07T00:00:00.000',
+                    value: 3.1,
+                    label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                },
+                {
+                    dateTime: '2023-04-08T00:00:00.000',
+                    value: 3.2,
+                    label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                },
             ],
             [
-                {dateTime: '2023-04-07T00:00:00.000', value: 5},
-                {dateTime: '2023-04-08T00:00:00.000', value: 8},
+                {
+                    dateTime: '2023-04-07T00:00:00.000',
+                    value: 5,
+                    label: TicketSatisfactionSurveyMeasure.ScoredSurveysCount,
+                },
+                {
+                    dateTime: '2023-04-08T00:00:00.000',
+                    value: 8,
+                    label: TicketSatisfactionSurveyMeasure.ScoredSurveysCount,
+                },
             ],
         ],
     }
@@ -252,7 +285,7 @@ describe('<AverageScorePerDimensionTrendChart>', () => {
         expect(screen.getByTestId('chart')).toBeInTheDocument()
         expect(screen.getAllByTestId('dataset')).toHaveLength(3)
         expect(screen.getByText('email')).toBeInTheDocument()
-        expect(screen.getByText('api')).toBeInTheDocument()
+        expect(screen.getByText('chat')).toBeInTheDocument()
     })
 
     it('should render assignee trend chart when switched', () => {
@@ -381,5 +414,48 @@ describe('<AverageScorePerDimensionTrendChart>', () => {
         userEvent.click(screen.getByText('Per integration'))
         expect(screen.getByTestId('y-tick-0')).toHaveTextContent('N/A')
         expect(screen.getByTestId('y-tick-5')).toHaveTextContent('5')
+    })
+
+    it('should handle invalid timeseries data length', () => {
+        const invalidTimeseriesData = {
+            email: [
+                [
+                    {
+                        dateTime: '2023-04-07T00:00:00.000',
+                        value: 4.4,
+                        label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                    },
+                    {
+                        dateTime: '2023-04-08T00:00:00.000',
+                        value: 4.5,
+                        label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                    },
+                ],
+            ],
+            chat: [
+                [
+                    {
+                        dateTime: '2023-04-07T00:00:00.000',
+                        value: 5.4,
+                        label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                    },
+                    {
+                        dateTime: '2023-04-08T00:00:00.000',
+                        value: 5.5,
+                        label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                    },
+                ],
+            ],
+        }
+
+        useAverageCSATPerChannelTimeseriesMock.mockReturnValue(
+            getSuccessResponse(invalidTimeseriesData)
+        )
+
+        renderComponent(mockStoreState)
+        const labels = screen.getAllByTestId('dataset')
+        expect(labels).toHaveLength(2)
+        expect(labels[0]).toHaveTextContent('email')
+        expect(labels[1]).toHaveTextContent('chat')
     })
 })

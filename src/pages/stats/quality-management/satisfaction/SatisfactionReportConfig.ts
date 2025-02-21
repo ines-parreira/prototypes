@@ -36,6 +36,7 @@ export enum SatisfactionChart {
 export const SATISFACTION_TITLE = 'Satisfaction'
 export const SATISFACTION_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.Period,
+    FilterKey.AggregationWindow,
 ]
 export const SATISFACTION_OPTIONAL_FILTERS = [
     FilterKey.Agents,

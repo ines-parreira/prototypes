@@ -10,6 +10,7 @@ import {
 import {Integration} from 'models/integration/types'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
+import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {NOT_AVAILABLE_TEXT} from 'pages/stats/common/utils'
 
 const DATASET_VISIBILITY_ITEMS = 3
@@ -19,8 +20,16 @@ const getAverageCSATScorePerDimension = (data?: TimeSeriesPerDimension) => {
     if (!data) return {}
     return Object.entries(data).reduce<Record<string, number>>(
         (acc, [key, value]) => {
-            acc[key] = value
-                .map((item) => item[1].value)
+            const measureIndices = getMeasureIndices(value)
+            const scoredSurveysCountIndex =
+                measureIndices[
+                    TicketSatisfactionSurveyMeasure.ScoredSurveysCount
+                ]
+
+            if (scoredSurveysCountIndex === undefined) return acc
+
+            acc[key] = value[scoredSurveysCountIndex]
+                .map((item) => item.value)
                 .reduce(
                     (prevValue, currentValue) => prevValue + currentValue,
                     0
@@ -100,19 +109,36 @@ export const computeAverageCSAT = (data?: TimeSeriesPerDimension) => {
     const dataValues = Object.values(data)
     if (!data || dataValues.length === 0) return
     const timeseriesData = dataValues[0]
-    if (!timeseriesData[0]) return
+    const measureIndices = getMeasureIndices(timeseriesData)
+    const avgSurveyScoreIndex =
+        measureIndices[TicketSatisfactionSurveyMeasure.AvgSurveyScore]
+    const scoredSurveysCountIndex =
+        measureIndices[TicketSatisfactionSurveyMeasure.ScoredSurveysCount]
+
+    if (
+        !timeseriesData?.[0] ||
+        avgSurveyScoreIndex === undefined ||
+        scoredSurveysCountIndex === undefined
+    )
+        return
+
     for (let i = 0; i < timeseriesData[0].length; i++) {
         let sum = 0
         let count = 0
         dataValues.forEach((dataValue) => {
-            sum += dataValue[0][i].value * dataValue[1][i].value
-            count += dataValue[1][i].value
+            sum +=
+                dataValue[avgSurveyScoreIndex][i].value *
+                dataValue[scoredSurveysCountIndex][i].value
+            count += dataValue[scoredSurveysCountIndex][i].value
         })
-        averageCSATSeries[0].push({
-            ...timeseriesData[0][i],
+        averageCSATSeries[avgSurveyScoreIndex].push({
+            ...timeseriesData[avgSurveyScoreIndex][i],
             value: sum / (count || 1),
         })
-        averageCSATSeries[1].push({...timeseriesData[1][i], value: count})
+        averageCSATSeries[scoredSurveysCountIndex].push({
+            ...timeseriesData[scoredSurveysCountIndex][i],
+            value: count,
+        })
     }
     return averageCSATSeries
 }
@@ -170,4 +196,13 @@ export const transformToTimeSeriesData = (result: {
 export const formatZeroToNALabel = (value: number | string) => {
     const stringValue = value.toString()
     return stringValue === '0' ? NOT_AVAILABLE_TEXT : stringValue
+}
+
+export const getMeasureIndices = (data: TimeSeriesDataItem[][]) => {
+    const measureIndices: Record<string, number> = {}
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].length === 0) continue
+        measureIndices[data[i][0].label || 'no-label'] = i
+    }
+    return measureIndices
 }
