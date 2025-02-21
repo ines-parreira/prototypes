@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import {StatsFilters} from 'models/stat/types'
 import Pagination from 'pages/common/components/Pagination'
@@ -51,6 +51,12 @@ export const VoiceCallTable = ({
     const handlePageChange = (nextPage: number) => {
         setCurrentPage(nextPage)
     }
+
+    useEffect(() => {
+        if (!isFetching && currentPage > totalPages) {
+            handlePageChange(totalPages === 0 ? 1 : totalPages)
+        }
+    }, [currentPage, totalPages, isFetching])
 
     return (
         <>

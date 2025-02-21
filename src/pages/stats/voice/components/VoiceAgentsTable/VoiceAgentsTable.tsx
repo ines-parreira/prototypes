@@ -69,6 +69,12 @@ export const VoiceAgentsTable = () => {
         )
     }
 
+    const totalPages = Math.ceil(agents.length / perPage)
+
+    if (currentPage > totalPages) {
+        handlePageChange(totalPages)
+    }
+
     return (
         <>
             <div ref={ref} className={css.container} onScroll={handleScroll}>
@@ -248,7 +254,7 @@ export const VoiceAgentsTable = () => {
             <div className={css.pagination}>
                 {agents.length >= perPage && (
                     <NumberedPagination
-                        count={Math.ceil(agents.length / perPage)}
+                        count={totalPages}
                         page={currentPage}
                         onChange={handlePageChange}
                     />

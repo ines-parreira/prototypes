@@ -128,4 +128,45 @@ describe('VoiceCallTable', () => {
         expect(queryByText('500')).toBeInTheDocument()
         expect(queryByText('600')).not.toBeInTheDocument()
     })
+
+    it('should update current page if number of total pages changes', () => {
+        useVoiceCallListMock.mockReturnValue({
+            data: [{}],
+            isFetching: false,
+        } as UseQueryResult<VoiceCallSummary[], unknown>)
+        useVoiceCallCountMock.mockReturnValue({
+            total: 100,
+            totalPages: 10,
+        })
+
+        const {getByLabelText, rerender} = renderComponent()
+
+        expect(
+            getByLabelText('Page 1 is your current page')
+        ).toBeInTheDocument()
+        expect(getByLabelText('Page 2')).toBeInTheDocument()
+
+        fireEvent.click(getByLabelText('Page 3'))
+        expect(
+            getByLabelText('Page 3 is your current page')
+        ).toBeInTheDocument()
+
+        useVoiceCallCountMock.mockReturnValue({
+            total: 20,
+            totalPages: 2,
+        })
+        rerender(
+            <Provider store={mockStore({})}>
+                <VoiceCallTable
+                    statsFilters={statsFilters}
+                    userTimezone={'UTC'}
+                    filterOption={VoiceCallFilterOptions.All}
+                />
+            </Provider>
+        )
+
+        expect(
+            getByLabelText('Page 2 is your current page')
+        ).toBeInTheDocument()
+    })
 })
