@@ -1,4 +1,4 @@
-import {screen, fireEvent, waitFor} from '@testing-library/react'
+import {fireEvent, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {DndProvider} from 'react-dnd'
@@ -8,12 +8,14 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
 import {LIMIT_REACHED_MESSAGE} from 'pages/stats/custom-reports/constants'
 import {
-    DashboardsNavbarBlock,
-    DASHBOARDS_NAV_TITLE,
     CREATE_DASHBOARD,
+    DASHBOARDS_NAV_TITLE,
+    DashboardsNavbarBlock,
     RESTRICTION_MESSAGE,
 } from 'pages/stats/custom-reports/DashboardsNavbarBlock/DashboardsNavbarBlock'
+import {getDashboardPath} from 'pages/stats/custom-reports/utils'
 import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import {BASE_STATS_PATH, STATS_ROUTES} from 'routes/constants'
 import {renderWithQueryClientAndRouter} from 'tests/renderWIthQueryClientAndRouter'
 import {isTeamLead} from 'utils'
 import {assumeMock} from 'utils/testing'
@@ -95,7 +97,7 @@ describe('DashboardsNavbarBlock', () => {
             fireEvent.click(createButton)
 
             expect(mockPush).toHaveBeenCalledWith(
-                '/app/stats/custom-reports/new'
+                [BASE_STATS_PATH, STATS_ROUTES.DASHBOARDS_NEW].join('/')
             )
 
             expect(screen.queryByText('Report 1')).not.toBeInTheDocument()
@@ -133,7 +135,7 @@ describe('DashboardsNavbarBlock', () => {
 
             expect(reportLink.parentElement).toHaveAttribute(
                 'href',
-                '/app/stats/custom-reports/1'
+                getDashboardPath(1)
             )
         })
 

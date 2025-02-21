@@ -11,6 +11,7 @@ import {
     DashboardName,
     DashboardNameValue,
 } from 'pages/stats/custom-reports/DashboardName'
+import {getDashboardPath} from 'pages/stats/custom-reports/utils'
 import {
     StatsPageContent,
     StatsPageHeader,
@@ -55,7 +56,7 @@ export const CustomReports = () => {
                 },
                 chartIds,
                 onSuccess: (response) => {
-                    history.push(`/app/stats/custom-reports/${response?.id}`)
+                    history.push(getDashboardPath(response?.id))
                     closeModal()
                 },
             })

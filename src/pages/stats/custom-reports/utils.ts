@@ -25,6 +25,7 @@ import {
     CustomReportSectionSchema,
     DashboardInput,
 } from 'pages/stats/custom-reports/types'
+import {BASE_STATS_PATH, STATS_ROUTES} from 'routes/constants'
 import {notNull} from 'utils/types'
 
 const fromApiChart = (
@@ -390,3 +391,9 @@ export const updateChartPosition = (
         children: childrenWithChart,
     }
 }
+
+export const getDashboardPath = (id: number) =>
+    [
+        BASE_STATS_PATH,
+        STATS_ROUTES.DASHBOARDS_PAGE.replace(':id', String(id)),
+    ].join('/')

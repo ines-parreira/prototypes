@@ -16,6 +16,8 @@ import {
     MAX_DASHBOARDS_ALLOWED,
 } from 'pages/stats/custom-reports/constants'
 import css from 'pages/stats/custom-reports/DashboardsNavbarBlock/DashboardsNavbarBlock.less'
+import {getDashboardPath} from 'pages/stats/custom-reports/utils'
+import {BASE_STATS_PATH, STATS_ROUTES} from 'routes/constants'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {isTeamLead} from 'utils'
 
@@ -30,6 +32,8 @@ export const RESTRICTION_MESSAGE = 'Reach out to your admin for dashboard setup'
 const logStatDashboardNavCreateChartClicked = () => {
     logEvent(SegmentEvent.StatDashboardNavCreateChartClicked)
 }
+
+const CREATE_DASHBOARD_PATH = `${BASE_STATS_PATH}/${STATS_ROUTES.DASHBOARDS_NEW}`
 
 export const DashboardsNavbarBlock = ({navBarLinkProps}: Props) => {
     const history = useHistory()
@@ -52,7 +56,7 @@ export const DashboardsNavbarBlock = ({navBarLinkProps}: Props) => {
                 : {
                       label: CREATE_DASHBOARD,
                       onClick: () => {
-                          history.push('/app/stats/custom-reports/new')
+                          history.push(CREATE_DASHBOARD_PATH)
                           logEvent(
                               SegmentEvent.StatDashboardNavCreateChartClicked
                           )
@@ -89,7 +93,7 @@ export const DashboardsNavbarBlock = ({navBarLinkProps}: Props) => {
                 >
                     <NavbarLink
                         {...navBarLinkProps}
-                        to={`/app/stats/custom-reports/${id}`}
+                        to={getDashboardPath(id)}
                         className={css.wrapper}
                     >
                         {emoji && <span>{emoji}</span>}

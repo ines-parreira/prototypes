@@ -7,12 +7,14 @@ export const CUSTOM_FIELD_ROUTES = {
 
 export const CUSTOM_FIELD_CONDITIONS_ROUTE = 'ticket-field-conditions'
 
+export const BASE_STATS_PATH = '/app/stats'
+
 export const STATS_ROUTES = {
     LIVE_OVERVIEW: 'live-overview',
     LIVE_AGENTS: 'live-agents',
     LIVE_VOICE: 'live-voice',
-    DASHBOARDS_NEW: 'custom-reports/new',
-    DASHBOARDS_PAGE: 'custom-reports/:id',
+    DASHBOARDS_NEW: 'dashboard/new',
+    DASHBOARDS_PAGE: 'dashboard/:id',
     SUPPORT_PERFORMANCE_OVERVIEW: 'support-performance-overview',
     SUPPORT_PERFORMANCE_AGENTS: 'support-performance-agents',
     SUPPORT_PERFORMANCE_BUSIEST_TIMES: 'busiest-times-of-days',

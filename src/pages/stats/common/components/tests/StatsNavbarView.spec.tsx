@@ -20,6 +20,7 @@ import {STATS_ROUTE_PREFIX} from 'pages/stats/common/components/constants'
 import StatsNavbarView, {
     BUSIEST_TIMES_OF_DAYS_NAV_LABEL,
 } from 'pages/stats/common/components/StatsNavbarView'
+import {getDashboardPath} from 'pages/stats/custom-reports/utils'
 import {SERVICE_LEVEL_AGREEMENT_PAGE_TITLE} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
 import {AUTO_QA_PAGE_TITLE} from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
 import {STATS_ROUTES} from 'routes/constants'
@@ -256,10 +257,10 @@ describe('StatsNavbarView', () => {
         )
 
         const FirstCustomReportLink = container.querySelector(
-            'a[href="/app/stats/custom-reports/1"]'
+            `a[href="${getDashboardPath(1)}"]`
         )
         const SecondCustomReportLink = container.querySelector(
-            'a[href="/app/stats/custom-reports/2"]'
+            `a[href="${getDashboardPath(2)}"]`
         )
 
         expect(FirstCustomReportLink).toBeInTheDocument()
