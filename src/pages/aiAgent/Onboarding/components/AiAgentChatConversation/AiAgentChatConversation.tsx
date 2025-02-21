@@ -1,9 +1,10 @@
 import classnames from 'classnames'
 import {Map} from 'immutable'
-import React, {FC, Ref} from 'react'
+import React, {FC, Ref, useMemo} from 'react'
 
 import {GorgiasChatAvatarSettings} from 'models/integration/types'
 
+import {removeATags} from 'pages/aiAgent/utils/removeATags'
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import AgentMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentMessages'
 import CustomerInitialMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/CustomerInitialMessages'
@@ -26,6 +27,7 @@ type Props = {
     avatar?: GorgiasChatAvatarSettings
     language?: string
     user: Map<any, any>
+    removeLinksFromMessages?: boolean
 }
 
 const AiAgentChatConversation: FC<Props> = ({
@@ -36,9 +38,24 @@ const AiAgentChatConversation: FC<Props> = ({
     language,
     user,
     messages,
+    removeLinksFromMessages,
 }) => {
+    const sanitizedMessage = useMemo(() => {
+        if (removeLinksFromMessages) {
+            return messages.map((message) => {
+                return {
+                    ...message,
+                    content: message.isHtml
+                        ? removeATags(message.content)
+                        : message.content,
+                }
+            })
+        }
+        return messages
+    }, [removeLinksFromMessages, messages])
+
     // group messages by fromAgent but create a new group when fromAgent changes
-    const groupedMessages = messages.reduce(
+    const groupedMessages = sanitizedMessage.reduce(
         (acc, message) => {
             const lastGroup = acc[acc.length - 1]
             if (lastGroup && lastGroup.fromAgent === message.fromAgent) {

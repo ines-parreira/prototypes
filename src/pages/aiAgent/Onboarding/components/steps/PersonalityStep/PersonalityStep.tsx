@@ -332,6 +332,7 @@ export const PersonalityStep: React.FC<StepProps> = ({
                         <ChatIntegrationPreview {...chatPreviewSettings}>
                             <AiAgentChatConversation
                                 {...agentChatConversationSettings}
+                                removeLinksFromMessages
                             />
                         </ChatIntegrationPreview>
                         <div className={css.chatFooter}>

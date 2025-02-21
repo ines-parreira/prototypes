@@ -108,6 +108,7 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
                             <AiAgentChatConversation
                                 {...agentChatConversationSettings}
                                 messages={chatPreviewData.messages}
+                                removeLinksFromMessages
                             />
                         </ChatIntegrationPreview>
                     </div>

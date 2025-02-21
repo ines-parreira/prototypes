@@ -388,6 +388,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                     {...{
                                         ...agentChatConversationSettings,
                                         conversationColor: newChatColor,
+                                        removeLinksFromMessages: true,
                                     }}
                                 />
                             </ChatIntegrationPreview>

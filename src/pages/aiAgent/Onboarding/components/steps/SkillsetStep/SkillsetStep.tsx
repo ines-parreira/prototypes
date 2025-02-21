@@ -162,6 +162,7 @@ export const SkillsetStep: FC<StepProps> = ({
                         <ChatIntegrationPreview {...chatPreviewSettings}>
                             <AiAgentChatConversation
                                 {...agentChatConversationSettings}
+                                removeLinksFromMessages
                             />
                         </ChatIntegrationPreview>
                     </div>

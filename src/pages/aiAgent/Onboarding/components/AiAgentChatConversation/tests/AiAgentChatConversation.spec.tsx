@@ -12,7 +12,9 @@ import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {RootState, StoreDispatch} from 'state/types'
 
-import AiAgentChatConversation from '../AiAgentChatConversation'
+import AiAgentChatConversation, {
+    ConversationMessage,
+} from '../AiAgentChatConversation'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -22,7 +24,7 @@ const defaultState = {
 } as RootState
 
 describe('AiAgentChatConversation', () => {
-    const messages = [
+    const messages: ConversationMessage[] = [
         {
             content:
                 'Hi, I’m after a long dress for everyday wear, something comfortable and cute.',
@@ -36,9 +38,7 @@ describe('AiAgentChatConversation', () => {
             fromAgent: true,
             attachments: [
                 {
-                    // weird ts error here
-                    content_type:
-                        AttachmentEnum.Product as AttachmentEnum.Product,
+                    content_type: AttachmentEnum.Product,
                     name: 'ADIDAS | SUPERSTAR 80S',
                     size: 0,
                     url: 'https://test.com/products/test-product1',
@@ -56,6 +56,13 @@ describe('AiAgentChatConversation', () => {
             ],
         },
         {
+            content:
+                'Checkout this product <a href="https://example.com/moisturizer" target="_blank">View Product</a>.',
+            isHtml: true,
+            fromAgent: true,
+            attachments: [],
+        },
+        {
             content: 'Nice!',
             isHtml: false,
             fromAgent: false,
@@ -71,13 +78,14 @@ describe('AiAgentChatConversation', () => {
 
     const user = Map({name: 'Test User'})
 
-    it('renders agent and customer messages correctly', () => {
-        const {getByText} = render(
+    it('renders agent and customer messages correctly when removeLinksFromMessages is false', () => {
+        const {getByText, getByRole} = render(
             <Provider store={mockStore(defaultState)}>
                 <AiAgentChatConversation
                     conversationColor="#000"
                     messages={messages}
                     user={user}
+                    removeLinksFromMessages={false}
                 />
             </Provider>
         )
@@ -91,6 +99,32 @@ describe('AiAgentChatConversation', () => {
         ).toBeInTheDocument()
         expect(getByText('ADIDAS | SUPERSTAR 80S')).toBeInTheDocument()
         expect(getByText('Nice!')).toBeInTheDocument()
-        expect(getByText('Bye!')).toBeInTheDocument()
+        expect(getByText(/View Product/)).toBeInTheDocument()
+        expect(getByRole('link')).toBeInTheDocument()
+    })
+
+    it('renders agent and customer messages correctly when removeLinksFromMessages is true', () => {
+        const {getByText, queryByRole} = render(
+            <Provider store={mockStore(defaultState)}>
+                <AiAgentChatConversation
+                    conversationColor="#000"
+                    messages={messages}
+                    user={user}
+                    removeLinksFromMessages
+                />
+            </Provider>
+        )
+        expect(
+            getByText(
+                'Hi, I’m after a long dress for everyday wear, something comfortable and cute.'
+            )
+        ).toBeInTheDocument()
+        expect(
+            getByText('Hi! Our sizes are made for all shapes and body types.')
+        ).toBeInTheDocument()
+        expect(getByText('ADIDAS | SUPERSTAR 80S')).toBeInTheDocument()
+        expect(getByText('Nice!')).toBeInTheDocument()
+        expect(getByText(/View Product/)).toBeInTheDocument()
+        expect(queryByRole('link')).not.toBeInTheDocument()
     })
 })
