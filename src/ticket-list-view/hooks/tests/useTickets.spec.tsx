@@ -9,6 +9,7 @@ import useScrollOffset from '../useScrollOffset'
 import useTicketData from '../useTicketData'
 import useTicketPartials from '../useTicketPartials'
 import useTickets from '../useTickets'
+import useViewTickets from '../useViewTickets'
 
 jest.mock('core/flags', () => ({useFlag: jest.fn()}))
 const useFlagMock = useFlag as jest.Mock
@@ -18,6 +19,9 @@ const useTicketDataMock = useTicketData as jest.Mock
 
 jest.mock('../useTicketPartials', () => jest.fn())
 const useTicketPartialsMock = useTicketPartials as jest.Mock
+
+jest.mock('../useViewTickets')
+const mockUseViewTickets = useViewTickets as jest.Mock
 
 jest.mock('hooks/useElementSize', () => jest.fn())
 const useElementSizeMock = useElementSize as jest.Mock
@@ -134,5 +138,10 @@ describe('useTickets', () => {
             useTickets(1, 'created_datetime:asc', 456, mockRegisterToggleUnread)
         )
         expect(mockRegisterToggleUnread).toHaveBeenCalledWith(mockToggleUnread)
+    })
+
+    it('should call useViewTickets with visiblePartials', () => {
+        renderHook(() => useTickets(123, 'created_datetime:asc'))
+        expect(mockUseViewTickets).toHaveBeenCalledWith(partials, true)
     })
 })

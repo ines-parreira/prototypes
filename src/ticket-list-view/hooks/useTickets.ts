@@ -4,6 +4,7 @@ import useDebouncedValue from 'hooks/useDebouncedValue'
 import useElementSize from 'hooks/useElementSize'
 import usePrevious from 'hooks/usePrevious'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
+import useViewTickets from 'ticket-list-view/hooks/useViewTickets'
 import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
 import {TICKET_HEIGHT} from '../constants'
@@ -88,6 +89,8 @@ export default function useTickets(
             ),
         [newPartials, visiblePartialsMap]
     )
+
+    useViewTickets(visiblePartials, true)
 
     const visibleStaleTicketIds = useMemo(
         (): number[] =>
