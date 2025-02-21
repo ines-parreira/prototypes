@@ -6,7 +6,10 @@ import {BrowserRouter as Router} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useGetStoreApps} from 'models/workflows/queries'
+import {
+    useGetStoreApps,
+    useGetWorkflowConfigurationTemplates,
+} from 'models/workflows/queries'
 import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
 import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
@@ -29,7 +32,9 @@ const mockUseAddStoreApp = jest.mocked(useAddStoreApp)
 const mockUseApps = jest.mocked(useApps)
 const mockUseUpsertAction = jest.mocked(useUpsertAction)
 const mockUseDeleteAction = jest.mocked(useDeleteAction)
-
+const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
+    useGetWorkflowConfigurationTemplates
+)
 const mockActions: StoresWorkflowConfiguration = [
     {
         id: '1',
@@ -107,6 +112,9 @@ describe('ActionsList', () => {
             isLoading: false,
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
+        mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
+            data: [],
+        } as unknown as ReturnType<typeof useGetWorkflowConfigurationTemplates>)
     })
 
     it('sorts actions by updated date in ascending order', () => {

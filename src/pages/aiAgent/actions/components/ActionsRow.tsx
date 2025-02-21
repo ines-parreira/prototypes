@@ -1,10 +1,11 @@
 import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {MouseEvent, useCallback, useState} from 'react'
+import React, {MouseEvent, useCallback, useMemo, useState} from 'react'
 import {Link, useHistory, useParams} from 'react-router-dom'
 
 import webhooksIcon from 'assets/img/icons/webhooks.svg'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import {useStoreAppsContext} from 'pages/aiAgent/actions/providers/StoreAppsContext'
@@ -31,6 +32,10 @@ export default function ActionsRow({action}: Props) {
         shopType: 'shopify'
         shopName: string
     }>()
+
+    const {data: templateSteps = []} = useGetWorkflowConfigurationTemplates({
+        triggers: ['reusable-llm-prompt'],
+    })
 
     const {routes} = useAiAgentNavigation({shopName})
 
@@ -80,6 +85,45 @@ export default function ActionsRow({action}: Props) {
     const {recharge: rechargeIntegration} = useStoreAppsContext()
 
     const [nameRef, setNameRef] = useState<HTMLSpanElement | null>(null)
+
+    const appIcons = useMemo(() => {
+        const iconsMap: Record<string, React.ReactElement> = {}
+        for (const step of action.steps) {
+            if (step.kind === 'reusable-llm-prompt-call') {
+                const templateStep = templateSteps.find(
+                    (templateStep) =>
+                        templateStep.id === step.settings.configuration_id
+                )
+                if (templateStep) {
+                    for (const templateApp of templateStep.apps) {
+                        const app = getAppFromTemplateApp(templateApp)
+                        const key =
+                            templateApp.type === 'app'
+                                ? templateApp.app_id
+                                : templateApp.type
+                        iconsMap[key] = (
+                            <AppIcon
+                                key={key}
+                                name={app?.name}
+                                icon={app?.icon}
+                            />
+                        )
+                    }
+                }
+                step.settings.configuration_id
+            } else if (step.kind === 'http-request') {
+                iconsMap[step.kind] = (
+                    <img
+                        src={webhooksIcon}
+                        alt="HTTP request"
+                        title="HTTP request"
+                    />
+                )
+            }
+        }
+
+        return Object.values(iconsMap)
+    }, [action.steps, getAppFromTemplateApp, templateSteps])
 
     return (
         <TableBodyRow
@@ -139,30 +183,7 @@ export default function ActionsRow({action}: Props) {
                     )}
                 </div>
             </BodyCell>
-            <BodyCell innerClassName={css.apps}>
-                {action.apps?.map((templateApp) => {
-                    const app = getAppFromTemplateApp(templateApp)
-
-                    return (
-                        <AppIcon
-                            key={
-                                templateApp.type === 'app'
-                                    ? templateApp.app_id
-                                    : templateApp.type
-                            }
-                            name={app?.name}
-                            icon={app?.icon}
-                        />
-                    )
-                })}
-                {action.steps.some((step) => step.kind === 'http-request') && (
-                    <img
-                        src={webhooksIcon}
-                        alt="HTTP request"
-                        title="HTTP request"
-                    />
-                )}
-            </BodyCell>
+            <BodyCell innerClassName={css.apps}>{appIcons}</BodyCell>
             <BodyCell size="smallest" justifyContent="right">
                 {action.updated_datetime &&
                     formatDatetime(action.updated_datetime, datetimeFormat)}

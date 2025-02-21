@@ -7,6 +7,7 @@ import {ulid} from 'ulidx'
 
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {IntegrationType} from 'models/integration/constants'
+import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import {StoreWorkflowsConfiguration} from 'pages/aiAgent/actions/types'
@@ -29,6 +30,9 @@ const mockUseApps = jest.mocked(useApps)
 const mockUseUpsertAction = jest.mocked(useUpsertAction)
 const mockUseDeleteAction = jest.mocked(useDeleteAction)
 const mockUseGetDateAndTimeFormat = jest.mocked(useGetDateAndTimeFormat)
+const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
+    useGetWorkflowConfigurationTemplates
+)
 
 const b = new WorkflowConfigurationBuilder({
     id: ulid(),
@@ -81,6 +85,21 @@ const b = new WorkflowConfigurationBuilder({
     ],
     available_languages: [],
 })
+b.insertReusableLLMPromptCallAndSelect({
+    configuration_id: 'uuid1',
+    configuration_internal_id: 'internal_uuid1',
+    values: {},
+})
+b.insertReusableLLMPromptCallAndSelect({
+    configuration_id: 'uuid2',
+    configuration_internal_id: 'internal_uuid2',
+    values: {},
+})
+b.insertReusableLLMPromptCallAndSelect({
+    configuration_id: 'uuid3',
+    configuration_internal_id: 'internal_uuid3',
+    values: {},
+})
 
 const configuration = b.build() as StoreWorkflowsConfiguration
 
@@ -121,6 +140,37 @@ describe('<ActionsRow />', () => {
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
         mockUseGetDateAndTimeFormat.mockReturnValue('MM/DD/YYYY')
+        mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
+            data: [
+                {
+                    id: 'uuid1',
+                    apps: [
+                        {
+                            app_id: 'someid',
+                            type: IntegrationType.App,
+                        },
+                    ],
+                },
+                {
+                    id: 'uuid2',
+                    apps: [
+                        {
+                            app_id: 'recharge',
+                            type: IntegrationType.Recharge,
+                        },
+                    ],
+                },
+                {
+                    id: 'uuid3',
+                    apps: [
+                        {
+                            app_id: 'shopify',
+                            type: IntegrationType.Shopify,
+                        },
+                    ],
+                },
+            ],
+        } as unknown as ReturnType<typeof useGetWorkflowConfigurationTemplates>)
     })
 
     it('should render component', () => {
