@@ -21,6 +21,7 @@ export default function SatisfactionReport() {
     const getGridCellSize = useGridSize()
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
+
     return (
         <div className="full-width">
             <StatsPage
@@ -36,10 +37,7 @@ export default function SatisfactionReport() {
             >
                 {isAnalyticsNewFilters && (
                     <DashboardSection>
-                        <DashboardGridCell
-                            size={getGridCellSize(12)}
-                            className="pb-0"
-                        >
+                        <DashboardGridCell size={getGridCellSize(12)}>
                             <FiltersPanelWrapper
                                 optionalFilters={
                                     SatisfactionReportConfig.reportFilters
@@ -79,8 +77,6 @@ export default function SatisfactionReport() {
                             config={SatisfactionReportConfig}
                         />
                     </DashboardGridCell>
-                </DashboardSection>
-                <DashboardSection>
                     <DashboardGridCell size={getGridCellSize(6)}>
                         <CustomReportComponent
                             chart={
@@ -100,6 +96,12 @@ export default function SatisfactionReport() {
                             chart={
                                 SatisfactionChart.AverageCSATPerDimensionTrendChart
                             }
+                            config={SatisfactionReportConfig}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={getGridCellSize(12)}>
+                        <CustomReportComponent
+                            chart={SatisfactionChart.ScoredSurveysChart}
                             config={SatisfactionReportConfig}
                         />
                     </DashboardGridCell>

@@ -1,0 +1,67 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .surveyScore {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        .body-semibold();
+        color: var(--analytics-yellow) !important;
+    }
+
+    .customerName {
+        color: var(--main-primary);
+    }
+
+    .skeleton {
+        flex: 1;
+    }
+
+    .wrapper {
+        display: grid;
+    }
+
+    .noDataAvalable {
+        height: 400px;
+    }
+
+    .container {
+        width: 100%;
+        max-height: calc(100vh - 200px);
+        overflow: auto;
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .cellPadding {
+        padding-block: @layout-spacing-xs;
+    }
+
+    .table {
+        box-sizing: border-box;
+        margin-bottom: @layout-spacing-xs;
+
+        .header,
+        thead {
+            th,
+            td {
+                position: sticky;
+                top: 0;
+                z-index: 3;
+                background-color: var(--neutral-grey-0);
+                cursor: pointer;
+            }
+        }
+
+        th,
+        td {
+            width: auto;
+        }
+    }
+
+    .pagination {
+        margin-top: @layout-spacing-xs;
+        margin-left: @layout-spacing-xs;
+        margin-bottom: @layout-spacing-xs;
+    }
+}

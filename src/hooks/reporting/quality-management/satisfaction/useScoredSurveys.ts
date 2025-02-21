@@ -1,0 +1,109 @@
+import {useMemo} from 'react'
+
+import {
+    fetchMetricPerDimensionWithEnrichment,
+    useMetricPerDimensionWithEnrichment,
+} from 'hooks/reporting/useMetricPerDimension'
+import {MergedRecord} from 'hooks/reporting/withEnrichment'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import {scoredSurveysQueryFactory} from 'models/reporting/queryFactories/satisfaction/scoredSurveysQueryFactory'
+import {EnrichmentFields} from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
+
+export enum ScoredSurveyDataKey {
+    ASSIGNEE = 'assignee',
+    CUSTOMER_NAME = 'customerName',
+    TICKET_ID = 'ticketId',
+    SURVEY_SCORE = 'surveyScore',
+    COMMENT = 'comment',
+    SURVEY_SCORED_DATE = 'surveyScoredDate',
+    SURVEY_CUSTOMER_ID = 'surveyCustomerId',
+}
+
+export type ScoredSurveysData = Record<ScoredSurveyDataKey, string | null>
+
+export type ScoredSurveysQueryData = {
+    isFetching: boolean
+    isError: boolean
+    data?: ScoredSurveysData[]
+}
+
+export type RawScoredSurveyData = {
+    [TicketDimension.TicketId]: string | null
+    [TicketDimension.SurveyScore]: string
+    [TicketSatisfactionSurveyDimension.SurveyCustomerId]: string | null
+    [TicketSatisfactionSurveyDimension.SurveyComment]: string | null
+    [TicketSatisfactionSurveyDimension.SurveyScoredDatetime]: string | null
+    [EnrichmentFields.CustomerName]: string
+    [EnrichmentFields.AssigneeName]: string
+}
+
+const mapScoredSurveysQueryResponse = (
+    allData?: MergedRecord<
+        TicketSatisfactionSurveyDimension | EnrichmentFields,
+        TicketDimension
+    >[]
+): ScoredSurveysData[] | undefined => {
+    if (!allData) {
+        return
+    }
+
+    return allData.map((result) => ({
+        ticketId: result[TicketDimension.TicketId] || null,
+        surveyScore: result[TicketDimension.SurveyScore] || null,
+        comment:
+            result[TicketSatisfactionSurveyDimension.SurveyComment] || null,
+        assignee: result[EnrichmentFields.AssigneeName] || null,
+        customerName: result[EnrichmentFields.CustomerName] || null,
+        surveyCustomerId:
+            result[TicketSatisfactionSurveyDimension.SurveyCustomerId] || null,
+        surveyScoredDate:
+            result[TicketSatisfactionSurveyDimension.SurveyScoredDatetime] ||
+            null,
+    }))
+}
+
+export const useScoredSurveys = (
+    filters: StatsFilters,
+    timezone: string,
+    limit?: number
+): ScoredSurveysQueryData => {
+    const {data, isFetching, isError} = useMetricPerDimensionWithEnrichment(
+        scoredSurveysQueryFactory(filters, timezone, limit),
+        [EnrichmentFields.CustomerName, EnrichmentFields.AssigneeName],
+        EnrichmentFields.TicketId
+    )
+
+    const processedData = useMemo(() => {
+        return mapScoredSurveysQueryResponse(data?.allData)
+    }, [data?.allData])
+
+    return {
+        data: processedData,
+        isFetching,
+        isError,
+    }
+}
+
+export const fetchScoredSurveys = (
+    filters: StatsFilters,
+    timezone: string,
+    limit?: number
+) =>
+    fetchMetricPerDimensionWithEnrichment(
+        scoredSurveysQueryFactory(filters, timezone, limit),
+        [EnrichmentFields.CustomerName, EnrichmentFields.AssigneeName],
+        EnrichmentFields.TicketId
+    )
+        .then((result) => {
+            return {
+                ...result,
+                data: mapScoredSurveysQueryResponse(result.data?.allData),
+            }
+        })
+        .catch(() => ({
+            data: null,
+            isFetching: false,
+            isError: true,
+        }))

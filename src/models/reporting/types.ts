@@ -120,10 +120,12 @@ export enum EnrichmentFields {
     Description = 'Ticket.excerpt',
     Channel = 'Ticket.channel',
     AssigneeId = 'Ticket.assignee_user_id',
+    AssigneeName = 'Ticket.assignee_name',
     CreatedDatetime = 'Ticket.created_datetime',
     ContactReason = 'Ticket.contact_reason',
     IsUnread = 'Ticket.is_unread',
     CustomerIntegrationDataByExternalId = 'CustomerIntegrationDataByExternalId.id',
     OrderCustomerId = 'OrderConversion.customerId',
     CustomFields = 'Ticket.custom_fields',
+    CustomerName = 'Ticket.customer_name',
 }

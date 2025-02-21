@@ -5,6 +5,7 @@ import {renderHook} from '@testing-library/react-hooks'
 import {defaultEnrichmentFields} from 'hooks/reporting/useDrillDownData'
 import {
     fetchMetricPerDimension,
+    fetchMetricPerDimensionWithEnrichment,
     QueryReturnType,
     useMetricPerDimension,
     useMetricPerDimensionWithBreakdown,
@@ -387,6 +388,80 @@ describe('useMetricPerDimensionWithEnrichment', () => {
                 defaultEnrichmentFields,
                 EnrichmentFields.TicketId
             )
+        })
+    })
+})
+
+describe('fetchMetricPerDimensionWithEnrichment', () => {
+    const mockQuery = {
+        measures: ['testMeasure'],
+        dimensions: ['testDimension'],
+    }
+    const mockEnrichmentFields = [EnrichmentFields.AssigneeName]
+    const mockEnrichmentIdField = EnrichmentFields.TicketId
+
+    const mockApiResponse = {
+        data: [
+            {testMeasure: '100', testDimension: '1'},
+            {testMeasure: '200', testDimension: '2'},
+        ],
+        enrichment: [
+            {testDimension: '1', extraInfo: 'Info 1'},
+            {testDimension: '2', extraInfo: 'Info 2'},
+        ],
+    }
+
+    const mockEnrichedData = {
+        data: {
+            data: [{testMeasure: '100', testDimension: '1', enriched: true}],
+        },
+    }
+    it('should fetch and return enriched data successfully', async () => {
+        postEnrichedReportingMock.mockResolvedValue(mockApiResponse as any)
+        withEnrichmentMock.mockReturnValue(mockEnrichedData as any)
+
+        const result = await fetchMetricPerDimensionWithEnrichment(
+            mockQuery as any,
+            mockEnrichmentFields,
+            mockEnrichmentIdField
+        )
+
+        expect(postEnrichedReportingMock).toHaveBeenCalledWith(
+            mockQuery,
+            mockEnrichmentFields
+        )
+        expect(withEnrichmentMock).toHaveBeenCalledWith(
+            mockApiResponse,
+            'testDimension',
+            mockEnrichmentFields,
+            mockEnrichmentIdField
+        )
+        expect(result).toEqual({
+            data: {
+                allData: mockEnrichedData.data.data,
+            },
+            isFetching: false,
+            isError: false,
+        })
+    })
+
+    it('should handle API failure and return an error state', async () => {
+        postEnrichedReportingMock.mockRejectedValue(new Error('API Error'))
+
+        const result = await fetchMetricPerDimensionWithEnrichment(
+            mockQuery as any,
+            mockEnrichmentFields,
+            mockEnrichmentIdField
+        )
+
+        expect(postEnrichedReportingMock).toHaveBeenCalledWith(
+            mockQuery,
+            mockEnrichmentFields
+        )
+        expect(result).toEqual({
+            data: null,
+            isFetching: false,
+            isError: true,
         })
     })
 })

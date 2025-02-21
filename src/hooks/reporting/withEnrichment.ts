@@ -7,7 +7,11 @@ export type KeyedRecord<keys extends string> = {
     [K in keys]: any
 }
 export type MergedRecord<AKeys extends string, BKeys extends string> = {
-    [K in AKeys & BKeys]: KeyedRecord<AKeys>[K] | KeyedRecord<BKeys>[K]
+    [K in AKeys | BKeys]: K extends AKeys
+        ? KeyedRecord<AKeys>[K]
+        : K extends BKeys
+          ? KeyedRecord<BKeys>[K]
+          : never
 }
 
 export const withEnrichment = <
@@ -70,7 +74,10 @@ const merge = <T extends string, K extends string, ID extends string>(
     fields: K[],
     enrichment?: KeyedRecord<K>
 ): MergedRecord<T, K | EnrichmentFields> & IDRecord<ID> => {
-    return fields.reduce((obj, field) => {
-        return {...obj, [field]: enrichment?.[field] || null}
-    }, result)
+    return fields.reduce(
+        (obj, field) => {
+            return {...obj, [field]: enrichment?.[field] || null}
+        },
+        result as MergedRecord<T, K | EnrichmentFields> & IDRecord<ID>
+    )
 }

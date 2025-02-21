@@ -13,9 +13,14 @@ import AverageSurveyScoreDonutChart from 'pages/stats/quality-management/satisfa
 import {ResponseRateTrendCard} from 'pages/stats/quality-management/satisfaction/ResponseRateTrendCard'
 import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
 import {SatisfactionScoreTrendCard} from 'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard'
+import ScoredSurveysChart from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysChart'
+import {SCORED_SURVEYS} from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/utils'
 import {SurveysSentTrendCard} from 'pages/stats/quality-management/satisfaction/SurveysSentTrendCard'
 import {STATS_ROUTES} from 'routes/constants'
-import {fetchSurveyScoresReportData} from 'services/reporting/satisfactionReportingService'
+import {
+    fetchSurveyScoresReportData,
+    fetchScoredSurveysReportData,
+} from 'services/reporting/satisfactionReportingService'
 import {SatisfactionMetric} from 'state/ui/stats/types'
 
 export enum SatisfactionChart {
@@ -25,6 +30,7 @@ export enum SatisfactionChart {
     AverageSurveyScoreDonutChart = 'average-survey-score-donut-chart',
     CommentHighlightsChart = 'comment-highlights-chart',
     AverageCSATPerDimensionTrendChart = 'average-csat-per-dimension-trend-chart',
+    ScoredSurveysChart = 'scored-survey-chart',
 }
 
 export const SATISFACTION_TITLE = 'Satisfaction'
@@ -171,6 +177,18 @@ export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {
                 },
             ],
             chartType: ChartType.Graph,
+        },
+        [SatisfactionChart.ScoredSurveysChart]: {
+            chartComponent: ScoredSurveysChart,
+            label: SCORED_SURVEYS.TITLE,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Table,
+                    fetch: fetchScoredSurveysReportData,
+                },
+            ],
+            description: SCORED_SURVEYS.DESCRIPTION,
+            chartType: ChartType.Table,
         },
     },
 } as const

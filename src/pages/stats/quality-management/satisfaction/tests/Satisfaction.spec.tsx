@@ -17,6 +17,7 @@ import {
     SATISFACTION_TITLE,
 } from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
 import {SatisfactionScoreTrendCard} from 'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard'
+import ScoredSurveyChart from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysChart'
 import {SurveysSentTrendCard} from 'pages/stats/quality-management/satisfaction/SurveysSentTrendCard'
 import {defaultStatsFilters} from 'state/stats/statsSlice'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
@@ -82,6 +83,11 @@ jest.mock(
 )
 const CommentHighlightsChartMock = assumeMock(CommentHighlightsChart)
 
+jest.mock(
+    'pages/stats/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysChart'
+)
+const ScoredSurveyChartMock = assumeMock(ScoredSurveyChart)
+
 describe('<Satisfaction>', () => {
     const defaultState = {
         stats: {
@@ -109,6 +115,7 @@ describe('<Satisfaction>', () => {
         SatisfactionDownloadDataButtonMock.mockImplementation(componentMock)
         CommentHighlightsChartMock.mockImplementation(componentMock)
         AverageScorePerDimensionTrendChartMock.mockImplementation(componentMock)
+        ScoredSurveyChartMock.mockImplementation(componentMock)
     })
 
     it('should render new satisfaction report page', () => {
@@ -124,6 +131,7 @@ describe('<Satisfaction>', () => {
         expect(AverageSurveyScoreDonutChartMock).toHaveBeenCalled()
         expect(CommentHighlightsChartMock).toHaveBeenCalled()
         expect(AverageScorePerDimensionTrendChartMock).toHaveBeenCalled()
+        expect(SatisfactionDownloadDataButtonMock).toHaveBeenCalled()
     })
 
     it('should contain filters panel component', () => {
@@ -140,6 +148,7 @@ describe('<Satisfaction>', () => {
             expect(AverageSurveyScoreDonutChartMock).toHaveBeenCalled()
             expect(CommentHighlightsChartMock).toHaveBeenCalled()
             expect(AverageScorePerDimensionTrendChartMock).toHaveBeenCalled()
+            expect(SatisfactionDownloadDataButtonMock).toHaveBeenCalled()
         })
     })
 })

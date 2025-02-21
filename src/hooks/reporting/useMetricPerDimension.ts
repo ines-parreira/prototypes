@@ -278,3 +278,44 @@ export function useMetricPerDimensionWithEnrichment(
                 : null,
     }
 }
+
+export const fetchMetricPerDimensionWithEnrichment = (
+    query: DrillDownReportingQuery,
+    enrichmentFields: EnrichmentFields[],
+    enrichmentIdField: EnrichmentFields
+): Promise<
+    MetricWithEnrichment<
+        (typeof query)['measures'][0],
+        (typeof query)['dimensions'][0]
+    >
+> => {
+    const idField = query.dimensions[0]
+
+    return postEnrichedReporting<{
+        data: (KeyedRecord<(typeof query)['measures'][0]> &
+            IDRecord<(typeof query)['dimensions'][0]>)[]
+        enrichment: (KeyedRecord<EnrichmentFields> &
+            IDRecord<(typeof query)['dimensions'][0]>)[]
+    }>(query, enrichmentFields)
+        .then((res) => {
+            const enrichedData = withEnrichment(
+                res,
+                idField,
+                enrichmentFields,
+                enrichmentIdField
+            )
+
+            return {
+                data: {
+                    allData: enrichedData.data.data,
+                },
+                isFetching: false,
+                isError: false,
+            }
+        })
+        .catch(() => ({
+            data: null,
+            isFetching: false,
+            isError: true,
+        }))
+}

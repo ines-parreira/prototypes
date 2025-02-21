@@ -2,11 +2,15 @@ import moment from 'moment/moment'
 
 import {useTables} from 'hooks/reporting/common/useTableReportData'
 import {useSatisfactionMetrics} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
+import {
+    fetchScoredSurveys,
+    ScoredSurveysData,
+    useScoredSurveys,
+} from 'hooks/reporting/quality-management/satisfaction/useScoredSurveys'
 import {fetchSurveyScores} from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
 import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
@@ -18,6 +22,7 @@ import {
 } from 'pages/stats/common/utils'
 import {formatSurveyScores} from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
 import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
+import {SCORED_SURVEYS_TABLE_COLUMNS} from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/utils'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {SatisfactionMetric} from 'state/ui/stats/types'
 import {createCsv} from 'utils/file'
@@ -51,6 +56,7 @@ export const SATISFACTION_TRENDS_METRICS_FILE_NAME =
     'satisfaction-trends-metrics'
 export const SATISFACTION_METRICS_FILE_NAME = 'satisfaction-metrics'
 export const SATISFACTION_AVERAGE_CSAT_OVER_TIME = '{metric}-over-time'
+export const SATISFACTION_SCORED_SURVEYS = 'satisfaction-scored-surveys'
 
 const formatTrendMetric = (column: SatisfactionMetric, value?: number | null) =>
     formatMetricValue(
@@ -82,7 +88,6 @@ export const saveReport = (data: SatisfactionReportData, period: Period) => {
         data.surveyScores,
         '- star count'
     ).map(({value, label}) => [label, value])
-
     const headers = getHeaders(period)
 
     const trendData = [
@@ -142,6 +147,16 @@ export const saveReport = (data: SatisfactionReportData, period: Period) => {
 export const useSatisfactionReportData = () => {
     const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
     const {reportData, isLoading, period} = useSatisfactionMetrics()
+    const {data, isFetching: isFetchingScoredSurveys} = useScoredSurveys(
+        cleanStatsFilters,
+        userTimezone,
+        500
+    )
+
+    const scoredSurveysFileName = getCsvFileNameWithDates(
+        period,
+        SATISFACTION_SCORED_SURVEYS
+    )
 
     const fileName = getCsvFileNameWithDates(
         period,
@@ -162,10 +177,11 @@ export const useSatisfactionReportData = () => {
     return {
         files: {
             [trendsFileName]: saveReport(reportData, period),
+            [scoredSurveysFileName]: formatScoredSurveysReport(data),
             ...files,
         },
         fileName,
-        isLoading: isLoading || isFetching,
+        isLoading: isLoading || isFetching || isFetchingScoredSurveys,
     }
 }
 
@@ -195,6 +211,57 @@ export const fetchSurveyScoresReportData = (
                     [fileName]: createCsv(
                         formatSurveyScoresReport(result, filters.period)
                     ),
+                },
+                fileName,
+                isLoading: false,
+                isError: false,
+            }
+        })
+        .catch(() => ({
+            files: {},
+            fileName,
+            isLoading: false,
+            isError: true,
+        }))
+}
+
+export const formatScoredSurveysReport = (
+    scoredSurveys?: ScoredSurveysData[] | null
+) => {
+    const EXPORTABLE_COLUMNS = SCORED_SURVEYS_TABLE_COLUMNS.filter(
+        (column) => column.property
+    )
+
+    const formattedScoredSurveys =
+        scoredSurveys?.map((scoredSurvey) =>
+            EXPORTABLE_COLUMNS.map((column) => {
+                return (
+                    (column.property && scoredSurvey[column.property]) ||
+                    NOT_AVAILABLE_PLACEHOLDER
+                )
+            })
+        ) || []
+
+    const headers = [...EXPORTABLE_COLUMNS.map((column) => column.title)]
+    return createCsv([headers, ...formattedScoredSurveys])
+}
+
+export const fetchScoredSurveysReportData = (
+    filters: StatsFilters,
+    timezone: string
+) => {
+    const fileName = getCsvFileNameWithDates(
+        filters.period,
+        SATISFACTION_SCORED_SURVEYS
+    )
+
+    const LIMIT = 500
+
+    return fetchScoredSurveys(filters, timezone, LIMIT)
+        .then((result) => {
+            return {
+                files: {
+                    [fileName]: formatScoredSurveysReport(result.data),
                 },
                 fileName,
                 isLoading: false,

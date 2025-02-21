@@ -7,6 +7,10 @@ import thunk from 'redux-thunk'
 
 import {useTables} from 'hooks/reporting/common/useTableReportData'
 import {useSatisfactionMetrics} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
+import {
+    fetchScoredSurveys,
+    useScoredSurveys,
+} from 'hooks/reporting/quality-management/satisfaction/useScoredSurveys'
 import {fetchSurveyScores} from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
 import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
@@ -19,10 +23,13 @@ import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfact
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {
     fetchSurveyScoresReportData,
+    formatScoredSurveysReport,
     SATISFACTION_METRICS_FILE_NAME,
+    SATISFACTION_SCORED_SURVEYS,
     SATISFACTION_TRENDS_METRICS_FILE_NAME,
     saveReport,
     useSatisfactionReportData,
+    fetchScoredSurveysReportData,
 } from 'services/reporting/satisfactionReportingService'
 import {SatisfactionMetric} from 'state/ui/stats/types'
 import {createCsv} from 'utils/file'
@@ -36,6 +43,9 @@ const useSatisfactionMetricsMock = assumeMock(useSatisfactionMetrics)
 jest.mock('hooks/reporting/quality-management/satisfaction/useSurveyScores')
 const fetchSurveyScoresMock = assumeMock(fetchSurveyScores)
 
+jest.mock('hooks/reporting/quality-management/satisfaction/useScoredSurveys')
+const fetchScoredSurveysMock = assumeMock(fetchScoredSurveys)
+
 jest.mock(
     'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/utils'
 )
@@ -43,6 +53,9 @@ const getLineChartFormattedInfoMock = assumeMock(getFormattedInfo)
 
 jest.mock('hooks/reporting/common/useTableReportData')
 const useTablesMock = assumeMock(useTables)
+
+jest.mock('hooks/reporting/quality-management/satisfaction/useScoredSurveys')
+const useScoredSurveysMock = assumeMock(useScoredSurveys)
 
 const mockStore = configureMockStore([thunk])
 
@@ -76,6 +89,11 @@ describe('satisfactionReportingService', () => {
         period,
         SATISFACTION_TRENDS_METRICS_FILE_NAME
     )
+
+    const scoredSurveysFileName = getCsvFileNameWithDates(
+        period,
+        SATISFACTION_SCORED_SURVEYS
+    )
     const exampleTrendData = {
         isFetching: false,
         isError: false,
@@ -99,6 +117,23 @@ describe('satisfactionReportingService', () => {
             ],
         },
     }
+
+    const exampleScoredSurveysData = {
+        isFetching: false,
+        isError: false,
+        data: [
+            {
+                ticketId: '123',
+                surveyScore: '2',
+                comment: "didn't understand the issue at all?",
+                assignee: 'John Doe',
+                customerName: 'Alice',
+                surveyCustomerId: '602166910',
+                surveyScoredDate: '2025-02-16T09:27:09.000',
+            },
+        ],
+    }
+
     const headers = [
         'Metric',
         `${startDate} - ${endDate}`,
@@ -278,6 +313,7 @@ describe('satisfactionReportingService', () => {
 
     describe('useSatisfactionReportData', () => {
         beforeEach(() => {
+            useScoredSurveysMock.mockReturnValue(exampleScoredSurveysData)
             useSatisfactionMetricsMock.mockReturnValue({
                 reportData: defaultData,
                 isLoading: false,
@@ -301,8 +337,58 @@ describe('satisfactionReportingService', () => {
             expect(result.current).toEqual({
                 files: {
                     [trendsFileName]: saveReport(defaultData, period),
+                    [scoredSurveysFileName]: formatScoredSurveysReport(
+                        exampleScoredSurveysData.data
+                    ),
                 },
                 fileName,
+                isLoading: false,
+            })
+        })
+    })
+
+    describe('fetchScoredSurveysReportData', () => {
+        const formattedExampleScoredSurveyData = formatScoredSurveysReport(
+            exampleScoredSurveysData.data
+        )
+
+        beforeEach(() => {
+            fetchScoredSurveysMock.mockResolvedValue(exampleScoredSurveysData)
+        })
+
+        it('should fetch and format Scored surveys report', async () => {
+            const result = await fetchScoredSurveysReportData(
+                {period},
+                userTimezone
+            )
+
+            const fileName = getCsvFileNameWithDates(
+                period,
+                SATISFACTION_SCORED_SURVEYS
+            )
+
+            expect(result).toEqual({
+                files: {
+                    [fileName]: formattedExampleScoredSurveyData,
+                },
+                fileName: fileName,
+                isError: false,
+                isLoading: false,
+            })
+        })
+
+        it('should return empty on error', async () => {
+            fetchScoredSurveysMock.mockRejectedValue({})
+
+            const result = await fetchSurveyScoresReportData(
+                {period},
+                userTimezone
+            )
+
+            expect(result).toEqual({
+                files: {},
+                fileName: trendsFileName,
+                isError: true,
                 isLoading: false,
             })
         })
