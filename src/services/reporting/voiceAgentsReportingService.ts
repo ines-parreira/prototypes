@@ -25,7 +25,6 @@ import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {ReportFetch} from 'pages/stats/custom-reports/types'
 import {VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME} from 'pages/stats/voice/constants/voiceAgents'
 import {
     fetchAnsweredCallsMetric,
@@ -278,7 +277,7 @@ const agentsSummaryDataSources: TableSummaryDataSources<VoiceAgentsPerformanceRe
         {fetchData: fetchAverageTalkTimeMetric, title: 'averageTalkTimeMetric'},
     ]
 
-export const fetchVoiceAgentsReportData: ReportFetch = async (
+export const fetchVoiceAgentsReportData = async (
     cleanStatsFilters: StatsFilters,
     userTimezone: string,
     _: ReportingGranularity,

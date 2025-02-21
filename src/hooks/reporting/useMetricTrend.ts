@@ -24,7 +24,10 @@ export type MetricTrendHook = (
 
 export type MetricTrendFetch = (
     statsFilters: StatsFilters,
-    timezone: string
+    timezone: string,
+    isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined,
+    aiAgentUserId: string | undefined,
+    costSavedPerInteraction: number
 ) => Promise<MetricTrend>
 
 export type QueryReturnType<Measure extends Cubes['measures']> = [

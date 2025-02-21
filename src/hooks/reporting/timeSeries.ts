@@ -6,12 +6,6 @@ import {
 } from 'hooks/reporting/useTimeSeries'
 import {OrderDirection} from 'models/api/types'
 import {Cubes} from 'models/reporting/cubes'
-
-import {
-    interactionsByEventTypeTimeSeriesQueryFactory,
-    interactionsTimeSeriesQueryFactory,
-    billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory,
-} from 'models/reporting/queryFactories/automate_v2/timeseries'
 import {closedTicketsTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {messagesSentTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {ticketsCreatedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
@@ -151,44 +145,3 @@ export const useTagsTicketCountTimeSeries = getTimeSeriesPerDimensionHook(
 export const fetchTagsTicketCountTimeSeries = getTimeSeriesPerDimensionFetch(
     tagsTicketCountTimeSeriesFactory
 )
-
-// Automate V2
-export function useAutomationDatasetTimeSeries(
-    filters: StatsFilters,
-    timezone: string,
-    granularity: ReportingGranularity
-) {
-    return useTimeSeries(
-        interactionsTimeSeriesQueryFactory(filters, timezone, granularity)
-    )
-}
-
-export function useAutomationDatasetByEventTypeTimeSeries(
-    filters: StatsFilters,
-    timezone: string,
-    granularity: ReportingGranularity
-) {
-    return useTimeSeriesPerDimension(
-        interactionsByEventTypeTimeSeriesQueryFactory(
-            filters,
-            timezone,
-            granularity
-        )
-    )
-}
-
-export function useBillableTicketDatasetTimeSeries(
-    filters: StatsFilters,
-    timezone: string,
-    granularity: ReportingGranularity,
-    aiAgentUserId?: string
-) {
-    return useTimeSeries(
-        billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory(
-            filters,
-            timezone,
-            granularity,
-            aiAgentUserId
-        )
-    )
-}

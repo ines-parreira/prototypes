@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
-import {useAutomateMetricsTrendV2} from 'hooks/reporting/automate/useAutomationDatasetV2'
+import {useAutomateMetricsTrend} from 'hooks/reporting/automate/useAutomationDataset'
 import {useTicketHandleTimeTrend} from 'hooks/reporting/metricTrends'
 import useAppSelector from 'hooks/useAppSelector'
 import {StatsFilters} from 'models/stat/types'
@@ -58,7 +58,7 @@ const AutomateLandingPageDashboardV2 = ({
         automationRateTrend,
         decreaseInFirstResponseTimeTrend,
         decreaseInResolutionTimeTrend,
-    } = useAutomateMetricsTrendV2(filters, userTimezone)
+    } = useAutomateMetricsTrend(filters, userTimezone)
 
     const ticketHandleTimeTrend = useTicketHandleTimeTrend(
         filters,

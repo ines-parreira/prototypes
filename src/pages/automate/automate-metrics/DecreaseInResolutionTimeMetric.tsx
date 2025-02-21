@@ -8,25 +8,23 @@ import {DECREASE_IN_RESOLUTION_TIME} from './constants'
 import {BaseAutomateMetricProps} from './types'
 import {getTrendProps, toDuration} from './utils'
 
-export const DECREASE_IN_RESOLUTION_TIME_TOOLTIP = (
-    <>
-        How much faster Gorgias Automate is helping your team resolve
-        interactions, based on your average resolution time.{' '}
-        <a target="_blank" href="https://link.gorgias.com/ec5" rel="noreferrer">
-            How is it calculated?
-        </a>
-    </>
-)
+export const DECREASE_IN_RESOLUTION_TIME_TOOLTIP = {
+    title: 'How much faster Gorgias Automate is helping your team resolve interactions, based on your average resolution time.',
+    link: 'https://link.gorgias.com/ec5',
+    linkText: 'How is it calculated?',
+}
 
 export const DecreaseInResolutionTimeMetric = ({
     trend: decreaseInResolutionTimeMetric,
+    chartId,
+    dashboard,
 }: BaseAutomateMetricProps) => {
     return (
         <MetricCard
             title={DECREASE_IN_RESOLUTION_TIME}
-            hint={{
-                title: DECREASE_IN_RESOLUTION_TIME_TOOLTIP,
-            }}
+            hint={DECREASE_IN_RESOLUTION_TIME_TOOLTIP}
+            dashboard={dashboard}
+            chartId={chartId}
             isLoading={decreaseInResolutionTimeMetric.isFetching}
         >
             <BigNumberMetric

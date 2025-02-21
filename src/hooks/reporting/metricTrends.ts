@@ -1,7 +1,4 @@
-import useMetricTrend, {
-    fetchMetricTrend,
-    MetricTrendFetch,
-} from 'hooks/reporting/useMetricTrend'
+import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
 import {OrderDirection} from 'models/api/types'
 import {Cubes} from 'models/reporting/cubes'
 import {ticketAverageHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
@@ -27,7 +24,7 @@ type QueryFactory<TCube extends Cubes> = (
 ) => ReportingQuery<TCube>
 
 export const getTrendFetch =
-    <TCube extends Cubes>(query: QueryFactory<TCube>): MetricTrendFetch =>
+    <TCube extends Cubes>(query: QueryFactory<TCube>) =>
     (filters: StatsFilters, timezone: string) =>
         fetchMetricTrend(
             query(filters, timezone),

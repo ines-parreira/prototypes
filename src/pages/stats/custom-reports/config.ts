@@ -1,6 +1,11 @@
 import _flatten from 'lodash/flatten'
 
 import {
+    AutomateOverviewChart,
+    AutomateOverviewReportConfig,
+} from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
+
+import {
     ChartConfig,
     ReportConfig,
     ReportsModalConfig,
@@ -62,6 +67,7 @@ export const SUPPORT_PERFORMANCE_OVERVIEW_ID =
 export const AGENT_PERFORMANCE_ID = 'SupportPerformanceAgentsReportConfig'
 
 export enum ReportsIDs {
+    AutomateOverviewReportConfig = 'AutomateOverviewReportConfig',
     SupportPerformanceOverviewReportConfig = 'SupportPerformanceOverviewReportConfig',
     SupportPerformanceAgentsReportConfig = 'SupportPerformanceAgentsReportConfig',
     SupportPerformanceRevenueReportConfig = 'SupportPerformanceRevenueReportConfig',
@@ -140,6 +146,16 @@ export const REPORTS_CONFIG: ReportsModalConfig = [
                 type: SatisfactionChart,
                 config: SatisfactionReportConfig,
                 id: ReportsIDs.SatisfactionReportConfig,
+            },
+        ],
+    },
+    {
+        category: 'Automate',
+        children: [
+            {
+                type: AutomateOverviewChart,
+                config: AutomateOverviewReportConfig,
+                id: ReportsIDs.AutomateOverviewReportConfig,
             },
         ],
     },

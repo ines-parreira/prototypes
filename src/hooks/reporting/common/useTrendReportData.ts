@@ -1,7 +1,14 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import {useEffect, useState} from 'react'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
 
 import {MetricTrendFetch} from 'hooks/reporting/useMetricTrend'
 import {StatsFilters} from 'models/stat/types'
+import {AGENT_COST_PER_TICKET} from 'pages/automate/automate-metrics/constants'
+import {useMoneySavedPerInteractionWithAutomate} from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import {formatMetricValue, MetricValueFormat} from 'pages/stats/common/utils'
 import {FormattedTrendDataWithLabel} from 'services/reporting/supportPerformanceReportingService'
 
@@ -14,6 +21,16 @@ export const useTrendReportData = (
         title: string
     }[]
 ) => {
+    const isAutomateNonFilteredDenominatorInAutomationRate:
+        | boolean
+        | undefined =
+        useFlags()[
+            FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate
+        ]
+    const aiAgentUserId = useAIAgentUserId()
+    const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
+        AGENT_COST_PER_TICKET
+    )
     const [trendData, setTrendData] = useState<{
         isFetching: boolean
         data: FormattedTrendDataWithLabel[]
@@ -24,7 +41,13 @@ export const useTrendReportData = (
 
     useEffect(() => {
         const workloadTrendPromises = trendsReportSource.map((r) =>
-            r.fetchTrend(cleanStatsFilters, userTimezone)
+            r.fetchTrend(
+                cleanStatsFilters,
+                userTimezone,
+                isAutomateNonFilteredDenominatorInAutomationRate,
+                aiAgentUserId,
+                costSavedPerInteraction
+            )
         )
         void Promise.all([...workloadTrendPromises])
             .then((results) => {
@@ -44,7 +67,14 @@ export const useTrendReportData = (
                 })
             })
             .catch(() => setTrendData({isFetching: false, data: []}))
-    }, [cleanStatsFilters, userTimezone, trendsReportSource])
+    }, [
+        aiAgentUserId,
+        cleanStatsFilters,
+        costSavedPerInteraction,
+        isAutomateNonFilteredDenominatorInAutomationRate,
+        trendsReportSource,
+        userTimezone,
+    ])
 
     return trendData
 }

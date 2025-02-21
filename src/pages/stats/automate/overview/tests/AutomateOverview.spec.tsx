@@ -1,8 +1,10 @@
 import {QueryClientProvider} from '@tanstack/react-query'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentProps} from 'react'
 import {act} from 'react-dom/test-utils'
 import {Provider} from 'react-redux'
@@ -10,15 +12,19 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {TicketChannel} from 'business/types/ticket'
-import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
+import {useFilteredAutomatedInteractions} from 'hooks/reporting/automate/automationTrends'
 import {AutomateTimeseries} from 'hooks/reporting/automate/types'
 import {
-    useAutomateMetricsTimeseriesV2,
-    useAutomateMetricsTrendV2,
-} from 'hooks/reporting/automate/useAutomationDatasetV2'
+    useAutomateMetricsTimeSeries,
+    useAutomateMetricsTrend,
+} from 'hooks/reporting/automate/useAutomationDataset'
+import {useAutomationRateTimeSeriesData} from 'hooks/reporting/automate/useAutomationRateTimeSeriesData'
+import {useAutomationRateTrend} from 'hooks/reporting/automate/useAutomationRateTrend'
+import {useDecreaseInFirstResponseTimeTrend} from 'hooks/reporting/automate/useDecreaseInFirstResponseTimeTrend'
+import {useDecreaseInResolutionTimeTrend} from 'hooks/reporting/automate/useDecreaseInResolutionTimeTrend'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {useSearchParam} from 'hooks/useSearchParam'
 import {IntegrationType} from 'models/integration/constants'
@@ -28,12 +34,13 @@ import {AUTOMATION_RATE_FIXED_STATS} from 'pages/automate/automate-metrics/const
 import {
     AutomateOverview,
     AAO_TIPS_VISIBILITY_KEY,
-} from 'pages/stats/AutomateOverview'
+} from 'pages/stats/automate/overview/AutomateOverview'
+import {AutomateOverviewDownloadDataButton} from 'pages/stats/automate/overview/AutomateOverviewDownloadDataButton'
+import {TimeSavedByAgentsKPIChart} from 'pages/stats/automate/overview/charts/TimeSavedByAgentsKPIChart'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButton'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
-import {saveReport} from 'services/reporting/automateOverviewReportingService'
 import {AccountFeature, AccountSettingType} from 'state/currentAccount/types'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
@@ -74,17 +81,17 @@ jest.mock('react-router-dom', () => ({
         }) as any,
 }))
 
-// Timeseries
-jest.mock('hooks/reporting/timeSeries')
-
-jest.mock('hooks/reporting/automate/useAutomationDatasetV2')
-const useAutomateMetricsTimeseriesV2Mock = assumeMock(
-    useAutomateMetricsTimeseriesV2
+// TimeSeries
+jest.mock('hooks/reporting/automate/useAutomationDataset')
+const useAutomateMetricsTimeSeriesMock = assumeMock(
+    useAutomateMetricsTimeSeries
 )
-const useAutomateMetricsTrendV2Mock = assumeMock(useAutomateMetricsTrendV2)
+const useAutomateMetricsTrendMock = assumeMock(useAutomateMetricsTrend)
 
-jest.mock('common/segment')
-const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
+jest.mock('hooks/reporting/automate/automationTrends')
+const useFilteredAutomatedInteractionsMock = assumeMock(
+    useFilteredAutomatedInteractions
+)
 
 jest.mock('pages/stats/common/components/TrendBadge')
 const trendBadgeMock = assumeMock(TrendBadge)
@@ -93,13 +100,33 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 
-jest.mock('services/reporting/automateOverviewReportingService')
-const saveReportMock = assumeMock(saveReport)
+jest.mock('pages/stats/automate/overview/AutomateOverviewDownloadDataButton')
+const AutomateOverviewDownloadDataButtonMock = assumeMock(
+    AutomateOverviewDownloadDataButton
+)
 
 jest.mock('hooks/useSearchParam', () => ({
     useSearchParam: jest.fn(),
 }))
 const mockedUseSearchParam = assumeMock(useSearchParam)
+
+jest.mock('hooks/reporting/automate/useAutomationRateTrend')
+const useAutomationRateTrendMock = assumeMock(useAutomationRateTrend)
+jest.mock('hooks/reporting/automate/useDecreaseInResolutionTimeTrend')
+const useDecreaseInResolutionTimeTrendMock = assumeMock(
+    useDecreaseInResolutionTimeTrend
+)
+jest.mock('hooks/reporting/automate/useDecreaseInFirstResponseTimeTrend')
+const useDecreaseInFirstResponseTimeTrendMock = assumeMock(
+    useDecreaseInFirstResponseTimeTrend
+)
+jest.mock('hooks/reporting/automate/useAutomationRateTimeSeriesData')
+const useAutomationRateTimeSeriesDataMock = assumeMock(
+    useAutomationRateTimeSeriesData
+)
+
+jest.mock('pages/stats/automate/overview/charts/TimeSavedByAgentsKPIChart')
+const TimeSavedByAgentsKPIChartMock = assumeMock(TimeSavedByAgentsKPIChart)
 
 describe('<AutomateOverview />', () => {
     function getIntegration(id: number, type: IntegrationType) {
@@ -184,13 +211,6 @@ describe('<AutomateOverview />', () => {
             prevValue: 100,
         },
     }
-    const resolutionTimeWithAutomationTrend = {
-        ...defaultMetricTrend,
-        data: {
-            value: 92,
-            prevValue: 100,
-        },
-    }
     const automationRateTrend = {
         ...defaultMetricTrend,
         data: {
@@ -206,7 +226,7 @@ describe('<AutomateOverview />', () => {
         },
     }
 
-    const automateMetricsTimeseriesV2: AutomateTimeseries = {
+    const automateMetricsTimeSeries: AutomateTimeseries = {
         isFetching: false,
         isError: false,
         automationRateTimeSeries: [
@@ -240,10 +260,25 @@ describe('<AutomateOverview />', () => {
         jest.resetAllMocks()
         mockFlags({[FeatureFlagKey.AutomateOverviewChannelsFilter]: true})
 
-        useAutomateMetricsTimeseriesV2Mock.mockReturnValue(
-            automateMetricsTimeseriesV2
+        useFilteredAutomatedInteractionsMock.mockReturnValue(
+            automatedInteractionTrend
         )
-        useAutomateMetricsTrendV2Mock.mockReturnValue({
+        useAutomationRateTrendMock.mockReturnValue(automationRateTrend)
+        useDecreaseInResolutionTimeTrendMock.mockReturnValue(
+            decreaseInResolutionTimeWithAutomateTrend
+        )
+        useDecreaseInFirstResponseTimeTrendMock.mockReturnValue(
+            firstResponseTimeWithAutomationTrend
+        )
+        useAutomationRateTimeSeriesDataMock.mockReturnValue({
+            data: [],
+            isError: false,
+            isFetching: false,
+        })
+        useAutomateMetricsTimeSeriesMock.mockReturnValue(
+            automateMetricsTimeSeries
+        )
+        useAutomateMetricsTrendMock.mockReturnValue({
             automatedInteractionTrend,
             automationRateTrend,
             decreaseInFirstResponseTimeTrend:
@@ -253,6 +288,7 @@ describe('<AutomateOverview />', () => {
         })
 
         trendBadgeMock.mockImplementation(() => <div>TrendBadgeMock</div>)
+        AutomateOverviewDownloadDataButtonMock.mockImplementation(() => <div />)
 
         mockedUseSearchParam.mockReturnValue([null, jest.fn()])
     })
@@ -375,23 +411,80 @@ describe('<AutomateOverview />', () => {
         )
     })
 
-    it('should send event to segment and call saveReport on download data button click', () => {
-        const {getByText} = render(
-            <Provider store={mockStore(defaultState)}>
+    it('should render AutomateOverviewDownloadDataButton', () => {
+        const store = mockStore(defaultState)
+        render(
+            <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <AutomateOverview />
                 </QueryClientProvider>
             </Provider>
         )
-        fireEvent.click(getByText(/Download data/))
 
-        expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.StatDownloadClicked,
-            expect.objectContaining({
-                name: 'all-metrics',
-            })
+        expect(AutomateOverviewDownloadDataButton).toHaveBeenCalled()
+    })
+
+    it('should render 72 hour notification', () => {
+        const notificationFragment = 'Data for the past 72 hours'
+        const store = mockStore(defaultState)
+
+        render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <AutomateOverview />
+                </QueryClientProvider>
+            </Provider>
         )
-        expect(saveReportMock).toHaveBeenCalled()
+
+        expect(
+            screen.getByText(new RegExp(notificationFragment))
+        ).toBeInTheDocument()
+        userEvent.click(screen.getByAltText('close-icon'))
+
+        expect(
+            screen.queryByText(new RegExp(notificationFragment))
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render notification about missing data', () => {
+        jest.useFakeTimers().setSystemTime(new Date('2025-02-02'))
+        const notificationFragment = 'There is no activity for these features'
+        const state = {
+            ...defaultState,
+            stats: {
+                filters: {
+                    period: {
+                        start_datetime: '2024-01-06T00:00:00Z',
+                        end_datetime: '2024-01-06T00:00:00Z',
+                    },
+                },
+            },
+        }
+        useFilteredAutomatedInteractionsMock.mockReturnValue({
+            ...defaultMetricTrend,
+            data: {
+                value: null,
+                prevValue: null,
+            },
+        })
+
+        const store = mockStore(state)
+        render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <AutomateOverview />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        expect(
+            screen.getByText(new RegExp(notificationFragment))
+        ).toBeInTheDocument()
+        userEvent.click(screen.getByAltText('close-icon'))
+
+        expect(
+            screen.queryByText(new RegExp(notificationFragment))
+        ).not.toBeInTheDocument()
     })
 
     describe('Performance Tips', () => {
@@ -457,24 +550,17 @@ describe('<AutomateOverview />', () => {
                 /You’re doing great/,
                 AUTOMATION_RATE_FIXED_STATS.top10P + 0.1,
             ],
-        ])('%s', (testName, sentiment, value) => {
+        ])('%s', (_, sentiment, value) => {
             it('should show tips with sentiment ', () => {
                 localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
-
-                useAutomateMetricsTrendV2Mock.mockReturnValue({
-                    automatedInteractionTrend,
-                    automationRateTrend: {
-                        ...defaultMetricTrend,
-                        data: {
-                            value,
-                            prevValue: value,
-                        },
+                useAutomationRateTrendMock.mockReturnValue({
+                    ...defaultMetricTrend,
+                    data: {
+                        value,
+                        prevValue: value,
                     },
-                    decreaseInFirstResponseTimeTrend:
-                        firstResponseTimeWithAutomationTrend,
-                    decreaseInResolutionTimeTrend:
-                        decreaseInResolutionTimeWithAutomateTrend,
                 })
+
                 const screen = render(
                     <Provider store={mockStore(defaultState)}>
                         <QueryClientProvider client={queryClient}>
@@ -493,21 +579,14 @@ describe('<AutomateOverview />', () => {
     describe.each([['show dash in case of', 0]])('%s', (testName, value) => {
         it('should show tips with sentiment ', () => {
             localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
-
-            useAutomateMetricsTrendV2Mock.mockReturnValue({
-                automatedInteractionTrend,
-                automationRateTrend: {
-                    ...defaultMetricTrend,
-                    data: {
-                        value,
-                        prevValue: value,
-                    },
+            useAutomationRateTrendMock.mockReturnValue({
+                ...defaultMetricTrend,
+                data: {
+                    value,
+                    prevValue: value,
                 },
-                decreaseInFirstResponseTimeTrend:
-                    firstResponseTimeWithAutomationTrend,
-                decreaseInResolutionTimeTrend:
-                    decreaseInResolutionTimeWithAutomateTrend,
             })
+
             const screen = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>
@@ -516,62 +595,48 @@ describe('<AutomateOverview />', () => {
                 </Provider>
             )
             fireEvent.click(screen.getByText(/Show tips/))
+
             expect(screen.getByText('-'))
         })
     })
 
-    describe.each([['FRT show 0h 0m in case of', 0]])(
-        '%s',
-        (testName, value) => {
-            it('should show tips with sentiment ', () => {
-                localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
-
-                useAutomateMetricsTrendV2Mock.mockReturnValue({
-                    automatedInteractionTrend,
-                    automationRateTrend,
-                    decreaseInFirstResponseTimeTrend: {
-                        ...defaultMetricTrend,
-                        data: {
-                            value,
-                            prevValue: value,
-                        },
-                    },
-                    decreaseInResolutionTimeTrend:
-                        decreaseInResolutionTimeWithAutomateTrend,
-                })
-
-                const screen = render(
-                    <Provider store={mockStore(defaultState)}>
-                        <QueryClientProvider client={queryClient}>
-                            <AutomateOverview />
-                        </QueryClientProvider>
-                    </Provider>
-                )
-                fireEvent.click(screen.getByText(/Show tips/))
-                expect(screen.getByText('0h 0m'))
+    describe.each([['FRT show 0h 0m in case of', 0]])('%s', (_, value) => {
+        it('should show tips with sentiment ', () => {
+            localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
+            useDecreaseInFirstResponseTimeTrendMock.mockReturnValue({
+                ...defaultMetricTrend,
+                data: {
+                    value,
+                    prevValue: value,
+                },
             })
-        }
-    )
+
+            const screen = render(
+                <Provider store={mockStore(defaultState)}>
+                    <QueryClientProvider client={queryClient}>
+                        <AutomateOverview />
+                    </QueryClientProvider>
+                </Provider>
+            )
+            fireEvent.click(screen.getByText(/Show tips/))
+
+            expect(screen.getByText('0h 0m'))
+        })
+    })
 
     describe.each([
         ['DecreaseInResolutionTimeWithAutomation show 0h 0m in case of', 0],
     ])('%s', (testName, value) => {
         it('should show tips with sentiment ', () => {
             localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
-
-            useAutomateMetricsTrendV2Mock.mockReturnValue({
-                automatedInteractionTrend,
-                automationRateTrend,
-                decreaseInFirstResponseTimeTrend:
-                    firstResponseTimeWithAutomationTrend,
-                decreaseInResolutionTimeTrend: {
-                    ...defaultMetricTrend,
-                    data: {
-                        value,
-                        prevValue: value,
-                    },
+            useDecreaseInResolutionTimeTrendMock.mockReturnValue({
+                ...defaultMetricTrend,
+                data: {
+                    value,
+                    prevValue: value,
                 },
             })
+
             const screen = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>
@@ -580,6 +645,7 @@ describe('<AutomateOverview />', () => {
                 </Provider>
             )
             fireEvent.click(screen.getByText(/Show tips/))
+
             expect(screen.getByText('0h 0m'))
         })
     })
@@ -587,21 +653,14 @@ describe('<AutomateOverview />', () => {
     describe.each([['AI show 0 in case of', 0]])('%s', (testName, value) => {
         it('should show tips with sentiment ', () => {
             localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
-
-            useAutomateMetricsTrendV2Mock.mockReturnValue({
-                automatedInteractionTrend: {
-                    ...defaultMetricTrend,
-                    data: {
-                        value,
-                        prevValue: value,
-                    },
+            useFilteredAutomatedInteractionsMock.mockReturnValue({
+                ...defaultMetricTrend,
+                data: {
+                    value,
+                    prevValue: value,
                 },
-                automationRateTrend,
-                decreaseInFirstResponseTimeTrend:
-                    firstResponseTimeWithAutomationTrend,
-                decreaseInResolutionTimeTrend:
-                    resolutionTimeWithAutomationTrend,
             })
+
             const screen = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>
@@ -610,6 +669,7 @@ describe('<AutomateOverview />', () => {
                 </Provider>
             )
             fireEvent.click(screen.getByText(/Show tips/))
+
             expect(screen.getByText('0'))
         })
     })
@@ -645,7 +705,7 @@ describe('<AutomateOverview />', () => {
                     ],
                 ],
             }
-            useAutomateMetricsTimeseriesV2Mock.mockReturnValue(
+            useAutomateMetricsTimeSeriesMock.mockReturnValue(
                 automateMetricsTimeseries
             )
             const screen = render(
@@ -694,7 +754,7 @@ describe('<AutomateOverview />', () => {
                     ],
                 ],
             }
-            useAutomateMetricsTimeseriesV2Mock.mockReturnValue(
+            useAutomateMetricsTimeSeriesMock.mockReturnValue(
                 automateMetricsTimeseries
             )
             const screen = render(
@@ -739,7 +799,7 @@ describe('<AutomateOverview />', () => {
                     ],
                 ],
             }
-            useAutomateMetricsTimeseriesV2Mock.mockReturnValue(
+            useAutomateMetricsTimeSeriesMock.mockReturnValue(
                 automateMetricsTimeseries
             )
 
@@ -787,7 +847,7 @@ describe('<AutomateOverview />', () => {
                     ],
                 ],
             }
-            useAutomateMetricsTimeseriesV2Mock.mockReturnValue(
+            useAutomateMetricsTimeSeriesMock.mockReturnValue(
                 automateMetricsTimeseries
             )
             const screen = render(
@@ -836,7 +896,7 @@ describe('<AutomateOverview />', () => {
                     ],
                 ],
             }
-            useAutomateMetricsTimeseriesV2Mock.mockReturnValue(
+            useAutomateMetricsTimeSeriesMock.mockReturnValue(
                 automateMetricsTimeseries
             )
             const screen = render(
@@ -881,7 +941,7 @@ describe('<AutomateOverview />', () => {
                     ],
                 ],
             }
-            useAutomateMetricsTimeseriesV2Mock.mockReturnValue(
+            useAutomateMetricsTimeSeriesMock.mockReturnValue(
                 automateMetricsTimeseries
             )
 
@@ -927,7 +987,7 @@ describe('<AutomateOverview />', () => {
                     ],
                 ],
             }
-            useAutomateMetricsTimeseriesV2Mock.mockReturnValue(
+            useAutomateMetricsTimeSeriesMock.mockReturnValue(
                 automateMetricsTimeseries
             )
 
@@ -941,6 +1001,26 @@ describe('<AutomateOverview />', () => {
 
             // Add assertions to check the specific behavior
             expect(container.firstChild).toMatchSnapshot()
+        })
+    })
+
+    describe('TimeSavedByAgentsKPI', () => {
+        beforeEach(() => {
+            mockFlags({[FeatureFlagKey.ObservabilityTicketTimeToHandle]: true})
+
+            TimeSavedByAgentsKPIChartMock.mockImplementation(() => <div />)
+        })
+
+        it('should render TimeSavedByAgentsKPIChart when the flag is on', () => {
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <QueryClientProvider client={queryClient}>
+                        <AutomateOverview />
+                    </QueryClientProvider>
+                </Provider>
+            )
+
+            expect(TimeSavedByAgentsKPIChartMock).toHaveBeenCalled()
         })
     })
 })

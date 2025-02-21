@@ -1,11 +1,12 @@
 import moment from 'moment'
+
 import React, {useMemo} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {User} from 'config/types/user'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {useAutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
-import {useAutomateMetricsTimeseriesV2} from 'hooks/reporting/automate/useAutomationDatasetV2'
+import {AutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
+import {useAutomateMetricsTimeSeries} from 'hooks/reporting/automate/useAutomationDataset'
 import {calculateGreyArea} from 'hooks/reporting/automate/utils'
 import {useAgentsMetrics} from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
@@ -17,7 +18,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import {isAiAgentCustomField} from 'pages/aiAgent/util'
 import Button from 'pages/common/components/button/Button'
-import {useTimeSeriesFormattedData} from 'pages/stats/AutomateOverviewContent'
+import {getTimeSeriesFormattedData} from 'pages/stats/automate/overview/utils'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 import {activeParams} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {formatDates} from 'pages/stats/utils'
@@ -49,10 +50,10 @@ export const AiAgentStatsDownloadButton = () => {
     }
 
     // Get automated tickets data
-    const automateStatsMeasureLabelMap = useAutomateStatsMeasureLabelMap()
+    const automateStatsMeasureLabelMap = AutomateStatsMeasureLabelMap
     const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
 
-    const timeseries = useAutomateMetricsTimeseriesV2(
+    const timeseries = useAutomateMetricsTimeSeries(
         statsFilters,
         userTimezone,
         granularity
@@ -67,10 +68,9 @@ export const AiAgentStatsDownloadButton = () => {
         [statsFilters.period.end_datetime, statsFilters.period.start_datetime]
     )
 
-    const {exportableData} = useTimeSeriesFormattedData(
-        timeseries,
-        granularity,
-        greyArea
+    const {exportableData} = useMemo(
+        () => getTimeSeriesFormattedData(timeseries, granularity, greyArea),
+        [granularity, greyArea, timeseries]
     )
 
     const automatedInteractionByEventTypesTimeSeries =

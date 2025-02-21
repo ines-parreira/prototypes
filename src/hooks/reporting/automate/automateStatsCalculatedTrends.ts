@@ -70,6 +70,7 @@ export const getAutomationRateTrend = (
         },
     }
 }
+
 export const getDecreaseInFirstResponseTimeTrend = (
     isFetching: boolean,
     isError: boolean,

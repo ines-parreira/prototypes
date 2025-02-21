@@ -16,6 +16,7 @@ import {
     workflowEndStepAutomatedInteractions,
     workflowEndStepDropoff,
 } from 'hooks/reporting/automate/automateStatsFormulae'
+import {DisplayEventType} from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
 import {
     BREAKDOWN_FIELD,
     CUSTOM_FIELD_COUNT,
@@ -32,7 +33,6 @@ import {
     TICKET_COUNT,
     WorkflowTrendMetrics,
 } from 'hooks/reporting/automate/types'
-import {DisplayEventType} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
 import {
     MetricWithDecile,
     QueryReturnType,
@@ -344,6 +344,7 @@ export function renderAutomateXTickLabel(
         )
     return this.getLabelForValue(index)
 }
+
 export function automatePercentLabel(value: number | string) {
     return typeof value === 'number'
         ? `${parseFloat((value * 100).toFixed(2))}%`
@@ -375,6 +376,22 @@ export function calculateGreyArea(
     }
 
     return null
+}
+
+export const getGreyAreaAndChartParam = (period: Period) => {
+    const greyArea = calculateGreyArea(
+        moment(period.start_datetime),
+        moment(period.end_datetime)
+    )
+    return {
+        greyArea,
+        greyAreaChartParam: greyArea
+            ? {
+                  start: greyArea.from.format(SHORT_FORMAT),
+                  end: greyArea.to.format(SHORT_FORMAT),
+              }
+            : undefined,
+    }
 }
 
 export function getCountEventsByEventType(

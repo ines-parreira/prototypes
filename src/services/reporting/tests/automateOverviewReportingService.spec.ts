@@ -1,27 +1,60 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import moment from 'moment'
 
-import {useAutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
+import {AutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
+
+import {AutomateTrendMetrics} from 'hooks/reporting/automate/types'
+import {
+    fetchAutomateMetricsTimeSeries,
+    useAutomateMetricsTimeSeries,
+    useAutomateMetricsTrend,
+} from 'hooks/reporting/automate/useAutomationDataset'
+
+import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
+import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
+import {ReportingGranularity} from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
+import {
+    DECREASE_IN_FIRST_RESPONSE,
+    DECREASE_IN_RESOLUTION_TIME,
+} from 'pages/automate/automate-metrics/constants'
+import {
+    AUTOMATED_INTERACTIONS_LABEL,
+    AUTOMATION_RATE_LABEL,
+} from 'pages/stats/self-service/constants'
+
 import {
     AUTOMATE_IMPACT_FILENAME,
     AUTOMATE_PERFORMANCE_FEATURE_FILENAME,
     AUTOMATE_PERFORMANCE_FILENAME,
+    fetchAutomatePerformanceReport,
+    fetchPerformanceByFeatureReport,
+    formatPerformanceFeatureData,
+    formatPerformanceReportData,
     OVERVIEW_METRICS_FILENAME,
-    saveReport,
+    useAutomateOverviewReportData,
 } from 'services/reporting/automateOverviewReportingService'
-import {DATE_TIME_FORMAT} from 'services/reporting/constants'
-import * as files from 'utils/file'
+import {
+    CURRENT_PERIOD_LABEL,
+    EMPTY_LABEL,
+    PREVIOUS_PERIOD_LABEL,
+} from 'services/reporting/constants'
+import {createCsv} from 'utils/file'
+import {assumeMock} from 'utils/testing'
 
-jest.mock('utils/file')
+jest.mock('hooks/reporting/automate/useNewAutomateFilters')
+const useNewAutomateFiltersMock = assumeMock(useNewAutomateFilters)
 
-const trendReportData = {
-    prevValue: 1,
-    value: 2,
-}
-const timeSeriesData = {
-    dateTime: moment().toISOString(),
-    value: 4,
-}
+jest.mock('hooks/reporting/automate/useAutomationDataset')
+const useAutomateMetricsTrendMock = assumeMock(useAutomateMetricsTrend)
+const useAutomateMetricsTimeSeriesV2Mock = assumeMock(
+    useAutomateMetricsTimeSeries
+)
+const fetchAutomateMetricsTimeSeriesMock = assumeMock(
+    fetchAutomateMetricsTimeSeries
+)
 
 const buildQuery = <T>(isFetching: boolean, data?: T) => ({
     isFetching,
@@ -30,104 +63,270 @@ const buildQuery = <T>(isFetching: boolean, data?: T) => ({
 })
 
 describe('reporting', () => {
-    const data: Parameters<typeof saveReport>[0] = {
-        firstResponseTimeTrend: buildQuery(false, trendReportData),
-        decreaseInResolutionTimeWithAutomationTrend: buildQuery(
+    const trendReportData = {
+        prevValue: 1,
+        value: 2,
+    }
+    const featureLabel =
+        AutomationBillingEventMeasure.AutomatedInteractionsByAIAgent
+    const timeSeriesData = {
+        dateTime: moment().toISOString(),
+        value: 4,
+        label: featureLabel,
+    }
+
+    const trendData = {
+        [AutomateTrendMetrics.DecreaseInResolutionTime]: buildQuery(
             false,
             trendReportData
         ),
-        automationRateTrend: buildQuery(false, trendReportData),
-        automatedInteractionTrend: buildQuery(false, trendReportData),
+        [AutomateTrendMetrics.DecreaseInFirstResponseTime]: buildQuery(
+            false,
+            trendReportData
+        ),
+        [AutomateTrendMetrics.AutomationRate]: buildQuery(
+            false,
+            trendReportData
+        ),
+        [AutomateTrendMetrics.Interactions]: buildQuery(false, trendReportData),
+    }
+    const timeSeries = {
         automationRateTimeSeries: [[timeSeriesData]],
         automatedInteractionTimeSeries: [[timeSeriesData]],
         automatedInteractionByEventTypesTimeSeries: [[timeSeriesData]],
+        isFetching: false,
+        isError: false,
     }
     const period = {
         start_datetime: '2023-06-07',
         end_datetime: '2023-06-14',
     }
+    const impactReportFileName = getCsvFileNameWithDates(
+        period,
+        AUTOMATE_IMPACT_FILENAME
+    )
+    const performanceReportFileName = getCsvFileNameWithDates(
+        period,
+        AUTOMATE_PERFORMANCE_FILENAME
+    )
+    const performanceByFeatureReportFileName = getCsvFileNameWithDates(
+        period,
+        AUTOMATE_PERFORMANCE_FEATURE_FILENAME
+    )
+    const reportGroupFileName = getCsvFileNameWithDates(
+        period,
+        OVERVIEW_METRICS_FILENAME
+    )
 
-    it('should call saveReport with a report', async () => {
-        const {result} = renderHook(() => useAutomateStatsMeasureLabelMap())
-        const automateStatsMeasureLabelMap = result.current
-
-        const fakeReport = 'someValue'
-        jest.spyOn(files, 'createCsv').mockReturnValue(fakeReport)
-        const zipperMock = jest.spyOn(files, 'saveZippedFiles')
-
-        await saveReport(data, period, automateStatsMeasureLabelMap)
-
-        expect(zipperMock).toHaveBeenCalledWith(
-            {
-                [`${period.start_datetime}_${
-                    period.end_datetime
-                }-${AUTOMATE_IMPACT_FILENAME}-${moment().format(
-                    DATE_TIME_FORMAT
-                )}.csv`]: fakeReport,
-                [`${period.start_datetime}_${
-                    period.end_datetime
-                }-${AUTOMATE_PERFORMANCE_FILENAME}-${moment().format(
-                    DATE_TIME_FORMAT
-                )}.csv`]: fakeReport,
-                [`${period.start_datetime}_${
-                    period.end_datetime
-                }-${AUTOMATE_PERFORMANCE_FEATURE_FILENAME}-${moment().format(
-                    DATE_TIME_FORMAT
-                )}.csv`]: fakeReport,
-            },
-            `${period.start_datetime}_${
-                period.end_datetime
-            }-${OVERVIEW_METRICS_FILENAME}-${moment().format(DATE_TIME_FORMAT)}`
-        )
+    beforeEach(() => {
+        useNewAutomateFiltersMock.mockReturnValue({
+            granularity: ReportingGranularity.Day,
+            isAnalyticsNewFiltersAutomate: true,
+            statsFilters: {period},
+            userTimezone: 'UTC',
+        })
+        useAutomateMetricsTrendMock.mockReturnValue(trendData)
+        useAutomateMetricsTimeSeriesV2Mock.mockReturnValue(timeSeries)
     })
 
-    it('should call saveReport with some base query values unset', async () => {
-        const fakeReport = 'someValue'
-        jest.spyOn(files, 'createCsv').mockReturnValue(fakeReport)
-        const zipperMock = jest.spyOn(files, 'saveZippedFiles')
-        const {result} = renderHook(() => useAutomateStatsMeasureLabelMap())
-        const automateStatsMeasureLabelMap = result.current
-        await saveReport(
-            {
-                ...data,
-                ...{
-                    resolutionTimeTrend: buildQuery(false, {
-                        ...trendReportData,
-                        value: null,
-                    }),
-                    automationRateTrend: buildQuery(false, {
-                        ...trendReportData,
-                        value: null,
-                    }),
-                    automatedInteractionTimeSeries: [],
-                    automatedInteractionByEventTypesTimeSeries: [],
-                },
+    it('should call saveReport with a report', () => {
+        const {result} = renderHook(() => useAutomateOverviewReportData())
+
+        expect(result.current).toEqual({
+            files: {
+                [impactReportFileName]: createCsv([
+                    [EMPTY_LABEL, CURRENT_PERIOD_LABEL, PREVIOUS_PERIOD_LABEL],
+                    [
+                        AUTOMATION_RATE_LABEL,
+                        trendReportData.value,
+                        trendReportData.prevValue,
+                    ],
+                    [
+                        AUTOMATED_INTERACTIONS_LABEL,
+                        trendReportData.value,
+                        trendReportData.prevValue,
+                    ],
+                    [
+                        DECREASE_IN_FIRST_RESPONSE,
+                        trendReportData.value,
+                        trendReportData.prevValue,
+                    ],
+                    [
+                        DECREASE_IN_RESOLUTION_TIME,
+                        trendReportData.value,
+                        trendReportData.prevValue,
+                    ],
+                ]),
+                [performanceReportFileName]: createCsv([
+                    [
+                        EMPTY_LABEL,
+                        AUTOMATED_INTERACTIONS_LABEL,
+                        AUTOMATION_RATE_LABEL,
+                    ],
+                    [
+                        timeSeriesData.dateTime,
+                        timeSeriesData.value,
+                        timeSeriesData.value,
+                    ],
+                ]),
+                [performanceByFeatureReportFileName]: createCsv([
+                    [EMPTY_LABEL, AutomateStatsMeasureLabelMap[featureLabel]],
+                    [timeSeriesData.dateTime, timeSeriesData.value],
+                ]),
             },
-            period,
-            automateStatsMeasureLabelMap
+            fileName: reportGroupFileName,
+            isLoading: false,
+        })
+    })
+
+    it('should call saveReport with some base query values unset', () => {
+        const emptyTrendData = {
+            [AutomateTrendMetrics.DecreaseInResolutionTime]: buildQuery(false, {
+                ...trendReportData,
+                value: null,
+                prevValue: null,
+            }),
+            [AutomateTrendMetrics.DecreaseInFirstResponseTime]: buildQuery(
+                false,
+                {
+                    ...trendReportData,
+                    value: null,
+                    prevValue: null,
+                }
+            ),
+            [AutomateTrendMetrics.AutomationRate]: buildQuery(false, {
+                ...trendReportData,
+                value: null,
+                prevValue: null,
+            }),
+            [AutomateTrendMetrics.Interactions]: buildQuery(false, {
+                ...trendReportData,
+                value: null,
+                prevValue: null,
+            }),
+        }
+        const emptyTimeSeries = {
+            automationRateTimeSeries: [],
+            automatedInteractionTimeSeries: [],
+            automatedInteractionByEventTypesTimeSeries: [],
+            isFetching: false,
+            isError: false,
+        }
+
+        useAutomateMetricsTrendMock.mockReturnValue(emptyTrendData)
+        useAutomateMetricsTimeSeriesV2Mock.mockReturnValue(emptyTimeSeries)
+
+        const {result} = renderHook(() => useAutomateOverviewReportData())
+
+        expect(result.current).toEqual({
+            files: {
+                [impactReportFileName]: createCsv([
+                    [EMPTY_LABEL, CURRENT_PERIOD_LABEL, PREVIOUS_PERIOD_LABEL],
+                    [AUTOMATION_RATE_LABEL, 0, 0],
+                    [AUTOMATED_INTERACTIONS_LABEL, 0, 0],
+                    [DECREASE_IN_FIRST_RESPONSE, 0, 0],
+                    [DECREASE_IN_RESOLUTION_TIME, 0, 0],
+                ]),
+                [performanceReportFileName]: createCsv([
+                    [
+                        EMPTY_LABEL,
+                        AUTOMATED_INTERACTIONS_LABEL,
+                        AUTOMATION_RATE_LABEL,
+                    ],
+                ]),
+                [performanceByFeatureReportFileName]: createCsv([
+                    [EMPTY_LABEL],
+                ]),
+            },
+            fileName: reportGroupFileName,
+            isLoading: false,
+        })
+    })
+
+    describe('fetchPerformanceByFeatureReport', () => {
+        const statsFilters: StatsFilters = {
+            period: {
+                start_datetime: '2024-12-11',
+                end_datetime: '2024-12-11',
+            },
+        }
+        const timezone = 'UTC'
+        const granularity = ReportingGranularity.Day
+        const context = {
+            isAutomateNonFilteredDenominatorInAutomationRate: false,
+            aiAgentUserId: '123',
+        }
+        const fileName = getCsvFileNameWithDates(
+            statsFilters.period,
+            AUTOMATE_PERFORMANCE_FEATURE_FILENAME
         )
 
-        expect(zipperMock).toHaveBeenCalledWith(
-            {
-                [`${period.start_datetime}_${
-                    period.end_datetime
-                }-${AUTOMATE_IMPACT_FILENAME}-${moment().format(
-                    DATE_TIME_FORMAT
-                )}.csv`]: fakeReport,
-                [`${period.start_datetime}_${
-                    period.end_datetime
-                }-${AUTOMATE_PERFORMANCE_FILENAME}-${moment().format(
-                    DATE_TIME_FORMAT
-                )}.csv`]: fakeReport,
-                [`${period.start_datetime}_${
-                    period.end_datetime
-                }-${AUTOMATE_PERFORMANCE_FEATURE_FILENAME}-${moment().format(
-                    DATE_TIME_FORMAT
-                )}.csv`]: fakeReport,
+        beforeEach(() => {
+            fetchAutomateMetricsTimeSeriesMock.mockResolvedValue(timeSeries)
+        })
+
+        it('should fetch data and return formatted report', async () => {
+            const response = await fetchPerformanceByFeatureReport(
+                statsFilters,
+                timezone,
+                granularity,
+                context
+            )
+
+            expect(response).toEqual({
+                files: {
+                    [fileName]: createCsv(
+                        formatPerformanceFeatureData(
+                            AutomateStatsMeasureLabelMap,
+                            timeSeries.automatedInteractionTimeSeries
+                        )
+                    ),
+                },
+                fileName,
+                isLoading: false,
+            })
+        })
+    })
+
+    describe('fetchAutomatePerformanceReport', () => {
+        const statsFilters: StatsFilters = {
+            period: {
+                start_datetime: '2024-12-11',
+                end_datetime: '2024-12-11',
             },
-            `${period.start_datetime}_${
-                period.end_datetime
-            }-${OVERVIEW_METRICS_FILENAME}-${moment().format(DATE_TIME_FORMAT)}`
+        }
+        const timezone = 'UTC'
+        const granularity = ReportingGranularity.Day
+        const context = {
+            isAutomateNonFilteredDenominatorInAutomationRate: false,
+            aiAgentUserId: '123',
+        }
+        const fileName = getCsvFileNameWithDates(
+            statsFilters.period,
+            AUTOMATE_PERFORMANCE_FILENAME
         )
+
+        beforeEach(() => {
+            fetchAutomateMetricsTimeSeriesMock.mockResolvedValue(timeSeries)
+        })
+
+        it('should fetch and format report', async () => {
+            const result = await fetchAutomatePerformanceReport(
+                statsFilters,
+                timezone,
+                granularity,
+                context
+            )
+
+            expect(result).toEqual({
+                files: {
+                    [fileName]: createCsv(
+                        formatPerformanceReportData(timeSeries)
+                    ),
+                },
+                fileName,
+                isLoading: false,
+            })
+        })
     })
 })

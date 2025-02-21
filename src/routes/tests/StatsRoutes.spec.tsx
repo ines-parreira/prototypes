@@ -20,9 +20,9 @@ import {RevenueAddonApiClientProvider} from 'pages/convert/common/hooks/useConve
 import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import AiAgentStatsFilters from 'pages/stats/automate/ai-agent/AiAgentStatsFilters'
+import AutomateStatsPaywall from 'pages/stats/automate/AutomateStatsPaywall'
 import AutomateIntents from 'pages/stats/AutomateIntents'
 import AutomateMacros from 'pages/stats/AutomateMacros'
-import AutomateStatsPaywall from 'pages/stats/AutomateStatsPaywall'
 import {STATS_ROUTE_PREFIX} from 'pages/stats/common/components/constants'
 import StatsNavbarContainer from 'pages/stats/common/StatsNavbarContainer'
 import RevenueCampaignsStats from 'pages/stats/convert/pages/CampaignsStats'
@@ -184,7 +184,7 @@ jest.mock('pages/stats/AutomateMacros')
 const AutomateMacrosMock = assumeMock(AutomateMacros)
 jest.mock('pages/stats/AutomateIntents')
 const AutomateIntentsMock = assumeMock(AutomateIntents)
-jest.mock('pages/stats/AutomateStatsPaywall')
+jest.mock('pages/stats/automate/AutomateStatsPaywall')
 const AutomateStatsPaywallMock = assumeMock(AutomateStatsPaywall)
 jest.mock('pages/stats/automate/ai-agent/AutomateAiAgentStats', () => () => (
     <div>AutomateAiAgentStats</div>

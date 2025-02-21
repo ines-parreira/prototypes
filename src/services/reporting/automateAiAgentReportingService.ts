@@ -10,7 +10,7 @@ import {
     AgentsPerformanceReportData,
     getData as getPerformanceData,
 } from 'services/reporting/agentsPerformanceReportingService'
-import {getPerformanceFeatureData} from 'services/reporting/automateOverviewReportingService'
+import {formatPerformanceFeatureData} from 'services/reporting/automateOverviewReportingService'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {formatData as getTicketInsightsData} from 'services/reporting/ticketFieldsReportingService'
 import {AgentsTableColumn} from 'state/ui/stats/types'
@@ -58,7 +58,7 @@ export const saveReport = async (
             ticketInsights.order
         )
 
-    const automatedTicketsData = getPerformanceFeatureData(
+    const automatedTicketsData = formatPerformanceFeatureData(
         automatedTickets.automateStatsMeasureLabelMap,
         automatedTickets.automatedInteractionByEventTypesTimeSeries
     )

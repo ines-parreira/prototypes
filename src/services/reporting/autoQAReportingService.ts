@@ -30,7 +30,6 @@ import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {ReportFetch} from 'pages/stats/custom-reports/types'
 import {
     AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER,
     AutoQAAgentsColumnConfig,
@@ -403,7 +402,7 @@ const autoQAAgentsMetricsDataSources: TableDataSources<AutoQATableReportData> =
         {fetchData: fetchBrandVoicePerAgent, title: 'brandVoicePerAgent'},
     ]
 
-export const fetchAutoQAAgentsTableReportData: ReportFetch = async (
+export const fetchAutoQAAgentsTableReportData = async (
     statsFilters: StatsFilters,
     userTimezone: string,
     _: ReportingGranularity,

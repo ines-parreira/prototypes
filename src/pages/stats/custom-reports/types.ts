@@ -1,4 +1,5 @@
 import {Tag} from '@gorgias/api-queries'
+
 import {ReactNode} from 'react'
 
 import {User} from 'config/types/user'
@@ -12,6 +13,7 @@ import {Channel} from 'models/channel/types'
 import {Integration} from 'models/integration/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StaticFilter, StatsFilters} from 'models/stat/types'
+import {AutomateOverviewChart} from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
 import {MetricValueFormat} from 'pages/stats/common/utils'
 import {ReportsIDs} from 'pages/stats/custom-reports/config'
@@ -118,6 +120,8 @@ export type ReportFetch = (
         tagsTableOrder: TagsTableOrder
         integrations: Integration[]
         getAgentDetails: (id: number) => User | undefined
+        isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined
+        aiAgentUserId: string | undefined
     }
 ) => Promise<{
     isLoading: boolean
@@ -147,7 +151,7 @@ export type DataExportFetch =
           dimensions: string[]
       }
 
-export type DashboardChartProps = {
+export interface DashboardChartProps {
     chartId?: string
     dashboard?: CustomReportSchema
 }
@@ -168,16 +172,17 @@ export type ReportConfig<T extends string> = {
 }
 
 export type AvailableChartIds =
-    | typeof OverviewChart
     | typeof AgentsChart
+    | typeof AutomateOverviewChart
+    | typeof AutoQAChart
     | typeof BusiestTimesChart
     | typeof ChannelsChart
+    | typeof HelpCenterChart
+    | typeof OverviewChart
+    | typeof SatisfactionChart
     | typeof ServiceLevelAgreementsChart
     | typeof TicketFieldsChart
     | typeof TicketInsightsTagsChart
-    | typeof AutoQAChart
-    | typeof SatisfactionChart
-    | typeof HelpCenterChart
     | typeof VoiceAgentsChart
     | typeof VoiceOverviewChart
 

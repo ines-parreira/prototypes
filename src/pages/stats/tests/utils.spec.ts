@@ -2,7 +2,7 @@ import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {ChartArea, TooltipItem} from 'chart.js'
 import moment from 'moment'
 
-import {DisplayEventType} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
+import {DisplayEventType} from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
 import {getAutomateColorsForEventType} from 'hooks/reporting/automate/utils'
 import {ReportingGranularity} from 'models/reporting/types'
 import {

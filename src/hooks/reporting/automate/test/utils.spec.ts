@@ -1,5 +1,5 @@
-import {renderHook} from '@testing-library/react-hooks'
 import {TooltipItem} from 'chart.js'
+
 import moment from 'moment'
 
 import {
@@ -7,8 +7,9 @@ import {
     emptyMetric,
     totalTicketsMetric,
 } from 'fixtures/aiAgentInsights'
+import {AutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
 import {CUSTOM_FIELD_COUNT, TICKET_COUNT} from 'hooks/reporting/automate/types'
-import {useAutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
+
 import {
     addZeroValueTimeSeriesForGreyArea,
     mergeAutomateDataByEventType,
@@ -26,6 +27,7 @@ import {
     calculateAiAgentKnowledgeResourcePerIntent,
     getIntentByLevel,
     filterMetricDataByIntentLevel,
+    getGreyAreaAndChartParam,
 } from 'hooks/reporting/automate/utils'
 import {QueryReturnType} from 'hooks/reporting/useMetricPerDimension'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
@@ -238,6 +240,7 @@ describe('automatePercentLabel', () => {
         expect(result).toBe(expectedOutput)
     })
 })
+
 describe('calculateGreyArea', () => {
     it('should return the correct grey area', () => {
         jest.useFakeTimers().setSystemTime(new Date('2024-03-20T00:00:00Z'))
@@ -269,6 +272,47 @@ describe('calculateGreyArea', () => {
 
         const result = calculateGreyArea(startDate, endDate)
         expect(result).toBeNull()
+    })
+})
+
+describe('getGreyAreaAndChartParam', () => {
+    it('should return the grey area and chartParam', () => {
+        jest.useFakeTimers().setSystemTime(new Date('2024-03-20T00:00:00Z'))
+        const startDate = '2024-03-14T00:00:00Z'
+        const endDate = '2024-03-18T00:00:00Z'
+        const greyArea = calculateGreyArea(moment(startDate), moment(endDate))
+
+        const result = getGreyAreaAndChartParam({
+            start_datetime: startDate,
+            end_datetime: endDate,
+        })
+
+        expect(greyArea).not.toBeNull()
+        expect(result).toEqual({
+            greyArea: greyArea,
+            greyAreaChartParam: {
+                start: greyArea?.from.format(SHORT_FORMAT),
+                end: greyArea?.to.format(SHORT_FORMAT),
+            },
+        })
+    })
+
+    it('should return the undefined chartParam if no greyArea', () => {
+        jest.useFakeTimers().setSystemTime(new Date('2024-04-20T00:00:00Z'))
+        const startDate = '2024-03-15T00:00:00Z'
+        const endDate = '2024-03-18T00:00:00Z'
+        const greyArea = calculateGreyArea(moment(endDate), moment(startDate))
+
+        const result = getGreyAreaAndChartParam({
+            start_datetime: startDate,
+            end_datetime: endDate,
+        })
+
+        expect(greyArea).toBeNull()
+        expect(result).toEqual({
+            greyArea: greyArea,
+            greyAreaChartParam: undefined,
+        })
     })
 })
 
@@ -474,8 +518,7 @@ describe('renderAutomateTooltipLabel', () => {
     })
 })
 describe('sortByAutomateFeatureLabels', () => {
-    const {result} = renderHook(() => useAutomateStatsMeasureLabelMap())
-    const automateStatsMeasureLabelMap = result.current
+    const automateStatsMeasureLabelMap = AutomateStatsMeasureLabelMap
     const labels = Object.values(automateStatsMeasureLabelMap)
 
     test('sorts labels in ascending order', () => {
@@ -516,10 +559,7 @@ describe('sortByAutomateFeatureLabels', () => {
 })
 describe('automateInteractionsByEventTypeToTimeSeries', () => {
     test('should convert interactions data by event type to time series data', () => {
-        const {result: mapResult} = renderHook(() =>
-            useAutomateStatsMeasureLabelMap()
-        )
-        const automateStatsMeasureLabelMap = mapResult.current
+        const automateStatsMeasureLabelMap = AutomateStatsMeasureLabelMap
 
         const interactionsDataByEventType: Record<
             string,

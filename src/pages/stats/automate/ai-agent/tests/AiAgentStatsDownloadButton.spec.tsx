@@ -1,16 +1,14 @@
 import {render, fireEvent, act} from '@testing-library/react'
 
 import moment from 'moment'
+
 import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {agents} from 'fixtures/agents'
-import {
-    DisplayEventType,
-    useAutomateStatsMeasureLabelMap,
-} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
-import {useAutomateMetricsTimeseriesV2} from 'hooks/reporting/automate/useAutomationDatasetV2'
+import {AutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
+import {useAutomateMetricsTimeSeries} from 'hooks/reporting/automate/useAutomationDataset'
 import {calculateGreyArea} from 'hooks/reporting/automate/utils'
 import {useAgentsMetrics} from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
@@ -23,7 +21,7 @@ import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/Aut
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {isAiAgentCustomField} from 'pages/aiAgent/util'
-import {useTimeSeriesFormattedData} from 'pages/stats/AutomateOverviewContent'
+import {getTimeSeriesFormattedData} from 'pages/stats/automate/overview/utils'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {formatDates} from 'pages/stats/utils'
 import {saveReport} from 'services/reporting/automateAiAgentReportingService'
@@ -44,24 +42,19 @@ const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)
 jest.mock('hooks/reporting/useAgentsTableConfigSetting')
 const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)
 
-jest.mock('hooks/reporting/automate/useAutomateStatsMeasureLabelMap')
-const useAutomateStatsMeasureLabelMapMock = assumeMock(
-    useAutomateStatsMeasureLabelMap
-)
-
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
 const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
-jest.mock('hooks/reporting/automate/useAutomationDatasetV2')
-const useAutomateMetricsTimeseriesV2Mock = assumeMock(
-    useAutomateMetricsTimeseriesV2
+jest.mock('hooks/reporting/automate/useAutomationDataset')
+const useAutomateMetricsTimeSeriesMock = assumeMock(
+    useAutomateMetricsTimeSeries
 )
 
 jest.mock('hooks/reporting/automate/utils')
 const calculateGreyAreaMock = assumeMock(calculateGreyArea)
 
-jest.mock('pages/stats/AutomateOverviewContent')
-const useTimeSeriesFormattedDataMock = assumeMock(useTimeSeriesFormattedData)
+jest.mock('pages/stats/automate/overview/utils')
+const useTimeSeriesFormattedDataMock = assumeMock(getTimeSeriesFormattedData)
 
 jest.mock('hooks/reporting/timeSeries')
 const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
@@ -183,12 +176,6 @@ describe('AiAgentStatsDownloadButton', () => {
             columnsOrder: [AgentsTableColumn.AgentName],
         } as unknown as ReturnType<typeof useAgentsTableConfigSetting>)
 
-        // Mock automated tickets data
-        useAutomateStatsMeasureLabelMapMock.mockReturnValue({
-            [AutomationBillingEventMeasure.AutomatedInteractionsByAIAgent]:
-                DisplayEventType.AI_AGENT,
-        } as unknown as ReturnType<typeof useAutomateStatsMeasureLabelMap>)
-
         useNewStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: {
                 period: {
@@ -201,9 +188,9 @@ describe('AiAgentStatsDownloadButton', () => {
             isAnalyticsNewFilters: false,
         })
 
-        useAutomateMetricsTimeseriesV2Mock.mockReturnValue({
+        useAutomateMetricsTimeSeriesMock.mockReturnValue({
             isFetching: timeseriesIsFetching,
-        } as unknown as ReturnType<typeof useAutomateMetricsTimeseriesV2>)
+        } as unknown as ReturnType<typeof useAutomateMetricsTimeSeries>)
 
         calculateGreyAreaMock.mockReturnValue({
             from: moment(new Date('2024-09-17')),
@@ -214,7 +201,7 @@ describe('AiAgentStatsDownloadButton', () => {
             exportableData: {
                 automatedInteractionByEventTypesTimeSeries: timeSeriesMock,
             },
-        } as unknown as ReturnType<typeof useTimeSeriesFormattedData>)
+        } as unknown as ReturnType<typeof getTimeSeriesFormattedData>)
 
         // Mock ticket insights data
         useAppSelectorMock
@@ -266,10 +253,7 @@ describe('AiAgentStatsDownloadButton', () => {
                 columnsOrder: [AgentsTableColumn.AgentName],
             },
             {
-                automateStatsMeasureLabelMap: {
-                    [AutomationBillingEventMeasure.AutomatedInteractionsByAIAgent]:
-                        DisplayEventType.AI_AGENT,
-                },
+                automateStatsMeasureLabelMap: AutomateStatsMeasureLabelMap,
                 automatedInteractionByEventTypesTimeSeries: [timeSeriesMock[0]],
             },
             {
@@ -298,10 +282,7 @@ describe('AiAgentStatsDownloadButton', () => {
                 columnsOrder: [AgentsTableColumn.AgentName],
             },
             {
-                automateStatsMeasureLabelMap: {
-                    [AutomationBillingEventMeasure.AutomatedInteractionsByAIAgent]:
-                        DisplayEventType.AI_AGENT,
-                },
+                automateStatsMeasureLabelMap: AutomateStatsMeasureLabelMap,
                 automatedInteractionByEventTypesTimeSeries: [timeSeriesMock[0]],
             },
             undefined

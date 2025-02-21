@@ -1,13 +1,12 @@
-import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
 
 import {agents} from 'fixtures/agents'
 
-import {useAutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
+import {AutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
 import {OrderDirection} from 'models/api/types'
 import {getData as getPerformanceData} from 'services/reporting/agentsPerformanceReportingService'
 import {saveReport} from 'services/reporting/automateAiAgentReportingService'
-import {getPerformanceFeatureData} from 'services/reporting/automateOverviewReportingService'
+import {formatPerformanceFeatureData} from 'services/reporting/automateOverviewReportingService'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {formatData as getTicketInsightsData} from 'services/reporting/ticketFieldsReportingService'
 import {AgentsTableColumn} from 'state/ui/stats/types'
@@ -30,10 +29,8 @@ jest.mock('services/reporting/ticketFieldsReportingService', () => ({
 }))
 const getTicketInsightsDataMock = assumeMock(getTicketInsightsData)
 
-jest.mock('services/reporting/automateOverviewReportingService', () => ({
-    getPerformanceFeatureData: jest.fn(() => 'performance-feature-data'),
-}))
-const getPerformanceFeatureDataMock = assumeMock(getPerformanceFeatureData)
+jest.mock('services/reporting/automateOverviewReportingService')
+const getPerformanceFeatureDataMock = assumeMock(formatPerformanceFeatureData)
 
 const period = {
     start_datetime: '2024-09-21',
@@ -100,10 +97,14 @@ const ticketInsights = {
 }
 
 describe('automateAiAgentReportingService', () => {
+    beforeEach(() => {
+        getPerformanceFeatureDataMock.mockReturnValue([
+            ['performance-feature-data'],
+        ])
+    })
     describe('saveReport', () => {
         it('should call saveZippedFiles with the correct values', async () => {
-            const {result} = renderHook(() => useAutomateStatsMeasureLabelMap())
-            const automateStatsMeasureLabelMap = result.current
+            const automateStatsMeasureLabelMap = AutomateStatsMeasureLabelMap
 
             const automatedTickets = {
                 automateStatsMeasureLabelMap,
@@ -150,8 +151,7 @@ describe('automateAiAgentReportingService', () => {
         })
 
         it('should call saveZippedFiles without ticket insights when those are not set', async () => {
-            const {result} = renderHook(() => useAutomateStatsMeasureLabelMap())
-            const automateStatsMeasureLabelMap = result.current
+            const automateStatsMeasureLabelMap = AutomateStatsMeasureLabelMap
 
             const automatedTickets = {
                 automateStatsMeasureLabelMap,

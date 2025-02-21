@@ -17,6 +17,7 @@ import {
     TimeSeriesFetch,
     TimeSeriesPerDimensionFetch,
 } from 'hooks/reporting/useTimeSeries'
+import {AutomateOverviewReportConfig} from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
 import {MetricTrendFormat, MetricValueFormat} from 'pages/stats/common/utils'
 import {
     ChartConfig,
@@ -56,6 +57,7 @@ const chartsLookupTable: Record<string, ChartConfig | undefined> = {
     ...VoiceOverviewReportConfig.charts,
     ...VoiceAgentsReportConfig.charts,
     ...SatisfactionReportConfig.charts,
+    ...AutomateOverviewReportConfig.charts,
 }
 
 type Queries = {

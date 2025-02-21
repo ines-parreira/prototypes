@@ -2,8 +2,10 @@ import {waitFor} from '@testing-library/react'
 import {renderHook} from '@testing-library/react-hooks'
 
 import {TicketChannel} from 'business/types/ticket'
+import {User} from 'config/types/user'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
+import {useAIAgentUser} from 'hooks/reporting/automate/useAIAgentUserId'
 import {useTrendReportData} from 'hooks/reporting/common/useTrendReportData'
 import {
     fetchClosedTicketsTrend,
@@ -15,6 +17,7 @@ import {
 import {workloadReportSource} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {LegacyStatsFilters} from 'models/stat/types'
+import {useMoneySavedPerInteractionWithAutomate} from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import {formatMetricValue} from 'pages/stats/common/utils'
 import {
     MESSAGES_SENT_LABEL,
@@ -31,6 +34,14 @@ const useClosedTicketsTrendMock = assumeMock(fetchClosedTicketsTrend)
 const useTicketsCreatedTrendMock = assumeMock(fetchTicketsCreatedTrend)
 const useTicketsRepliedTrendMock = assumeMock(fetchTicketsRepliedTrend)
 const useMessagesSentTrendMock = assumeMock(fetchMessagesSentTrend)
+
+jest.mock('hooks/reporting/automate/useAIAgentUserId')
+const useAIAgentUserMock = assumeMock(useAIAgentUser)
+
+jest.mock('pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate')
+const useMoneySavedPerInteractionWithAutomateMock = assumeMock(
+    useMoneySavedPerInteractionWithAutomate
+)
 
 describe('useTrendReport', () => {
     const defaultStatsFilters: LegacyStatsFilters = {
@@ -88,6 +99,10 @@ describe('useTrendReport', () => {
     }
 
     beforeEach(() => {
+        useAIAgentUserMock.mockReturnValue({
+            id: 23,
+        } as User)
+        useMoneySavedPerInteractionWithAutomateMock.mockReturnValue(123)
         useOpenTicketsTrendMock.mockResolvedValue(openTicketsMetricTrend)
         useClosedTicketsTrendMock.mockResolvedValue(closedTicketsMetricTrend)
         useTicketsCreatedTrendMock.mockResolvedValue(createdTicketsMetricTrend)

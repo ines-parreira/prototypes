@@ -1,3 +1,5 @@
+import {TooltipData} from 'pages/stats/types'
+
 export const DECREASE_IN_RESOLUTION_TIME = 'Decrease in resolution time'
 export const AUTOMATION_RATE_LABEL = 'Automation rate'
 export const AUTOMATED_INTERACTIONS_LABEL = 'Automated interactions'
@@ -11,4 +13,10 @@ export const AGENT_COST_PER_TICKET = 3.1
 export const AUTOMATION_RATE_FIXED_STATS = {
     top10P: 0.48,
     avg: 0.14,
+}
+
+export const AUTOMATED_INTERACTION_TOOLTIP: TooltipData = {
+    title: 'Fully automated interactions solved without any agent intervention.',
+    link: 'https://link.gorgias.com/ppw',
+    linkText: 'How is it calculated?',
 }

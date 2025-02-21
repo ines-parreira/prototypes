@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react'
 
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
-import {useAutomateMetricsTrendV2} from 'hooks/reporting/automate/useAutomationDatasetV2'
+import {useAutomateMetricsTrend} from 'hooks/reporting/automate/useAutomationDataset'
 import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
@@ -48,7 +48,7 @@ export default function AutomateAiAgentStats() {
         [aiAgentUserId, statsFilters]
     )
 
-    const {automatedInteractionTrend} = useAutomateMetricsTrendV2(
+    const {automatedInteractionTrend} = useAutomateMetricsTrend(
         {
             ...statsFiltersWithAiAgent,
             channels: {values: ['email'], operator: LogicalOperatorEnum.ONE_OF},

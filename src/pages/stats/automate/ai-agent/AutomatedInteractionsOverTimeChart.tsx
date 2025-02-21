@@ -1,17 +1,18 @@
 import moment from 'moment'
+
 import React, {useMemo} from 'react'
 
 import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
-import {useAutomateMetricsTimeseriesV2} from 'hooks/reporting/automate/useAutomationDatasetV2'
+import {useAutomateMetricsTimeSeries} from 'hooks/reporting/automate/useAutomationDataset'
 import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
 import {calculateGreyArea} from 'hooks/reporting/automate/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {FilterKey} from 'models/stat/types'
-import {AUTOMATED_INTERACTION_TOOLTIP} from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
+import {AUTOMATED_INTERACTION_TOOLTIP} from 'pages/automate/automate-metrics/constants'
 import {
     getGreyAreaHint,
-    useTimeSeriesFormattedData,
-} from 'pages/stats/AutomateOverviewContent'
+    getTimeSeriesFormattedData,
+} from 'pages/stats/automate/overview/utils'
 import ChartCard from 'pages/stats/ChartCard'
 import {default as LineChart} from 'pages/stats/common/components/charts/LineChart/LineChart'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
@@ -44,7 +45,7 @@ export function AutomatedInteractionsOverTimeChart({
     )
 
     const {userTimezone, granularity} = useNewAutomateFilters()
-    const timeseries = useAutomateMetricsTimeseriesV2(
+    const timeseries = useAutomateMetricsTimeSeries(
         statsFiltersWithAiAgent,
         userTimezone,
         granularity
@@ -71,7 +72,7 @@ export function AutomatedInteractionsOverTimeChart({
     )
 
     const {automatedInteractionByEventTypesTimeSeriesData} =
-        useTimeSeriesFormattedData(timeseries, granularity, greyArea)
+        getTimeSeriesFormattedData(timeseries, granularity, greyArea)
 
     const data = automatedInteractionByEventTypesTimeSeriesData.find(
         (item) => item.label === AUTOMATED_INTERACTIONS_LABEL

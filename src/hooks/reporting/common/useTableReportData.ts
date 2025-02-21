@@ -1,6 +1,10 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useCallback, useEffect, useMemo, useState} from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
+
 import {User} from 'config/types/user'
+import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
 import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import {useChannelsTableSetting} from 'hooks/reporting/useChannelsTableConfigSetting'
@@ -39,6 +43,13 @@ export const useTables = (
     granularity: ReportingGranularity,
     fetchTables: {title: string; fetchTable: ReportFetch}[]
 ) => {
+    const isAutomateNonFilteredDenominatorInAutomationRate:
+        | boolean
+        | undefined =
+        useFlags()[
+            FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate
+        ]
+    const aiAgentUserId = useAIAgentUserId()
     const [tableData, setTableData] = useState<{
         isFetching: boolean
         files: Record<string, string>
@@ -80,6 +91,8 @@ export const useTables = (
             tagsTableOrder,
             getAgentDetails,
             integrations,
+            isAutomateNonFilteredDenominatorInAutomationRate,
+            aiAgentUserId,
         }),
         [
             agents,
@@ -94,6 +107,8 @@ export const useTables = (
             tagsTableOrder,
             getAgentDetails,
             integrations,
+            isAutomateNonFilteredDenominatorInAutomationRate,
+            aiAgentUserId,
         ]
     )
 

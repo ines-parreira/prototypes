@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react'
 
 import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
-import {useAutomateMetricsTrendV2} from 'hooks/reporting/automate/useAutomationDatasetV2'
+import {useAutomateMetricsTrend} from 'hooks/reporting/automate/useAutomationDataset'
 import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {FilterKey} from 'models/stat/types'
@@ -27,7 +27,7 @@ export function AutomatedInteractionsMetricCard() {
         [aiAgentUserId, statsFilters]
     )
 
-    const {automatedInteractionTrend} = useAutomateMetricsTrendV2(
+    const {automatedInteractionTrend} = useAutomateMetricsTrend(
         {
             ...statsFiltersWithAiAgent,
             channels: {values: ['email'], operator: LogicalOperatorEnum.ONE_OF},

@@ -1,0 +1,120 @@
+import {renderHook} from '@testing-library/react-hooks'
+
+import {
+    fetchFilteredAutomatedInteractions,
+    useFilteredAutomatedInteractions,
+} from 'hooks/reporting/automate/automationTrends'
+import {
+    fetchAutomationCostSavedTrend,
+    formatData,
+    useAutomationCostSavedTrend,
+} from 'hooks/reporting/automate/useAutomationCostSavedTrend'
+import {StatsFilters} from 'models/stat/types'
+import {useMoneySavedPerInteractionWithAutomate} from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
+import {assumeMock} from 'utils/testing'
+
+jest.mock('hooks/reporting/automate/automationTrends')
+jest.mock('pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate')
+const useFilteredAutomatedInteractionsMock = assumeMock(
+    useFilteredAutomatedInteractions
+)
+const useMoneySavedPerInteractionWithAutomateMock = assumeMock(
+    useMoneySavedPerInteractionWithAutomate
+)
+const fetchFilteredAutomatedInteractionsMock = assumeMock(
+    fetchFilteredAutomatedInteractions
+)
+
+describe('AutomationCostSavedTrend', () => {
+    const periodStart = '2021-05-29T00:00:00.000'
+    const periodEnd = '2021-06-04T23:59:59.000'
+    const statsFilters: StatsFilters = {
+        period: {
+            start_datetime: periodStart,
+            end_datetime: periodEnd,
+        },
+    }
+    const userTimezone = 'UTC'
+    const filteredAutomatedInteractions = {value: 2, prevValue: 4}
+    const trendResponse = {
+        data: filteredAutomatedInteractions,
+        isFetching: false,
+        isError: false,
+    }
+    const moneySavedPerInteractionWithAutomate = 123
+
+    describe('useAutomationCostSavedTrend', () => {
+        beforeEach(() => {
+            useFilteredAutomatedInteractionsMock.mockReturnValue(trendResponse)
+            useMoneySavedPerInteractionWithAutomateMock.mockReturnValue(
+                moneySavedPerInteractionWithAutomate
+            )
+        })
+
+        it('should calculate and format trend', () => {
+            const {result} = renderHook(() =>
+                useAutomationCostSavedTrend(statsFilters, userTimezone)
+            )
+
+            expect(result.current).toEqual({
+                data: formatData(
+                    trendResponse,
+                    moneySavedPerInteractionWithAutomate
+                ),
+                isError: false,
+                isFetching: false,
+            })
+        })
+
+        it('should return 0s on empty data', () => {
+            useFilteredAutomatedInteractionsMock.mockReturnValue({
+                data: {
+                    value: null,
+                    prevValue: null,
+                },
+                isFetching: false,
+                isError: false,
+            })
+
+            const {result} = renderHook(() =>
+                useAutomationCostSavedTrend(statsFilters, userTimezone)
+            )
+
+            expect(result.current).toEqual({
+                data: {
+                    value: 0,
+                    prevValue: 0,
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
+    })
+
+    describe('fetchAutomationCostSavedTrend', () => {
+        beforeEach(() => {
+            fetchFilteredAutomatedInteractionsMock.mockResolvedValue(
+                trendResponse
+            )
+        })
+
+        it('should calculate and format trend', async () => {
+            const result = await fetchAutomationCostSavedTrend(
+                statsFilters,
+                userTimezone,
+                undefined,
+                undefined,
+                moneySavedPerInteractionWithAutomate
+            )
+
+            expect(result).toEqual({
+                data: formatData(
+                    trendResponse,
+                    moneySavedPerInteractionWithAutomate
+                ),
+                isError: false,
+                isFetching: false,
+            })
+        })
+    })
+})

@@ -23,7 +23,6 @@ import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {Channel} from 'models/channel/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
-import {ReportFetch} from 'pages/stats/custom-reports/types'
 import {saveReport} from 'services/reporting/channelsReportingService'
 import {ChannelsTableColumns} from 'state/ui/stats/types'
 
@@ -110,7 +109,7 @@ export const useChannelsReportMetrics = () => {
     }
 }
 
-export const fetchChannelsTableReportData: ReportFetch = async (
+export const fetchChannelsTableReportData = async (
     cleanStatsFilters: StatsFilters,
     userTimezone: string,
     _: ReportingGranularity,

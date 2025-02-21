@@ -43,7 +43,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import {Channel} from 'models/channel/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
-import {ReportFetch} from 'pages/stats/custom-reports/types'
 import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
 import {createAgentsReport} from 'services/reporting/agentsPerformanceReportingService'
 import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
@@ -225,7 +224,7 @@ export const useDownloadAgentsPerformanceData = () => {
         isLoading: isFetching || summaryIsLoading,
     }
 }
-export const fetchAgentsTableReportData: ReportFetch = async (
+export const fetchAgentsTableReportData = async (
     cleanStatsFilters: StatsFilters,
     userTimezone: string,
     _: ReportingGranularity,

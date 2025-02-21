@@ -8,9 +8,6 @@ import {
     fetchTicketsClosedTimeSeries,
     fetchTicketsCreatedTimeSeries,
     fetchTicketsRepliedTimeSeries,
-    useAutomationDatasetByEventTypeTimeSeries,
-    useAutomationDatasetTimeSeries,
-    useBillableTicketDatasetTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
     useMessagesSentTimeSeries,
     useTagsTicketCountTimeSeries,
@@ -24,12 +21,6 @@ import {
     useTimeSeries,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
-import {
-    billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory,
-    interactionsByEventTypeTimeSeriesQueryFactory,
-    interactionsTimeSeriesQueryFactory,
-} from 'models/reporting/queryFactories/automate_v2/timeseries'
-import {averageCSATScorePerDimensionTimeSeriesFactory} from 'models/reporting/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
 import {closedTicketsTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {messagesSentTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {ticketsCreatedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
@@ -39,8 +30,6 @@ import {tagsTicketCountTimeSeriesFactory} from 'models/reporting/queryFactories/
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
-
-import {useAverageCSATScorePerDimensionTimeSeries} from '../quality-management/satisfaction/useAverageScorePerDimensionTimeSeries'
 
 jest.mock('hooks/reporting/useTimeSeries')
 const useTimeSeriesMock = assumeMock(useTimeSeries)
@@ -81,7 +70,7 @@ describe('time series', () => {
             useMessagesSentTimeSeries,
             messagesSentTimeSeriesQueryFactory,
         ],
-    ])('%s', (testName, useTrendFn, queryFactory) => {
+    ])('%s', (_, useTrendFn, queryFactory) => {
         it('should use query factory for $testName', () => {
             const filters = {
                 period: {
@@ -232,102 +221,6 @@ describe('time series', () => {
                     customFieldId
                 )
             )
-        })
-    })
-
-    describe('Automate V2', () => {
-        describe('useAutomationDatasetTimeSeries', () => {
-            it('should pass the query to the useTimeSeriesHook', () => {
-                renderHook(
-                    ({statsFilters, timezone}) =>
-                        useAutomationDatasetTimeSeries(
-                            statsFilters,
-                            timezone,
-                            granularity
-                        ),
-                    {initialProps: {statsFilters, timezone, granularity}}
-                )
-
-                expect(useTimeSeriesMock.mock.calls[0]).toEqual([
-                    interactionsTimeSeriesQueryFactory(
-                        statsFilters,
-                        timezone,
-                        granularity
-                    ),
-                ])
-            })
-        })
-        describe('useAutomationDatasetTimeSeries', () => {
-            it('should pass the query to the useTimeSeriesHook', () => {
-                renderHook(
-                    ({statsFilters, timezone}) =>
-                        useAutomationDatasetByEventTypeTimeSeries(
-                            statsFilters,
-                            timezone,
-                            granularity
-                        ),
-                    {initialProps: {statsFilters, timezone, granularity}}
-                )
-
-                expect(useTimeSeriesPerDimensionMock.mock.calls[0]).toEqual([
-                    interactionsByEventTypeTimeSeriesQueryFactory(
-                        statsFilters,
-                        timezone,
-                        granularity
-                    ),
-                ])
-            })
-        })
-        describe('useBillableTicketDatasetTimeSeries', () => {
-            it('should pass the query to the useTimeSeriesHook', () => {
-                renderHook(
-                    ({statsFilters, timezone}) =>
-                        useBillableTicketDatasetTimeSeries(
-                            statsFilters,
-                            timezone,
-                            granularity
-                        ),
-                    {initialProps: {statsFilters, timezone, granularity}}
-                )
-
-                expect(useTimeSeriesMock.mock.calls[0]).toEqual([
-                    billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory(
-                        statsFilters,
-                        timezone,
-                        granularity
-                    ),
-                ])
-            })
-        })
-        describe('useAverageCSATScorePerDimensionTimeSeries', () => {
-            it('should pass the query to the useTimeSeriesHook', () => {
-                const dimension = 'some-dimension'
-                renderHook(
-                    ({statsFilters, timezone, granularity}) =>
-                        useAverageCSATScorePerDimensionTimeSeries(
-                            dimension,
-                            statsFilters,
-                            timezone,
-                            granularity
-                        ),
-                    {
-                        initialProps: {
-                            statsFilters,
-                            timezone,
-                            granularity,
-                        },
-                    }
-                )
-
-                expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
-                    averageCSATScorePerDimensionTimeSeriesFactory(
-                        dimension,
-                        statsFilters,
-                        timezone,
-                        granularity
-                    )
-                )
-            })
         })
     })
 })

@@ -15,7 +15,6 @@ import {
 import {OrderDirection} from 'models/api/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {Period, StatsFilters} from 'models/stat/types'
-import {ReportFetch} from 'pages/stats/custom-reports/types'
 import {formatDates} from 'pages/stats/utils'
 import {TicketInsightsOrder} from 'state/ui/stats/ticketInsightsSlice'
 import {createCsv} from 'utils/file'
@@ -98,7 +97,7 @@ export const useCustomFieldsReportData = (
     }
 }
 
-export const fetchCustomFieldsReportData: ReportFetch = async (
+export const fetchCustomFieldsReportData = async (
     statsFilters: StatsFilters,
     userTimezone: string,
     granularity: ReportingGranularity,

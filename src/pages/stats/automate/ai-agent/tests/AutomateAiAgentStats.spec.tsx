@@ -12,12 +12,12 @@ import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFi
 import {agents} from 'fixtures/agents'
 import {GreyArea} from 'hooks/reporting/automate/types'
 import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
-import {useAutomateMetricsTrendV2} from 'hooks/reporting/automate/useAutomationDatasetV2'
+import {useAutomateMetricsTrend} from 'hooks/reporting/automate/useAutomationDataset'
 import {calculateGreyArea} from 'hooks/reporting/automate/utils'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {AutomatedInteractionsMetric} from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
-import {useTimeSeriesFormattedData} from 'pages/stats/AutomateOverviewContent'
+import {getTimeSeriesFormattedData} from 'pages/stats/automate/overview/utils'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import {TicketDistributionChart} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
@@ -46,8 +46,8 @@ jest.mock('state/ui/stats/ticketInsightsSlice')
 const getSelectedCustomFieldMock =
     getSelectedCustomField as unknown as jest.Mock
 
-jest.mock('hooks/reporting/automate/useAutomationDatasetV2')
-const useAutomateMetricsTrendV2Mock = useAutomateMetricsTrendV2 as jest.Mock
+jest.mock('hooks/reporting/automate/useAutomationDataset')
+const useAutomateMetricsTrendMock = useAutomateMetricsTrend as jest.Mock
 
 jest.mock('hooks/reporting/automate/useNewAutomateFilters', () => ({
     useNewAutomateFilters: () => ({
@@ -57,14 +57,13 @@ jest.mock('hooks/reporting/automate/useNewAutomateFilters', () => ({
 }))
 
 jest.mock('hooks/reporting/automate/utils')
-const calculateGreyAreaMock = calculateGreyArea as jest.Mock
+const calculateGreyAreaMock = assumeMock(calculateGreyArea)
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
-const useCustomFieldDefinitionsMock = useCustomFieldDefinitions as jest.Mock
+const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 
-jest.mock('pages/stats/AutomateOverviewContent')
-const useTimeSeriesFormattedDataMock =
-    useTimeSeriesFormattedData as unknown as jest.Mock
+jest.mock('pages/stats/automate/overview/utils')
+const getTimeSeriesFormattedDataMock = assumeMock(getTimeSeriesFormattedData)
 
 jest.mock('hooks/reporting/automate/useAIAgentUserId')
 const useAIAgentUserIdMock = useAIAgentUserId as jest.Mock
@@ -136,7 +135,7 @@ jest.mock(
         )),
     })
 )
-const AutomatedInteractionsMetricMock = AutomatedInteractionsMetric as jest.Mock
+const AutomatedInteractionsMetricMock = assumeMock(AutomatedInteractionsMetric)
 
 jest.mock('pages/stats/common/components/charts/LineChart/LineChart')
 const LineChartMock = assumeMock(LineChart)
@@ -208,21 +207,28 @@ describe('AutomateAiAgentStats', () => {
             label: 'AI Agent Contact Reason',
         })
 
-        useAutomateMetricsTrendV2Mock.mockReturnValue({
+        useAutomateMetricsTrendMock.mockReturnValue({
             automatedInteractionTrend,
         })
 
+        const customFieldResponse = customFieldsIsLoading
+            ? {isLoading: true}
+            : {
+                  data: {data: customFields},
+              }
         useCustomFieldDefinitionsMock.mockReturnValue(
-            customFieldsIsLoading
-                ? {isLoading: true}
-                : {
-                      data: {data: customFields},
-                  }
+            customFieldResponse as ReturnType<typeof useCustomFieldDefinitions>
         )
 
-        useTimeSeriesFormattedDataMock.mockReturnValue({
+        getTimeSeriesFormattedDataMock.mockReturnValue({
+            automatedInteractionTimeSeriesData: [],
+            automationRateTimeSeriesData: [],
             automatedInteractionByEventTypesTimeSeriesData,
-            exportableData: {},
+            exportableData: {
+                automationRateTimeSeries: [],
+                automatedInteractionTimeSeries: [],
+                automatedInteractionByEventTypesTimeSeries: [],
+            },
         })
 
         useReportChartRestrictionsMock.mockReturnValue({

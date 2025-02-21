@@ -8,26 +8,23 @@ import {DECREASE_IN_FIRST_RESPONSE} from './constants'
 import {BaseAutomateMetricProps} from './types'
 import {getTrendProps, toDuration} from './utils'
 
-export const DECREASE_IN_FIRST_RESPONSE_TOOLTIP = (
-    <>
-        How much longer customers would have had to wait for a first response if
-        you were not using Gorgias Automate, based on your average first
-        response time.{' '}
-        <a target="_blank" href="https://link.gorgias.com/mal" rel="noreferrer">
-            How is it calculated?
-        </a>
-    </>
-)
+export const DECREASE_IN_FIRST_RESPONSE_TOOLTIP = {
+    title: 'How much longer customers would have had to wait for a first response if you were not using Gorgias Automate, based on your average first response time.',
+    link: 'https://link.gorgias.com/mal',
+    linkText: 'How is it calculated?',
+}
 
 export const DecreaseInFirstResponseTimeMetric = ({
     trend: firstResponseTimeTrend,
+    chartId,
+    dashboard,
 }: BaseAutomateMetricProps) => {
     return (
         <MetricCard
             title={DECREASE_IN_FIRST_RESPONSE}
-            hint={{
-                title: DECREASE_IN_FIRST_RESPONSE_TOOLTIP,
-            }}
+            hint={DECREASE_IN_FIRST_RESPONSE_TOOLTIP}
+            dashboard={dashboard}
+            chartId={chartId}
             isLoading={firstResponseTimeTrend.isFetching}
         >
             <BigNumberMetric

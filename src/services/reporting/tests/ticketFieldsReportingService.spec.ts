@@ -1,8 +1,6 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
 
-import {agents} from 'fixtures/agents'
-
 import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 
 import {
@@ -15,7 +13,6 @@ import {
 } from 'hooks/reporting/useTimeSeries'
 import {OrderDirection} from 'models/api/types'
 import {ReportingGranularity} from 'models/reporting/types'
-import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
 import {formatDates} from 'pages/stats/utils'
 
 import {
@@ -165,21 +162,8 @@ describe('ticketFieldsReportingService', () => {
                 userTimezone,
                 granularity,
                 {
-                    agents: [],
-                    agentsQA: [],
-                    channelColumnsOrder: [],
-                    channels: [],
-                    columnsOrder: [],
-                    selectedBTODMetric: BusiestTimeOfDaysMetrics.TicketsCreated,
                     customFieldsOrder,
                     selectedCustomFieldId: String(selectedCustomFieldId),
-                    tags: {},
-                    tagsTableOrder: {
-                        direction: OrderDirection.Asc,
-                        column: 1,
-                    },
-                    integrations: [],
-                    getAgentDetails: () => undefined,
                 }
             )
 
@@ -199,21 +183,8 @@ describe('ticketFieldsReportingService', () => {
                 userTimezone,
                 granularity,
                 {
-                    agents: [],
-                    agentsQA: [],
-                    channelColumnsOrder: [],
-                    channels: [],
-                    columnsOrder: [],
-                    selectedBTODMetric: BusiestTimeOfDaysMetrics.TicketsCreated,
                     customFieldsOrder,
                     selectedCustomFieldId: String(selectedCustomFieldId),
-                    tags: {},
-                    tagsTableOrder: {
-                        direction: OrderDirection.Asc,
-                        column: 1,
-                    },
-                    integrations: [],
-                    getAgentDetails: () => undefined,
                 }
             )
 
@@ -230,21 +201,8 @@ describe('ticketFieldsReportingService', () => {
                 userTimezone,
                 granularity,
                 {
-                    agents,
-                    agentsQA: [],
-                    channelColumnsOrder: [],
-                    channels: [],
-                    columnsOrder: [],
-                    selectedBTODMetric: BusiestTimeOfDaysMetrics.TicketsCreated,
                     customFieldsOrder,
                     selectedCustomFieldId: null,
-                    tags: {},
-                    tagsTableOrder: {
-                        direction: OrderDirection.Asc,
-                        column: 1,
-                    },
-                    integrations: [],
-                    getAgentDetails: () => undefined,
                 }
             )
 
@@ -263,21 +221,8 @@ describe('ticketFieldsReportingService', () => {
                 userTimezone,
                 granularity,
                 {
-                    agents,
-                    agentsQA: [],
-                    channelColumnsOrder: [],
-                    channels: [],
-                    columnsOrder: [],
-                    selectedBTODMetric: BusiestTimeOfDaysMetrics.TicketsCreated,
                     customFieldsOrder,
                     selectedCustomFieldId: String(selectedCustomFieldId),
-                    tags: {},
-                    tagsTableOrder: {
-                        direction: OrderDirection.Asc,
-                        column: 1,
-                    },
-                    integrations: [],
-                    getAgentDetails: () => undefined,
                 }
             )
 
