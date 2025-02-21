@@ -14,7 +14,7 @@
         "lint:deprecated": "tsx scripts/deprecated-monitoring/deprecated.monitoring.ts",
         "lint:format": "run-p stylelint:less eslint",
         "lint:changed": "files=$(git diff --name-only --diff-filter=ACMRTUXB main | grep -E '\\.(js|ts|tsx)$'); echo \"$files\"; eslint -c .eslintrc.js $files",
-        "quality": "run-s lint types",
+        "quality": "run-s lint typecheck",
         "jest": "TZ=UTC LC_ALL=\"en_US.UTF-8\" jest",
         "storybook": "storybook dev",
         "test": "run-s quality jest",
