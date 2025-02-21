@@ -18,6 +18,26 @@ export const getTeams = createImmutableSelector(
             : fromJS([])) as List<Map<any, any>>
 )
 
+export const getTeamsMinimalWithEmoji = createSelector(getTeams, (teams) =>
+    teams
+        .map((team) =>
+            Map({
+                name: team?.get('name'),
+                id: team?.get('id'),
+                nativeEmoji: team?.getIn(['decoration', 'emoji', 'native']),
+            })
+        )
+        .toList()
+)
+
+export const getTeamsMinimalWithEmojiJS = makeGetPlainJS<
+    {
+        id: number
+        name: string
+        nativeEmoji?: string
+    }[]
+>(getTeamsMinimalWithEmoji)
+
 export const getLabelledTeams = createSelector(getTeams, (teams) =>
     teams.map((team) => ({
         label: _capitalize(team?.get('name')),

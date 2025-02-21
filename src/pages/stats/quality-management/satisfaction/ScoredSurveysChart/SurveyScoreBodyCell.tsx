@@ -11,17 +11,17 @@ export type Props = Omit<BodyCellProps, 'children' | 'ref'> & {
 
 export default function SurveyScoreBodyCell({
     surveyScore,
-    width,
     height,
     innerClassName,
     justifyContent,
+    width,
 }: Props) {
     return (
         <BodyCell
-            width={width}
             height={height}
             innerClassName={innerClassName}
             justifyContent={justifyContent}
+            width={width}
         >
             <div className={css.surveyScore}>
                 <span>{surveyScore}</span>

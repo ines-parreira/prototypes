@@ -23,11 +23,14 @@ const NO_DATA_ITEM = {
     surveyScore: '0',
     comment: 'No data available for the selected filters.',
     ticketId: null,
-    assignee: {
+    assignedAgent: {
         name: NOT_AVAILABLE_PLACEHOLDER,
     },
     customerName: 'No data',
+    assignedTeam: null,
 }
+
+export const UNASSIGNED_TICKET_LABEL = 'Unassigned ticket'
 
 export default function CommentHighlightsCarousel({
     isFetching,
@@ -88,11 +91,12 @@ export default function CommentHighlightsCarousel({
 }
 
 function CommentHighlightsCarouselItem({
-    assignee,
+    assignedAgent,
     customerName,
     comment,
     surveyScore,
     ticketId,
+    assignedTeam,
 }: CommentHighlightsData) {
     return (
         <div key={`${ticketId}`} className={css.wrapper}>
@@ -101,14 +105,18 @@ function CommentHighlightsCarouselItem({
                     className={css.avatar}
                     size={48}
                     shape="round"
-                    name={assignee?.name || NOT_AVAILABLE_PLACEHOLDER}
-                    {...(assignee?.url && {
-                        url: assignee.url,
+                    name={assignedAgent?.name || NOT_AVAILABLE_PLACEHOLDER}
+                    {...(assignedAgent?.url && {
+                        url: assignedAgent.url,
                     })}
+                    isAIAgent={assignedAgent?.isBot}
                 />
                 <div className={css.details}>
-                    <div className={css.agentName}>
-                        {assignee?.name || NOT_AVAILABLE_PLACEHOLDER}
+                    <div className={css.assignee}>
+                        <TicketAssignee
+                            assignedAgent={assignedAgent}
+                            assignedTeam={assignedTeam}
+                        />
                     </div>
                     <div className={css.ticketDetails}>
                         {ticketId ? (
@@ -152,4 +160,27 @@ function CommentHighlightsCarouselItem({
             </div>
         </div>
     )
+}
+
+type TicketAssigneeProps = Pick<
+    CommentHighlightsData,
+    'assignedAgent' | 'assignedTeam'
+>
+
+function TicketAssignee({assignedAgent, assignedTeam}: TicketAssigneeProps) {
+    if (assignedAgent?.name) {
+        return <>{assignedAgent.name}</>
+    }
+
+    if (assignedTeam) {
+        const {name, emoji} = assignedTeam
+        return (
+            <>
+                {emoji && <span>{emoji}</span>}
+                <span>{name}</span>
+            </>
+        )
+    }
+
+    return <>{UNASSIGNED_TICKET_LABEL}</>
 }

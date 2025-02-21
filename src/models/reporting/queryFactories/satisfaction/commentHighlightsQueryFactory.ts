@@ -19,7 +19,7 @@ export const commentHighlightsQueryFactory = (
         TicketDimension.TicketId,
         TicketDimension.SurveyScore,
         TicketDimension.AssigneeUserId,
-        TicketSatisfactionSurveyDimension.SurveyCustomerId,
+        TicketDimension.AssigneeTeamId,
         TicketSatisfactionSurveyDimension.SurveyComment,
         TicketSatisfactionSurveyDimension.SurveyCommentLength,
     ],

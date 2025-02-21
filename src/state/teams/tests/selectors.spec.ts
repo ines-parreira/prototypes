@@ -50,4 +50,51 @@ describe('teams selectors', () => {
             expect(selectors.getLabelledTeamsJS({} as RootState)).toEqual([])
         })
     })
+
+    describe('getTeamsMinimalWithEmoji & getTeamsMinimalWithEmojiJS', () => {
+        const state = {
+            teams: initialState.mergeDeep({
+                all: {
+                    1: {
+                        id: 1,
+                        name: 'Team 1',
+                        decoration: {emoji: {native: '😀'}},
+                    },
+                    2: {
+                        id: 2,
+                        name: 'Team 2',
+                        decoration: {emoji: {native: '😃'}},
+                    },
+                },
+            }),
+        } as RootState
+
+        it('should return minimal teams from the state', () => {
+            expect(selectors.getTeamsMinimalWithEmoji(state)).toEqualImmutable(
+                fromJS([
+                    {id: 1, name: 'Team 1', nativeEmoji: '😀'},
+                    {id: 2, name: 'Team 2', nativeEmoji: '😃'},
+                ])
+            )
+        })
+
+        it('should return minimal teams as JS from the state', () => {
+            expect(selectors.getTeamsMinimalWithEmojiJS(state)).toEqual([
+                {id: 1, name: 'Team 1', nativeEmoji: '😀'},
+                {id: 2, name: 'Team 2', nativeEmoji: '😃'},
+            ])
+        })
+
+        it('should return an empty array when no teams in the state', () => {
+            expect(
+                selectors.getTeamsMinimalWithEmoji({} as RootState)
+            ).toEqualImmutable(fromJS([]))
+        })
+
+        it('should return an empty array as JS when no teams in the state', () => {
+            expect(
+                selectors.getTeamsMinimalWithEmojiJS({} as RootState)
+            ).toEqual([])
+        })
+    })
 })

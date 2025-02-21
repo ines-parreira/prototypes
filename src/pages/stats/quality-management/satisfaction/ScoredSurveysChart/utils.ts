@@ -27,7 +27,7 @@ import TicketIdBodyCell, {
 type ColProps = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     title: string
     justifyContent?: 'left' | 'right' | 'center'
-    width: number
+    width: number | 'auto'
     property?: ScoredSurveyDataKey
     CellComponent:
         | React.FunctionComponent<AssigneeBodyCellProps>
@@ -64,7 +64,7 @@ export const SCORED_SURVEYS_TABLE_COLUMNS: ColProps[] = [
         title: 'score',
         justifyContent: 'right',
         property: ScoredSurveyDataKey.SURVEY_SCORE,
-        width: 100,
+        width: 'auto',
         CellComponent: SurveyScoreBodyCell,
     },
     {

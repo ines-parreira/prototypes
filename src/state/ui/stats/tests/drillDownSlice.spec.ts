@@ -9,7 +9,10 @@ import {createJob} from 'models/job/resources'
 import {Job, JobType} from 'models/job/types'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {SatisfactionMetricConfig as SatisfactionTrendCardConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
+import {
+    CSAT_SCORE,
+    SatisfactionMetricConfig as SatisfactionTrendCardConfig,
+} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
 import {SLA_STATUS_COLUMN_LABEL} from 'pages/stats/sla/SlaConfig'
 import {
     buildAgentMetric,
@@ -360,6 +363,19 @@ describe('drillDownSlice', () => {
                     metricValueFormat:
                         SatisfactionTrendCardConfig[
                             SatisfactionMetric.SurveysSent
+                        ].metricFormat,
+                },
+            },
+            {
+                metricData: {
+                    metricName: SatisfactionMetric.AverageSurveyScore,
+                },
+                expectedValues: {
+                    metricTitle: CSAT_SCORE,
+                    showMetric: true,
+                    metricValueFormat:
+                        SatisfactionTrendCardConfig[
+                            SatisfactionMetric.AverageSurveyScore
                         ].metricFormat,
                 },
             },

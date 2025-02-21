@@ -1,23 +1,30 @@
-import {useQueries} from '@tanstack/react-query'
 import {useMemo} from 'react'
 
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import {UserRole} from 'config/types/user'
+import {useMetricPerDimensionWithEnrichment} from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
-import {customersKeys} from 'models/customer/queries'
-import {getCustomer} from 'models/customer/resources'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {commentHighlightsQueryFactory} from 'models/reporting/queryFactories/satisfaction/commentHighlightsQueryFactory'
+import {EnrichmentFields} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
+import {getTeamsMinimalWithEmojiJS} from 'state/teams/selectors'
 
 type CommentHighlightsUserData = {
     name: string
     url?: string | null
+    isBot?: boolean
+}
+
+type CommentHighlightsTeamData = {
+    name: string
+    emoji?: string
 }
 
 export type CommentHighlightsData = {
-    assignee: CommentHighlightsUserData | null
+    assignedAgent: CommentHighlightsUserData | null
+    assignedTeam: CommentHighlightsTeamData | null
     customerName: string | null
     ticketId: string | null
     surveyScore: string | null
@@ -36,80 +43,68 @@ export const useCommentHighlights = (
     queryScores: string[]
 ): FormattedCommentHighlightQueryData => {
     const agents = useAppSelector(getHumanAndAutomationBotAgentsJS)
-
-    const {data, isFetching, isError} = useMetricPerDimension(
-        commentHighlightsQueryFactory(filters, timezone, queryScores)
+    const teams = useAppSelector(getTeamsMinimalWithEmojiJS)
+    const {data, isFetching, isError} = useMetricPerDimensionWithEnrichment(
+        commentHighlightsQueryFactory(filters, timezone, queryScores),
+        [EnrichmentFields.CustomerName, EnrichmentFields.AssigneeName],
+        EnrichmentFields.TicketId
     )
 
-    const processedData = useMemo(
+    const formattedData = useMemo(
         () =>
             data?.allData?.map((result) => {
                 const ticketId = result[TicketDimension.TicketId] || null
                 const assignedUserId =
                     result[TicketDimension.AssigneeUserId] || null
-                const surveyCustomerId =
-                    result[
-                        TicketSatisfactionSurveyDimension.SurveyCustomerId
-                    ] || null
                 const surveyScore = result[TicketDimension.SurveyScore] || null
                 const comment =
                     result[TicketSatisfactionSurveyDimension.SurveyComment] ||
                     null
 
+                const assignedTeamId =
+                    result[TicketDimension.AssigneeTeamId] || null
+
+                const team = teams.find(
+                    (team) => String(team.id) === assignedTeamId
+                )
+
+                const assignedTeam = team
+                    ? {
+                          name: team.name,
+                          emoji: team.nativeEmoji,
+                      }
+                    : null
+
                 const agent = agents.find(
                     (agent) => String(agent.id) === assignedUserId
                 )
 
-                const assignee = agent
+                const assignedAgent = agent
                     ? {
                           name: agent.name,
                           url: agent.meta?.profile_picture_url,
+                          isBot: agent.role.name === UserRole.Bot,
                       }
                     : null
+
+                const customerName =
+                    result[EnrichmentFields.CustomerName] || null
 
                 return {
                     ticketId,
                     surveyScore,
                     comment,
-                    assignee,
-                    surveyCustomerId,
+                    assignedAgent,
+                    assignedTeam,
+                    customerName,
                 }
-            }) || [],
-        [agents, data?.allData]
-    )
-
-    const customerQueries = useQueries({
-        queries: processedData.map(({surveyCustomerId}) => {
-            const customerId = Number(surveyCustomerId)
-            return {
-                queryKey: customersKeys.detail(customerId),
-                queryFn: () => getCustomer(customerId),
-                enabled: !!customerId,
-            }
-        }),
-    })
-
-    const areCustomerQueriesLoading = useMemo(
-        () => customerQueries.some((query) => query.isLoading),
-        [customerQueries]
-    )
-
-    const areCustomerQueriesInError = useMemo(
-        () => customerQueries.some((query) => query.isError),
-        [customerQueries]
-    )
-    const finalData = useMemo(
-        () =>
-            processedData.map((item, index) => ({
-                ...item,
-                customerName: customerQueries[index]?.data?.data?.name || null,
-            })),
-        [customerQueries, processedData]
+            }),
+        [agents, data?.allData, teams]
     )
 
     return {
-        ...(!areCustomerQueriesLoading && {data: finalData}),
-        isFetching: isFetching || areCustomerQueriesLoading,
-        isError: isError || areCustomerQueriesInError,
+        data: formattedData,
+        isFetching: isFetching,
+        isError: isError,
     }
 }

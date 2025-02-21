@@ -2,7 +2,9 @@ import {render, screen} from '@testing-library/react'
 import React from 'react'
 
 import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
-import CommentHighlightsCarousel from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel'
+import CommentHighlightsCarousel, {
+    UNASSIGNED_TICKET_LABEL,
+} from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel'
 
 const VIEW_TICKET = 'View Ticket'
 const NO_DATA_COMMENT = 'No data available for the selected filters.'
@@ -12,8 +14,9 @@ const dummyData = [
         ticketId: '1',
         surveyScore: '5',
         comment: 'This is a test comment.',
-        assignee: {name: 'Agent A', url: 'http://avatar.url/a.png'},
+        assignedAgent: {name: 'Agent A', url: 'http://avatar.url/a.png'},
         customerName: 'Customer A',
+        assignedTeam: {name: 'Team A', emoji: '👍'},
     },
 ]
 
@@ -52,6 +55,79 @@ describe('CommentHighlightsCarousel', () => {
         expect(getByText('This is a test comment.')).toBeInTheDocument()
     })
 
+    it('renders slider with assignedTeam when assignedAgent is not provided', () => {
+        const dummyDataWithoutAgent = [
+            {
+                ticketId: '1',
+                surveyScore: '5',
+                comment: 'This is a test comment.',
+                assignedAgent: null,
+                customerName: 'Customer A',
+                assignedTeam: {name: 'Team A', emoji: '👍'},
+            },
+        ]
+
+        const {getByText} = render(
+            <CommentHighlightsCarousel
+                isFetching={false}
+                isError={false}
+                data={dummyDataWithoutAgent}
+            />
+        )
+
+        expect(getByText('Team A')).toBeInTheDocument()
+        expect(getByText('👍')).toBeInTheDocument()
+    })
+
+    it('renders slider with assignedTeam when emoji is not provided', () => {
+        const dummyDataWithoutAgent = [
+            {
+                ticketId: '1',
+                surveyScore: '5',
+                comment: 'This is a test comment.',
+                assignedAgent: null,
+                customerName: 'Customer A',
+                assignedTeam: {name: 'Team A'},
+            },
+        ]
+
+        const {getByText, queryByText} = render(
+            <CommentHighlightsCarousel
+                isFetching={false}
+                isError={false}
+                data={dummyDataWithoutAgent}
+            />
+        )
+
+        const emojiElement = queryByText('👍')
+
+        expect(getByText('Team A')).toBeInTheDocument()
+        expect(emojiElement).not.toBeInTheDocument()
+    })
+
+    it('renders slider with unassigned placeholder when assignedAgent and assignedTeam are not provided', () => {
+        const dummyDataWithoutAgentAndTeam = [
+            {
+                ticketId: '1',
+                surveyScore: '5',
+                comment: 'This is a test comment.',
+                assignedAgent: null,
+                customerName: 'Customer A',
+                assignedTeam: null,
+            },
+        ]
+
+        const {getByText} = render(
+            <CommentHighlightsCarousel
+                isFetching={false}
+                isError={false}
+                data={dummyDataWithoutAgentAndTeam}
+            />
+        )
+
+        expect(getByText(UNASSIGNED_TICKET_LABEL)).toBeInTheDocument()
+    })
+
     it('renders default no-data item when data is empty', () => {
         const {getByText} = render(
             <CommentHighlightsCarousel
@@ -71,8 +147,9 @@ describe('CommentHighlightsCarousel', () => {
                 ticketId: '1',
                 surveyScore: null,
                 comment: null,
-                assignee: null,
+                assignedAgent: null,
                 customerName: null,
+                assignedTeam: null,
             },
         ]
 
@@ -86,7 +163,7 @@ describe('CommentHighlightsCarousel', () => {
 
         const placeholders = screen.getAllByText(NOT_AVAILABLE_PLACEHOLDER)
 
-        expect(placeholders.length).toBe(4)
+        expect(placeholders.length).toBe(3)
     })
 
     it('renders View Ticket without link when ticketId is not provided', () => {
@@ -95,8 +172,9 @@ describe('CommentHighlightsCarousel', () => {
                 ticketId: null,
                 surveyScore: '4',
                 comment: 'Another test comment.',
-                assignee: {name: 'Agent B'},
+                assignedAgent: {name: 'Agent B'},
                 customerName: 'Customer B',
+                assignedTeam: {name: 'Team B', emoji: '👎'},
             },
         ]
 
@@ -138,8 +216,9 @@ describe('CommentHighlightsCarousel', () => {
                 ticketId: '2',
                 surveyScore: '3',
                 comment: longComment,
-                assignee: {name: 'Agent Long'},
+                assignedAgent: {name: 'Agent Long'},
                 customerName: 'Customer Long',
+                assignedTeam: {name: 'Team Long', emoji: '🤷'},
             },
         ]
 

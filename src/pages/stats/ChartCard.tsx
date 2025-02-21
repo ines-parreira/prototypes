@@ -11,8 +11,6 @@ import {TooltipData} from 'pages/stats/types'
 type Props = {
     children?: ReactNode
     className?: string
-    titleClassName?: string
-    titleWrapperClassName?: string
     hint?: TooltipData
     title: ReactNode
     titleExtra?: ReactNode
@@ -22,8 +20,6 @@ type Props = {
 export default function ChartCard({
     children,
     className,
-    titleClassName,
-    titleWrapperClassName,
     hint,
     title,
     titleExtra,
@@ -37,10 +33,8 @@ export default function ChartCard({
                 [css.noPadding]: noPadding,
             })}
         >
-            <div
-                className={classnames(titleWrapperClassName, css.titleWrapper)}
-            >
-                <div className={classnames(titleClassName, css.title)}>
+            <div className={css.titleWrapper}>
+                <div className={css.title}>
                     <span>{title}</span>
                     {hint && (
                         <HintTooltip

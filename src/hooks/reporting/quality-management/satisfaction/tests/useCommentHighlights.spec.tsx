@@ -1,27 +1,24 @@
-import {useQueries} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
 import moment from 'moment'
-import React from 'react'
-import {Provider} from 'react-redux'
 
-import {agents} from 'fixtures/agents'
+import {UserRole} from 'config/types/user'
 import {useCommentHighlights} from 'hooks/reporting/quality-management/satisfaction/useCommentHighlights'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import {useMetricPerDimensionWithEnrichment} from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {commentHighlightsQueryFactory} from 'models/reporting/queryFactories/satisfaction/commentHighlightsQueryFactory'
+import {EnrichmentFields} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
-import {RootState} from 'state/types'
+import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
+import {getTeamsMinimalWithEmojiJS} from 'state/teams/selectors'
 import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock, mockStore} from 'utils/testing'
-
-jest.mock('@tanstack/react-query')
-const useQueriesMock = assumeMock(useQueries)
+import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
-const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const useMetricPerDimensionWithEnrichmentMock = assumeMock(
+    useMetricPerDimensionWithEnrichment
+)
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)
@@ -32,6 +29,15 @@ describe('useCommentHighlights', () => {
             id: 1,
             name: 'John Doe',
             meta: {profile_picture_url: 'http://image.url'},
+            role: {name: UserRole.Bot},
+        },
+    ]
+
+    const teamsMockReturnedValues = [
+        {
+            id: 1,
+            name: 'Team A',
+            nativeEmoji: '🚀',
         },
     ]
 
@@ -42,6 +48,8 @@ describe('useCommentHighlights', () => {
             [TicketSatisfactionSurveyDimension.SurveyCustomerId]: '10',
             [TicketDimension.SurveyScore]: '5',
             [TicketSatisfactionSurveyDimension.SurveyComment]: 'Great service',
+            [TicketDimension.AssigneeTeamId]: '1',
+            [EnrichmentFields.CustomerName]: 'Customer A',
         },
     ]
 
@@ -56,88 +64,40 @@ describe('useCommentHighlights', () => {
     const timezone = 'someTimeZone'
     const queryScores = ['1', '2', '3', '4', '5']
 
-    const emptyMetricPerDimensionReturnValue = {
-        data: null,
+    const emptyMetricPerDimensionWithEnrichmentReturnValue = {
         isError: false,
         isFetching: false,
     }
 
-    const defaultState = {
-        agents: fromJS({
-            all: agents,
-        }),
-        ui: {stats: {filters: {cleanStatsFilters: statsFilters}}},
-    } as RootState
-
     beforeEach(() => {
-        useMetricPerDimensionMock.mockReturnValue(
-            emptyMetricPerDimensionReturnValue
+        useMetricPerDimensionWithEnrichmentMock.mockReturnValue(
+            emptyMetricPerDimensionWithEnrichmentReturnValue as any
         )
-        useQueriesMock.mockReturnValue([])
-        useAppSelectorMock.mockReturnValue(agentsMockReturnedValues)
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getHumanAndAutomationBotAgentsJS) {
+                return agentsMockReturnedValues
+            }
+            if (selector === getTeamsMinimalWithEmojiJS) {
+                return teamsMockReturnedValues
+            }
+            return null
+        })
     })
 
     it('should pass query factories with three arguments and return empty data', () => {
-        const {result} = renderHook(
-            () => useCommentHighlights(statsFilters, timezone, queryScores),
-            {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
-            }
-        )
-
-        expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-            commentHighlightsQueryFactory(statsFilters, timezone, queryScores)
-        )
-        expect(result.current).toEqual({
-            ...emptyMetricPerDimensionReturnValue,
-            data: [],
-        })
-    })
-
-    it('should call useQuerys with empty array and return empty data', () => {
-        const {result} = renderHook(
-            () => useCommentHighlights(statsFilters, timezone, queryScores),
-            {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                ),
-            }
-        )
-
-        expect(useQueriesMock).toHaveBeenCalledWith({queries: []})
-        expect(result.current).toEqual({
-            ...emptyMetricPerDimensionReturnValue,
-            data: [],
-        })
-    })
-
-    it('should not return finalData while loading customerQueries', () => {
-        useMetricPerDimensionMock.mockReturnValue({
-            data: {value: null, decile: 0, allData: allDataDummy},
-            isFetching: false,
-            isError: false,
-        })
-        useQueriesMock.mockReturnValue([
-            {
-                isLoading: true,
-                isError: false,
-                data: null,
-            } as any,
-        ])
-
         const {result} = renderHook(() =>
             useCommentHighlights(statsFilters, timezone, queryScores)
         )
 
+        expect(useMetricPerDimensionWithEnrichmentMock).toHaveBeenCalledWith(
+            commentHighlightsQueryFactory(statsFilters, timezone, queryScores),
+            [EnrichmentFields.CustomerName, EnrichmentFields.AssigneeName],
+            EnrichmentFields.TicketId
+        )
         expect(result.current).toEqual({
-            isFetching: true,
             isError: false,
+            isFetching: false,
         })
     })
 
@@ -146,23 +106,16 @@ describe('useCommentHighlights', () => {
             {
                 [TicketDimension.TicketId]: '',
                 [TicketDimension.AssigneeUserId]: '',
-                [TicketSatisfactionSurveyDimension.SurveyCustomerId]: '',
                 [TicketDimension.SurveyScore]: '',
                 [TicketSatisfactionSurveyDimension.SurveyComment]: '',
+                [TicketDimension.AssigneeTeamId]: '',
+                [EnrichmentFields.CustomerName]: '',
             },
         ]
-        useMetricPerDimensionMock.mockReturnValue({
-            data: {value: null, decile: 0, allData: emptyAllDataDummy},
-            isFetching: false,
-            isError: false,
+        useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+            ...emptyMetricPerDimensionWithEnrichmentReturnValue,
+            data: {allData: emptyAllDataDummy} as any,
         })
-        useQueriesMock.mockReturnValue([
-            {
-                isLoading: false,
-                isError: false,
-                data: null,
-            } as any,
-        ])
 
         const {result} = renderHook(() =>
             useCommentHighlights(statsFilters, timezone, queryScores)
@@ -173,32 +126,22 @@ describe('useCommentHighlights', () => {
             isError: false,
             data: [
                 {
-                    assignee: null,
+                    assignedAgent: null,
+                    assignedTeam: null,
                     comment: null,
                     customerName: null,
                     surveyScore: null,
                     ticketId: null,
-                    surveyCustomerId: null,
                 },
             ],
         })
     })
 
-    it('should return finalData with computed customerName when not loading and no error', () => {
-        useMetricPerDimensionMock.mockReturnValue({
-            data: {value: null, decile: 0, allData: allDataDummy},
-            isFetching: false,
-            isError: false,
+    it('should return data formatted when not loading and no error', () => {
+        useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+            ...emptyMetricPerDimensionWithEnrichmentReturnValue,
+            data: {allData: allDataDummy} as any,
         })
-        useQueriesMock.mockReturnValue([
-            {
-                isLoading: false,
-                isError: false,
-                data: {
-                    data: {name: 'Customer A'},
-                },
-            } as any,
-        ])
 
         const {result} = renderHook(() =>
             useCommentHighlights(statsFilters, timezone, queryScores)
@@ -212,9 +155,62 @@ describe('useCommentHighlights', () => {
                     ticketId: '1',
                     surveyScore: '5',
                     comment: 'Great service',
-                    assignee: {name: 'John Doe', url: 'http://image.url'},
+                    assignedAgent: {
+                        name: 'John Doe',
+                        url: 'http://image.url',
+                        isBot: true,
+                    },
                     customerName: 'Customer A',
-                    surveyCustomerId: '10',
+                    assignedTeam: {name: 'Team A', emoji: '🚀'},
+                },
+            ],
+        })
+    })
+
+    it('should return data formatted and assignedAgent.isBot should be false when UserRole is different than bot', () => {
+        const adminAgentsMockReturnedValues = [
+            {
+                id: 1,
+                name: 'John Doe',
+                meta: {profile_picture_url: 'http://image.url'},
+                role: {name: UserRole.Admin},
+            },
+        ]
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getHumanAndAutomationBotAgentsJS) {
+                return adminAgentsMockReturnedValues
+            }
+            if (selector === getTeamsMinimalWithEmojiJS) {
+                return teamsMockReturnedValues
+            }
+            return null
+        })
+
+        useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+            ...emptyMetricPerDimensionWithEnrichmentReturnValue,
+            data: {allData: allDataDummy} as any,
+        })
+
+        const {result} = renderHook(() =>
+            useCommentHighlights(statsFilters, timezone, queryScores)
+        )
+
+        expect(result.current).toEqual({
+            isFetching: false,
+            isError: false,
+            data: [
+                {
+                    ticketId: '1',
+                    surveyScore: '5',
+                    comment: 'Great service',
+                    assignedAgent: {
+                        name: 'John Doe',
+                        url: 'http://image.url',
+                        isBot: false,
+                    },
+                    customerName: 'Customer A',
+                    assignedTeam: {name: 'Team A', emoji: '🚀'},
                 },
             ],
         })

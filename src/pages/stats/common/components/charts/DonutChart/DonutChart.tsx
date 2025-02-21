@@ -106,7 +106,14 @@ const DonutChart = ({
 
     const options: ChartOptions<'doughnut'> = useMemo(
         () => ({
+            elements: {
+                arc: {borderWidth: 1},
+            },
             cutout: '65%',
+            interaction: {
+                intersect: false,
+                mode: 'point',
+            },
             plugins: {
                 legend: {
                     display: false,

@@ -28,6 +28,7 @@ export const SATISFACTION_SCORE_LABEL = 'Satisfaction score'
 export const RESPONSE_RATE_LABEL = 'Response rate'
 export const SURVEYS_SENT_LABEL = 'Surveys sent'
 export const AVERAGE_SURVEY_SCORE = 'Average CSAT'
+export const CSAT_SCORE = 'CSAT Score'
 
 const AVERAGE_CSAT_PER_DIMENSION_DESCRIPTION =
     'Average from 1 to 5 stars in satisfaction per {dimension} over time.'

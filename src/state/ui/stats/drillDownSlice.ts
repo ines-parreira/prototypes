@@ -12,7 +12,10 @@ import {
 } from 'models/job/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {MetricValueFormat} from 'pages/stats/common/utils'
-import {SatisfactionMetricConfig as SatisfactionTrendCardConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
+import {
+    CSAT_SCORE,
+    SatisfactionMetricConfig as SatisfactionTrendCardConfig,
+} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
 import {SLA_STATUS_COLUMN_LABEL} from 'pages/stats/sla/SlaConfig'
 import {
     AgentsColumnConfig,
@@ -401,12 +404,17 @@ export const getDrillDownMetricColumn = (
         metricData.metricName === SatisfactionMetric.SatisfactionScore ||
         metricData.metricName === SatisfactionMetric.ResponseRate ||
         metricData.metricName === SatisfactionMetric.SurveysSent ||
-        metricData.metricName === SatisfactionMetric.AverageSurveyScore ||
         metricData.metricName === SatisfactionMetric.AverageCSATPerAssignee ||
         metricData.metricName === SatisfactionMetric.AverageCSATPerChannel ||
         metricData.metricName === SatisfactionMetric.AverageCSATPerIntegration
     ) {
         metricTitle = SatisfactionTrendCardConfig[metricData.metricName].title
+        metricValueFormat =
+            SatisfactionTrendCardConfig[metricData.metricName].metricFormat
+    } else if (
+        metricData.metricName === SatisfactionMetric.AverageSurveyScore
+    ) {
+        metricTitle = CSAT_SCORE
         metricValueFormat =
             SatisfactionTrendCardConfig[metricData.metricName].metricFormat
     } else if (

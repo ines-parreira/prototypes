@@ -6,7 +6,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import ChartCard from 'pages/stats/ChartCard'
 import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import CommentHighlightsCarousel from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel'
-import css from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsChart.less'
 import CommentHighlightCsatSentimentToggle from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCsatSentimentToggle'
 import {getCommentHighlightsCsatSentiment} from 'state/ui/stats/qualityManagementSlice'
 import {CsatSentiment} from 'state/ui/stats/types'
@@ -44,8 +43,6 @@ export default function CommentHighlightsChart(props: DashboardChartProps) {
             hint={{
                 title: COMMENT_HIGHLIGHTS.DESCRIPTION,
             }}
-            titleClassName={css.title}
-            titleWrapperClassName={css.titleWrapper}
             titleExtra={<CommentHighlightCsatSentimentToggle />}
             {...props}
         >
