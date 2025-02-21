@@ -148,8 +148,6 @@ export default function Routes() {
     )
 }
 
-type FeatureFlag = boolean | undefined
-
 export function AppRoutes() {
     const {path} = useRouteMatch()
     const location = useLocation()
@@ -780,8 +778,6 @@ function AutomationContent() {
         useFlags()[FeatureFlagKey.FlowsBuilderAnalytics]
     const isAutomateTopQuestionsEnabled =
         useFlags()[FeatureFlagKey.ObservabilityAutomateTopQuestions]
-    const isNewChannelsViewEnabled: FeatureFlag =
-        useFlags()[FeatureFlagKey.NewChannelsView]
     const isActionsInternalPlatformEnabled = useFlag(
         FeatureFlagKey.ActionsInternalPlatform
     )
@@ -1088,7 +1084,6 @@ function AutomationContent() {
                     <SelfServiceContactFormsProvider>
                         <Route
                             path={`${path}/:shopType/:shopName/connected-channels`}
-                            exact={isNewChannelsViewEnabled === false}
                             component={withUserRoleRequired(
                                 ConnectedChannelsViewContainer,
                                 AGENT_ROLE

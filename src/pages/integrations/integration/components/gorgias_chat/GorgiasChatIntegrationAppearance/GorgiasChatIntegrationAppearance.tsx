@@ -96,7 +96,6 @@ import {RootState} from 'state/types'
 
 import useIntegrationPageViewLogEvent from '../../../hooks/useIntegrationPageViewLogEvent'
 import {CustomizeTranslationsButton} from '../components/CustomizeTranslationsButton'
-import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import ChatHomePreview from '../GorgiasChatIntegrationPreview/ChatHomePreview'
 import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
 import {defaultChatFontFamily} from '../GorgiasChatIntegrationPreview/CustomizedChatLauncher'
@@ -258,9 +257,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         useFlags()[FeatureFlagKey.ChatLauncherCustomization]
     const isChatHeaderPictureStyleEnabled =
         useFlags()[FeatureFlagKey.ChatHeaderPictureStyle]
-    const changeAutomateSettingButtomPosition =
-        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
-    const newChannelsView = useFlags()[FeatureFlagKey.NewChannelsView]
     const isControlBotLabelEnabled =
         useFlags()[FeatureFlagKey.ChatControlBotLabelVisibility]
     const isControlUseMainColorOutsideBusinessHoursEnabled =
@@ -921,15 +917,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         </BreadcrumbItem>
                     </Breadcrumb>
                 }
-            >
-                {isUpdate &&
-                    !changeAutomateSettingButtomPosition &&
-                    !newChannelsView && (
-                        <GorgiasChatIntegrationConnectedChannel
-                            integration={integration}
-                        />
-                    )}
-            </PageHeader>
+            />
 
             {isUpdate && (
                 <GorgiasChatIntegrationHeader

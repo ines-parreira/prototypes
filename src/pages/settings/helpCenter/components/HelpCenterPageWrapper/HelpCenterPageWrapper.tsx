@@ -226,7 +226,6 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                 cannotUpdateHelpCenter={cannotUpdateHelpCenter}
                 helpCenterId={helpCenter.id}
                 helpCenterShopName={helpCenter.shop_name}
-                isConnectStoreLinkEnabled={isConnectStoreLinkEnabled}
             />
             {fluidContainer ? (
                 <div

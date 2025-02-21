@@ -100,7 +100,6 @@ export enum FeatureFlagKey {
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
     MLFeaturesKillswitch = 'ml-features-killswitch',
     MLFlowsRecommendation = 'ml-flows-recommendation',
-    NewChannelsView = 'new-channels-view',
     NewDomainVerification = 'new-domain-verification',
     NewSenderSelect = 'new-sender-select',
     NewSatisfactionReport = 'new-satisfaction-report',

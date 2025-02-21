@@ -8,8 +8,6 @@ import {TicketChannel} from 'business/types/ticket'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
@@ -23,14 +21,12 @@ type Props = {
     helpCenterId: string | number
     helpCenterShopName?: string | null
     cannotUpdateHelpCenter?: boolean
-    isConnectStoreLinkEnabled?: boolean
 }
 
 export const HelpCenterNavigation: React.FC<Props> = ({
     cannotUpdateHelpCenter = false,
     helpCenterId,
     helpCenterShopName,
-    isConnectStoreLinkEnabled = true,
 }: Props) => {
     const baseURL = `/app/settings/help-center/${helpCenterId}`
     const hasAutomate = useAppSelector(getHasAutomate)
@@ -41,8 +37,6 @@ export const HelpCenterNavigation: React.FC<Props> = ({
 
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
-
-    const newChannelsView = useFlags()[FeatureFlagKey.NewChannelsView]
 
     const showAILibraryTab = useHasAccessToAILibrary()
 
@@ -93,7 +87,7 @@ export const HelpCenterNavigation: React.FC<Props> = ({
                 Customization
             </NavLink>
             <NavLink to={`${baseURL}/publish-track`}>Publish & Track</NavLink>
-            {newChannelsView && hasAutomate && (
+            {hasAutomate && (
                 <NavLink to={`${baseURL}/automate`}>
                     Automate
                     {!helpCenterShopName && (
@@ -105,68 +99,25 @@ export const HelpCenterNavigation: React.FC<Props> = ({
                     )}
                 </NavLink>
             )}
-            {changeAutomateSettingButtomPosition &&
-                (hasAutomate ? (
-                    <>
-                        {helpCenterShopName && !newChannelsView ? (
-                            <Button
-                                fillStyle="ghost"
-                                intent="primary"
-                                className={css.automateSettingsButton}
-                                onClick={() => {
-                                    logHelpCenterEvent('Setting')
-                                    history.push(
-                                        `/app/automation/shopify/${helpCenterShopName}/connected-channels?type=${TicketChannel.HelpCenter}&id=${helpCenterId}`,
-                                        {from: 'help-center-settings'}
-                                    )
-                                }}
-                                leadingIcon="bolt"
-                            >
-                                Automate Settings
-                            </Button>
-                        ) : (
-                            !newChannelsView && (
-                                <Button
-                                    fillStyle="ghost"
-                                    intent="primary"
-                                    onClick={() => {
-                                        logHelpCenterEvent('Store')
-                                        if (isConnectStoreLinkEnabled) {
-                                            history.push(
-                                                `/app/settings/help-center/${helpCenterId}/publish-track`
-                                            )
-                                        }
-                                    }}
-                                >
-                                    <ButtonIconLabel
-                                        icon="warning"
-                                        className={css.connectStoreWarning}
-                                    >
-                                        Connect to Automate
-                                    </ButtonIconLabel>
-                                </Button>
-                            )
-                        )}
-                    </>
-                ) : (
-                    <>
-                        <AutomateSubscriptionButton
-                            fillStyle="ghost"
-                            label="Upgrade to Automate"
-                            onClick={() => {
-                                logHelpCenterEvent('Upsell')
-                                setIsAutomationModalOpened(true)
-                            }}
-                        />
-                        <AutomateSubscriptionModal
-                            confirmLabel="Subscribe"
-                            isOpen={isAutomationModalOpened}
-                            onClose={() => {
-                                setIsAutomationModalOpened(false)
-                            }}
-                        />
-                    </>
-                ))}
+            {changeAutomateSettingButtomPosition && !hasAutomate && (
+                <>
+                    <AutomateSubscriptionButton
+                        fillStyle="ghost"
+                        label="Upgrade to Automate"
+                        onClick={() => {
+                            logHelpCenterEvent('Upsell')
+                            setIsAutomationModalOpened(true)
+                        }}
+                    />
+                    <AutomateSubscriptionModal
+                        confirmLabel="Subscribe"
+                        isOpen={isAutomationModalOpened}
+                        onClose={() => {
+                            setIsAutomationModalOpened(false)
+                        }}
+                    />
+                </>
+            )}
         </SecondaryNavbar>
     )
 }

@@ -1,30 +1,19 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Redirect} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
 
 import {ConnectedChannelsView} from './ConnectedChannelsView'
-import DEPRECATED_ConnectedChannelsView from './DEPRECATED_ConnectedChannelsView'
 
 const ConnectedChannelsViewContainer = () => {
     const hasAutomate = useAppSelector(getHasAutomate)
-    const isNewChannelsViewEnabled = useFlags()[FeatureFlagKey.NewChannelsView]
 
     if (!hasAutomate) {
         return <Redirect to="/app/automation/connected-channels" />
     }
 
-    if (isNewChannelsViewEnabled) {
-        return <ConnectedChannelsView />
-    }
-
-    if (isNewChannelsViewEnabled === false) {
-        return <DEPRECATED_ConnectedChannelsView />
-    }
-    return null
+    return <ConnectedChannelsView />
 }
 
 export default ConnectedChannelsViewContainer

@@ -33,7 +33,6 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
         null
     )
     const hasAutomate = useAppSelector(getHasAutomate)
-    const newChannelsView = useFlags()[FeatureFlagKey.NewChannelsView]
     const storeIntegration = storeIntegrations.find(
         (integration) => integration.id === shopIntegrationId
     )
@@ -82,7 +81,7 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
                 )}
             </NavLink>
 
-            {newChannelsView && hasAutomate && (
+            {hasAutomate && (
                 <NavLink to={`${baseURL}/automate`} exact>
                     Automate
                     {isStoreNotConnected && (
@@ -96,9 +95,7 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
             )}
 
             {changeAutomateSettingButtomPosition && (
-                <GorgiasChatIntegrationConnectedChannel
-                    integration={integration}
-                />
+                <GorgiasChatIntegrationConnectedChannel />
             )}
         </SecondaryNavbar>
     )

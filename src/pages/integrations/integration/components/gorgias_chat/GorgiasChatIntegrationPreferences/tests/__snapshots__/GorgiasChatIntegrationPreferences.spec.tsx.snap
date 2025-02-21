@@ -108,11 +108,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
         />
       </ol>
     </nav>
-    <div>
-      <div
-        data-testid="GorgiasChatIntegrationConnectedChannel"
-      />
-    </div>
   </div>
   <div
     data-testid="GorgiasChatIntegrationHeader"

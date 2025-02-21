@@ -1,11 +1,9 @@
 import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
@@ -38,7 +36,6 @@ jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
 }))
 
 const mockGetHasAutomate = jest.mocked(getHasAutomate)
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 
 describe('<GorgiasChatIntegrationNavigation />', () => {
     const integration = {
@@ -67,9 +64,6 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
 
     it('should render automate tab', () => {
         mockGetHasAutomate.mockReturnValue(true)
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.NewChannelsView]: true,
-        })
         render(
             <Provider store={store}>
                 <GorgiasChatIntegrationNavigation
@@ -82,9 +76,6 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
 
     it('should not render automate tab', () => {
         mockGetHasAutomate.mockReturnValue(false)
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.NewChannelsView]: true,
-        })
         render(
             <Provider store={store}>
                 <GorgiasChatIntegrationNavigation

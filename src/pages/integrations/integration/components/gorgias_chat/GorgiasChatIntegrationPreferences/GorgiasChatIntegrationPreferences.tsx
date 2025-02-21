@@ -82,7 +82,6 @@ import {isGenericEmailIntegration} from '../../email/helpers'
 import {CustomizeTranslationsButton} from '../components/CustomizeTranslationsButton'
 import {multiLanguageInitialTextsEmptyData} from '../GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
 import translationsAvailableKeys from '../GorgiasChatIntegrationAppearance/GorgiasTranslateText/translations-available-keys'
-import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import AutoResponderPreview from '../GorgiasChatIntegrationPreview/AutoResponder'
 import ChatHomePreview from '../GorgiasChatIntegrationPreview/ChatHomePreview'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
@@ -767,11 +766,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         const renameContactFormEnabled =
             flags?.[FeatureFlagKey.ChatRenameContactForm]
 
-        const changeAutomateSettingButtomPosition =
-            flags?.[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
-
-        const newChannelsView = flags?.[FeatureFlagKey.NewChannelsView]
-
         const liveChatAvailabilityOptions = [
             {
                 caption:
@@ -985,14 +979,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                 <BreadcrumbItem>{chatTitle}</BreadcrumbItem>
                             </Breadcrumb>
                         }
-                    >
-                        {!changeAutomateSettingButtomPosition &&
-                            !newChannelsView && (
-                                <GorgiasChatIntegrationConnectedChannel
-                                    integration={integration}
-                                />
-                            )}
-                    </PageHeader>
+                    />
 
                     <GorgiasChatIntegrationHeader
                         integration={integration}

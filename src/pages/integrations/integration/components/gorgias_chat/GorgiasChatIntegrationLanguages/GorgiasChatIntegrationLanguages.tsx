@@ -1,10 +1,8 @@
 import {Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {Language} from 'constants/languages'
 import {IntegrationType} from 'models/integration/constants'
 import DropdownButtonWithSearch, {
@@ -14,7 +12,6 @@ import PageHeader from 'pages/common/components/PageHeader'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import {Tab} from 'pages/integrations/integration/types'
 
-import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import {GorgiasChatIntegrationLanguagesTable} from './components/GorgiasChatIntegrationLanguagesTable'
 import {GorgiasChatIntegrationLanguagesTableRow} from './components/GorgiasChatIntegrationLanguagesTable/GorgiasChatIntegrationLanguagesTableRow'
 import {useGorgiasChatIntegrationLanguagesTable} from './components/GorgiasChatIntegrationLanguagesTable/useGorgiasChatIntegrationLanguagesTable'
@@ -42,10 +39,7 @@ const GorgiasChatIntegrationLanguages = ({
     const onAddLanguage = async (option: DropdownOption) => {
         await addLanguage({language: option.value as Language})
     }
-    const changeAutomateSettingButtomPosition =
-        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
-    const newChannelsView = useFlags()[FeatureFlagKey.NewChannelsView]
     return (
         <div className="full-width">
             <PageHeader
@@ -64,11 +58,6 @@ const GorgiasChatIntegrationLanguages = ({
                     </Breadcrumb>
                 }
             >
-                {!changeAutomateSettingButtomPosition && !newChannelsView && (
-                    <GorgiasChatIntegrationConnectedChannel
-                        integration={integration}
-                    />
-                )}
                 <DropdownButtonWithSearch
                     label="Add Language"
                     options={languagesAvailable}

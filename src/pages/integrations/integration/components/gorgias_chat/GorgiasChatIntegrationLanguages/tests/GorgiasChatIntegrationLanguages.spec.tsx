@@ -1,6 +1,5 @@
-import {render, screen} from '@testing-library/react'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -43,7 +42,6 @@ const defaultState: Partial<RootState> = {
 jest.mock('launchdarkly-react-client-sdk')
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 
 describe('GorgiasChatIntegrationLanguages', () => {
     it('should render', () => {
@@ -55,38 +53,5 @@ describe('GorgiasChatIntegrationLanguages', () => {
                 />
             </Provider>
         )
-    })
-
-    it('should render `GorgiasChatIntegrationConnectedChannel` if both `changeAutomateSettingButtomPosition` and `newChannelsView` are false', () => {
-        const {rerender} = render(
-            <Provider store={mockStore(defaultState)}>
-                <GorgiasChatIntegrationLanguages
-                    loading={fromJS({})}
-                    integration={fromJS({})}
-                />
-            </Provider>
-        )
-
-        expect(
-            screen.queryByTestId('GorgiasChatIntegrationConnectedChannel')
-        ).toBeInTheDocument()
-
-        mockUseFlags.mockReturnValue({
-            'change-automate-setting-buttom-position': true,
-            'new-channels-view': true,
-        })
-
-        rerender(
-            <Provider store={mockStore(defaultState)}>
-                <GorgiasChatIntegrationLanguages
-                    loading={fromJS({})}
-                    integration={fromJS({})}
-                />
-            </Provider>
-        )
-
-        expect(
-            screen.queryByTestId('GorgiasChatIntegrationConnectedChannel')
-        ).not.toBeInTheDocument()
     })
 })

@@ -2,7 +2,7 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {screen} from '@testing-library/react'
 import {createMemoryHistory} from 'history'
 import {fromJS} from 'immutable'
-import LD, {useFlags} from 'launchdarkly-react-client-sdk'
+import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
@@ -10,7 +10,6 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {integrationsState} from 'fixtures/integrations'
@@ -48,7 +47,6 @@ const queryClient = mockQueryClient()
 
 jest.mock('launchdarkly-react-client-sdk')
 
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 const mockGetHasAutomate = getHasAutomate as jest.MockedFunction<
     typeof getHasAutomate
 >
@@ -206,9 +204,6 @@ describe('<ContactFormSettingsView />', () => {
         })
 
         mockGetHasAutomate.mockReturnValue(true)
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.NewChannelsView]: true,
-        })
 
         renderView({
             path: CONTACT_FORM_SETTINGS_PATH,
@@ -228,9 +223,6 @@ describe('<ContactFormSettingsView />', () => {
         })
 
         mockGetHasAutomate.mockReturnValue(false)
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.NewChannelsView]: true,
-        })
 
         renderView({
             path: CONTACT_FORM_SETTINGS_PATH,

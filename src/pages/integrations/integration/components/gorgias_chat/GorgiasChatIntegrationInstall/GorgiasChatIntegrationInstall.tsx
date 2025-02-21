@@ -1,13 +1,11 @@
 import {fromJS, List, Map} from 'immutable'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 
 import warningIcon from 'assets/img/icons/warning.svg'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
@@ -24,7 +22,6 @@ import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/s
 import {deleteIntegration} from 'state/integrations/actions'
 import {getStoreIntegrations} from 'state/integrations/selectors'
 
-import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import useChatMigrationBanner from '../hooks/useChatMigrationBanner'
 import useThemeAppExtensionInstallation from '../hooks/useThemeAppExtensionInstallation'
 import GorgiasChatIntegrationConnectStore from './GorgiasChatIntegrationConnectStore'
@@ -81,10 +78,7 @@ const GorgiasChatIntegrationInstall = ({
     } = useThemeAppExtensionInstallation(
         isConnectedToShopify ? storeIntegration : undefined
     )
-    const changeAutomateSettingButtomPosition =
-        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
-    const newChannelsView = useFlags()[FeatureFlagKey.NewChannelsView]
     return (
         <>
             <NavigatedSuccessModal
@@ -114,14 +108,7 @@ const GorgiasChatIntegrationInstall = ({
                             </BreadcrumbItem>
                         </Breadcrumb>
                     }
-                >
-                    {!changeAutomateSettingButtomPosition &&
-                        !newChannelsView && (
-                            <GorgiasChatIntegrationConnectedChannel
-                                integration={integration}
-                            />
-                        )}
-                </PageHeader>
+                />
 
                 <GorgiasChatIntegrationHeader
                     integration={integration}

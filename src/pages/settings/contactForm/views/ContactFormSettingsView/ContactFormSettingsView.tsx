@@ -69,8 +69,6 @@ const ContactFormSettingsView = (): JSX.Element => {
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
-    const newChannelsView = useFlags()[FeatureFlagKey.NewChannelsView]
-
     useEffect(() => {
         if (!isIdValid) return history.push(CONTACT_FORM_BASE_PATH)
         dispatch(changeContactFormId(contactFormId))
@@ -156,27 +154,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                 <div className={css.header}>
                     {!changeAutomateSettingButtomPosition &&
                         (hasAutomate ? (
-                            contactForm.shop_name ? (
-                                !newChannelsView && (
-                                    <Button
-                                        fillStyle="ghost"
-                                        intent="primary"
-                                        onClick={() => {
-                                            history.push(
-                                                `/app/automation/shopify/${
-                                                    contactForm.shop_name as string
-                                                }/connected-channels?type=${
-                                                    TicketChannel.ContactForm
-                                                }&id=${contactForm.id}`,
-                                                {from: 'contact-form-settings'}
-                                            )
-                                        }}
-                                        leadingIcon="bolt"
-                                    >
-                                        Go to Automate settings
-                                    </Button>
-                                )
-                            ) : (
+                            !contactForm.shop_name && (
                                 <Button
                                     fillStyle="ghost"
                                     intent="primary"
@@ -225,7 +203,7 @@ const ContactFormSettingsView = (): JSX.Element => {
             <SecondaryNavbar>
                 {Object.entries({
                     ...navLinks,
-                    ...(newChannelsView && hasAutomate
+                    ...(hasAutomate
                         ? {Automate: CONTACT_FORM_AUTOMATE_PATH}
                         : {}),
                 }).map(([name, to]) => (
@@ -246,28 +224,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                 {changeAutomateSettingButtomPosition &&
                     (hasAutomate ? (
                         <>
-                            {contactForm.shop_name ? (
-                                !newChannelsView && (
-                                    <Button
-                                        fillStyle="ghost"
-                                        intent="primary"
-                                        onClick={() => {
-                                            logContactFormEvent('Setting')
-                                            history.push(
-                                                `/app/automation/shopify/${
-                                                    contactForm.shop_name as string
-                                                }/connected-channels?type=${
-                                                    TicketChannel.ContactForm
-                                                }&id=${contactForm.id}`,
-                                                {from: 'contact-form-settings'}
-                                            )
-                                        }}
-                                        leadingIcon="bolt"
-                                    >
-                                        Automate Settings
-                                    </Button>
-                                )
-                            ) : (
+                            {!contactForm.shop_name && (
                                 <Button
                                     fillStyle="ghost"
                                     intent="primary"
