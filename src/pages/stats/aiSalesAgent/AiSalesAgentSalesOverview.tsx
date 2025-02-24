@@ -3,8 +3,10 @@ import React from 'react'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
 
+import {AiSalesAgentChart} from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsConfig'
 import AiSalesAgentOverviewDownloadButton from 'pages/stats/aiSalesAgent/AiSalesAgentOverviewDownloadButton'
 import {AiSalesAgentReportConfig} from 'pages/stats/aiSalesAgent/AiSalesAgentReportConfig'
+import {RenderChart} from 'pages/stats/aiSalesAgent/components/RenderChart'
 import {PAGE_TITLE_AI_SALES_AGENT_SALES_OVERVIEW} from 'pages/stats/aiSalesAgent/constants'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 
@@ -39,7 +41,30 @@ const AiSalesAgentSalesOverview = () => {
             </DashboardSection>
 
             <DashboardSection title="Main Metrics">
-                Main Metrics
+                <DashboardGridCell size={getGridCellSize(3)}>
+                    <RenderChart
+                        chart={AiSalesAgentChart.AiSalesAgentTotalSalesConv}
+                        config={AiSalesAgentReportConfig}
+                    />
+                </DashboardGridCell>
+                <DashboardGridCell size={getGridCellSize(3)}>
+                    <RenderChart
+                        chart={AiSalesAgentChart.AiSalesAgentGmv}
+                        config={AiSalesAgentReportConfig}
+                    />
+                </DashboardGridCell>
+                <DashboardGridCell size={getGridCellSize(3)}>
+                    <RenderChart
+                        chart={AiSalesAgentChart.AiSalesAgentGmvInfluenced}
+                        config={AiSalesAgentReportConfig}
+                    />
+                </DashboardGridCell>
+                <DashboardGridCell size={getGridCellSize(3)}>
+                    <RenderChart
+                        chart={AiSalesAgentChart.AiSalesAgentRoiRate}
+                        config={AiSalesAgentReportConfig}
+                    />
+                </DashboardGridCell>
             </DashboardSection>
 
             <AnalyticsFooter />

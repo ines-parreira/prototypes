@@ -13,6 +13,7 @@ import {Channel} from 'models/channel/types'
 import {Integration} from 'models/integration/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StaticFilter, StatsFilters} from 'models/stat/types'
+import {AiSalesAgentChart} from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsConfig'
 import {AutomateOverviewChart} from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
 import {MetricValueFormat} from 'pages/stats/common/utils'
@@ -189,6 +190,7 @@ export type AvailableChartIds =
     | typeof VoiceOverviewChart
     | typeof CampaignsChart
     | typeof CampaignsLegacyChart
+    | typeof AiSalesAgentChart
 
 export type ReportChildrenConfig = {
     type: AvailableChartIds

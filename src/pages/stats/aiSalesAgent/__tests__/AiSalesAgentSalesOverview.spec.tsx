@@ -23,6 +23,24 @@ jest.mock('pages/stats/DrillDownModal', () => ({
     DrillDownModal: () => null,
 }))
 
+// Mock charts
+jest.mock(
+    'pages/stats/aiSalesAgent/charts/GmvInfluencedMetricCard',
+    () => () => <div>gmv-influenced-metric-card</div>
+)
+
+jest.mock('pages/stats/aiSalesAgent/charts/GmvMetricCard', () => () => (
+    <div>gmv-metric-card</div>
+))
+
+jest.mock('pages/stats/aiSalesAgent/charts/RoiRateMetricCard', () => () => (
+    <div>roi-rate-metric-card</div>
+))
+
+jest.mock('pages/stats/aiSalesAgent/charts/TotalAIConvMetricCard', () => () => (
+    <div>total-ai-conv-metric-card</div>
+))
+
 describe('AiSalesAgentSalesOverview', () => {
     const renderComponent = () => {
         render(<AiSalesAgentSalesOverview />)

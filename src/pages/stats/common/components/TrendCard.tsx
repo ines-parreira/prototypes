@@ -30,7 +30,7 @@ export const TrendCard = ({
     dashboard,
 }: {
     useTrend: MetricTrendHook
-    hint: TooltipData
+    hint?: TooltipData
     title: string
     drillDownMetric?:
         | OverviewMetric
