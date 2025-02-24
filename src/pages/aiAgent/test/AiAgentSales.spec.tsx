@@ -1,9 +1,17 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
+import {Provider} from 'react-redux'
+
+import {mockStore} from 'utils/testing'
 
 import {AiAgentSales} from '../AiAgentSales'
 
-const renderComponent = () => render(<AiAgentSales />)
+const renderComponent = () =>
+    render(
+        <Provider store={mockStore({})}>
+            <AiAgentSales />
+        </Provider>
+    )
 
 describe('<AiAgentSales />', () => {
     it('should render the sales components', () => {

@@ -249,6 +249,9 @@ describe('<StoreConfigForm />', () => {
         wizardId: null,
         scopes: [AiAgentScope.Support],
         createdDatetime: moment().toISOString(),
+        salesDiscountMax: null,
+        salesDiscountStrategyLevel: null,
+        salesPersuasionLevel: null,
     }
 
     const initialFormValues: FormValues = {

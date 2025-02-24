@@ -7,7 +7,7 @@ import {FormProvider, useForm} from 'react-hook-form'
 import {useParams} from 'react-router-dom'
 import {z} from 'zod'
 
-import {OnboardingData} from 'models/aiAgent/types'
+import {OnboardingData, SalesSettingsData} from 'models/aiAgent/types'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import Card from 'pages/aiAgent/Onboarding/components/Card/Card'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
@@ -38,21 +38,12 @@ import {
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding/settings'
 import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
+import {formatDiscountMax} from 'pages/aiAgent/utils/sales-discount.utils'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import IconInput from 'pages/common/forms/input/IconInput'
 import InputField from 'pages/common/forms/input/InputField'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-
-type PersonalityFormValues = {
-    salesPersuasionLevel: PersuasionLevel
-    salesDiscountStrategyLevel: DiscountStrategy
-    salesDiscountMax: number
-}
-
-const formatDiscountMax = (value: number): number => {
-    return parseFloat(value.toFixed(8).replace(/\.?0+$/, ''))
-}
 
 const personalitySchema = z
     .object({
@@ -101,7 +92,7 @@ export const PersonalityStep: React.FC<StepProps> = ({
 
     useCheckStoreIntegration()
 
-    const methods = useForm<PersonalityFormValues>({
+    const methods = useForm<SalesSettingsData>({
         values: {
             salesPersuasionLevel:
                 data?.salesPersuasionLevel ?? PersuasionLevel.Moderate,
@@ -129,7 +120,7 @@ export const PersonalityStep: React.FC<StepProps> = ({
     const salesDiscountMax = watch('salesDiscountMax')
 
     const handleSliderChange = (
-        field: keyof PersonalityFormValues,
+        field: keyof SalesSettingsData,
         value: PersuasionLevel | DiscountStrategy | number
     ) => {
         setValue(field, value, {shouldValidate: true, shouldDirty: true})

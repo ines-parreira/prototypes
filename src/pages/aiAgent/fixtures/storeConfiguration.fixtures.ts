@@ -39,5 +39,8 @@ export const getStoreConfigurationFixture = (
     wizardId: null,
     scopes: [AiAgentScope.Support],
     createdDatetime: '1970-01-01T00:00:00.000Z',
+    salesDiscountMax: null,
+    salesDiscountStrategyLevel: null,
+    salesPersuasionLevel: null,
     ...props,
 })

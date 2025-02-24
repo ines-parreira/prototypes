@@ -74,6 +74,10 @@ export type StoreConfiguration = {
     scopes: AiAgentScope[]
 
     createdDatetime: string
+
+    salesDiscountMax: number | null
+    salesDiscountStrategyLevel: DiscountStrategy | null
+    salesPersuasionLevel: PersuasionLevel | null
 }
 
 export type CreateStoreConfigurationPayload = Pick<
@@ -213,4 +217,10 @@ export type OnboardingData = {
     chatIntegrationIds?: number[]
     helpCenterId?: string
     gorgiasDomain?: string
+}
+
+export type SalesSettingsData = {
+    salesPersuasionLevel: PersuasionLevel
+    salesDiscountStrategyLevel: DiscountStrategy
+    salesDiscountMax: number
 }
