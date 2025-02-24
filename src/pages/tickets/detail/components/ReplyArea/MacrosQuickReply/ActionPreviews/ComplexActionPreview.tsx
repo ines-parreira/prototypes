@@ -1,5 +1,4 @@
 import classnames from 'classnames'
-import {fromJS} from 'immutable'
 import React from 'react'
 import {Badge} from 'reactstrap'
 
@@ -15,8 +14,7 @@ type Props = {
 }
 
 export const ComplexActionPreview = ({actions}: Props) => {
-    const sortedActions: Record<string, MacroAction[]> =
-        getSortedIntegrationActions(fromJS(actions)).toJS()
+    const sortedActions = getSortedIntegrationActions(actions)
 
     return (
         <>

@@ -1,39 +1,163 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
+import {render, screen} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {fetchMacros} from 'state/macro/actions'
+import useMacrosSearch from 'pages/common/editor/hooks/useMacrosSearch'
 import {RootState, StoreDispatch} from 'state/types'
 
+import {assumeMock} from 'utils/testing'
+
+import {ModalProps} from '../components/MacroModal'
 import MacroContainer from '../MacroContainer'
+import {getDefaultSelectedMacroId} from '../utils'
+
+jest.mock('../utils')
+const getDefaultSelectedMacroIdMock = assumeMock(getDefaultSelectedMacroId)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('../components/MacroModal', () => () => <div>MacroModal</div>)
-jest.mock('state/macro/actions')
+jest.mock(
+    '../components/MacroModal',
+    () =>
+        ({fetchMacros, handleClickItem, onSearch}: ModalProps) => (
+            <div>
+                MacroModal
+                <div onClick={() => fetchMacros()}>fetchMacros</div>
+                <div onClick={() => fetchMacros(true)}>fetchMacrosReset</div>
+                <div onClick={() => handleClickItem(11)}>handleClickItem</div>
+                <div onClick={() => onSearch({search: 'new search'})}>
+                    onSearch
+                </div>
+            </div>
+        )
+)
 
-const fetchMacrosMock: jest.SpyInstance = fetchMacros as jest.MockedFunction<
-    typeof fetchMacros
->
-fetchMacrosMock.mockImplementation(() => () => ({data: fromJS([])}))
+jest.mock('pages/common/editor/hooks/useMacrosSearch')
+const refetchMock = jest.fn()
+const fetchNextPageMock = jest.fn()
+const useMacrosSearchMock: jest.SpyInstance =
+    useMacrosSearch as jest.MockedFunction<typeof useMacrosSearch>
+useMacrosSearchMock.mockImplementation(() => ({
+    data: [],
+    fetchNextPage: fetchNextPageMock,
+    isLoading: false,
+    nextCursor: null,
+    refetch: refetchMock,
+}))
 
 describe('<MacroContainer />', () => {
     const defaultStore: Partial<RootState> = {}
+
+    const props = {
+        closeModal: jest.fn(),
+        isCreatingMacro: false,
+        toggleCreateMacro: jest.fn(),
+        onComplete: jest.fn(),
+    }
+
     it('should render MacroContainer', () => {
-        const {container} = render(
+        render(
             <Provider store={mockStore(defaultStore)}>
-                <MacroContainer
-                    closeModal={jest.fn()}
-                    isCreatingMacro={false}
-                    toggleCreateMacro={jest.fn()}
-                    onComplete={jest.fn()}
-                />
+                <MacroContainer {...props} />
             </Provider>
         )
-        expect(container.firstChild).toMatchSnapshot()
-        expect(fetchMacrosMock).toHaveBeenCalledTimes(1)
+
+        expect(screen.getByText('MacroModal'))
+        expect(useMacrosSearchMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should refetch macros', () => {
+        render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroContainer {...props} />
+            </Provider>
+        )
+
+        screen.getByText('fetchMacrosReset').click()
+
+        expect(refetchMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should update current macro', () => {
+        render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroContainer {...props} />
+            </Provider>
+        )
+
+        screen.getByText('fetchMacros').click()
+
+        expect(getDefaultSelectedMacroIdMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should fetch next page of macros', () => {
+        render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroContainer {...props} />
+            </Provider>
+        )
+
+        screen.getByText('fetchMacros').click()
+
+        expect(fetchNextPageMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should set selected macro', () => {
+        getDefaultSelectedMacroIdMock.mockReturnValue(22)
+        render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroContainer {...props} selectedMacro={{id: 1}} />
+            </Provider>
+        )
+
+        expect(getDefaultSelectedMacroIdMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should trigger update of displayed macro on click', () => {
+        render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroContainer {...props} />
+            </Provider>
+        )
+
+        screen.getByText('handleClickItem').click()
+
+        expect(props.toggleCreateMacro).toHaveBeenCalledWith(false)
+        expect(getDefaultSelectedMacroIdMock).toHaveBeenNthCalledWith(
+            1,
+            [],
+            null,
+            false
+        )
+        expect(getDefaultSelectedMacroIdMock).toHaveBeenNthCalledWith(
+            2,
+            [],
+            11,
+            false
+        )
+    })
+
+    it('should trigger search update', () => {
+        render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroContainer {...props} />
+            </Provider>
+        )
+
+        expect(useMacrosSearchMock).toHaveBeenNthCalledWith(1, {
+            params: {},
+            ticket: undefined,
+        })
+
+        screen.getByText('onSearch').click()
+
+        expect(useMacrosSearchMock).toHaveBeenNthCalledWith(2, {
+            params: {
+                search: 'new search',
+            },
+            ticket: undefined,
+        })
     })
 })

@@ -1,7 +1,3 @@
-import {
-    useBulkArchiveMacros,
-    useBulkUnarchiveMacros,
-} from '@gorgias/api-queries'
 import {QueryClient, useQueryClient} from '@tanstack/react-query'
 import {act, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -9,6 +5,7 @@ import React from 'react'
 import {useRouteMatch} from 'react-router-dom'
 
 import {macros} from 'fixtures/macro'
+import {useBulkArchiveMacros, useBulkUnarchiveMacros} from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {OrderDirection} from 'models/api/types'
 import {MacroSortableProperties} from 'models/macro/types'
@@ -55,20 +52,11 @@ const useAppDispatchMock = assumeMock(useAppDispatch)
 jest.mock('@tanstack/react-query')
 const useQueryClientMock = assumeMock(useQueryClient)
 
-jest.mock('@gorgias/api-queries', () => ({
-    __esModule: true,
-    useBulkArchiveMacros: jest.fn(),
-    useBulkUnarchiveMacros: jest.fn(),
-    queryKeys: {
-        macros: {
-            listMacros: () => ({pop: () => null}),
-        },
-    },
-}))
+jest.mock('hooks/macros')
 const useBulkArchiveMacrosMock = assumeMock(useBulkArchiveMacros)
 const useBulkUnarchiveMacrosMock = assumeMock(useBulkUnarchiveMacros)
-const mockMutateAsyncBulkArchive = jest.fn()
-const mockMutateAsyncBulkUnarchive = jest.fn()
+const mockMutateBulkArchive = jest.fn()
+const mockMutateBulkUnarchive = jest.fn()
 
 describe('<MacrosSettingsItem />', () => {
     const invalidateQueriesMock = jest.fn()
@@ -100,10 +88,10 @@ describe('<MacrosSettingsItem />', () => {
         )
         useAppDispatchMock.mockReturnValue(dispatchMock)
         useBulkArchiveMacrosMock.mockReturnValue({
-            mutateAsync: mockMutateAsyncBulkArchive,
+            mutateAsync: mockMutateBulkArchive,
         } as unknown as ReturnType<typeof useBulkArchiveMacros>)
         useBulkUnarchiveMacrosMock.mockReturnValue({
-            mutateAsync: mockMutateAsyncBulkUnarchive,
+            mutateAsync: mockMutateBulkUnarchive,
         } as unknown as ReturnType<typeof useBulkUnarchiveMacros>)
     })
 

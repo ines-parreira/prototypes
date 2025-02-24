@@ -1,21 +1,30 @@
-import {Macro, MacroAction} from '@gorgias/api-queries'
+import {
+    Language,
+    Macro,
+    MacroAction,
+    UpdateMacroBodyLanguage,
+} from '@gorgias/api-queries'
 import classnames from 'classnames'
 import {fromJS, Map, List} from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
 import React, {FormEvent, useEffect, useRef, useState} from 'react'
 import {Container, Row, Col} from 'reactstrap'
-import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {DEFAULT_ACTIONS} from 'config'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useFlag} from 'core/flags'
-import {useBulkArchiveMacros} from 'hooks/macros'
+import {
+    useBulkArchiveMacros,
+    useCreateMacro,
+    useDeleteMacro,
+    useUpdateMacro,
+} from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {JobParams, JobType} from 'models/job/types'
-import {FetchMacrosOptions} from 'models/macro/types'
+import {Filters} from 'models/macro/types'
 import {MacroActionName} from 'models/macroAction/types'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -25,7 +34,6 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import shortcutManager from 'services/shortcutManager/index'
-import {createMacro, updateMacro, deleteMacro} from 'state/macro/actions'
 import {createJob as createTicketJob} from 'state/tickets/actions'
 import {createJob as createViewJob} from 'state/views/actions'
 import {makeGetViewCount} from 'state/views/selectors'
@@ -36,29 +44,25 @@ import MacroModalList from './MacroModalList'
 import MacroNoResults from './MacroNoResults'
 import MacroPreview from './MacroPreview'
 
-type Props = {
+export type ModalProps = {
     activeView: Map<any, any>
     agents: List<any>
     allViewItemsSelected?: boolean
     closeModal: () => void
-    currentMacro: Map<any, any>
+    currentMacro?: Macro
     areExternalActionsDisabled: boolean
-    fetchMacros: (
-        opts?: FetchMacrosOptions,
-        retainPreviousResults?: boolean
-    ) => Promise<Macro[] | void>
+    fetchMacros: (reset?: boolean) => Promise<any>
     firstLoad: boolean
     handleClickItem: (id: number) => void
     hasDataToLoad?: boolean
     isCreatingMacro?: boolean
     onComplete?: (ids: List<any>) => void
-    onSearch: (searchParams: FetchMacrosOptions) => void
-    searchParams: FetchMacrosOptions
-    searchResults: List<any>
+    onSearch: (searchParams: Filters) => void
+    searchParams: Filters
+    searchResults: Macro[]
     selectedItemsIds: List<any>
     selectionMode: boolean
     toggleCreateMacro?: (toggle?: boolean) => void
-    updateMacros: (macro: Macro) => void
 }
 
 const multipleActionsNames = [
@@ -85,8 +89,7 @@ const MacroModal = ({
     selectedItemsIds,
     selectionMode,
     toggleCreateMacro,
-    updateMacros,
-}: Props) => {
+}: ModalProps) => {
     const dispatch = useAppDispatch()
     const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives)
     const {mutateAsync: bulkArchiveMacros} = useBulkArchiveMacros()
@@ -97,27 +100,29 @@ const MacroModal = ({
     // Not using this intermediate state results in the response text <RichField />
     // (https://github.com/gorgias/helpdesk-web-app/blob/54527379c7597adcb902bafb4c7427ee04910be2/src/pages/common/forms/RichField/RichField.tsx#L45)
     // being initialized on mount with the value of the previous macro's action.
-    const [macro, setMacro] = useState<Map<any, any>>()
+    const [macro, setMacro] = useState<Macro>()
     const [actions, setActions] = useState<MacroAction[]>(
-        (currentMacro.get('actions') as List<any>)?.toJS() || []
+        currentMacro?.actions || []
     )
-    const [name, setName] = useState<string>(currentMacro.get('name') || '')
+    const [name, setName] = useState<string>(currentMacro?.name || '')
     const [language, setLanguage] = useState<string | null>(
-        currentMacro.get('language') || null
+        currentMacro?.language || null
     )
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     useEffect(() => {
-        setMacro(currentMacro)
-        setName(currentMacro.get('name'))
-        setActions(currentMacro.get('actions'))
-        setLanguage(currentMacro.get('language'))
+        if (!!currentMacro) {
+            setMacro(currentMacro)
+            setName(currentMacro.name ?? '')
+            setActions(currentMacro.actions ?? [])
+            setLanguage(currentMacro.language ?? null)
+        }
     }, [currentMacro])
 
     const getViewCount = useAppSelector(makeGetViewCount)
-    const currentViewCount = activeView.get('id')
-        ? getViewCount(activeView.get('id'))
-        : null
+    const currentViewCount = activeView.isEmpty()
+        ? 0
+        : getViewCount(activeView.get('id'))
 
     useEffectOnce(() => {
         shortcutManager.bind('MacroModal')
@@ -166,7 +171,7 @@ const MacroModal = ({
     const applyMacro = () => {
         closeModal()
         launchApplyMacroJob({
-            macro_id: currentMacro.get('id'),
+            macro_id: currentMacro?.id,
             apply_and_close: false,
         })
     }
@@ -174,7 +179,7 @@ const MacroModal = ({
     const applyMacroAndClose = () => {
         closeModal()
         launchApplyMacroJob({
-            macro_id: currentMacro.get('id'),
+            macro_id: currentMacro?.id,
             apply_and_close: true,
         })
     }
@@ -183,10 +188,12 @@ const MacroModal = ({
         if (!toggleCreateMacro) return
 
         toggleCreateMacro(true)
-        setMacro(currentMacro)
-        setName(currentMacro.get('name'))
-        setActions(currentMacro.get('actions'))
-        setLanguage(currentMacro.get('language'))
+        if (!!currentMacro) {
+            setMacro(currentMacro)
+            setName(currentMacro.name!)
+            setActions(currentMacro.actions!)
+            setLanguage(currentMacro.language!)
+        }
     }
 
     const filterActions = (actions: MacroAction[]) =>
@@ -196,103 +203,119 @@ const MacroModal = ({
                 !!(action.arguments.tags as string | null)
         )
 
-    const handleCreateMacro = async (e: FormEvent) => {
+    const {mutateAsync: createMacro} = useCreateMacro()
+    const {mutate: updateMacro} = useUpdateMacro()
+    const {mutate: deleteMacro} = useDeleteMacro()
+
+    const handleCreateMacro = (e: FormEvent) => {
         e.preventDefault()
         e.stopPropagation()
-        const newMacro = currentMacro
-            .set('actions', filterActions(actions))
-            .set('name', name)
-            .set('language', language === '' ? null : language)
+        const newMacro = {
+            ...currentMacro,
+            actions: filterActions(actions),
+            name,
+            language: language === '' ? null : (language as Language),
+        }
 
-        const resp = await dispatch(createMacro(newMacro))
-        if (
-            resp?.id &&
-            (resp as unknown as UpsertNotificationAction)?.payload?.status !==
-                'error'
-        ) {
-            onSearch({search: newMacro.get('name')})
-            handleClickItem(resp.id)
+        try {
+            void createMacro({
+                data: newMacro,
+            })
+        } catch (e) {
+            // handled in hook
         }
     }
 
-    const handleUpdateMacro = async (e: FormEvent) => {
+    const handleUpdateMacro = (e: FormEvent) => {
         e.preventDefault()
         e.stopPropagation()
 
-        const updatedMacro = currentMacro
-            .set('actions', filterActions(actions))
-            .set('name', name)
-            .set('language', language === '' ? null : language)
+        const updatedMacro = {
+            ...currentMacro,
+            actions: filterActions(actions),
+            name,
+            language: (language === ''
+                ? null
+                : language) as UpdateMacroBodyLanguage,
+        }
 
-        const newMacro = await dispatch(updateMacro(updatedMacro))
-        const macros = searchResults
-        macros.some(((macro: Map<any, any>) => {
-            if (macro.get('id') === newMacro.id) {
-                if (macro.get('name') !== newMacro.name) {
-                    // if the name changed, reload macro list
-                    void fetchMacros(
-                        {
-                            search: newMacro.name,
-                        },
-                        false
-                    )
-                } else {
-                    updateMacros(newMacro)
-                }
-                return true
+        updateMacro(
+            {id: updatedMacro.id!, data: updatedMacro},
+            {
+                onSettled: (data) => {
+                    const newMacro = data?.data
+
+                    const macros = searchResults
+                    macros.some(((macro: Macro) => {
+                        if (
+                            macro.id === newMacro!.id &&
+                            macro.name !== newMacro!.name
+                        ) {
+                            onSearch({search: newMacro!.name || ''})
+                        }
+                    }) as any)
+                },
             }
-        }) as any)
+        )
     }
 
     const handleDuplicateMacro = async (e: FormEvent) => {
         e.preventDefault()
         e.stopPropagation()
 
-        const duplicateMacro = currentMacro
-            .delete('id')
-            .set('name', `(Copy) ${currentMacro.get('name', '') as string}`)
+        if (!!currentMacro) {
+            const {id: __id, ...rest} = currentMacro
+            const duplicatedMacro = {
+                ...rest,
+                name: `(Copy) ${currentMacro?.name || ''}`,
+            }
 
-        const res = await dispatch(createMacro(duplicateMacro))
-        // once the macro is created - search it in the list
-        onSearch({search: res.name || ''})
+            const res = await createMacro({data: duplicatedMacro})
+            // once the macro is created - search it in the list
+            onSearch({search: res.data.name || ''})
+        }
     }
 
     const handleDiscardChanges = (e: FormEvent) => {
         e.preventDefault()
         e.stopPropagation()
-        setActions(currentMacro.get('actions'))
+        if (currentMacro) {
+            setActions(currentMacro.actions!)
+        }
     }
 
-    const handleDeleteMacro = async () => {
-        const macroId = currentMacro.get('id', '')
-        await dispatch(deleteMacro(macroId))
-        void fetchMacros(
-            {
-                search: searchParams.search,
-            },
-            false
-        )
+    const handleDeleteMacro = () => {
+        const id = currentMacro?.id
+
+        if (id) {
+            deleteMacro(
+                {
+                    id,
+                },
+                {
+                    onSettled: () => {
+                        onSearch({search: undefined})
+                    },
+                }
+            )
+        }
     }
 
     const handlArchiveMacro = async () => {
         try {
-            await bulkArchiveMacros({data: {ids: [currentMacro.get('id')]}})
-            void fetchMacros(
-                {
-                    search: searchParams.search,
-                },
-                false
-            )
+            await bulkArchiveMacros({data: {ids: [currentMacro!.id!]}})
+            void fetchMacros(true)
         } catch (error) {
-            // handled in hooks
+            // handled in hook
         }
     }
 
     const updateActions = (actions?: List<any> | null) => {
         // filter actions that exist in configuration
-        const filteredActions = actions?.filter((action: Map<any, any>) =>
-            DEFAULT_ACTIONS.includes(action.get('name'))
-        )
+
+        const filteredActions = actions?.filter((action: Map<any, any>) => {
+            return DEFAULT_ACTIONS.includes(action.get('name'))
+        })
 
         // keep only one action by type
         const uniqActions = fromJS(
@@ -314,7 +337,7 @@ const MacroModal = ({
 
         setActions(uniqActions)
     }
-    const noResults = searchResults.isEmpty() && !isCreatingMacro
+    const noResults = !searchResults.length && !isCreatingMacro
 
     const selectedCount = allViewItemsSelected
         ? currentViewCount
@@ -428,9 +451,7 @@ const MacroModal = ({
                                                         handleDeleteMacro
                                                     }
                                                     confirmationContent={`Do you really want to delete the macro ${
-                                                        currentMacro.get(
-                                                            'name'
-                                                        ) ?? ''
+                                                        currentMacro?.name ?? ''
                                                     }?`}
                                                     leadingIcon="delete"
                                                 >

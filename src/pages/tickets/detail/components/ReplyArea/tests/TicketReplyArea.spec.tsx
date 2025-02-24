@@ -10,6 +10,8 @@ import thunk from 'redux-thunk'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {macros} from 'fixtures/macro'
 
+import {InTicketSuggestionState} from 'state/entities/rules/types'
+
 import TicketMacrosSearch from '../TicketMacrosSearch'
 import TicketReply from '../TicketReply'
 import {TicketReplyArea} from '../TicketReplyArea'
@@ -85,7 +87,7 @@ const minProps = {
         newMessage: {body_text: 'Hello world'},
     }),
     newMessageType: TicketMessageSourceType.Email,
-    notify: () => Promise.resolve,
+    notify: jest.fn(),
     currentMacro: {},
     page: 1,
     totalPages: 1,
@@ -107,7 +109,13 @@ const minProps = {
     onChangeFilters: jest.fn(),
     onChangeMacrosActive: jest.fn(),
     onChangeQuery: jest.fn(),
-} as unknown as ComponentProps<typeof TicketReplyArea>
+    hasAutomate: false,
+    isMacrosLoading: false,
+    appliedMacro: fromJS({}),
+    topRankMacroState: null,
+    inTicketSuggestionState: 'ignored' as InTicketSuggestionState,
+    clearAppliedMacro: jest.fn(),
+}
 
 describe('<TicketReplyArea/>', () => {
     it('should render', () => {
@@ -222,6 +230,24 @@ describe('<TicketReplyArea/>', () => {
         fireEvent.keyDown(input, {key: 'Enter'})
 
         expect(minProps.applyMacro).not.toHaveBeenCalled()
+    })
+
+    it('should update selected macro id', () => {
+        const [first, ...data] = macros
+        const macrosWithScore = [
+            {...first, score: 1, relevance_rank: 1},
+            ...data,
+        ]
+        const {rerender} = render(
+            <TicketReplyArea {...minProps} macros={macrosWithScore} />
+        )
+        rerender(
+            <TicketReplyArea
+                {...minProps}
+                macros={macrosWithScore}
+                isMacrosLoading
+            />
+        )
     })
 
     describe('prefill macro alert', () => {

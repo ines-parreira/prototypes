@@ -1,5 +1,4 @@
 import classnames from 'classnames'
-import {fromJS} from 'immutable'
 import React, {ComponentType} from 'react'
 
 import {ActionTemplateExecution} from 'config'
@@ -78,7 +77,7 @@ export const ActionPreviews = ({actions, textPreviewMinWidth}: Props) => {
                     className={css.popoverText}
                     style={{minWidth: textPreviewMinWidth}}
                 >
-                    <Preview actions={fromJS([setResponseTextAction])} />
+                    <Preview actions={[setResponseTextAction]} />
                 </div>
             )}
             {(hasSimpleActions || hasComplexActions) && (

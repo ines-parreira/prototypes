@@ -1,6 +1,6 @@
 import {render, fireEvent, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -32,19 +32,17 @@ const applyMacro = jest.fn()
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 describe('<MacrosQuickReply />', () => {
-    const minProps: ComponentProps<typeof MacrosQuickReply> = {
-        macros: fromJS(
-            [
-                [setTextAction],
-                [shopifyAction, addTagsAction, httpAction],
-                [setTextAction, shopifyAction, addTagsAction, httpAction],
-            ].map((actions, i) => ({
-                ...macroFixture,
-                actions: actions,
-                name: `macro-${i}`,
-                id: i,
-            }))
-        ),
+    const minProps = {
+        macros: [
+            [setTextAction],
+            [shopifyAction, addTagsAction, httpAction],
+            [setTextAction, shopifyAction, addTagsAction, httpAction],
+        ].map((actions, i) => ({
+            ...macroFixture,
+            actions: actions,
+            name: `macro-${i}`,
+            id: i,
+        })),
         applyMacro,
     }
     const state: Partial<RootState> = {

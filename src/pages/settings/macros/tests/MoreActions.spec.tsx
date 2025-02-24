@@ -27,8 +27,8 @@ jest.mock(
         }) as Record<string, unknown>
 )
 const mockUseRouteMatch = useRouteMatch as jest.Mock
-const mockMutateAsyncBulkArchive = jest.fn()
-const mockMutateAsyncBulkUnarchive = jest.fn()
+const mockMutateBulkArchive = jest.fn()
+const mockMutateBulkUnarchive = jest.fn()
 
 jest.mock('state/notifications/actions')
 
@@ -36,10 +36,10 @@ describe('<MoreActions />', () => {
     beforeEach(() => {
         mockUseRouteMatch.mockReturnValue(false)
         useBulkArchiveMacrosMock.mockReturnValue({
-            mutateAsync: mockMutateAsyncBulkArchive,
+            mutate: mockMutateBulkArchive,
         } as unknown as ReturnType<typeof useBulkArchiveMacros>)
         useBulkUnarchiveMacrosMock.mockReturnValue({
-            mutateAsync: mockMutateAsyncBulkUnarchive,
+            mutate: mockMutateBulkUnarchive,
         } as unknown as ReturnType<typeof useBulkUnarchiveMacros>)
     })
 
@@ -75,14 +75,14 @@ describe('<MoreActions />', () => {
         screen.getByLabelText('Archive macro').click()
 
         expect(screen.getByLabelText('Archive macro')).toBeAriaEnabled()
-        expect(mockMutateAsyncBulkArchive).toHaveBeenCalledWith(
+        expect(mockMutateBulkArchive).toHaveBeenCalledWith(
             {
                 data: {ids: [props.macro.id]},
             },
             {onSettled: expect.any(Function)}
         )
         ;(
-            mockMutateAsyncBulkArchive.mock.calls[0] as {
+            mockMutateBulkArchive.mock.calls[0] as {
                 onSettled: (arg: unknown) => void
             }[]
         )[1].onSettled({
@@ -102,7 +102,7 @@ describe('<MoreActions />', () => {
         screen.getByLabelText('Archive macro').click()
 
         expect(screen.getByLabelText('Archive macro')).toBeAriaEnabled()
-        expect(mockMutateAsyncBulkArchive).toHaveBeenCalledWith(
+        expect(mockMutateBulkArchive).toHaveBeenCalledWith(
             {
                 data: {ids: [props.macro.id]},
             },
@@ -110,7 +110,7 @@ describe('<MoreActions />', () => {
         )
         const msg = 'error title'
         ;(
-            mockMutateAsyncBulkArchive.mock.calls[0] as {
+            mockMutateBulkArchive.mock.calls[0] as {
                 onSettled: (arg: unknown) => void
             }[]
         )[1].onSettled({
@@ -138,7 +138,7 @@ describe('<MoreActions />', () => {
 
         screen.getByLabelText('Unarchive macro').click()
 
-        expect(mockMutateAsyncBulkUnarchive).toHaveBeenCalledWith(
+        expect(mockMutateBulkUnarchive).toHaveBeenCalledWith(
             {
                 data: {ids: [props.macro.id]},
             },
@@ -147,7 +147,7 @@ describe('<MoreActions />', () => {
             }
         )
         const mockCalls = (
-            mockMutateAsyncBulkUnarchive.mock.calls[0] as {
+            mockMutateBulkUnarchive.mock.calls[0] as {
                 onSettled: () => void
             }[]
         )[1]

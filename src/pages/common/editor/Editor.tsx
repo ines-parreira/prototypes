@@ -1,5 +1,6 @@
+import {ListMacrosParams} from '@gorgias/api-queries'
 import cn from 'classnames'
-import React from 'react'
+import React, {useMemo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {MacrosProperties} from 'models/macro/types'
@@ -20,6 +21,11 @@ import useForm from './hooks/useForm'
 import useMacros from './hooks/useMacros'
 import useMacrosSearch from './hooks/useMacrosSearch'
 
+type Filters = Pick<
+    ListMacrosParams,
+    'languages' | 'tags' | 'search' | 'cursor'
+>
+
 type Props = {
     initialMacroFilters: MacrosProperties
     onBlur?: () => void
@@ -27,6 +33,8 @@ type Props = {
     submit: (args: SubmitArgs) => any
     ticket: Ticket
 }
+
+export const SEARCH_DEBOUNCE_DELAY = 350
 
 export default function Editor({
     initialMacroFilters,
@@ -49,9 +57,13 @@ export default function Editor({
         onChangeQuery,
     } = useMacros({initialFilters: initialMacroFilters})
 
-    const {initialLoaded, loadMacros, macros, nextCursor} = useMacrosSearch({
-        filters,
-        query,
+    const params: Filters = useMemo(
+        () => ({...filters, search: query}),
+        [filters, query]
+    )
+
+    const {data, fetchNextPage, isLoading, nextCursor} = useMacrosSearch({
+        params,
         ticket,
     })
 
@@ -76,11 +88,11 @@ export default function Editor({
                             hasShownMacros={hasShown}
                             hasAutomate={hasAutomate}
                             filters={filters}
-                            initialMacrosLoaded={initialLoaded}
+                            isMacrosLoading={isLoading}
                             isMacrosActive={isActive}
-                            loadMacros={loadMacros}
-                            macros={macros}
-                            nextCursor={nextCursor}
+                            loadMacros={fetchNextPage}
+                            macros={data}
+                            nextCursor={nextCursor ?? undefined}
                             query={query}
                             onChangeFilters={onChangeFilters}
                             onChangeMacrosActive={onChangeActive}

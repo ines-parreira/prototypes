@@ -27,3 +27,8 @@ export enum MacroPropertiesOptions {
     Languages = 'languages',
     Tags = 'tags',
 }
+
+export type Filters = Pick<
+    ListMacrosParams,
+    'languages' | 'tags' | 'cursor' | 'search'
+>

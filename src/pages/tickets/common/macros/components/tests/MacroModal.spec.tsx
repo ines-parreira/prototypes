@@ -1,15 +1,20 @@
+import {Macro, MacroAction} from '@gorgias/api-queries'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {fromJS, List, Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import MockDate from 'mockdate'
 import React, {ComponentProps, ReactNode} from 'react'
 
 import {useFlag} from 'core/flags'
-import {useBulkArchiveMacros} from 'hooks/macros'
+import {
+    useBulkArchiveMacros,
+    useCreateMacro,
+    useDeleteMacro,
+    useUpdateMacro,
+} from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {MacroActionName} from 'models/macroAction/types'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {createMacro, updateMacro, deleteMacro} from 'state/macro/actions'
 import {createJob as createTicketJob} from 'state/tickets/actions'
 import {createJob as createViewJob} from 'state/views/actions'
 import {assumeMock} from 'utils/testing'
@@ -25,11 +30,6 @@ const useAppSelectorMock = useAppSelector as jest.Mock
 
 jest.mock('lodash/uniqueId', () => () => '42')
 
-jest.mock('state/macro/actions')
-const mockCreateMacro = assumeMock(createMacro)
-const mockUpdateMacro = assumeMock(updateMacro)
-const mockDeleteMacro = assumeMock(deleteMacro)
-
 jest.mock('state/tickets/actions')
 const mockCreateTicketJob = assumeMock(createTicketJob)
 mockCreateTicketJob.mockImplementation(
@@ -44,7 +44,13 @@ mockCreateViewJob.mockImplementation(
 
 jest.mock('hooks/macros')
 const useBulkArchiveMacrosMock = assumeMock(useBulkArchiveMacros)
-const mockMutateAsyncBulkArchive = jest.fn()
+const mockMutateBulkArchive = jest.fn()
+const mockUseCreateMacro = assumeMock(useCreateMacro)
+const mockUseDeleteMacro = assumeMock(useDeleteMacro)
+const mockUseUpdateMacro = assumeMock(useUpdateMacro)
+const mockMutateCreate = jest.fn()
+const mockMutateDelete = jest.fn()
+const mockMutateUpdate = jest.fn()
 
 jest.mock('../MacroModalList', () => () => <div>MacroModalListMock</div>)
 const mockActions = fromJS([
@@ -99,27 +105,22 @@ const mockUseFlag = useFlag as jest.Mock
 const date = '2021-01-24T17:30:00.000Z'
 
 describe('<MacroModal />', () => {
-    const macros: List<Map<any, any>> = fromJS([
-        {
-            id: 1,
-            name: 'Pizza Pepperoni',
-            relevance_rank: 1,
-            actions: [],
-        },
-        {id: 2, name: 'Pizza Capricciosa', actions: [{name: 'http'}]},
+    const macros = [
+        {id: 1, name: 'Pizza Pepperoni', relevance_rank: 1, actions: []},
+        {id: 2, name: 'Pizza Capricciosa', actions: []},
         {
             id: 3,
             name: 'Pizza Margherita',
             actions: [{name: 'http'}],
         },
-    ])
+    ] as Macro[]
 
     const props = {
         activeView: fromJS({}),
         agents: fromJS([]),
-        closeModal: jest.fn(),
-        currentMacro: macros.first(),
         areExternalActionsDisabled: false,
+        closeModal: jest.fn(),
+        currentMacro: macros[0],
         fetchMacros: jest.fn(),
         firstLoad: false,
         handleClickItem: jest.fn(),
@@ -129,7 +130,6 @@ describe('<MacroModal />', () => {
         searchResults: macros,
         selectedItemsIds: fromJS([]),
         selectionMode: false,
-        updateMacros: jest.fn(),
     }
 
     let dispatch: jest.Mock
@@ -144,8 +144,17 @@ describe('<MacroModal />', () => {
         )
         mockUseFlag.mockImplementation(() => false)
         useBulkArchiveMacrosMock.mockReturnValue({
-            mutateAsync: mockMutateAsyncBulkArchive,
+            mutateAsync: mockMutateBulkArchive,
         } as unknown as ReturnType<typeof useBulkArchiveMacros>)
+        mockUseCreateMacro.mockReturnValue({
+            mutateAsync: mockMutateCreate,
+        } as unknown as ReturnType<typeof useCreateMacro>)
+        mockUseDeleteMacro.mockReturnValue({
+            mutate: mockMutateDelete,
+        } as unknown as ReturnType<typeof useDeleteMacro>)
+        mockUseUpdateMacro.mockReturnValue({
+            mutate: mockMutateUpdate,
+        } as unknown as ReturnType<typeof useUpdateMacro>)
     })
 
     afterEach(() => {
@@ -157,11 +166,29 @@ describe('<MacroModal />', () => {
 
         const buttons = screen.getAllByRole('button')
 
+        expect(buttons).toHaveLength(5)
         expect(buttons[0]).toHaveAccessibleName('Create macro')
         expect(buttons[1]).toHaveAccessibleName('Delete macro')
         expect(buttons[2]).toHaveAccessibleName('Discard Changes')
         expect(buttons[3]).toHaveAccessibleName('Duplicate')
         expect(buttons[4]).toHaveAccessibleName('Update')
+    })
+
+    it('should handle undefined current macro', () => {
+        render(
+            <MacroModal
+                {...props}
+                isCreatingMacro
+                toggleCreateMacro={jest.fn()}
+                currentMacro={undefined}
+            />
+        )
+
+        const buttons = screen.getAllByRole('button')
+
+        expect(buttons).toHaveLength(2)
+        expect(buttons[0]).toHaveAccessibleName('Create macro')
+        expect(buttons[1]).toHaveAccessibleName('Save new macro')
     })
 
     it('should apply macro and close modal', async () => {
@@ -209,12 +236,9 @@ describe('<MacroModal />', () => {
         })
     })
 
-    it('should fill the form for new macro', async () => {
-        mockCreateMacro.mockImplementation(
-            (() =>
-                new Promise((resolve) =>
-                    resolve({...macros.first().toJS()})
-                )) as any
+    it('should fill the form for new macro', () => {
+        mockMutateCreate.mockImplementation(
+            (() => new Promise((resolve) => resolve({...macros[0]}))) as any
         )
 
         const toggleCreateMacro = jest.fn()
@@ -228,20 +252,16 @@ describe('<MacroModal />', () => {
 
         expect(toggleCreateMacro).toHaveBeenCalledWith(true)
         expect(
-            screen.getByText(new RegExp(macros.first().get('name'), 'i'))
+            screen.getByText(new RegExp(macros[0].name!, 'i'))
         ).toBeInTheDocument()
 
         screen.getByText(/Save new macro/i).click()
 
-        expect(mockCreateMacro).toHaveBeenCalledWith(
-            props.currentMacro.set('language', undefined)
-        )
-
-        await waitFor(() => {
-            expect(props.onSearch).toHaveBeenCalledWith({
-                search: props.currentMacro.get('name'),
-            })
-            expect(props.handleClickItem).toHaveBeenCalled()
+        expect(mockMutateCreate).toHaveBeenCalledWith({
+            data: {
+                ...props.currentMacro,
+                language: undefined,
+            },
         })
     })
 
@@ -258,43 +278,47 @@ describe('<MacroModal />', () => {
         ).toBeInTheDocument()
     })
 
-    it('should update macro', async () => {
-        mockUpdateMacro.mockImplementation(
-            (() =>
-                new Promise((resolve) =>
-                    resolve(props.currentMacro.toJS())
-                )) as any
+    it('should update macro', () => {
+        mockMutateUpdate.mockImplementation(
+            (() => new Promise((resolve) => resolve(props.currentMacro))) as any
         )
         render(<MacroModal {...props} />)
 
         screen.getByText(/Update/i).click()
 
-        expect(mockUpdateMacro).toHaveBeenCalledWith(
-            props.currentMacro.set('language', undefined)
+        expect(mockMutateUpdate).toHaveBeenCalledWith(
+            {
+                data: {...props.currentMacro, language: null},
+                id: props.currentMacro.id,
+            },
+            {onSettled: expect.any(Function)}
         )
-        await waitFor(() =>
-            expect(props.updateMacros).toHaveBeenCalledWith(
-                props.currentMacro.toJS()
-            )
-        )
+        ;(
+            mockMutateUpdate.mock.calls[0] as {
+                onSettled: (args: unknown) => void
+            }[]
+        )[1].onSettled({
+            data: props.currentMacro,
+        })
     })
 
     it('should update macro and refetch macros', async () => {
-        mockUpdateMacro.mockImplementation(
-            (() =>
-                new Promise((resolve) =>
-                    resolve({...props.currentMacro.toJS(), name: 'new name'})
-                )) as any
-        )
         render(<MacroModal {...props} />)
 
         screen.getByText(/Update/i).click()
+        ;(
+            mockMutateUpdate.mock.calls[0] as {
+                onSettled: (args: unknown) => void
+            }[]
+        )[1].onSettled({
+            data: {
+                ...props.currentMacro,
+                name: 'new name',
+            },
+        })
 
         await waitFor(() =>
-            expect(props.fetchMacros).toHaveBeenCalledWith(
-                {search: 'new name'},
-                false
-            )
+            expect(props.onSearch).toHaveBeenCalledWith({search: 'new name'})
         )
     })
 
@@ -304,23 +328,42 @@ describe('<MacroModal />', () => {
         screen.getByText(/Delete macro/i).click()
         screen.getByText(/Confirm/i).click()
 
-        expect(mockDeleteMacro).toHaveBeenCalledWith(
-            props.currentMacro.get('id')
+        expect(mockMutateDelete).toHaveBeenCalledWith(
+            {
+                id: props.currentMacro.id,
+            },
+            {onSettled: expect.any(Function)}
         )
+        ;(
+            mockMutateDelete.mock.calls[0] as {
+                onSettled: () => void
+            }[]
+        )[1].onSettled()
 
         await waitFor(() => {
-            expect(props.fetchMacros).toHaveBeenCalledWith(
-                {search: undefined},
-                false
-            )
+            expect(props.onSearch).toHaveBeenCalledWith({search: undefined})
         })
     })
 
-    it('should duplicate macro', () => {
-        mockCreateMacro.mockImplementation(
+    it('should not do anything when deleting a macro if id is missing', () => {
+        render(<MacroModal {...props} currentMacro={undefined} />)
+
+        screen.getByText(/Delete macro/i).click()
+        screen.getByText(/Confirm/i).click()
+
+        expect(mockMutateDelete).not.toHaveBeenCalledWith(
+            {
+                id: props.currentMacro.id,
+            },
+            {onSettled: expect.any(Function)}
+        )
+    })
+
+    it('should duplicate macro', async () => {
+        mockMutateCreate.mockImplementation(
             (() =>
                 new Promise((resolve) =>
-                    resolve({...props.currentMacro.toJS(), name: 'new name'})
+                    resolve({data: {...props.currentMacro, name: 'new name'}})
                 )) as any
         )
 
@@ -328,32 +371,55 @@ describe('<MacroModal />', () => {
 
         screen.getByText(/Duplicate/i).click()
 
-        expect(mockCreateMacro).toHaveBeenCalledWith(
-            props.currentMacro
-                .delete('id')
-                .set(
-                    'name',
-                    `(Copy) ${props.currentMacro.get('name', '') as string}`
-                )
-        )
+        const {id: __id, ...newMacro} = props.currentMacro
+        expect(mockMutateCreate).toHaveBeenCalledWith({
+            data: {
+                ...newMacro,
+                name: `(Copy) ${props.currentMacro.name}`,
+            },
+        })
+
+        await waitFor(() => {
+            expect(props.onSearch).toHaveBeenCalledWith({
+                search: 'new name',
+            })
+        })
+    })
+
+    it('should not do anything when duplicating macro if currentMacro is undefined', () => {
+        render(<MacroModal {...props} currentMacro={undefined} />)
+
+        screen.getByText(/Duplicate/i).click()
+
+        const {id: __id, ...newMacro} = props.currentMacro
+        expect(mockMutateCreate).not.toHaveBeenCalledWith({
+            data: {
+                ...newMacro,
+                name: `(Copy) ${props.currentMacro.name}`,
+            },
+        })
     })
 
     it('should discard changes', () => {
-        const macros: List<Map<any, any>> = fromJS([
+        const macros = [
             {
                 id: 1,
                 name: 'Pizza Pepperoni',
                 relevance_rank: 1,
-                actions: [{name: 'Add tags'}],
+                actions: [{name: 'Add tags'} as MacroAction],
             },
-            {id: 2, name: 'Pizza Capricciosa', actions: []},
+            {
+                id: 2,
+                name: 'Pizza Capricciosa',
+                actions: [] as MacroAction[],
+            },
             {
                 id: 3,
                 name: 'Pizza Margherita',
-                actions: [{name: 'http'}],
+                actions: [{name: 'http'} as MacroAction],
             },
-        ])
-        const currentMacro = macros.first()
+        ]
+        const currentMacro = macros[0]
 
         render(
             <MacroModal
@@ -365,7 +431,7 @@ describe('<MacroModal />', () => {
 
         screen.getByText(/Discard Changes/i).click()
 
-        const actionName = currentMacro.getIn(['actions', 0, 'name'])
+        const actionName = currentMacro.actions[0].name
         expect(
             screen.getByText(new RegExp(actionName, 'i'))
         ).toBeInTheDocument()
@@ -377,14 +443,11 @@ describe('<MacroModal />', () => {
 
         screen.getByText(/Archive macro/i).click()
 
-        expect(mockMutateAsyncBulkArchive).toHaveBeenCalledWith({
-            data: {ids: [props.currentMacro.get('id')]},
+        expect(mockMutateBulkArchive).toHaveBeenCalledWith({
+            data: {ids: [props.currentMacro.id]},
         })
         await waitFor(() =>
-            expect(props.fetchMacros).toHaveBeenCalledWith(
-                {search: undefined},
-                false
-            )
+            expect(props.fetchMacros).toHaveBeenCalledWith(true)
         )
     })
 })

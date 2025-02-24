@@ -1,10 +1,9 @@
-import {Macro} from '@gorgias/api-queries'
+import {ListMacrosParams, Macro} from '@gorgias/api-queries'
 import axios, {AxiosError, CancelToken} from 'axios'
 import {fromJS, Map, List} from 'immutable'
 
 import client from 'models/api/resources'
 import {fetchMacros as fetchMacrosRequest} from 'models/macro/resources'
-import {FetchMacrosOptions} from 'models/macro/types'
 import GorgiasApi from 'services/gorgiasApi'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -15,7 +14,7 @@ import {MacroApiError} from './types'
 import {getErrorReason} from './utils'
 
 export function fetchMacros(
-    options: FetchMacrosOptions,
+    options: ListMacrosParams,
     cancelToken: CancelToken
 ) {
     return async (dispatch: StoreDispatch) => {
@@ -43,7 +42,7 @@ export function fetchMacros(
 }
 
 export function fetchAllMacros(
-    options: FetchMacrosOptions,
+    options: ListMacrosParams,
     cancelToken: CancelToken
 ) {
     return async (dispatch: StoreDispatch) => {

@@ -136,7 +136,7 @@ describe('MacroEdit component', () => {
     const defaultProps = {
         actions: fromJS([]),
         agents: fromJS({}),
-        currentMacro: fromJS({id: 1}),
+        currentMacro: {id: 1},
         name: 'Pizza Pepperoni',
         setActions: jest.fn(),
         setName: jest.fn(),

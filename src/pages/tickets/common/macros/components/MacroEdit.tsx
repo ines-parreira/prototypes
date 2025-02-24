@@ -1,3 +1,4 @@
+import {Macro} from '@gorgias/api-queries'
 import classnames from 'classnames'
 import {fromJS, Map, List} from 'immutable'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
@@ -41,7 +42,7 @@ type Props = {
     actions: List<any> | null
     agents: List<any>
     className?: string
-    currentMacro?: Map<any, any>
+    currentMacro?: Macro
     name: string
     language: string | null
     setActions: (actions?: List<any> | null) => void
@@ -74,7 +75,7 @@ export class MacroEdit extends Component<Props> {
 
     _addAction = (actionName: MacroActionName) => {
         const actions = this.props.actions?.push(
-            generateDefaultAction(actionName)
+            fromJS(generateDefaultAction(actionName))
         )
         this.props.setActions(actions)
     }
@@ -110,10 +111,13 @@ export class MacroEdit extends Component<Props> {
                 })
             }
 
-            newAction = newAction.set('arguments', args)
+            newAction = {
+                ...newAction,
+                arguments: args,
+            }
         }
 
-        const actions = this.props.actions?.set(index, newAction)
+        const actions = this.props.actions?.set(index, fromJS(newAction))
         this.props.setActions(actions)
     }
 
@@ -410,7 +414,7 @@ export class MacroEdit extends Component<Props> {
         // the unique key is based on index of action + ID of macro
         // so when we switch from a macro to the other, all previous macro fields are unmounted
         // it's simpler to manage lifecycle of actions components then
-        const key = `${index}${this.props.currentMacro?.get('id') as string}`
+        const key = `${index}${this.props.currentMacro?.id}`
 
         return (
             <div key={key} className="mt-3">
@@ -442,7 +446,7 @@ export class MacroEdit extends Component<Props> {
         const isMacroForwardByEmailEnabled =
             !!flags[FeatureFlagKey.MacroForwardByEmail]
 
-        if (!currentMacro || currentMacro.isEmpty()) return null
+        if (!currentMacro || !Object.keys(currentMacro).length) return null
 
         // external actions with externalType grouped by externalType
         const integrationMenus: Map<any, any> =
@@ -479,7 +483,7 @@ export class MacroEdit extends Component<Props> {
                                 Language
                             </div>
                             <MacroEditLanguage
-                                key={currentMacro.get('id')} //Force remount on macro change
+                                key={currentMacro.id} //Force remount on macro change
                                 language={this.props.language}
                                 setLanguage={this.props.setLanguage}
                                 text={this._extractText()}

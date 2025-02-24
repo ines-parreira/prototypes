@@ -1,18 +1,15 @@
-import {Map} from 'immutable'
+import {Macro} from '@gorgias/api-queries'
 import React from 'react'
 
 import Preview from '../Preview'
 
-const MacroPreview = ({currentMacro}: {currentMacro: Map<any, any>}) =>
+const MacroPreview = ({currentMacro}: {currentMacro?: Macro}) =>
     currentMacro ? (
         <div className="MacroPreview">
             <div className="mt-3 mb-3">
-                <h2>{currentMacro.get('name') || ''}</h2>
+                <h2>{currentMacro.name || ''}</h2>
 
-                <Preview
-                    displayHTML={true}
-                    actions={currentMacro.get('actions')}
-                />
+                <Preview displayHTML={true} actions={currentMacro.actions} />
             </div>
         </div>
     ) : (

@@ -1,24 +1,24 @@
-import {fromJS, Map, List} from 'immutable'
+import {Macro} from '@gorgias/api-queries'
 
 import {ActionTemplateExecution} from 'config'
 import {getDefaultMacro} from 'state/macro/utils'
 import {getActionTemplate} from 'utils'
 
 export const isMacroDisabled = (
-    macro: Map<any, any>,
+    macro: Macro,
     areExternalActionsDisabled?: boolean
 ) => {
     if (!areExternalActionsDisabled) return false
 
-    return (macro.get('actions', fromJS([])) as List<any>).some(
-        (action: Map<any, any>) =>
-            getActionTemplate(action.get('name'))?.execution ===
+    return macro.actions?.some(
+        (action) =>
+            getActionTemplate(action.name)?.execution ===
             ActionTemplateExecution.External
     )
 }
 
 export const getDefaultSelectedMacroId = (
-    macros: List<any>,
+    macros: Macro[],
     selectedMacroId: number | null,
     isCreatingMacro?: boolean
 ) => {
@@ -27,25 +27,23 @@ export const getDefaultSelectedMacroId = (
         selectedMacroId,
         isCreatingMacro
     )
-    if (macros.isEmpty()) {
+    if (!macros.length) {
         return null
     }
     // selectedMacroId not in macro list
-    if (currentMacro.isEmpty()) {
-        return macros.getIn([0, 'id']) as number
+    if (!currentMacro) {
+        return macros[0].id!
     }
     return selectedMacroId
 }
 
 export const getCurrentMacro = (
-    macros: List<any>,
+    macros: Macro[],
     selectedMacroId: Maybe<number>,
     isCreatingMacro?: boolean
 ) => {
     if (isCreatingMacro) {
         return getDefaultMacro()
     }
-    return (macros.find(
-        (macro: Map<any, any>) => macro.get('id') === selectedMacroId
-    ) || fromJS({})) as Map<any, any>
+    return macros.find((macro) => macro.id === selectedMacroId)
 }

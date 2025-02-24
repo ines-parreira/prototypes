@@ -21,7 +21,7 @@ jest.mock('@gorgias/api-queries', () => ({
 }))
 
 const useBulkArchiveMacrosMock = assumeMock(useBulkArchiveMacrosPrimitive)
-const mockMutateAsyncBulkArchive = jest.fn()
+const mockMutateBulkArchive = jest.fn()
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const useAppDispatchMock = assumeMock(useAppDispatch)
@@ -38,7 +38,7 @@ describe('useBulkArchiveMacros', () => {
     beforeEach(() => {
         useAppDispatchMock.mockReturnValue(dispatchMock)
         useBulkArchiveMacrosMock.mockReturnValue({
-            mutateAsync: mockMutateAsyncBulkArchive,
+            mutateAsync: mockMutateBulkArchive,
         } as unknown as ReturnType<typeof useBulkArchiveMacros>)
         useQueryClientMock.mockImplementation(
             () =>
@@ -112,7 +112,7 @@ describe('useBulkArchiveMacros', () => {
         )
         ;(
             useBulkArchiveMacrosMock.mock.calls[0][0]?.mutation as unknown as {
-                onError: (argss: unknown) => void
+                onError: (args: unknown) => void
             }
         )?.onError({
             response: {

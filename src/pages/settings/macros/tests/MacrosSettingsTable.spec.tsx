@@ -63,8 +63,8 @@ const mockUseFlag = useFlag as jest.Mock
 jest.mock('hooks/macros')
 const useBulkArchiveMacrosMock = assumeMock(useBulkArchiveMacros)
 const useBulkUnarchiveMacrosMock = assumeMock(useBulkUnarchiveMacros)
-const mockMutateAsyncBulkArchive = jest.fn()
-const mockMutateAsyncBulkUnarchive = jest.fn()
+const mockMutateBulkArchive = jest.fn()
+const mockMutateBulkUnarchive = jest.fn()
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const useAppDispatchMock = assumeMock(useAppDispatch)
@@ -79,17 +79,17 @@ describe('<MacrosSettingsTable />', () => {
     const dispatchMock = jest.fn()
 
     beforeEach(() => {
-        mockMutateAsyncBulkArchive.mockResolvedValue(null)
-        mockMutateAsyncBulkUnarchive.mockResolvedValue(null)
+        mockMutateBulkArchive.mockResolvedValue(null)
+        mockMutateBulkUnarchive.mockResolvedValue(null)
         useHasAgentPrivilegesMock.mockReturnValue(true)
         mockUseFlag.mockReturnValue(false)
         mockUseRouteMatch.mockReturnValue(false)
         useAppDispatchMock.mockReturnValue(dispatchMock)
         useBulkArchiveMacrosMock.mockReturnValue({
-            mutateAsync: mockMutateAsyncBulkArchive,
+            mutateAsync: mockMutateBulkArchive,
         } as unknown as ReturnType<typeof useBulkArchiveMacros>)
         useBulkUnarchiveMacrosMock.mockReturnValue({
-            mutateAsync: mockMutateAsyncBulkUnarchive,
+            mutateAsync: mockMutateBulkUnarchive,
         } as unknown as ReturnType<typeof useBulkUnarchiveMacros>)
         useQueryClientMock.mockImplementation(
             () =>
@@ -251,7 +251,7 @@ describe('<MacrosSettingsTable />', () => {
 
         screen.getByText('Archive').click()
 
-        expect(mockMutateAsyncBulkArchive).toHaveBeenCalledWith({
+        expect(mockMutateBulkArchive).toHaveBeenCalledWith({
             data: {ids: selectedMacrosIds},
         })
 
@@ -273,7 +273,7 @@ describe('<MacrosSettingsTable />', () => {
 
         screen.getByText('Archive').click()
 
-        expect(mockMutateAsyncBulkArchive).toHaveBeenCalledWith({
+        expect(mockMutateBulkArchive).toHaveBeenCalledWith({
             data: {ids: selectedMacrosIds},
         })
         await waitFor(() =>
@@ -295,7 +295,7 @@ describe('<MacrosSettingsTable />', () => {
 
         screen.getByText('Unarchive').click()
 
-        expect(mockMutateAsyncBulkUnarchive).toHaveBeenCalledWith({
+        expect(mockMutateBulkUnarchive).toHaveBeenCalledWith({
             data: {ids: selectedMacrosIds},
         })
         await waitFor(() =>

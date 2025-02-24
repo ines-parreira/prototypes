@@ -1,5 +1,6 @@
+import {Macro, MacroAction} from '@gorgias/api-queries'
 import {render, screen} from '@testing-library/react'
-import {fromJS, List, Map} from 'immutable'
+import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -32,17 +33,17 @@ describe('<MacroModalList />', () => {
         {
             id: 3,
             name: 'Pizza Margherita',
-            actions: [{name: 'http'}],
+            actions: [{name: 'http'} as MacroAction],
         },
     ]
 
     const props = {
-        currentMacro: fromJS(macros[0]),
+        currentMacro: macros[0],
         fetchMacros: jest.fn(),
         handleClickItem: jest.fn(),
         onSearch: jest.fn(),
         searchParams: {},
-        searchResults: fromJS(macros),
+        searchResults: macros,
     }
 
     it('should render list of macros with the filters', () => {
@@ -118,7 +119,7 @@ describe('<MacroModalList />', () => {
     })
 
     it('should not bind keyboard shortcuts when all macros are disabled', () => {
-        const macros: List<Map<any, any>> = fromJS([
+        const macros = [
             {id: 1, name: 'Pizza Pepperoni', actions: [{name: 'http'}]},
             {id: 2, name: 'Pizza Capricciosa', actions: [{name: 'http'}]},
             {
@@ -126,14 +127,14 @@ describe('<MacroModalList />', () => {
                 name: 'Pizza Margherita',
                 actions: [{name: 'http'}],
             },
-        ])
+        ] as Macro[]
         render(
             <Provider store={mockStore({})}>
                 <MacroModalList
                     {...props}
                     areExternalActionsDisabled
                     searchResults={macros}
-                    currentMacro={macros.first()}
+                    currentMacro={macros[0]}
                 />
             </Provider>
         )

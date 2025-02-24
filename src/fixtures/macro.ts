@@ -1,9 +1,10 @@
 import {Macro} from '@gorgias/api-queries'
 
 import {TicketStatus} from 'business/types/ticket'
+import {User} from 'config/types/user'
+import {Team} from 'models/team/types'
 
 import {HttpMethod} from '../models/api/types'
-
 import {
     MacroAction,
     MacroActionType,
@@ -255,6 +256,40 @@ export const setCustomFieldValueAction: MacroAction = {
     arguments: {
         custom_field_id: 1,
         value: 'Custom field value',
+    },
+}
+
+export const setAssigneeAction: MacroAction = {
+    name: MacroActionName.SetAssignee,
+    type: MacroActionType.User,
+    title: 'Set user assignee',
+    arguments: {
+        assignee_user: {
+            name: 'Blop',
+            email: 'blop@blip.com',
+        } as User,
+    },
+}
+
+export const setTeamAssigneeAction: MacroAction = {
+    name: MacroActionName.SetTeamAssignee,
+    type: MacroActionType.User,
+    title: 'Set team assignee',
+    arguments: {
+        assignee_team: {
+            id: 89,
+            name: 'Blop team',
+            decoration: {},
+        } as Team,
+    },
+}
+
+export const forwardByEmailAction: MacroAction = {
+    name: MacroActionName.ForwardByEmail,
+    type: MacroActionType.User,
+    title: 'Forward email',
+    arguments: {
+        to: 'forwardToThis@niceGuy.com',
     },
 }
 

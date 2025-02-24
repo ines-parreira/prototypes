@@ -56,7 +56,7 @@ describe('macro resources', () => {
             await expect(
                 fetchMacros(
                     {
-                        orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
+                        order_by: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
                     },
                     {cancelToken: source.token}
                 )

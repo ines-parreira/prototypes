@@ -1,5 +1,4 @@
 import {Macro} from '@gorgias/api-queries'
-import {fromJS, List, Map} from 'immutable'
 
 import {
     MacroAction,
@@ -56,7 +55,7 @@ describe('Business', () => {
                 // When
                 const result = clearMacroBeforeApply(
                     TicketMessageSourceType.Chat,
-                    fromJS(macro)
+                    macro
                 )
 
                 // Then
@@ -64,16 +63,10 @@ describe('Business', () => {
                     'We have removed the attachments from this message, because you cannot send multiple ' +
                         'attachments at the same time on Chat.'
                 )
-                expect((result.macro.get('actions') as List<any>).size).toEqual(
-                    1
+                expect(result.macro.actions?.length).toEqual(1)
+                expect(result.macro.actions?.[0].name).toEqual(
+                    'setResponseText'
                 )
-                expect(
-                    (
-                        (result.macro.get('actions') as List<any>).get(
-                            0
-                        ) as Map<any, any>
-                    ).get('name')
-                ).toEqual('setResponseText')
             })
 
             it('should not clear attachments when applied on chat with only one', () => {
@@ -82,14 +75,12 @@ describe('Business', () => {
                 // When
                 const result = clearMacroBeforeApply(
                     TicketMessageSourceType.Chat,
-                    fromJS(macro)
+                    macro
                 )
 
                 // Then
                 expect(result.notification).toBeFalsy()
-                expect((result.macro.get('actions') as List<any>).size).toEqual(
-                    2
-                )
+                expect(result.macro.actions?.length).toEqual(2)
             })
         })
     })

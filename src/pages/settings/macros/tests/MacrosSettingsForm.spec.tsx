@@ -84,9 +84,9 @@ const mockUseFlag = useFlag as jest.Mock
 
 jest.mock('hooks/macros')
 const useBulkArchiveMacrosMock = assumeMock(useBulkArchiveMacros)
-const mockMutateAsyncBulkArchive = jest.fn()
+const mockMutateBulkArchive = jest.fn()
 const useBulkUnarchiveMacrosMock = assumeMock(useBulkUnarchiveMacros)
-const mockMutateAsyncBulkUnarchive = jest.fn()
+const mockMutateBulkUnarchive = jest.fn()
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
@@ -145,10 +145,10 @@ describe('<MacrosSettingsForm/>', () => {
     mockFetchMacro.mockResolvedValue(macrosFixtures[0])
     mockUpdateMacro.mockResolvedValue(macrosFixtures[0])
     useBulkArchiveMacrosMock.mockReturnValue({
-        mutateAsync: mockMutateAsyncBulkArchive,
+        mutate: mockMutateBulkArchive,
     } as unknown as ReturnType<typeof useBulkArchiveMacros>)
     useBulkUnarchiveMacrosMock.mockReturnValue({
-        mutateAsync: mockMutateAsyncBulkUnarchive,
+        mutate: mockMutateBulkUnarchive,
     } as unknown as ReturnType<typeof useBulkUnarchiveMacros>)
 
     beforeEach(() => {
@@ -210,11 +210,11 @@ describe('<MacrosSettingsForm/>', () => {
         render(<MacrosSettingsFormContainer {...minProps} />)
 
         screen.getByText('Create macro').click()
-        expect(mockCreateMacro).toHaveBeenNthCalledWith(1, {
-            ...getDefaultMacro().toJS(),
-            language: null,
-        })
         await waitFor(() => {
+            expect(mockCreateMacro).toHaveBeenNthCalledWith(1, {
+                ...getDefaultMacro(),
+                language: null,
+            })
             expect(mockMacroCreated).toHaveBeenNthCalledWith(1, newMacroFixture)
             expect(mockNotify).toHaveBeenNthCalledWith(1, {
                 message: 'Successfully created macro.',
@@ -526,7 +526,7 @@ describe('<MacrosSettingsForm/>', () => {
 
         await waitFor(() => {
             screen.getByText('Archive macro').click()
-            expect(mockMutateAsyncBulkArchive).toHaveBeenCalledWith({
+            expect(mockMutateBulkArchive).toHaveBeenCalledWith({
                 data: {ids: [1]},
             })
             expect(history.push).toHaveBeenCalledWith('/app/settings/macros')
@@ -551,7 +551,7 @@ describe('<MacrosSettingsForm/>', () => {
 
         await waitFor(() => {
             screen.getByText('Unarchive macro').click()
-            expect(mockMutateAsyncBulkUnarchive).toHaveBeenCalledWith({
+            expect(mockMutateBulkUnarchive).toHaveBeenCalledWith({
                 data: {ids: [1]},
             })
             expect(history.push).toHaveBeenCalledWith(

@@ -1,4 +1,5 @@
-import {fromJS, List, Map} from 'immutable'
+import {MacroAction} from '@gorgias/api-queries'
+import {fromJS, Map} from 'immutable'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {ActionTemplate} from 'config'
@@ -99,16 +100,12 @@ export const getSortedIntegrationActionsNames = (actions: ActionTemplate[]) =>
  * @param actionsList: the list of actions
  * @returns {any} the dictionary of sorted actions
  */
-export const getSortedIntegrationActions = (
-    actions: List<Map<string, any>>
-): Map<any, any> =>
-    fromJS(
-        actions.reduce(
-            (sorted, action) => {
-                const name: string = action!.get('name')
-                const type = getActionTemplate(name)?.integrationType || name
-                return {...sorted, [type]: [...(sorted![type] || []), action]}
-            },
-            {} as {[key: string]: any[]}
-        )
-    ) as Map<string, any>
+export const getSortedIntegrationActions = (actions: MacroAction[]) =>
+    actions.reduce(
+        (sorted, action) => {
+            const name = action.name
+            const type = getActionTemplate(name)?.integrationType || name
+            return {...sorted, [type]: [...(sorted[type] || []), action]}
+        },
+        {} as {[key: string]: any[]}
+    )

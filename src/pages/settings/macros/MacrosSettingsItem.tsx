@@ -23,8 +23,8 @@ type Props = {
     hasAgentPrivileges: boolean
     isArchivingAvailable: boolean
     macro: Macro
-    onMacroDelete: (id: number) => Promise<void>
-    onMacroDuplicate: (macro: Macro) => Promise<void>
+    onMacroDelete: (id: number) => void
+    onMacroDuplicate: (macro: Macro) => void
     onMacroArchiveOrUnarchived: (id: number) => void
     firstTagFilter?: ListMacrosTagsItem
     selectedMacrosIds: number[]

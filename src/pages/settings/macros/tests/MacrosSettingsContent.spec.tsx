@@ -1,9 +1,4 @@
-import {
-    useListMacros,
-    useCreateMacro,
-    useDeleteMacro,
-} from '@gorgias/api-queries'
-import {QueryClient, useQueryClient} from '@tanstack/react-query'
+import {useListMacros} from '@gorgias/api-queries'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
@@ -15,7 +10,12 @@ import configureMockStore from 'redux-mock-store'
 import {useFlag} from 'core/flags'
 import {macros as macrosFixtures} from 'fixtures/macro'
 import {user} from 'fixtures/users'
-import {useBulkArchiveMacros, useBulkUnarchiveMacros} from 'hooks/macros'
+import {
+    useBulkArchiveMacros,
+    useBulkUnarchiveMacros,
+    useCreateMacro,
+    useDeleteMacro,
+} from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {OrderDirection} from 'models/api/types'
 import {MacroSortableProperties} from 'models/macro/types'
@@ -30,9 +30,6 @@ const mockProperty = MacroSortableProperties.CreatedDatetime
 const mockOrder = OrderDirection.Asc
 
 jest.mock('pages/history')
-
-jest.mock('@tanstack/react-query')
-const useQueryClientMock = assumeMock(useQueryClient)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
@@ -51,9 +48,8 @@ const mockNotify = notify as jest.Mock
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock
 
-const mockMutateAsyncCreate = jest.fn()
-const mockMutateAsyncDelete = jest.fn()
-const invalidateQueriesMock = jest.fn()
+const mockMutateCreate = jest.fn()
+const mockMutateDelete = jest.fn()
 
 jest.mock(
     'react-router-dom',
@@ -83,34 +79,26 @@ const mockUseFlag = useFlag as jest.Mock
 jest.mock('@gorgias/api-queries', () => ({
     __esModule: true,
     useListMacros: jest.fn(),
-    useCreateMacro: jest.fn(),
-    useDeleteMacro: jest.fn(),
     queryKeys: {
         macros: {
             listMacros: () => ({pop: () => null}),
         },
     },
 }))
-
 const mockUseListMacros = assumeMock(useListMacros)
+
+jest.mock('hooks/macros')
 const mockUseCreateMacro = assumeMock(useCreateMacro)
 const mockUseDeleteMacro = assumeMock(useDeleteMacro)
 
-jest.mock('hooks/macros')
 const useBulkArchiveMacrosMock = assumeMock(useBulkArchiveMacros)
 const useBulkUnarchiveMacrosMock = assumeMock(useBulkUnarchiveMacros)
-const mockMutateAsyncBulkArchive = jest.fn()
-const mockMutateAsyncBulkUnarchive = jest.fn()
+const mockMutateBulkArchive = jest.fn()
+const mockMutateBulkUnarchive = jest.fn()
 
 describe('<MacrosSettingsContent/>', () => {
     beforeEach(() => {
         useAppDispatchMock.mockReturnValue(jest.fn())
-        useQueryClientMock.mockImplementation(
-            () =>
-                ({
-                    invalidateQueries: invalidateQueriesMock,
-                }) as unknown as QueryClient
-        )
         mockUseListMacros.mockReturnValue({
             data: {
                 data: {
@@ -124,16 +112,16 @@ describe('<MacrosSettingsContent/>', () => {
             isError: false,
         } as ReturnType<typeof useListMacros>)
         mockUseCreateMacro.mockReturnValue({
-            mutateAsync: mockMutateAsyncCreate,
+            mutate: mockMutateCreate,
         } as unknown as ReturnType<typeof useCreateMacro>)
         mockUseDeleteMacro.mockReturnValue({
-            mutateAsync: mockMutateAsyncDelete,
+            mutate: mockMutateDelete,
         } as unknown as ReturnType<typeof useDeleteMacro>)
         useBulkArchiveMacrosMock.mockReturnValue({
-            mutateAsync: mockMutateAsyncBulkArchive,
+            mutateAsync: mockMutateBulkArchive,
         } as unknown as ReturnType<typeof useBulkArchiveMacros>)
         useBulkUnarchiveMacrosMock.mockReturnValue({
-            mutateAsync: mockMutateAsyncBulkUnarchive,
+            mutateAsync: mockMutateBulkUnarchive,
         } as unknown as ReturnType<typeof useBulkUnarchiveMacros>)
         mockUseFlag.mockImplementation(() => false)
         mockUseRouteMatch.mockReturnValue({
@@ -290,9 +278,9 @@ describe('<MacrosSettingsContent/>', () => {
         screen.getByText('delete').click()
         screen.getByText('Confirm').click()
 
-        expect(mockMutateAsyncDelete).toHaveBeenCalled()
+        expect(mockMutateDelete).toHaveBeenCalled()
         ;(
-            mockMutateAsyncDelete.mock.calls[0] as {onSettled: () => void}[]
+            mockMutateDelete.mock.calls[0] as {onSettled: () => void}[]
         )[1].onSettled()
 
         expect(mockUseListMacros).toHaveBeenNthCalledWith(
@@ -349,7 +337,7 @@ describe('<MacrosSettingsContent/>', () => {
         screen.getByText('delete').click()
         screen.getByText('Confirm').click()
         ;(
-            mockMutateAsyncDelete.mock.calls[0] as {onSettled: () => void}[]
+            mockMutateDelete.mock.calls[0] as {onSettled: () => void}[]
         )[1].onSettled()
 
         expect(mockUseListMacros).toHaveBeenNthCalledWith(
@@ -366,83 +354,6 @@ describe('<MacrosSettingsContent/>', () => {
         )
     })
 
-    it('should notice when macro deletion succeeded', () => {
-        mockUseListMacros.mockReturnValue({
-            data: {
-                data: {
-                    data: [macrosFixtures[0]],
-                    meta: {
-                        next_cursor: 'next_cursor',
-                        prev_cursor: 'prev_cursor',
-                    },
-                },
-            },
-            isError: false,
-        } as ReturnType<typeof useListMacros>)
-        render(
-            <Provider
-                store={mockStore({
-                    currentUser: fromJS(user),
-                })}
-            >
-                <MacrosSettingsContent />
-            </Provider>
-        )
-
-        screen.getByText('delete').click()
-        screen.getByText('Confirm').click()
-
-        expect(mockMutateAsyncDelete).toHaveBeenCalled()
-        ;(
-            mockMutateAsyncDelete.mock.calls[0] as {
-                onSuccess: () => void
-            }[]
-        )[1].onSuccess()
-
-        expect(mockNotify).toHaveBeenCalledWith({
-            message: 'Successfully deleted macro',
-            status: 'success',
-        })
-    })
-
-    it('should notice when macro deletion failed', () => {
-        render(
-            <Provider
-                store={mockStore({
-                    currentUser: fromJS(user),
-                })}
-            >
-                <MacrosSettingsContent />
-            </Provider>
-        )
-
-        screen.getAllByText('delete')[0].click()
-        screen.getByText('Confirm').click()
-
-        const msg = 'nope'
-        expect(mockMutateAsyncDelete).toHaveBeenCalled()
-        ;(
-            mockMutateAsyncDelete.mock.calls[0] as {
-                onError: (a: unknown) => void
-            }[]
-        )[1].onError({
-            response: {
-                data: {
-                    error: {
-                        msg,
-                    },
-                },
-            },
-        })
-
-        expect(mockNotify).toHaveBeenCalledWith({
-            title: msg,
-            allowHTML: true,
-            message: null,
-            status: 'error',
-        })
-    })
-
     it('should duplicate macro with success', () => {
         render(
             <Provider
@@ -455,41 +366,15 @@ describe('<MacrosSettingsContent/>', () => {
         )
 
         screen.getAllByText('file_copy')[0].click()
-        ;(
-            mockMutateAsyncCreate.mock.calls[0] as {onSettled: () => void}[]
-        )[1].onSettled()
 
         const id = 18
-        expect(invalidateQueriesMock).toHaveBeenCalled()
         ;(
-            mockMutateAsyncCreate.mock.calls[0] as {
+            mockMutateCreate.mock.calls[0] as {
                 onSuccess: (resp: unknown) => void
             }[]
         )[1].onSuccess({data: {id}})
 
         expect(history.push).toHaveBeenCalledWith(`/app/settings/macros/${id}`)
-    })
-
-    it('should fail to duplicate macro', () => {
-        render(
-            <Provider
-                store={mockStore({
-                    currentUser: fromJS(user),
-                })}
-            >
-                <MacrosSettingsContent />
-            </Provider>
-        )
-
-        screen.getAllByText('file_copy')[0].click()
-        ;(
-            mockMutateAsyncCreate.mock.calls[0] as {onError: () => void}[]
-        )[1].onError()
-
-        expect(mockNotify).toHaveBeenCalledWith({
-            message: 'Failed to duplicate macro',
-            status: 'error',
-        })
     })
 
     it('should fetch macros when searching', async () => {

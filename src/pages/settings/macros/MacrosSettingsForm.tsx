@@ -63,14 +63,12 @@ export function MacrosSettingsFormContainer({
     }>()
     const {isArchived} = location.state ?? {}
 
-    const {mutateAsync: bulkArchiveMacros, isLoading: isArchivingPending} =
+    const {mutate: bulkArchiveMacros, isLoading: isArchivingPending} =
         useBulkArchiveMacros()
-    const {mutateAsync: bulkUnarchiveMacros, isLoading: isUnarchivingPending} =
+    const {mutate: bulkUnarchiveMacros, isLoading: isUnarchivingPending} =
         useBulkUnarchiveMacros()
 
-    const [macroForm, setMacroForm] = useState<MacroDraft>(
-        getDefaultMacro().toJS()
-    )
+    const [macroForm, setMacroForm] = useState<MacroDraft>(getDefaultMacro())
 
     const [{loading: isFetchPending}, handleMacroFetch] =
         useAsyncFn(async () => {
@@ -186,26 +184,20 @@ export function MacrosSettingsFormContainer({
             }
         }, [macros, macroId])
 
-    const handleMacroArchiveOrUnarchive = async (
+    const handleMacroArchiveOrUnarchive = (
         e: MouseEvent<HTMLButtonElement>
     ) => {
         e.preventDefault()
         e.stopPropagation()
         if (!!macroId) {
-            try {
-                if (isArchived) {
-                    await bulkUnarchiveMacros({
-                        data: {ids: [parseInt(macroId)]},
-                    })
-                } else {
-                    await bulkArchiveMacros({data: {ids: [parseInt(macroId)]}})
-                }
-                history.push(
-                    `/app/settings/macros${isArchived ? '/archived' : ''}`
-                )
-            } catch (error) {
-                // handled in hooks
+            if (isArchived) {
+                bulkUnarchiveMacros({
+                    data: {ids: [parseInt(macroId)]},
+                })
+            } else {
+                bulkArchiveMacros({data: {ids: [parseInt(macroId)]}})
             }
+            history.push(`/app/settings/macros${isArchived ? '/archived' : ''}`)
         }
     }
 

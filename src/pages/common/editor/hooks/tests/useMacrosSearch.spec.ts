@@ -1,10 +1,12 @@
+import {InfiniteQueryObserverSuccessResult} from '@tanstack/react-query'
+import * as reactQuery from '@tanstack/react-query'
+import {waitFor} from '@testing-library/react'
 import {act, renderHook} from '@testing-library/react-hooks'
-import _noop from 'lodash/noop'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {ticket as defaultTicket} from 'fixtures/ticket'
-import {fetchMacros} from 'models/macro/resources'
-import {flushPromises} from 'utils/testing'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {assumeMock} from 'utils/testing'
 
 import useMacrosSearch, {SEARCH_DEBOUNCE_DELAY} from '../useMacrosSearch'
 
@@ -14,182 +16,150 @@ jest.mock('models/macro/resources', () => ({
 
 jest.mock('common/segment')
 
-const fetchMacrosMock = fetchMacros as jest.Mock
+jest.mock('hooks/useAppDispatch', () => jest.fn())
+const useAppDispatchMock = assumeMock(useAppDispatch)
+
 const logEventMock = logEvent as jest.Mock
+
+jest.mock('@tanstack/react-query')
+const useInfiniteQuerySpy = jest.spyOn(reactQuery, 'useInfiniteQuery')
+
+const mockMacrosData = [{id: 1}, {id: 2}]
+const mockMeta = {next_cursor: 'beepboop'}
 
 describe('useMacrosSearch', () => {
     const defaultOptions = {
-        filters: {},
-        query: '',
+        params: {search: ''},
         ticket: defaultTicket,
     }
+    let dispatch: jest.Mock
 
     beforeEach(() => {
-        jest.resetAllMocks()
-        logEventMock.mockImplementation(_noop)
-
-        fetchMacrosMock.mockResolvedValue({
+        jest.useFakeTimers()
+        useInfiniteQuerySpy.mockReturnValue({
             data: {
-                data: [{id: 1}, {id: 2}],
-                meta: {next_cursor: 'beepboop'},
+                pages: [
+                    {
+                        data: {
+                            data: [],
+                            meta: {next_cursor: undefined},
+                        },
+                    },
+                ],
+                pageParams: [],
             },
-        })
+        } as unknown as InfiniteQueryObserverSuccessResult<unknown, unknown>)
+
+        dispatch = jest.fn()
+        useAppDispatchMock.mockReturnValue(dispatch)
     })
 
-    it('should return the default state', async () => {
+    afterEach(() => {
+        jest.useRealTimers()
+    })
+
+    it('should return the default state', () => {
         const {result} = renderHook(() => useMacrosSearch(defaultOptions))
 
         expect(result.current).toEqual({
-            initialLoaded: false,
-            loadMacros: expect.any(Function),
-            macros: [],
-            nextCursor: null,
-        })
-
-        await act(async () => {
-            await flushPromises()
+            data: [],
+            nextCursor: undefined,
         })
     })
 
-    it('should request macro data on mounting', async () => {
-        fetchMacrosMock.mockResolvedValue({
+    it('should return data state', () => {
+        useInfiniteQuerySpy.mockReturnValue({
             data: {
-                data: [{id: 1}, {id: 2}],
-                meta: {next_cursor: 'beepboop'},
+                pages: [
+                    {
+                        data: {
+                            data: mockMacrosData,
+                            meta: mockMeta,
+                        },
+                    },
+                ],
+                pageParams: [],
             },
-        })
-
+        } as unknown as InfiniteQueryObserverSuccessResult<unknown, unknown>)
         const {result} = renderHook(() => useMacrosSearch(defaultOptions))
 
-        expect(fetchMacrosMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                messageId: 182,
-                numberPredictions: 3,
-                search: '',
-                ticketId: 152,
-            }),
-            expect.objectContaining({cancelToken: expect.any(Object)})
-        )
-
-        await act(async () => {
-            await flushPromises()
-        })
-
         expect(result.current).toEqual({
-            initialLoaded: true,
-            loadMacros: expect.any(Function),
-            macros: [{id: 1}, {id: 2}],
-            nextCursor: 'beepboop',
+            data: mockMacrosData,
+            nextCursor: mockMeta.next_cursor,
         })
     })
 
     it('should log an event if a search is executed due to changing parameters', async () => {
-        jest.useFakeTimers()
-
-        fetchMacrosMock.mockResolvedValue({
-            data: {
-                data: [{id: 3}, {id: 4}],
-                meta: {next_cursor: 'boopbeep'},
-            },
+        const {rerender} = renderHook((options) => useMacrosSearch(options), {
+            initialProps: defaultOptions,
+        })
+        rerender({
+            ...defaultOptions,
+            params: {...defaultOptions.params, search: 'beep'},
         })
 
-        const {rerender, result} = renderHook(
-            (options) => useMacrosSearch(options),
-            {initialProps: defaultOptions}
-        )
-
-        await act(async () => {
-            rerender({...defaultOptions, query: 'beep'})
-            await flushPromises()
+        act(() => {
             jest.advanceTimersByTime(SEARCH_DEBOUNCE_DELAY)
         })
 
-        expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.TicketMacrosSearch,
-            {
-                changed: ['search'],
-                search: 'beep',
-            }
+        await waitFor(() =>
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.TicketMacrosSearch,
+                {
+                    changed: ['search'],
+                    search: 'beep',
+                }
+            )
         )
-
-        await act(async () => {
-            await flushPromises()
-        })
-
-        expect(result.current).toEqual({
-            initialLoaded: true,
-            loadMacros: expect.any(Function),
-            macros: [{id: 3}, {id: 4}],
-            nextCursor: 'boopbeep',
-        })
-        jest.useRealTimers()
     })
 
-    it('should replace macros when calling loadMacros without an argument', async () => {
-        fetchMacrosMock
-            .mockResolvedValueOnce({
+    it('should update received macros data', () => {
+        const mockNewMacrosData = [{id: 3}, {id: 4}]
+        const mockNewMeta = {next_cursor: 'boopbeep'}
+        useInfiniteQuerySpy
+            .mockReturnValueOnce({
                 data: {
-                    data: [{id: 1}, {id: 2}],
-                    meta: {next_cursor: 'beepboop'},
+                    pages: [
+                        {
+                            data: {
+                                data: mockMacrosData,
+                                meta: mockMeta,
+                            },
+                        },
+                    ],
+                    pageParams: [],
                 },
-            })
-            .mockResolvedValueOnce({
+            } as unknown as InfiniteQueryObserverSuccessResult<
+                unknown,
+                unknown
+            >)
+            .mockReturnValueOnce({
                 data: {
-                    data: [{id: 3}, {id: 4}],
-                    meta: {next_cursor: 'boopbeep'},
+                    pages: [
+                        {
+                            data: {
+                                data: mockNewMacrosData,
+                                meta: mockNewMeta,
+                            },
+                        },
+                    ],
+                    pageParams: [],
                 },
-            })
-
-        const {result} = renderHook(() => useMacrosSearch(defaultOptions))
-
-        await act(async () => {
-            await flushPromises()
-        })
-
-        await act(async () => {
-            await result.current.loadMacros()
-            await flushPromises()
+            } as unknown as InfiniteQueryObserverSuccessResult<
+                unknown,
+                unknown
+            >)
+        const {rerender, result} = renderHook(() =>
+            useMacrosSearch(defaultOptions)
+        )
+        rerender({
+            ...defaultOptions,
+            params: {...defaultOptions.params, search: 'beep'},
         })
 
         expect(result.current).toEqual({
-            initialLoaded: true,
-            loadMacros: expect.any(Function),
-            macros: [{id: 3}, {id: 4}],
-            nextCursor: 'boopbeep',
-        })
-    })
-
-    it('should append more macros when calling loadMacros with true', async () => {
-        fetchMacrosMock
-            .mockResolvedValueOnce({
-                data: {
-                    data: [{id: 1}, {id: 2}],
-                    meta: {next_cursor: 'beepboop'},
-                },
-            })
-            .mockResolvedValueOnce({
-                data: {
-                    data: [{id: 3}, {id: 4}],
-                    meta: {next_cursor: 'boopbeep'},
-                },
-            })
-
-        const {result} = renderHook(() => useMacrosSearch(defaultOptions))
-
-        await act(async () => {
-            await flushPromises()
-        })
-
-        await act(async () => {
-            await result.current.loadMacros(true)
-            await flushPromises()
-        })
-
-        expect(result.current).toEqual({
-            initialLoaded: true,
-            loadMacros: expect.any(Function),
-            macros: [{id: 1}, {id: 2}, {id: 3}, {id: 4}],
-            nextCursor: 'boopbeep',
+            data: mockNewMacrosData,
+            nextCursor: mockNewMeta.next_cursor,
         })
     })
 })

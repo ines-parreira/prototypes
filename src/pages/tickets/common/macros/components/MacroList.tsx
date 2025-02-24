@@ -1,6 +1,5 @@
 import {Macro} from '@gorgias/api-queries'
 import classnames from 'classnames'
-import {List, Map} from 'immutable'
 import _noop from 'lodash/noop'
 import React from 'react'
 
@@ -14,16 +13,16 @@ import css from './MacroList.less'
 
 type Props = {
     className?: string
-    searchResults: List<any>
-    currentMacro: Map<any, any>
+    searchResults: Macro[]
+    currentMacro?: Macro
     areExternalActionsDisabled?: boolean
-    onClickItem: (item: Map<any, any>) => void
-    onHoverItem?: (item: Map<any, any>) => void
-    loadMore: () => Promise<Macro[] | void>
+    onClickItem: (item: Macro) => void
+    onHoverItem?: (item: Macro) => void
+    loadMore: () => Promise<void>
     hasDataToLoad?: boolean
 }
 
-const MacroListContainer = ({
+const MacroList = ({
     searchResults,
     className,
     currentMacro,
@@ -42,15 +41,15 @@ const MacroListContainer = ({
             onLoad={loadMore}
             shouldLoadMore={hasDataToLoad}
         >
-            {searchResults.map((macro: Map<any, any>) => {
+            {searchResults.map((macro: Macro) => {
                 const isDisabled = isMacroDisabled(
                     macro,
                     areExternalActionsDisabled
                 )
-                const isActive = macro.get('id') === currentMacro.get('id')
+                const isActive = macro.id === currentMacro?.id
                 return (
                     <div
-                        key={macro.get('id')}
+                        key={macro.id}
                         className={classnames(css.item, {
                             [css.active]: isActive,
                             [css.disabled]: isDisabled,
@@ -60,18 +59,18 @@ const MacroListContainer = ({
 
                             logEvent(SegmentEvent.MacroAppliedSearchbar, {
                                 is_recommended: isSuggestion(
-                                    macro.get('relevance_rank', 0)
+                                    macro.relevance_rank ?? 0
                                 ),
-                                macro_id: macro.get('id'),
-                                rank: macro.get('relevance_rank'),
+                                macro_id: macro.id,
+                                rank: macro.relevance_rank,
                                 user_id: currentUser.get('id'),
                             })
                             onClickItem(macro)
                         }}
                         onMouseEnter={() => onHoverItem(macro)}
                     >
-                        {macro.get('name') || <i>No name</i>}
-                        {isSuggestion(macro.get('relevance_rank', 0)) && (
+                        {macro.name || <i>No name</i>}
+                        {isSuggestion(macro.relevance_rank ?? 0) && (
                             <span
                                 className={classnames(
                                     'material-icons',
@@ -88,4 +87,4 @@ const MacroListContainer = ({
     )
 }
 
-export default MacroListContainer
+export default MacroList

@@ -1,4 +1,4 @@
-import {fromJS, Map, List} from 'immutable'
+import {Macro} from '@gorgias/api-queries'
 
 import {MacroActionName} from 'models/macroAction/types'
 import {NotificationStatus} from 'state/notifications/types'
@@ -7,14 +7,14 @@ import {Notification} from './types/notification'
 import {TicketMessageSourceType} from './types/ticket'
 
 export type MacroClearingResult = {
-    macro: Map<any, any>
+    macro: Macro
     notification?: Notification
 }
 
 // Public functions
 export function clearMacroBeforeApply(
     messageType: TicketMessageSourceType,
-    macro: Map<any, any>
+    macro: Macro
 ): MacroClearingResult {
     const isChatAndMoreThanOneAttachment =
         messageType === TicketMessageSourceType.Chat &&
@@ -70,39 +70,31 @@ export function clearMacroBeforeApply(
 }
 
 // Private functions
-function getAttachmentsCount(macro: Map<any, any>): number {
-    return (macro.get('actions', fromJS([])) as List<any>)
-        .filter(
-            (action: Map<any, any>) =>
-                action.get('name') === MacroActionName.AddAttachments
-        )
-        .reduce(
-            (total = 0, action: Map<any, any>) =>
-                total +
-                (
-                    action.getIn(
-                        ['arguments', 'attachments'],
-                        fromJS([])
-                    ) as List<any>
-                ).size,
-            0
-        )
-}
-
-function removeAttachmentsFromActions(macro: Map<any, any>): Map<any, any> {
-    return macro.update('actions', (actions: List<any>) =>
-        actions.filter(
-            (action: Map<any, any>) =>
-                action.get('name') !== MacroActionName.AddAttachments
-        )
+function getAttachmentsCount(macro: Macro): number {
+    return (
+        macro.actions
+            ?.filter((action) => action.name === MacroActionName.AddAttachments)
+            .reduce(
+                (total = 0, action) =>
+                    total +
+                    (action.arguments as {attachments: string}).attachments
+                        .length,
+                0
+            ) ?? 0
     )
 }
 
-function hasText(macro: Map<any, any>): boolean {
-    return !(macro.get('actions', fromJS([])) as List<any>)
-        .filter(
-            (action: Map<any, any>) =>
-                action.get('name') === MacroActionName.SetResponseText
-        )
-        .isEmpty()
+function removeAttachmentsFromActions(macro: Macro) {
+    return {
+        ...macro,
+        actions: macro.actions?.filter(
+            (action) => action.name !== MacroActionName.AddAttachments
+        ),
+    }
+}
+
+function hasText(macro: Macro): boolean {
+    return !!macro.actions?.filter(
+        (action) => action.name === MacroActionName.SetResponseText
+    ).length
 }

@@ -1,5 +1,5 @@
+import {Macro} from '@gorgias/api-queries'
 import classnames from 'classnames'
-import {Map} from 'immutable'
 import _debounce from 'lodash/debounce'
 import React, {useCallback, useMemo} from 'react'
 import {UncontrolledTooltip} from 'reactstrap'
@@ -18,8 +18,8 @@ import {MacroButton} from './MacroButton'
 import css from './MacrosQuickReply.less'
 
 type Props = {
-    macros: Map<any, any>
-    applyMacro: (macro: Map<any, any>) => void
+    macros: Macro[]
+    applyMacro: (macro: Macro) => void
 }
 
 export const MacrosQuickReply = ({macros, applyMacro}: Props) => {
@@ -71,24 +71,20 @@ export const MacrosQuickReply = ({macros, applyMacro}: Props) => {
                 Suggested macros
             </div>
             <div className={css.macros}>
-                {macros.map((macro: Map<any, any>, macroRank: number) => (
+                {macros.map((macro, macroRank: number) => (
                     <MacroButton
-                        macro={macro.toJS()}
+                        macro={macro}
                         applyMacro={() => {
                             void applyMacro(macro)
                             logEvent(SegmentEvent.MacrosQuickReplySent, {
                                 ...baseSegmentPayload,
-                                macro_id: macro.get('id'),
+                                macro_id: macro.id,
                                 macro_rank: macroRank + 1,
                             })
                         }}
-                        key={macro.get('id')}
+                        key={macro.id}
                         onHover={_debounce(
-                            () =>
-                                buttonHandleHover(
-                                    macro.get('id'),
-                                    macroRank + 1
-                                ),
+                            () => buttonHandleHover(macro.id, macroRank + 1),
                             500
                         )}
                     />

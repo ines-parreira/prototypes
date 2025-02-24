@@ -1,79 +1,58 @@
-import {Macro} from '@gorgias/api-queries'
+import {queryKeys} from '@gorgias/api-queries'
+import {useInfiniteQuery} from '@tanstack/react-query'
+import _flatten from 'lodash/flatten'
 import _isEqual from 'lodash/isEqual'
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {useEffect, useMemo, useRef} from 'react'
+
+import {notify} from 'reapop'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import useCancellableRequest from 'hooks/useCancellableRequest'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useDebouncedValue from 'hooks/useDebouncedValue'
-import {OrderDirection} from 'models/api/types'
 import {fetchMacros} from 'models/macro/resources'
-import {MacroSortableProperties, MacrosProperties} from 'models/macro/types'
+import {Filters} from 'models/macro/types'
 import {Ticket} from 'models/ticket/types'
+import {NotificationStatus} from 'state/notifications/types'
 
 export const SEARCH_DEBOUNCE_DELAY = 350
 
-type Options = {
-    filters: MacrosProperties
-    query: string
-    ticket: Ticket
+type Props = {
+    params: Filters
+    ticket?: Ticket
 }
-
-type Filters = MacrosProperties & {cursor?: string | null; search: string}
 
 type FilterKey = keyof Filters
 
-type State = {
-    macros: Macro[]
-    nextCursor: string | null
-}
+export const STALE_TIME_MS = 15 * 60 * 1000 // 15 minutes
 
-export default function useMacrosSearch({filters, query, ticket}: Options) {
-    const initialLoaded = useRef<boolean>(false)
+const queryKey = queryKeys.macros.listMacros() as string[]
+queryKey.pop()
+
+export default function useMacrosSearch({params, ticket}: Props) {
+    const dispatch = useAppDispatch()
     const previousSearchOptions = useRef<Filters | null>(null)
-    const [{macros, nextCursor}, setState] = useState<State>({
-        macros: [],
-        nextCursor: null,
-    })
 
-    const searchOptions: Filters = useMemo(
-        () => ({...filters, search: query}),
-        [filters, query]
-    )
     const debouncedSearchOptions = useDebouncedValue<Filters>(
-        searchOptions,
+        params,
         SEARCH_DEBOUNCE_DELAY
     )
-
     const ticketOptions = useMemo(
         () =>
-            !ticket.id
+            !ticket?.id
                 ? {}
                 : {
-                      ticketId: ticket.id,
-                      messageId:
+                      ticket_id: ticket.id,
+                      message_id:
                           ticket.messages[ticket.messages.length - 1]?.id,
-                      numberPredictions: 3,
+                      number_predictions: 3,
                   },
         [ticket]
-    )
-
-    const [cancellableFetchMacros] = useCancellableRequest(
-        (cancelToken) => async (options: typeof debouncedSearchOptions) =>
-            fetchMacros(
-                {
-                    ...options,
-                    ...ticketOptions,
-                    orderBy: `${MacroSortableProperties.Name}:${OrderDirection.Asc}`,
-                },
-                {cancelToken}
-            )
     )
 
     useEffect(() => {
         if (_isEqual(debouncedSearchOptions, previousSearchOptions.current)) {
             return
         }
-
         let changed: string[] = []
         if (previousSearchOptions.current) {
             changed = (Object.keys(debouncedSearchOptions) as FilterKey[])
@@ -85,56 +64,52 @@ export default function useMacrosSearch({filters, query, ticket}: Options) {
                 .map((fieldName) => fieldName)
         }
 
-        logEvent(SegmentEvent.TicketMacrosSearch, {
-            ...debouncedSearchOptions,
-            changed,
-        })
-
+        if (!!changed.length) {
+            logEvent(SegmentEvent.TicketMacrosSearch, {
+                ...debouncedSearchOptions,
+                changed,
+            })
+        }
         previousSearchOptions.current = debouncedSearchOptions
+    }, [debouncedSearchOptions])
 
-        void cancellableFetchMacros(debouncedSearchOptions)
-            .then((res) => {
-                if (res) {
-                    initialLoaded.current = true
-                    setState({
-                        macros: res.data.data,
-                        nextCursor: res.data.meta.next_cursor,
-                    })
-                }
+    const {data, isError, ...props} = useInfiniteQuery({
+        queryKey: [...queryKey, debouncedSearchOptions],
+        queryFn: async ({pageParam}: {pageParam?: string}) => {
+            return fetchMacros({
+                ...debouncedSearchOptions,
+                ...ticketOptions,
+                cursor: pageParam,
+                order_by: 'name:asc',
             })
-            .catch((err) => {
-                console.error(err)
-            })
-    }, [cancellableFetchMacros, debouncedSearchOptions])
-
-    const loadMacros = useCallback(
-        async (retainPreviousResults?: boolean): Promise<void> => {
-            try {
-                const res = await cancellableFetchMacros({
-                    ...debouncedSearchOptions,
-                    cursor: nextCursor,
-                })
-
-                if (res) {
-                    setState((s) => ({
-                        ...s,
-                        macros: retainPreviousResults
-                            ? [...s.macros, ...(res.data.data || [])]
-                            : res.data.data || [],
-                        nextCursor: res.data.meta.next_cursor,
-                    }))
-                }
-            } catch (err) {
-                console.error(err)
-            }
         },
-        [cancellableFetchMacros, debouncedSearchOptions, nextCursor]
+        getNextPageParam: (lastPage) => {
+            return lastPage.data.meta.next_cursor
+        },
+        staleTime: STALE_TIME_MS,
+    })
+
+    const nextCursor = data?.pages[data?.pages.length - 1].data.meta.next_cursor
+
+    const macrosData = useMemo(
+        () => _flatten(data?.pages.map((page) => page.data.data)),
+        [data]
     )
 
+    useEffect(() => {
+        if (isError) {
+            void dispatch(
+                notify({
+                    message: 'Failed to fetch macros',
+                    status: NotificationStatus.Error,
+                })
+            )
+        }
+    }, [dispatch, isError])
+
     return {
-        initialLoaded: initialLoaded.current,
-        loadMacros,
-        macros,
+        data: macrosData,
         nextCursor,
+        ...props,
     }
 }

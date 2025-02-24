@@ -1,10 +1,8 @@
-import {Macro} from '@gorgias/api-queries'
+import {ListMacrosParams, Macro} from '@gorgias/api-queries'
 import classnames from 'classnames'
-import {List, Map} from 'immutable'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
-import {FetchMacrosOptions} from 'models/macro/types'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
@@ -13,14 +11,19 @@ import {isMacroDisabled} from 'pages/tickets/common/macros/utils'
 import MacroList from './MacroList'
 import css from './MacroModalList.less'
 
+type Filters = Pick<
+    ListMacrosParams,
+    'languages' | 'tags' | 'cursor' | 'search'
+>
+
 type Props = {
-    currentMacro: Map<any, any>
-    fetchMacros: (params?: FetchMacrosOptions) => Promise<Macro[] | void>
+    currentMacro?: Macro
+    fetchMacros: () => Promise<any>
     handleClickItem: (id: number) => void
-    onSearch: (searchParams: FetchMacrosOptions) => void
+    onSearch: (searchParams: Filters) => void
     hasDataToLoad?: boolean
-    searchParams: FetchMacrosOptions
-    searchResults: List<any>
+    searchParams: Filters
+    searchResults: Macro[]
     areExternalActionsDisabled?: boolean
 }
 
@@ -39,16 +42,13 @@ export default function MacroModalList({
         () =>
             areExternalActionsDisabled
                 ? !searchResults.every((macro) => isMacroDisabled(macro, true))
-                : !searchResults.isEmpty(),
+                : !!searchResults.length,
         [areExternalActionsDisabled, searchResults]
     )
 
     useEffect(() => {
         setMacroCursor(
-            searchResults.findIndex(
-                (macro: Map<any, any>) =>
-                    macro.get('id') === currentMacro.get('id')
-            )
+            searchResults.findIndex((macro) => macro.id === currentMacro?.id)
         )
     }, [currentMacro, searchResults])
 
@@ -56,12 +56,12 @@ export default function MacroModalList({
         (direction: MoveIndexDirection, currentMacroCursor?: number) => {
             const cursor = currentMacroCursor ?? macroCursor
 
-            const index = moveIndex(cursor, searchResults.size, {
+            const index = moveIndex(cursor, searchResults.length, {
                 direction,
                 rotate: true,
             })
             setMacroCursor(index)
-            const macro = searchResults.get(index) as Map<any, any>
+            const macro = searchResults[index]
             // skip disabled macros
             if (isMacroDisabled(macro, areExternalActionsDisabled)) {
                 moveCursor(
@@ -71,7 +71,7 @@ export default function MacroModalList({
                 return
             }
 
-            handleClickItem(macro.get('id'))
+            handleClickItem(macro.id!)
         },
         [
             areExternalActionsDisabled,
@@ -104,10 +104,10 @@ export default function MacroModalList({
     return (
         <div className={css.component}>
             <TextInput
-                value={searchParams.search}
+                value={searchParams.search ?? undefined}
                 onChange={(value) => onSearch({...searchParams, search: value})}
                 placeholder="Search macros by name, tags or body..."
-                autoFocus={!searchResults.isEmpty()}
+                autoFocus={!!searchResults.length}
                 className={classnames(
                     css.search,
                     'shortcuts-enable',
@@ -133,10 +133,10 @@ export default function MacroModalList({
             <MacroList
                 className={css.scroller}
                 searchResults={searchResults}
-                loadMore={() => fetchMacros()}
+                loadMore={fetchMacros}
                 currentMacro={currentMacro}
                 areExternalActionsDisabled={areExternalActionsDisabled}
-                onClickItem={(macro) => handleClickItem(macro.get('id'))}
+                onClickItem={(macro) => handleClickItem(macro.id!)}
                 hasDataToLoad={hasDataToLoad}
             />
         </div>

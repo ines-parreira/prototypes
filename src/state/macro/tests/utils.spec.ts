@@ -1,8 +1,6 @@
-import {fromJS} from 'immutable'
-
 import {ActionTemplateExecution} from 'config'
+import {MacroActionName} from 'models/macroAction/types'
 
-import {MacroActionName} from '../../../models/macroAction/types'
 import {MacroApiError} from '../types'
 import {getDefaultMacro, generateDefaultAction, getErrorReason} from '../utils'
 
@@ -11,41 +9,37 @@ describe('macro utils', () => {
         it('should return default action for setResponseText', () => {
             expect(
                 generateDefaultAction(MacroActionName.SetResponseText)
-            ).toEqual(
-                fromJS({
-                    type: 'user',
-                    execution: ActionTemplateExecution.Front,
-                    name: MacroActionName.SetResponseText,
-                    title: 'Add response text',
-                    arguments: {
-                        body_text: '',
-                        body_html: '',
-                    },
-                })
-            )
+            ).toEqual({
+                type: 'user',
+                execution: ActionTemplateExecution.Front,
+                name: MacroActionName.SetResponseText,
+                title: 'Add response text',
+                arguments: {
+                    body_text: '',
+                    body_html: '',
+                },
+            })
         })
     })
 
     describe('getDefaultMacro', () => {
         it('should return default new macro', () => {
-            expect(getDefaultMacro()).toEqual(
-                fromJS({
-                    name: 'New macro',
-                    actions: [
-                        {
-                            type: 'user',
-                            execution: ActionTemplateExecution.Front,
-                            name: MacroActionName.SetResponseText,
-                            title: 'Add response text',
-                            arguments: {
-                                body_text: '',
-                                body_html: '',
-                            },
+            expect(getDefaultMacro()).toEqual({
+                name: 'New macro',
+                actions: [
+                    {
+                        type: 'user',
+                        execution: ActionTemplateExecution.Front,
+                        name: MacroActionName.SetResponseText,
+                        title: 'Add response text',
+                        arguments: {
+                            body_text: '',
+                            body_html: '',
                         },
-                    ],
-                    language: '',
-                })
-            )
+                    },
+                ],
+                language: '',
+            })
         })
     })
 

@@ -1,4 +1,4 @@
-import {fromJS, Map} from 'immutable'
+import {Macro, MacroAction} from '@gorgias/api-queries'
 import _forEach from 'lodash/forEach'
 
 import {MacroActionName} from '../../models/macroAction/types'
@@ -6,22 +6,20 @@ import {getActionTemplate} from '../../utils'
 
 import {MacroApiError} from './types'
 
-export function generateDefaultAction(
-    actionType: MacroActionName
-): Maybe<Map<any, any>> {
+export function generateDefaultAction(actionType: MacroActionName) {
     const actionTemplate = getActionTemplate(actionType)
 
     if (!actionTemplate) {
         return null
     }
 
-    let ret = fromJS({
+    let ret = {
         type: 'user',
         execution: actionTemplate.execution,
         name: actionTemplate.name,
         title: actionTemplate.title,
         arguments: {},
-    }) as Map<any, any>
+    } as MacroAction
 
     _forEach(
         (actionTemplate.arguments as {
@@ -49,7 +47,13 @@ export function generateDefaultAction(
                 }
             }
 
-            ret = ret.setIn(['arguments', key], fromJS(defaultValue))
+            ret = {
+                ...ret,
+                arguments: {
+                    ...ret.arguments,
+                    [key]: defaultValue,
+                },
+            }
         }
     )
 
@@ -57,11 +61,11 @@ export function generateDefaultAction(
 }
 
 export function getDefaultMacro() {
-    return fromJS({
+    return {
         name: 'New macro',
         actions: [generateDefaultAction(MacroActionName.SetResponseText)],
         language: '',
-    }) as Map<any, any>
+    } as unknown as Macro
 }
 
 export function getErrorReason({

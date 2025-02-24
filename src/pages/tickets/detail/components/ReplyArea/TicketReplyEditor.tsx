@@ -1,7 +1,8 @@
+import {Macro} from '@gorgias/api-queries'
 import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import {ContentState, EditorState} from 'draft-js'
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import _debounce from 'lodash/debounce'
@@ -40,8 +41,8 @@ import css from './TicketReplyEditor.less'
 
 type Props = {
     replyAreaHeader?: ReactNode
-    applyMacro: (macro: Map<any, any>) => void
-    macros: List<any>
+    applyMacro: (macro: Macro) => void
+    macros: Macro[]
     richAreaRef: (ref: RichField | null) => void
     shouldDisplayQuickReply: boolean
     ticket: Map<any, any>
@@ -486,7 +487,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                         shouldDisplayQuickReply ? (
                             <MacrosQuickReply
                                 applyMacro={applyMacro}
-                                macros={macros.slice(0, 3) as Map<any, any>}
+                                macros={macros.slice(0, 3)}
                             />
                         ) : undefined
                     }

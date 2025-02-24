@@ -1,5 +1,5 @@
+import {Macro} from '@gorgias/api-queries'
 import classnames from 'classnames'
-import {fromJS, Map, List} from 'immutable'
 import React, {
     MouseEvent,
     useCallback,
@@ -19,10 +19,9 @@ import {
 import {useAppNode} from 'appNode'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {UserRole} from 'config/types/user'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {useDeleteMacro} from 'hooks/macros'
 import useAppSelector from 'hooks/useAppSelector'
-import usePrevious from 'hooks/usePrevious'
-import {FetchMacrosOptions} from 'models/macro/types'
+import {Filters} from 'models/macro/types'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
@@ -32,47 +31,44 @@ import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
 import Preview from 'pages/tickets/common/macros/Preview'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {CurrentUserState} from 'state/currentUser/types'
-import {deleteMacro} from 'state/macro/actions'
 import {getNewMessageType} from 'state/newMessage/selectors'
 import {hasRole} from 'utils'
 
 import css from './TicketMacros.less'
 
 type Props = {
-    applyMacro: (macro: Map<any, any>) => void
+    applyMacro: (macro: Macro) => void
     className?: string
-    currentMacro: Map<any, any>
-    initialMacrosLoaded: boolean
-    loadMacros: (retainPreviousResults?: boolean) => Promise<void>
-    macros: List<any>
-    selectMacro: (macro: Map<any, any>) => void
-    searchParams: FetchMacrosOptions
+    currentMacro?: Macro
+    isLoading: boolean
+    loadMacros: () => Promise<any>
+    macros: Macro[]
+    selectMacro: (macro: Macro) => void
+    searchParams?: Filters
     hasDataToLoad?: boolean
 }
 
-export function TicketMacrosContainer({
+export function TicketMacros({
     applyMacro,
     className,
     currentMacro,
     hasDataToLoad,
-    initialMacrosLoaded,
+    isLoading,
     loadMacros,
-    macros = fromJS([]),
+    macros = [],
     searchParams = {search: ''},
     selectMacro,
 }: Props) {
-    const dispatch = useAppDispatch()
     const currentUser = useAppSelector<CurrentUserState>(getCurrentUser)
     const newMessageType =
         useAppSelector<TicketMessageSourceType>(getNewMessageType)
     const previewContainerRef = useRef<HTMLDivElement | null>(null)
     const [macroDropdownOpen, setMacroDropdownOpen] = useState(false)
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false)
-    const [isDeleting, setIsDeleting] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isCreatingMacro, setIsCreatingMacro] = useState(false)
-    const prevIsDeleting = usePrevious(isDeleting)
     const appNode = useAppNode()
+    const {mutate: deleteMacro} = useDeleteMacro()
 
     // brings the preview to top when previewing another macro
     useEffect(() => {
@@ -95,34 +91,26 @@ export function TicketMacrosContainer({
 
     const closeMacroModal = useCallback(() => {
         setIsModalOpen(false)
-
-        // reload macros, in case they changed in the modal
-        void loadMacros()
-    }, [loadMacros])
+    }, [])
 
     const toggleCreateMacro = useCallback((isCreatingMacro = false): void => {
         setIsCreatingMacro(isCreatingMacro)
     }, [])
 
-    const handleDeleteMacro = useCallback(async () => {
+    const handleDeleteMacro = useCallback(() => {
         toggleMacroDeleteConfirmOpen()
-        const macroId = currentMacro.get('id', '')
-        setIsDeleting(true)
+        const id = currentMacro?.id
 
-        await dispatch(deleteMacro(macroId))
-        setIsDeleting(false)
-    }, [currentMacro, dispatch, toggleMacroDeleteConfirmOpen])
-
-    useEffect(() => {
-        if (prevIsDeleting && isDeleting !== prevIsDeleting) {
-            void loadMacros()
-        }
-    }, [isDeleting, loadMacros, prevIsDeleting])
+        if (id)
+            deleteMacro({
+                id,
+            })
+    }, [currentMacro, deleteMacro, toggleMacroDeleteConfirmOpen])
 
     let content = null
-    if (macros.isEmpty() && !initialMacrosLoaded) {
+    if (isLoading) {
         content = <Loader minHeight="100%" message="Loading macros..." />
-    } else if (macros.isEmpty()) {
+    } else if (!macros.length) {
         content = (
             <MacroNoResults
                 searchParams={searchParams}
@@ -138,7 +126,7 @@ export function TicketMacrosContainer({
                     searchResults={macros}
                     onClickItem={applyMacro}
                     onHoverItem={selectMacro}
-                    loadMore={() => loadMacros(true)}
+                    loadMore={loadMacros}
                     hasDataToLoad={hasDataToLoad}
                 />
                 <div className={css.previewContainer} ref={previewContainerRef}>
@@ -222,7 +210,7 @@ export function TicketMacrosContainer({
                                 <PopoverBody>
                                     <p>
                                         Are you sure you want to delete '
-                                        {currentMacro.get('name')}'?
+                                        {currentMacro?.name}'?
                                     </p>
                                     <Button
                                         onClick={handleDeleteMacro}
@@ -244,7 +232,7 @@ export function TicketMacrosContainer({
 
                     <Preview
                         ticketMessageSourceType={newMessageType}
-                        actions={currentMacro.get('actions')}
+                        actions={currentMacro?.actions}
                         className={css.preview}
                     />
                 </div>
@@ -267,4 +255,4 @@ export function TicketMacrosContainer({
     )
 }
 
-export default TicketMacrosContainer
+export default TicketMacros

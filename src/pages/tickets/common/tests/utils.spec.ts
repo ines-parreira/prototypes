@@ -1,4 +1,4 @@
-import {fromJS} from 'immutable'
+import {MacroAction} from '@gorgias/api-queries'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {ActionTemplate} from 'config'
@@ -50,15 +50,16 @@ describe('getSortedIntegrationActionsNames', () => {
 describe('getSortedIntegrationActions', () => {
     it('should return sorted integration actions names', () => {
         const sortedIntegrationActions = getSortedIntegrationActions(
-            fromJS(integrationActions)
+            integrationActions as MacroAction[]
         )
 
         expect(
-            Object.entries<ActionTemplate[]>(
-                sortedIntegrationActions.toJS()
-            ).reduce((acc, [key, value]) => {
-                return {...acc, [key]: value.map((action) => action.name)}
-            }, {})
+            Object.entries<ActionTemplate[]>(sortedIntegrationActions).reduce(
+                (acc, [key, value]) => {
+                    return {...acc, [key]: value.map((action) => action.name)}
+                },
+                {}
+            )
         ).toMatchSnapshot()
     })
 })

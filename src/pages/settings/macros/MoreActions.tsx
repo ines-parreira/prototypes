@@ -14,8 +14,8 @@ import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent
 import css from './MoreActions.less'
 
 type Props = {
-    onMacroDelete: (macroId: number) => Promise<void>
-    onMacroDuplicate: (macro: Macro) => Promise<void>
+    onMacroDelete: (macroId: number) => void
+    onMacroDuplicate: (macro: Macro) => void
     onMacroArchiveOrUnarchived: (macroId: number) => void
     hasAgentPrivileges: boolean
     macro: Macro
@@ -30,12 +30,12 @@ export default function MoreActions({
 }: Props) {
     const isArchiveTab = !!useRouteMatch('/app/settings/macros/archived')
 
-    const {mutateAsync: bulkArchiveMacros} = useBulkArchiveMacros()
-    const {mutateAsync: bulkUnarchiveMacros} = useBulkUnarchiveMacros()
+    const {mutate: bulkArchiveMacros} = useBulkArchiveMacros()
+    const {mutate: bulkUnarchiveMacros} = useBulkUnarchiveMacros()
 
-    const handleMacroArchiveOrUnarchive = async () => {
+    const handleMacroArchiveOrUnarchive = () => {
         if (isArchiveTab) {
-            await bulkUnarchiveMacros(
+            bulkUnarchiveMacros(
                 {data: {ids: [macro.id!]}},
                 {
                     onSettled: () => {
@@ -44,7 +44,7 @@ export default function MoreActions({
                 }
             )
         } else {
-            await bulkArchiveMacros(
+            bulkArchiveMacros(
                 {data: {ids: [macro.id!]}},
                 {
                     onSettled: (resp) => {
@@ -93,7 +93,7 @@ export default function MoreActions({
                 }
                 id={`new-delete-button-${macro.id}`}
                 onConfirm={() => {
-                    void onMacroDelete(macro.id!)
+                    onMacroDelete(macro.id!)
                     setIsDropdownOpen(false)
                 }}
                 placement="left"

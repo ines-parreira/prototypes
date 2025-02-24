@@ -1,5 +1,5 @@
+import {File, MacroAction} from '@gorgias/api-queries'
 import classnames from 'classnames'
-import {Map, List, fromJS} from 'immutable'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import React, {
@@ -17,7 +17,6 @@ import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFie
 import {CustomField} from 'custom-fields/types'
 import {getIconFromActionType} from 'models/macroAction/helpers'
 import {actionTypeToName, MacroActionName} from 'models/macroAction/types'
-import {Action} from 'models/ticket/types'
 import TicketTag from 'pages/common/components/TicketTag'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import {
@@ -39,41 +38,46 @@ import css from './Preview.less'
 
 type Props = {
     displayHTML?: boolean
-    actions: List<Map<string, any>>
+    actions?: MacroAction[]
     ticketMessageSourceType?: TicketMessageSourceType
     className?: string
     flags: LDFlagSet
 }
 
 class Preview extends Component<Props> {
-    renderAddAttachments = (attachmentAction?: Map<string, any>) => {
+    renderAddAttachments = (attachmentAction?: MacroAction) => {
         if (!attachmentAction) return null
 
         return (
             <div className="mb-3">
                 <strong className="text-muted mr-2">Attach files:</strong>
                 {(
-                    attachmentAction.getIn(['arguments', 'attachments']) as Map<
-                        any,
-                        any
-                    >
-                ).map((file: Map<any, any>, index: number) => (
+                    attachmentAction.arguments as {attachments: File[]}
+                ).attachments.map((file, index: number) => (
                     <Badge key={index} color="secondary" className="mr-1 mb-1">
                         <i className="material-icons mr-2">
-                            {fileIconFromContentType(file.get('content_type'))}
+                            {fileIconFromContentType(file.content_type ?? '')}
                         </i>
-                        {file.get('name')}
+                        {file.name}
                     </Badge>
                 ))}
             </div>
         )
     }
 
-    renderResponseText(responseTextAction?: Map<string, any>) {
+    renderResponseText(responseTextAction?: MacroAction) {
         if (!responseTextAction) return null
 
+        const {body_html, body_text, cc, bcc} =
+            responseTextAction.arguments as {
+                body_html?: string
+                body_text?: string
+                cc?: string
+                bcc?: string
+            }
+
         const value: ComponentProps<typeof TicketRichField>['value'] = {
-            text: responseTextAction.getIn(['arguments', 'body_text']),
+            text: body_text,
         }
 
         const hasSourceType = !!this.props.ticketMessageSourceType
@@ -87,7 +91,7 @@ class Preview extends Component<Props> {
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
             (hasSourceType && isRichType(this.props.ticketMessageSourceType!))
         ) {
-            value.html = responseTextAction.getIn(['arguments', 'body_html'])
+            value.html = body_html
             // This is used for ticket macros
         } else if (
             hasSourceType &&
@@ -95,15 +99,11 @@ class Preview extends Component<Props> {
                 TicketMessageSourceType.FacebookMessenger
         ) {
             // Get body_html as text
-            let html = responseTextAction.getIn(['arguments', 'body_html'])
+            let html = body_html
 
-            html = sanitizeHtmlForFacebookMessenger(html)
+            html = sanitizeHtmlForFacebookMessenger(html ?? '')
             value.html = html
         }
-
-        const {cc, bcc} = (
-            responseTextAction.get('arguments', fromJS({})) as Map<any, any>
-        ).toJS()
 
         const isMacroResponseCcBccEnabled: boolean | undefined =
             this.props.flags[FeatureFlagKey.MacroResponseTextCcBcc]
@@ -152,26 +152,24 @@ class Preview extends Component<Props> {
         )
     }
 
-    renderSetStatus(setStatusAction?: Map<string, any>) {
+    renderSetStatus(setStatusAction?: MacroAction) {
         if (!setStatusAction) return null
 
         return (
             <div className={css.macroData}>
                 <strong className="text-muted mr-2">Set status:</strong>
                 <StatusLabel
-                    status={setStatusAction.getIn(['arguments', 'status'])}
+                    status={setStatusAction.arguments.status as string}
                 />
             </div>
         )
     }
 
-    renderSnoozeTicket(snoozeTicketAction?: Map<string, any>) {
+    renderSnoozeTicket(snoozeTicketAction?: MacroAction) {
         if (!snoozeTicketAction) return null
 
-        const duration = snoozeTicketAction.getIn([
-            'arguments',
-            'snooze_timedelta',
-        ])
+        const duration = snoozeTicketAction.arguments.snooze_timedelta as string
+
         return (
             <div className={css.macroData}>
                 <strong className="text-muted">Snooze for </strong>
@@ -180,13 +178,13 @@ class Preview extends Component<Props> {
         )
     }
 
-    renderAddTags(addTagsAction?: Map<string, any>) {
+    renderAddTags(addTagsAction?: MacroAction) {
         if (!addTagsAction) return null
 
         return (
             <div className={classnames(css.macroData, css.addTagWrapper)}>
                 <strong className="text-muted">Add tags:</strong>
-                {(addTagsAction.getIn(['arguments', 'tags'], '') as string)
+                {(addTagsAction.arguments.tags as string)
                     .split(',')
                     .map((tag) => (
                         <TicketTag text={tag} key={tag} />
@@ -195,7 +193,7 @@ class Preview extends Component<Props> {
         )
     }
 
-    renderSetAssignee(setAssigneeAction?: Map<string, any>) {
+    renderSetAssignee(setAssigneeAction?: MacroAction) {
         if (!setAssigneeAction) return null
 
         return (
@@ -206,18 +204,20 @@ class Preview extends Component<Props> {
                 <span>
                     <AgentLabel
                         className="align-middle"
-                        name={setAssigneeAction.getIn([
-                            'arguments',
-                            'assignee_user',
-                            'name',
-                        ])}
+                        name={
+                            (
+                                setAssigneeAction.arguments as {
+                                    assignee_user: {name: string}
+                                }
+                            ).assignee_user.name
+                        }
                     />
                 </span>
             </div>
         )
     }
 
-    renderSetTeamAssignee(setTeamAssigneeAction?: Map<string, any>) {
+    renderSetTeamAssignee(setTeamAssigneeAction?: MacroAction) {
         if (!setTeamAssigneeAction) return null
 
         return (
@@ -228,31 +228,33 @@ class Preview extends Component<Props> {
                 <span>
                     <TeamLabel
                         className="align-middle"
-                        name={setTeamAssigneeAction.getIn([
-                            'arguments',
-                            'assignee_team',
-                            'name',
-                        ])}
+                        name={
+                            (
+                                setTeamAssigneeAction.arguments as {
+                                    assignee_team: {name: string}
+                                }
+                            ).assignee_team?.name
+                        }
                     />
                 </span>
             </div>
         )
     }
 
-    renderSetSubject(setSubjectAction?: Map<string, any>) {
+    renderSetSubject(setSubjectAction?: MacroAction) {
         if (!setSubjectAction) return null
 
         return (
             <div className={css.macroData}>
                 <strong className="text-muted mr-2">Set subject:</strong>
                 <b className={css.integrationAction}>
-                    {setSubjectAction.getIn(['arguments', 'subject'])}
+                    {setSubjectAction.arguments.subject}
                 </b>
             </div>
         )
     }
 
-    renderInternalNote(action?: Map<string, any>) {
+    renderInternalNote(action?: MacroAction) {
         if (!action) return null
         return (
             <div className={css.macroData}>
@@ -268,36 +270,38 @@ class Preview extends Component<Props> {
                 >
                     note
                 </span>
-                <span className={css.internalNote}>{action.get('title')}</span>
+                <span className={css.internalNote}>{action.title}</span>
             </div>
         )
     }
 
     renderForwardByEmail(
         isMacroForwardByEmailEnabled: boolean,
-        action?: Map<string, any>
+        action?: MacroAction
     ) {
         if (!action || !isMacroForwardByEmailEnabled) return null
 
         return (
             <div className={css.macroData}>
                 <strong className="text-muted mr-2 align-middle">
-                    {action.get('title')}:
+                    {action.title}:
                 </strong>
                 <span className={classnames('material-icons mr-2', css.icon)}>
                     forward
                 </span>
-                <span className={css.internalNote}>{action.get('title')}</span>
+                <span className={css.internalNote}>
+                    {action.arguments.to as string}
+                </span>
             </div>
         )
     }
 
     renderSetCustomFieldValues() {
-        const SCFActions = (this.props.actions.toJS() as Action[]).filter(
+        const SCFActions = this.props.actions?.filter(
             (action) => action.name === MacroActionName.SetCustomFieldValue
         )
 
-        if (!SCFActions.length) return null
+        if (!SCFActions?.length) return null
 
         return SCFActions.map((action, index) => (
             <div className={css.macroData} key={index}>
@@ -317,8 +321,8 @@ class Preview extends Component<Props> {
         ))
     }
 
-    renderActions(integrationType: string, integrationActions: List<any>) {
-        if (!integrationActions?.size) return null
+    renderActions(integrationType: string, integrationActions: MacroAction[]) {
+        if (!integrationActions?.length) return null
 
         return (
             <div
@@ -328,55 +332,49 @@ class Preview extends Component<Props> {
                 <strong className="text-muted mr-2">
                     {actionTypeToName[integrationType]} actions:
                 </strong>
-                {integrationActions
-                    .map(
-                        (
-                            action: Map<string, unknown>,
-                            index: number | undefined
-                        ) => (
-                            <div
-                                className={css.integrationAction}
-                                key={`integration-action-${index as number}`}
-                            >
-                                <img
-                                    alt={`${integrationType} logo`}
-                                    src={getIconFromActionType(integrationType)}
-                                    role="presentation"
-                                    className={css.logo}
-                                />
-                                {action.get('title')}
-                            </div>
-                        )
+                {integrationActions.map(
+                    (action: MacroAction, index: number | undefined) => (
+                        <div
+                            className={css.integrationAction}
+                            key={`integration-action-${index as number}`}
+                        >
+                            <img
+                                alt={`${integrationType} logo`}
+                                src={getIconFromActionType(integrationType)}
+                                role="presentation"
+                                className={css.logo}
+                            />
+                            {action.title}
+                        </div>
                     )
-                    .toJS()}
+                )}
             </div>
         )
     }
 
-    renderIntegrations(actions: List<Map<string, any>>) {
-        return getSortedIntegrationActions(
-            actions
-                .filter(
+    renderIntegrations(actions: MacroAction[]) {
+        return Object.entries(
+            getSortedIntegrationActions(
+                actions.filter(
                     (action) =>
-                        getActionTemplate(action?.get('name'))?.execution ===
+                        getActionTemplate(action.name)?.execution ===
                         ActionTemplateExecution.External
                 )
-                .toList()
-        )
-            .map((v, k) => this.renderActions(k, v))
-            .toList()
-            .toJS() as JSX.Element[]
+            ) as {
+                [key: string]: MacroAction[]
+            }
+        ).map(([k, v]) => this.renderActions(k, v))
     }
 
     render() {
         const {actions, className, flags} = this.props
-        if (!actions?.size) return null
+        if (!actions?.length) return null
 
         const isMacroForwardByEmailEnabled =
             flags[FeatureFlagKey.MacroForwardByEmail]
 
         const findAction = (actionName: string) =>
-            actions.find((action) => action?.get('name') === actionName)
+            actions.find((action) => action?.name === actionName)
 
         return (
             <div className={classnames(css.component, className)}>

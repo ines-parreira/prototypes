@@ -43,11 +43,11 @@ type Props = {
     filters: MacrosProperties
     hasAutomate: boolean
     hasShownMacros: boolean
-    initialMacrosLoaded: boolean
+    isMacrosLoading: boolean
     isMacrosActive: boolean
-    loadMacros: (retainPreviousResults?: boolean) => Promise<void>
+    loadMacros: () => Promise<any>
     macros: Macro[]
-    nextCursor: string | null
+    nextCursor?: string
     query: string
     onChangeFilters: (filters: MacrosProperties) => void
     onChangeMacrosActive: (isActive?: boolean) => void
@@ -199,13 +199,13 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     componentDidUpdate = (prevProps: Props, prevState: State) => {
-        const {initialMacrosLoaded, macros} = this.props
+        const {isMacrosLoading, macros} = this.props
         const {shouldFocusEditor} = this.state
 
-        if (initialMacrosLoaded && !prevProps.initialMacrosLoaded) {
+        if (isMacrosLoading && !prevProps.isMacrosLoading) {
             this.setState({
                 selectedMacroId: getDefaultSelectedMacroId(
-                    fromJS(macros),
+                    macros,
                     this.state.selectedMacroId
                 ),
             })
@@ -351,8 +351,8 @@ export class TicketReplyArea extends Component<Props, State> {
         }
     }
 
-    setSelectedMacroId = (macro: Map<any, any>) =>
-        this.setState({selectedMacroId: macro.get('id')})
+    setSelectedMacroId = (macro: Macro) =>
+        this.setState({selectedMacroId: macro.id!})
 
     bindKeys() {
         shortcutManager.bind('TicketDetailContainer', {
@@ -387,7 +387,7 @@ export class TicketReplyArea extends Component<Props, State> {
                         const macroIdx =
                             parseInt((e as KeyboardEvent).code.slice(-1)) - 1
                         if (macros.length > macroIdx) {
-                            this.applyMacro(fromJS(macros[macroIdx]))
+                            this.handleApplyMacro(macros[macroIdx])
                         }
                     }
                 },
@@ -428,7 +428,7 @@ export class TicketReplyArea extends Component<Props, State> {
             e.preventDefault()
             const macro = macros[selectedMacroIndex]
             if (macro) {
-                this.applyMacro(fromJS(macro))
+                this.handleApplyMacro(macro)
             }
         }
     }
@@ -446,7 +446,7 @@ export class TicketReplyArea extends Component<Props, State> {
         this.setState({shouldFocusEditor: true})
     }
 
-    applyMacro = (macro: Map<any, any>) => {
+    handleApplyMacro = (macro: Macro) => {
         const {applyMacro, currentTicket, newMessageType, notify} = this.props
 
         const clearingResult = clearMacroBeforeApply(newMessageType, macro)
@@ -457,7 +457,7 @@ export class TicketReplyArea extends Component<Props, State> {
             })
         }
 
-        void applyMacro(clearingResult.macro, currentTicket.get('id'))
+        void applyMacro(fromJS(clearingResult.macro), currentTicket.get('id'))
 
         this.hideMacrosAndFocusEditor()
     }
@@ -467,7 +467,6 @@ export class TicketReplyArea extends Component<Props, State> {
         const {
             currentTicket,
             filters,
-            initialMacrosLoaded,
             isMacrosActive,
             macros,
             newMessageType,
@@ -475,11 +474,10 @@ export class TicketReplyArea extends Component<Props, State> {
             query,
             onChangeFilters,
             onChangeQuery,
+            isMacrosLoading,
         } = this.props
 
-        const immutableMacros = fromJS(macros)
-
-        const currentMacro = getCurrentMacro(immutableMacros, selectedMacroId)
+        const currentMacro = getCurrentMacro(macros, selectedMacroId)
 
         const requireCustomerSelection =
             !currentTicket.get('id') &&
@@ -527,8 +525,8 @@ export class TicketReplyArea extends Component<Props, State> {
                         </div>
                     ) : isMacrosActive ? (
                         <TicketMacros
-                            macros={immutableMacros}
-                            initialMacrosLoaded={initialMacrosLoaded}
+                            macros={macros}
+                            isLoading={isMacrosLoading}
                             currentMacro={currentMacro}
                             selectMacro={this.setSelectedMacroId}
                             loadMacros={this.props.loadMacros}
@@ -537,7 +535,7 @@ export class TicketReplyArea extends Component<Props, State> {
                                 search: query,
                                 cursor: nextCursor,
                             }}
-                            applyMacro={this.applyMacro}
+                            applyMacro={this.handleApplyMacro}
                             hasDataToLoad={!!nextCursor}
                         />
                     ) : (
@@ -557,8 +555,8 @@ export class TicketReplyArea extends Component<Props, State> {
                                 'appliedMacro',
                             ])}
                             richAreaRef={(ref) => (this.richArea = ref)}
-                            macros={immutableMacros}
-                            applyMacro={this.applyMacro}
+                            macros={macros}
+                            applyMacro={this.handleApplyMacro}
                             shouldDisplayQuickReply={this.shouldDisplayQuickReply()}
                         />
                     )}

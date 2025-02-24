@@ -1,5 +1,6 @@
+import {Macro} from '@gorgias/api-queries'
 import classNames from 'classnames'
-import {List, Map} from 'immutable'
+import {Map} from 'immutable'
 import React, {ReactNode, useCallback} from 'react'
 
 import {canReply} from 'business/ticket'
@@ -22,9 +23,9 @@ import TicketReplyEditor from './TicketReplyEditor'
 type TicketReplyProps = {
     replyAreaHeader?: ReactNode
     appliedMacro?: Map<any, any>
-    applyMacro: (macro: Map<any, any>) => void
+    applyMacro: (macro: Macro) => void
     className?: string
-    macros: List<any>
+    macros: Macro[]
     richAreaRef: (ref: RichField | null) => void
     shouldDisplayQuickReply: boolean
     ticket: Map<any, any>

@@ -1,20 +1,13 @@
-import {
-    ListMacrosParams,
-    queryKeys,
-    useListMacros,
-    useCreateMacro,
-    useDeleteMacro,
-    Macro,
-} from '@gorgias/api-queries'
-import {useQueryClient} from '@tanstack/react-query'
+import {ListMacrosParams, useListMacros, Macro} from '@gorgias/api-queries'
 import classnames from 'classnames'
 import React, {useCallback, useEffect, useState} from 'react'
 import {NavLink, useRouteMatch} from 'react-router-dom'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useFlag} from 'core/flags'
+import {useCreateMacro, useDeleteMacro} from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {GorgiasApiError, OrderDirection} from 'models/api/types'
+import {OrderDirection} from 'models/api/types'
 import {MacroSortableProperties} from 'models/macro/types'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import Navigation from 'pages/common/components/Navigation/Navigation'
@@ -26,7 +19,6 @@ import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {errorToChildren} from 'utils'
 
 import {MacrosCreateDropdown} from './MacrosCreateDropdown'
 import css from './MacrosSettingsContent.less'
@@ -36,9 +28,6 @@ export const STALE_TIME_MS = 15 * 60 * 1000 // 15 minutes
 
 export function MacrosSettingsContent() {
     const dispatch = useAppDispatch()
-    const queryClient = useQueryClient()
-    const queryKey = queryKeys.macros.listMacros() as string[]
-    queryKey.pop()
     const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives)
     const isArchiveTab = !!useRouteMatch('/app/settings/macros/archived')
 
@@ -57,8 +46,8 @@ export function MacrosSettingsContent() {
         }
     )
 
-    const {mutateAsync: createMacro} = useCreateMacro()
-    const {mutateAsync: deleteMacro} = useDeleteMacro()
+    const {mutate: createMacro} = useCreateMacro('Failed to duplicate macro')
+    const {mutate: deleteMacro} = useDeleteMacro()
     const [selectedMacrosIds, setSelectedMacrosIds] = useState<number[]>([])
 
     useEffect(() => {
@@ -72,8 +61,8 @@ export function MacrosSettingsContent() {
         }
     }, [dispatch, isError])
 
-    const onMacroDelete = async (id: number) => {
-        await deleteMacro(
+    const onMacroDelete = (id: number) => {
+        deleteMacro(
             {
                 id,
             },
@@ -95,40 +84,17 @@ export function MacrosSettingsContent() {
                             cursor: data?.data.meta.prev_cursor ?? undefined,
                         })
                     }
-
-                    void queryClient.invalidateQueries({
-                        queryKey,
-                    })
-                },
-                onError: (error) => {
-                    void dispatch(
-                        notify({
-                            title: (error as GorgiasApiError).response.data
-                                .error.msg,
-                            message: errorToChildren(error)!,
-                            allowHTML: true,
-                            status: NotificationStatus.Error,
-                        })
-                    )
-                },
-                onSuccess: () => {
-                    void dispatch(
-                        notify({
-                            message: 'Successfully deleted macro',
-                            status: NotificationStatus.Success,
-                        })
-                    )
                 },
             }
         )
     }
 
-    const onMacroDuplicate = async (macro: Macro) => {
+    const onMacroDuplicate = (macro: Macro) => {
         if (!macro) {
             return
         }
         const {actions, name, language} = macro
-        await createMacro(
+        createMacro(
             {
                 data: {
                     actions,
@@ -137,17 +103,6 @@ export function MacrosSettingsContent() {
                 },
             },
             {
-                onSettled: () => {
-                    void queryClient.invalidateQueries({
-                        queryKey,
-                    })
-                },
-                onError: () => {
-                    void notify({
-                        message: 'Failed to duplicate macro',
-                        status: NotificationStatus.Error,
-                    })
-                },
                 onSuccess: (resp) => {
                     history.push(`/app/settings/macros/${resp.data.id}`)
                 },

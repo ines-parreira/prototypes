@@ -1,2 +1,5 @@
 export {useBulkArchiveMacros} from './useBulkArchiveMacros'
 export {useBulkUnarchiveMacros} from './useBulkUnarchiveMacros'
+export {useCreateMacro} from './useCreateMacro'
+export {useDeleteMacro} from './useDeleteMacro'
+export {useUpdateMacro} from './useUpdateMacro'
