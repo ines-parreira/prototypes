@@ -136,15 +136,16 @@ export default {
                     : styleBundleFile
             },
         }),
-        new RspackManifestPlugin({
-            seed: require(`${buildDir}/manifest.json`),
-        }),
         new rspack.DefinePlugin({
             'process.env.GORGIAS_ASSETS_URL': JSON.stringify(
                 GORGIAS_ASSETS_URL || 'http://localhost:8080/'
             ),
             'process.env.WEB_APP_RELEASE': JSON.stringify(WEB_APP_RELEASE),
         }),
+        isProd &&
+            new RspackManifestPlugin({
+                seed: require(`${buildDir}/manifest.json`),
+            }),
         isDev && new ReactRefreshPlugin(),
         isDev && new rspack.HotModuleReplacementPlugin(),
         codecovWebpackPlugin({

@@ -6,17 +6,17 @@ import {RspackManifestPlugin} from 'rspack-manifest-plugin'
 
 const {NODE_ENV} = process.env
 
-const __PRODUCTION__ = NODE_ENV === 'production'
+const isProd = NODE_ENV === 'production'
 
 const buildDir = path.join(__dirname, 'build')
 
-const mode = __PRODUCTION__ ? 'production' : 'development'
-const devtool = __PRODUCTION__ ? 'source-map' : 'cheap-module-source-map'
+const mode = isProd ? 'production' : 'development'
+const devtool = isProd ? 'source-map' : 'cheap-module-source-map'
 
 // Only bundle one dependency for now since it's a dummy file output
 const vendors = ['classnames']
 
-const vendorsBundleFile = __PRODUCTION__
+const vendorsBundleFile = isProd
     ? `helpdesk.vendors.[contenthash].js`
     : 'helpdesk.vendors.js'
 

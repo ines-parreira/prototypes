@@ -5,7 +5,7 @@ import {rspack, Configuration as RspackConfiguration} from '@rspack/core'
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin'
 import {RspackManifestPlugin} from 'rspack-manifest-plugin'
 
-const __PRODUCTION__ = process.env.NODE_ENV === 'production'
+const isProd = process.env.NODE_ENV === 'production'
 const HASH = process.env.RELEASE ? process.env.RELEASE : '[contenthash]'
 
 const srcDir = path.join(__dirname, 'src')
@@ -16,7 +16,7 @@ const optimization = {
 }
 
 export default {
-    mode: __PRODUCTION__ ? 'production' : 'development',
+    mode: isProd ? 'production' : 'development',
     optimization,
     devtool: 'source-map',
     entry: {
@@ -25,7 +25,7 @@ export default {
     output: {
         path: buildDir,
         publicPath: '',
-        filename: __PRODUCTION__
+        filename: isProd
             ? `helpdesk.shared-worker.${HASH}.js`
             : 'helpdesk.shared-worker.js',
     },
@@ -55,14 +55,15 @@ export default {
         extensions: ['.ts', '.tsx', '.js'],
     },
     plugins: [
-        new RspackManifestPlugin({
-            seed: require(`${buildDir}/manifest.json`),
-        }),
         new rspack.ProvidePlugin({
             Tether: 'tether',
             process: 'process/browser.js',
         }),
         new NodePolyfillPlugin(),
+        isProd &&
+            new RspackManifestPlugin({
+                seed: require(`${buildDir}/manifest.json`),
+            }),
         codecovWebpackPlugin({
             enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
             bundleName: 'helpdesk-shared-worker',
