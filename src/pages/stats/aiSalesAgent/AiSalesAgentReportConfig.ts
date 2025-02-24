@@ -4,7 +4,9 @@ import RoiRateMetricCard from 'pages/stats/aiSalesAgent//charts/RoiRateMetricCar
 import {
     AiSalesAgentChart,
     AiSalesAgentMetricConfig,
+    AiSalesAgentChartConfig,
 } from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsConfig'
+import GmvInfluencedOverTimeChart from 'pages/stats/aiSalesAgent/charts/GmvInfluencedOverTimeChart'
 import GmvMetricCard from 'pages/stats/aiSalesAgent/charts/GmvMetricCard'
 import TotalAIConvMetricCard from 'pages/stats/aiSalesAgent/charts/TotalAIConvMetricCard'
 import {ROUTE_AI_SALES_AGENT_OVERVIEW} from 'pages/stats/aiSalesAgent/constants'
@@ -56,6 +58,15 @@ export const AiSalesAgentReportConfig: ReportConfig<AiSalesAgentChart> = {
             ].title,
             description: '',
             chartComponent: RoiRateMetricCard,
+            csvProducer: [],
+        },
+        [AiSalesAgentChart.AiSalesAgentGmvInfluencedOverTime]: {
+            chartType: ChartType.Graph,
+            chartComponent: GmvInfluencedOverTimeChart,
+            label: AiSalesAgentChartConfig[
+                AiSalesAgentChart.AiSalesAgentGmvInfluencedOverTime
+            ].title,
+            description: '',
             csvProducer: [],
         },
     },

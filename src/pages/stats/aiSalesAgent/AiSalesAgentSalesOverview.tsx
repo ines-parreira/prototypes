@@ -67,6 +67,17 @@ const AiSalesAgentSalesOverview = () => {
                 </DashboardGridCell>
             </DashboardSection>
 
+            <DashboardSection>
+                <DashboardGridCell size={getGridCellSize(12)}>
+                    <RenderChart
+                        chart={
+                            AiSalesAgentChart.AiSalesAgentGmvInfluencedOverTime
+                        }
+                        config={AiSalesAgentReportConfig}
+                    />
+                </DashboardGridCell>
+            </DashboardSection>
+
             <AnalyticsFooter />
         </StatsPage>
     )
