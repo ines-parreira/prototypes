@@ -1,12 +1,10 @@
 import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     BIGCOMMERCE_INTEGRATION_TYPE,
     HTTP_INTEGRATION_TYPE,
@@ -54,9 +52,6 @@ describe('<InfobarCustomerInfo/>', () => {
         mockedCustomerTimelineButton.mockImplementation(() => (
             <div>Customer timeline</div>
         ))
-        mockFlags({
-            [FeatureFlagKey.CustomerTimelineButton]: true,
-        })
     })
 
     it('should not render because there is no passed customer', () => {

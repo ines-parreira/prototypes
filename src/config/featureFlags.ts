@@ -70,7 +70,7 @@ export enum FeatureFlagKey {
     ConvertChatInstallSnippet = 'convert-chat-install-snippet',
     ConvAiStandaloneMenu = 'conv-ai-standalone-menu',
     ConvAiOnboarding = 'conv-ai-onboarding',
-    CustomerTimelineButton = 'customer-timeline-button',
+    CustomerTimeline = 'customer-timeline',
     CustomRecordingNotification = 'custom-recording-notification',
     DefaultEmailAddress = 'default-email-address',
     DontTriggerLoginsOnInactiveTabs = 'dont-trigger-logins-on-inactive-tabs',
