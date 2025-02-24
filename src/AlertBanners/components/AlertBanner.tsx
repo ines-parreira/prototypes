@@ -15,6 +15,8 @@ export type AlertBannerProps = {
     message: ReactNode | string
     type?: AlertBannerTypes
     borderless?: boolean
+    prefix?: ReactNode
+    textPosition?: 'left' | 'center'
 } & Pick<HTMLAttributes<HTMLDivElement>, 'aria-label'>
 
 export function AlertBanner({
@@ -24,6 +26,8 @@ export function AlertBanner({
     CTA: CTAProps,
     onClose,
     type = AlertBannerTypes.Info,
+    prefix,
+    textPosition = 'center',
 }: AlertBannerProps) {
     return (
         <div
@@ -36,7 +40,14 @@ export function AlertBanner({
                 [css.borderless]: borderless,
             })}
         >
-            <div className={css.centralContainer}>
+            {prefix && <div className={css.prefix}>{prefix}</div>}
+            <div
+                className={
+                    textPosition === 'center'
+                        ? css.centralContainer
+                        : css.leftContainer
+                }
+            >
                 <Icon type={type} />
                 <div className={css.messageContainer}>
                     {typeof message === 'string' ? (

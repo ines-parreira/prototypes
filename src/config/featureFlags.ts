@@ -33,6 +33,7 @@ export enum FeatureFlagKey {
     AnalyticsNewFiltersVoice = 'analytics-new-filters-voice',
     AutomateNonFilteredDenominatorInAutomationRate = 'use-non-filtered-automated-interactions-in-automation-rate-denominator',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',
+    BannerCarousel = 'banner-carousel',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
     BillingVoiceSmsSelfServe = 'billing-voice-sms-self-serve',

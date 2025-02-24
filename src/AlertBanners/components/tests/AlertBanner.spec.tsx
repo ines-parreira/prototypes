@@ -101,4 +101,28 @@ describe('<AlertBanner/>', () => {
         fireEvent.click(getByText('close'))
         expect(onClose).toHaveBeenCalledWith()
     })
+
+    it('should render prefix if provided', () => {
+        render(<AlertBanner {...minProps} prefix={<div>Prefix</div>} />)
+
+        expect(screen.getByText('Prefix')).toBeInTheDocument()
+    })
+
+    it('should render with correct container class based on textPosition', () => {
+        const {rerender, container} = render(
+            <AlertBanner {...minProps} textPosition="center" />
+        )
+
+        expect(container.querySelector('.centralContainer')).toBeInTheDocument()
+        expect(
+            container.querySelector('.leftContainer')
+        ).not.toBeInTheDocument()
+
+        rerender(<AlertBanner {...minProps} textPosition="left" />)
+
+        expect(container.querySelector('.leftContainer')).toBeInTheDocument()
+        expect(
+            container.querySelector('.centralContainer')
+        ).not.toBeInTheDocument()
+    })
 })
