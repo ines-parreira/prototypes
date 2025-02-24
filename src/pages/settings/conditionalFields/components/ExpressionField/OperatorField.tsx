@@ -5,6 +5,7 @@ import {
 import {SelectField} from '@gorgias/merchant-ui-kit'
 import React, {forwardRef} from 'react'
 
+import {useFormContext} from 'core/forms'
 import {getUIDataType} from 'custom-fields/helpers/getUIDataType'
 import {CustomField, SupportedUIDataType} from 'custom-fields/types'
 
@@ -17,12 +18,14 @@ type OperatorFieldProps = {
     pickedDefinition?: CustomField
     value?: CustomFieldConditionExpressionField | null
     onChange: (value: CustomFieldConditionExpressionField) => void
+    index: number
 }
 
 export const OperatorField = forwardRef(function OperatorField(
-    {pickedDefinition, onChange, value}: OperatorFieldProps,
+    {pickedDefinition, onChange, value, index}: OperatorFieldProps,
     __ref
 ) {
+    const {setValue} = useFormContext()
     const UIDataType = pickedDefinition
         ? (getUIDataType(
               pickedDefinition.definition.data_type,
@@ -37,7 +40,12 @@ export const OperatorField = forwardRef(function OperatorField(
                     EXPRESSION_OPERATORS_BY_UI_DATA_TYPE[UIDataType]) ||
                 ([] as ExpressionOperator[])
             }
-            onChange={onChange}
+            onChange={(operator: ExpressionOperator) => {
+                onChange(operator)
+                if (operator === ExpressionOperator.IsNotEmpty) {
+                    setValue(`expression.${index}.values`, null)
+                }
+            }}
             optionMapper={(operator) => ({
                 value: EXPRESSION_OPERATORS_LABELS[operator],
             })}

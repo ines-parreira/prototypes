@@ -39,5 +39,5 @@ export const DEFAULT_EXPRESSION_RULE = {
     field_source: ExpressionFieldSource.TicketCustomFields,
     field: 0,
     operator: ExpressionOperator.Is,
-    values: [],
+    values: null,
 }

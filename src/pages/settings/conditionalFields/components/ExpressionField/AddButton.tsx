@@ -1,8 +1,8 @@
 import {CustomFieldConditionExpression} from '@gorgias/api-queries'
 
 import React from 'react'
-import {useWatch} from 'react-hook-form'
 
+import {useWatch} from 'core/forms'
 import Button from 'pages/common/components/button/Button'
 
 export function AddButton({onClick}: {onClick: () => void}) {

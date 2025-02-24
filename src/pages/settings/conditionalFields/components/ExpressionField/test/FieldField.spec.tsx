@@ -1,8 +1,8 @@
 import {SelectField} from '@gorgias/merchant-ui-kit'
 import {render} from '@testing-library/react'
 import React from 'react'
-import {useFormContext} from 'react-hook-form'
 
+import {useFormContext} from 'core/forms'
 import {SUPPORTED_UI_DATA_TYPE_VALUES} from 'custom-fields/constants'
 import {
     ticketDropdownFieldDefinition,
@@ -23,7 +23,7 @@ jest.mock(
             SelectField: jest.fn(() => <div data-testid="Mock" />),
         }) as Record<string, unknown>
 )
-jest.mock('react-hook-form', () => ({
+jest.mock('core/forms', () => ({
     useFormContext: jest.fn(),
 }))
 
@@ -107,7 +107,7 @@ describe('FieldField', () => {
         )
         expect(setValueMock).toHaveBeenCalledWith(
             `expression.${defaultProps.index}.values`,
-            []
+            null
         )
     })
 })

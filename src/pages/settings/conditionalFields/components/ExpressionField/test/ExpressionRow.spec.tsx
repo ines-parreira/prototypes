@@ -78,6 +78,7 @@ describe('ExpressionRow', () => {
                 name: 'expression.1.operator',
                 field: OperatorField,
                 pickedDefinition: defaultProps.customFieldDefinitions[0],
+                index: 1,
             },
             {}
         )

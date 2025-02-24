@@ -73,7 +73,7 @@ export const ValueField = forwardRef(function ValueField(
                             : undefined
                     }
                     onChange={(value) => {
-                        onChange(typeof value === 'number' ? [value] : [])
+                        onChange(typeof value === 'number' ? [value] : null)
                     }}
                     min={min ? Number(min) : undefined}
                     max={max ? Number(max) : undefined}

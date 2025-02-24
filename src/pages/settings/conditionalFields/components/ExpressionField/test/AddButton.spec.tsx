@@ -1,17 +1,17 @@
 import {CustomFieldConditionExpression} from '@gorgias/api-queries'
 import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
-import {useWatch} from 'react-hook-form'
 
+import {useWatch} from 'core/forms'
 import {assumeMock} from 'utils/testing'
 
 import {AddButton} from '../AddButton'
 
 jest.mock(
-    'react-hook-form',
+    'core/forms',
     () =>
         ({
-            ...jest.requireActual('react-hook-form'),
+            ...jest.requireActual('core/forms'),
             useWatch: jest.fn(),
         }) as Record<string, unknown>
 )

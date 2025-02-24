@@ -1,8 +1,8 @@
 import {CustomFieldConditionExpressionField} from '@gorgias/api-queries'
 import {SelectField} from '@gorgias/merchant-ui-kit'
 import React, {forwardRef} from 'react'
-import {useFormContext} from 'react-hook-form'
 
+import {useFormContext} from 'core/forms'
 import {
     SUPPORTED_UI_DATA_TYPES,
     SUPPORTED_UI_DATA_TYPE_VALUES,
@@ -60,7 +60,7 @@ export const FieldField = forwardRef(function FieldField(
                         ) as SupportedUIDataType
                     ][0]
                 )
-                setValue(`expression.${index}.values`, [])
+                setValue(`expression.${index}.values`, null)
             }}
         />
     )

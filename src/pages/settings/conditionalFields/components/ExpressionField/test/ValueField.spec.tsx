@@ -194,7 +194,7 @@ describe('ValueField', () => {
             expect(defaultProps.onChange).toHaveBeenCalledWith([5])
 
             getLastMockCall(NumberInputMock)[0].onChange?.()
-            expect(defaultProps.onChange).toHaveBeenCalledWith([])
+            expect(defaultProps.onChange).toHaveBeenCalledWith(null)
         })
     })
 

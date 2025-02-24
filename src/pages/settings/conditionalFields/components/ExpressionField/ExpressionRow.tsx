@@ -25,6 +25,7 @@ export const ExpressionRow = function ExpressionRow({
     const [field, operator] = useWatch({
         name: [`expression.${index}.field`, `expression.${index}.operator`],
     })
+
     const pickedDefinition = customFieldDefinitions?.find(
         ({id}) => id === field
     )
@@ -46,6 +47,7 @@ export const ExpressionRow = function ExpressionRow({
                     name={`expression.${index}.operator`}
                     field={OperatorField}
                     pickedDefinition={pickedDefinition}
+                    index={index}
                 />
             </span>
             <span className={css.valueContainer}>

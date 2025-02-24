@@ -12,7 +12,7 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
 import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
 
-import css from './ConfirmCustomFieldReuirementTypeChangeModal.less'
+import css from './ConfirmCustomFieldRequirementTypeChangeModal.less'
 
 const ConfirmRequirementTypeChangeModal = ({
     isOpen,
