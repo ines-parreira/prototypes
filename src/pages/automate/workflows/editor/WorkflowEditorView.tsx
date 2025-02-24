@@ -1,10 +1,8 @@
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useRef} from 'react'
 import {useLocation} from 'react-router-dom'
 import {Container} from 'reactstrap'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
@@ -89,9 +87,6 @@ function WorkflowEditorViewWrapped({
     const workflowEditorContext = useWorkflowEditorContext()
     const location = useLocation<{doShowDisplayInChannels: boolean}>()
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
-
-    const isFlowsBuilderAnalyticsEnabled =
-        useFlags()[FeatureFlagKey.FlowsBuilderAnalytics]
 
     const userTimezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
@@ -367,8 +362,7 @@ function WorkflowEditorViewWrapped({
         }
     }
 
-    const showWorkflowAnalyticsToggle =
-        isFlowsBuilderAnalyticsEnabled && !isNewWorkflow && !isDraft
+    const showWorkflowAnalyticsToggle = !isNewWorkflow && !isDraft
 
     return (
         <WorkflowChannelSupportContext.Provider

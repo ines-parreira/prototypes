@@ -56,7 +56,6 @@ type OwnProps = {
     integrations?: Integration[]
     selfServiceConfigurations?: SelfServiceConfiguration[]
     workflowConfigurations?: WorkflowConfigurationShallow[]
-    isFlowsBuilderAnalyticsEnabled?: boolean
     statsFilters?: LegacyStatsFilters
 }
 
@@ -394,9 +393,7 @@ export class TableStat extends Component<
                     return `${value}%`
                 }
 
-                const workflowMode = this.props.isFlowsBuilderAnalyticsEnabled
-                    ? 'analytics'
-                    : 'edit'
+                const workflowMode = 'analytics'
 
                 const period = this.props.statsFilters?.period
 
@@ -412,9 +409,7 @@ export class TableStat extends Component<
                                 },
                             }}
                         >
-                            {workflowMode === 'edit'
-                                ? 'Edit flow'
-                                : 'Analyze Flow'}
+                            Analyze Flow
                         </Link>
                     </div>
                 )

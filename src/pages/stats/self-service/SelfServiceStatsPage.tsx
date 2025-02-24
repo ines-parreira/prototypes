@@ -1,10 +1,8 @@
 import classnames from 'classnames'
 import {parse} from 'csv-parse/sync' // eslint-disable-line import/no-unresolved
 import {stringify} from 'csv-stringify/sync' // eslint-disable-line import/no-unresolved
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     PaywallConfig,
     paywallConfigs as defaultPaywallConfigs,
@@ -58,8 +56,6 @@ import css from './SelfServiceStatsPage.less'
 import SelfServiceStatsPagePaywallCustomCta from './SelfServiceStatsPagePaywallCustomCta'
 
 export const SelfServiceStatsPage = (): JSX.Element => {
-    const isFlowsBuilderAnalyticsEnabled =
-        useFlags()[FeatureFlagKey.FlowsBuilderAnalytics]
     const [noActivityAlertDismissed, setNoActivityAlertDismissed] =
         useState(false)
 
@@ -292,9 +288,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                     selfServiceConfigurations
                                 }
                                 workflowConfigurations={workflowConfigurations}
-                                isFlowsBuilderAnalyticsEnabled={
-                                    isFlowsBuilderAnalyticsEnabled
-                                }
                                 statsFilters={pageStatsFilters}
                             />
                         )}

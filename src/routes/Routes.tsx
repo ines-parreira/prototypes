@@ -770,8 +770,6 @@ export function AutomationRoutes() {
 
 function AutomationContent() {
     const {path} = useRouteMatch()
-    const isFlowsBuilderAnalyticsEnabled =
-        useFlags()[FeatureFlagKey.FlowsBuilderAnalytics]
     const isActionsInternalPlatformEnabled = useFlag(
         FeatureFlagKey.ActionsInternalPlatform
     )
@@ -891,35 +889,33 @@ function AutomationContent() {
                 )}
             />
 
-            {isFlowsBuilderAnalyticsEnabled && (
-                <Route
-                    path={`${path}/:shopType/:shopName/flows/analytics/:editWorkflowId`}
-                    exact
-                    render={(props) => (
-                        <SelfServiceHelpCentersProvider>
-                            <SelfServiceContactFormsProvider>
-                                {React.createElement<{
-                                    shopType: string
-                                    shopName: string
-                                    editWorkflowId: string
-                                }>(
-                                    withUserRoleRequired(
-                                        WorkflowAnalyticsContainer,
-                                        AGENT_ROLE
-                                    ),
-                                    {
-                                        ...props,
-                                        editWorkflowId:
-                                            props.match.params.editWorkflowId,
-                                        shopType: props.match.params.shopType,
-                                        shopName: props.match.params.shopName,
-                                    }
-                                )}
-                            </SelfServiceContactFormsProvider>
-                        </SelfServiceHelpCentersProvider>
-                    )}
-                />
-            )}
+            <Route
+                path={`${path}/:shopType/:shopName/flows/analytics/:editWorkflowId`}
+                exact
+                render={(props) => (
+                    <SelfServiceHelpCentersProvider>
+                        <SelfServiceContactFormsProvider>
+                            {React.createElement<{
+                                shopType: string
+                                shopName: string
+                                editWorkflowId: string
+                            }>(
+                                withUserRoleRequired(
+                                    WorkflowAnalyticsContainer,
+                                    AGENT_ROLE
+                                ),
+                                {
+                                    ...props,
+                                    editWorkflowId:
+                                        props.match.params.editWorkflowId,
+                                    shopType: props.match.params.shopType,
+                                    shopName: props.match.params.shopName,
+                                }
+                            )}
+                        </SelfServiceContactFormsProvider>
+                    </SelfServiceHelpCentersProvider>
+                )}
+            />
 
             <Route
                 path={[`${path}/:shopType/:shopName/flows`]}

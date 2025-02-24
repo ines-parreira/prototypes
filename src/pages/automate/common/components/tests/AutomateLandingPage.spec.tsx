@@ -29,6 +29,11 @@ jest.mock('../../hooks/useDisplayAiAgentMovedBanner', () => ({
     useDisplayAiAgentMovedBanner: jest.fn(),
 }))
 
+jest.mock('../TopQuestions/AutomateLandingPageTopQuestions', () => ({
+    AutomateLandingPageTopQuestions: () => (
+        <div>AutomateLandingPageTopQuestions</div>
+    ),
+}))
 jest.mock('../AiAgentMovedBanner', () => ({
     AiAgentMovedBanner: () => <div>AI Agent Moved Banner</div>,
 }))
