@@ -84,7 +84,7 @@ export default function useMacrosSearch({params, ticket}: Props) {
             })
         },
         getNextPageParam: (lastPage) => {
-            return lastPage.data.meta.next_cursor
+            return lastPage.data.meta?.next_cursor
         },
         staleTime: STALE_TIME_MS,
     })

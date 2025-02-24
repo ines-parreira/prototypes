@@ -207,9 +207,9 @@ class Preview extends Component<Props> {
                         name={
                             (
                                 setAssigneeAction.arguments as {
-                                    assignee_user: {name: string}
+                                    assignee_user: {name: string} | null
                                 }
-                            ).assignee_user.name
+                            ).assignee_user?.name
                         }
                     />
                 </span>
