@@ -107,7 +107,6 @@ export enum FeatureFlagKey {
     NotificationsTicketAssigned = 'notifications-ticket-assigned',
     ObservabilityAIArticles = 'observability-ai-articles',
     ObservabilityArticleTemplates = 'observability-article-templates',
-    ObservabilityAutomateTopQuestions = 'observability-automate-top-questions',
     ObservabilityROICalculator = 'roi-calculator-for-automate',
     ObservabilityTicketTimeToHandle = 'observability-ticket-time-to-handle',
     OfficeHours = 'office-hours',

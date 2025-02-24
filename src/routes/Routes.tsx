@@ -776,8 +776,6 @@ function AutomationContent() {
         useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
     const isFlowsBuilderAnalyticsEnabled =
         useFlags()[FeatureFlagKey.FlowsBuilderAnalytics]
-    const isAutomateTopQuestionsEnabled =
-        useFlags()[FeatureFlagKey.ObservabilityAutomateTopQuestions]
     const isActionsInternalPlatformEnabled = useFlag(
         FeatureFlagKey.ActionsInternalPlatform
     )
@@ -848,16 +846,14 @@ function AutomationContent() {
 
             <Route path={`${path}/ai-recommendations`} exact>
                 <SelfServiceHelpCentersProvider>
-                    {isAutomateTopQuestionsEnabled && (
-                        <Route
-                            path={`${path}/ai-recommendations`}
-                            exact
-                            component={withUserRoleRequired(
-                                AutomateAllRecommendationsContainer,
-                                AGENT_ROLE
-                            )}
-                        />
-                    )}
+                    <Route
+                        path={`${path}/ai-recommendations`}
+                        exact
+                        component={withUserRoleRequired(
+                            AutomateAllRecommendationsContainer,
+                            AGENT_ROLE
+                        )}
+                    />
                 </SelfServiceHelpCentersProvider>
             </Route>
 

@@ -19,9 +19,6 @@ const AutomateLandingPage = () => {
     const isImprovedNavigationEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
 
-    const isAutomateTopQuestionsEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.ObservabilityAutomateTopQuestions]
-
     const [checkListNode, setCheckListNode] = useCallbackRef()
     useInjectStyleToCandu(checkListNode)
 
@@ -33,14 +30,9 @@ const AutomateLandingPage = () => {
             headerCanduId="header-my-automate"
             banner={displayAiAgentMovedBanner && <AiAgentMovedBanner />}
         >
-            <AutomateLandingPageDashboardV2
-                filters={filters}
-                isAutomateTopQuestionsEnabled={!!isAutomateTopQuestionsEnabled}
-            />
+            <AutomateLandingPageDashboardV2 filters={filters} />
 
-            {isAutomateTopQuestionsEnabled && (
-                <AutomateLandingPageTopQuestions />
-            )}
+            <AutomateLandingPageTopQuestions />
 
             <section
                 data-candu-id="automate-landing-page-checklist"

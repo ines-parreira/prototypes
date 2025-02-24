@@ -1,6 +1,6 @@
 import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import {useAutomateMetricsTrend} from 'hooks/reporting/automate/useAutomationDataset'
@@ -28,13 +28,9 @@ const MIN_AUTOMATED_INTERACTIONS = 20
 
 type Props = {
     filters: StatsFilters
-    isAutomateTopQuestionsEnabled: boolean
 }
 
-const AutomateLandingPageDashboardV2 = ({
-    filters,
-    isAutomateTopQuestionsEnabled,
-}: Props) => {
+const AutomateLandingPageDashboardV2 = ({filters}: Props) => {
     const moneySavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
         AGENT_COST_PER_TICKET
     )
@@ -43,11 +39,7 @@ const AutomateLandingPageDashboardV2 = ({
 
     const history = useHistory()
 
-    const [isTipsVisible, setIsTipVisible] = useState(true)
-
-    useEffect(() => {
-        setIsTipVisible(!isAutomateTopQuestionsEnabled)
-    }, [isAutomateTopQuestionsEnabled])
+    const [isTipsVisible, setIsTipVisible] = useState(false)
 
     const userTimezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE

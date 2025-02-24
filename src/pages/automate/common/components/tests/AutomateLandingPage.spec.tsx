@@ -24,6 +24,11 @@ jest.mock('pages/stats/DrillDownModal', () => ({
     DrillDownModal: () => <div>DrillDownModal</div>,
 }))
 
+jest.mock('../TopQuestions/AutomateLandingPageTopQuestions', () => ({
+    AutomateLandingPageTopQuestions: () => (
+        <div>AutomateLandingPageTopQuestions</div>
+    ),
+}))
 jest.mock('../../hooks/useDisplayAiAgentMovedBanner', () => ({
     useDisplayAiAgentMovedBanner: jest.fn(),
 }))
