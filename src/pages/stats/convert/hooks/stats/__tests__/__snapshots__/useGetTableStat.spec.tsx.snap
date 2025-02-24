@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`useGetTableStat should fill default values if data is missing 1`] = `
+exports[`GetTableStat useGetTableStat should fill default values if data is missing 1`] = `
 [
   [
     [
@@ -159,7 +159,7 @@ exports[`useGetTableStat should fill default values if data is missing 1`] = `
 ]
 `;
 
-exports[`useGetTableStat should fill default values if data is missing 2`] = `
+exports[`GetTableStat useGetTableStat should fill default values if data is missing 2`] = `
 {
   "data": {
     "campaign1": {
@@ -210,7 +210,7 @@ exports[`useGetTableStat should fill default values if data is missing 2`] = `
 }
 `;
 
-exports[`useGetTableStat should return prepared data for campaign performance table 1`] = `
+exports[`GetTableStat useGetTableStat should return prepared data for campaign performance table 1`] = `
 [
   [
     [
@@ -369,7 +369,7 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
 ]
 `;
 
-exports[`useGetTableStat should return prepared data for campaign performance table 2`] = `
+exports[`GetTableStat useGetTableStat should return prepared data for campaign performance table 2`] = `
 {
   "data": {
     "campaign1": {

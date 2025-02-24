@@ -19,6 +19,7 @@ import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
 import {MetricValueFormat} from 'pages/stats/common/utils'
 import {CampaignsLegacyChart} from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
 import {CampaignsChart} from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
+import {CampaignReportContext} from 'pages/stats/convert/components/DownloadOverviewData/GenerateReportService'
 import {ReportsIDs} from 'pages/stats/custom-reports/constants'
 import {HelpCenterChart} from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
 import {SatisfactionChart} from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
@@ -125,6 +126,7 @@ export type ReportFetch = (
         getAgentDetails: (id: number) => User | undefined
         isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined
         aiAgentUserId: string | undefined
+        campaignsReportContext: CampaignReportContext
     }
 ) => Promise<{
     isLoading: boolean

@@ -1,6 +1,6 @@
 import {useMemo} from 'react'
 
-import {usePostReporting} from 'models/reporting/queries'
+import {fetchPostReporting, usePostReporting} from 'models/reporting/queries'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
     getCampaignEventsOrdersPerformanceData,
@@ -139,4 +139,98 @@ export const useGetTableStat = ({
             storeTotal.isError,
         data: data,
     }
+}
+
+export const fetchGetTableStat = async ({
+    groupDimension,
+    namespacedShopName,
+    campaignIds,
+    campaignsOperator,
+    startDate,
+    endDate,
+    timezone,
+}: Props): Promise<GetTableQuery> => {
+    const attrs: CampaignCubeFilterParams = {
+        shopName: namespacedShopName,
+        campaignIds: campaignIds || [],
+        campaignsOperator,
+        startDate,
+        endDate,
+        timezone,
+        groupDimension,
+    }
+
+    const isEnabled = campaignIds !== null
+
+    if (!isEnabled) {
+        return Promise.resolve({
+            isFetching: false,
+            isError: false,
+            data: transformToCampaignsPerformanceTable(
+                groupDimension,
+                undefined,
+                undefined,
+                undefined,
+                getMetricFromCubeData(undefined)
+            ),
+        })
+    }
+
+    const eventsQuery = getCampaignEventsPerformanceData(attrs)
+
+    const ordersQuery = getCampaignOrderPerformanceData(attrs)
+
+    const eventsOrdersQuery = getCampaignEventsOrdersPerformanceData(attrs)
+    const storeTotalQuery = getStoreRevenueTotalData(attrs)
+
+    const eventsPerformance = fetchPostReporting<CubeData, CubeData>(
+        eventsQuery,
+        {...OVERRIDES, enabled: isEnabled}
+    )
+    const ordersPerformance = fetchPostReporting<CubeData, CubeData>(
+        ordersQuery,
+        {...OVERRIDES, enabled: isEnabled}
+    )
+    const eventsOrdersPerformance = fetchPostReporting<CubeData, CubeData>(
+        eventsOrdersQuery,
+        {...OVERRIDES, enabled: isEnabled}
+    )
+    const storeTotal = fetchPostReporting<[CubeMetric], CubeMetric>(
+        storeTotalQuery,
+        {select: getMetricFromCubeData, enabled: isEnabled}
+    )
+
+    return Promise.all([
+        eventsPerformance,
+        ordersPerformance,
+        eventsOrdersPerformance,
+        storeTotal,
+    ])
+        .then(
+            ([
+                eventsPerformance,
+                ordersPerformance,
+                eventsOrdersPerformance,
+                storeTotal,
+            ]) => {
+                const data = transformToCampaignsPerformanceTable(
+                    groupDimension,
+                    getDataFromResult(eventsPerformance),
+                    getDataFromResult(ordersPerformance),
+                    getDataFromResult(eventsOrdersPerformance),
+                    getMetricFromCubeData(getDataFromResult(storeTotal))
+                )
+
+                return {
+                    isFetching: false,
+                    isError: false,
+                    data: data,
+                }
+            }
+        )
+        .catch(() => ({
+            isFetching: false,
+            isError: true,
+            data: undefined,
+        }))
 }

@@ -4,7 +4,7 @@ import {CampaignPreview} from 'models/convert/campaign/types'
 import {Integration} from 'models/integration/types'
 import {ReportingGranularity} from 'models/reporting/types'
 
-import {AggregationWindow, WithLogicalOperator} from 'models/stat/types'
+import {AggregationWindow, Period, WithLogicalOperator} from 'models/stat/types'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
@@ -16,10 +16,7 @@ interface FilterContextSchema {
     selectedCampaigns: string[]
     selectedCampaignStatuses: string[]
     selectedIntegrations: number[]
-    selectedPeriod: {
-        end_datetime: string
-        start_datetime: string
-    }
+    selectedPeriod: Period
     channelConnectionExternalIds: string[]
     onChangeIntegration: (integrationIds: Value[]) => void
     onChangeCampaigns: (

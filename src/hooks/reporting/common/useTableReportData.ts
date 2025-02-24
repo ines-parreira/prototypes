@@ -14,6 +14,9 @@ import useAppSelector from 'hooks/useAppSelector'
 import {ReportingGranularity} from 'models/reporting/types'
 
 import {StatsFilters} from 'models/stat/types'
+import {CampaignReportContext} from 'pages/stats/convert/components/DownloadOverviewData/GenerateReportService'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
 import {ReportFetch} from 'pages/stats/custom-reports/types'
 import {getAllAgentsJS} from 'state/agents/selectors'
 import {getEntitiesTags} from 'state/entities/tags/selectors'
@@ -74,6 +77,32 @@ export const useTables = (
         [allAgents]
     )
     const integrations = useAppSelector(getIntegrations)
+    const {
+        campaigns,
+        selectedIntegrations,
+        selectedCampaignIds,
+        selectedCampaignsOperator,
+        selectedPeriod,
+    } = useCampaignStatsFilters()
+
+    const namespacedShopName =
+        useGetNamespacedShopNameForStore(selectedIntegrations)
+    const campaignsReportContext: CampaignReportContext = useMemo(
+        () => ({
+            campaigns,
+            selectedCampaignIds,
+            selectedCampaignsOperator,
+            selectedPeriod,
+            namespacedShopName,
+        }),
+        [
+            campaigns,
+            namespacedShopName,
+            selectedCampaignIds,
+            selectedCampaignsOperator,
+            selectedPeriod,
+        ]
+    )
     const context = useMemo(
         () => ({
             agents,
@@ -93,10 +122,12 @@ export const useTables = (
             integrations,
             isAutomateNonFilteredDenominatorInAutomationRate,
             aiAgentUserId,
+            campaignsReportContext,
         }),
         [
             agents,
             agentsQA,
+            campaignsReportContext,
             columnsOrder,
             sortedChannels,
             channelColumnsOrder,

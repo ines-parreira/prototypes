@@ -19,6 +19,8 @@ import {
 } from 'hooks/reporting/useTimeSeries'
 import {AutomateOverviewReportConfig} from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
 import {MetricTrendFormat, MetricValueFormat} from 'pages/stats/common/utils'
+import {CampaignsLegacyReportConfig} from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
+import {CampaignsPerformanceReportConfig} from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
 import {
     ChartConfig,
     CustomReportChild,
@@ -58,6 +60,8 @@ const chartsLookupTable: Record<string, ChartConfig | undefined> = {
     ...VoiceAgentsReportConfig.charts,
     ...SatisfactionReportConfig.charts,
     ...AutomateOverviewReportConfig.charts,
+    ...CampaignsLegacyReportConfig.charts,
+    ...CampaignsPerformanceReportConfig.charts,
 }
 
 type Queries = {

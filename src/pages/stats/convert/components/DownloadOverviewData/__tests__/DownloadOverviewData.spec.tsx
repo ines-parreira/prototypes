@@ -1,5 +1,6 @@
 import {QueryClientProvider} from '@tanstack/react-query'
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -9,6 +10,7 @@ import {campaign} from 'fixtures/campaign'
 import {shopifyIntegration} from 'fixtures/integrations'
 
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 
@@ -34,7 +36,7 @@ jest.mock('utils/file', () => ({
 }))
 const mockSavezippedFiles = assumeMock(saveZippedFiles)
 
-const exampleResponseData = {
+export const exampleResponseData = {
     [campaign.id]: {
         campaignSalesCount: 1,
         clickThroughRate: 2.6497695852534564,
@@ -98,7 +100,9 @@ describe('<DownloadOverviewData />', () => {
         // render
         renderComponent()
 
-        const button = screen.getByRole('button', {name: /Download Data/})
+        const button = screen.getByRole('button', {
+            name: DOWNLOAD_DATA_BUTTON_LABEL,
+        })
         expect(button).toBeAriaEnabled()
     })
 
@@ -111,7 +115,9 @@ describe('<DownloadOverviewData />', () => {
 
         renderComponent()
 
-        const button = screen.getByRole('button', {name: /Download Data/})
+        const button = screen.getByRole('button', {
+            name: DOWNLOAD_DATA_BUTTON_LABEL,
+        })
         expect(button).toBeAriaDisabled()
 
         act(() => {
@@ -130,7 +136,9 @@ describe('<DownloadOverviewData />', () => {
 
         renderComponent()
 
-        const button = screen.getByRole('button', {name: /Download Data/})
+        const button = screen.getByRole('button', {
+            name: DOWNLOAD_DATA_BUTTON_LABEL,
+        })
 
         act(() => {
             fireEvent.click(button)
