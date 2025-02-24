@@ -18,8 +18,6 @@ const AutomateNavbar = () => {
     const hasAutomate = useAppSelector(getHasAutomate)
     const hasAiAgentPreview =
         useFlags()[FeatureFlagKey.AIAgentPreviewModeAllowed]
-    const isImprovedNavigationEnabled =
-        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
     const isActionsInternalPlatformEnabled = useFlag(
         FeatureFlagKey.ActionsInternalPlatform
     )
@@ -39,21 +37,7 @@ const AutomateNavbar = () => {
                         data-candu-id="automate-link-my-automate"
                     >
                         <NavbarLink to="/app/automation" exact>
-                            {isImprovedNavigationEnabled ? (
-                                <span>Overview</span>
-                            ) : (
-                                <span className={navbarCss['item-name']}>
-                                    <i
-                                        className={classNames(
-                                            'material-icons',
-                                            navbarCss.icon
-                                        )}
-                                    >
-                                        bolt
-                                    </i>{' '}
-                                    My Automate
-                                </span>
-                            )}
+                            <span>Overview</span>
                         </NavbarLink>
                     </div>
                     {!isAiAgentItemEnabled &&

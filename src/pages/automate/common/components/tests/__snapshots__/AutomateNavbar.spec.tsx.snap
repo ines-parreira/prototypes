@@ -174,16 +174,8 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
             data-active-class-name="active"
             href="/app/automation"
           >
-            <span
-              class="item-name"
-            >
-              <i
-                class="material-icons icon"
-              >
-                bolt
-              </i>
-               
-              My Automate
+            <span>
+              Overview
             </span>
           </a>
         </div>
@@ -308,22 +300,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
             </a>
           </div>
           <div
-            class="link-wrapper isNested"
-            data-candu-id="automate-link-train-my-ai"
-          >
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="[object Object]"
-            >
-              <span
-                class="item-name"
-              >
-                Train My AI
-              </span>
-            </a>
-          </div>
-          <div
             class="section section"
           >
             <div
@@ -396,21 +372,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
                 class="item-name"
               >
                 Channels
-              </span>
-            </a>
-          </div>
-          <div
-            class="link-wrapper isNested"
-          >
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="[object Object]"
-            >
-              <span
-                class="item-name"
-              >
-                Train My AI
               </span>
             </a>
           </div>
@@ -830,16 +791,8 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
             data-active-class-name="active"
             href="/app/automation"
           >
-            <span
-              class="item-name"
-            >
-              <i
-                class="material-icons icon"
-              >
-                bolt
-              </i>
-               
-              My Automate
+            <span>
+              Overview
             </span>
           </a>
         </div>
@@ -964,22 +917,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
             </a>
           </div>
           <div
-            class="link-wrapper isNested"
-            data-candu-id="automate-link-train-my-ai"
-          >
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="[object Object]"
-            >
-              <span
-                class="item-name"
-              >
-                Train My AI
-              </span>
-            </a>
-          </div>
-          <div
             class="section section"
           >
             <div
@@ -1052,21 +989,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
                 class="item-name"
               >
                 Channels
-              </span>
-            </a>
-          </div>
-          <div
-            class="link-wrapper isNested"
-          >
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="[object Object]"
-            >
-              <span
-                class="item-name"
-              >
-                Train My AI
               </span>
             </a>
           </div>

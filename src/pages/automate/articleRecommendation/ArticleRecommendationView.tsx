@@ -85,9 +85,6 @@ const ArticleRecommendationView = () => {
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
-    const isImprovedNavigationEnabled =
-        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
-
     useEffectOnce(() => {
         if (!changeAutomateSettingButtomPosition) return
         logEvent(SegmentEvent.AutomateSettingPageViewed, {
@@ -101,14 +98,10 @@ const ArticleRecommendationView = () => {
         <AutomateView
             title={ARTICLE_RECOMMENDATION}
             isLoading={isLoading}
-            {...(isImprovedNavigationEnabled
-                ? {
-                      headerNavbarItems: getArticleRecommendationNavItems(
-                          shopType,
-                          shopName
-                      ),
-                  }
-                : {})}
+            headerNavbarItems={getArticleRecommendationNavItems(
+                shopType,
+                shopName
+            )}
         >
             <AutomateViewContent
                 description="Automatically send a Help Center article in response to customer questions in Chat, if a relevant article exists. If a customer requests more help, a ticket will be created for an agent to handle."
@@ -152,10 +145,6 @@ const ArticleRecommendationView = () => {
             />
         </AutomateView>
     )
-
-    if (!isImprovedNavigationEnabled) {
-        return articleRecommendation
-    }
 
     return (
         <Switch>

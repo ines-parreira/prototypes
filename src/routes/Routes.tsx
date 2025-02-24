@@ -81,11 +81,9 @@ import EditReportOrderIssueFlowScenarioViewContainer from 'pages/automate/orderM
 import ReportOrderIssueFlowViewContainer from 'pages/automate/orderManagement/reportOrderIssue/ReportOrderIssueFlowViewContainer'
 import ReturnOrderFlowViewContainer from 'pages/automate/orderManagement/returnOrder/ReturnOrderFlowViewContainer'
 import TrackOrderFlowViewContainer from 'pages/automate/orderManagement/trackOrder/TrackOrderFlowViewContainer'
-import TrainMyAiViewContainer from 'pages/automate/trainMyAi/TrainMyAiViewContainer'
 import WorkflowAnalyticsContainer from 'pages/automate/workflows/analytics/WorkflowAnalyticsContainer'
 import WorkflowEditorViewContainer from 'pages/automate/workflows/editor/WorkflowEditorViewContainer'
 import WorkflowsViewContainer from 'pages/automate/workflows/WorkflowsViewContainer'
-import WorkflowTemplatesViewContainer from 'pages/automate/workflows/WorkflowTemplatesViewContainer'
 import NoMatch from 'pages/common/components/NoMatch'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import UpdateABTestView from 'pages/convert/abTests/components/UpdateABTestView'
@@ -772,8 +770,6 @@ export function AutomationRoutes() {
 
 function AutomationContent() {
     const {path} = useRouteMatch()
-    const isImprovedNavigationEnabled =
-        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
     const isFlowsBuilderAnalyticsEnabled =
         useFlags()[FeatureFlagKey.FlowsBuilderAnalytics]
     const isActionsInternalPlatformEnabled = useFlag(
@@ -870,17 +866,6 @@ function AutomationContent() {
                     AGENT_ROLE
                 )}
             />
-
-            {!isImprovedNavigationEnabled && (
-                <Route
-                    path={`${path}/:shopType/:shopName/flows/templates`}
-                    exact
-                    component={withUserRoleRequired(
-                        WorkflowTemplatesViewContainer,
-                        AGENT_ROLE
-                    )}
-                />
-            )}
 
             <Route
                 path={`${path}/:shopType/:shopName/flows/edit/:editWorkflowId`}
@@ -1032,28 +1017,15 @@ function AutomationContent() {
                 </SelfServiceHelpCentersProvider>
             </Route>
 
-            {!isImprovedNavigationEnabled && (
-                <Route
-                    path={`${path}/:shopType/:shopName/train-my-ai`}
-                    exact
-                    component={withUserRoleRequired(
-                        TrainMyAiViewContainer,
-                        AGENT_ROLE
-                    )}
-                />
-            )}
-
             <Route
                 path={[
                     `${path}/:shopType/:shopName/article-recommendation`,
                     `${path}/:shopType/:shopName/train-my-ai`,
                 ]}
-                exact={isImprovedNavigationEnabled === false ? true : false}
                 render={(props) => {
                     if (
                         props.match.path ===
-                            `${path}/:shopType/:shopName/train-my-ai` &&
-                        isImprovedNavigationEnabled === true
+                        `${path}/:shopType/:shopName/train-my-ai`
                     ) {
                         return (
                             <Redirect

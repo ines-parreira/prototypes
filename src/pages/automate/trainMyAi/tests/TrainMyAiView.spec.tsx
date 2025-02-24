@@ -210,69 +210,6 @@ describe('<TrainMyAiView />', () => {
         window.HTMLElement.prototype.scrollTo = jest.fn()
     })
 
-    it('should render empty when article recommendation is disabled', () => {
-        useArticleRecommendationPredictionsMock.mockImplementation(() => {
-            return {
-                data: undefined,
-                isInitialLoading: false,
-                isFetched: false,
-            } as ReturnType<typeof useArticleRecommendationPredictionsMock>
-        })
-        ;(
-            useSelfServiceConfiguration as jest.MockedFn<
-                typeof useSelfServiceConfiguration
-            >
-        ).mockReturnValue({
-            isFetchPending: false,
-            isUpdatePending: false,
-            storeIntegration: undefined,
-            selfServiceConfiguration: {
-                ...selfServiceConfiguration1,
-                articleRecommendationHelpCenterId: 1,
-            },
-            handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
-        })
-
-        useHelpCenterMock.mockReturnValue({
-            data: {
-                account_id: 1,
-            },
-            isInitialLoading: false,
-            isError: false,
-        } as ReturnType<typeof useHelpCenterMock>)
-
-        useApplicationsAutomationSettingsMock.mockReturnValue({
-            applicationsAutomationSettings: {
-                1: {
-                    id: 1,
-                    applicationId: 1,
-                    articleRecommendation: {enabled: false},
-                    orderManagement: {enabled: false},
-                    workflows: {enabled: false},
-                    createdDatetime: '2023-01-10T10:11:00.077382+00:00',
-                    updatedDatetime: '2023-01-10T10:11:00.077382+00:00',
-                },
-            },
-            isFetchPending: false,
-            isUpdatePending: false,
-            handleChatApplicationAutomationSettingsUpdate: jest.fn(),
-        })
-
-        useHelpCenterPublishedArticlesCountMock.mockReturnValue(1)
-
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <TrainMyAiView />
-                </Provider>
-            </QueryClientProvider>
-        )
-
-        expect(
-            screen.queryByText('Set up article recommendation')
-        ).toBeInTheDocument()
-    })
-
     it('should render empty information when no article recommendation has been sent', () => {
         useArticleRecommendationPredictionsMock.mockImplementation(() => {
             return {

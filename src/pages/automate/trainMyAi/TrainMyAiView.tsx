@@ -1,12 +1,10 @@
 import {Badge, LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import {useQueryClient} from '@tanstack/react-query'
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo, useState, useRef, useCallback, useEffect} from 'react'
 import {Link, useParams} from 'react-router-dom'
 
 import {SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     ARTICLE_RECOMMENDATION_PREDICTION_QUERY_KEY,
     useArticleRecommendationPredictions,
@@ -22,10 +20,7 @@ import ProgressBar from 'pages/common/components/ProgressBar/ProgressBar'
 
 import gorgiasLogo from '../../../assets/img/gorgias-logo.svg'
 import {assetsUrl} from '../../../utils'
-import {
-    ARTICLE_RECOMMENDATION,
-    TRAIN_MY_AI,
-} from '../common/components/constants'
+import {ARTICLE_RECOMMENDATION} from '../common/components/constants'
 import useApplicationsAutomationSettings from '../common/hooks/useApplicationsAutomationSettings'
 import {useHelpCenterPublishedArticlesCount} from '../common/hooks/useHelpCenterPublishedArticlesCount'
 import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
@@ -155,9 +150,6 @@ const TrainMyAiView = () => {
         },
         [recommendationFilterFeedbackOptions]
     )
-
-    const isImprovedNavigationEnabled =
-        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
 
     useEffect(() => {
         resetCurrectPagination()
@@ -293,70 +285,23 @@ const TrainMyAiView = () => {
             (isArticleRecommendationEnabled || hasArticleRecommendations)
         )
 
-    if (shouldShowPaywall && !isImprovedNavigationEnabled) {
-        return (
-            <Paywall
-                pageHeader={TRAIN_MY_AI}
-                previewImage={assetsUrl('/img/train-my-ai/preview.png')}
-                requiredUpgrade={''}
-                header="Configure Article Recommendation to access AI training"
-                description="Review recommendations and provide feedback to optimize AI performance."
-                customBadge={
-                    <Badge className={css.badge}>
-                        <span>
-                            <i
-                                className={classNames(
-                                    'material-icons',
-                                    css.AIIcon
-                                )}
-                            >
-                                auto_awesome
-                            </i>
-                            {' AI POWERED'}
-                        </span>
-                    </Badge>
-                }
-                customCta={
-                    <LinkButton
-                        target=""
-                        href={`${baseUrl}${
-                            isImprovedNavigationEnabled ? '/configuration' : ''
-                        }`}
-                    >
-                        Set up article recommendation
-                    </LinkButton>
-                }
-            />
-        )
-    }
-
     return (
         <AutomateView
-            title={
-                isImprovedNavigationEnabled
-                    ? ARTICLE_RECOMMENDATION
-                    : TRAIN_MY_AI
-            }
+            title={ARTICLE_RECOMMENDATION}
             isLoading={isLoading}
-            {...(isImprovedNavigationEnabled && !isLoading
-                ? {
-                      headerNavbarItems: getArticleRecommendationNavItems(
-                          shopType,
-                          shopName
-                      ),
-                  }
-                : {})}
-            className={classNames(
-                isImprovedNavigationEnabled ? css.newContainer : css.container,
-                {
-                    [css.enabled]:
-                        !isHelpCenterSelfServiceDeleted &&
-                        (isArticleRecommendationEnabled ||
-                            hasArticleRecommendations),
-                }
-            )}
+            headerNavbarItems={
+                !isLoading
+                    ? getArticleRecommendationNavItems(shopType, shopName)
+                    : undefined
+            }
+            className={classNames(css.newContainer, {
+                [css.enabled]:
+                    !isHelpCenterSelfServiceDeleted &&
+                    (isArticleRecommendationEnabled ||
+                        hasArticleRecommendations),
+            })}
         >
-            {shouldShowPaywall && isImprovedNavigationEnabled ? (
+            {shouldShowPaywall ? (
                 <Paywall
                     hideBubble
                     previewImage={assetsUrl('/img/train-my-ai/preview.png')}
@@ -385,11 +330,7 @@ const TrainMyAiView = () => {
                             className={css.cta}
                         >
                             <Link
-                                to={`${baseUrl}${
-                                    isImprovedNavigationEnabled
-                                        ? '/configuration'
-                                        : ''
-                                }`}
+                                to={`${baseUrl}/configuration`}
                                 className={css.linkCta}
                             >
                                 Set up Article Recommendation

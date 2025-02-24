@@ -27,7 +27,6 @@ import {
     CHANNELS,
     FLOWS,
     ORDER_MANAGEMENT,
-    TRAIN_MY_AI,
 } from './constants'
 
 type Props = {
@@ -59,8 +58,6 @@ const AutomateNavbarSectionBlock = ({
     const isTrialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
     const hasAiAgentPreview =
         useFlags()[FeatureFlagKey.AIAgentPreviewModeAllowed]
-    const isImprovedNavigationEnabled =
-        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
 
     const hasAiAgentTrialEnabled = isPreviewModeActivated({
         isPreviewModeActive: storeConfiguration?.isPreviewModeActive,
@@ -285,28 +282,6 @@ const AutomateNavbarSectionBlock = ({
                     <span className={cssNavbar['item-name']}>{CHANNELS}</span>
                 </NavbarLink>
             </div>
-            {!isImprovedNavigationEnabled && (
-                <div
-                    className={classNames(
-                        cssNavbar['link-wrapper'],
-                        cssNavbar.isNested
-                    )}
-                    {...(shouldRenderCanduIds && {
-                        ['data-candu-id']: 'automate-link-train-my-ai',
-                    })}
-                >
-                    <NavbarLink
-                        to={{
-                            pathname: `/app/automation/${shopType}/${shopName}/train-my-ai`,
-                            state: {from: FROM_LOCATION},
-                        }}
-                    >
-                        <span className={cssNavbar['item-name']}>
-                            {TRAIN_MY_AI}
-                        </span>
-                    </NavbarLink>
-                </div>
-            )}
         </NavbarSectionBlock>
     )
 }

@@ -1,7 +1,5 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo} from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import useCallbackRef from 'hooks/useCallbackRef'
 
@@ -16,8 +14,6 @@ import {AutomateLandingPageTopQuestions} from './TopQuestions/AutomateLandingPag
 
 const AutomateLandingPage = () => {
     const displayAiAgentMovedBanner = useDisplayAiAgentMovedBanner()
-    const isImprovedNavigationEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
 
     const [checkListNode, setCheckListNode] = useCallbackRef()
     useInjectStyleToCandu(checkListNode)
@@ -26,7 +22,7 @@ const AutomateLandingPage = () => {
 
     return (
         <StatsPage
-            title={isImprovedNavigationEnabled ? 'Overview' : 'Automate'}
+            title="Overview"
             headerCanduId="header-my-automate"
             banner={displayAiAgentMovedBanner && <AiAgentMovedBanner />}
         >

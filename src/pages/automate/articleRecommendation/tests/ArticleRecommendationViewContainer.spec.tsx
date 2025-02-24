@@ -6,14 +6,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
-import {
-    AUTOMATION_PRODUCT_ID,
-    HELPDESK_PRODUCT_ID,
-    basicMonthlyAutomationPlan,
-    basicMonthlyHelpdeskPlan,
-} from 'fixtures/productPrices'
 import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
@@ -85,45 +78,6 @@ describe('<ArticleRecommendationPreview />', () => {
             screen.getByText(
                 'Automate 60%+ of your support with AI and grow your brand'
             )
-        ).toBeInTheDocument()
-    })
-
-    it('should render article recommendation', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        currentAccount: fromJS({
-                            ...account,
-                            current_subscription: {
-                                products: {
-                                    [HELPDESK_PRODUCT_ID]:
-                                        basicMonthlyHelpdeskPlan.price_id,
-                                    [AUTOMATION_PRODUCT_ID]:
-                                        basicMonthlyAutomationPlan.price_id,
-                                },
-                                status: 'active',
-                            },
-                        }),
-                    })}
-                >
-                    <ArticleRecommendationViewContainer />
-                </Provider>
-            </QueryClientProvider>,
-            {
-                path: `/app/automation/:shopType/:shopName/article-recommendation`,
-                route: '/app/automation/shopify/test-shop/article-recommendation',
-            }
-        )
-
-        expect(
-            screen.queryByText(
-                'Automate 60%+ of your support with AI and grow your brand'
-            )
-        ).toBeNull()
-        expect(
-            screen.getByText('Learn About Article Recommendation In Chat')
         ).toBeInTheDocument()
     })
 })

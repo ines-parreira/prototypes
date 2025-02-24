@@ -95,7 +95,6 @@ export enum FeatureFlagKey {
     HelpCenterMigrationConfig = 'migration-config',
     HelpCenterOnePager = 'help-center-one-pager',
     HelpCenterSubjectLines = 'help-center-subject-lines',
-    ImprovedAutomateNavigation = 'improved-automate-navigation',
     MacroArchives = 'macro-archives',
     MacroForwardByEmail = 'macro-forward-by-email',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
