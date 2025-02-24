@@ -3,7 +3,7 @@ import {
     ExpressionFieldType,
     ExpressionOperator,
     TicketStatus,
-    CustomFieldRequirementType,
+    RequirementType,
 } from '@gorgias/api-types'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {render, screen, waitFor} from '@testing-library/react'
@@ -67,7 +67,7 @@ describe('<TicketFields />', () => {
         ...ticketInputFieldDefinition,
         id: 101,
         required: false,
-        requirement_type: CustomFieldRequirementType.Conditional,
+        requirement_type: RequirementType.Conditional,
         label: 'Conditional field',
     }
     const makeOnOpenAndAnotherFieldSetCustomFieldCondition = (

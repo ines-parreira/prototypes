@@ -1,7 +1,4 @@
-import {
-    CustomFieldRequirementType,
-    ExpressionFieldType,
-} from '@gorgias/api-types'
+import {RequirementType, ExpressionFieldType} from '@gorgias/api-types'
 
 import {ticketInputFieldDefinition} from 'fixtures/customField'
 
@@ -18,7 +15,7 @@ describe('isFieldErrored', () => {
         ...ticketInputFieldDefinition,
         id: 100,
         required: false,
-        requirement_type: CustomFieldRequirementType.Conditional,
+        requirement_type: RequirementType.Conditional,
     }
 
     it.each([

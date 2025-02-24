@@ -1,7 +1,4 @@
-import {
-    CustomFieldRequirementType,
-    ExpressionFieldType,
-} from '@gorgias/api-types'
+import {RequirementType, ExpressionFieldType} from '@gorgias/api-types'
 import classNames from 'classnames'
 import React, {memo, useEffect, useMemo, useState} from 'react'
 
@@ -37,10 +34,8 @@ const isFieldVisible = (
 ): boolean => {
     return (
         (fieldDefinition.required === false &&
-            fieldDefinition.requirement_type !==
-                CustomFieldRequirementType.Conditional) ||
-        (fieldDefinition.requirement_type ===
-            CustomFieldRequirementType.Conditional &&
+            fieldDefinition.requirement_type !== RequirementType.Conditional) ||
+        (fieldDefinition.requirement_type === RequirementType.Conditional &&
             conditionalRequirementType === ExpressionFieldType.Visible)
     )
 }

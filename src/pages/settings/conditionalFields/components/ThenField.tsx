@@ -1,4 +1,4 @@
-import {CustomFieldRequirementType} from '@gorgias/api-queries'
+import {RequirementType} from '@gorgias/api-queries'
 import {
     CustomFieldConditionField,
     ExpressionFieldType,
@@ -122,7 +122,7 @@ export default forwardRef(function ThenField(
                     onSelect={(customField: CustomField) => {
                         if (
                             customField.requirement_type !==
-                            CustomFieldRequirementType.Conditional
+                            RequirementType.Conditional
                         ) {
                             setNonConditionalFieldRequestedForAddition(
                                 customField

@@ -1,4 +1,4 @@
-import {CustomFieldRequirementType} from '@gorgias/api-queries'
+import {RequirementType} from '@gorgias/api-queries'
 import {
     SelectField,
     type SelectFieldTriggerProps,
@@ -40,9 +40,7 @@ type CustomFieldSelectButtonProps = {
     className?: string
 }
 
-function requirementTypeToString(
-    requirementType?: CustomFieldRequirementType
-): string {
+function requirementTypeToString(requirementType?: RequirementType): string {
     if (requirementType === 'conditional') {
         return 'Conditional visibility'
     }

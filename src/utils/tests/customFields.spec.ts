@@ -1,6 +1,6 @@
 import {Macro} from '@gorgias/api-queries'
 
-import {CustomFieldRequirementType} from '@gorgias/api-types'
+import {RequirementType} from '@gorgias/api-types'
 
 import {ticketInputFieldDefinition} from 'fixtures/customField'
 import {macroFixture, setCustomFieldValueAction} from 'fixtures/macro'
@@ -40,7 +40,7 @@ describe('getInvalidTicketFieldIds', () => {
                 ...ticketInputFieldDefinition,
                 id: 3,
                 required: false,
-                requirement_type: CustomFieldRequirementType.Conditional,
+                requirement_type: RequirementType.Conditional,
             },
         ]
         expect(

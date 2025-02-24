@@ -1,4 +1,4 @@
-import {CustomFieldRequirementType} from '@gorgias/api-queries'
+import {RequirementType} from '@gorgias/api-queries'
 import {ExpressionFieldType} from '@gorgias/api-types'
 import {UseQueryResult} from '@tanstack/react-query'
 import {fireEvent, screen, waitFor} from '@testing-library/react'
@@ -35,28 +35,28 @@ const customFields: Record<number, CustomField> = {
         ...ticketInputFieldDefinition,
         id: 1,
         label: 'Custom field #1',
-        requirement_type: CustomFieldRequirementType.Conditional,
+        requirement_type: RequirementType.Conditional,
         required: false,
     },
     2: {
         ...ticketNumberFieldDefinition,
         id: 2,
         label: 'Custom field #2',
-        requirement_type: CustomFieldRequirementType.Conditional,
+        requirement_type: RequirementType.Conditional,
         required: false,
     },
     3: {
         ...ticketDropdownFieldDefinition,
         id: 3,
         label: 'Custom field #3',
-        requirement_type: CustomFieldRequirementType.Conditional,
+        requirement_type: RequirementType.Conditional,
         required: false,
     },
     4: {
         ...ticketBooleanFieldDefinition,
         id: 4,
         label: 'Custom field #4',
-        requirement_type: CustomFieldRequirementType.Conditional,
+        requirement_type: RequirementType.Conditional,
         required: false,
     },
 }
@@ -196,7 +196,7 @@ describe('ThenField', () => {
             ...ticketInputFieldDefinition,
             id: 4,
             label: 'Custom field #4',
-            requirement_type: CustomFieldRequirementType.Required,
+            requirement_type: RequirementType.Required,
         }
         const fields: Record<number, CustomField> = {
             1: customFields[1],

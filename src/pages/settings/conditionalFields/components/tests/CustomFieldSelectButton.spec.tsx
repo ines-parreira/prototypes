@@ -1,4 +1,4 @@
-import {CustomFieldRequirementType} from '@gorgias/api-types'
+import {RequirementType} from '@gorgias/api-types'
 import {fireEvent, screen} from '@testing-library/react'
 import React from 'react'
 
@@ -22,19 +22,19 @@ const customFields: CustomField[] = [
         ...ticketInputFieldDefinition,
         id: 1,
         label: 'Custom field #1',
-        requirement_type: CustomFieldRequirementType.Conditional,
+        requirement_type: RequirementType.Conditional,
     },
     {
         ...ticketNumberFieldDefinition,
         id: 2,
         label: 'Custom field #2',
-        requirement_type: CustomFieldRequirementType.Required,
+        requirement_type: RequirementType.Required,
     },
     {
         ...ticketDropdownFieldDefinition,
         id: 3,
         label: 'Custom field #3',
-        requirement_type: CustomFieldRequirementType.Visible,
+        requirement_type: RequirementType.Visible,
     },
 ]
 

@@ -1,5 +1,5 @@
 import {listCustomFieldConditions} from '@gorgias/api-client'
-import {CustomFieldRequirementType} from '@gorgias/api-queries'
+import {RequirementType} from '@gorgias/api-queries'
 import {
     ExpressionFieldSource,
     ExpressionFieldType,
@@ -58,7 +58,7 @@ describe('triggerTicketFieldsRefreshAndInvalidation()', () => {
     const conditionalTicketField = {
         ...ticketDropdownFieldDefinition,
         id: 121,
-        requirement_type: CustomFieldRequirementType.Conditional,
+        requirement_type: RequirementType.Conditional,
     }
     const visibleTicketField = {
         ...ticketInputFieldDefinition,

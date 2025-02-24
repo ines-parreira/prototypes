@@ -1,4 +1,4 @@
-import {CustomFieldRequirementType} from '@gorgias/api-queries'
+import {RequirementType} from '@gorgias/api-queries'
 import React, {useCallback} from 'react'
 import {Link} from 'react-router-dom'
 
@@ -14,7 +14,7 @@ import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
 
 import css from './ConfirmCustomFieldReuirementTypeChangeModal.less'
 
-const ConfirmCustomFieldRequirementTypeChangeModal = ({
+const ConfirmRequirementTypeChangeModal = ({
     isOpen,
     customField,
     onCancel,
@@ -26,7 +26,7 @@ const ConfirmCustomFieldRequirementTypeChangeModal = ({
     customField: CustomField
 }) => {
     const requirementTypeLabel =
-        customField.requirement_type === CustomFieldRequirementType.Required ||
+        customField.requirement_type === RequirementType.Required ||
         customField.required
             ? 'required'
             : 'always visible'
@@ -43,7 +43,7 @@ const ConfirmCustomFieldRequirementTypeChangeModal = ({
                 label,
                 managed_type,
                 required: false,
-                requirement_type: CustomFieldRequirementType.Conditional,
+                requirement_type: RequirementType.Conditional,
             },
         ])
         onConfirmationSuccess(customField)
@@ -119,4 +119,4 @@ const SeeObjectLink = ({
     )
 }
 
-export default ConfirmCustomFieldRequirementTypeChangeModal
+export default ConfirmRequirementTypeChangeModal

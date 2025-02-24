@@ -1,4 +1,4 @@
-import {CustomFieldRequirementType} from '@gorgias/api-queries'
+import {RequirementType} from '@gorgias/api-queries'
 import {
     ExpressionFieldSource,
     TicketStatus,
@@ -41,7 +41,7 @@ const mockConditionalCustomField = {
     ...mockTicketInputFieldDefinition,
     id: 101,
     required: false,
-    requirement_type: CustomFieldRequirementType.Conditional,
+    requirement_type: RequirementType.Conditional,
 }
 const mockRequiredOnIntentAndOpenCustomFieldCondition = {
     ...customFieldCondition,

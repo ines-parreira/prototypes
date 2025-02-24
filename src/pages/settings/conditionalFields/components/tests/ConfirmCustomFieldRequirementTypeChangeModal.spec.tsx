@@ -1,4 +1,4 @@
-import {CustomFieldRequirementType} from '@gorgias/api-queries'
+import {RequirementType} from '@gorgias/api-queries'
 import {fireEvent, screen, render, waitFor} from '@testing-library/react'
 import React from 'react'
 import {Link} from 'react-router-dom'
@@ -42,7 +42,7 @@ describe('ConfirmCustomFieldRequirementTypeChangeModal', () => {
         definition: {},
         label: 'Test Field',
         managed_type: null,
-        requirement_type: CustomFieldRequirementType.Required,
+        requirement_type: RequirementType.Required,
         required: true,
     } as any
 
@@ -94,7 +94,7 @@ describe('ConfirmCustomFieldRequirementTypeChangeModal', () => {
     it('displays correct text for always visible customer field', () => {
         const visibleField = {
             ...mockCustomField,
-            requirement_type: CustomFieldRequirementType.Visible,
+            requirement_type: RequirementType.Visible,
             required: false,
             object_type: OBJECT_TYPES.CUSTOMER,
         }
@@ -141,7 +141,7 @@ describe('ConfirmCustomFieldRequirementTypeChangeModal', () => {
                     label: mockCustomField.label,
                     managed_type: mockCustomField.managed_type,
                     required: false,
-                    requirement_type: CustomFieldRequirementType.Conditional,
+                    requirement_type: RequirementType.Conditional,
                 },
             ])
             expect(defaultProps.onConfirmationSuccess).toHaveBeenCalled()

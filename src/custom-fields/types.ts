@@ -15,7 +15,7 @@ import {
 export type CustomFieldObjectTypes =
     (typeof OBJECT_TYPES)[keyof typeof OBJECT_TYPES]
 
-export type CustomFieldRequirementType = 'required' | 'visible' | 'conditional'
+export type RequirementType = 'required' | 'visible' | 'conditional'
 
 export type ListParams = ApiPaginationParams & {
     archived?: boolean
@@ -84,7 +84,7 @@ export type CustomFieldInput = {
     description?: string
     priority?: number
     required: boolean
-    requirement_type?: CustomFieldRequirementType
+    requirement_type?: RequirementType
     managed_type: CustomFieldManagedType | null
     definition: CustomFieldDefinition
 }

@@ -2,14 +2,14 @@ import {Label, Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 import {Link} from 'react-router-dom'
 
-import {CustomFieldRequirementType} from 'custom-fields/types'
+import {RequirementType} from 'custom-fields/types'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import css from 'pages/settings/customFields/components/RequirementTypeInput.less'
 
 interface RequirementTypeInputProps {
     className?: string
-    value?: CustomFieldRequirementType
-    onChange: (value: CustomFieldRequirementType) => void
+    value?: RequirementType
+    onChange: (value: RequirementType) => void
 }
 
 export default function RequirementTypeInput(props: RequirementTypeInputProps) {

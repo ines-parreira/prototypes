@@ -1,7 +1,4 @@
-import {
-    ExpressionFieldType,
-    CustomFieldRequirementType,
-} from '@gorgias/api-types'
+import {ExpressionFieldType, RequirementType} from '@gorgias/api-types'
 
 import {CustomField} from 'custom-fields/types'
 
@@ -11,8 +8,7 @@ export const isFieldRequired = (
 ): boolean => {
     return (
         fieldDefinition.required ||
-        (fieldDefinition.requirement_type ===
-            CustomFieldRequirementType.Conditional &&
+        (fieldDefinition.requirement_type === RequirementType.Conditional &&
             conditionalRequirementType === ExpressionFieldType.Required)
     )
 }
