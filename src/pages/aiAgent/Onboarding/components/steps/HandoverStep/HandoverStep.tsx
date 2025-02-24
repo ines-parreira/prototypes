@@ -4,13 +4,11 @@ import {useParams} from 'react-router-dom'
 
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
-import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import {useSteps} from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import {
     OnboardingBody,
     OnboardingContentContainer,
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
-
-import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 
 export const HandoverStep: FC<StepProps> = ({
     currentStep,
@@ -19,21 +17,20 @@ export const HandoverStep: FC<StepProps> = ({
 }) => {
     const {shopName} = useParams<{shopName: string}>()
 
-    const {data} = useGetOnboardingData(shopName)
+    const {validSteps} = useSteps({shopName})
 
     useCheckStoreIntegration()
 
     const onNextClick = () => {
-        goToStep(WizardStepEnum.KNOWLEDGE)
+        const nextStep = validSteps[currentStep]?.step
+
+        goToStep(nextStep)
     }
 
     const onBackClick = () => {
-        if (data?.scopes.includes(AiAgentScopes.SALES)) {
-            goToStep(WizardStepEnum.SALES_PERSONALITY)
-            return
-        }
+        const previousStep = validSteps[currentStep - 2]?.step
 
-        goToStep(WizardStepEnum.PERSONALITY_PREVIEW)
+        goToStep(previousStep)
     }
 
     return (

@@ -64,7 +64,17 @@ const defaultState = {
     }),
 } as RootState
 
-const renderComponent = (props: ComponentProps<typeof PersonalityStep>) => {
+const goToStep = jest.fn()
+
+const defaultProps: StepProps = {
+    currentStep: 4,
+    totalSteps: 6,
+    goToStep,
+}
+
+const renderComponent = (
+    props: ComponentProps<typeof PersonalityStep> = defaultProps
+) => {
     renderWithRouter(
         <QueryClientProvider client={queryClient}>
             <Provider store={mockStore(defaultState)}>
@@ -79,15 +89,57 @@ const renderComponent = (props: ComponentProps<typeof PersonalityStep>) => {
     )
 }
 
-const goToStep = jest.fn()
+describe('PersonalityStep - With prepopulated data', () => {
+    beforeAll(() => {
+        queryClient.clear()
+        // ✅ Mock getOnboardingData function
+        mockGetOnboardingData.mockResolvedValue(
+            Promise.resolve([
+                {
+                    id: 1,
+                    salesPersuasionLevel: PersuasionLevel.Moderate,
+                    salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                    salesDiscountMax: 0.1,
+                    scopes: [AiAgentScopes.SALES],
+                    shopName: shopifyIntegration.meta.shop_name,
+                },
+            ])
+        )
 
-describe('PersonalityStep', () => {
-    const defaultProps: StepProps = {
-        currentStep: 2,
-        totalSteps: 8,
-        goToStep,
-    }
+        // // ✅ Mock updateOnboardingData function
+        mockUpdateOnboardingData.mockResolvedValue(
+            Promise.resolve({
+                success: true,
+            })
+        )
 
+        jest.useFakeTimers()
+    })
+
+    it('navigates to the next step when Next is clicked', async () => {
+        renderComponent()
+
+        jest.runAllTimers()
+
+        await waitFor(() => {
+            expect(screen.getByDisplayValue('10')).toBeInTheDocument()
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText(/Maximum Discount Percentage/)
+            ).toBeInTheDocument()
+        })
+
+        fireEvent.click(screen.getByText(/Next/i))
+
+        await waitFor(() => {
+            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.HANDOVER)
+        })
+    })
+})
+
+describe('PersonalityStep - Empty state', () => {
     beforeAll(() => {
         // ✅ Mock getOnboardingData function
         mockGetOnboardingData.mockResolvedValue(
@@ -115,10 +167,11 @@ describe('PersonalityStep', () => {
 
     afterAll(() => {
         jest.useRealTimers()
+        queryClient.clear()
     })
 
     it('should render without crashing', () => {
-        renderComponent(defaultProps)
+        renderComponent()
 
         jest.runAllTimers()
 
@@ -140,7 +193,7 @@ describe('PersonalityStep', () => {
     })
 
     it('should update persuasion level description when moving slider', async () => {
-        renderComponent(defaultProps)
+        renderComponent()
 
         await waitFor(() => {
             const track = document.querySelectorAll('.track')[0]
@@ -159,7 +212,7 @@ describe('PersonalityStep', () => {
     })
 
     it('should update discount strategy description when moving slider', async () => {
-        renderComponent(defaultProps)
+        renderComponent()
 
         await waitFor(() => {
             const track = document.querySelectorAll('.track')[1]
@@ -178,7 +231,7 @@ describe('PersonalityStep', () => {
     })
 
     it('should set max percentage to 0 when discount strategy is None', async () => {
-        renderComponent(defaultProps)
+        renderComponent()
 
         await waitFor(() => {
             const track = document.querySelectorAll('.track')[1]
@@ -204,7 +257,7 @@ describe('PersonalityStep', () => {
     })
 
     it('should update the max percentage discount when valid discount', async () => {
-        renderComponent(defaultProps)
+        renderComponent()
 
         await waitFor(() => {
             const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
@@ -220,7 +273,7 @@ describe('PersonalityStep', () => {
     })
 
     it('should update the max percentage discount and show an error message when discount to low (0)', async () => {
-        renderComponent(defaultProps)
+        renderComponent()
 
         await waitFor(() => {
             const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
@@ -238,7 +291,7 @@ describe('PersonalityStep', () => {
     })
 
     it('should update the max percentage discount and show an error message when discount to high (101)', async () => {
-        renderComponent(defaultProps)
+        renderComponent()
 
         await waitFor(() => {
             const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
@@ -253,8 +306,8 @@ describe('PersonalityStep', () => {
         })
     })
 
-    it('navigates to the personality preview step when Back is clicked', async () => {
-        renderComponent(defaultProps)
+    it('navigates to the previous step when Back is clicked', async () => {
+        renderComponent()
 
         await waitFor(() => {
             expect(
@@ -272,7 +325,7 @@ describe('PersonalityStep', () => {
     })
 
     it('navigates to the handover step when Next is clicked', async () => {
-        renderComponent(defaultProps)
+        renderComponent()
 
         await waitFor(() => {
             expect(

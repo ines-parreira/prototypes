@@ -4,14 +4,11 @@ import {useParams} from 'react-router-dom'
 
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
+import {useSteps} from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import {
     OnboardingBody,
     OnboardingContentContainer,
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
-
-import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
-
-import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
 export const EmailIntegrationStep: FC<StepProps> = ({
     currentStep,
@@ -20,20 +17,20 @@ export const EmailIntegrationStep: FC<StepProps> = ({
 }) => {
     const {shopName} = useParams<{shopName: string}>()
 
-    const {integration} = useShopifyIntegrationAndScope(shopName)
+    const {validSteps} = useSteps({shopName})
 
     useCheckStoreIntegration()
 
     const onNextClick = () => {
-        goToStep(WizardStepEnum.CHANNELS)
+        const nextStep = validSteps[currentStep]?.step
+
+        goToStep(nextStep)
     }
 
     const onBackClick = () => {
-        if (!integration) {
-            goToStep(WizardStepEnum.SHOPIFY_INTEGRATION)
-            return
-        }
-        goToStep(WizardStepEnum.SKILLSET)
+        const previousStep = validSteps[currentStep - 2]?.step
+
+        goToStep(previousStep)
     }
 
     return (

@@ -1,12 +1,15 @@
 import {useMemo} from 'react'
 
+import {StoreIntegration} from 'models/integration/types'
 import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import {useShopifyIntegrations} from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
 import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 
 export const useSteps = ({shopName}: {shopName: string}) => {
     const {integration} = useShopifyIntegrationAndScope(shopName)
+    const shopifyIntegrations: StoreIntegration[] = useShopifyIntegrations()
     const {emailIntegrations, defaultIntegration} = useEmailIntegrations()
     const {data, isLoading} = useGetOnboardingData(shopName)
 
@@ -19,7 +22,7 @@ export const useSteps = ({shopName}: {shopName: string}) => {
             },
             {
                 step: WizardStepEnum.SHOPIFY_INTEGRATION,
-                condition: !integration,
+                condition: shopifyIntegrations.length > 1 || !integration,
             },
             {
                 step: WizardStepEnum.EMAIL_INTEGRATION,
@@ -48,6 +51,7 @@ export const useSteps = ({shopName}: {shopName: string}) => {
             },
         ],
         [
+            shopifyIntegrations.length,
             integration,
             emailIntegrations,
             defaultIntegration,

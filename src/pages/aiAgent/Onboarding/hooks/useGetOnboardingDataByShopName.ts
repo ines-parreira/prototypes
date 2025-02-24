@@ -5,7 +5,7 @@ import {OnboardingData} from 'models/aiAgent/types'
 
 export const useGetOnboardingDataByShopName = (shopName: string) => {
     return useQuery({
-        queryKey: ['onboardingData', shopName],
+        queryKey: ['onboardingData', 'shopName', shopName],
         queryFn: async () => {
             const data = await getOnboardingDataByShopName(shopName)
             const selectedShopData = data.find(
@@ -14,7 +14,7 @@ export const useGetOnboardingDataByShopName = (shopName: string) => {
             if (shopName && selectedShopData) {
                 return selectedShopData
             }
-            return undefined
+            return null
         },
         staleTime: Infinity,
     })

@@ -57,8 +57,8 @@ const renderComponent = (state?: RootState) => {
         <QueryClientProvider client={queryClient}>
             <Provider store={mockStore(state ?? defaultState)}>
                 <PersonalityPreviewStep
-                    currentStep={2}
-                    totalSteps={3}
+                    currentStep={3}
+                    totalSteps={6}
                     goToStep={goToStep}
                 />
             </Provider>

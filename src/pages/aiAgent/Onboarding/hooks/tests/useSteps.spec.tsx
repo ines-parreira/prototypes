@@ -1,6 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks'
 
 import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import {useShopifyIntegrations} from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
 import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
@@ -9,20 +10,20 @@ import {useSteps} from '../useSteps'
 
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData')
 jest.mock('pages/settings/contactForm/hooks/useEmailIntegrations')
-
+jest.mock('pages/aiAgent/Onboarding/hooks/useShopifyIntegrations')
 jest.mock('pages/common/hooks/useShopifyIntegrationAndScope', () => ({
     useShopifyIntegrationAndScope: jest.fn(),
 }))
 
 const mockUseShopifyIntegrationAndScope =
     useShopifyIntegrationAndScope as jest.Mock
-
 const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
-
+const mockUseShopifyIntegrations = useShopifyIntegrations as jest.Mock
 const mockUseGetOnboardingData = useGetOnboardingData as jest.Mock
 
 describe('useSteps', () => {
     it('should return all steps when no integrations exist and data is loading', () => {
+        mockUseShopifyIntegrations.mockReturnValue([])
         mockUseShopifyIntegrationAndScope.mockReturnValue({
             integration: null,
             integrationId: null,
@@ -50,6 +51,7 @@ describe('useSteps', () => {
     })
 
     it('should exclude steps based on integration and email data', () => {
+        mockUseShopifyIntegrations.mockReturnValue([])
         mockUseShopifyIntegrationAndScope.mockReturnValue({
             integration: true,
             integrationId: 123,
@@ -77,6 +79,7 @@ describe('useSteps', () => {
     })
 
     it('should include SALES_PERSONALITY step when AiAgentScopes.SALES is in data.scopes', () => {
+        mockUseShopifyIntegrations.mockReturnValue([])
         mockUseShopifyIntegrationAndScope.mockReturnValue({
             integration: true,
             integrationId: 123,

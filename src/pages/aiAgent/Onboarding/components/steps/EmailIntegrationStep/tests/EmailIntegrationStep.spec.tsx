@@ -11,16 +11,19 @@ import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {chatIntegrationFixtures} from 'fixtures/chat'
 import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
+import {StoreIntegration} from 'models/integration/types'
 import {EmailIntegrationStep} from 'pages/aiAgent/Onboarding/components/steps/EmailIntegrationStep/EmailIntegrationStep'
+import {useShopifyIntegrations} from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
 import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 
-jest.mock('pages/common/hooks/useShopifyIntegrationAndScope', () => ({
-    useShopifyIntegrationAndScope: jest.fn(),
-}))
+jest.mock('pages/aiAgent/Onboarding/hooks/useShopifyIntegrations')
+jest.mock('pages/common/hooks/useShopifyIntegrationAndScope')
+jest.mock('pages/settings/contactForm/hooks/useEmailIntegrations')
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -32,20 +35,31 @@ const defaultState = {
     }),
 } as RootState
 
+const mockUseShopifyIntegrations = useShopifyIntegrations as jest.Mock
 const mockUseShopifyIntegrationAndScope =
     useShopifyIntegrationAndScope as jest.Mock
+const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
+
 const mockGoToStep = jest.fn()
+
 const queryClient = new QueryClient()
 
-const renderComponent = (state?: RootState) => {
-    renderWithRouter(
+const defaultProps = {
+    currentStep: 2,
+    totalSteps: 6,
+    goToStep: mockGoToStep,
+}
+
+const renderComponent = (
+    props = defaultProps,
+    shopifyIntegrations: StoreIntegration[] = []
+) => {
+    mockUseShopifyIntegrations.mockReturnValue(shopifyIntegrations)
+
+    return renderWithRouter(
         <QueryClientProvider client={queryClient}>
-            <Provider store={mockStore(state ?? defaultState)}>
-                <EmailIntegrationStep
-                    currentStep={2}
-                    totalSteps={3}
-                    goToStep={mockGoToStep}
-                />
+            <Provider store={mockStore(defaultState)}>
+                <EmailIntegrationStep {...props} />
             </Provider>
         </QueryClientProvider>
     )
@@ -53,7 +67,14 @@ const renderComponent = (state?: RootState) => {
 
 describe('EmailIntegrationStep', () => {
     beforeEach(() => {
-        mockUseShopifyIntegrationAndScope.mockReturnValue({integration: true})
+        // Populate the return values of the mocked hooks
+        mockUseShopifyIntegrationAndScope.mockReturnValue({
+            integration: true,
+        })
+        mockUseEmailIntegrations.mockReturnValue({
+            emailIntegrations: true,
+            defaultIntegration: true,
+        })
     })
 
     beforeAll(() => {
@@ -72,7 +93,7 @@ describe('EmailIntegrationStep', () => {
         expect(screen.getByText('Email Integration step')).toBeInTheDocument()
     })
 
-    it('navigates to the Channels step when Next is clicked', () => {
+    it('navigates to the personality preview step when Next is clicked', () => {
         renderComponent()
 
         jest.runAllTimers()
@@ -81,12 +102,14 @@ describe('EmailIntegrationStep', () => {
 
         fireEvent.click(screen.getByText(/Next/i))
 
-        expect(mockGoToStep).toHaveBeenCalledWith(WizardStepEnum.CHANNELS)
+        expect(mockGoToStep).toHaveBeenCalledWith(
+            WizardStepEnum.PERSONALITY_PREVIEW
+        )
     })
 
     it('navigates back to Shopify Integration if integration is missing', () => {
         mockUseShopifyIntegrationAndScope.mockReturnValue({integration: false})
-        renderComponent()
+        renderComponent({...defaultProps, currentStep: 3})
 
         jest.runAllTimers()
 

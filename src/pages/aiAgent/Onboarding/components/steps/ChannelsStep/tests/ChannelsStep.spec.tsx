@@ -81,7 +81,28 @@ const history = createMemoryHistory({
     ],
 })
 
-describe('ChannelsStep', () => {
+const defaultProps: StepProps = {
+    currentStep: 2,
+    totalSteps: 3,
+    goToStep,
+}
+
+const renderWithProvider = (state?: RootState, props = defaultProps) => {
+    return renderWithRouter(
+        <QueryClientProvider client={queryClient}>
+            <Provider store={mockStore(state ?? defaultState)}>
+                <ChannelsStep {...props} />
+            </Provider>
+        </QueryClientProvider>,
+        {
+            history,
+            path: '/app/ai-agent/:shopType/:shopName/onboarding/:step',
+            route: `/app/ai-agent/shopify/${shopifyIntegration.meta.shop_name}/onboarding/channels`,
+        }
+    )
+}
+
+describe('ChannelsStep - Empty state', () => {
     beforeEach(() => {
         mockUseShopifyIntegrationAndScope.mockReturnValue({integration: true})
 
@@ -107,26 +128,9 @@ describe('ChannelsStep', () => {
         )
     })
 
-    const defaultProps: StepProps = {
-        currentStep: 2,
-        totalSteps: 3,
-        goToStep,
-    }
-
-    const renderWithProvider = (state?: RootState, props = defaultProps) => {
-        return renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(state ?? defaultState)}>
-                    <ChannelsStep {...props} />
-                </Provider>
-            </QueryClientProvider>,
-            {
-                history,
-                path: '/app/ai-agent/:shopType/:shopName/onboarding/:step',
-                route: `/app/ai-agent/shopify/${shopifyIntegration.meta.shop_name}/onboarding/channels`,
-            }
-        )
-    }
+    afterAll(() => {
+        queryClient.clear()
+    })
 
     it('renders the component with main title and cards', async () => {
         renderWithProvider()
@@ -437,7 +441,7 @@ describe('ChannelsStep', () => {
 
     it('navigates to the shopify integration step when Back is clicked and there is no integration', async () => {
         mockUseShopifyIntegrationAndScope.mockReturnValue({integration: false})
-        renderWithProvider()
+        renderWithProvider(undefined, {...defaultProps, currentStep: 3})
 
         jest.runAllTimers()
 
@@ -446,6 +450,79 @@ describe('ChannelsStep', () => {
         await waitFor(() => {
             expect(goToStep).toHaveBeenCalledWith(
                 WizardStepEnum.SHOPIFY_INTEGRATION
+            )
+        })
+    })
+})
+
+describe('ChannelsStep - With preloaded data', () => {
+    beforeEach(() => {
+        mockUseShopifyIntegrationAndScope.mockReturnValue({integration: true})
+
+        // ✅ Mock getOnboardingData function
+        mockGetOnboardingData.mockResolvedValue(
+            Promise.resolve([
+                {
+                    id: 1,
+                    salesPersuasionLevel: PersuasionLevel.Moderate,
+                    salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                    salesDiscountMax: 0.8,
+                    scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
+                    shopName: shopifyIntegration.meta.shop_name,
+                    emailIntegrationIds: [5],
+                    chatIntegrationIds: [3],
+                },
+            ])
+        )
+
+        // // ✅ Mock updateOnboardingData function
+        mockUpdateOnboardingData.mockResolvedValue(
+            Promise.resolve({
+                success: true,
+            })
+        )
+    })
+
+    it('should allow navigating to next step when isDirty is false', async () => {
+        // ✅ Mock getOnboardingData function
+        mockGetOnboardingData.mockResolvedValue(
+            Promise.resolve([
+                {
+                    id: 1,
+                    salesPersuasionLevel: PersuasionLevel.Moderate,
+                    salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                    salesDiscountMax: 0.8,
+                    scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
+                    shopName: shopifyIntegration.meta.shop_name,
+                    emailIntegrationIds: [5],
+                    chatIntegrationIds: [3],
+                },
+            ])
+        )
+
+        const screen = renderWithProvider()
+
+        jest.runAllTimers()
+
+        // Ensure email and chat checkboxes are already checked (form is pre-filled)
+        await waitFor(() => {
+            expect(screen.getByLabelText('Email')).toBeChecked()
+            expect(screen.getByLabelText('Chat')).toBeChecked()
+        })
+
+        // Click on Next button
+        const nextButton = screen.getByText('Next')
+        userEvent.click(nextButton)
+
+        jest.runAllTimers()
+
+        // Since isDirty is false, updateOnboardingData should NOT be called
+        expect(mockUpdateOnboardingData).not.toHaveBeenCalled()
+
+        // Wait for goToStep to be called directly
+        await waitFor(() => {
+            expect(defaultProps.goToStep).toHaveBeenCalledWith(
+                WizardStepEnum.PERSONALITY_PREVIEW
             )
         })
     })

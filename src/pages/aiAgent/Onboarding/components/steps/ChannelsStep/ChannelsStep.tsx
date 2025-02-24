@@ -30,6 +30,7 @@ import {createChatConfiguration} from 'pages/aiAgent/Onboarding/components/steps
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
 import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import {useSteps} from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import {useUpdateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import {
     OnboardingBody,
@@ -48,7 +49,6 @@ import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServi
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import CheckBox from 'pages/common/forms/CheckBox'
 import ColorField from 'pages/common/forms/ColorField'
-import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import {createGorgiasChatIntegration} from 'state/integrations/actions'
 import {
@@ -65,6 +65,8 @@ export const ChannelsStep: React.FC<StepProps> = ({
     goToStep,
 }) => {
     const {shopName} = useParams<{shopName: string}>()
+
+    const {validSteps} = useSteps({shopName})
 
     const {data, isLoading: isLoadingOnboardingData} =
         useGetOnboardingData(shopName)
@@ -92,8 +94,6 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const [newChatColor, setNewChatColor] = useState<string>(
         GORGIAS_CHAT_DEFAULT_COLOR
     )
-
-    const {integration} = useShopifyIntegrationAndScope(shopName)
 
     const createNewChat = chatChannels.length === 0
 
@@ -168,9 +168,15 @@ export const ChannelsStep: React.FC<StepProps> = ({
         }
     }
 
+    const goToNextStep = () => {
+        const nextStep = validSteps[currentStep]?.step
+
+        goToStep(nextStep)
+    }
+
     const onNextClick = () => {
         if (!isDirty) {
-            goToStep(WizardStepEnum.PERSONALITY_PREVIEW)
+            goToNextStep()
             return
         }
         if (data && 'id' in data) {
@@ -185,7 +191,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
                 {id: data.id as string, data: updatedData},
                 {
                     onSuccess: () => {
-                        goToStep(WizardStepEnum.PERSONALITY_PREVIEW)
+                        goToNextStep()
                     },
                 }
             )
@@ -193,17 +199,9 @@ export const ChannelsStep: React.FC<StepProps> = ({
     }
 
     const onBackClick = () => {
-        if (!emailIntegrations) {
-            goToStep(WizardStepEnum.EMAIL_INTEGRATION)
-            return
-        }
+        const previousStep = validSteps[currentStep - 2]?.step
 
-        if (!integration) {
-            goToStep(WizardStepEnum.SHOPIFY_INTEGRATION)
-            return
-        }
-
-        goToStep(WizardStepEnum.SKILLSET)
+        goToStep(previousStep)
     }
 
     const renderContent = () => {

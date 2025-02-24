@@ -16,6 +16,7 @@ import {mapScopeToPreviewType} from 'pages/aiAgent/Onboarding/components/steps/P
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
 import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import {useSteps} from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import {
     OnboardingBody,
     OnboardingContentContainer,
@@ -25,7 +26,6 @@ import {
     agentChatConversationSettings,
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding/settings'
-import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 
@@ -35,6 +35,8 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
     goToStep,
 }) => {
     const {shopName} = useParams<{shopName: string}>()
+
+    const {validSteps} = useSteps({shopName})
 
     const {data, isLoading} = useGetOnboardingData(shopName)
 
@@ -61,15 +63,15 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
         useFetchPersonalityPreviewChatScenario(previewType, selectedPreview?.id)
 
     const onNextClick = () => {
-        if (data?.scopes.includes(AiAgentScopes.SALES)) {
-            goToStep(WizardStepEnum.SALES_PERSONALITY)
-            return
-        }
-        goToStep(WizardStepEnum.HANDOVER)
+        const nextStep = validSteps[currentStep]?.step
+
+        goToStep(nextStep)
     }
 
     const onBackClick = () => {
-        goToStep(WizardStepEnum.CHANNELS)
+        const previousStep = validSteps[currentStep - 2]?.step
+
+        goToStep(previousStep)
     }
 
     return (

@@ -58,8 +58,8 @@ const renderComponent = () => {
         <QueryClientProvider client={queryClient}>
             <Provider store={mockStore(defaultState)}>
                 <HandoverStep
-                    currentStep={2}
-                    totalSteps={3}
+                    currentStep={5}
+                    totalSteps={6}
                     goToStep={mockGoToStep}
                 />
             </Provider>

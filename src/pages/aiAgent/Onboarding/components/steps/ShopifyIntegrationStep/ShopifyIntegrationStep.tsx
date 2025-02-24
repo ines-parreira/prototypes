@@ -23,6 +23,7 @@ import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboard
 import {useGetOnboardingDataByShopName} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingDataByShopName'
 import {useOnboardingIntegrationRedirection} from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
 import {useShopifyIntegrations} from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
+import {useSteps} from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import {useUpdateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import {
     OnboardingBody,
@@ -58,6 +59,7 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
     goToStep,
 }) => {
     const {shopName} = useParams<{shopName: string}>()
+    const {validSteps} = useSteps({shopName})
     const {redirectToIntegration} = useOnboardingIntegrationRedirection()
     const shopifyIntegrations: StoreIntegration[] = useShopifyIntegrations()
     const {emailIntegrations, defaultIntegration} = useEmailIntegrations()
@@ -134,9 +136,11 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
         redirectToIntegration('https://apps.shopify.com/helpdesk')
     }, [redirectToIntegration])
 
-    const onBackClick = () => {
-        goToStep(WizardStepEnum.SKILLSET)
-    }
+    const onBackClick = useCallback(() => {
+        const previousStep = validSteps[currentStep - 2]?.step
+
+        goToStep(previousStep)
+    }, [validSteps, currentStep, goToStep])
 
     const goToNextStep = () => {
         let newPath = `/app/ai-agent/${selectedShopType}/${selectedShop}/onboarding/${WizardStepEnum.CHANNELS}`

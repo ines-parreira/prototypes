@@ -10,6 +10,7 @@ import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
 import {useCreateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
 import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import {useSteps} from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import {useUpdateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import {
     LoadingPulserIcon,
@@ -23,10 +24,7 @@ import {
     agentChatConversationSettings,
 } from 'pages/aiAgent/Onboarding/settings'
 import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
-import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-
-import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
@@ -42,8 +40,7 @@ export const SkillsetStep: FC<StepProps> = ({
     goToStep,
 }) => {
     const {shopName} = useParams<{shopName: string}>()
-    const {integration} = useShopifyIntegrationAndScope(shopName)
-    const {emailIntegrations, defaultIntegration} = useEmailIntegrations()
+    const {validSteps} = useSteps({shopName})
 
     const {data, isLoading: isLoadingOnboardingData} =
         useGetOnboardingData(shopName)
@@ -81,16 +78,10 @@ export const SkillsetStep: FC<StepProps> = ({
     )
 
     const onNextStep = useCallback(() => {
-        if (!integration) {
-            goToStep(WizardStepEnum.SHOPIFY_INTEGRATION)
-            return
-        }
-        if (!emailIntegrations && !defaultIntegration) {
-            goToStep(WizardStepEnum.EMAIL_INTEGRATION)
-            return
-        }
-        goToStep(WizardStepEnum.CHANNELS)
-    }, [integration, emailIntegrations, defaultIntegration, goToStep])
+        const nextStep = validSteps[currentStep]?.step
+
+        goToStep(nextStep)
+    }, [validSteps, currentStep, goToStep])
 
     const handleSubmit = useCallback(() => {
         if (isEqual(selectedScope, data?.scopes) && data && 'id' in data) {

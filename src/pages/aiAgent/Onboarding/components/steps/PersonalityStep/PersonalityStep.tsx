@@ -26,6 +26,7 @@ import {
 import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
 import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import {useSteps} from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import {useUpdateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import {
     OnboardingBody,
@@ -87,6 +88,8 @@ export const PersonalityStep: React.FC<StepProps> = ({
 }) => {
     const {shopName} = useParams<{shopName: string}>()
 
+    const {validSteps} = useSteps({shopName})
+
     const {data, isLoading: isLoadingOnboardingData} =
         useGetOnboardingData(shopName)
     const {
@@ -146,7 +149,7 @@ export const PersonalityStep: React.FC<StepProps> = ({
 
     const onNextClick = () => {
         if (!isDirty) {
-            goToStep(WizardStepEnum.HANDOVER)
+            onNextStep()
             return
         }
         if (data && 'id' in data) {
@@ -166,15 +169,23 @@ export const PersonalityStep: React.FC<StepProps> = ({
                 {id: data.id as string, data: updatedData},
                 {
                     onSuccess: () => {
-                        goToStep(WizardStepEnum.HANDOVER)
+                        onNextStep()
                     },
                 }
             )
         }
     }
 
+    const onNextStep = () => {
+        const nextStep = validSteps[currentStep]?.step
+
+        goToStep(nextStep)
+    }
+
     const onBackClick = () => {
-        goToStep(WizardStepEnum.PERSONALITY_PREVIEW)
+        const previousStep = validSteps[currentStep - 2]?.step
+
+        goToStep(previousStep)
     }
 
     return (
