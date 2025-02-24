@@ -31,6 +31,8 @@ export default function CustomerNameBodyCell({
                 <Link
                     to={`/app/customer/${surveyCustomerId}`}
                     className={css.customerName}
+                    target="_blank"
+                    rel="noopener noreferrer"
                 >
                     {customerName}
                 </Link>
