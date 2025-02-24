@@ -6,6 +6,7 @@ import ReactRefreshPlugin from '@rspack/plugin-react-refresh'
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin'
 
 import {RspackManifestPlugin} from 'rspack-manifest-plugin'
+import {TsCheckerRspackPlugin} from 'ts-checker-rspack-plugin'
 
 const {
     NODE_ENV,
@@ -154,6 +155,7 @@ export default {
         new rspack.BannerPlugin(
             'WEB_APP_RELEASE: ' + WEB_APP_RELEASE || 'undefined'
         ),
+        new TsCheckerRspackPlugin(),
     ].filter(Boolean),
     module: {
         rules: [
