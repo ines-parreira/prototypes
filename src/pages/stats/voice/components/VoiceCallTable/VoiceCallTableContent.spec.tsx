@@ -5,7 +5,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {VoiceCallStatus} from 'models/voiceCall/types'
+import {VoiceCallDisplayStatus, VoiceCallStatus} from 'models/voiceCall/types'
 import {CALL_LIST_PAGE_SIZE} from 'pages/stats/voice/constants/voiceOverview'
 import {useVoiceCallCount} from 'pages/stats/voice/hooks/useVoiceCallCount'
 import {RootState, StoreDispatch} from 'state/types'
@@ -67,6 +67,7 @@ const data = [
         voicemailUrl: null,
         callRecordingAvailable: true,
         callRecordingUrl: 'callRecordingUrl',
+        displayStatus: VoiceCallDisplayStatus.Answered,
     },
     {
         agentId: 2,
@@ -85,6 +86,7 @@ const data = [
         voicemailUrl: 'voicemailUrl',
         callRecordingAvailable: null,
         callRecordingUrl: null,
+        displayStatus: VoiceCallDisplayStatus.Unanswered,
     },
     {
         agentId: 3,
@@ -103,6 +105,7 @@ const data = [
         voicemailUrl: null,
         callRecordingAvailable: true,
         callRecordingUrl: 'callRecordingUrl',
+        displayStatus: VoiceCallDisplayStatus.Abandoned,
     },
 ]
 

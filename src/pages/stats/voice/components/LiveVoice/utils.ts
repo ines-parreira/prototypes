@@ -7,7 +7,10 @@ import {
 } from '@gorgias/api-queries'
 
 import {OrderDirection} from 'models/api/types'
-import {VoiceCallStatus as LegacyVoiceCallStatus} from 'models/voiceCall/types'
+import {
+    VoiceCallStatus as LegacyVoiceCallStatus,
+    VoiceCallDisplayStatus,
+} from 'models/voiceCall/types'
 import {getMoment} from 'utils/date'
 import {formatReportingQueryDate} from 'utils/reporting'
 
@@ -114,6 +117,7 @@ export const formatVoiceCallsData = (
             voicemailUrl: null,
             callRecordingAvailable: voiceCall.has_call_recording,
             callRecordingUrl: null,
+            displayStatus: VoiceCallDisplayStatus.Answered, // TODO: placeholder, set real display status when we have termination_status
         }
     })
 

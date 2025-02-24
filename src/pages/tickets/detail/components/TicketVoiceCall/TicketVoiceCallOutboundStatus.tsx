@@ -3,7 +3,7 @@ import React from 'react'
 import {
     getDisplayOutboundVoiceCallStatus,
     VoiceCall,
-    VoiceCallDisplayStatus,
+    DEPRECATED_VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 
@@ -27,7 +27,7 @@ export default function TicketVoiceCallOutboundStatus({voiceCall}: Props) {
         </div>
     )
     switch (getDisplayOutboundVoiceCallStatus(voiceCall.status)) {
-        case VoiceCallDisplayStatus.Ringing:
+        case DEPRECATED_VoiceCallDisplayStatus.Ringing:
             return (
                 <div className={css.statusWrapper}>
                     <div>Waiting for</div>
@@ -38,7 +38,7 @@ export default function TicketVoiceCallOutboundStatus({voiceCall}: Props) {
                     ...
                 </div>
             )
-        case VoiceCallDisplayStatus.Failed:
+        case DEPRECATED_VoiceCallDisplayStatus.Failed:
             return (
                 <div className={css.errorStatus}>
                     <strong>Failed: </strong>Our provider's carriers could not
@@ -47,7 +47,7 @@ export default function TicketVoiceCallOutboundStatus({voiceCall}: Props) {
                     or dialing a number with poor reputation.
                 </div>
             )
-        case VoiceCallDisplayStatus.Missed:
+        case DEPRECATED_VoiceCallDisplayStatus.Missed:
             return (
                 <div className={css.statusWrapper}>
                     <div className={css.errorStatus}>Call missed by</div>
@@ -57,8 +57,8 @@ export default function TicketVoiceCallOutboundStatus({voiceCall}: Props) {
                     />
                 </div>
             )
-        case VoiceCallDisplayStatus.InProgress:
-        case VoiceCallDisplayStatus.Answered:
+        case DEPRECATED_VoiceCallDisplayStatus.InProgress:
+        case DEPRECATED_VoiceCallDisplayStatus.Answered:
             return (
                 <CollapsibleDetails title={answeredStatus}>
                     <TicketVoiceCallEvents callId={voiceCall.id} />

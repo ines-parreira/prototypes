@@ -69,5 +69,6 @@ export const selectVoiceCallData = (
         voicemailUrl: row[VoiceCallDimension.VoicemailUrl],
         callRecordingAvailable: row[VoiceCallDimension.CallRecordingAvailable],
         callRecordingUrl: row[VoiceCallDimension.CallRecordingUrl],
+        displayStatus: row[VoiceCallDimension.DisplayStatus],
     }))
 }

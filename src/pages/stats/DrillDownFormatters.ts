@@ -255,6 +255,7 @@ export const formatVoiceDrillDownRowData = ({
     voicemailUrl: row[VoiceCallDimension.VoicemailUrl],
     callRecordingAvailable: row[VoiceCallDimension.CallRecordingAvailable],
     callRecordingUrl: row[VoiceCallDimension.CallRecordingUrl],
+    displayStatus: row[VoiceCallDimension.DisplayStatus],
     metricValue: row[metricField],
     rowData: row,
 })

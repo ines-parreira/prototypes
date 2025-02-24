@@ -4,7 +4,7 @@ import React from 'react'
 import {
     getDisplayInboundVoiceCallStatus,
     VoiceCall,
-    VoiceCallDisplayStatus,
+    DEPRECATED_VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 
@@ -23,11 +23,11 @@ export const TicketVoiceCallInboundStatus = ({voiceCall}: Props) => {
             voiceCall.last_answered_by_agent_id
         )
     ) {
-        case VoiceCallDisplayStatus.Ringing:
+        case DEPRECATED_VoiceCallDisplayStatus.Ringing:
             return <>Ringing</>
-        case VoiceCallDisplayStatus.Failed:
+        case DEPRECATED_VoiceCallDisplayStatus.Failed:
             return <div className={css.errorStatus}>Failed</div>
-        case VoiceCallDisplayStatus.Missed:
+        case DEPRECATED_VoiceCallDisplayStatus.Missed:
             return (
                 <CollapsibleDetails
                     title={
@@ -52,8 +52,8 @@ export const TicketVoiceCallInboundStatus = ({voiceCall}: Props) => {
                     <TicketVoiceCallEvents callId={voiceCall.id} />
                 </CollapsibleDetails>
             )
-        case VoiceCallDisplayStatus.InProgress:
-        case VoiceCallDisplayStatus.Answered:
+        case DEPRECATED_VoiceCallDisplayStatus.InProgress:
+        case DEPRECATED_VoiceCallDisplayStatus.Answered:
             return (
                 <CollapsibleDetails
                     title={

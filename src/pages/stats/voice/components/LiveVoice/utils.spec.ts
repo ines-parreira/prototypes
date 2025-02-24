@@ -8,6 +8,7 @@ import {
 import moment from 'moment'
 
 import {OrderDirection} from 'models/api/types'
+import {VoiceCallDisplayStatus} from 'models/voiceCall/types'
 import {getMoment} from 'utils/date'
 import {assumeMock} from 'utils/testing'
 
@@ -307,6 +308,7 @@ describe('utils', () => {
                     voicemailUrl: null,
                     callRecordingAvailable: true,
                     callRecordingUrl: null,
+                    displayStatus: VoiceCallDisplayStatus.Answered,
                 },
             ])
         })
@@ -349,6 +351,7 @@ describe('utils', () => {
                     voicemailUrl: null,
                     callRecordingAvailable: true,
                     callRecordingUrl: null,
+                    displayStatus: VoiceCallDisplayStatus.Answered,
                 },
             ])
         })

@@ -122,6 +122,7 @@ export enum FeatureFlagKey {
     ShopifyInventoryItemScopeBanner = 'shopify-inventory-item-scope-banner',
     ShopifyHideActionButtons = 'shopify-widget-hide-action-buttons',
     ShopifyOrderNotes = 'shopify-order-notes',
+    ShowNewUnansweredStatuses = 'show-new-unanswered-statuses',
     StandaloneConvAiOverviewPage = 'standalone-conv-ai_overview-page',
     StandaloneAiSalesAnalyticsPage = 'standalone-ai-sales-analytics-page',
     StandaloneAIAgentSalesPage = 'standalone-ai-agent-sales-page',

@@ -29,6 +29,7 @@ export enum VoiceCallDimension {
     VoicemailUrl = 'VoiceCall.voicemailUrl',
     CallRecordingAvailable = 'VoiceCall.callRecordingAvailable',
     CallRecordingUrl = 'VoiceCall.callRecordingUrl',
+    DisplayStatus = 'VoiceCall.displayStatus',
 }
 
 export enum VoiceCallMember {

@@ -5,7 +5,7 @@ import {
     VoiceCallMeasure,
     VoiceCallSegment,
 } from 'models/reporting/cubes/VoiceCallCube'
-import {VoiceCallStatus} from 'models/voiceCall/types'
+import {VoiceCallDisplayStatus, VoiceCallStatus} from 'models/voiceCall/types'
 
 export type VoiceCallStatListItem = {
     [VoiceCallDimension.AgentId]: string | null
@@ -25,6 +25,7 @@ export type VoiceCallStatListItem = {
     [VoiceCallDimension.VoicemailUrl]: string | null
     [VoiceCallDimension.CallRecordingAvailable]: boolean | null
     [VoiceCallDimension.CallRecordingUrl]: string | null
+    [VoiceCallDimension.DisplayStatus]: VoiceCallDisplayStatus
 }
 
 export type VoiceCallSummary = {
@@ -45,6 +46,7 @@ export type VoiceCallSummary = {
     voicemailUrl: string | null
     callRecordingAvailable?: boolean | null
     callRecordingUrl: string | null
+    displayStatus: VoiceCallDisplayStatus
 }
 
 export enum VoiceCallFilterOptions {

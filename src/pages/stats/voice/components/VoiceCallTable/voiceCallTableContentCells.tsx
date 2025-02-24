@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom'
 import {getFormattedDurationEndedCall} from 'models/voiceCall/utils'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import DEPRECATED_VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/DEPRECATED_VoiceCallStatusLabel'
 import VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel'
 import VoiceCallTimerBadge from 'pages/common/components/VoiceCallTimerBadge/VoiceCallTimerBadge'
 import VoiceIntegrationBasicLabel from 'pages/common/components/VoiceIntegrationBasicLabel/VoiceIntegrationBasicLabel'
@@ -140,11 +141,13 @@ export const getOrderedCells = ({
     columns,
     isTableScrolled,
     isRecordingDownloadable,
+    showDisplayStatus = false,
 }: {
     item: VoiceCallSummary
     columns?: VoiceCallTableColumnName[]
     isTableScrolled: boolean
     isRecordingDownloadable?: boolean
+    showDisplayStatus?: boolean
 }) => {
     const cells: Record<
         VoiceCallTableColumnName,
@@ -197,8 +200,10 @@ export const getOrderedCells = ({
         [VoiceCallTableColumnName.State]: {
             props: {
                 className: css.tinyCell,
-                children: (
-                    <VoiceCallStatusLabel
+                children: showDisplayStatus ? (
+                    <VoiceCallStatusLabel displayStatus={item.displayStatus} />
+                ) : (
+                    <DEPRECATED_VoiceCallStatusLabel
                         voiceCallStatus={item.status}
                         direction={item.direction}
                         lastAnsweredByAgentId={item.agentId}

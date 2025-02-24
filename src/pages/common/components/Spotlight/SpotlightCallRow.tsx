@@ -10,7 +10,7 @@ import {callHighlightsTransform} from 'pages/common/components/Spotlight/helpers
 import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
 import TicketIcon from 'pages/common/components/TicketIcon'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
-import VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel'
+import DEPRECATED_VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/DEPRECATED_VoiceCallStatusLabel'
 import {formatDatetime} from 'utils'
 
 import css from './SpotlightCallRow.less'
@@ -100,7 +100,7 @@ const SpotlightCallInfo = ({
                     className={css.customerLabel}
                 />
                 <span className={css.separator} />
-                <VoiceCallStatusLabel
+                <DEPRECATED_VoiceCallStatusLabel
                     voiceCallStatus={voiceCall.status}
                     direction={voiceCall.direction}
                     lastAnsweredByAgentId={voiceCall.last_answered_by_agent_id}

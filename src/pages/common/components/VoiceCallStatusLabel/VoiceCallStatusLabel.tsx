@@ -1,51 +1,57 @@
-import {VoiceCallDirection} from '@gorgias/api-queries'
 import classNames from 'classnames'
 import React from 'react'
 
-import {
-    getDisplayInboundVoiceCallStatus,
-    getDisplayOutboundVoiceCallStatus,
-    VoiceCallDisplayStatus,
-    VoiceCallStatus,
-} from 'models/voiceCall/types'
+import {VoiceCallDisplayStatus} from 'models/voiceCall/types'
 
 import css from './VoiceCallStatusLabel.less'
 
 type Props = {
-    voiceCallStatus: VoiceCallStatus
-    direction: string
-    lastAnsweredByAgentId?: number | null
+    displayStatus: VoiceCallDisplayStatus
 }
 
-const GREEN_STATUS = [
-    VoiceCallDisplayStatus.Answered,
-    VoiceCallDisplayStatus.InProgress,
-]
-const RED_STATUS = [
-    VoiceCallDisplayStatus.Failed,
-    VoiceCallDisplayStatus.Missed,
-]
-const VoiceCallStatusLabel = ({
-    voiceCallStatus,
-    direction,
-    lastAnsweredByAgentId,
-}: Props) => {
-    const status =
-        direction === VoiceCallDirection.Inbound
-            ? getDisplayInboundVoiceCallStatus(
-                  voiceCallStatus,
-                  lastAnsweredByAgentId
-              )
-            : getDisplayOutboundVoiceCallStatus(voiceCallStatus)
+const getPrettyDisplayName = (status: VoiceCallDisplayStatus) => {
+    switch (status) {
+        case VoiceCallDisplayStatus.Ringing:
+            return 'Ringing'
+        case VoiceCallDisplayStatus.InProgress:
+            return 'In Progress'
+        case VoiceCallDisplayStatus.Answered:
+            return 'Answered'
+        case VoiceCallDisplayStatus.Missed:
+            return 'Missed'
+        case VoiceCallDisplayStatus.Abandoned:
+            return 'Abandoned'
+        case VoiceCallDisplayStatus.Cancelled:
+            return 'Cancelled'
+        case VoiceCallDisplayStatus.Failed:
+            return 'Failed'
+        case VoiceCallDisplayStatus.Unanswered:
+            return 'Unanswered'
+    }
+}
 
+const getColorClass = (status: VoiceCallDisplayStatus) => {
+    switch (status) {
+        case VoiceCallDisplayStatus.InProgress:
+        case VoiceCallDisplayStatus.Answered:
+            return css.greenStatus
+        case VoiceCallDisplayStatus.Missed:
+        case VoiceCallDisplayStatus.Failed:
+            return css.redStatus
+        case VoiceCallDisplayStatus.Abandoned:
+        case VoiceCallDisplayStatus.Unanswered:
+            return css.orangeStatus
+        case VoiceCallDisplayStatus.Ringing:
+        case VoiceCallDisplayStatus.Cancelled:
+        default:
+            return css.greyStatus
+    }
+}
+
+const VoiceCallStatusLabel = ({displayStatus}: Props) => {
     return (
-        <div
-            className={classNames({
-                [css.greenStatus]: status && GREEN_STATUS.includes(status),
-                [css.redStatus]: status && RED_STATUS.includes(status),
-            })}
-        >
-            {status}
+        <div className={classNames(getColorClass(displayStatus))}>
+            {getPrettyDisplayName(displayStatus)}
         </div>
     )
 }

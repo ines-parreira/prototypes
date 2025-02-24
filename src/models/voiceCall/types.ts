@@ -20,12 +20,23 @@ export enum VoiceCallStatus {
     Missed = 'missed',
 }
 
-export enum VoiceCallDisplayStatus {
+export enum DEPRECATED_VoiceCallDisplayStatus {
     Answered = 'Answered',
     InProgress = 'In progress',
     Ringing = 'Ringing',
     Missed = 'Missed',
     Failed = 'Failed',
+}
+
+export enum VoiceCallDisplayStatus {
+    Ringing = 'ringing',
+    InProgress = 'in-progress',
+    Answered = 'answered',
+    Missed = 'missed',
+    Abandoned = 'abandoned',
+    Cancelled = 'cancelled',
+    Failed = 'failed',
+    Unanswered = 'unanswered',
 }
 
 export type VoiceCallSummary = {
@@ -149,19 +160,19 @@ export const getDisplayOutboundVoiceCallStatus = (status: VoiceCallStatus) => {
         case VoiceCallStatus.InProgress:
         case VoiceCallStatus.Queued:
         case VoiceCallStatus.Initiated:
-            return VoiceCallDisplayStatus.Ringing
+            return DEPRECATED_VoiceCallDisplayStatus.Ringing
         case VoiceCallStatus.Failed:
-            return VoiceCallDisplayStatus.Failed
+            return DEPRECATED_VoiceCallDisplayStatus.Failed
         case VoiceCallStatus.Canceled:
         case VoiceCallStatus.Busy:
         case VoiceCallStatus.NoAnswer:
         case VoiceCallStatus.Missed:
-            return VoiceCallDisplayStatus.Missed
+            return DEPRECATED_VoiceCallDisplayStatus.Missed
         case VoiceCallStatus.Answered:
         case VoiceCallStatus.Connected:
-            return VoiceCallDisplayStatus.InProgress
+            return DEPRECATED_VoiceCallDisplayStatus.InProgress
         case VoiceCallStatus.Completed:
-            return VoiceCallDisplayStatus.Answered
+            return DEPRECATED_VoiceCallDisplayStatus.Answered
         default:
             return null
     }
@@ -176,23 +187,23 @@ export const getDisplayInboundVoiceCallStatus = (
         case VoiceCallStatus.Initiated:
         case VoiceCallStatus.Queued:
         case VoiceCallStatus.InProgress:
-            return VoiceCallDisplayStatus.Ringing
+            return DEPRECATED_VoiceCallDisplayStatus.Ringing
         case VoiceCallStatus.Failed:
         case VoiceCallStatus.NoAnswer:
-            return VoiceCallDisplayStatus.Failed
+            return DEPRECATED_VoiceCallDisplayStatus.Failed
         case VoiceCallStatus.Canceled:
         case VoiceCallStatus.Busy:
         case VoiceCallStatus.Missed:
         case VoiceCallStatus.Ending:
-            return VoiceCallDisplayStatus.Missed
+            return DEPRECATED_VoiceCallDisplayStatus.Missed
         case VoiceCallStatus.Answered:
         case VoiceCallStatus.Connected:
-            return VoiceCallDisplayStatus.InProgress
+            return DEPRECATED_VoiceCallDisplayStatus.InProgress
         case VoiceCallStatus.Completed:
             if (lastAnsweredByAgentId === null) {
-                return VoiceCallDisplayStatus.Missed
+                return DEPRECATED_VoiceCallDisplayStatus.Missed
             }
-            return VoiceCallDisplayStatus.Answered
+            return DEPRECATED_VoiceCallDisplayStatus.Answered
         default:
             return null
     }

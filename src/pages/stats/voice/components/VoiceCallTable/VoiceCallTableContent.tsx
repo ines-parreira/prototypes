@@ -2,6 +2,8 @@ import {Skeleton} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {UIEventHandler, useMemo, useState} from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
+import useFlag from 'core/flags/hooks/useFlag'
 import useMeasure from 'hooks/useMeasure'
 import {OrderDirection} from 'models/api/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -51,6 +53,10 @@ export default function VoiceCallTableContent({
     orderDirection,
     onColumnClick,
 }: VoiceCallTableContentProps) {
+    const shouldShowNewUnansweredStatuses = useFlag(
+        FeatureFlagKey.ShowNewUnansweredStatuses
+    )
+
     const [ref, {width: measuredWidth}] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
 
@@ -139,6 +145,8 @@ export default function VoiceCallTableContent({
                                           columns,
                                           isTableScrolled,
                                           isRecordingDownloadable,
+                                          showDisplayStatus:
+                                              shouldShowNewUnansweredStatuses,
                                       }).map((cell: Cell<typeof BodyCell>) => (
                                           <BodyCell
                                               key={`${cell.key}-cell`}
