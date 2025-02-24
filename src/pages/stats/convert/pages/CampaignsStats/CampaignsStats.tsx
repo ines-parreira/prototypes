@@ -1,12 +1,13 @@
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {isEmpty} from 'lodash'
+
 import React, {useMemo} from 'react'
 import {Redirect, useParams} from 'react-router-dom'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useGridSize} from 'hooks/useGridSize'
-import {FilterComponentKey, FilterKey} from 'models/stat/types'
+import {FilterKey} from 'models/stat/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import ConvertLimitBanner from 'pages/convert/campaigns/components/ConvertLimitBanner/ConvertLimitBanner'
@@ -15,23 +16,26 @@ import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
 import {useIsConvertPerformanceViewEnabled} from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
 import {ConvertRouteParams} from 'pages/convert/common/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
+import {CampaignsLegacyReportConfig} from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
 import DownloadOverviewData from 'pages/stats/convert/components/DownloadOverviewData'
 import RequestABTest from 'pages/stats/convert/components/RequestABTest'
 import {RevenueFilters} from 'pages/stats/convert/containers/RevenueFilters'
 import {RevenueStatsContent} from 'pages/stats/convert/containers/RevenueStatsContent'
 
 import {useShopifyIntegrations} from 'pages/stats/convert/hooks/useShopifyIntegrations'
+
+import css from 'pages/stats/convert/pages/CampaignsStats/CampaignsStats.less'
 import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
-
 import StatsPage from 'pages/stats/StatsPage'
-
-import css from './CampaignsStats.less'
 
 type CampaignsStatsProps = {
     isConvertSubscriber: boolean
 }
+
+export const CAMPAIGNS_REPORT_TITLE = 'Campaigns'
+const CAMPAIGN_PERFORMANCE_REPORT_TITLE = 'Performance'
 
 const CampaignsStats = ({isConvertSubscriber}: CampaignsStatsProps) => {
     const AnalyticsNewFiltersConvert =
@@ -46,7 +50,11 @@ const CampaignsStats = ({isConvertSubscriber}: CampaignsStatsProps) => {
     return (
         <CampaignStatsFilters>
             <StatsPage
-                title={chatIntegrationId ? 'Performance' : 'Campaigns'}
+                title={
+                    chatIntegrationId
+                        ? CAMPAIGN_PERFORMANCE_REPORT_TITLE
+                        : CAMPAIGNS_REPORT_TITLE
+                }
                 titleExtra={
                     <>
                         {showButton ? <RequestABTest /> : null}
@@ -71,15 +79,14 @@ const CampaignsStats = ({isConvertSubscriber}: CampaignsStatsProps) => {
                                         },
                                     },
                                 }}
-                                persistentFilters={[
-                                    FilterKey.Period,
-                                    FilterKey.AggregationWindow,
-                                    FilterComponentKey.Store,
-                                ]}
-                                optionalFilters={[
-                                    FilterKey.Campaigns,
-                                    FilterKey.CampaignStatuses,
-                                ]}
+                                persistentFilters={
+                                    CampaignsLegacyReportConfig.reportFilters
+                                        .persistent
+                                }
+                                optionalFilters={
+                                    CampaignsLegacyReportConfig.reportFilters
+                                        .optional
+                                }
                                 withSavedFilters={false}
                             />
                         </DashboardGridCell>

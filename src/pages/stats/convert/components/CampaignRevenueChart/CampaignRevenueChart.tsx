@@ -2,7 +2,6 @@ import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 
-import {useGridSize} from 'hooks/useGridSize'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
@@ -13,10 +12,10 @@ import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStat
 import {useGetCurrencyForStore} from 'pages/stats/convert/hooks/useGetCurrencyForStore'
 
 import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {getTimezone} from 'state/currentUser/selectors'
 
-const CampaignRevenueChart = () => {
+const CampaignRevenueChart = ({chartId, dashboard}: DashboardChartProps) => {
     const {
         selectedIntegrations,
         selectedCampaignIds,
@@ -46,27 +45,23 @@ const CampaignRevenueChart = () => {
 
     const isLoading = isFetching || isError
 
-    const getGridCellSize = useGridSize()
-
     return (
-        <>
-            <DashboardGridCell size={getGridCellSize(12)}>
-                <ChartCard
-                    title={OverviewMetricConfig.revenue.title}
-                    hint={OverviewMetricConfig.revenue.hint}
-                >
-                    <LineChart
-                        data={[
-                            {
-                                label: `${CAMPAIGN_REVENUE_LABEL} ${currency}`,
-                                values: data || [],
-                            },
-                        ]}
-                        isLoading={isLoading}
-                    />
-                </ChartCard>
-            </DashboardGridCell>
-        </>
+        <ChartCard
+            title={OverviewMetricConfig.revenue.title}
+            hint={OverviewMetricConfig.revenue.hint}
+            chartId={chartId}
+            dashboard={dashboard}
+        >
+            <LineChart
+                data={[
+                    {
+                        label: `${CAMPAIGN_REVENUE_LABEL} ${currency}`,
+                        values: data || [],
+                    },
+                ]}
+                isLoading={isLoading}
+            />
+        </ChartCard>
     )
 }
 

@@ -1,21 +1,21 @@
 import {fromJS} from 'immutable'
+
 import React from 'react'
 
 import {campaign} from 'fixtures/campaign'
 import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
 
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import useGetCampaignRevenueTimeSeries from 'pages/stats/convert/hooks/stats/useGetCampaignRevenueTimeSeries'
+import {CampaignRevenueShareStat} from 'pages/stats/convert/components/CampaignRevenueShareStat/CampaignRevenueShareStat'
+import {useGetRevenueShareChart} from 'pages/stats/convert/hooks/stats/useGetRevenueShareChart'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {assumeMock, renderWithStore} from 'utils/testing'
-
-import CampaignRevenueChart from '../CampaignRevenueChart'
 
 jest.mock('pages/stats/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
 
-jest.mock('pages/stats/convert/hooks/stats/useGetCampaignRevenueTimeSeries')
-const useGetCampaignRevenueMock = assumeMock(useGetCampaignRevenueTimeSeries)
+jest.mock('pages/stats/convert/hooks/stats/useGetRevenueShareChart')
+const useGetRevenueShareChartMock = assumeMock(useGetRevenueShareChart)
 
 jest.mock('pages/stats/common/components/charts/LineChart/LineChart', () => ({
     __esModule: true,
@@ -24,7 +24,7 @@ jest.mock('pages/stats/common/components/charts/LineChart/LineChart', () => ({
     },
 }))
 
-describe('<CampaignRevenueChart />', () => {
+describe('<CampaignRevenueShareStat />', () => {
     beforeAll(() => {
         useCampaignStatsFiltersMock.mockReturnValue({
             selectedPeriod: {
@@ -37,7 +37,7 @@ describe('<CampaignRevenueChart />', () => {
             campaigns: [campaign],
         } as any)
 
-        useGetCampaignRevenueMock.mockReturnValue({
+        useGetRevenueShareChartMock.mockReturnValue({
             isFetching: false,
             isError: false,
             data: [],
@@ -45,7 +45,7 @@ describe('<CampaignRevenueChart />', () => {
     })
 
     it('renders without errors', () => {
-        const {getByText} = renderWithStore(<CampaignRevenueChart />, {
+        const {getByText} = renderWithStore(<CampaignRevenueShareStat />, {
             integrations: fromJS({
                 integrations: [
                     ...integrationsState.integrations,
@@ -54,18 +54,18 @@ describe('<CampaignRevenueChart />', () => {
             }),
         })
 
-        expect(useGetCampaignRevenueMock).toHaveBeenCalledTimes(1)
+        expect(useGetRevenueShareChartMock).toHaveBeenCalledTimes(1)
         expect(getByText('LineChart')).toBeInTheDocument()
     })
 
     it('renders when no data', () => {
-        useGetCampaignRevenueMock.mockReturnValue({
+        useGetRevenueShareChartMock.mockReturnValue({
             isFetching: false,
             isError: false,
             data: undefined,
         })
 
-        const {getByText} = renderWithStore(<CampaignRevenueChart />, {
+        const {getByText} = renderWithStore(<CampaignRevenueShareStat />, {
             integrations: fromJS({
                 integrations: [
                     ...integrationsState.integrations,
@@ -74,7 +74,7 @@ describe('<CampaignRevenueChart />', () => {
             }),
         })
 
-        expect(useGetCampaignRevenueMock).toHaveBeenCalledTimes(1)
+        expect(useGetRevenueShareChartMock).toHaveBeenCalledTimes(1)
         expect(getByText('LineChart')).toBeInTheDocument()
     })
 })

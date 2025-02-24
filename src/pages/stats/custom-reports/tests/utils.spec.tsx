@@ -10,9 +10,11 @@ import {
     AnalyticsCustomReportType,
 } from '@gorgias/api-types'
 import {AxiosError} from 'axios'
+
 import React from 'react'
 
-import {REPORTS_CONFIG, ReportsIDs} from 'pages/stats/custom-reports/config'
+import {REPORTS_CONFIG} from 'pages/stats/custom-reports/config'
+import {ReportsIDs} from 'pages/stats/custom-reports/constants'
 import {getSearchConfig} from 'pages/stats/custom-reports/CustomReportsModal/ModalSearchBar'
 import {
     ChartConfig,

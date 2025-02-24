@@ -6,6 +6,11 @@ import {
 } from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
 
 import {
+    CampaignsChart,
+    CampaignsPerformanceReportConfig,
+} from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
+import {ReportsIDs} from 'pages/stats/custom-reports/constants'
+import {
     ChartConfig,
     ReportConfig,
     ReportsModalConfig,
@@ -61,27 +66,6 @@ import {
 } from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
 
 export const MAX_CHECKED_CHARTS = 20
-
-export const SUPPORT_PERFORMANCE_OVERVIEW_ID =
-    'SupportPerformanceOverviewReportConfig'
-export const AGENT_PERFORMANCE_ID = 'SupportPerformanceAgentsReportConfig'
-
-export enum ReportsIDs {
-    AutomateOverviewReportConfig = 'AutomateOverviewReportConfig',
-    SupportPerformanceOverviewReportConfig = 'SupportPerformanceOverviewReportConfig',
-    SupportPerformanceAgentsReportConfig = 'SupportPerformanceAgentsReportConfig',
-    SupportPerformanceRevenueReportConfig = 'SupportPerformanceRevenueReportConfig',
-    BusiestTimesReportConfig = 'BusiestTimesReportConfig',
-    ChannelsReportConfig = 'ChannelsReportConfig',
-    ServiceLevelAgreementsReportConfig = 'ServiceLevelAgreementsReportConfig',
-    HelpCenterReportConfig = 'HelpCenterReportConfig',
-    TicketFieldsReportConfig = 'TicketFieldsReportConfig',
-    TicketInsightsTagsReportConfig = 'TicketInsightsTagsReportConfig',
-    AutoQAReportConfig = 'AutoQAReportConfig',
-    SatisfactionReportConfig = 'SatisfactionReportConfig',
-    VoiceAgentsReportConfig = 'VoiceAgentsReportConfig',
-    VoiceOverviewReportConfig = 'VoiceOverviewReportConfig',
-}
 
 export const REPORTS_CONFIG: ReportsModalConfig = [
     {
@@ -156,6 +140,16 @@ export const REPORTS_CONFIG: ReportsModalConfig = [
                 type: AutomateOverviewChart,
                 config: AutomateOverviewReportConfig,
                 id: ReportsIDs.AutomateOverviewReportConfig,
+            },
+        ],
+    },
+    {
+        category: 'Convert',
+        children: [
+            {
+                type: CampaignsChart,
+                config: CampaignsPerformanceReportConfig,
+                id: ReportsIDs.CampaignsReportConfig,
             },
         ],
     },

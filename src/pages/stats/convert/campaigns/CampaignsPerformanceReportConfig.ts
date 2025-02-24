@@ -1,0 +1,134 @@
+import {
+    CAMPAIGNS_REPORT_OPTIONAL_FILTERS,
+    CAMPAIGNS_REPORT_PERSISTENT_FILTERS,
+} from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
+import {PerformanceCampaignSalesGraphChart} from 'pages/stats/convert/charts/PerformanceCampaignSalesGraphChart'
+import {PerformanceCampaignSalesKpiChart} from 'pages/stats/convert/charts/PerformanceCampaignSalesKpiChart'
+import {PerformanceEngagementKpiChart} from 'pages/stats/convert/charts/PerformanceEngagementKpiChart'
+import {PerformanceImpressionsGraphChart} from 'pages/stats/convert/charts/PerformanceImpressionsGraphChart'
+import {PerformanceImpressionsKpiChart} from 'pages/stats/convert/charts/PerformanceImpressionsKpiChart'
+import {PerformanceInfluencedRevenueShareKpiChart} from 'pages/stats/convert/charts/PerformanceInlfluencedRevenueShareKpiChart'
+import {RevenueKpiChart} from 'pages/stats/convert/charts/RevenueKpiChart'
+import CampaignRevenueChart from 'pages/stats/convert/components/CampaignRevenueChart'
+import {OverviewMetricConfig} from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
+import {
+    CampaignPerformanceTable,
+    CAMPAIGNS_PERFORMANCE_TABLE_TITLE,
+} from 'pages/stats/convert/containers/CampaignPerformanceTable'
+import {CAMPAIGNS_REPORT_TITLE} from 'pages/stats/convert/pages/CampaignsStats/CampaignsStats'
+import {CampaignsTotalsMetricNames} from 'pages/stats/convert/services/constants'
+import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
+import {STATS_ROUTES} from 'routes/constants'
+
+export enum CampaignsChart {
+    RevenueKpiChart = 'RevenueKpiChart',
+    PerformanceInfluencedRevenueShareKpiChart = 'PerformanceInfluencedRevenueShareKpiChart',
+    CampaignRevenueChart = 'CampaignRevenueChart',
+    PerformanceImpressionsKpiChart = 'PerformanceImpressionsKpiChart',
+    PerformanceEngagementKpiChart = 'PerformanceEngagementKpiChart',
+    PerformanceCampaignSalesKpiChart = 'PerformanceCampaignSalesKpiChart',
+    PerformanceImpressionsGraphChart = 'PerformanceImpressionsGraphChart',
+    PerformanceCampaignSalesGraphChart = 'PerformanceCampaignSalesGraphChart',
+    CampaignPerformanceTable = 'CampaignPerformanceTable',
+}
+
+export const CampaignsPerformanceReportConfig: ReportConfig<CampaignsChart> = {
+    reportName: `${CAMPAIGNS_REPORT_TITLE} Performance Report`,
+    reportPath: STATS_ROUTES.CONVERT_CAMPAIGNS,
+    reportFilters: {
+        persistent: CAMPAIGNS_REPORT_PERSISTENT_FILTERS,
+        optional: CAMPAIGNS_REPORT_OPTIONAL_FILTERS,
+    },
+    charts: {
+        [CampaignsChart.RevenueKpiChart]: {
+            chartComponent: RevenueKpiChart,
+            label: OverviewMetricConfig[CampaignsTotalsMetricNames.revenue]
+                .title,
+            csvProducer: null,
+            description:
+                OverviewMetricConfig[CampaignsTotalsMetricNames.revenue].hint
+                    .title,
+            chartType: ChartType.Card,
+        },
+        [CampaignsChart.PerformanceInfluencedRevenueShareKpiChart]: {
+            chartComponent: PerformanceInfluencedRevenueShareKpiChart,
+            label: OverviewMetricConfig[
+                CampaignsTotalsMetricNames.influencedRevenueShare
+            ].title,
+            csvProducer: null,
+            description:
+                OverviewMetricConfig[
+                    CampaignsTotalsMetricNames.influencedRevenueShare
+                ].hint.title,
+            chartType: ChartType.Card,
+        },
+        [CampaignsChart.CampaignRevenueChart]: {
+            chartComponent: CampaignRevenueChart,
+            label: OverviewMetricConfig.revenue.title,
+            csvProducer: null,
+            description: OverviewMetricConfig.revenue.hint.title,
+            chartType: ChartType.Graph,
+        },
+        [CampaignsChart.PerformanceImpressionsKpiChart]: {
+            chartComponent: PerformanceImpressionsKpiChart,
+            label: OverviewMetricConfig[CampaignsTotalsMetricNames.impressions]
+                .title,
+            csvProducer: null,
+            description:
+                OverviewMetricConfig[CampaignsTotalsMetricNames.impressions]
+                    .hint.title,
+            chartType: ChartType.Card,
+        },
+        [CampaignsChart.PerformanceEngagementKpiChart]: {
+            chartComponent: PerformanceEngagementKpiChart,
+            label: OverviewMetricConfig[CampaignsTotalsMetricNames.engagement]
+                .title,
+            csvProducer: null,
+            description:
+                OverviewMetricConfig[CampaignsTotalsMetricNames.engagement].hint
+                    .title,
+            chartType: ChartType.Card,
+        },
+        [CampaignsChart.PerformanceCampaignSalesKpiChart]: {
+            chartComponent: PerformanceCampaignSalesKpiChart,
+            label: OverviewMetricConfig[
+                CampaignsTotalsMetricNames.campaignSalesCount
+            ].title,
+            csvProducer: null,
+            description:
+                OverviewMetricConfig[
+                    CampaignsTotalsMetricNames.campaignSalesCount
+                ].hint.title,
+            chartType: ChartType.Card,
+        },
+        [CampaignsChart.PerformanceImpressionsGraphChart]: {
+            chartComponent: PerformanceImpressionsGraphChart,
+            label: OverviewMetricConfig[CampaignsTotalsMetricNames.impressions]
+                .title,
+            csvProducer: null,
+            description:
+                OverviewMetricConfig[CampaignsTotalsMetricNames.impressions]
+                    .hint.title,
+            chartType: ChartType.Graph,
+        },
+        [CampaignsChart.PerformanceCampaignSalesGraphChart]: {
+            chartComponent: PerformanceCampaignSalesGraphChart,
+            label: OverviewMetricConfig[
+                CampaignsTotalsMetricNames.campaignSalesCount
+            ].title,
+            csvProducer: null,
+            description:
+                OverviewMetricConfig[
+                    CampaignsTotalsMetricNames.campaignSalesCount
+                ].hint.title,
+            chartType: ChartType.Graph,
+        },
+        [CampaignsChart.CampaignPerformanceTable]: {
+            chartComponent: CampaignPerformanceTable,
+            label: CAMPAIGNS_PERFORMANCE_TABLE_TITLE,
+            csvProducer: null,
+            description: undefined,
+            chartType: ChartType.Table,
+        },
+    },
+}

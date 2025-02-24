@@ -1,14 +1,19 @@
 import _get from 'lodash/get'
+
 import React, {useEffect, useMemo, useState} from 'react'
 import {useParams} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
+import {useIsConvertPerformanceViewEnabled} from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
 import {ConvertRouteParams} from 'pages/convert/common/types'
+import ChartCard from 'pages/stats/ChartCard'
 import {SharedDimension} from 'pages/stats/convert/clients/constants'
+import {CampaignPerformanceEditColumns} from 'pages/stats/convert/components/CampaignPerformanceEditColumns'
 
 import {CampaignTableStats} from 'pages/stats/convert/components/CampaignTableStats'
+import css from 'pages/stats/convert/components/CampaignTableStats/CampaignTableStats.less'
 import {CAMPAIGN_TABLE_COLUMN_TITLES} from 'pages/stats/convert/components/CampaignTableStats/constants'
 
 import {ITEMS_PER_PAGE} from 'pages/stats/convert/constants/campaignPerformanceTable'
@@ -21,12 +26,18 @@ import {useGetCurrencyForStore} from 'pages/stats/convert/hooks/useGetCurrencyFo
 import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
 import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
 import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import {DashboardChartProps} from 'pages/stats/custom-reports/types'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getIntegrationByIdAndType} from 'state/integrations/selectors'
 import {ConvertMetric} from 'state/ui/stats/types'
 
-export const CampaignPerformanceTable = () => {
+export const CAMPAIGNS_PERFORMANCE_TABLE_TITLE = 'Campaigns performance'
+
+export const CampaignPerformanceTable = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
+    const isConvertPerformanceViewEnabled = useIsConvertPerformanceViewEnabled()
     const {
         campaigns,
         selectedIntegrations,
@@ -153,23 +164,18 @@ export const CampaignPerformanceTable = () => {
         variantData,
         selectedCampaignsOperator,
     ])
-
     const handleClickNextPage = () => {
         let nextValue = offset + ITEMS_PER_PAGE
-
         if (nextValue >= campaigns.length) {
             nextValue = campaigns.length - 1
         }
         setOffset(nextValue)
     }
-
     const handleClickPrevPage = () => {
         let nextValue = offset - ITEMS_PER_PAGE
-
         if (nextValue < 0) {
             nextValue = 0
         }
-
         setOffset(nextValue)
     }
 
@@ -178,7 +184,18 @@ export const CampaignPerformanceTable = () => {
     }, [selectedIntegrations, campaigns])
 
     return (
-        <DashboardGridCell size={12}>
+        <ChartCard
+            title={CAMPAIGNS_PERFORMANCE_TABLE_TITLE}
+            chartId={chartId}
+            titleExtra={
+                isConvertPerformanceViewEnabled && (
+                    <div className={css.editColumns}>
+                        <CampaignPerformanceEditColumns />
+                    </div>
+                )
+            }
+            dashboard={dashboard}
+        >
             <CampaignTableStats
                 chatIntegrationId={chatIntegration?.id}
                 isLoading={
@@ -189,6 +206,6 @@ export const CampaignPerformanceTable = () => {
                 onClickNextPage={handleClickNextPage}
                 onClickPrevPage={handleClickPrevPage}
             />
-        </DashboardGridCell>
+        </ChartCard>
     )
 }

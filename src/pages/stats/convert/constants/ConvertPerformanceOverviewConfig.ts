@@ -3,10 +3,13 @@ import {TooltipData} from 'pages/stats/types'
 
 export const OverviewMetricConfig: Record<
     CampaignsTotalsMetricNames,
-    {title: string; hint?: TooltipData}
+    {title: string; hint: TooltipData}
 > = {
     [CampaignsTotalsMetricNames.gmv]: {
         title: 'Total store revenue',
+        hint: {
+            title: '',
+        },
     },
     [CampaignsTotalsMetricNames.influencedRevenueShare]: {
         title: 'Total store revenue share influenced by campaigns',

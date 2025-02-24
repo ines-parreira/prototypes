@@ -1,11 +1,14 @@
 import {fromJS} from 'immutable'
+
 import React from 'react'
 import routerDom, {useParams} from 'react-router-dom'
 
 import {campaign} from 'fixtures/campaign'
 import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
 import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
+import * as useIsConvertPerformanceViewEnabled from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {CampaignPerformanceEditColumns} from 'pages/stats/convert/components/CampaignPerformanceEditColumns'
 import {CAMPAIGN_TABLE_COLUMN_TITLES} from 'pages/stats/convert/components/CampaignTableStats/constants'
 import {CampaignPerformanceTable} from 'pages/stats/convert/containers/CampaignPerformanceTable/CampaignPerformanceTable'
 import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
@@ -17,6 +20,11 @@ import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('pages/stats/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
+
+jest.mock('pages/stats/convert/components/CampaignPerformanceEditColumns')
+const CampaignPerformanceEditColumnsMock = assumeMock(
+    CampaignPerformanceEditColumns
+)
 
 jest.mock('pages/stats/convert/hooks/useCampaignPerformanceTableSetting')
 const useCampaignPerformanceTableSettingMock = assumeMock(
@@ -35,6 +43,7 @@ const useParamsMock = useParams as jest.Mock
 
 describe('CampaignPerformanceTable', () => {
     beforeEach(() => {
+        CampaignPerformanceEditColumnsMock.mockImplementation(() => <div />)
         useCampaignStatsFiltersMock.mockReturnValue({
             selectedPeriod: {
                 start_datetime: '2020-01-01T00:00:00.000Z',
@@ -76,5 +85,23 @@ describe('CampaignPerformanceTable', () => {
         })
 
         expect(useGetTableStatMock).toHaveBeenCalledTimes(2)
+    })
+
+    it('should render Edit Columns control when ConvertPerformanceViewEnabled', () => {
+        jest.spyOn(
+            useIsConvertPerformanceViewEnabled,
+            'useIsConvertPerformanceViewEnabled'
+        ).mockImplementation(() => true)
+
+        renderWithStore(<CampaignPerformanceTable />, {
+            integrations: fromJS({
+                integrations: [
+                    ...integrationsState.integrations,
+                    shopifyIntegration,
+                ],
+            }),
+        })
+
+        expect(CampaignPerformanceEditColumnsMock).toHaveBeenCalled()
     })
 })

@@ -1,5 +1,6 @@
 import {UserRole} from 'config/types/user'
-import {ReportsIDs} from 'pages/stats/custom-reports/config'
+
+import {ReportsIDs} from 'pages/stats/custom-reports/constants'
 
 const LOOPY_CASES_ACCOUNT_ID = 141994
 

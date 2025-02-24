@@ -1,6 +1,7 @@
 import {QueryClient, useQueryClient} from '@tanstack/react-query'
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -8,7 +9,7 @@ import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomRe
 import {useReportRestrictions} from 'hooks/reporting/custom-reports/useReportRestrictions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as constants from 'pages/stats/custom-reports/config'
-import {ReportsIDs} from 'pages/stats/custom-reports/config'
+import {ReportsIDs} from 'pages/stats/custom-reports/constants'
 import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
 import {
     ADD_CHARTS_CTA,

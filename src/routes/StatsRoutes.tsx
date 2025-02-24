@@ -30,6 +30,7 @@ import AutomateMacros from 'pages/stats/AutomateMacros'
 import StatsNavbarContainer from 'pages/stats/common/StatsNavbarContainer'
 import RevenueCampaignsStats from 'pages/stats/convert/pages/CampaignsStats'
 import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
+import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
 import {CustomReportPage} from 'pages/stats/custom-reports/CustomReportPage'
 import {CustomReports} from 'pages/stats/custom-reports/CustomReports'
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
@@ -191,10 +192,16 @@ export const StatsRoutes = () => {
                             render={() => (
                                 <HelpCenterApiClientProvider>
                                     <SupportedLocalesProvider>
-                                        <App
-                                            content={CustomReports}
-                                            navbar={StatsNavbarContainer}
-                                        />
+                                        <RevenueAddonApiClientProvider>
+                                            <CampaignStatsFilters>
+                                                <App
+                                                    content={CustomReports}
+                                                    navbar={
+                                                        StatsNavbarContainer
+                                                    }
+                                                />
+                                            </CampaignStatsFilters>
+                                        </RevenueAddonApiClientProvider>
                                     </SupportedLocalesProvider>
                                 </HelpCenterApiClientProvider>
                             )}
@@ -211,10 +218,16 @@ export const StatsRoutes = () => {
                             render={() => (
                                 <HelpCenterApiClientProvider>
                                     <SupportedLocalesProvider>
-                                        <App
-                                            content={CustomReportPage}
-                                            navbar={StatsNavbarContainer}
-                                        />
+                                        <RevenueAddonApiClientProvider>
+                                            <CampaignStatsFilters>
+                                                <App
+                                                    content={CustomReportPage}
+                                                    navbar={
+                                                        StatsNavbarContainer
+                                                    }
+                                                />
+                                            </CampaignStatsFilters>
+                                        </RevenueAddonApiClientProvider>
                                     </SupportedLocalesProvider>
                                 </HelpCenterApiClientProvider>
                             )}

@@ -1,8 +1,10 @@
 import {fireEvent, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import React from 'react'
 
-import {REPORTS_CONFIG, ReportsIDs} from 'pages/stats/custom-reports/config'
+import {REPORTS_CONFIG} from 'pages/stats/custom-reports/config'
+import {ReportsIDs} from 'pages/stats/custom-reports/constants'
 import {ModalSearchBar} from 'pages/stats/custom-reports/CustomReportsModal/ModalSearchBar'
 import {
     OverviewChart,

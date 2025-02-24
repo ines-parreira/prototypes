@@ -1,5 +1,6 @@
 import {QueryClientProvider} from '@tanstack/react-query'
 import {fromJS} from 'immutable'
+
 import React from 'react'
 import routerDom, {useParams} from 'react-router-dom'
 
@@ -14,12 +15,14 @@ import useGetCampaignRevenueTimeSeries from 'pages/stats/convert/hooks/stats/use
 import {useGetTotalsStat} from 'pages/stats/convert/hooks/stats/useGetTotalsStat'
 
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
 import {RevenueStatsContent} from '../RevenueStatsContent'
 
-jest.mock('pages/convert/common/hooks/useIsConvertPerformanceViewEnabled')
+jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
+const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 jest.mock('pages/stats/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
@@ -75,6 +78,10 @@ describe('<RevenueStatsContent />', () => {
     }
 
     beforeAll(() => {
+        useReportChartRestrictionsMock.mockReturnValue({
+            isRouteRestrictedToCurrentUser: () => false,
+            isChartRestrictedToCurrentUser: () => false,
+        })
         useCampaignStatsFiltersMock.mockReturnValue({
             selectedPeriod: {
                 start_datetime: '2020-01-01T00:00:00.000Z',

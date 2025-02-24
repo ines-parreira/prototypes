@@ -2,6 +2,7 @@ import {act, render} from '@testing-library/react'
 import {createBrowserHistory} from 'history'
 import {fromJS, Map} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentType, PropsWithChildren, ReactNode} from 'react'
 import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
@@ -27,6 +28,7 @@ import {STATS_ROUTE_PREFIX} from 'pages/stats/common/components/constants'
 import StatsNavbarContainer from 'pages/stats/common/StatsNavbarContainer'
 import RevenueCampaignsStats from 'pages/stats/convert/pages/CampaignsStats'
 import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
+import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
 import {CustomReportPage} from 'pages/stats/custom-reports/CustomReportPage'
 import {CustomReports} from 'pages/stats/custom-reports/CustomReports'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
@@ -180,6 +182,8 @@ jest.mock('pages/stats/convert/pages/CampaignsStats')
 const RevenueCampaignsStatsMock = assumeMock(RevenueCampaignsStats)
 jest.mock('pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView')
 const CampaignStatsPaywallViewMock = assumeMock(CampaignStatsPaywallView)
+jest.mock('pages/stats/convert/providers/CampaignStatsFilters')
+const CampaignStatsFiltersMock = assumeMock(CampaignStatsFilters)
 jest.mock('pages/stats/AutomateMacros')
 const AutomateMacrosMock = assumeMock(AutomateMacros)
 jest.mock('pages/stats/AutomateIntents')
@@ -233,6 +237,9 @@ describe('StatsRoutes', () => {
         SupportPerformanceSatisfactionMock.mockImplementation(() => <div />)
         SupportPerformanceRevenueMock.mockImplementation(() => <div />)
         RevenueCampaignsStatsMock.mockImplementation(() => <div />)
+        CampaignStatsFiltersMock.mockImplementation(({children}) => (
+            <>{children}</>
+        ))
         CampaignStatsPaywallViewMock.mockImplementation(() => <div />)
         AutomateMacrosMock.mockImplementation(() => <div />)
         AutomateIntentsMock.mockImplementation(() => <div />)

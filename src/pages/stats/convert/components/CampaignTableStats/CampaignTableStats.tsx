@@ -15,7 +15,6 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
 import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
 import {useIsConvertPerformanceViewEnabled} from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
-import {CampaignPerformanceEditColumns} from 'pages/stats/convert/components/CampaignPerformanceEditColumns'
 import {ITEMS_PER_PAGE} from 'pages/stats/convert/constants/campaignPerformanceTable'
 import {useCampaignPerformanceTableSetting} from 'pages/stats/convert/hooks/useCampaignPerformanceTableSetting'
 
@@ -255,15 +254,7 @@ export const CampaignTableStats = ({
     }
 
     return (
-        <div className={css.wrapper}>
-            <div className={css.tableHeader}>
-                <p className={css.title}>Campaigns performance</p>
-                {isConvertPerformanceViewEnabled && (
-                    <div className={css.editColumns}>
-                        <CampaignPerformanceEditColumns />
-                    </div>
-                )}
-            </div>
+        <>
             <div ref={ref} className={css.container} onScroll={handleScroll}>
                 <TableWrapper className={css.table} style={{width}}>
                     <TableHead className={css.header}>
@@ -284,6 +275,6 @@ export const CampaignTableStats = ({
                     fetchPrevItems={onClickPrevPage}
                 />
             )}
-        </div>
+        </>
     )
 }

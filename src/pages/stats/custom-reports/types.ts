@@ -16,7 +16,9 @@ import {StaticFilter, StatsFilters} from 'models/stat/types'
 import {AutomateOverviewChart} from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
 import {MetricValueFormat} from 'pages/stats/common/utils'
-import {ReportsIDs} from 'pages/stats/custom-reports/config'
+import {CampaignsLegacyChart} from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
+import {CampaignsChart} from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
+import {ReportsIDs} from 'pages/stats/custom-reports/constants'
 import {HelpCenterChart} from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
 import {SatisfactionChart} from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
 import {ServiceLevelAgreementsChart} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
@@ -185,6 +187,8 @@ export type AvailableChartIds =
     | typeof TicketInsightsTagsChart
     | typeof VoiceAgentsChart
     | typeof VoiceOverviewChart
+    | typeof CampaignsChart
+    | typeof CampaignsLegacyChart
 
 export type ReportChildrenConfig = {
     type: AvailableChartIds
