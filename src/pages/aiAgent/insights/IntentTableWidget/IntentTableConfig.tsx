@@ -58,7 +58,7 @@ export const IntentsColumnsConfig: Partial<
         perAgent: false,
     },
     [IntentTableColumn.AutomationOpportunities]: {
-        format: 'decimal-to-percent',
+        format: 'decimal-percent-to-integer-percent',
         hint: {
             title: 'Estimated potential to improve your automation rate, base on the potential uplift between your current success rate and the ticket volume of the intent.',
         },
@@ -72,7 +72,7 @@ export const IntentsColumnsConfig: Partial<
         notAvailableText: '-',
     },
     [IntentTableColumn.SuccessRate]: {
-        format: 'decimal-to-percent',
+        format: 'decimal-percent-to-integer-percent',
         hint: null,
         perAgent: true,
         notAvailableText: '-',

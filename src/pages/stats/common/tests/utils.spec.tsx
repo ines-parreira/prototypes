@@ -261,6 +261,18 @@ describe('stats components utils', () => {
         it('should return percent on 0-1 float representing percentage', () => {
             expect(formatMetricValue(0.5, 'decimal-to-percent')).toBe('50%')
         })
+
+        it('should round number to closest integer (up) when format is "decimal-percent-to-integer-percent"', () => {
+            expect(
+                formatMetricValue(0.555, 'decimal-percent-to-integer-percent')
+            ).toBe('56%')
+        })
+
+        it('should round number to closest integer (down) when format is "decimal-percent-to-integer-percent"', () => {
+            expect(
+                formatMetricValue(0.352, 'decimal-percent-to-integer-percent')
+            ).toBe('35%')
+        })
     })
 
     describe('formatMetricTrend', () => {

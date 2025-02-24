@@ -206,6 +206,7 @@ export type MetricValueFormat =
     | 'percent'
     | 'percent-refined'
     | 'decimal-to-percent'
+    | 'decimal-percent-to-integer-percent'
 
 const metricToDecimal = (
     value: number,
@@ -252,6 +253,10 @@ export const formatMetricValue = (
 
     if (format === 'integer') {
         return metricToInteger(Math.ceil(value))
+    }
+
+    if (format === 'decimal-percent-to-integer-percent') {
+        return `${metricToInteger(Math.round(value * 100))}%`
     }
 
     return metricToDecimal(value, additionalFormatOptions)

@@ -160,7 +160,7 @@ describe('IntentTableCells', () => {
                     allIntents={mockAllIntents}
                 />
             )
-            expect(screen.getByText('+50.00%')).toBeInTheDocument()
+            expect(screen.getByText('+50%')).toBeInTheDocument()
         })
     })
 
