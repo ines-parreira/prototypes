@@ -1,5 +1,6 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 @import (reference) '~css/typography';
+@import (reference) '~css/new/mixins';
 
 :local {
     .innerCard {
@@ -25,11 +26,21 @@
         color: var(--accessory-magenta-25);
     }
 
+    .expanderIcon {
+        margin-left: 2px;
+        font-size: 18px;
+        vertical-align: -18%;
+    }
+
     .pendingTaskInnerContainer {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(304px, 1fr));
+        grid-template-columns: 1fr;
         gap: 16px;
         margin-top: @layout-spacing-xs;
+
+        @media @xlarge-desktops {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
     }
 
     .expanderContainer {

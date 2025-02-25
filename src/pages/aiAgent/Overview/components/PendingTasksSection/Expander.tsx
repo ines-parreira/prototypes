@@ -34,7 +34,7 @@ export const Expander = ({
             {isExpanded
                 ? 'Collapse'
                 : `Show all tasks (${tasksCount ?? 0} total)`}
-            <i className={classNames('material-icons', css.titleIcon)}>
+            <i className={classNames('material-icons', css.expanderIcon)}>
                 {isExpanded ? 'arrow_drop_up' : 'arrow_drop_down'}
             </i>
         </button>
