@@ -11,7 +11,7 @@ import { getCommentHighlightsCsatSentiment } from 'state/ui/stats/qualityManagem
 import { CsatSentiment } from 'state/ui/stats/types'
 
 export const COMMENT_HIGHLIGHTS = {
-    TITLE: 'Comments Highlight',
+    TITLE: 'Comment Highlights',
     DESCRIPTION:
         'Most enthusiastic or negative feedback received during this period.',
 }

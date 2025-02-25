@@ -33,8 +33,9 @@
         margin-bottom: @layout-spacing-m;
     }
 
-    .cellPadding {
+    .rowCell {
         padding-block: @layout-spacing-xs;
+        cursor: default;
     }
 
     .table {
@@ -56,6 +57,12 @@
         th,
         td {
             width: auto;
+        }
+
+        tbody {
+            tr:hover {
+                background-color: var(--neutral-grey-1);
+            }
         }
     }
 

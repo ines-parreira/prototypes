@@ -91,7 +91,12 @@ export const getSortedData = (
     })
     const topData = sortedData.slice(0, topAmount)
 
-    const dataToRender = topData.map(([__, data]) => data[0])
+    const dataToRender = topData.map(([__, data]) =>
+        data[0].map((item) => ({
+            ...item,
+            value: Number(item.value.toFixed(2)),
+        })),
+    )
     const labels = topData.map(([dim, __]) => dim)
     const tooltips = topData.map(([dim, __]) => dim)
 

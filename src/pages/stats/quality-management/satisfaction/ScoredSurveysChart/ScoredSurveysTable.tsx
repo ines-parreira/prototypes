@@ -81,7 +81,7 @@ export default function ScoredSurveysTable({
                                         index,
                                     ) => (
                                         <CellComponent
-                                            innerClassName={css.cellPadding}
+                                            innerClassName={css.rowCell}
                                             key={`${rowData.ticketId}-${index}`}
                                             width={width}
                                             justifyContent={justifyContent}
