@@ -3377,10 +3377,10 @@
     ajv-formats "^3.0.1"
     immer "^10.1"
 
-"@gorgias/config@0.2.2":
-  version "0.2.2"
-  resolved "https://npm.pkg.github.com/download/@gorgias/config/0.2.2/d72af2ff9993fbdff0ea9a54a12db35d845219c7#d72af2ff9993fbdff0ea9a54a12db35d845219c7"
-  integrity sha512-TJ+nVytyxok2mhU7WeGM313BSFAMCncb+TbwCOvr8eQYsDOBHdlAJo86TWKYwjZ/e2av/2ZLZCg4YSSAZV5KQQ==
+"@gorgias/config@0.2.3":
+  version "0.2.3"
+  resolved "https://npm.pkg.github.com/download/@gorgias/config/0.2.3/82e420e8dfa8ac1e132fe57c6b01b2bd261c22ee#82e420e8dfa8ac1e132fe57c6b01b2bd261c22ee"
+  integrity sha512-aTKF6osQXmhpo7HYTaUW9p8QZOJg2bOWtwXBqCmaz1DWE7g0ZzqQikg2pzKDP+zp3FKbFgvhc4N7F0DIXeOquA==
 
 "@gorgias/design-tokens@^0.4.0":
   version "0.4.0"
