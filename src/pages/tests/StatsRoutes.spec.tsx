@@ -36,9 +36,10 @@ jest.mock('pages/stats/voice/pages/VoiceOverview', () => () => (
 jest.mock('pages/stats/voice/pages/VoiceAgents', () => () => (
     <div>Voice Agents</div>
 ))
-jest.mock('pages/stats/automate/ai-agent/AutomateAiAgentStats', () => () => (
-    <div>AI Agent Stats</div>
-))
+jest.mock(
+    'pages/stats/automate/ai-agent/AutomateAiAgentStatsReport',
+    () => () => <div>AI Agent Stats</div>,
+)
 jest.mock(
     'pages/stats/automate/ai-agent/AiAgentStatsFilters',
     () =>

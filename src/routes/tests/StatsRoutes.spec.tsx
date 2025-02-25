@@ -20,7 +20,7 @@ import {
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
-import AiAgentStatsFilters from 'pages/stats/automate/ai-agent/AiAgentStatsFilters'
+import AutomateAiAgentStatsReport from 'pages/stats/automate/ai-agent/AutomateAiAgentStatsReport'
 import AutomateStatsPaywall from 'pages/stats/automate/AutomateStatsPaywall'
 import AutomateIntents from 'pages/stats/AutomateIntents'
 import AutomateMacros from 'pages/stats/AutomateMacros'
@@ -190,9 +190,8 @@ jest.mock('pages/stats/AutomateIntents')
 const AutomateIntentsMock = assumeMock(AutomateIntents)
 jest.mock('pages/stats/automate/AutomateStatsPaywall')
 const AutomateStatsPaywallMock = assumeMock(AutomateStatsPaywall)
-jest.mock('pages/stats/automate/ai-agent/AutomateAiAgentStats', () => () => (
-    <div>AutomateAiAgentStats</div>
-))
+jest.mock('pages/stats/automate/ai-agent/AutomateAiAgentStatsReport')
+const AutomateAiAgentStatsReportMock = assumeMock(AutomateAiAgentStatsReport)
 jest.mock('pages/stats/self-service/SelfServiceStatsPage')
 const SelfServiceStatsPageMock = assumeMock(SelfServiceStatsPage)
 jest.mock('pages/stats/help-center/pages/HelpCenterStats')
@@ -211,8 +210,6 @@ const RevenueAddonApiClientProviderMock = assumeMock(
 )
 jest.mock('pages/stats/support-performance/auto-qa/AutoQA')
 const AutoQAMock = assumeMock(AutoQA)
-jest.mock('pages/stats/automate/ai-agent/AiAgentStatsFilters')
-const AiAgentStatsFiltersMock = assumeMock(AiAgentStatsFilters)
 
 describe('StatsRoutes', () => {
     beforeEach(() => {
@@ -248,7 +245,10 @@ describe('StatsRoutes', () => {
         HelpCenterStatsMock.mockImplementation(() => <div />)
         VoiceOverviewMock.mockImplementation(() => <div />)
         VoiceAgentsMock.mockImplementation(() => <div />)
-        AiAgentStatsFiltersMock.mockImplementation(() => <div />)
+        RevenueAddonApiClientProviderMock.mockImplementation(({ children }) => (
+            <>{children}</>
+        ))
+        AutomateAiAgentStatsReportMock.mockImplementation(() => <div />)
         RevenueAddonApiClientProviderMock.mockImplementation(({ children }) => (
             <>{children}</>
         ))
@@ -343,11 +343,11 @@ describe('StatsRoutes', () => {
         },
         {
             route: `${STATS_ROUTE_PREFIX}${STATS_ROUTES.VOICE_AGENTS}`,
-            mock: VoiceOverviewMock,
+            mock: VoiceAgentsMock,
         },
         {
-            route: '/app/stats/automate-ai-agent',
-            mock: VoiceAgentsMock,
+            route: `${STATS_ROUTE_PREFIX}${STATS_ROUTES.AUTOMATE_AI_AGENTS}`,
+            mock: AutomateAiAgentStatsReportMock,
         },
     ])('should render %p page', ({ route, mock }) => {
         mockFlags({

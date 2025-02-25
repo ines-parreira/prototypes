@@ -15,6 +15,8 @@ import { calculateGreyArea } from 'hooks/reporting/automate/utils'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import { AutomatedInteractionsMetric } from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
+import AiAgentStatsFilters from 'pages/stats/automate/ai-agent/AiAgentStatsFilters'
+import AutomateAiAgentStatsReport from 'pages/stats/automate/ai-agent/AutomateAiAgentStatsReport'
 import { getTimeSeriesFormattedData } from 'pages/stats/automate/overview/utils'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
@@ -24,8 +26,6 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 import { getStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 import { getSelectedCustomField } from 'state/ui/stats/ticketInsightsSlice'
 import { assumeMock } from 'utils/testing'
-
-import AutomateAiAgentStats from '../AutomateAiAgentStats'
 
 jest.mock(
     'hooks/useAppSelector',
@@ -142,9 +142,12 @@ jest.mock('pages/stats/AnalyticsFooter', () => ({
     AnalyticsFooter: () => <div>analytics-footer</div>,
 }))
 
+jest.mock('pages/stats/automate/ai-agent/AiAgentStatsFilters')
+const AiAgentStatsFiltersMock = assumeMock(AiAgentStatsFilters)
+
 LineChartMock.mockImplementation(() => <div>line-chart</div>)
 
-describe('AutomateAiAgentStats', () => {
+describe('AutomateAiAgentStatsReport', () => {
     const renderComponent = ({
         statsFilters = {
             period: {
@@ -196,6 +199,10 @@ describe('AutomateAiAgentStats', () => {
             aiAgentUserId === null ? undefined : aiAgentUserId,
         )
 
+        AiAgentStatsFiltersMock.mockImplementation(({ children }: any) => (
+            <>{children}</>
+        ))
+
         calculateGreyAreaMock.mockReturnValue(greyArea)
 
         getStatsFiltersWithLogicalOperatorsMock.mockReturnValue(statsFilters)
@@ -234,7 +241,7 @@ describe('AutomateAiAgentStats', () => {
             isRouteRestrictedToCurrentUser: () => false,
         })
 
-        return render(<AutomateAiAgentStats />)
+        return render(<AutomateAiAgentStatsReport />)
     }
 
     it('should correctly render AI Agent related stats', () => {

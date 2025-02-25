@@ -14,13 +14,13 @@ import {
     LINK_AI_SALES_AGENT_TEXT,
     ROUTE_AI_SALES_AGENT_OVERVIEW,
 } from 'pages/stats/aiSalesAgent/constants'
+import { STATS_ROUTES } from 'routes/constants'
 import { getHasAutomate } from 'state/billing/selectors'
 
 import {
     PAGE_TITLE_AI_AGENT,
     PAGE_TITLE_OVERVIEW,
     PAGE_TITLE_PERFORMANCE_BY_FEATURES,
-    ROUTE_AUTOMATE_AI_AGENT,
     ROUTE_AUTOMATE_OVERVIEW,
     ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
 } from './constants'
@@ -30,7 +30,7 @@ type Props = {
 }
 
 const OVERVIEW_PATH = `/app/stats/${ROUTE_AUTOMATE_OVERVIEW}`
-const AI_AGENT_PATH = `/app/stats/${ROUTE_AUTOMATE_AI_AGENT}`
+const AI_AGENT_PATH = `/app/stats/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`
 const PERFORMANCE_BY_FEATURE_PATH = `/app/stats/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`
 const AI_SALES_AGENT_PATH = `/app/stats/${ROUTE_AI_SALES_AGENT_OVERVIEW}`
 

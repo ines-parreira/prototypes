@@ -19,8 +19,7 @@ import {
     TicketInsightsFieldsMetricConfig,
 } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
 import { TicketInsightsFieldTrend } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
-
-export const SUPPORT_PERFORMANCE_AI_AGENTS_REPORT_PATH = 'automate-ai-agent'
+import { STATS_ROUTES } from 'routes/constants'
 
 export enum AutomateAiAgentsChart {
     AiAgentTable = 'automate_ai_agent_table',
@@ -39,7 +38,7 @@ export const AUTOMATE_AI_AGENTS_OPTIONAL_FILTERS = []
 export const AutomateAiAgentsReportConfig: ReportConfig<AutomateAiAgentsChart> =
     {
         reportName: 'AI Agents',
-        reportPath: SUPPORT_PERFORMANCE_AI_AGENTS_REPORT_PATH,
+        reportPath: STATS_ROUTES.AUTOMATE_AI_AGENTS,
         reportFilters: {
             persistent: AUTOMATE_AI_AGENTS_PERSISTENT_FILTERS,
             optional: AUTOMATE_AI_AGENTS_OPTIONAL_FILTERS,

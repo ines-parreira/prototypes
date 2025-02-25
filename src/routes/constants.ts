@@ -30,6 +30,7 @@ export const STATS_ROUTES = {
     QUALITY_MANAGEMENT_AUTO_QA: 'auto-qa',
     QUALITY_MANAGEMENT_SATISFACTION: 'quality-management-satisfaction',
     CONVERT_CAMPAIGNS: 'convert/campaigns',
+    AUTOMATE_AI_AGENTS: 'automate-ai-agent',
     VOICE_OVERVIEW: 'voice-overview',
     VOICE_AGENTS: 'voice-agents',
 }

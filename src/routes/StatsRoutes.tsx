@@ -21,8 +21,7 @@ import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/use
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import AiSalesAgentSalesOverview from 'pages/stats/aiSalesAgent/AiSalesAgentSalesOverview'
 import { ROUTE_AI_SALES_AGENT_OVERVIEW } from 'pages/stats/aiSalesAgent/constants'
-import AiAgentStatsFilters from 'pages/stats/automate/ai-agent/AiAgentStatsFilters'
-import AutomateAiAgentStats from 'pages/stats/automate/ai-agent/AutomateAiAgentStats'
+import AutomateAiAgentStatsReport from 'pages/stats/automate/ai-agent/AutomateAiAgentStatsReport'
 import AutomateStatsPaywall from 'pages/stats/automate/AutomateStatsPaywall'
 import AutomateIntents from 'pages/stats/AutomateIntents'
 import AutomateMacros from 'pages/stats/AutomateMacros'
@@ -39,7 +38,6 @@ import LiveOverview from 'pages/stats/LiveOverview'
 import SatisfactionReport from 'pages/stats/quality-management/satisfaction/SatisfactionReport'
 import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
 import {
-    ROUTE_AUTOMATE_AI_AGENT,
     ROUTE_AUTOMATE_OVERVIEW,
     ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
     ROUTE_OLD_PERFORMANCE_BY_FEATURES,
@@ -458,16 +456,17 @@ export const StatsRoutes = () => {
                 </ProtectedRoute>
 
                 {isAiAgentStatsPageEnabled && (
-                    <ProtectedRoute path={`${path}/${ROUTE_AUTOMATE_AI_AGENT}`}>
+                    <ProtectedRoute
+                        path={`${path}/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`}
+                    >
                         <Route
                             exact
-                            path={`${path}/${ROUTE_AUTOMATE_AI_AGENT}`}
+                            path={`${path}/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`}
                             render={() => (
-                                <App navbar={StatsNavbarContainer}>
-                                    <AiAgentStatsFilters>
-                                        <AutomateAiAgentStats />
-                                    </AiAgentStatsFilters>
-                                </App>
+                                <App
+                                    navbar={StatsNavbarContainer}
+                                    content={AutomateAiAgentStatsReport}
+                                />
                             )}
                         />
                     </ProtectedRoute>

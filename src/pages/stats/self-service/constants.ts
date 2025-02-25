@@ -12,7 +12,6 @@ export const GORGIAS_AUTOMATE_BADGE = 'GORGIAS AUTOMATE'
 export const ROUTE_OLD_PERFORMANCE_BY_FEATURES = 'automation-add-on-features'
 export const ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES = 'performance-by-features'
 export const ROUTE_AUTOMATE_OVERVIEW = 'automate-overview'
-export const ROUTE_AUTOMATE_AI_AGENT = 'automate-ai-agent'
 
 export const PAGE_DESCRIPTION =
     'This page provides an overview of the performance of features included in the Automate. This view shows data from chat and help center channels combined.'
