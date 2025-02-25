@@ -46,6 +46,15 @@ jest.mock(
     () => () => <div>gmv-influenced-over-time-chart</div>
 )
 
+jest.mock('pages/stats/aiSalesAgent/charts/AverageOrderValueCard', () => () => (
+    <div>average-order-value-card</div>
+))
+
+jest.mock(
+    'pages/stats/aiSalesAgent/charts/TotalNumberOfOrdersCard',
+    () => () => <div>total-number-of-orders-card</div>
+)
+
 describe('AiSalesAgentSalesOverview', () => {
     const renderComponent = () => {
         render(<AiSalesAgentSalesOverview />)

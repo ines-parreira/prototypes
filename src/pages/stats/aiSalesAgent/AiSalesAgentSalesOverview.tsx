@@ -78,6 +78,23 @@ const AiSalesAgentSalesOverview = () => {
                 </DashboardGridCell>
             </DashboardSection>
 
+            <DashboardSection title="Order Data">
+                <DashboardGridCell size={getGridCellSize(6)}>
+                    <RenderChart
+                        chart={
+                            AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders
+                        }
+                        config={AiSalesAgentReportConfig}
+                    />
+                </DashboardGridCell>
+                <DashboardGridCell size={getGridCellSize(6)}>
+                    <RenderChart
+                        chart={AiSalesAgentChart.AiSalesAgentAverageOrderValue}
+                        config={AiSalesAgentReportConfig}
+                    />
+                </DashboardGridCell>
+            </DashboardSection>
+
             <AnalyticsFooter />
         </StatsPage>
     )

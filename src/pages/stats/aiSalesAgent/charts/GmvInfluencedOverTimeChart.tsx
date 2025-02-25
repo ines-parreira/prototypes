@@ -3,6 +3,7 @@ import React from 'react'
 
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
+
 import {
     AiSalesAgentChart,
     AiSalesAgentChartConfig,
@@ -12,6 +13,7 @@ import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 
 import {formatTimeSeriesData} from 'pages/stats/common/utils'
 import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import {TooltipData} from 'pages/stats/types'
 
 export const percentLabel = (value: number | string) => {
     return typeof value === 'number'
@@ -29,11 +31,13 @@ export const renderTooltipLabel = (isPercentage = false) => {
 
 const Chart = ({
     title,
+    hint,
     useTimeSeries,
     dashboard,
     chartId,
 }: {
     title: string
+    hint?: TooltipData
     useTimeSeries: TimeSeriesHook
 } & DashboardChartProps) => {
     const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
@@ -45,7 +49,12 @@ const Chart = ({
     )
 
     return (
-        <ChartCard title={title} chartId={chartId} dashboard={dashboard}>
+        <ChartCard
+            title={title}
+            chartId={chartId}
+            dashboard={dashboard}
+            hint={hint}
+        >
             <LineChart
                 isLoading={!timeSeries.data}
                 data={formatTimeSeriesData(timeSeries.data, title, granularity)}
